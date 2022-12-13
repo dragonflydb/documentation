@@ -5,44 +5,40 @@ slug: /
 
 # Getting Started
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Starting with `docker run` is the simplest way to get up and running with DragonflyDB.
 
-## Getting Started
+If you do not have docker on your machine, [Install Docker](https://docs.docker.com/get-docker/) before continuing.
 
-Get started by **creating a new site**.
+## Step  1
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
-
-### What you'll need
-
-- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
-
-## Generate a new site
-
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
+```sh
+docker run --network=host --ulimit memlock=-1 docker.dragonflydb.io/dragonflydb/dragonfly
 ```
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+Dragonfly DB will answer to both `http` and `redis` requests out of the box!
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+You can use `redis-cli` to connect to `localhost:6379` or open a browser and visit `http://localhost:6379`
 
-## Start your site
+:::info
 
-Run the development server:
+On some configurations, running with the `docker run --privileged ...` flag can fix some initialization errors.
+:::
 
-```bash
-cd my-website
-npm run start
+## Step 2
+
+Connect with a redis client
+
+```sh
+redis-cli
+127.0.0.1:6379> set hello world
+OK
+127.0.0.1:6379> keys *
+1) "hello"
+127.0.0.1:6379> get hello
+"world"
+127.0.0.1:6379>
 ```
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+## Step 3
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+Continue being great and build your app with the power of DragonflyDB!
