@@ -11,7 +11,7 @@ If you do not have docker on your machine, [Install Docker](https://docs.docker.
 
 ## Step  1
 
-```sh
+```bash
 docker run --network=host --ulimit memlock=-1 docker.dragonflydb.io/dragonflydb/dragonfly
 ```
 
@@ -28,7 +28,7 @@ On some configurations, running with the `docker run --privileged ...` flag can 
 
 Connect with a redis client
 
-```sh
+```bash
 redis-cli
 127.0.0.1:6379> set hello world
 OK
