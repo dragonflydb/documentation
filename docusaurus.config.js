@@ -68,7 +68,7 @@ const config = {
         },
         items: [
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/dragonflydb/dragonfly',
             label: 'GitHub',
             position: 'right',
           },
@@ -107,17 +107,13 @@ const config = {
             title: 'More',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
-              },
-              {
                 label: 'GitHub',
                 href: 'https://github.com/dragonflydb/dragonfly',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Dragonfly. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
