@@ -40,7 +40,7 @@ const config = {
     },
     {
       attributes: {
-        href: "https://fonts.googleapis.com/css2?family=Inter&family=Archivo&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Inter:wght@400;500;600;700&display=swap",
         rel: "stylesheet",
       },
       tagName: "link",
