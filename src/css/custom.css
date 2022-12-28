@@ -1,0 +1,80 @@
+:root {
+  --ifm-color-primary: #5a3ee0;
+  --ifm-color-primary-dark: #311a9e;
+  --ifm-color-primary-darker: #277148;
+  --ifm-color-primary-darkest: #205d3b;
+  --ifm-color-primary-light: #a596ee;
+  --ifm-color-primary-lighter: #359962;
+  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  --ifm-background-color: white;
+  --ifm-footer-link-hover-color: white;
+
+  --font-family-base: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+    Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI", Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --ifm-font-family-base: "Inter", var(--font-family-base);
+  --ifm-heading-font-family: "Archivo", var(--font-family-base);
+  --ifm-toc-border-color: rgba(0, 0, 0, 0.06);
+  --ifm-color-emphasis-300: var(--ifm-toc-border-color);
+  --ifm-color-content: rgba(0, 0, 0, 0.8);
+  --ifm-menu-color: rgba(0, 0, 0, 0.7);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+:root[data-theme="dark"] {
+  --ifm-color-primary: #a596ee;
+  /* --ifm-color-primary-dark: #1a9e77; */
+  /* --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870; */
+  /* --ifm-color-primary-light: #96eed4; */
+  /* --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf; */
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  --ifm-background-color: #17171a;
+  --ifm-toc-border-color: rgba(255, 255, 255, 0.1);
+  --ifm-color-emphasis-300: var(--ifm-toc-border-color);
+  --ifm-menu-color: white;
+}
+
+[data-theme="dark"] .navbar {
+  background: linear-gradient(to right, #462741, #232331);
+}
+
+.footer--dark {
+  --ifm-footer-background-color: #272730;
+}
+
+.footer__link-item:hover {
+  text-decoration: none;
+}
+
+a > svg[class*="ExternalLink"] {
+  width: 0.7em;
+  height: 0.7em;
+  opacity: 0.7;
+  margin-left: 0.7em;
+}
+
+.footer__copyright {
+  font-size: 0.9em;
+}
+
+.menu__caret:before {
+  background-size: 1.25rem;
+  opacity: 0.6;
+}
+
+.theme-doc-footer-edit-meta-row a {
+  font-size: 0.9em;
+}
+
+.theme-doc-footer-edit-meta-row a > svg {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.5em;
+  vertical-align: middle;
+}
