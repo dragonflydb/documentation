@@ -55,7 +55,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/dragonflydb/documentation/blob/main/",
+          editUrl: "https://github.com/dragonflydb/documentation/edit/main/",
           routeBasePath: "/",
         },
         blog: false,
