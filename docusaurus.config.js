@@ -107,25 +107,16 @@ const config = {
             title: "Community",
             items: [
               {
-                label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/docusaurus",
+                label: "GitHub",
+                href: "https://github.com/dragonflydb/dragonfly",
               },
               {
                 label: "Discord",
-                href: "https://discordapp.com/invite/docusaurus",
+                href: "https://discord.gg/HsPjXGVH85",
               },
               {
                 label: "Twitter",
-                href: "https://twitter.com/docusaurus",
-              },
-            ],
-          },
-          {
-            title: "More",
-            items: [
-              {
-                label: "GitHub",
-                href: "https://github.com/facebook/docusaurus",
+                href: "https://twitter.com/dragonflydbio",
               },
             ],
           },
