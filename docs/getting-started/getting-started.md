@@ -4,14 +4,15 @@ sidebar_position: 1
 
 # Getting Started
 
-Some linking tests
+How to get Dragonfly up and running. 
 
-- [About](../about/about.md)
-  - [Introduction](../about/introduction/introduction.md)
-  - [Mockup](../about/introduction/mockup.md)
-- [Command Reference](../command-reference/command-reference.md)
 
-- [About](/)
-  - [Introduction](/about/introduction)
-  - [Mockup](/about/introduction/mockup/)
-- [Command Reference](/command-reference/)
+Install DragonflyDB
+- [Install with Docker](../getting-started/docker)
+- [Install with Kubernetes](../getting-started/kubernetes)
+- [Install from Source](../getting-started/binary)
+
+CLI
+
+Client libraries
+
