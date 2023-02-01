@@ -1,0 +1,5 @@
+pytoml==0.1.21
+PyYAML==6.0
+railroad-diagrams==1.1.1
+requests==2.27.1
+semver==2.13.0
