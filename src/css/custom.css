@@ -42,6 +42,7 @@
   background-image: url("../../static/img/bg-gradient.svg");
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: top right;
 }
 
 .navbar {
@@ -65,7 +66,7 @@
   --ifm-footer-background-color: #272730;
   background-image: url("../../static/img/footer-gradient.svg");
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: left center;
   background-size: cover;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
