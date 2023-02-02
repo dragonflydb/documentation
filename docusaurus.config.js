@@ -69,6 +69,10 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      colorMode: {
+        disableSwitch: true,
+        defaultMode: "dark",
+      },
       navbar: {
         title: "Docs",
         logo: {
