@@ -127,30 +127,65 @@ const config = {
       },
       footer: {
         style: "dark",
+        logo: {
+          alt: "Dragonfly Logo",
+          src: "img/logo.svg",
+          srcDark: "img/logo-white.svg",
+          href: "https://dragonflydb.io",
+          target: "_self",
+          width: 150,
+        },
         links: [
-          // {
-          //   title: "Docs",
-          //   items: [
-          //     {
-          //       label: "Tutorial",
-          //       to: "/docs/intro",
-          //     },
-          //   ],
-          // },
           {
-            title: "Community",
+            title: "Dragonfly",
             items: [
               {
-                label: "GitHub",
-                href: "https://github.com/dragonflydb/dragonfly",
+                label: "Features",
+                href: "https://dragonflydb.io/features",
+                target: "_self",
               },
+              {
+                label: "Blog",
+                href: "https://dragonflydb.io/blog",
+                target: "_self",
+              },
+              {
+                label: "Early Access",
+                href: "https://dragonflydb.io/early-access",
+                target: "_self",
+              },
+            ],
+          },
+          {
+            title: "Developers",
+            items: [
               {
                 label: "Discord",
                 href: "https://discord.gg/HsPjXGVH85",
               },
               {
-                label: "Twitter",
-                href: "https://twitter.com/dragonflydbio",
+                label: "GitHub",
+                href: "https://github.com/dragonflydb/dragonfly",
+              },
+            ],
+          },
+          {
+            title: "Company",
+            items: [
+              {
+                label: "Careers",
+                href: "https://dragonflydb.io/careers",
+                target: "_self",
+              },
+              {
+                label: "Privacy",
+                href: "https://dragonflydb.io/privacy",
+                target: "_self",
+              },
+              {
+                label: "Terms of Use",
+                href: "https://dragonflydb.io/terms",
+                target: "_self",
               },
             ],
           },

@@ -135,7 +135,8 @@ a > svg[class*="ExternalLink"] {
 
 .navbar__item svg,
 .menu__link svg,
-.navbar__link[aria-haspopup="true"]:after {
+.navbar__link[aria-haspopup="true"]:after,
+.footer__link-item svg {
   display: none;
 }
 
@@ -144,7 +145,8 @@ a > svg[class*="ExternalLink"] {
   margin-right: auto;
 }
 
-.nav-github-stars {
+.nav-github-stars,
+.footer__title {
   font-family: var(--ifm-heading-font-family);
 }
 
@@ -171,4 +173,12 @@ a > svg[class*="ExternalLink"] {
 .nav-cta:hover {
   color: white;
   opacity: 0.9;
+}
+
+.footer__col {
+  --ifm-col-width: 200px;
+}
+
+.footer__bottom {
+  text-align: right;
 }
