@@ -74,22 +74,53 @@ const config = {
         defaultMode: "dark",
       },
       navbar: {
-        title: "Docs",
         logo: {
           alt: "Dragonfly Logo",
           src: "img/logo.svg",
           srcDark: "img/logo-white.svg",
+          href: "https://dragonflydb.io",
+          target: "_self",
         },
         items: [
-          // {
-          //   type: "doc",
-          //   docId: "introduction",
-          //   position: "left",
-          //   label: "Tutorial",
-          // },
+          {
+            href: "https://dragonflydb.io/features",
+            label: "Features",
+            target: "_self",
+          },
+          {
+            type: "dropdown",
+            label: "Community",
+            items: [
+              {
+                href: "https://github.com/dragonflydb/dragonfly",
+                label: "GitHub",
+              },
+              {
+                href: "https://discord.gg/HsPjXGVH85",
+                label: "Discord",
+              },
+            ],
+          },
+          {
+            href: "https://dragonflydb.io/blog",
+            label: "Blog",
+            target: "_self",
+          },
+          {
+            href: "https://dragonflydb.io/careers",
+            label: "Careers",
+            target: "_self",
+          },
           {
             href: "https://github.com/dragonflydb/documentation/",
-            label: "GitHub",
+            label: "16.8k stars",
+            className: "nav-github-stars",
+            position: "right",
+          },
+          {
+            href: "https://github.com/dragonflydb/dragonfly/blob/main/docs/quick-start/README.md",
+            label: "Get Started",
+            className: "nav-cta",
             position: "right",
           },
         ],

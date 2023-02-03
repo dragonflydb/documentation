@@ -86,7 +86,8 @@ a > svg[class*="ExternalLink"] {
   font-size: 0.9em;
 }
 
-.menu__caret:before {
+.menu__caret:before,
+.menu__link--sublist-caret:after {
   background-size: 1.25rem;
   opacity: 0.6;
 }
@@ -130,4 +131,44 @@ a > svg[class*="ExternalLink"] {
 .menu__list-item-collapsible:hover {
   background: var(--brand-gradient-bg);
   color: white;
+}
+
+.navbar__item svg,
+.menu__link svg,
+.navbar__link[aria-haspopup="true"]:after {
+  display: none;
+}
+
+.navbar__brand,
+.navbar__items:not(.navbar__items--right) .navbar__item:last-child {
+  margin-right: auto;
+}
+
+.nav-github-stars {
+  font-family: var(--ifm-heading-font-family);
+}
+
+.nav-github-stars:before {
+  content: "";
+  vertical-align: middle;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-image: url(../../static/img/github-icon.svg);
+  margin-right: 6px;
+}
+
+.nav-cta {
+  padding: 8px 20px;
+  margin-left: 8px;
+  font-family: var(--ifm-heading-font-family);
+  font-weight: 700;
+  background-image: linear-gradient(to bottom right, #5a3ee0, #c53ee0);
+  border-radius: 6px;
+  color: white;
+}
+
+.nav-cta:hover {
+  color: white;
+  opacity: 0.9;
 }
