@@ -62,6 +62,9 @@ const config = {
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
+        googleTagManager: {
+          containerId: "GTM-M7MX697",
+        },
       }),
     ],
   ],
@@ -69,53 +72,123 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      colorMode: {
+        disableSwitch: true,
+        defaultMode: "dark",
+      },
       navbar: {
-        title: "Docs",
         logo: {
           alt: "Dragonfly Logo",
           src: "img/logo.svg",
           srcDark: "img/logo-white.svg",
+          href: "https://dragonflydb.io",
+          target: "_self",
         },
         items: [
-          // {
-          //   type: "doc",
-          //   docId: "introduction",
-          //   position: "left",
-          //   label: "Tutorial",
-          // },
+          {
+            href: "https://dragonflydb.io/features",
+            label: "Features",
+            target: "_self",
+          },
+          {
+            type: "dropdown",
+            label: "Community",
+            items: [
+              {
+                href: "https://github.com/dragonflydb/dragonfly",
+                label: "GitHub",
+              },
+              {
+                href: "https://discord.gg/HsPjXGVH85",
+                label: "Discord",
+              },
+            ],
+          },
+          {
+            href: "https://dragonflydb.io/blog",
+            label: "Blog",
+            target: "_self",
+          },
+          {
+            href: "https://dragonflydb.io/careers",
+            label: "Careers",
+            target: "_self",
+          },
           {
             href: "https://github.com/dragonflydb/documentation/",
-            label: "GitHub",
+            label: "16.8k stars",
+            className: "nav-github-stars",
+            position: "right",
+          },
+          {
+            href: "https://github.com/dragonflydb/dragonfly/blob/main/docs/quick-start/README.md",
+            label: "Get Started",
+            className: "nav-cta",
             position: "right",
           },
         ],
       },
       footer: {
         style: "dark",
+        logo: {
+          alt: "Dragonfly Logo",
+          src: "img/logo.svg",
+          srcDark: "img/logo-white.svg",
+          href: "https://dragonflydb.io",
+          target: "_self",
+          width: 150,
+        },
         links: [
-          // {
-          //   title: "Docs",
-          //   items: [
-          //     {
-          //       label: "Tutorial",
-          //       to: "/docs/intro",
-          //     },
-          //   ],
-          // },
           {
-            title: "Community",
+            title: "Dragonfly",
             items: [
               {
-                label: "GitHub",
-                href: "https://github.com/dragonflydb/dragonfly",
+                label: "Features",
+                href: "https://dragonflydb.io/features",
+                target: "_self",
               },
+              {
+                label: "Blog",
+                href: "https://dragonflydb.io/blog",
+                target: "_self",
+              },
+              {
+                label: "Early Access",
+                href: "https://dragonflydb.io/early-access",
+                target: "_self",
+              },
+            ],
+          },
+          {
+            title: "Developers",
+            items: [
               {
                 label: "Discord",
                 href: "https://discord.gg/HsPjXGVH85",
               },
               {
-                label: "Twitter",
-                href: "https://twitter.com/dragonflydbio",
+                label: "GitHub",
+                href: "https://github.com/dragonflydb/dragonfly",
+              },
+            ],
+          },
+          {
+            title: "Company",
+            items: [
+              {
+                label: "Careers",
+                href: "https://dragonflydb.io/careers",
+                target: "_self",
+              },
+              {
+                label: "Privacy",
+                href: "https://dragonflydb.io/privacy",
+                target: "_self",
+              },
+              {
+                label: "Terms of Use",
+                href: "https://dragonflydb.io/terms",
+                target: "_self",
               },
             ],
           },
