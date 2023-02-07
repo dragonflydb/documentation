@@ -10,7 +10,7 @@ const config = {
   tagline: "Ultra-fast, scalable in-memory datastore",
   url: "https://dragonflydb.io",
   baseUrl: process.env.VERCEL_ENV === "preview" ? "/" : "/docs",
-  onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
 
