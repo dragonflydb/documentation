@@ -200,6 +200,17 @@ const config = {
         darkTheme: darkCodeTheme,
       },
     }),
+
+  plugins: [
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      {
+        indexBlog: false,
+        docsRouteBasePath: "/",
+        searchBarShortcutHint: false,
+      },
+    ],
+  ],
 };
 
 module.exports = config;

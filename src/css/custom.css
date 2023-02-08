@@ -182,3 +182,15 @@ a > svg[class*="ExternalLink"] {
 .footer__bottom {
   text-align: right;
 }
+
+/* Search */
+.navbar__search {
+  margin: 0 !important;
+}
+
+.navbar__search-input {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  height: auto !important;
+  border-radius: 6px;
+}
