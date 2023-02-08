@@ -14,7 +14,7 @@ This configuration is used to create redis-compatible backup snapshots.
 
 The algorithm utilizes the shared-nothing architecture of Dragonfly and makes sure that each shard-thread serializes only its own data. Below is the high description of the flow.
 
-<img src="http://static.dragonflydb.io/repo-assets/rdbsave.svg" width="80%" border="0"/>
+<img src="http://static.dragonflydb.io/repo-assets/rdbsave.svg"/>
 
 
 1. The `RdbSave` class instantiates a single blocking channel (in red).
