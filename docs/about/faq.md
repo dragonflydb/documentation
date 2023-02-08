@@ -5,7 +5,7 @@ sidebar_position: 2
 # Frequently Asked Questions
 
 ## What is the licensing model for Dragonfly? Is it open source?
-Dragonfly is released under [BSL 1.1](../LICENSE.md) (Business Source License). We believe that a BSL license is more permissive than AGPL-like licenses. In general terms, it means that dragonfly's code is free to use and free to change as long as you do not sell services directly related to dragonfly or in-memory datastores.
+Dragonfly is released under [BSL 1.1](https://github.com/dragonflydb/dragonfly/blob/main/LICENSE.md) (Business Source License). We believe that a BSL license is more permissive than AGPL-like licenses. In general terms, it means that dragonfly's code is free to use and free to change as long as you do not sell services directly related to dragonfly or in-memory datastores.
 We followed the model set by other companies like Elastic, Redis, MongoDB, Cockroach labs, Redpanda Data to protect our rights to provide service and support for the software we are building. 
 
 ## Can I use dragonfly in production?
