@@ -193,7 +193,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Attos Technologies Ltd.`,
+        copyright: `Copyright © ${new Date().getFullYear()} DragonflyDB Ltd.`,
       },
       prism: {
         theme: lightCodeTheme,
