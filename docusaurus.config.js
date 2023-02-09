@@ -121,6 +121,10 @@ const config = {
             position: "right",
           },
           {
+            type: "search",
+            position: "right",
+          },
+          {
             href: "https://github.com/dragonflydb/dragonfly/blob/main/docs/quick-start/README.md",
             label: "Get Started",
             className: "nav-cta",
