@@ -39,7 +39,7 @@
     rgba(197, 62, 224, 1) 103.72%
   );
 
-  background-image: url("../../static/img/bg-gradient.svg");
+  background-image: url("/website/bg-gradient.svg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top right;
@@ -64,7 +64,7 @@
 
 .footer--dark {
   --ifm-footer-background-color: #272730;
-  background-image: url("../../static/img/footer-gradient.svg");
+  background-image: url("/website/footer-gradient.svg");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: cover;
@@ -156,7 +156,7 @@ a > svg[class*="ExternalLink"] {
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-image: url(../../static/img/github-icon.svg);
+  background-image: url(/website/github-icon.svg);
   margin-right: 6px;
 }
 

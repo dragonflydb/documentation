@@ -1,8 +1,7 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const codeTheme = require("prism-react-renderer/themes/palenight");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -12,7 +11,7 @@ const config = {
   baseUrl: process.env.VERCEL_ENV === "preview" ? "/" : "/docs",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: "img/favicon.ico",
+  favicon: "website/favicon.ico",
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -79,8 +78,7 @@ const config = {
       navbar: {
         logo: {
           alt: "Dragonfly Logo",
-          src: "img/logo.svg",
-          srcDark: "img/logo-white.svg",
+          src: "website/logo.svg",
           href: "https://dragonflydb.io",
           target: "_self",
         },
@@ -136,8 +134,7 @@ const config = {
         style: "dark",
         logo: {
           alt: "Dragonfly Logo",
-          src: "img/logo.svg",
-          srcDark: "img/logo-white.svg",
+          src: "website/logo.svg",
           href: "https://dragonflydb.io",
           target: "_self",
           width: 150,
@@ -200,8 +197,7 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} DragonflyDB Ltd.`,
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: codeTheme,
       },
     }),
 
