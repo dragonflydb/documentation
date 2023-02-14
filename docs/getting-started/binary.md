@@ -46,8 +46,8 @@ For example to run dragonfly with:
 - Password (set to youshallnotpass)
 - Cache mode enabled
 - Number of db set to 1
-- List on port  6379 and local host traffic only
-- Persisting data at 30 minutes intervals
+- Listen on port  6379 and local host traffic only
+- Persist data at 30 minutes intervals
 - Max memory set to 12GB
 - The number of keys that the “KEY” commands return (set to 12288)
 - Set the dump file name (to dump.db)
