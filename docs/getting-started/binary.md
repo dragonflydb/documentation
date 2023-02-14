@@ -21,8 +21,9 @@ You can download the latest Dragonfly release from one of the links below. You c
 ## Uncompress and rename
 Next we need to uncompress the file and rename it to 'dragonfly'
 
-  tar zxf {file_name}
-  mv {file_name} dragonfly
+```tar zxf {file_name}
+mv {file_name} dragonfly
+```
 
 ## Run Dragonfly
 Run the following command to run Dragonfly.
