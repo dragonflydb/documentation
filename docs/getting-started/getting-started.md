@@ -11,8 +11,3 @@ Install DragonflyDB
 - [Install with Docker](../getting-started/docker-compose)
 - [Install with Kubernetes](../getting-started/kubernetes)
 - [Install from Binary](../getting-started/binary)
-
-CLI
-
-Client libraries
-
