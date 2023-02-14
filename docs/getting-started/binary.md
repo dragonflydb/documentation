@@ -21,15 +21,18 @@ You can download the latest Dragonfly release from one of the links below. You c
 ## Uncompress and rename
 Next we need to uncompress the file and rename it to 'dragonfly'
 
-```tar zxf {file_name}
+```
+tar zxf {file_name}
 mv {file_name} dragonfly
 ```
 
 ## Run Dragonfly
 Run the following command to run Dragonfly.
 
-  ./dragonfly --logtostderr
-  
+```
+./dragonfly --logtostderr
+```
+
 ## Run Dragonfly with parameters
 
 The list of supported flags for Dragonfly can be seen by running “--help” option.
@@ -50,8 +53,8 @@ For example to run dragonfly with:
 - Set the dump file name (to dump.db)
 
 You would run:
-
-  dragonfly --logtostderr --requirepass=youshallnotpass --cache_mode=true -dbnum 1 --bind localhost --port 6379  --save_schedule "*:30" --maxmemory=12gb --keys_output_limit=12288 --dbfilename dump.rdb
-
+```
+dragonfly --logtostderr --requirepass=youshallnotpass --cache_mode=true -dbnum 1 --bind localhost --port 6379  --save_schedule "*:30" --maxmemory=12gb --keys_output_limit=12288 --dbfilename dump.rdb
+```
 
 
