@@ -1,0 +1,28 @@
+---
+description: Get all the fields and values in a hash
+---
+
+# HGETALL
+
+## Syntax
+
+    HGETALL key
+
+**Time complexity:** O(N) where N is the size of the hash.
+
+Returns all fields and values of the hash stored at `key`.
+In the returned value, every field name is followed by its value, so the length
+of the reply is twice the size of the hash.
+
+## Return
+
+[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of fields and their values stored in the hash, or an
+empty list when `key` does not exist.
+
+## Examples
+
+```cli
+HSET myhash field1 "Hello"
+HSET myhash field2 "World"
+HGETALL myhash
+```
