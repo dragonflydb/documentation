@@ -18,15 +18,15 @@ const commandConfigGroupToCommandDir = {
   string: "strings",
   connection: "server-management",
   server: "server-management",
-  bitmap: "generic",
+  bitmap: "strings",
   list: "lists",
   generic: "generic",
   transactions: "generic",
   scripting: "generic",
   hash: "hashes",
-  pubsub: "generic",
+  pubsub: "pubsub",
   set: "sets",
-  stream: "generic",
+  stream: "pubsub",
   "sorted-set": "sorted-sets",
 } as const;
 
