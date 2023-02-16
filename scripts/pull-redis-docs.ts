@@ -6,16 +6,32 @@ import fetch from "cross-fetch";
 import fs from "fs";
 import yaml from "yaml";
 
-const REPO_ZIP_URL =
-  "https://github.com/redis/redis-doc/archive/refs/heads/master.zip";
-const ZIP_ROOT_DIR = "redis-doc-master";
-const REPO_COMMANDS_DIR_PATH = `${ZIP_ROOT_DIR}/commands/`;
-const REPO_COMMANDS_JSON_PATH = `${ZIP_ROOT_DIR}/commands.json`;
+const DRAGONFLY_SUPPORTED_COMMANDS =
+  "HMGET,EXISTS,SCARD,LINSERT,HDEL,KEYS,SETBIT,INFO,LPUSH,HSETNX,XSETID,RPOP,SET,ZUNIONSTORE,PUNSUBSCRIBE,JSON.ARRINDEX,SETNX,GETEX,BITOP,LATENCY,EXEC,HMSET,SADD,JSON.OBJLEN,JSON.CLEAR,PUBLISH,HSET,XDEL,XGROUP,PERSIST,TYPE,MULTI,LLEN,SMEMBERS,ZADD,DECR,JSON.STRAPPEND,UNWATCH,FLUSHDB,ECHO,SCRIPT,SPOP,GETRANGE,JSON.DEL,SSCAN,JSON.ARRPOP,SINTER,JSON.DEBUG,DEBUG,HINCRBY,EVAL,XLEN,RPOPLPUSH,ZCARD,SDIFFSTORE,ZREMRANGEBYRANK,JSON.TYPE,JSON.TOGGLE,SORT,MSETNX,XINFO,ZINCRBY,INCRBYFLOAT,JSON.NUMMULTBY,JSON.OBJKEYS,XRANGE,REPLICAOF,DFLY,DECRBY,TTL,SUNIONSTORE,LREM,HVALS,REPLCONF,UNSUBSCRIBE,WATCH,MONITOR,STICK,RENAMENX,JSON.ARRINSERT,EVALSHA,TIME,LPOP,DEL,HLEN,HGET,MGET,LINDEX,BRPOPLPUSH,CLIENT,CONFIG,LASTSAVE,DISCARD,ZCOUNT,RPUSHX,SMISMEMBER,FLUSHALL,INCRBY,SINTERSTORE,FUNCTION,CL.THROTTLE,PUBSUB,HKEYS,HRANDFIELD,SREM,GETDEL,MOVE,ZRANGE,BRPOP,LTRIM,SETRANGE,LPUSHX,ZRANGEBYSCORE,RESTORE,HEXISTS,SUBSCRIBE,ZREMRANGEBYLEX,ZRANK,XREVRANGE,AUTH,MSET,HGETALL,PEXPIRE,ZRANGEBYLEX,EXPIRE,UNLINK,ZINTERSTORE,TOUCH,SMOVE,HSCAN,ZREVRANGEBYLEX,BITFIELD_RO,EXPIREAT,ZPOPMIN,SAVE,ZREVRANGE,QUIT,JSON.ARRTRIM,JSON.ARRAPPEND,SDIFF,GETBIT,SHUTDOWN,BITPOS,PSETEX,PSUBSCRIBE,ZREVRANK,ZSCORE,DBSIZE,SLAVEOF,ZREMRANGEBYSCORE,ZREM,MEMORY,JSON.ARRLEN,PTTL,HSTRLEN,SELECT,ZPOPMAX,ZREVRANGEBYSCORE,INCR,PEXPIREAT,JSON.GET,SUBSTR,SADDEX,JSON.RESP,JSON.MGET,RENAME,PING,SETEX,GET,LPOS,ZLEXCOUNT,COMMAND,ZSCAN,LMOVE,GETSET,BLPOP,DUMP,RPUSH,HINCRBYFLOAT,ZMSCORE,ZUNION,JSON.STRLEN,STRLEN,LSET,JSON.NUMINCRBY,JSON.FORGET,JSON.SET,ROLE,SCAN,SISMEMBER,BGSAVE,LRANGE,BITFIELD,HELLO,BITCOUNT,SUNION,APPEND,XADD,PREPEND".split(
+    ","
+  );
 
 const DOCS_COMMANDS_PATH = path.join(__dirname, "../docs/command-reference");
 
-const fetchRepoZip = async () => {
-  const zipResponse = await fetch(REPO_ZIP_URL);
+const commandConfigGroupToCommandDir = {
+  json: "json",
+  string: "strings",
+  connection: "server-management",
+  server: "server-management",
+  bitmap: "generic",
+  list: "lists",
+  generic: "generic",
+  transactions: "generic",
+  scripting: "generic",
+  hash: "hashes",
+  pubsub: "generic",
+  set: "sets",
+  stream: "generic",
+  "sorted-set": "sorted-sets",
+} as const;
+
+const fetchRepoZip = async (repoZipUrl: string) => {
+  const zipResponse = await fetch(repoZipUrl);
   const zipArrayBuffer = await zipResponse.arrayBuffer();
 
   return Buffer.from(zipArrayBuffer);
@@ -26,7 +42,7 @@ const getZipEntryContent = (entry: AdmZip.IZipEntry) =>
 
 const isCommandEntry = (entry: AdmZip.IZipEntry) =>
   !entry.isDirectory &&
-  entry.entryName.startsWith(REPO_COMMANDS_DIR_PATH) &&
+  entry.entryName.includes("commands/") &&
   !path.basename(entry.entryName).startsWith("_");
 
 const getCommandsFromZip = (zip: AdmZip) =>
@@ -41,7 +57,13 @@ const getCommandsFromZip = (zip: AdmZip) =>
   );
 
 const getCommandsConfigFromZip = (zip: AdmZip): Record<string, CommandConfig> =>
-  JSON.parse(getZipEntryContent(zip.getEntry(REPO_COMMANDS_JSON_PATH)));
+  JSON.parse(
+    getZipEntryContent(
+      zip
+        .getEntries()
+        .find((entry) => entry.entryName.endsWith("commands.json"))
+    )
+  );
 
 const specialSyntaxes = {
   return: "## Return",
@@ -58,10 +80,15 @@ const specialSyntaxes = {
 };
 
 const processMdSpecialSyntax = (mdContent: string) =>
-  mdContent.replace(
-    new RegExp(`@(${Object.keys(specialSyntaxes).join("|")})`, "g"),
-    (match, key) => specialSyntaxes[key] || match
-  );
+  mdContent
+    .replace(
+      new RegExp(`@(${Object.keys(specialSyntaxes).join("|")})`, "g"),
+      (match, key) => specialSyntaxes[key] || match
+    )
+    .replace(/{{< highlight (.+?) >}}/g, "``` $1")
+    .replace(/{{< \/ highlight >}}/g, "```")
+    .replace(/{{% alert title="(.+?)" color="warning" %}}/g, ":::note $1\n")
+    .replace(/{{% \/alert %}}/g, "\n:::");
 
 const processMdLinks = (mdContent: string) => {
   return mdContent
@@ -100,6 +127,7 @@ type Argument = (
 type CommandConfig = {
   summary: string;
   complexity: string;
+  group: keyof typeof commandConfigGroupToCommandDir;
   arguments?: Argument[];
 };
 
@@ -165,47 +193,65 @@ const generateCommandMdDoc = (
 };
 
 const main = async () => {
-  console.log("Fetching Repo ZIP...");
+  console.log("Fetching Repo ZIPs...");
 
-  const zipBuffer = await fetchRepoZip();
+  const zipBuffers = await Promise.all([
+    fetchRepoZip(
+      "https://github.com/RedisJSON/RedisJSON/archive/refs/heads/master.zip"
+    ),
+    fetchRepoZip(
+      "https://github.com/redis/redis-doc/archive/refs/heads/master.zip"
+    ),
+  ]);
 
-  console.log("Loading Repo ZIP...");
+  console.log("Loading Repo ZIPs...");
 
-  const zip = new AdmZip(zipBuffer);
+  const zips = zipBuffers.map((buffer) => new AdmZip(buffer));
 
-  console.log("Parsing commands.json file...");
+  console.log("Parsing commands.json files...");
 
-  const commandsConfig = getCommandsConfigFromZip(zip);
+  const commandsConfig = zips.reduce(
+    (config, zip) => ({ ...config, ...getCommandsConfigFromZip(zip) }),
+    {} as Record<string, CommandConfig>
+  );
 
   console.log("Parsing commands markdown files...");
 
-  const commands = getCommandsFromZip(zip);
+  const commands = zips.reduce(
+    (obj, zip) => ({ ...obj, ...getCommandsFromZip(zip) }),
+    {}
+  );
 
   for (let [commandName, commandConfig] of Object.entries(commandsConfig)) {
     console.group("Processing command", commandName, "...");
 
-    const commandFileName = commandName.toLowerCase().split(" ").join("-");
-    const commandFilePath = `${commandFileName}.md`;
-    const commandFileAbsolutePath = path.join(
-      DOCS_COMMANDS_PATH,
-      commandFilePath
-    );
-    const commandMdContents = commands[commandFilePath];
+    if (DRAGONFLY_SUPPORTED_COMMANDS.includes(commandName)) {
+      const commandFileName = commandName.toLowerCase().split(" ").join("-");
+      const commandFilePath = `${commandFileName}.md`;
+      const commandFileAbsolutePath = path.join(
+        DOCS_COMMANDS_PATH,
+        commandConfigGroupToCommandDir[commandConfig.group],
+        commandFilePath
+      );
+      const commandMdContents = commands[commandFilePath];
 
-    console.log("Generating doc file");
+      console.log("Generating doc file");
 
-    const commandMdDoc = generateCommandMdDoc(
-      commandName,
-      commandConfig,
-      commandMdContents
-    );
+      const commandMdDoc = generateCommandMdDoc(
+        commandName,
+        commandConfig,
+        commandMdContents
+      );
 
-    console.log(
-      "Writing doc file into",
-      path.relative(process.cwd(), commandFileAbsolutePath)
-    );
+      console.log(
+        "Writing doc file into",
+        path.relative(process.cwd(), commandFileAbsolutePath)
+      );
 
-    fs.writeFileSync(commandFileAbsolutePath, commandMdDoc);
+      fs.writeFileSync(commandFileAbsolutePath, commandMdDoc);
+    } else {
+      console.log("Command not supported by Dragonfly. Skipping.");
+    }
 
     console.groupEnd();
   }
