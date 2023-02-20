@@ -30,12 +30,17 @@ information.
 
 ## Examples
 
-```cli
-HSET mykey field 10.50
-HINCRBYFLOAT mykey field 0.1
-HINCRBYFLOAT mykey field -5
-HSET mykey field 5.0e3
-HINCRBYFLOAT mykey field 2.0e2
+```shell
+dragonfly> HSET mykey field 10.50
+(integer) 1
+dragonfly> HINCRBYFLOAT mykey field 0.1
+"10.6"
+dragonfly> HINCRBYFLOAT mykey field -5
+"5.6"
+dragonfly> HSET mykey field 5.0e3
+(integer) 0
+dragonfly> HINCRBYFLOAT mykey field 2.0e2
+"5200"
 ```
 
 ## Implementation details

@@ -21,8 +21,11 @@ Returns if `field` is an existing field in the hash stored at `key`.
 
 ## Examples
 
-```cli
-HSET myhash field1 "foo"
-HEXISTS myhash field1
-HEXISTS myhash field2
+```shell
+dragonfly> HSET myhash field1 "foo"
+(integer) 1
+dragonfly> HEXISTS myhash field1
+(integer) 1
+dragonfly> HEXISTS myhash field2
+(integer) 0
 ```

@@ -30,16 +30,28 @@ When called with the `count` argument:
 
 ## Examples
 
-```cli
-SADD myset "one"
-SADD myset "two"
-SADD myset "three"
-SPOP myset
-SMEMBERS myset
-SADD myset "four"
-SADD myset "five"
-SPOP myset 3
-SMEMBERS myset
+```shell
+dragonfly> SADD myset "one"
+(integer) 1
+dragonfly> SADD myset "two"
+(integer) 1
+dragonfly> SADD myset "three"
+(integer) 1
+dragonfly> SPOP myset
+"one"
+dragonfly> SMEMBERS myset
+1) "three"
+2) "two"
+dragonfly> SADD myset "four"
+(integer) 1
+dragonfly> SADD myset "five"
+(integer) 1
+dragonfly> SPOP myset 3
+1) "three"
+2) "two"
+3) "four"
+dragonfly> SMEMBERS myset
+1) "five"
 ```
 ## Distribution of returned elements
 

@@ -22,7 +22,9 @@ represented as string.
 
 ## Examples
 
-```cli
-ZADD myzset 1 "one"
-ZSCORE myzset "one"
+```shell
+dragonfly> ZADD myzset 1 "one"
+(integer) 1
+dragonfly> ZSCORE myzset "one"
+"1"
 ```

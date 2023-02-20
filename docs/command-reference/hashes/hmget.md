@@ -22,8 +22,13 @@ a non-existing `key` will return a list of `nil` values.
 [Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of values associated with the given fields, in the same
 order as they are requested.
 
-```cli
-HSET myhash field1 "Hello"
-HSET myhash field2 "World"
-HMGET myhash field1 field2 nofield
+```shell
+dragonfly> HSET myhash field1 "Hello"
+(integer) 1
+dragonfly> HSET myhash field2 "World"
+(integer) 1
+dragonfly> HMGET myhash field1 field2 nofield
+1) "Hello"
+2) "World"
+3) (nil)
 ```

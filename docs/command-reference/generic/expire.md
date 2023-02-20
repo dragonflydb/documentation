@@ -81,16 +81,25 @@ are now fixed.
 
 ## Examples
 
-```cli
-SET mykey "Hello"
-EXPIRE mykey 10
-TTL mykey
-SET mykey "Hello World"
-TTL mykey
-EXPIRE mykey 10 XX
-TTL mykey
-EXPIRE mykey 10 NX
-TTL mykey
+```shell
+dragonfly> SET mykey "Hello"
+"OK"
+dragonfly> EXPIRE mykey 10
+(integer) 1
+dragonfly> TTL mykey
+(integer) 10
+dragonfly> SET mykey "Hello World"
+"OK"
+dragonfly> TTL mykey
+(integer) -1
+dragonfly> EXPIRE mykey 10 XX
+(integer) 0
+dragonfly> TTL mykey
+(integer) -1
+dragonfly> EXPIRE mykey 10 NX
+(integer) 1
+dragonfly> TTL mykey
+(integer) 10
 ```
 
 ## Pattern: Navigation session

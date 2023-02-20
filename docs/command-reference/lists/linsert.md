@@ -24,9 +24,15 @@ An error is returned when `key` exists but does not hold a list value.
 
 ## Examples
 
-```cli
-RPUSH mylist "Hello"
-RPUSH mylist "World"
-LINSERT mylist BEFORE "World" "There"
-LRANGE mylist 0 -1
+```shell
+dragonfly> RPUSH mylist "Hello"
+(integer) 1
+dragonfly> RPUSH mylist "World"
+(integer) 2
+dragonfly> LINSERT mylist BEFORE "World" "There"
+(integer) 3
+dragonfly> LRANGE mylist 0 -1
+1) "Hello"
+2) "There"
+3) "World"
 ```

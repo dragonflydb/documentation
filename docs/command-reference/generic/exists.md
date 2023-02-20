@@ -20,10 +20,15 @@ The user should be aware that if the same existing key is mentioned in the argum
 
 ## Examples
 
-```cli
-SET key1 "Hello"
-EXISTS key1
-EXISTS nosuchkey
-SET key2 "World"
-EXISTS key1 key2 nosuchkey
+```shell
+dragonfly> SET key1 "Hello"
+"OK"
+dragonfly> EXISTS key1
+(integer) 1
+dragonfly> EXISTS nosuchkey
+(integer) 0
+dragonfly> SET key2 "World"
+"OK"
+dragonfly> EXISTS key1 key2 nosuchkey
+(integer) 2
 ```

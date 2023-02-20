@@ -59,14 +59,24 @@ with their scores).
 
 ## Examples
 
-```cli
-ZADD myzset 1 "one"
-ZADD myzset 2 "two"
-ZADD myzset 3 "three"
-ZRANGEBYSCORE myzset -inf +inf
-ZRANGEBYSCORE myzset 1 2
-ZRANGEBYSCORE myzset (1 2
-ZRANGEBYSCORE myzset (1 (2
+```shell
+dragonfly> ZADD myzset 1 "one"
+(integer) 1
+dragonfly> ZADD myzset 2 "two"
+(integer) 1
+dragonfly> ZADD myzset 3 "three"
+(integer) 1
+dragonfly> ZRANGEBYSCORE myzset -inf +inf
+1) "one"
+2) "two"
+3) "three"
+dragonfly> ZRANGEBYSCORE myzset 1 2
+1) "one"
+2) "two"
+dragonfly> ZRANGEBYSCORE myzset (1 2
+1) "two"
+dragonfly> ZRANGEBYSCORE myzset (1 (2
+
 ```
 
 ## Pattern: weighted random selection of an element

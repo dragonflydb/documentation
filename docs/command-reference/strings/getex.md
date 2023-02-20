@@ -29,10 +29,15 @@ The `GETEX` command supports a set of options that modify its behavior:
 
 ## Examples
 
-```cli
-SET mykey "Hello"
-GETEX mykey
-TTL mykey
-GETEX mykey EX 60
-TTL mykey
+```shell
+dragonfly> SET mykey "Hello"
+"OK"
+dragonfly> GETEX mykey
+"Hello"
+dragonfly> TTL mykey
+(integer) -1
+dragonfly> GETEX mykey EX 60
+"Hello"
+dragonfly> TTL mykey
+(integer) 60
 ```

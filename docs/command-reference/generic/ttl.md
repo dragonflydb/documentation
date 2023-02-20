@@ -29,8 +29,11 @@ See also the `PTTL` command that returns the same information with milliseconds 
 
 ## Examples
 
-```cli
-SET mykey "Hello"
-EXPIRE mykey 10
-TTL mykey
+```shell
+dragonfly> SET mykey "Hello"
+"OK"
+dragonfly> EXPIRE mykey 10
+(integer) 1
+dragonfly> TTL mykey
+(integer) 10
 ```

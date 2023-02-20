@@ -25,10 +25,16 @@ the second highest score and so forth.
 
 ## Examples
 
-```cli
-ZADD myzset 1 "one"
-ZADD myzset 2 "two"
-ZADD myzset 3 "three"
-ZREMRANGEBYRANK myzset 0 1
-ZRANGE myzset 0 -1 WITHSCORES
+```shell
+dragonfly> ZADD myzset 1 "one"
+(integer) 1
+dragonfly> ZADD myzset 2 "two"
+(integer) 1
+dragonfly> ZADD myzset 3 "three"
+(integer) 1
+dragonfly> ZREMRANGEBYRANK myzset 0 1
+(integer) 2
+dragonfly> ZRANGE myzset 0 -1 WITHSCORES
+1) "three"
+2) "3"
 ```

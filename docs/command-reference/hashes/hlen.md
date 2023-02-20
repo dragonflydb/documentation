@@ -18,8 +18,11 @@ Returns the number of fields contained in the hash stored at `key`.
 
 ## Examples
 
-```cli
-HSET myhash field1 "Hello"
-HSET myhash field2 "World"
-HLEN myhash
+```shell
+dragonfly> HSET myhash field1 "Hello"
+(integer) 1
+dragonfly> HSET myhash field2 "World"
+(integer) 1
+dragonfly> HLEN myhash
+(integer) 2
 ```

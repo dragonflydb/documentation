@@ -25,10 +25,15 @@ the actual length of the string.
 
 ## Examples
 
-```cli
-SET mykey "This is a string"
-GETRANGE mykey 0 3
-GETRANGE mykey -3 -1
-GETRANGE mykey 0 -1
-GETRANGE mykey 10 100
+```shell
+dragonfly> SET mykey "This is a string"
+"OK"
+dragonfly> GETRANGE mykey 0 3
+"This"
+dragonfly> GETRANGE mykey -3 -1
+"ing"
+dragonfly> GETRANGE mykey 0 -1
+"This is a string"
+dragonfly> GETRANGE mykey 10 100
+"string"
 ```

@@ -23,10 +23,15 @@ is associated).
 
 ## Examples
 
-```cli
-SET mykey "Hello"
-EXPIRE mykey 10
-TTL mykey
-PERSIST mykey
-TTL mykey
+```shell
+dragonfly> SET mykey "Hello"
+"OK"
+dragonfly> EXPIRE mykey 10
+(integer) 1
+dragonfly> TTL mykey
+(integer) 10
+dragonfly> PERSIST mykey
+(integer) 1
+dragonfly> TTL mykey
+(integer) -1
 ```

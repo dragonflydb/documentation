@@ -19,10 +19,18 @@ Removes all elements in the sorted set stored at `key` with a score between
 
 ## Examples
 
-```cli
-ZADD myzset 1 "one"
-ZADD myzset 2 "two"
-ZADD myzset 3 "three"
-ZREMRANGEBYSCORE myzset -inf (2
-ZRANGE myzset 0 -1 WITHSCORES
+```shell
+dragonfly> ZADD myzset 1 "one"
+(integer) 1
+dragonfly> ZADD myzset 2 "two"
+(integer) 1
+dragonfly> ZADD myzset 3 "three"
+(integer) 1
+dragonfly> ZREMRANGEBYSCORE myzset -inf (2
+(integer) 1
+dragonfly> ZRANGE myzset 0 -1 WITHSCORES
+1) "two"
+2) "2"
+3) "three"
+4) "3"
 ```

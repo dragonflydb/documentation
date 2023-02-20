@@ -75,8 +75,13 @@ The command returns the integer representing the matching element, or `nil` if t
 
 ## Examples
 
-```cli
-RPUSH mylist a b c d 1 2 3 4 3 3 3
-LPOS mylist 3
-LPOS mylist 3 COUNT 0 RANK 2
+```shell
+dragonfly> RPUSH mylist a b c d 1 2 3 4 3 3 3
+(integer) 11
+dragonfly> LPOS mylist 3
+(integer) 6
+dragonfly> LPOS mylist 3 COUNT 0 RANK 2
+1) (integer) 8
+2) (integer) 9
+3) (integer) 10
 ```

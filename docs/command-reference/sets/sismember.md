@@ -21,8 +21,11 @@ Returns if `member` is a member of the set stored at `key`.
 
 ## Examples
 
-```cli
-SADD myset "one"
-SISMEMBER myset "one"
-SISMEMBER myset "two"
+```shell
+dragonfly> SADD myset "one"
+(integer) 1
+dragonfly> SISMEMBER myset "one"
+(integer) 1
+dragonfly> SISMEMBER myset "two"
+(integer) 0
 ```

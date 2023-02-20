@@ -27,8 +27,11 @@ Starting with Redis 2.8 the return value in case of error changed:
 
 ## Examples
 
-```cli
-SET mykey "Hello"
-EXPIRE mykey 1
-PTTL mykey
+```shell
+dragonfly> SET mykey "Hello"
+"OK"
+dragonfly> EXPIRE mykey 1
+(integer) 1
+dragonfly> PTTL mykey
+(integer) 1000
 ```

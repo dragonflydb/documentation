@@ -41,12 +41,23 @@ the last element of the list.
 
 ## Examples
 
-```cli
-RPUSH mylist "one"
-RPUSH mylist "two"
-RPUSH mylist "three"
-LRANGE mylist 0 0
-LRANGE mylist -3 2
-LRANGE mylist -100 100
-LRANGE mylist 5 10
+```shell
+dragonfly> RPUSH mylist "one"
+(integer) 1
+dragonfly> RPUSH mylist "two"
+(integer) 2
+dragonfly> RPUSH mylist "three"
+(integer) 3
+dragonfly> LRANGE mylist 0 0
+1) "one"
+dragonfly> LRANGE mylist -3 2
+1) "one"
+2) "two"
+3) "three"
+dragonfly> LRANGE mylist -100 100
+1) "one"
+2) "two"
+3) "three"
+dragonfly> LRANGE mylist 5 10
+
 ```

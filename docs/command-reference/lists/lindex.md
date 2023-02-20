@@ -25,10 +25,15 @@ When the value at `key` is not a list, an error is returned.
 
 ## Examples
 
-```cli
-LPUSH mylist "World"
-LPUSH mylist "Hello"
-LINDEX mylist 0
-LINDEX mylist -1
-LINDEX mylist 3
+```shell
+dragonfly> LPUSH mylist "World"
+(integer) 1
+dragonfly> LPUSH mylist "Hello"
+(integer) 2
+dragonfly> LINDEX mylist 0
+"Hello"
+dragonfly> LINDEX mylist -1
+"World"
+dragonfly> LINDEX mylist 3
+(nil)
 ```

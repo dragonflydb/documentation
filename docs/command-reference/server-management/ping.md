@@ -30,8 +30,9 @@ of the argument.
 
 ## Examples
 
-```cli
-PING
-
-PING "hello world"
+```shell
+dragonfly> PING
+"PONG"
+dragonfly> PING "hello world"
+"hello world"
 ```

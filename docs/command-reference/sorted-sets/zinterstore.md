@@ -32,12 +32,22 @@ If `destination` already exists, it is overwritten.
 
 ## Examples
 
-```cli
-ZADD zset1 1 "one"
-ZADD zset1 2 "two"
-ZADD zset2 1 "one"
-ZADD zset2 2 "two"
-ZADD zset2 3 "three"
-ZINTERSTORE out 2 zset1 zset2 WEIGHTS 2 3
-ZRANGE out 0 -1 WITHSCORES
+```shell
+dragonfly> ZADD zset1 1 "one"
+(integer) 1
+dragonfly> ZADD zset1 2 "two"
+(integer) 1
+dragonfly> ZADD zset2 1 "one"
+(integer) 1
+dragonfly> ZADD zset2 2 "two"
+(integer) 1
+dragonfly> ZADD zset2 3 "three"
+(integer) 1
+dragonfly> ZINTERSTORE out 2 zset1 zset2 WEIGHTS 2 3
+(integer) 2
+dragonfly> ZRANGE out 0 -1 WITHSCORES
+1) "one"
+2) "5"
+3) "two"
+4) "10"
 ```

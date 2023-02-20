@@ -21,10 +21,16 @@ exist.
 
 ## Examples
 
-```cli
-LPUSH mylist "World"
-LPUSHX mylist "Hello"
-LPUSHX myotherlist "Hello"
-LRANGE mylist 0 -1
-LRANGE myotherlist 0 -1
+```shell
+dragonfly> LPUSH mylist "World"
+(integer) 1
+dragonfly> LPUSHX mylist "Hello"
+(integer) 2
+dragonfly> LPUSHX myotherlist "Hello"
+(integer) 0
+dragonfly> LRANGE mylist 0 -1
+1) "Hello"
+2) "World"
+dragonfly> LRANGE myotherlist 0 -1
+
 ```

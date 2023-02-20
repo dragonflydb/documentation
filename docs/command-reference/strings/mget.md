@@ -21,8 +21,13 @@ Because of this, the operation never fails.
 
 ## Examples
 
-```cli
-SET key1 "Hello"
-SET key2 "World"
-MGET key1 key2 nonexisting
+```shell
+dragonfly> SET key1 "Hello"
+"OK"
+dragonfly> SET key2 "World"
+"OK"
+dragonfly> MGET key1 key2 nonexisting
+1) "Hello"
+2) "World"
+3) (nil)
 ```

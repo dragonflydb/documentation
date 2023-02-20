@@ -85,6 +85,7 @@ const processMdSpecialSyntax = (mdContent: string) =>
       new RegExp(`@(${Object.keys(specialSyntaxes).join("|")})`, "g"),
       (match, key) => specialSyntaxes[key] || match
     )
+    .replace(/```cli/g, "```shell")
     .replace(/{{< highlight (.+?) >}}/g, "``` $1")
     .replace(/{{< \/ highlight >}}/g, "```")
     .replace(/{{% alert title="(.+?)" color="warning" %}}/g, ":::note $1\n")
@@ -97,6 +98,62 @@ const processMdLinks = (mdContent: string) => {
       /(\s|\()(\/(?:docs|topics)(?:[a-z-_/]+))/g,
       "$1https://redis.io$2"
     );
+};
+
+const stringifyCLIOutput = <Reply extends string | number | null>(
+  reply: Reply | Reply[]
+) => {
+  if (Array.isArray(reply)) {
+    return reply
+      .map((rep, index) => `${index + 1}) ${stringifyCLIOutput(rep)}`)
+      .join("\n");
+  }
+
+  if (typeof reply === "string") return `"${reply}"`;
+  if (typeof reply === "number") return `(integer) ${reply}`;
+  if (reply === null) return "(nil)";
+
+  throw new Error("Unsupported CLI output type");
+};
+
+const runCLICommands = async (
+  commands: string[]
+): Promise<{
+  commands: string[];
+  replies: Array<{
+    error: boolean;
+    value: Parameters<typeof stringifyCLIOutput>[0];
+  }>;
+}> => {
+  const response = await fetch("https://cli.redis.io/", {
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ commands }),
+    method: "POST",
+  });
+
+  return response.json();
+};
+
+const processCLIOutputs = async (mdContent: string) => {
+  let mdContentCopy = mdContent;
+
+  for (let [, commandsStr] of mdContent.matchAll(
+    /```shell\n([\s\S]+?)\n```/g
+  )) {
+    const { commands, replies } = await runCLICommands(
+      commandsStr.split("\n").filter(Boolean)
+    );
+    const commandsWithReplies = commands
+      .flatMap((command, index) => [
+        `dragonfly> ${command}`,
+        stringifyCLIOutput(replies[index].value),
+      ])
+      .join("\n");
+
+    mdContentCopy = mdContentCopy.replace(commandsStr, commandsWithReplies);
+  }
+
+  return mdContentCopy;
 };
 
 const buildFrontMatter = (commandConfig: CommandConfig) => {
@@ -163,7 +220,7 @@ const stringifyCommandArgument = (arg: Argument) => {
   return wrap(`${arg.display_text || arg.name}`);
 };
 
-const generateCommandMdDoc = (
+const generateCommandMdDoc = async (
   commandName: string,
   commandConfig: CommandConfig,
   commandMdContents: string
@@ -171,8 +228,8 @@ const generateCommandMdDoc = (
   const frontMatter = buildFrontMatter(commandConfig);
   const stringifiedArguments =
     commandConfig.arguments?.map(stringifyCommandArgument).join(" ") || "";
-  const processedCommandMdContents = processMdLinks(
-    processMdSpecialSyntax(commandMdContents)
+  const processedCommandMdContents = await processCLIOutputs(
+    processMdLinks(processMdSpecialSyntax(commandMdContents))
   );
 
   return [
@@ -237,7 +294,7 @@ const main = async () => {
 
       console.log("Generating doc file");
 
-      const commandMdDoc = generateCommandMdDoc(
+      const commandMdDoc = await generateCommandMdDoc(
         commandName,
         commandConfig,
         commandMdContents

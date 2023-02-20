@@ -224,12 +224,28 @@ their fields and values in the exact same order as `XADD` added them.
 
 ## Examples
 
-```cli
-XADD writers * name Virginia surname Woolf
-XADD writers * name Jane surname Austen
-XADD writers * name Toni surname Morrison
-XADD writers * name Agatha surname Christie
-XADD writers * name Ngozi surname Adichie
-XLEN writers
-XRANGE writers - + COUNT 2
+```shell
+dragonfly> XADD writers * name Virginia surname Woolf
+"1676903940637-0"
+dragonfly> XADD writers * name Jane surname Austen
+"1676903940637-1"
+dragonfly> XADD writers * name Toni surname Morrison
+"1676903940637-2"
+dragonfly> XADD writers * name Agatha surname Christie
+"1676903940637-3"
+dragonfly> XADD writers * name Ngozi surname Adichie
+"1676903940638-0"
+dragonfly> XLEN writers
+(integer) 5
+dragonfly> XRANGE writers - + COUNT 2
+1) 1) "1676903940637-0"
+2) 1) "name"
+2) "Virginia"
+3) "surname"
+4) "Woolf"
+2) 1) "1676903940637-1"
+2) 1) "name"
+2) "Jane"
+3) "surname"
+4) "Austen"
 ```

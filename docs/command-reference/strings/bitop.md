@@ -45,11 +45,15 @@ size of the longest input string.
 
 ## Examples
 
-```cli
-SET key1 "foobar"
-SET key2 "abcdef"
-BITOP AND dest key1 key2
-GET dest
+```shell
+dragonfly> SET key1 "foobar"
+"OK"
+dragonfly> SET key2 "abcdef"
+"OK"
+dragonfly> BITOP AND dest key1 key2
+(integer) 6
+dragonfly> GET dest
+"`bc`ab"
 ```
 
 ## Pattern: real time metrics using bitmaps

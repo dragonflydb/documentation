@@ -31,10 +31,13 @@ representation of the integer.
 
 ## Examples
 
-```cli
-SET mykey "10"
-INCR mykey
-GET mykey
+```shell
+dragonfly> SET mykey "10"
+"OK"
+dragonfly> INCR mykey
+(integer) 11
+dragonfly> GET mykey
+"11"
 ```
 
 ## Pattern: Counter

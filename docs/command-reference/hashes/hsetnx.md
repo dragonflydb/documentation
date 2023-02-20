@@ -24,8 +24,11 @@ If `field` already exists, this operation has no effect.
 
 ## Examples
 
-```cli
-HSETNX myhash field "Hello"
-HSETNX myhash field "World"
-HGET myhash field
+```shell
+dragonfly> HSETNX myhash field "Hello"
+(integer) 1
+dragonfly> HSETNX myhash field "World"
+(integer) 0
+dragonfly> HGET myhash field
+"Hello"
 ```

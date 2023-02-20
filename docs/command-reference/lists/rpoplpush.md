@@ -31,13 +31,20 @@ list, so it can be considered as a list rotation command.
 
 ## Examples
 
-```cli
-RPUSH mylist "one"
-RPUSH mylist "two"
-RPUSH mylist "three"
-RPOPLPUSH mylist myotherlist
-LRANGE mylist 0 -1
-LRANGE myotherlist 0 -1
+```shell
+dragonfly> RPUSH mylist "one"
+(integer) 1
+dragonfly> RPUSH mylist "two"
+(integer) 2
+dragonfly> RPUSH mylist "three"
+(integer) 3
+dragonfly> RPOPLPUSH mylist myotherlist
+"three"
+dragonfly> LRANGE mylist 0 -1
+1) "one"
+2) "two"
+dragonfly> LRANGE myotherlist 0 -1
+1) "three"
 ```
 
 ## Pattern: Reliable queue

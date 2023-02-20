@@ -48,9 +48,13 @@ The `GT`, `LT` and `NX` options are mutually exclusive.
 
 ## Examples
 
-```cli
-SET mykey "Hello"
-EXISTS mykey
-EXPIREAT mykey 1293840000
-EXISTS mykey
+```shell
+dragonfly> SET mykey "Hello"
+"OK"
+dragonfly> EXISTS mykey
+(integer) 1
+dragonfly> EXPIREAT mykey 1293840000
+(integer) 1
+dragonfly> EXISTS mykey
+(integer) 0
 ```

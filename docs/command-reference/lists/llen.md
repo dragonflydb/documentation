@@ -20,8 +20,11 @@ An error is returned when the value stored at `key` is not a list.
 
 ## Examples
 
-```cli
-LPUSH mylist "World"
-LPUSH mylist "Hello"
-LLEN mylist
+```shell
+dragonfly> LPUSH mylist "World"
+(integer) 1
+dragonfly> LPUSH mylist "Hello"
+(integer) 2
+dragonfly> LLEN mylist
+(integer) 2
 ```

@@ -33,11 +33,18 @@ An error is returned if `source` or `destination` does not hold a set value.
 
 ## Examples
 
-```cli
-SADD myset "one"
-SADD myset "two"
-SADD myotherset "three"
-SMOVE myset myotherset "two"
-SMEMBERS myset
-SMEMBERS myotherset
+```shell
+dragonfly> SADD myset "one"
+(integer) 1
+dragonfly> SADD myset "two"
+(integer) 1
+dragonfly> SADD myotherset "three"
+(integer) 1
+dragonfly> SMOVE myset myotherset "two"
+(integer) 1
+dragonfly> SMEMBERS myset
+1) "one"
+dragonfly> SMEMBERS myotherset
+1) "two"
+2) "three"
 ```

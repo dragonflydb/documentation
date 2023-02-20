@@ -20,8 +20,11 @@ A key is ignored if it does not exist.
 
 ## Examples
 
-```cli
-SET key1 "Hello"
-SET key2 "World"
-TOUCH key1 key2
+```shell
+dragonfly> SET key1 "Hello"
+"OK"
+dragonfly> SET key2 "World"
+"OK"
+dragonfly> TOUCH key1 key2
+(integer) 2
 ```

@@ -22,10 +22,13 @@ In Cluster mode, both `key` and `newkey` must be in the same **hash slot**, mean
 
 ## Examples
 
-```cli
-SET mykey "Hello"
-RENAME mykey myotherkey
-GET myotherkey
+```shell
+dragonfly> SET mykey "Hello"
+"OK"
+dragonfly> RENAME mykey myotherkey
+"OK"
+dragonfly> GET myotherkey
+"Hello"
 ```
 
 ## Behavior change history

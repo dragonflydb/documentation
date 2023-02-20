@@ -24,7 +24,9 @@ See `INCR` for extra information on increment/decrement operations.
 
 ## Examples
 
-```cli
-SET mykey "10"
-INCRBY mykey 5
+```shell
+dragonfly> SET mykey "10"
+"OK"
+dragonfly> INCRBY mykey 5
+(integer) 15
 ```

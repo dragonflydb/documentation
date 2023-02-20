@@ -20,8 +20,12 @@ This has the same effect as running `SINTER` with one argument `key`.
 
 ## Examples
 
-```cli
-SADD myset "Hello"
-SADD myset "World"
-SMEMBERS myset
+```shell
+dragonfly> SADD myset "Hello"
+(integer) 1
+dragonfly> SADD myset "World"
+(integer) 1
+dragonfly> SMEMBERS myset
+1) "Hello"
+2) "World"
 ```

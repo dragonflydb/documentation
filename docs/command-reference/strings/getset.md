@@ -23,10 +23,13 @@ some event occurs, but from time to time we need to get the value of the counter
 and reset it to zero atomically.
 This can be done using `GETSET mycounter "0"`:
 
-```cli
-INCR mycounter
-GETSET mycounter "0"
-GET mycounter
+```shell
+dragonfly> INCR mycounter
+(integer) 1
+dragonfly> GETSET mycounter "0"
+"1"
+dragonfly> GET mycounter
+"0"
 ```
 
 ## Return
@@ -35,8 +38,11 @@ GET mycounter
 
 ## Examples
 
-```cli
-SET mykey "Hello"
-GETSET mykey "World"
-GET mykey
+```shell
+dragonfly> SET mykey "Hello"
+"OK"
+dragonfly> GETSET mykey "World"
+"Hello"
+dragonfly> GET mykey
+"World"
 ```

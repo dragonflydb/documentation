@@ -28,9 +28,15 @@ When called with the `count` argument:
 
 ## Examples
 
-```cli
-RPUSH mylist "one" "two" "three" "four" "five"
-LPOP mylist
-LPOP mylist 2
-LRANGE mylist 0 -1
+```shell
+dragonfly> RPUSH mylist "one" "two" "three" "four" "five"
+(integer) 5
+dragonfly> LPOP mylist
+"one"
+dragonfly> LPOP mylist 2
+1) "two"
+2) "three"
+dragonfly> LRANGE mylist 0 -1
+1) "four"
+2) "five"
 ```

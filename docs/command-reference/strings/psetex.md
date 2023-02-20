@@ -15,8 +15,11 @@ time is specified in milliseconds instead of seconds.
 
 ## Examples
 
-```cli
-PSETEX mykey 1000 "Hello"
-PTTL mykey
-GET mykey
+```shell
+dragonfly> PSETEX mykey 1000 "Hello"
+"OK"
+dragonfly> PTTL mykey
+(integer) 1000
+dragonfly> GET mykey
+"Hello"
 ```

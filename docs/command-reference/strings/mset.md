@@ -24,8 +24,11 @@ others are unchanged.
 
 ## Examples
 
-```cli
-MSET key1 "Hello" key2 "World"
-GET key1
-GET key2
+```shell
+dragonfly> MSET key1 "Hello" key2 "World"
+"OK"
+dragonfly> GET key1
+"Hello"
+dragonfly> GET key2
+"World"
 ```

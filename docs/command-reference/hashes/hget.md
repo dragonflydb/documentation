@@ -19,8 +19,11 @@ present in the hash or `key` does not exist.
 
 ## Examples
 
-```cli
-HSET myhash field1 "foo"
-HGET myhash field1
-HGET myhash field2
+```shell
+dragonfly> HSET myhash field1 "foo"
+(integer) 1
+dragonfly> HGET myhash field1
+"foo"
+dragonfly> HGET myhash field2
+(nil)
 ```

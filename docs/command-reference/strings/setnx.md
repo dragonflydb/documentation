@@ -24,10 +24,13 @@ When `key` already holds a value, no operation is performed.
 
 ## Examples
 
-```cli
-SETNX mykey "Hello"
-SETNX mykey "World"
-GET mykey
+```shell
+dragonfly> SETNX mykey "Hello"
+(integer) 1
+dragonfly> SETNX mykey "World"
+(integer) 0
+dragonfly> GET mykey
+"Hello"
 ```
 
 ## Design pattern: Locking with `!SETNX`

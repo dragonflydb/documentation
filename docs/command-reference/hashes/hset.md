@@ -21,11 +21,22 @@ If `key` doesn't exist, a new key holding a hash is created.
 
 ## Examples
 
-```cli
-HSET myhash field1 "Hello"
-HGET myhash field1
-HSET myhash field2 "Hi" field3 "World"
-HGET myhash field2
-HGET myhash field3
-HGETALL myhash
+```shell
+dragonfly> HSET myhash field1 "Hello"
+(integer) 1
+dragonfly> HGET myhash field1
+"Hello"
+dragonfly> HSET myhash field2 "Hi" field3 "World"
+(integer) 2
+dragonfly> HGET myhash field2
+"Hi"
+dragonfly> HGET myhash field3
+"World"
+dragonfly> HGETALL myhash
+1) "field1"
+2) "Hello"
+3) "field2"
+4) "Hi"
+5) "field3"
+6) "World"
 ```

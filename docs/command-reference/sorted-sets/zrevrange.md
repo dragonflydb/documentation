@@ -24,11 +24,20 @@ their scores).
 
 ## Examples
 
-```cli
-ZADD myzset 1 "one"
-ZADD myzset 2 "two"
-ZADD myzset 3 "three"
-ZREVRANGE myzset 0 -1
-ZREVRANGE myzset 2 3
-ZREVRANGE myzset -2 -1
+```shell
+dragonfly> ZADD myzset 1 "one"
+(integer) 1
+dragonfly> ZADD myzset 2 "two"
+(integer) 1
+dragonfly> ZADD myzset 3 "three"
+(integer) 1
+dragonfly> ZREVRANGE myzset 0 -1
+1) "three"
+2) "two"
+3) "one"
+dragonfly> ZREVRANGE myzset 2 3
+1) "one"
+dragonfly> ZREVRANGE myzset -2 -1
+1) "two"
+2) "one"
 ```

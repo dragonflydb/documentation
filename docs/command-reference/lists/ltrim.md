@@ -49,10 +49,16 @@ list.
 
 ## Examples
 
-```cli
-RPUSH mylist "one"
-RPUSH mylist "two"
-RPUSH mylist "three"
-LTRIM mylist 1 -1
-LRANGE mylist 0 -1
+```shell
+dragonfly> RPUSH mylist "one"
+(integer) 1
+dragonfly> RPUSH mylist "two"
+(integer) 2
+dragonfly> RPUSH mylist "three"
+(integer) 3
+dragonfly> LTRIM mylist 1 -1
+"OK"
+dragonfly> LRANGE mylist 0 -1
+1) "two"
+2) "three"
 ```

@@ -24,8 +24,11 @@ will happen later asynchronously.
 
 ## Examples
 
-```cli
-SET key1 "Hello"
-SET key2 "World"
-UNLINK key1 key2 key3
+```shell
+dragonfly> SET key1 "Hello"
+"OK"
+dragonfly> SET key2 "World"
+"OK"
+dragonfly> UNLINK key1 key2 key3
+(integer) 2
 ```

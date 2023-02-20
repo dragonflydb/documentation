@@ -19,8 +19,11 @@ does not exist.
 
 ## Examples
 
-```cli
-SADD myset "Hello"
-SADD myset "World"
-SCARD myset
+```shell
+dragonfly> SADD myset "Hello"
+(integer) 1
+dragonfly> SADD myset "World"
+(integer) 1
+dragonfly> SCARD myset
+(integer) 2
 ```

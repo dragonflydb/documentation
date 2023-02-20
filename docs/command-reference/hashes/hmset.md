@@ -21,8 +21,11 @@ If `key` does not exist, a new key holding a hash is created.
 
 ## Examples
 
-```cli
-HMSET myhash field1 "Hello" field2 "World"
-HGET myhash field1
-HGET myhash field2
+```shell
+dragonfly> HMSET myhash field1 "Hello" field2 "World"
+"OK"
+dragonfly> HGET myhash field1
+"Hello"
+dragonfly> HGET myhash field2
+"World"
 ```
