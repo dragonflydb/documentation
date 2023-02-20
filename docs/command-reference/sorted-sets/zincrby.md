@@ -30,9 +30,16 @@ number), represented as string.
 
 ## Examples
 
-```cli
-ZADD myzset 1 "one"
-ZADD myzset 2 "two"
-ZINCRBY myzset 2 "one"
-ZRANGE myzset 0 -1 WITHSCORES
+```shell
+dragonfly> ZADD myzset 1 "one"
+(integer) 1
+dragonfly> ZADD myzset 2 "two"
+(integer) 1
+dragonfly> ZINCRBY myzset 2 "one"
+"3"
+dragonfly> ZRANGE myzset 0 -1 WITHSCORES
+1) "two"
+2) "2"
+3) "one"
+4) "3"
 ```

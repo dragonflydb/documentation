@@ -43,11 +43,13 @@ If the command is issued with the `!GET` option, the above does not apply. It wi
 
 ## Examples
 
-```cli
-SET mykey "Hello"
-GET mykey
-
-SET anotherkey "will expire in a minute" EX 60
+```shell
+dragonfly> SET mykey "Hello"
+"OK"
+dragonfly> GET mykey
+"Hello"
+dragonfly> SET anotherkey "will expire in a minute" EX 60
+"OK"
 ```
 
 ## Patterns

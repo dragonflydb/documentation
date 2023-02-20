@@ -24,11 +24,18 @@ including non existing members.
 
 ## Examples
 
-```cli
-SADD myset "one"
-SADD myset "two"
-SADD myset "three"
-SREM myset "one"
-SREM myset "four"
-SMEMBERS myset
+```shell
+dragonfly> SADD myset "one"
+(integer) 1
+dragonfly> SADD myset "two"
+(integer) 1
+dragonfly> SADD myset "three"
+(integer) 1
+dragonfly> SREM myset "one"
+(integer) 1
+dragonfly> SREM myset "four"
+(integer) 0
+dragonfly> SMEMBERS myset
+1) "three"
+2) "two"
 ```

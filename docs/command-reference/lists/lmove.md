@@ -36,14 +36,22 @@ This command comes in place of the now deprecated `RPOPLPUSH`. Doing
 
 ## Examples
 
-```cli
-RPUSH mylist "one"
-RPUSH mylist "two"
-RPUSH mylist "three"
-LMOVE mylist myotherlist RIGHT LEFT
-LMOVE mylist myotherlist LEFT RIGHT
-LRANGE mylist 0 -1
-LRANGE myotherlist 0 -1
+```shell
+dragonfly> RPUSH mylist "one"
+(integer) 1
+dragonfly> RPUSH mylist "two"
+(integer) 2
+dragonfly> RPUSH mylist "three"
+(integer) 3
+dragonfly> LMOVE mylist myotherlist RIGHT LEFT
+"three"
+dragonfly> LMOVE mylist myotherlist LEFT RIGHT
+"one"
+dragonfly> LRANGE mylist 0 -1
+1) "two"
+dragonfly> LRANGE myotherlist 0 -1
+1) "three"
+2) "one"
 ```
 
 ## Pattern: Reliable queue

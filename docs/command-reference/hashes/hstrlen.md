@@ -18,9 +18,13 @@ Returns the string length of the value associated with `field` in the hash store
 
 ## Examples
 
-```cli
-HMSET myhash f1 HelloWorld f2 99 f3 -256
-HSTRLEN myhash f1
-HSTRLEN myhash f2
-HSTRLEN myhash f3
+```shell
+dragonfly> HMSET myhash f1 HelloWorld f2 99 f3 -256
+"OK"
+dragonfly> HSTRLEN myhash f1
+(integer) 10
+dragonfly> HSTRLEN myhash f2
+(integer) 2
+dragonfly> HSTRLEN myhash f3
+(integer) 4
 ```

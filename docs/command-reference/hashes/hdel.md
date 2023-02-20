@@ -22,8 +22,11 @@ including specified but non existing fields.
 
 ## Examples
 
-```cli
-HSET myhash field1 "foo"
-HDEL myhash field1
-HDEL myhash field2
+```shell
+dragonfly> HSET myhash field1 "foo"
+(integer) 1
+dragonfly> HDEL myhash field1
+(integer) 1
+dragonfly> HDEL myhash field2
+(integer) 0
 ```

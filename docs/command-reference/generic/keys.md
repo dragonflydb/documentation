@@ -44,9 +44,16 @@ Use `\` to escape special characters if you want to match them verbatim.
 
 ## Examples
 
-```cli
-MSET firstname Jack lastname Stuntman age 35
-KEYS *name*
-KEYS a??
-KEYS *
+```shell
+dragonfly> MSET firstname Jack lastname Stuntman age 35
+"OK"
+dragonfly> KEYS *name*
+1) "lastname"
+2) "firstname"
+dragonfly> KEYS a??
+1) "age"
+dragonfly> KEYS *
+1) "lastname"
+2) "age"
+3) "firstname"
 ```

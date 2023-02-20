@@ -32,12 +32,19 @@ set intersection with an empty set always results in an empty set).
 
 ## Examples
 
-```cli
-SADD key1 "a"
-SADD key1 "b"
-SADD key1 "c"
-SADD key2 "c"
-SADD key2 "d"
-SADD key2 "e"
-SINTER key1 key2
+```shell
+dragonfly> SADD key1 "a"
+(integer) 1
+dragonfly> SADD key1 "b"
+(integer) 1
+dragonfly> SADD key1 "c"
+(integer) 1
+dragonfly> SADD key2 "c"
+(integer) 1
+dragonfly> SADD key2 "d"
+(integer) 1
+dragonfly> SADD key2 "e"
+(integer) 1
+dragonfly> SINTER key1 key2
+1) "c"
 ```

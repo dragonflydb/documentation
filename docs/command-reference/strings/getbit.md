@@ -24,9 +24,13 @@ always out of range and the value is also assumed to be a contiguous space with
 
 ## Examples
 
-```cli
-SETBIT mykey 7 1
-GETBIT mykey 0
-GETBIT mykey 7
-GETBIT mykey 100
+```shell
+dragonfly> SETBIT mykey 7 1
+(integer) 0
+dragonfly> GETBIT mykey 0
+(integer) 0
+dragonfly> GETBIT mykey 7
+(integer) 1
+dragonfly> GETBIT mykey 100
+(integer) 0
 ```

@@ -34,9 +34,13 @@ The `GT`, `LT` and `NX` options are mutually exclusive.
 
 ## Examples
 
-```cli
-SET mykey "Hello"
-PEXPIREAT mykey 1555555555005
-TTL mykey
-PTTL mykey
+```shell
+dragonfly> SET mykey "Hello"
+"OK"
+dragonfly> PEXPIREAT mykey 1555555555005
+(integer) 1
+dragonfly> TTL mykey
+(integer) -2
+dragonfly> PTTL mykey
+(integer) -2
 ```

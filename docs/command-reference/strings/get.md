@@ -21,8 +21,11 @@ only handles string values.
 
 ## Examples
 
-```cli
-GET nonexisting
-SET mykey "Hello"
-GET mykey
+```shell
+dragonfly> GET nonexisting
+(nil)
+dragonfly> SET mykey "Hello"
+"OK"
+dragonfly> GET mykey
+"Hello"
 ```

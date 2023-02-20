@@ -21,11 +21,15 @@ will be similar to `SET` in this special case.
 
 ## Examples
 
-```cli
-EXISTS mykey
-APPEND mykey "Hello"
-APPEND mykey " World"
-GET mykey
+```shell
+dragonfly> EXISTS mykey
+(integer) 0
+dragonfly> APPEND mykey "Hello"
+(integer) 5
+dragonfly> APPEND mykey " World"
+(integer) 11
+dragonfly> GET mykey
+"Hello World"
 ```
 
 ## Pattern: Time series
@@ -60,9 +64,13 @@ more friendly to be distributed across many Redis instances.
 An example sampling the temperature of a sensor using fixed-size strings (using
 a binary format is better in real implementations).
 
-```cli
-APPEND ts "0043"
-APPEND ts "0035"
-GETRANGE ts 0 3
-GETRANGE ts 4 7
+```shell
+dragonfly> APPEND ts "0043"
+(integer) 4
+dragonfly> APPEND ts "0035"
+(integer) 8
+dragonfly> GETRANGE ts 0 3
+"0043"
+dragonfly> GETRANGE ts 4 7
+"0035"
 ```

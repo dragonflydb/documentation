@@ -27,9 +27,13 @@ The range of values supported by `HINCRBY` is limited to 64 bit signed integers.
 Since the `increment` argument is signed, both increment and decrement
 operations can be performed:
 
-```cli
-HSET myhash field 5
-HINCRBY myhash field 1
-HINCRBY myhash field -1
-HINCRBY myhash field -10
+```shell
+dragonfly> HSET myhash field 5
+(integer) 1
+dragonfly> HINCRBY myhash field 1
+(integer) 6
+dragonfly> HINCRBY myhash field -1
+(integer) 5
+dragonfly> HINCRBY myhash field -10
+(integer) -5
 ```

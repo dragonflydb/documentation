@@ -21,13 +21,21 @@ If `destination` already exists, it is overwritten.
 
 ## Examples
 
-```cli
-SADD key1 "a"
-SADD key1 "b"
-SADD key1 "c"
-SADD key2 "c"
-SADD key2 "d"
-SADD key2 "e"
-SINTERSTORE key key1 key2
-SMEMBERS key
+```shell
+dragonfly> SADD key1 "a"
+(integer) 1
+dragonfly> SADD key1 "b"
+(integer) 1
+dragonfly> SADD key1 "c"
+(integer) 1
+dragonfly> SADD key2 "c"
+(integer) 1
+dragonfly> SADD key2 "d"
+(integer) 1
+dragonfly> SADD key2 "e"
+(integer) 1
+dragonfly> SINTERSTORE key key1 key2
+(integer) 1
+dragonfly> SMEMBERS key
+1) "c"
 ```

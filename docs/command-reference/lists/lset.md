@@ -21,11 +21,19 @@ An error is returned for out of range indexes.
 
 ## Examples
 
-```cli
-RPUSH mylist "one"
-RPUSH mylist "two"
-RPUSH mylist "three"
-LSET mylist 0 "four"
-LSET mylist -2 "five"
-LRANGE mylist 0 -1
+```shell
+dragonfly> RPUSH mylist "one"
+(integer) 1
+dragonfly> RPUSH mylist "two"
+(integer) 2
+dragonfly> RPUSH mylist "three"
+(integer) 3
+dragonfly> LSET mylist 0 "four"
+"OK"
+dragonfly> LSET mylist -2 "five"
+"OK"
+dragonfly> LRANGE mylist 0 -1
+1) "four"
+2) "five"
+3) "three"
 ```

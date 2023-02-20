@@ -50,15 +50,25 @@ However, this behavior changes if you are looking for clear bits and specify a r
 
 ## Examples
 
-```cli
-SET mykey "\xff\xf0\x00"
-BITPOS mykey 0
-SET mykey "\x00\xff\xf0"
-BITPOS mykey 1 0
-BITPOS mykey 1 2
-BITPOS mykey 1 2 -1 BYTE
-BITPOS mykey 1 7 15 BIT
-set mykey "\x00\x00\x00"
-BITPOS mykey 1
-BITPOS mykey 1 7 -3 BIT
+```shell
+dragonfly> SET mykey "\xff\xf0\x00"
+"OK"
+dragonfly> BITPOS mykey 0
+(integer) 0
+dragonfly> SET mykey "\x00\xff\xf0"
+"OK"
+dragonfly> BITPOS mykey 1 0
+(integer) 1
+dragonfly> BITPOS mykey 1 2
+(integer) 18
+dragonfly> BITPOS mykey 1 2 -1 BYTE
+(integer) 18
+dragonfly> BITPOS mykey 1 7 15 BIT
+(integer) 9
+dragonfly> set mykey "\x00\x00\x00"
+"OK"
+dragonfly> BITPOS mykey 1
+(integer) 1
+dragonfly> BITPOS mykey 1 7 -3 BIT
+(integer) 9
 ```

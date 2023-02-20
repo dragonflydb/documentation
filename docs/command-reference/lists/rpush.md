@@ -28,8 +28,12 @@ containing `a` as first element, `b` as second element and `c` as third element.
 
 ## Examples
 
-```cli
-RPUSH mylist "hello"
-RPUSH mylist "world"
-LRANGE mylist 0 -1
+```shell
+dragonfly> RPUSH mylist "hello"
+(integer) 1
+dragonfly> RPUSH mylist "world"
+(integer) 2
+dragonfly> LRANGE mylist 0 -1
+1) "hello"
+2) "world"
 ```

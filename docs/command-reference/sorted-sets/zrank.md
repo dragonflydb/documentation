@@ -33,12 +33,19 @@ Note that in RESP3 null and nullarray are the same, but in RESP2 they are not.
 
 ## Examples
 
-```cli
-ZADD myzset 1 "one"
-ZADD myzset 2 "two"
-ZADD myzset 3 "three"
-ZRANK myzset "three"
-ZRANK myzset "four"
-ZRANK myzset "three" WITHSCORE
-ZRANK myzset "four" WITHSCORE
+```shell
+dragonfly> ZADD myzset 1 "one"
+(integer) 1
+dragonfly> ZADD myzset 2 "two"
+(integer) 1
+dragonfly> ZADD myzset 3 "three"
+(integer) 1
+dragonfly> ZRANK myzset "three"
+(integer) 2
+dragonfly> ZRANK myzset "four"
+(nil)
+dragonfly> ZRANK myzset "three" WITHSCORE
+"ERR wrong number of arguments for command"
+dragonfly> ZRANK myzset "four" WITHSCORE
+"ERR wrong number of arguments for command"
 ```

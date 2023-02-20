@@ -24,9 +24,14 @@ all the elements already present in the set.
 
 ## Examples
 
-```cli
-SADD myset "Hello"
-SADD myset "World"
-SADD myset "World"
-SMEMBERS myset
+```shell
+dragonfly> SADD myset "Hello"
+(integer) 1
+dragonfly> SADD myset "World"
+(integer) 1
+dragonfly> SADD myset "World"
+(integer) 0
+dragonfly> SMEMBERS myset
+1) "Hello"
+2) "World"
 ```

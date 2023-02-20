@@ -30,11 +30,18 @@ exist, the command will always return `0`.
 
 ## Examples
 
-```cli
-RPUSH mylist "hello"
-RPUSH mylist "hello"
-RPUSH mylist "foo"
-RPUSH mylist "hello"
-LREM mylist -2 "hello"
-LRANGE mylist 0 -1
+```shell
+dragonfly> RPUSH mylist "hello"
+(integer) 1
+dragonfly> RPUSH mylist "hello"
+(integer) 2
+dragonfly> RPUSH mylist "foo"
+(integer) 3
+dragonfly> RPUSH mylist "hello"
+(integer) 4
+dragonfly> LREM mylist -2 "hello"
+(integer) 2
+dragonfly> LRANGE mylist 0 -1
+1) "hello"
+2) "foo"
 ```

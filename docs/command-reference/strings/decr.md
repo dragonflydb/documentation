@@ -24,9 +24,13 @@ See `INCR` for extra information on increment/decrement operations.
 
 ## Examples
 
-```cli
-SET mykey "10"
-DECR mykey
-SET mykey "234293482390480948029348230948"
-DECR mykey
+```shell
+dragonfly> SET mykey "10"
+"OK"
+dragonfly> DECR mykey
+(integer) 9
+dragonfly> SET mykey "234293482390480948029348230948"
+"OK"
+dragonfly> DECR mykey
+"value is not an integer or out of range"
 ```

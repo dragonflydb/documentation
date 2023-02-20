@@ -21,9 +21,20 @@ Apart from the reversed ordering, `ZREVRANGEBYLEX` is similar to `ZRANGEBYLEX`.
 
 ## Examples
 
-```cli
-ZADD myzset 0 a 0 b 0 c 0 d 0 e 0 f 0 g
-ZREVRANGEBYLEX myzset [c -
-ZREVRANGEBYLEX myzset (c -
-ZREVRANGEBYLEX myzset (g [aaa
+```shell
+dragonfly> ZADD myzset 0 a 0 b 0 c 0 d 0 e 0 f 0 g
+(integer) 7
+dragonfly> ZREVRANGEBYLEX myzset [c -
+1) "c"
+2) "b"
+3) "a"
+dragonfly> ZREVRANGEBYLEX myzset (c -
+1) "b"
+2) "a"
+dragonfly> ZREVRANGEBYLEX myzset (g [aaa
+1) "f"
+2) "e"
+3) "d"
+4) "c"
+5) "b"
 ```

@@ -20,11 +20,17 @@ The different types that can be returned are: `string`, `list`, `set`, `zset`,
 
 ## Examples
 
-```cli
-SET key1 "value"
-LPUSH key2 "value"
-SADD key3 "value"
-TYPE key1
-TYPE key2
-TYPE key3
+```shell
+dragonfly> SET key1 "value"
+"OK"
+dragonfly> LPUSH key2 "value"
+(integer) 1
+dragonfly> SADD key3 "value"
+(integer) 1
+dragonfly> TYPE key1
+"string"
+dragonfly> TYPE key2
+"list"
+dragonfly> TYPE key3
+"set"
 ```

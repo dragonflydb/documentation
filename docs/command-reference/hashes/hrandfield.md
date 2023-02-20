@@ -29,11 +29,24 @@ If the `WITHVALUES` modifier is used, the reply is a list fields and their value
 
 ## Examples
 
-```cli
-HMSET coin heads obverse tails reverse edge null
-HRANDFIELD coin
-HRANDFIELD coin
-HRANDFIELD coin -5 WITHVALUES
+```shell
+dragonfly> HMSET coin heads obverse tails reverse edge null
+"OK"
+dragonfly> HRANDFIELD coin
+"heads"
+dragonfly> HRANDFIELD coin
+"tails"
+dragonfly> HRANDFIELD coin -5 WITHVALUES
+1) "edge"
+2) "null"
+3) "tails"
+4) "reverse"
+5) "heads"
+6) "obverse"
+7) "edge"
+8) "null"
+9) "heads"
+10) "obverse"
 ```
 
 ## Specification of the behavior when count is passed

@@ -26,7 +26,11 @@ A multi bulk reply containing two elements:
 
 ## Examples
 
-```cli
-TIME
-TIME
+```shell
+dragonfly> TIME
+1) "1676903938"
+2) "196106"
+dragonfly> TIME
+1) "1676903938"
+2) "196338"
 ```

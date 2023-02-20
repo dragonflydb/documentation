@@ -97,9 +97,24 @@ key doesn't exist.
 
 ## Examples
 
-```cli
-XADD mystream * name Sara surname OConnor
-XADD mystream * field1 value1 field2 value2 field3 value3
-XLEN mystream
-XRANGE mystream - +
+```shell
+dragonfly> XADD mystream * name Sara surname OConnor
+"1676903939979-0"
+dragonfly> XADD mystream * field1 value1 field2 value2 field3 value3
+"1676903939979-1"
+dragonfly> XLEN mystream
+(integer) 2
+dragonfly> XRANGE mystream - +
+1) 1) "1676903939979-0"
+2) 1) "name"
+2) "Sara"
+3) "surname"
+4) "OConnor"
+2) 1) "1676903939979-1"
+2) 1) "field1"
+2) "value1"
+3) "field2"
+4) "value2"
+5) "field3"
+6) "value3"
 ```

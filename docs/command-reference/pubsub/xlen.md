@@ -26,9 +26,13 @@ associated with it.
 
 ## Examples
 
-```cli
-XADD mystream * item 1
-XADD mystream * item 2
-XADD mystream * item 3
-XLEN mystream
+```shell
+dragonfly> XADD mystream * item 1
+"1676903940326-0"
+dragonfly> XADD mystream * item 2
+"1676903940327-0"
+dragonfly> XADD mystream * item 3
+"1676903940327-1"
+dragonfly> XLEN mystream
+(integer) 3
 ```

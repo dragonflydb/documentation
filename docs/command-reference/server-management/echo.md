@@ -18,6 +18,7 @@ Returns `message`.
 
 ## Examples
 
-```cli
-ECHO "Hello World!"
+```shell
+dragonfly> ECHO "Hello World!"
+"Hello World!"
 ```

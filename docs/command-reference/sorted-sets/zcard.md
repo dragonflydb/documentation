@@ -20,8 +20,11 @@ if `key` does not exist.
 
 ## Examples
 
-```cli
-ZADD myzset 1 "one"
-ZADD myzset 2 "two"
-ZCARD myzset
+```shell
+dragonfly> ZADD myzset 1 "one"
+(integer) 1
+dragonfly> ZADD myzset 2 "two"
+(integer) 1
+dragonfly> ZCARD myzset
+(integer) 2
 ```

@@ -20,8 +20,11 @@ exist.
 
 ## Examples
 
-```cli
-SET mykey "Hello world"
-STRLEN mykey
-STRLEN nonexisting
+```shell
+dragonfly> SET mykey "Hello world"
+"OK"
+dragonfly> STRLEN mykey
+(integer) 11
+dragonfly> STRLEN nonexisting
+(integer) 0
 ```

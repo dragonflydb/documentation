@@ -21,8 +21,12 @@ order as they are requested.
 
 ## Examples
 
-```cli
-SADD myset "one"
-SADD myset "one"
-SMISMEMBER myset "one" "notamember"
+```shell
+dragonfly> SADD myset "one"
+(integer) 1
+dragonfly> SADD myset "one"
+(integer) 0
+dragonfly> SMISMEMBER myset "one" "notamember"
+1) (integer) 1
+2) (integer) 0
 ```

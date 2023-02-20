@@ -24,10 +24,18 @@ An error is returned when `key` exists and does not hold a sorted set.
 
 ## Examples
 
-```cli
-ZADD myzset 1 "one"
-ZADD myzset 2 "two"
-ZADD myzset 3 "three"
-ZREM myzset "two"
-ZRANGE myzset 0 -1 WITHSCORES
+```shell
+dragonfly> ZADD myzset 1 "one"
+(integer) 1
+dragonfly> ZADD myzset 2 "two"
+(integer) 1
+dragonfly> ZADD myzset 3 "three"
+(integer) 1
+dragonfly> ZREM myzset "two"
+(integer) 1
+dragonfly> ZRANGE myzset 0 -1 WITHSCORES
+1) "one"
+2) "1"
+3) "three"
+4) "3"
 ```

@@ -21,8 +21,13 @@ represented as strings.
 
 ## Examples
 
-```cli
-ZADD myzset 1 "one"
-ZADD myzset 2 "two"
-ZMSCORE myzset "one" "two" "nofield"
+```shell
+dragonfly> ZADD myzset 1 "one"
+(integer) 1
+dragonfly> ZADD myzset 2 "two"
+(integer) 1
+dragonfly> ZMSCORE myzset "one" "two" "nofield"
+1) "1"
+2) "2"
+3) (nil)
 ```

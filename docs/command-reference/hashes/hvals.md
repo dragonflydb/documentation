@@ -19,8 +19,12 @@ not exist.
 
 ## Examples
 
-```cli
-HSET myhash field1 "Hello"
-HSET myhash field2 "World"
-HVALS myhash
+```shell
+dragonfly> HSET myhash field1 "Hello"
+(integer) 1
+dragonfly> HSET myhash field2 "World"
+(integer) 1
+dragonfly> HVALS myhash
+1) "Hello"
+2) "World"
 ```

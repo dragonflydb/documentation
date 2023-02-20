@@ -21,8 +21,14 @@ empty list when `key` does not exist.
 
 ## Examples
 
-```cli
-HSET myhash field1 "Hello"
-HSET myhash field2 "World"
-HGETALL myhash
+```shell
+dragonfly> HSET myhash field1 "Hello"
+(integer) 1
+dragonfly> HSET myhash field2 "World"
+(integer) 1
+dragonfly> HGETALL myhash
+1) "field1"
+2) "Hello"
+3) "field2"
+4) "World"
 ```

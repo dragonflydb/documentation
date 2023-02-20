@@ -25,7 +25,8 @@ The additional elements of the array depends on the role.
 
 ## Master output
 
-An example of output when `ROLE` is called in a master instance:
+An example of output when `dragonfly> ROLE
+"this user has no permissions to run the 'role' command"` is called in a master instance:
 
 ```
 1) "master"
@@ -87,7 +88,7 @@ The sentinel output is composed of the following parts:
 
 ## Examples
 
-```cli
+```shell
 ROLE
 ```
 

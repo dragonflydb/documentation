@@ -24,9 +24,13 @@ Note: the command has a complexity of just O(log(N)) because it uses elements ra
 
 ## Examples
 
-```cli
-ZADD myzset 0 a 0 b 0 c 0 d 0 e
-ZADD myzset 0 f 0 g
-ZLEXCOUNT myzset - +
-ZLEXCOUNT myzset [b [f
+```shell
+dragonfly> ZADD myzset 0 a 0 b 0 c 0 d 0 e
+(integer) 5
+dragonfly> ZADD myzset 0 f 0 g
+(integer) 2
+dragonfly> ZLEXCOUNT myzset - +
+(integer) 7
+dragonfly> ZLEXCOUNT myzset [b [f
+(integer) 5
 ```

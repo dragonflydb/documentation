@@ -41,12 +41,17 @@ regardless of the actual internal precision of the computation.
 
 ## Examples
 
-```cli
-SET mykey 10.50
-INCRBYFLOAT mykey 0.1
-INCRBYFLOAT mykey -5
-SET mykey 5.0e3
-INCRBYFLOAT mykey 2.0e2
+```shell
+dragonfly> SET mykey 10.50
+"OK"
+dragonfly> INCRBYFLOAT mykey 0.1
+"10.6"
+dragonfly> INCRBYFLOAT mykey -5
+"5.6"
+dragonfly> SET mykey 5.0e3
+"OK"
+dragonfly> INCRBYFLOAT mykey 2.0e2
+"5200"
 ```
 
 ## Implementation details

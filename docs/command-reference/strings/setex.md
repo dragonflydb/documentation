@@ -32,10 +32,13 @@ An error is returned when `seconds` is invalid.
 
 ## Examples
 
-```cli
-SETEX mykey 10 "Hello"
-TTL mykey
-GET mykey
+```shell
+dragonfly> SETEX mykey 10 "Hello"
+"OK"
+dragonfly> TTL mykey
+(integer) 10
+dragonfly> GET mykey
+"Hello"
 ```
 ## See also
 

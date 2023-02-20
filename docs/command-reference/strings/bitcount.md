@@ -35,13 +35,19 @@ The number of bits set to 1.
 
 ## Examples
 
-```cli
-SET mykey "foobar"
-BITCOUNT mykey
-BITCOUNT mykey 0 0
-BITCOUNT mykey 1 1
-BITCOUNT mykey 1 1 BYTE
-BITCOUNT mykey 5 30 BIT
+```shell
+dragonfly> SET mykey "foobar"
+"OK"
+dragonfly> BITCOUNT mykey
+(integer) 26
+dragonfly> BITCOUNT mykey 0 0
+(integer) 4
+dragonfly> BITCOUNT mykey 1 1
+(integer) 6
+dragonfly> BITCOUNT mykey 1 1 BYTE
+(integer) 6
+dragonfly> BITCOUNT mykey 5 30 BIT
+(integer) 17
 ```
 
 ## Pattern: real-time metrics using bitmaps
