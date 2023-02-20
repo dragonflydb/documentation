@@ -249,6 +249,12 @@ const generateCommandMdDoc = async (
   ].join("\n");
 };
 
+const isSupportedCommand = (commandName: string) => {
+  return DRAGONFLY_SUPPORTED_COMMANDS.includes(commandName.split(" ")[0]);
+};
+
+const overwriteExistingDocs = process.argv.includes("--overwrite");
+
 const main = async () => {
   console.log("Fetching Repo ZIPs...");
 
@@ -282,33 +288,48 @@ const main = async () => {
   for (let [commandName, commandConfig] of Object.entries(commandsConfig)) {
     console.group("Processing command", commandName, "...");
 
-    if (DRAGONFLY_SUPPORTED_COMMANDS.includes(commandName)) {
-      const commandFileName = commandName.toLowerCase().split(" ").join("-");
-      const commandFilePath = `${commandFileName}.md`;
-      const commandFileAbsolutePath = path.join(
-        DOCS_COMMANDS_PATH,
-        commandConfigGroupToCommandDir[commandConfig.group],
-        commandFilePath
-      );
-      const commandMdContents = commands[commandFilePath];
-
-      console.log("Generating doc file");
-
-      const commandMdDoc = await generateCommandMdDoc(
-        commandName,
-        commandConfig,
-        commandMdContents
-      );
-
-      console.log(
-        "Writing doc file into",
-        path.relative(process.cwd(), commandFileAbsolutePath)
-      );
-
-      fs.writeFileSync(commandFileAbsolutePath, commandMdDoc);
-    } else {
+    if (!isSupportedCommand(commandName)) {
       console.log("Command not supported by Dragonfly. Skipping.");
+      console.groupEnd();
+
+      continue;
     }
+
+    const commandFileName = commandName.toLowerCase().split(" ").join("-");
+    const commandFilePath = `${commandFileName}.md`;
+    const commandFileAbsolutePath = path.join(
+      DOCS_COMMANDS_PATH,
+      commandConfigGroupToCommandDir[commandConfig.group],
+      commandFilePath
+    );
+
+    if (fs.existsSync(commandFileAbsolutePath)) {
+      if (overwriteExistingDocs) {
+        console.log("Doc already generated. Overwriting...");
+      } else {
+        console.log("Doc already generated. Skipping.");
+        console.groupEnd();
+
+        continue;
+      }
+    }
+
+    const commandMdContents = commands[commandFilePath];
+
+    console.log("Generating doc file");
+
+    const commandMdDoc = await generateCommandMdDoc(
+      commandName,
+      commandConfig,
+      commandMdContents
+    );
+
+    console.log(
+      "Writing doc file into",
+      path.relative(process.cwd(), commandFileAbsolutePath)
+    );
+
+    fs.writeFileSync(commandFileAbsolutePath, commandMdDoc);
 
     console.groupEnd();
   }
