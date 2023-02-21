@@ -6,7 +6,7 @@ description: Determine the index of a member in a sorted set
 
 ## Syntax
 
-    ZRANK key member [WITHSCORE]
+    ZRANK key member
 
 **Time complexity:** O(log(N))
 
@@ -22,15 +22,9 @@ to low.
 
 ## Return
 
-* If `member` exists in the sorted set:
-  * using `WITHSCORE`, [Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): an array containing the rank and score of `member`.
-  * without using `WITHSCORE`, [Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the rank of `member`.
-* If `member` does not exist in the sorted set or `key` does not exist:
-  * using `WITHSCORE`, [Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): `nil`.
-  * without using `WITHSCORE`, [Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): `nil`.
+* If `member` exists in the sorted set [Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the rank of `member`.
+* If `member` does not exist in the sorted set or `key` does not exist [Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): `nil`.
   
-Note that in RESP3 null and nullarray are the same, but in RESP2 they are not.
-
 ## Examples
 
 ```shell
@@ -44,8 +38,4 @@ dragonfly> ZRANK myzset "three"
 (integer) 2
 dragonfly> ZRANK myzset "four"
 (nil)
-dragonfly> ZRANK myzset "three" WITHSCORE
-"ERR wrong number of arguments for command"
-dragonfly> ZRANK myzset "four" WITHSCORE
-"ERR wrong number of arguments for command"
 ```

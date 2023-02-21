@@ -46,5 +46,5 @@ dragonfly> ZREVRANGEBYSCORE myzset 2 1
 dragonfly> ZREVRANGEBYSCORE myzset 2 (1
 1) "two"
 dragonfly> ZREVRANGEBYSCORE myzset (2 (1
-
+(empty array)
 ```

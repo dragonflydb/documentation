@@ -7,7 +7,7 @@ description: Determine the index of a member in a sorted set, with scores
 
 ## Syntax
 
-    ZREVRANK key member [WITHSCORE]
+    ZREVRANK key member
 
 **Time complexity:** O(log(N))
 
@@ -23,14 +23,8 @@ high.
 
 ## Return
 
-* If `member` exists in the sorted set:
-  * using `WITHSCORE`, [Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): an array containing the rank and score of `member`.
-  * without using `WITHSCORE`, [Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the rank of `member`.
-* If `member` does not exist in the sorted set or `key` does not exist:
-  * using `WITHSCORE`, [Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): `nil`.
-  * without using `WITHSCORE`, [Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): `nil`.
-  
-Note that in RESP3 null and nullarray are the same, but in RESP2 they are not.
+* If `member` exists in the sorted set [Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the rank of `member`.
+* If `member` does not exist in the sorted set or `key` does not exist [Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): `nil`.
 
 ## Examples
 
@@ -45,8 +39,4 @@ dragonfly> ZREVRANK myzset "one"
 (integer) 2
 dragonfly> ZREVRANK myzset "four"
 (nil)
-dragonfly> ZREVRANK myzset "three" WITHSCORE
-"ERR wrong number of arguments for command"
-dragonfly> ZREVRANK myzset "four" WITHSCORE
-"ERR wrong number of arguments for command"
 ```
