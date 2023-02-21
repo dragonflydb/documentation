@@ -14,19 +14,6 @@ Returns all keys matching `pattern`.
 
 While the time complexity for this operation is O(N), the constant times are
 fairly low.
-For example, Redis running on an entry level laptop can scan a 1 million key
-database in 40 milliseconds.
-
-**Warning**: consider `KEYS` as a command that should only be used in production
-environments with extreme care.
-It may ruin performance when it is executed against large databases.
-This command is intended for debugging and special operations, such as changing
-your keyspace layout.
-Don't use `KEYS` in your regular application code.
-If you're looking for a way to find keys in a subset of your keyspace, consider
-using `SCAN` or [sets][tdts].
-
-[tdts]: https://redis.io/topics/data-types#sets
 
 Supported glob-style patterns:
 
@@ -41,6 +28,10 @@ Use `\` to escape special characters if you want to match them verbatim.
 ## Return
 
 [Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of keys matching `pattern`.
+
+**Number of elements returned:**
+ 
+ Dragonfly protects itself from an overwhelming number of returned keys by imposing a limit on the quantity. To modify this limit, update the value of the "keys_output_limit" flag. Please refer to [Dragonfly configuration](https://github.com/dragonflydb/dragonfly#configuration) for more information how to change dragonfly flag values.
 
 ## Examples
 
