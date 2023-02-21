@@ -49,7 +49,7 @@ dragonfly> LRANGE myotherlist 0 -1
 
 ## Pattern: Reliable queue
 
-Redis is often used as a messaging server to implement processing of background
+Dragonfly can be used as a messaging server to implement processing of background
 jobs or other kinds of messaging tasks.
 A simple form of queue is often obtained pushing values into a list in the
 producer side, and waiting for this values in the consumer side using `RPOP`
@@ -79,8 +79,8 @@ operation.
 
 The above pattern works even if one or both of the following conditions occur:
 
-* There are multiple clients rotating the list: they'll fetch different 
-  elements, until all the elements of the list are visited, and the process 
+* There are multiple clients rotating the list: they'll fetch different
+  elements, until all the elements of the list are visited, and the process
   restarts.
 * Other clients are actively pushing new items at the end of the list.
 
