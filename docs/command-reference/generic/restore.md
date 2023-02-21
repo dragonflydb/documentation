@@ -7,9 +7,9 @@ description: Create a key using the provided serialized value, previously
 
 ## Syntax
 
-    RESTORE key ttl serialized-value [REPLACE] [ABSTTL] [IDLETIME seconds] [FREQ frequency]
+    RESTORE key ttl serialized-value [REPLACE] [ABSTTL]
 
-**Time complexity:** O(1) to create the new key and additional O(N*M) to reconstruct the serialized value, where N is the number of Redis objects composing the value and M their average size. For small string values the time complexity is thus O(1)+O(1*M) where M is small, so simply O(1). However for sorted set values the complexity is O(N*M*log(N)) because inserting values into sorted sets is O(log(N)).
+**Time complexity:** O(1) to create the new key and additional O(N*M) to reconstruct the serialized value, where N is the number of Dragonfly objects composing the value and M their average size. For small string values the time complexity is thus O(1)+O(1*M) where M is small, so simply O(1). However for sorted set values the complexity is O(N*M*log(N)) because inserting values into sorted sets is O(log(N)).
 
 Create a key associated with a value that is obtained by deserializing the
 provided serialized value (obtained via `DUMP`).
@@ -22,14 +22,10 @@ If the `ABSTTL` modifier was used, `ttl` should represent an absolute
 
 [hewowu]: http://en.wikipedia.org/wiki/Unix_time
 
-For eviction purposes, you may use the `IDLETIME` or `FREQ` modifiers. See
-`OBJECT` for more information.
-
 `!RESTORE` will return a "Target key name is busy" error when `key` already
 exists unless you use the `REPLACE` modifier.
 
-`!RESTORE` checks the RDB version and data checksum.
-If they don't match an error is returned.
+`!RESTORE` checks the data checksum. If it does not match an error is returned.
 
 ## Return
 
@@ -38,15 +34,13 @@ If they don't match an error is returned.
 ## Examples
 
 ```
-redis> DEL mykey
+dragonfly> DEL mykey
 0
-redis> RESTORE mykey 0 "\n\x17\x17\x00\x00\x00\x12\x00\x00\x00\x03\x00\
-                        x00\xc0\x01\x00\x04\xc0\x02\x00\x04\xc0\x03\x00\
-                        xff\x04\x00u#<\xc0;.\xe9\xdd"
+dragonfly> RESTORE mykey 0 "\x0e\x01\x11\x11\x00\x00\x00\x0e\x00\x00\x00\x03\x00\x00\xf2\x02\xf3\x02\xf4\xff\t\x00\xfa\x81\x98P\x85\xf8\xd9\xed"
 OK
-redis> TYPE mykey
+dragonfly> TYPE mykey
 list
-redis> LRANGE mykey 0 -1
+dragonfly> LRANGE mykey 0 -1
 1) "1"
 2) "2"
 3) "3"
