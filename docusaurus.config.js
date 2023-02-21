@@ -194,7 +194,11 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} DragonflyDB Ltd.`,
+        copyright: `
+          Copyright © ${new Date().getFullYear()} DragonflyDB Ltd. & <a href="https://github.com/redis/redis-doc/blob/master/LICENSE" target="_blank">others</a>
+          <br>
+          <em>DragonflyDB Docs is Licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International Public License</a></em>
+        `,
       },
       prism: {
         theme: codeTheme,

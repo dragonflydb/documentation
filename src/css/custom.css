@@ -83,7 +83,12 @@ a > svg[class*="ExternalLink"] {
 }
 
 .footer__copyright {
-  font-size: 0.9em;
+  font-size: 0.8em;
+  color: var(--ifm-menu-color);
+}
+
+.footer__copyright a {
+  color: var(--ifm-menu-color-active);
 }
 
 .menu__caret:before,
