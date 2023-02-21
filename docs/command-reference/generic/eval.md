@@ -13,7 +13,7 @@ description: Execute a Lua script server side
 Invoke the execution of a server-side Lua script.
 
 The first argument is the script's source code.
-Scripts are written in [Lua](https://lua.org) and executed by the embedded [Lua 5.1](https://redis.io/topics/lua-api) interpreter in Dragonfly.
+Scripts are written in [Lua](https://lua.org) and executed by the embedded [Lua 5.4.4](https://redis.io/topics/lua-api) interpreter in Dragonfly.
 
 The second argument is the number of input key name arguments, followed by all the keys accessed by the script.
 These names of input keys are available to the script as the [_KEYS_ global runtime variable](https://redis.io/topics/lua-api#the-keys-global-variable)
