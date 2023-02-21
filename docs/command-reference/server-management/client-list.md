@@ -31,7 +31,7 @@ Here is the meaning of the fields:
 * `name`: the name set by the client with `CLIENT SETNAME`
 * `age`: total duration of the connection in seconds
 * `idle`: idle time of the connection in seconds
-* `phase`: TODO
+* `phase`: connection state as captured by the "client list" command
 
 
 ## Notes

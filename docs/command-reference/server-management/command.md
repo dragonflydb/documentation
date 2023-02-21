@@ -65,8 +65,6 @@ Command flags are an array. It can contain the following simple strings (status 
 * **readonly:** the command doesn't modify data.
 * **write:** the command may modify data.
 
-// TODO: should we describe our internal flags?
-
 ## First key
 
 The position of the command's first key name argument.

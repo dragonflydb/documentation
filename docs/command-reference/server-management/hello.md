@@ -6,18 +6,15 @@ description: Handshake with Dragonfly
 
 ## Syntax
 
-    HELLO [protover]
+    HELLO
 
 **Time complexity:** O(1)
 
-Switch to a different protocol or provide a contextual client report.
-
-At the moment, the RESP3 protocol is not supported.
+Provide a contextual client report.
 
 `HELLO` always replies with a list of current server and connection properties,
 such as: versions, modules loaded, client ID, replication role and so forth.
-When called without any arguments in Redis 6.2 and its default use of RESP2
-protocol, the reply looks like this:
+The reply looks like this:
 
     > HELLO
      1) "server"

@@ -12,7 +12,7 @@ description: Synchronously save the dataset to disk
 
 The `SAVE` commands performs a save of the dataset producing a
 _point in time_ snapshot of all the data inside the Dragonfly instance, in the form
-of a collection of DFS files.
+of a set of [DFS files](../../managing-dragonfly/snapshotting).
 
 Use `SAVE RDB` to save the snapshot in form of an RDB file instead.
 

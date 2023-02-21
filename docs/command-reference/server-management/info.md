@@ -162,22 +162,9 @@ Here is the meaning of all fields in the **memory** section:
 *   `used_memory_rss_human`: Human readable representation of previous value
 *   `maxmemory`: The value of the `maxmemory` configuration directive
 *   `maxmemory_human`: Human readable representation of previous value
-// TODO: Custom flags
 
-// TODO: How do make users check fragmentation ratio? `MEMORY MALLOC-STATS`?
-<!--
 Ideally, the `used_memory_rss` value should be only slightly higher than
-`used_memory`.
-When rss >> used, a large difference may mean there is (external) memory fragmentation, which can be evaluated by checking
-`allocator_frag_ratio`, `allocator_frag_bytes`.
-When used >> rss, it means part of Redis memory has been swapped off by the
-operating system: expect some significant latencies.
-
-Because Redis does not have control over how its allocations are mapped to
-memory pages, high `used_memory_rss` is often the result of a spike in memory
-usage.
--->
-
+`used_memory`. When rss >> used, a large difference may mean there is (external) memory fragmentation.
 
 When Dragonfly frees memory, the memory is given back to the allocator, and the
 allocator may or may not give the memory back to the system. There may be
@@ -215,7 +202,7 @@ Here is the meaning of all fields in the **stats** section:
 Here is the meaning of all fields in the **replication** section:
 
 *   `role`: Value is "master" if the instance is replica of no one, or "slave" if the instance is a replica of some master instance
-*   `master_replid`: The replication ID of the Redis server
+*   `master_replid`: The replication ID of the Dragonfly server
 *   `connected_slaves`: Number of connected replicas
 
 If the instance is a replica, these additional fields are provided:
@@ -233,12 +220,12 @@ For each replica, the following line is added:
 
 Here is the meaning of all fields in the **cpu** section:
 
-*   `used_cpu_sys`: System CPU consumed by the Redis server, which is the sum of system CPU consumed by all threads of the server process (main thread and background threads)
-*   `used_cpu_user`: User CPU consumed by the Redis server, which is the sum of user CPU consumed by all threads of the server process (main thread and background threads)
+*   `used_cpu_sys`: System CPU consumed by the Dragonfly server, which is the sum of system CPU consumed by all threads of the server process (main thread and background threads)
+*   `used_cpu_user`: User CPU consumed by the Dragonfly server, which is the sum of user CPU consumed by all threads of the server process (main thread and background threads)
 *   `used_cpu_sys_children`: System CPU consumed by the background processes
 *   `used_cpu_user_children`: User CPU consumed by the background processes
-*   `used_cpu_sys_main_thread`: System CPU consumed by the Redis server main thread
-*   `used_cpu_user_main_thread`: User CPU consumed by the Redis server main thread
+*   `used_cpu_sys_main_thread`: System CPU consumed by the Dragonfly server main thread
+*   `used_cpu_user_main_thread`: User CPU consumed by the Dragonfly server main thread
 
 The **commandstats** section provides statistics based on the command type,
  including the number of calls that reached command execution (not rejected),
@@ -260,6 +247,3 @@ For each database, the following line is added:
 *   `dbXXX`: `keys=XXX,expires=XXX, avg_ttl=XXX`
 
 [hcgcpgp]: http://code.google.com/p/google-perftools/
-
-// TODO: slace question
-**A note about the word slave used in this man page**: Starting with Redis 5, if not for backward compatibility, the Redis project no longer uses the word slave. Unfortunately in this command the word slave is part of the protocol, so we'll be able to remove such occurrences only when this API will be naturally deprecated.
