@@ -36,9 +36,7 @@ Non-existent keys are treated as empty strings.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers)
-
-The command returns the position of the first bit set to 1 or 0 according to the request.
+[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the command returns the position of the first bit set to 1 or 0 according to the request.
 
 If we look for set bits (the bit argument is 1) and the string is empty or composed of just zero bytes, -1 is returned.
 
@@ -54,21 +52,19 @@ However, this behavior changes if you are looking for clear bits and specify a r
 dragonfly> SET mykey "\xff\xf0\x00"
 "OK"
 dragonfly> BITPOS mykey 0
-(integer) 0
+(integer) 12 
 dragonfly> SET mykey "\x00\xff\xf0"
 "OK"
 dragonfly> BITPOS mykey 1 0
-(integer) 1
+(integer) 8
 dragonfly> BITPOS mykey 1 2
-(integer) 18
-dragonfly> BITPOS mykey 1 2 -1 BYTE
-(integer) 18
-dragonfly> BITPOS mykey 1 7 15 BIT
-(integer) 9
-dragonfly> set mykey "\x00\x00\x00"
+(integer) 16
+dragonfly> SET mykey "\x00\x00\x00"
 "OK"
 dragonfly> BITPOS mykey 1
-(integer) 1
-dragonfly> BITPOS mykey 1 7 -3 BIT
-(integer) 9
+(integer) -1
+dragonfly> SET mykey "\x00\x00"
+"OK"
+dragonfly BITPOS mykey 0 8 16 BIT
+(integer) 8
 ```

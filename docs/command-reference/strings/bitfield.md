@@ -10,20 +10,22 @@ description: Perform arbitrary bitfield integer operations on strings
 
 **Time complexity:** O(1) for each subcommand specified
 
-The command treats a Redis string as an array of bits, and is capable of addressing specific integer fields of varying bit widths and arbitrary non (necessary) aligned offset. In practical terms using this command you can set, for example, a signed 5 bits integer at bit offset 1234 to a specific value, retrieve a 31 bit unsigned integer from offset 4567. Similarly the command handles increments and decrements of the specified integers, providing guaranteed and well specified overflow and underflow behavior that the user can configure.
+The command treats a string as an array of bits, and is capable of addressing specific integer fields of varying bit widths and arbitrary non (necessary) aligned offset. In practical terms, using this command you can set, for example, a signed 5 bits integer at bit offset 1234 to a specific value, retrieve a 31 bit unsigned integer from offset 4567. Similarly, the command handles increments and decrements of the specified integers, providing guaranteed and well specified overflow and underflow behavior that the user can configure.
 
 `BITFIELD` is able to operate with multiple bit fields in the same command call. It takes a list of operations to perform, and returns an array of replies, where each array matches the corresponding operation in the list of arguments.
 
 For example the following command increments a 5 bit signed integer at bit offset 100, and gets the value of the 4 bit unsigned integer at bit offset 0:
 
-    > BITFIELD mykey INCRBY i5 100 1 GET u4 0
-    1) (integer) 1
-    2) (integer) 0
+```shell
+dragonfly> BITFIELD mykey INCRBY i5 100 1 GET u4 0
+1) (integer) 1
+2) (integer) 0
+```
 
 Note that:
 
-1. Addressing with `!GET` bits outside the current string length (including the case the key does not exist at all), results in the operation to be performed like the missing part all consists of bits set to 0.
-2. Addressing with `!SET` or `!INCRBY` bits outside the current string length will enlarge the string, zero-padding it, as needed, for the minimal length needed, according to the most far bit touched.
+1. Addressing with `GET` bits outside the current string length (including the case the key does not exist at all), results in the operation to be performed like the missing part all consists of bits set to 0.
+2. Addressing with `SET` or `INCRBY` bits outside the current string length will enlarge the string, zero-padding it, as needed, for the minimal length needed, according to the most far bit touched.
 
 ## Supported subcommands and integer encoding
 
@@ -34,7 +36,7 @@ The following is the list of supported commands.
 * **INCRBY** `<encoding>` `<offset>` `<increment>` -- Increments or decrements (if a negative increment is given) the specified bit field and returns the new value.
 
 There is another subcommand that only changes the behavior of successive
-`!INCRBY` and `!SET` subcommands calls by setting the overflow behavior:
+`INCRBY` and `SET` subcommands calls by setting the overflow behavior:
 
 * **OVERFLOW** `[WRAP|SAT|FAIL]`
 
@@ -42,9 +44,7 @@ Where an integer encoding is expected, it can be composed by prefixing with `i` 
 signed integer of 16 bits.
 
 The supported encodings are up to 64 bits for signed integers, and up to 63 bits for
-unsigned integers. This limitation with unsigned integers is due to the fact
-that currently the Redis protocol is unable to return 64 bit unsigned integers
-as replies.
+unsigned integers. 
 
 ## Bits and positional offsets
 
@@ -55,9 +55,11 @@ bit offset inside the string.
 However if the offset is prefixed with a `#` character, the specified offset
 is multiplied by the integer encoding's width, so for example:
 
-    BITFIELD mystring SET i8 #0 100 SET i8 #1 200
+```shell
+BITFIELD mystring SET i8 #0 100 SET i8 #1 200
+```
 
-Will set the first i8 integer at offset 0 and the second at offset 8.
+Will set the first 8-bit integer at offset 0 and the second at offset 8.
 This way you don't have to do the math yourself inside your client if what
 you want is a plain array of integers of a given size.
 
@@ -71,24 +73,26 @@ the following behaviors:
 * **SAT**: uses saturation arithmetic, that is, on underflows the value is set to the minimum integer value, and on overflows to the maximum integer value. For example incrementing an `i8` integer starting from value 120 with an increment of 10, will result into the value 127, and further increments will always keep the value at 127. The same happens on underflows, but towards the value is blocked at the most negative value.
 * **FAIL**: in this mode no operation is performed on overflows or underflows detected. The corresponding return value is set to NULL to signal the condition to the caller.
 
-Note that each `OVERFLOW` statement only affects the `!INCRBY` and `!SET`
+Note that each `OVERFLOW` statement only affects the `INCRBY` and `SET`
 commands that follow it in the list of subcommands, up to the next `OVERFLOW`
 statement.
 
 By default, **WRAP** is used if not otherwise specified.
 
-    > BITFIELD mykey incrby u2 100 1 OVERFLOW SAT incrby u2 102 1
-    1) (integer) 1
-    2) (integer) 1
-    > BITFIELD mykey incrby u2 100 1 OVERFLOW SAT incrby u2 102 1
-    1) (integer) 2
-    2) (integer) 2
-    > BITFIELD mykey incrby u2 100 1 OVERFLOW SAT incrby u2 102 1
-    1) (integer) 3
-    2) (integer) 3
-    > BITFIELD mykey incrby u2 100 1 OVERFLOW SAT incrby u2 102 1
-    1) (integer) 0
-    2) (integer) 3
+```shell
+dragonfly> BITFIELD mykey incrby u2 100 1 OVERFLOW SAT incrby u2 102 1
+1) (integer) 1
+2) (integer) 1
+dragonfly> BITFIELD mykey incrby u2 100 1 OVERFLOW SAT incrby u2 102 1
+1) (integer) 2
+2) (integer) 2
+dragonfly> BITFIELD mykey incrby u2 100 1 OVERFLOW SAT incrby u2 102 1
+1) (integer) 3
+2) (integer) 3
+dragonfly> BITFIELD mykey incrby u2 100 1 OVERFLOW SAT incrby u2 102 1
+1) (integer) 0
+2) (integer) 3
+```
 
 ## Return value
 
@@ -98,15 +102,15 @@ as generating a reply.
 
 The following is an example of `OVERFLOW FAIL` returning NULL.
 
-    > BITFIELD mykey OVERFLOW FAIL incrby u2 102 1
-    1) (nil)
+```shell
+dragonfly> BITFIELD mykey OVERFLOW FAIL incrby u2 102 1
+1) (nil)
+```
 
 ## Motivations
 
 The motivation for this command is that the ability to store many small integers
-as a single large bitmap (or segmented over a few keys to avoid having huge keys) is extremely memory efficient, and opens new use cases for Redis to be applied, especially in the field of real time analytics. This use cases are supported by the ability to specify the overflow in a controlled way.
-
-Fun fact: Reddit's 2017 April fools' project [r/place](https://reddit.com/r/place) was [built using the Redis BITFIELD command](https://redditblog.com/2017/04/13/how-we-built-rplace/) in order to take an in-memory representation of the collaborative canvas.
+as a single large bitmap (or segmented over a few keys to avoid having huge keys) is extremely memory efficient, and opens new use cases for Dragonfly to be applied, especially in the field of real time analytics. This use cases are supported by the ability to specify the overflow in a controlled way.
 
 ## Performance considerations
 

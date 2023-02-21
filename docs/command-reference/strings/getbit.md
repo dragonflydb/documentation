@@ -10,7 +10,7 @@ description: Returns the bit value at offset in the string value stored at key
 
 **Time complexity:** O(1)
 
-Returns the bit value at _offset_ in the string value stored at _key_.
+Returns the bit value at _offset_ (zero-indexed) in the string value stored at _key_.
 
 When _offset_ is beyond the string length, the string is assumed to be a
 contiguous space with 0 bits.
@@ -25,11 +25,12 @@ always out of range and the value is also assumed to be a contiguous space with
 ## Examples
 
 ```shell
-dragonfly> SETBIT mykey 7 1
-(integer) 0
+dragonfly> SET mykey "\x42"  # 0100'0010
 dragonfly> GETBIT mykey 0
 (integer) 0
-dragonfly> GETBIT mykey 7
+dragonfly> GETBIT mykey 1
+(integer) 1
+dragonfly> GETBIT mykey 6
 (integer) 1
 dragonfly> GETBIT mykey 100
 (integer) 0

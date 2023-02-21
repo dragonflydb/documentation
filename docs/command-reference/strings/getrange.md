@@ -21,7 +21,7 @@ the actual length of the string.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings)
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the string stored at key `key`, sliced corresponding to `start`, `end`.
 
 ## Examples
 

@@ -16,12 +16,12 @@ An error is returned if the key contains a value of the wrong type or contains a
 string that can not be represented as integer.
 This operation is limited to 64 bit signed integers.
 
-**Note**: this is a string operation because Redis does not have a dedicated
+**Note**: this is a string operation because Dragonfly does not have a dedicated
 integer type.
 The string stored at the key is interpreted as a base-10 **64 bit signed
 integer** to execute the operation.
 
-Redis stores integers in their integer representation, so for string values
+Dragonfly stores integers in their integer representation, so for string values
 that actually hold an integer, there is no overhead for storing the string
 representation of the integer.
 
@@ -42,9 +42,9 @@ dragonfly> GET mykey
 
 ## Pattern: Counter
 
-The counter pattern is the most obvious thing you can do with Redis atomic
+The counter pattern is the most obvious thing you can do with atomic
 increment operations.
-The idea is simply send an `INCR` command to Redis every time an operation
+The idea is simply send an `INCR` command to Dragonfly every time an operation
 occurs.
 For instance in a web application we may want to know how many page views this
 user did every day of the year.
@@ -56,11 +56,11 @@ string representing the current date.
 This simple pattern can be extended in many ways:
 
 * It is possible to use `INCR` and `EXPIRE` together at every page view to have
-  a counter counting only the latest N page views separated by less than the
+  a counter counting only the latest `N` page views separated by less than the
   specified amount of seconds.
-* A client may use GETSET in order to atomically get the current counter value
+* A client may use `GETSET` in order to atomically get the current counter value
   and reset it to zero.
-* Using other atomic increment/decrement commands like `DECR` or `INCRBY` it
+* By using other atomic increment/decrement commands like `DECR` or `INCRBY`, it
   is possible to handle values that may get bigger or smaller depending on the
   operations performed by the user.
   Imagine for instance the score of different users in an online game.
