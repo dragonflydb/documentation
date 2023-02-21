@@ -10,9 +10,9 @@ description: Return a serialized version of the value stored at the specified ke
 
 **Time complexity:** O(1) to access the key and additional O(N*M) to serialize it, where N is the number of Redis objects composing the value and M their average size. For small string values the time complexity is thus O(1)+O(1*M) where M is small, so simply O(1).
 
-Serialize the value stored at key in a Redis-specific format and return it to
+Serialize the value stored at key in a Dragonfly-specific format and return it to
 the user.
-The returned value can be synthesized back into a Redis key using the `RESTORE`
+The returned value can be synthesized back into a Dragonfly key using the `RESTORE`
 command.
 
 The serialization format is opaque and non-standard, however it has a few
@@ -22,10 +22,8 @@ semantic characteristics:
   detected.
   The `RESTORE` command makes sure to check the checksum before synthesizing a
   key using the serialized value.
-* Values are encoded in the same format used by RDB.
-* An RDB version is encoded inside the serialized value, so that different Redis
-  versions with incompatible RDB formats will refuse to process the serialized
-  value.
+* Values are encoded in the same format used by the snapshotting algorithm.
+
 
 The serialized value does NOT contain expire information.
 In order to capture the time to live of the current value the `PTTL` command
@@ -43,5 +41,5 @@ If `key` does not exist a nil bulk reply is returned.
 > SET mykey 10
 OK
 > DUMP mykey
-"\x00\xc0\n\n\x00n\x9fWE\x0e\xaec\xbb"
+"\x00\xc0\n\t\x00\xbem\x06\x89Z(\x00\n"
 ```
