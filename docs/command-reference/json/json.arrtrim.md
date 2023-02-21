@@ -65,7 +65,7 @@ For more information about replies, see [Redis serialization protocol specificat
 Create two headphone products with maximum sound levels.
 
 ``` bash
-127.0.0.1:6379> JSON.GET key $
+dragonfly> JSON.SET key $
 "[[{\"name\":\"Healthy headphones\",\"description\":\"Wireless Bluetooth headphones with noise-cancelling technology\",\"connection\":{\"wireless\":true,\"type\":\"Bluetooth\"},\"price\":99.98,\"stock\":25,\"colors\":[\"black\",\"silver\"],\"max_level\":[60,70,80]},{\"name\":\"Noisy headphones\",\"description\":\"Wireless Bluetooth headphones with noise-cancelling technology\",\"connection\":{\"wireless\":true,\"type\":\"Bluetooth\"},\"price\":99.98,\"stock\":25,\"colors\":[\"black\",\"silver\"],\"max_level\":[85,90,100,120]}]]"
 OK
 ```
@@ -73,38 +73,32 @@ OK
 Add new sound level values to the second product.
 
 ``` bash
-127.0.0.1:6379> JSON.ARRAPPEND key $.[1].max_level 140 160 180 200 220 240 260 280
+dragonfly> JSON.ARRAPPEND key $[1].max_level 140 160 180 200 220 240 260 280
 1) (integer) 12
 ```
 
 Get the updated array.
 
 ``` bash
-127.0.0.1:6379> JSON.GET key $.[1].max_level
+dragonfly> JSON.GET key $[1].max_level
 "[[85,90,100,120,140,160,180,200,220,240,260,280]]"
 ```
 
 Keep only the values between the fifth and the ninth element, inclusive of that last element.
 
 ``` bash
-127.0.0.1:6379> JSON.ARRTRIM key $.[1].max_level 4 8
+dragonfly> JSON.ARRTRIM key $[1].max_level 4 8
 1) (integer) 5
 ```
 
 Get the updated array.
 
 ``` bash
-127.0.0.1:6379> JSON.GET key $.[1].max_level
+dragonfly> JSON.GET key $[1].max_level
 "[[140,160,180,200,220]]"
 ```
 </details>
 
 ## See also
 
-`JSON.ARRINDEX` | `JSON.ARRINSERT` 
-
-## Related topics
-
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)
-
+`JSON.ARRINDEX` | `JSON.ARRINSERT`

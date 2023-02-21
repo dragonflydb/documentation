@@ -37,24 +37,20 @@ For more information about replies, see [Redis serialization protocol specificat
 ## Examples
 
 ``` bash
-127.0.0.1:6379> JSON.SET doc $ '{"a":2, "nested": {"a": true}, "foo": "bar"}'
+dragonfly> JSON.SET doc $ '{"a":2, "nested": {"a": true}, "foo": "bar"}'
 OK
-127.0.0.1:6379> JSON.TYPE doc $..foo
+dragonfly> JSON.TYPE doc $..foo
 1) "string"
-127.0.0.1:6379> JSON.TYPE doc $..a
+dragonfly> JSON.TYPE doc $..a
 1) "integer"
 2) "boolean"
-127.0.0.1:6379> JSON.TYPE doc $..dummy
+dragonfly> JSON.TYPE doc $..dummy
+(nil)
 ```
 
 ## See also
 
 `JSON.SET` | `JSON.ARRLEN` 
-
-## Related topics
-
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)
 
 
 
