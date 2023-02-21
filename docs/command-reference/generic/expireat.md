@@ -6,7 +6,7 @@ description: Set the expiration for a key as a UNIX timestamp
 
 ## Syntax
 
-    EXPIREAT key unix-time-seconds [NX | XX | GT | LT]
+    EXPIREAT key unix-time-seconds
 
 **Time complexity:** O(1)
 
@@ -19,25 +19,6 @@ timestamp in the past will delete the key immediately.
 
 Please for the specific semantics of the command refer to the documentation of
 `EXPIRE`.
-
-## Background
-
-`EXPIREAT` was introduced in order to convert relative timeouts to absolute
-timeouts for the AOF persistence mode.
-Of course, it can be used directly to specify that a given key should expire at
-a given time in the future.
-
-## Options
-
-The `EXPIREAT` command supports a set of options:
-
-* `NX` -- Set expiry only when the key has no expiry
-* `XX` -- Set expiry only when the key has an existing expiry
-* `GT` -- Set expiry only when the new expiry is greater than current one
-* `LT` -- Set expiry only when the new expiry is less than current one
-
-A non-volatile key is treated as an infinite TTL for the purpose of `GT` and `LT`.
-The `GT`, `LT` and `NX` options are mutually exclusive.
 
 ## Return
 
