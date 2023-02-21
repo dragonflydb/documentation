@@ -12,4 +12,4 @@ description: A container for server configuration commands
 
 This is a container command for runtime configuration commands.
 
-To see the list of available commands you can call `CONFIG HELP`.
+<!-- To see the list of available commands you can call `CONFIG HELP`. -->

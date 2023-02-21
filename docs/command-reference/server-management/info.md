@@ -11,240 +11,106 @@ description: Get information and statistics about the server
 **Time complexity:** O(1)
 
 The `dragonfly> INFO
-"# Server
-redis_version:7.0.8
-redis_git_sha1:00000000
-redis_git_dirty:0
-redis_build_id:f52c061fed416ee1
+# Server
+redis_version:df-dev
 redis_mode:standalone
-os:Linux 5.15.0-1015-aws x86_64
 arch_bits:64
-monotonic_clock:POSIX clock_gettime
-multiplexing_api:epoll
-atomicvar_api:c11-builtin
-gcc_version:10.2.1
-process_id:1
-process_supervised:no
-run_id:255481cdc3d11392e9b2454a36a849e192a832c9
+multiplexing_api:iouring
 tcp_port:6379
-server_time_usec:1676903918720991
-uptime_in_seconds:2923671
-uptime_in_days:33
-hz:10
-configured_hz:10
-lru_clock:15959534
-executable:/data/redis-server
-config_file:/etc/redis/redis.conf
-io_threads_active:0
+uptime_in_seconds:9
+uptime_in_days:0
 
 # Clients
-connected_clients:2
-cluster_connections:0
-maxclients:10000
-client_recent_max_input_buffer:20480
-client_recent_max_output_buffer:0
+connected_clients:1
+client_read_buf_capacity:256
 blocked_clients:0
-tracking_clients:0
-clients_in_timeout_table:0
 
 # Memory
-used_memory:193233096
-used_memory_human:184.28M
-used_memory_rss:203927552
-used_memory_rss_human:194.48M
-used_memory_peak:196482120
-used_memory_peak_human:187.38M
-used_memory_peak_perc:98.35%
-used_memory_overhead:61087160
-used_memory_startup:862880
-used_memory_dataset:132145936
-used_memory_dataset_perc:68.69%
-allocator_allocated:193350104
-allocator_active:194322432
-allocator_resident:201154560
-total_system_memory:16585551872
-total_system_memory_human:15.45G
-used_memory_lua:31744
-used_memory_vm_eval:31744
-used_memory_lua_human:31.00K
-used_memory_scripts_eval:0
-number_of_cached_scripts:0
-number_of_functions:0
-number_of_libraries:0
-used_memory_vm_functions:32768
-used_memory_vm_total:64512
-used_memory_vm_total_human:63.00K
-used_memory_functions:184
-used_memory_scripts:184
-used_memory_scripts_human:184B
-maxmemory:4294967296
-maxmemory_human:4.00G
-maxmemory_policy:allkeys-lru
-allocator_frag_ratio:1.01
-allocator_frag_bytes:972328
-allocator_rss_ratio:1.04
-allocator_rss_bytes:6832128
-rss_overhead_ratio:1.01
-rss_overhead_bytes:2772992
-mem_fragmentation_ratio:1.06
-mem_fragmentation_bytes:10696280
-mem_not_counted_for_evict:0
-mem_replication_backlog:0
-mem_total_replication_buffers:0
-mem_clients_slaves:0
-mem_clients_normal:24072
-mem_cluster_links:0
-mem_aof_buffer:0
-mem_allocator:jemalloc-5.2.1
-active_defrag_running:0
-lazyfree_pending_objects:0
-lazyfreed_objects:0
-
-# Persistence
-loading:0
-async_loading:0
-current_cow_peak:0
-current_cow_size:0
-current_cow_size_age:0
-current_fork_perc:0.00
-current_save_keys_processed:0
-current_save_keys_total:0
-rdb_changes_since_last_save:2894350
-rdb_bgsave_in_progress:0
-rdb_last_save_time:1673980247
-rdb_last_bgsave_status:ok
-rdb_last_bgsave_time_sec:-1
-rdb_current_bgsave_time_sec:-1
-rdb_saves:0
-rdb_last_cow_size:0
-rdb_last_load_keys_expired:0
-rdb_last_load_keys_loaded:0
-aof_enabled:0
-aof_rewrite_in_progress:0
-aof_rewrite_scheduled:0
-aof_last_rewrite_time_sec:-1
-aof_current_rewrite_time_sec:-1
-aof_last_bgrewrite_status:ok
-aof_rewrites:0
-aof_rewrites_consecutive_failures:0
-aof_last_write_status:ok
-aof_last_cow_size:0
-module_fork_in_progress:0
-module_fork_last_cow_size:0
+used_memory:67219536
+used_memory_human:64.11MiB
+used_memory_peak:67219536
+comitted_memory:134963200
+used_memory_rss:128823296
+used_memory_rss_human:122.86MiB
+object_used_memory:27
+table_used_memory:66189280
+num_buckets:1720320
+num_entries:1005001
+inline_keys:1005001
+strval_bytes:0
+updateval_amount:0
+listpack_blobs:0
+listpack_bytes:0
+small_string_bytes:0
+pipeline_cache_bytes:0
+maxmemory:3169176780
+maxmemory_human:2.95GiB
+cache_mode:store
 
 # Stats
-total_connections_received:45
-total_commands_processed:3685185
-instantaneous_ops_per_sec:10
-total_net_input_bytes:292839115
-total_net_output_bytes:98776907
-total_net_repl_input_bytes:0
-total_net_repl_output_bytes:0
-instantaneous_input_kbps:0.81
-instantaneous_output_kbps:0.08
-instantaneous_input_repl_kbps:0.00
-instantaneous_output_repl_kbps:0.00
-rejected_connections:0
-sync_full:0
-sync_partial_ok:0
-sync_partial_err:0
-expired_keys:85674
-expired_stale_perc:0.00
-expired_time_cap_reached_count:0
-expire_cycle_cpu_milliseconds:179625
+total_connections_received:1
+total_commands_processed:2
+instantaneous_ops_per_sec:0
+total_pipelined_commands:0
+total_net_input_bytes:14
+total_net_output_bytes:11249
+instantaneous_input_kbps:-1
+instantaneous_output_kbps:-1
+rejected_connections:-1
+expired_keys:0
 evicted_keys:0
-evicted_clients:0
-total_eviction_exceeded_time:0
-current_eviction_exceeded_time:0
-keyspace_hits:848710
-keyspace_misses:87639
-pubsub_channels:0
-pubsub_patterns:0
-pubsubshard_channels:0
-latest_fork_usec:0
-total_forks:0
-migrate_cached_sockets:0
-slave_expires_tracked_keys:0
-active_defrag_hits:0
-active_defrag_misses:0
-active_defrag_key_hits:0
-active_defrag_key_misses:0
-total_active_defrag_time:0
-current_active_defrag_time:0
-tracking_total_keys:0
-tracking_total_items:0
-tracking_total_prefixes:0
-unexpected_error_replies:0
-total_error_replies:6137
-dump_payload_sanitizations:0
-total_reads_processed:3687546
-total_writes_processed:3687515
-io_threaded_reads_processed:0
-io_threaded_writes_processed:0
-reply_buffer_shrinks:10278
-reply_buffer_expands:10338
+hard_evictions:0
+garbage_checked:0
+garbage_collected:0
+bump_ups:0
+stash_unloaded:0
+traverse_ttl_sec:0
+delete_ttl_sec:0
+keyspace_hits:0
+keyspace_misses:0
+total_reads_processed:1
+total_writes_processed:1850
+async_writes_count:0
+parser_err_count:0
+defrag_attempt_total:0
+defrag_realloc_total:0
+defrag_task_invocation_total:0
 
 # Replication
 role:master
 connected_slaves:0
-master_failover_state:no-failover
-master_replid:623efdfc015dd86854ff6598ad4531c91366efce
-master_replid2:0000000000000000000000000000000000000000
-master_repl_offset:0
-second_repl_offset:-1
-repl_backlog_active:0
-repl_backlog_size:1048576
-repl_backlog_first_byte_offset:0
-repl_backlog_histlen:0
-
-# CPU
-used_cpu_sys:2574.705202
-used_cpu_user:10275.246584
-used_cpu_sys_children:0.001313
-used_cpu_user_children:0.002033
-used_cpu_sys_main_thread:2574.309989
-used_cpu_user_main_thread:10274.445298
-
-# Modules
-
-# Errorstats
-errorstat_BUSYGROUP:count=1
-errorstat_ERR:count=3322
-errorstat_EXECABORT:count=3
-errorstat_NOPERM:count=2241
-errorstat_WRONGTYPE:count=570
-
-# Cluster
-cluster_enabled:0
+master_replid:5114684b4a5bc1ab7fa9133c5ac972028c62f576
 
 # Keyspace
-db0:keys=1083128,expires=2705,avg_ttl=2168483177407279
+db0:keys=1005001,expires=0,avg_ttl=-1
+
+# CPU
+used_cpu_sys:0.76107
+used_cpu_user:9.353156
+used_cpu_sys_children:0.0
+used_cpu_user_children:0.0
+used_cpu_sys_main_thread:0.32040
+used_cpu_user_main_thread:4.681903
+
 "` command returns information and statistics about the server in a
 format that is simple to parse by computers and easy to read by humans.
 
 The optional parameter can be used to select a specific section of information:
 
-*   `server`: General information about the Redis server
+*   `server`: General information about the Dragonfly server
 *   `clients`: Client connections section
 *   `memory`: Memory consumption related information
-*   `persistence`: RDB and AOF related information
+*   `persistence`: Persistence related information
 *   `stats`: General statistics
 *   `replication`: Master/replica replication information
 *   `cpu`: CPU consumption statistics
-*   `commandstats`: Redis command statistics
-*   `latencystats`: Redis command latency percentile distribution statistics
-*   `sentinel`: Redis Sentinel section (only applicable to Sentinel instances)
-*   `cluster`: Redis Cluster section
-*   `modules`: Modules section
+*   `commandstats`: Command statistics
 *   `keyspace`: Database related statistics
-*   `modules`: Module related sections
-*   `errorstats`: Redis error statistics
+*   `errorstats`: Error statistics
 
 It can also take the following values:
 
 *   `all`: Return all sections (excluding module generated ones)
-*   `default`: Return only the default set of sections
-*   `everything`: Includes `all` and `modules`
 
 When no parameter is provided, the `default` option is assumed.
 
@@ -261,13 +127,12 @@ INFO
 
 ## Notes
 
-Please note depending on the version of Redis some of the fields have been
+Please note depending on the version of Dragonfly some of the fields have been
 added or removed. A robust client application should therefore parse the
 result of this command by skipping unknown properties, and gracefully handle
 missing fields.
 
-Here is the description of fields for Redis >= 2.4.
-
+<!-- TODO
 
 Here is the meaning of all fields in the **server** section:
 
@@ -659,3 +524,5 @@ For each database, the following line is added:
 **A note about the word slave used in this man page**: Starting with Redis 5, if not for backward compatibility, the Redis project no longer uses the word slave. Unfortunately in this command the word slave is part of the protocol, so we'll be able to remove such occurrences only when this API will be naturally deprecated.
 
 **Modules generated sections**: Starting with Redis 6, modules can inject their info into the `INFO` command, these are excluded by default even when the `all` argument is provided (it will include a list of loaded modules but not their generated info fields). To get these you must use either the `modules` argument or `everything`.,
+
+-->
