@@ -5,17 +5,17 @@ sidebar_position: 1
 # Install with Docker Compose
 
 
-This guide will have you up running DragonflyDB with `docker-compose` in just a few minutes.
+This guide will have you up running Dragonfly with `docker-compose` in just a few minutes.
 
 | This guide assumes you have `docker` and `docker-compose` installed on your machine. If not, [Install Docker](https://docs.docker.com/get-docker/) and [Install Docker Compose](https://docs.docker.com/compose/install/) before continuing.
 
 ## Step 1
 
 ```bash
-# Download Official Dragonfly DB Docker Compose File
+# Download Official Dragonfly Docker Compose File
 wget https://raw.githubusercontent.com/dragonflydb/dragonfly/main/contrib/docker/docker-compose.yml
 
-# Launch the Dragonfly DB Instance
+# Launch the Dragonfly Instance
 docker-compose up -d
 
 # Confirm image is up
@@ -26,7 +26,7 @@ docker ps | grep dragonfly
 docker logs -f docker_dragonfly_1
 ```
 
-Dragonfly DB will answer to both `http` and `redis` requests out of the box!
+Dragonfly will answer to both `http` and `redis` requests out of the box!
 
 You can use `redis-cli` to connect to `localhost:6379` or open a browser and visit `http://localhost:6379`
 
@@ -49,10 +49,10 @@ OK
 
 ## Step 3
 
-Continue being great and build your app with the power of DragonflyDB!  
+Continue being great and build your app with the power of Dragonfly!  
 
-## Tuning Dragonfly DB
-If you are attempting to tune Dragonfly DB for performance, consider `NAT` performance costs associated with containerization.  
+## Tuning Dragonfly
+If you are attempting to tune Dragonfly for performance, consider `NAT` performance costs associated with containerization.  
 > ## Performance Tuning
 > ---
 > In `docker-compose`, there is a meaningful difference between an `overlay` network(which relies on docker `NAT` traversal on every request) and using the `host` network(see [`docker-compose.yml`](https://github.com/dragonflydb/dragonfly/blob/main/contrib/docker/docker-compose.yml)).  
