@@ -18,7 +18,8 @@ sidebar_position: 1
 
 Create or add to your myvals.yaml values file
 
-```
+
+``` yml "
 storage:
   enabled: true
   requests: 128Mi # Set as desired
@@ -44,7 +45,7 @@ securityContext:
 ## Integrate with Kube-Prometheus Monitoring 
 If you have [Kube-Prometheus](https://github.com/prometheus-operator/kube-prometheus) installed in your cluster, you can have it monitor your dragonfly deployment by enbaling the `serviceMonitor` and `prometheusRule` in your values file. See an example below.
 
-```
+``` yml "
 serviceMonitor:
   enabled: true
 
