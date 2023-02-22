@@ -2,7 +2,8 @@
 sidebar_position: 3
 ---
 
-## License
+# License
+
 DragonflyDB docs are licensed under the
 [Creative Commons Attribution-ShareAlike 4.0 International Public License](https://creativecommons.org/licenses/by-sa/4.0/)
 
