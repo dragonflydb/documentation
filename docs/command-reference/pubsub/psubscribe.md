@@ -14,8 +14,9 @@ Subscribes the client to the given patterns.
 
 Supported glob-style patterns:
 
-* `h?llo` subscribes to `hello`, `hallo` and `hxllo`
-* `h*llo` subscribes to `hllo` and `heeeello`
-* `h[ae]llo` subscribes to `hello` and `hallo,` but not `hillo`
+* `h?llo` subscribes to `hello`, `hallo` and `hxllo` (matches a *single* character)
+* `h*llo` subscribes to `hllo`, `hallo` and `heeeello` (matches a *sequence* of characters, possibly empty)
+* `h[ae]llo` subscribes to `hello` and `hallo,` but not `hillo` (matches a single character from the list)
 
 Use `\` to escape special characters if you want to match them verbatim.
+

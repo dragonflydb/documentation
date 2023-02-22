@@ -46,16 +46,16 @@ not a good idea to add such complexity.
 
 ## Examples
 
-```
-> XADD mystream * a 1
+```shell
+dragonfly> XADD mystream * a 1
 1538561698944-0
-> XADD mystream * b 2
+dragonfly> XADD mystream * b 2
 1538561700640-0
-> XADD mystream * c 3
+dragonfly> XADD mystream * c 3
 1538561701744-0
-> XDEL mystream 1538561700640-0
+dragonfly> XDEL mystream 1538561700640-0
 (integer) 1
-127.0.0.1:6379> XRANGE mystream - +
+dragonfly> XRANGE mystream - +
 1) 1) 1538561698944-0
    2) 1) "a"
       2) "1"
