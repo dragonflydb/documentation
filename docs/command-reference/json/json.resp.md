@@ -49,14 +49,14 @@ JSON.RESP returns an array reply specified as the JSON's RESP form detailed in [
 Create a JSON document.
 
 ``` bash
-127.0.0.1:6379> JSON.SET item:2 $ '{"name":"Wireless earbuds","description":"Wireless Bluetooth in-ear headphones","connection":{"wireless":true,"type":"Bluetooth"},"price":64.99,"stock":17,"colors":["black","white"], "max_level":[80, 100, 120]}'
+dragonfly> JSON.SET item:2 $ '{"name":"Wireless earbuds","description":"Wireless Bluetooth in-ear headphones","connection":{"wireless":true,"type":"Bluetooth"},"price":64.99,"stock":17,"colors":["black","white"], "max_level":[80, 100, 120]}'
 OK
 ```
 
 Get all RESP details about the document.
 
 ``` bash
-127.0.0.1:6379> JSON.RESP item:2
+dragonfly> JSON.RESP item:2
  1) {
  2) "name"
  3) "Wireless earbuds"

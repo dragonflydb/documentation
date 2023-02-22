@@ -57,42 +57,42 @@ For more information about replies, see [Redis serialization protocol specificat
 Create a document for noise-cancelling headphones in black and silver colors.
 
 ``` bash
-127.0.0.1:6379> JSON.SET item:1 $ '{"name":"Noise-cancelling Bluetooth headphones","description":"Wireless Bluetooth headphones with noise-cancelling technology","connection":{"wireless":true,"type":"Bluetooth"},"price":99.98,"stock":25,"colors":["black","silver"]}'
+dragonfly> JSON.SET item:1 $ '{"name":"Noise-cancelling Bluetooth headphones","description":"Wireless Bluetooth headphones with noise-cancelling technology","connection":{"wireless":true,"type":"Bluetooth"},"price":99.98,"stock":25,"colors":["black","silver"]}'
 OK
 ```
 
 Add color `blue` to the end of the `colors` array. `JSON.ARRAPEND` returns the array's new size.
 
 ``` bash
-127.0.0.1:6379> JSON.ARRAPPEND item:1 $.colors '"blue"'
+dragonfly> JSON.ARRAPPEND item:1 $.colors '"blue"'
 1) (integer) 3
 ```
 
 Return the new length of the `colors` array.
 
 ``` bash
-JSON.GET item:1
+dragonfly> JSON.GET item:1
 "{\"name\":\"Noise-cancelling Bluetooth headphones\",\"description\":\"Wireless Bluetooth headphones with noise-cancelling technology\",\"connection\":{\"wireless\":true,\"type\":\"Bluetooth\"},\"price\":99.98,\"stock\":25,\"colors\":[\"black\",\"silver\",\"blue\"]}"
 ```
 
 Get the list of colors for the product.
 
 ``` bash
-127.0.0.1:6379> JSON.GET item:1 '$.colors[*]'
+dragonfly> JSON.GET item:1 '$.colors[*]'
 "[\"black\",\"silver\",\"blue\"]"
 ```
 
 Insert two more colors after the second color. You now have five colors.
 
 ``` bash
-127.0.0.1:6379> JSON.ARRINSERT item:1 $.colors 2 '"yellow"' '"gold"'
+dragonfly> JSON.ARRINSERT item:1 $.colors 2 '"yellow"' '"gold"'
 1) (integer) 5
 ```
 
 Get the updated list of colors.
 
 ``` bash
-127.0.0.1:6379> JSON.GET item:1 $.colors
+dragonfly> JSON.GET item:1 $.colors
 "[[\"black\",\"silver\",\"yellow\",\"gold\",\"blue\"]]"
 ```
 </details>
@@ -100,8 +100,3 @@ Get the updated list of colors.
 ## See also
 
 `JSON.ARRAPPEND` | `JSON.ARRINDEX` 
-
-## Related topics
-
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)

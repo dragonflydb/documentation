@@ -41,14 +41,14 @@ For more information about replies, see [Redis serialization protocol specificat
 Create a document for wireless earbuds.
 
 ``` bash
-127.0.0.1:6379> JSON.SET item:2 $ '{"name":"Wireless earbuds","description":"Wireless Bluetooth in-ear headphones","connection":{"wireless":true,"type":"Bluetooth"},"price":64.99,"stock":17,"colors":["black","white"], "max_level":[80, 100, 120]}'
+dragonfly> JSON.SET item:2 $ '{"name":"Wireless earbuds","description":"Wireless Bluetooth in-ear headphones","connection":{"wireless":true,"type":"Bluetooth"},"price":64.99,"stock":17,"colors":["black","white"], "max_level":[80, 100, 120]}'
 OK
 ```
 
 Find lengths of arrays in all objects of the document.
 
 ``` bash
-127.0.0.1:6379> JSON.ARRLEN item:2 '$.[*]'
+dragonfly> JSON.ARRLEN item:2 '$.*'
 1) (nil)
 2) (nil)
 3) (nil)
@@ -61,14 +61,14 @@ Find lengths of arrays in all objects of the document.
 Return the length of the `max_level` array.
 
 ``` bash
-127.0.0.1:6379> JSON.ARRLEN item:2 '$..max_level'
+dragonfly> JSON.ARRLEN item:2 '$..max_level'
 1) (integer) 3
 ```
 
 Get all the maximum level values.
 
 ``` bash
-127.0.0.1:6379> JSON.GET item:2 '$..max_level'
+dragonfly> JSON.GET item:2 '$..max_level'
 "[[80,100,120]]"
 ```
 
@@ -77,8 +77,3 @@ Get all the maximum level values.
 ## See also
 
 `JSON.ARRINDEX` | `JSON.ARRINSERT` 
-
-## Related topics
-
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)

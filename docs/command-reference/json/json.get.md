@@ -64,7 +64,7 @@ Produce pretty-formatted JSON with `redis-cli` by following this example:
 
 ``` bash
 ~/$ redis-cli --raw
-127.0.0.1:6379> JSON.GET myjsonkey INDENT "\t" NEWLINE "\n" SPACE " " path.to.value[1]
+dragonfly> JSON.GET myjsonkey INDENT "\t" NEWLINE "\n" SPACE " " path.to.value[1]
 ```
 
 
@@ -86,21 +86,21 @@ For more information about replies, see [Redis serialization protocol specificat
 Create a JSON document.
 
 ``` bash
-127.0.0.1:6379> JSON.SET doc $ '{"a":2, "b": 3, "nested": {"a": 4, "b": null}}'
+dragonfly> JSON.SET doc $ '{"a":2, "b": 3, "nested": {"a": 4, "b": null}}'
 OK
 ```
 
 With a single JSONPath (JSON array bulk string):
 
 ``` bash
-127.0.0.1:6379>  JSON.GET doc $..b
+dragonfly>  JSON.GET doc $..b
 "[3,null]"
 ```
 
 Using multiple paths with at least one JSONPath returns a JSON string with a top-level object with an array of JSON values per path:
 
 ``` bash
-127.0.0.1:6379> JSON.GET doc ..a $..b
+dragonfly> JSON.GET doc ..a $..b
 "{\"$..b\":[3,null],\"..a\":[2,4]}"
 ```
 </details>
@@ -108,8 +108,3 @@ Using multiple paths with at least one JSONPath returns a JSON string with a top
 ## See also
 
 `JSON.SET` | `JSON.MGET` 
-
-## Related topics
-
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)

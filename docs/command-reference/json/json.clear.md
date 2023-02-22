@@ -49,21 +49,21 @@ Already cleared values are ignored for empty containers and zero numbers.
 Create a JSON document.
 
 ``` bash
-127.0.0.1:6379> JSON.SET doc $ '{"obj":{"a":1, "b":2}, "arr":[1,2,3], "str": "foo", "bool": true, "int": 42, "float": 3.14}'
+dragonfly> JSON.SET doc $ '{"obj":{"a":1, "b":2}, "arr":[1,2,3], "str": "foo", "bool": true, "int": 42, "float": 3.14}'
 OK
 ```
 
 Clear all container values. This returns the number of objects with cleared values.
 
 ``` bash
-127.0.0.1:6379> JSON.CLEAR doc $.*
+dragonfly> JSON.CLEAR doc $.*
 (integer) 4
 ```
 
 Get the updated document. Note that numeric values have been set to `0`.
 
 ``` bash
-127.0.0.1:6379> JSON.GET doc $
+dragonfly> JSON.GET doc $
 "[{\"obj\":{},\"arr\":[],\"str\":\"foo\",\"bool\":true,\"int\":0,\"float\":0}]"
 ```
 </details>
@@ -71,9 +71,4 @@ Get the updated document. Note that numeric values have been set to `0`.
 ## See also
 
 `JSON.ARRINDEX` | `JSON.ARRINSERT` 
-
-## Related topics
-
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)
 

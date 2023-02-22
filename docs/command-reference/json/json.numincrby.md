@@ -46,21 +46,21 @@ For more information about replies, see [Redis serialization protocol specificat
 Create a document.
 
 ``` bash
-127.0.0.1:6379> JSON.SET doc . '{"a":"b","b":[{"a":2}, {"a":5}, {"a":"c"}]}'
+dragonfly> JSON.SET doc . '{"a":"b","b":[{"a":2}, {"a":5}, {"a":"c"}]}'
 OK
 ```
 
 Increment a value of `a` object by 2. The command fails to find a number and returns `null`.
 
 ``` bash
-127.0.0.1:6379> JSON.NUMINCRBY doc $.a 2
+dragonfly> JSON.NUMINCRBY doc $.a 2
 "[null]"
 ```
 
 Recursively find and increment a value of all `a` objects. The command increments numbers it finds and returns `null` for nonnumber values.
 
 ``` bash
-127.0.0.1:6379> JSON.NUMINCRBY doc $..a 2
+dragonfly> JSON.NUMINCRBY doc $..a 2
 "[null,4,7,null]"
 ```
 
@@ -69,8 +69,3 @@ Recursively find and increment a value of all `a` objects. The command increment
 ## See also
 
 `JSON.ARRINDEX` | `JSON.ARRINSERT` 
-
-## Related topics
-
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)

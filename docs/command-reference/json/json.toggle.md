@@ -42,35 +42,35 @@ For more information about replies, see [Redis serialization protocol specificat
 Create a JSON document.
 
 ``` bash
-127.0.0.1:6379> JSON.SET doc $ '{"bool": true}'
+dragonfly> JSON.SET doc $ '{"bool": true}'
 OK
 ```
 
 Toggle the Boolean value.
 
 ``` bash
-127.0.0.1:6379> JSON.TOGGLE doc $.bool
+dragonfly> JSON.TOGGLE doc $.bool
 1) (integer) 0
 ```
 
 Get the updated document.
 
 ``` bash
-127.0.0.1:6379> JSON.GET doc $
+dragonfly> JSON.GET doc $
 "[{\"bool\":false}]"
 ```
 
 Toggle the Boolean value.
 
 ``` bash
-127.0.0.1:6379> JSON.TOGGLE doc $.bool
+dragonfly> JSON.TOGGLE doc $.bool
 1) (integer) 1
 ```
 
 Get the updated document.
 
 ``` bash
-127.0.0.1:6379> JSON.GET doc $
+dragonfly> JSON.GET doc $
 "[{\"bool\":true}]"
 ```
 </details>
@@ -78,9 +78,3 @@ Get the updated document.
 ## See also
 
 `JSON.SET` | `JSON.GET` 
-
-## Related topics
-
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)
-

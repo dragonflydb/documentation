@@ -41,19 +41,14 @@ For more information about replies, see [Redis serialization protocol specificat
 ## Examples
 
 ``` bash
-127.0.0.1:6379> JSON.SET doc . '{"a":"b","b":[{"a":2}, {"a":5}, {"a":"c"}]}'
+dragonfly> JSON.SET doc . '{"a":"b","b":[{"a":2}, {"a":5}, {"a":"c"}]}'
 OK
-127.0.0.1:6379> JSON.NUMMULTBY doc $.a 2
+dragonfly> JSON.NUMMULTBY doc $.a 2
 "[null]"
-127.0.0.1:6379> JSON.NUMMULTBY doc $..a 2
+dragonfly> JSON.NUMMULTBY doc $..a 2
 "[null,4,10,null]"
 ```
 
 ## See also
 
 `JSON.NUMINCRBY` | `JSON.ARRINSERT` 
-
-## Related topics
-
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)

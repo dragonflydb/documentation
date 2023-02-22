@@ -36,9 +36,9 @@ For more information about replies, see [Redis serialization protocol specificat
 ## Examples
 
 ``` bash
-127.0.0.1:6379> JSON.SET doc $ '{"a":"foo", "nested": {"a": "hello"}, "nested2": {"a": 31}}'
+dragonfly> JSON.SET doc $ '{"a":"foo", "nested": {"a": "hello"}, "nested2": {"a": 31}}'
 OK
-127.0.0.1:6379> JSON.STRLEN doc $..a
+dragonfly> JSON.STRLEN doc $..a
 1) (integer) 3
 2) (integer) 5
 3) (nil)
@@ -47,8 +47,3 @@ OK
 ## See also
 
 `JSON.ARRLEN` | `JSON.ARRINSERT` 
-
-## Related topics
-
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)

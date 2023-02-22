@@ -42,16 +42,16 @@ For more information about replies, see [Redis serialization protocol specificat
 Create two JSON documents.
 
 ``` bash
-redis> JSON.SET doc1 $ '{"a":1, "b": 2, "nested": {"a": 3}, "c": null}'
+dragonfly> JSON.SET doc1 $ '{"a":1, "b": 2, "nested": {"a": 3}, "c": null}'
 OK
-redis> JSON.SET doc2 $ '{"a":4, "b": 5, "nested": {"a": 6}, "c": null}'
+dragonfly> JSON.SET doc2 $ '{"a":4, "b": 5, "nested": {"a": 6}, "c": null}'
 OK
 ```
 
 Get values from all arguments in the documents.
 
 ``` bash
-redis> JSON.MGET doc1 doc2 $..a
+dragonfly> JSON.MGET doc1 doc2 $..a
 1) "[1,3]"
 2) "[4,6]"
 ```
@@ -60,8 +60,3 @@ redis> JSON.MGET doc1 doc2 $..a
 ## See also
 
 `JSON.SET` | `JSON.GET` 
-
-## Related topics
-
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)
