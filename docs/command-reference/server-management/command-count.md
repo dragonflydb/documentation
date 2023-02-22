@@ -1,5 +1,5 @@
 ---
-description: Get total number of Redis commands
+description: Get total number of Dragonfly commands
 ---
 
 # COMMAND COUNT
@@ -10,7 +10,7 @@ description: Get total number of Redis commands
 
 **Time complexity:** O(1)
 
-Returns [Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers) of number of total commands in this Redis server.
+Returns [Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers) of number of total commands in this Dragonfly server.
 
 ## Return
 

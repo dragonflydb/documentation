@@ -11,12 +11,12 @@ description: Listen for all requests received by the server in real time
 **Time complexity:** undefined
 
 `MONITOR` is a debugging command that streams back every command processed by
-the Redis server.
+the Dragonfly server.
 It can help in understanding what is happening to the database.
 This command can both be used via `redis-cli` and via `telnet`.
 
 The ability to see all the requests processed by the server is useful in order
-to spot bugs in an application both when using Redis as a database and as a
+to spot bugs in an application both when using Dragonfly as a database and as a
 distributed caching system.
 
 ```
@@ -63,42 +63,8 @@ Furthermore, the command `QUIT` is also not logged.
 ## Cost of running MONITOR
 
 Because `MONITOR` streams back **all** commands, its use comes at a cost.
-The following (totally unscientific) benchmark numbers illustrate what the cost
-of running `MONITOR` can be.
-
-Benchmark result **without** `MONITOR` running:
-
-```
-$ src/redis-benchmark -c 10 -n 100000 -q
-PING_INLINE: 101936.80 requests per second
-PING_BULK: 102880.66 requests per second
-SET: 95419.85 requests per second
-GET: 104275.29 requests per second
-INCR: 93283.58 requests per second
-```
-
-Benchmark result **with** `MONITOR` running (`redis-cli monitor > /dev/null`):
-
-```
-$ src/redis-benchmark -c 10 -n 100000 -q
-PING_INLINE: 58479.53 requests per second
-PING_BULK: 59136.61 requests per second
-SET: 41823.50 requests per second
-GET: 45330.91 requests per second
-INCR: 41771.09 requests per second
-```
-
-In this particular case, running a single `MONITOR` client can reduce the
-throughput by more than 50%.
-Running more `MONITOR` clients will reduce throughput even more.
 
 ## Return
 
 **Non standard return value**, just dumps the received commands in an infinite
 flow.
-
-## Behavior change history
-
-*   `>= 6.0.0`: `AUTH` excluded from the command's output.
-*   `>= 6.2.0`: "`RESET` can be called to exit monitor mode.
-*   `>= 6.2.4`: "`AUTH`, `HELLO`, `EVAL`, `EVAL_RO`, `EVALSHA` and `EVALSHA_RO` included in the command's output.

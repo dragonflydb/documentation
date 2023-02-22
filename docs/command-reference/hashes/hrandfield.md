@@ -6,7 +6,7 @@ description: Get one or multiple random fields from a hash
 
 ## Syntax
 
-    HRANDFIELD key [count [WITHVALUES]]
+    HRANDFIELD key
 
 **Time complexity:** O(N) where N is the number of fields returned
 
