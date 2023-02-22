@@ -12,14 +12,10 @@ description: Incrementally iterate the keys space
 
 The `SCAN` command and the closely related commands `SSCAN`, `HSCAN` and `ZSCAN` are used in order to incrementally iterate over a collection of elements.
 
-* `SCAN` iterates the set of keys in the currently selected Redis database.
+* `SCAN` iterates the set of keys in the currently selected Dragonfly database.
 * `SSCAN` iterates elements of Sets types.
 * `HSCAN` iterates fields of Hash types and their associated values.
 * `ZSCAN` iterates elements of Sorted Set types and their associated scores.
-
-Since these commands allow for incremental iteration, returning only a small number of elements per call, they can be used in production without the downside of commands like `KEYS` or `SMEMBERS` that may block the server for a long time (even several seconds) when called against big collections of keys or elements.
-
-However while blocking commands like `SMEMBERS` are able to provide all the elements that are part of a Set in a given moment, The SCAN family of commands only offer limited guarantees about the returned elements since the collection that we incrementally iterate can change during the iteration process.
 
 Note that `SCAN`, `SSCAN`, `HSCAN` and `ZSCAN` all work very similarly, so this documentation covers all the four commands. However an obvious difference is that in the case of `SSCAN`, `HSCAN` and `ZSCAN` the first argument is the name of the key holding the Set, Hash or Sorted Set value. The `SCAN` command does not need any key name argument as it iterates keys in the current database, so the iterated object is the database itself.
 
@@ -29,8 +25,9 @@ SCAN is a cursor based iterator. This means that at every call of the command, t
 
 An iteration starts when the cursor is set to 0, and terminates when the cursor returned by the server is 0. The following is an example of SCAN iteration:
 
-```
-redis 127.0.0.1:6379> scan 0
+
+```shell
+dragonfly> scan 0
 1) "17"
 2)  1) "key:12"
     2) "key:8"
@@ -43,7 +40,7 @@ redis 127.0.0.1:6379> scan 0
     9) "key:3"
    10) "key:7"
    11) "key:1"
-redis 127.0.0.1:6379> scan 17
+dragonfly> scan 17
 1) "0"
 2) 1) "key:5"
    2) "key:18"
@@ -87,8 +84,8 @@ However there is a way for the user to tune the order of magnitude of the number
 While `SCAN` does not provide guarantees about the number of elements returned at every iteration, it is possible to empirically adjust the behavior of `SCAN` using the **COUNT** option. Basically with COUNT the user specified the *amount of work that should be done at every call in order to retrieve elements from the collection*. This is **just a hint** for the implementation, however generally speaking this is what you could expect most of the times from the implementation.
 
 * The default COUNT value is 10.
-* When iterating the key space, or a Set, Hash or Sorted Set that is big enough to be represented by a hash table, assuming no **MATCH** option is used, the server will usually return *count* or a bit more than *count* elements per call. Please check the *why SCAN may return all the elements at once* section later in this document.
-* When iterating Sets encoded as intsets (small sets composed of just integers), or Hashes and Sorted Sets encoded as ziplists (small hashes and sets composed of small individual values), usually all the elements are returned in the first `SCAN` call regardless of the COUNT value.
+* When iterating the key space, or a Set, Hash or Sorted Set, assuming no **MATCH** option is used, the server will usually return *count* or a bit more than *count* elements per call. 
+* When iterating Sets encoded as intsets (small sets composed of just integers) usually all the elements are returned in the first `SCAN` call regardless of the COUNT value.
 
 Important: **there is no need to use the same COUNT value** for every iteration. The caller is free to change the count from one iteration to the other as required, as long as the cursor passed in the next call is the one obtained in the previous call to the command.
 
@@ -100,33 +97,32 @@ To do so, just append the `MATCH <pattern>` arguments at the end of the `SCAN` c
 
 This is an example of iteration using **MATCH**:
 
-```
-redis 127.0.0.1:6379> sadd myset 1 2 3 foo foobar feelsgood
+```shell
+dragonfly> sadd myset 1 2 3 foo foobar feelsgood
 (integer) 6
-redis 127.0.0.1:6379> sscan myset 0 match f*
+dragonfly> sscan myset 0 match f*
 1) "0"
 2) 1) "foo"
    2) "feelsgood"
    3) "foobar"
-redis 127.0.0.1:6379>
 ```
 
 It is important to note that the **MATCH** filter is applied after elements are retrieved from the collection, just before returning data to the client. This means that if the pattern matches very little elements inside the collection, `SCAN` will likely return no elements in most iterations. An example is shown below:
 
-```
-redis 127.0.0.1:6379> scan 0 MATCH *11*
+```shell
+dragonfly> scan 0 MATCH *11*
 1) "288"
 2) 1) "key:911"
-redis 127.0.0.1:6379> scan 288 MATCH *11*
+dragonfly> scan 288 MATCH *11*
 1) "224"
 2) (empty list or set)
-redis 127.0.0.1:6379> scan 224 MATCH *11*
+dragonfly> scan 224 MATCH *11*
 1) "80"
 2) (empty list or set)
-redis 127.0.0.1:6379> scan 80 MATCH *11*
+dragonfly> scan 80 MATCH *11*
 1) "176"
 2) (empty list or set)
-redis 127.0.0.1:6379> scan 176 MATCH *11* COUNT 1000
+dragonfly> scan 176 MATCH *11* COUNT 1000
 1) "0"
 2)  1) "key:611"
     2) "key:711"
@@ -146,7 +142,6 @@ redis 127.0.0.1:6379> scan 176 MATCH *11* COUNT 1000
    16) "key:811"
    17) "key:511"
    18) "key:11"
-redis 127.0.0.1:6379>
 ```
 
 As you can see most of the calls returned zero elements, but the last call where a COUNT of 1000 was used in order to force the command to do more scanning for that iteration.
@@ -156,21 +151,19 @@ As you can see most of the calls returned zero elements, but the last call where
 
 You can use the `!TYPE` option to ask `SCAN` to only return objects that match a given `type`, allowing you to iterate through the database looking for keys of a specific type. The **TYPE** option is only available on the whole-database `SCAN`, not `HSCAN` or `ZSCAN` etc.
 
-The `type` argument is the same string name that the `TYPE` command returns. Note a quirk where some Redis types, such as GeoHashes, HyperLogLogs, Bitmaps, and Bitfields, may internally be implemented using other Redis types, such as a string or zset, so can't be distinguished from other keys of that same type by `SCAN`. For example, a ZSET and GEOHASH:
+The `type` argument is the same string name that the `TYPE` command returns.
 
-```
-redis 127.0.0.1:6379> GEOADD geokey 0 0 value
+```shell
+dragonfly> ZADD zkey1 1000 value
 (integer) 1
-redis 127.0.0.1:6379> ZADD zkey 1000 value
+dragonfly> ZADD zkey2 1000 value
 (integer) 1
-redis 127.0.0.1:6379> TYPE geokey
-zset
-redis 127.0.0.1:6379> TYPE zkey
-zset
-redis 127.0.0.1:6379> SCAN 0 TYPE zset
+dragonfly> TYPE zkey1
+"zset"
+dragonfly> SCAN 0 TYPE zset
 1) "0"
-2) 1) "geokey"
-   2) "zkey"
+2) 1) "zkey1"
+   2) "zkey2"
 ```
 
 It is important to note that the **TYPE** filter is also applied after elements are retrieved from the database, so the option does not reduce the amount of work the server has to do to complete a full iteration, and for rare types you may receive no elements in many iterations.
@@ -198,14 +191,6 @@ The `SCAN` algorithm is guaranteed to terminate only if the size of the iterated
 
 This is easy to see intuitively: if the collection grows there is more and more work to do in order to visit all the possible elements, and the ability to terminate the iteration depends on the number of calls to `SCAN` and its COUNT option value compared with the rate at which the collection grows.
 
-## Why SCAN may return all the items of an aggregate data type in a single call?
-
-In the `COUNT` option documentation, we state that sometimes this family of commands may return all the elements of a Set, Hash or Sorted Set at once in a single call, regardless of the `COUNT` option value. The reason why this happens is that the cursor-based iterator can be implemented, and is useful, only when the aggregate data type that we are scanning is represented as a hash table. However Redis uses a [memory optimization](https://redis.io/topics/memory-optimization) where small aggregate data types, until they reach a given amount of items or a given max size of single elements, are represented using a compact single-allocation packed encoding. When this is the case, `SCAN` has no meaningful cursor to return, and must iterate the whole data structure at once, so the only sane behavior it has is to return everything in a call.
-
-However once the data structures are bigger and are promoted to use real hash tables, the `SCAN` family of commands will resort to the normal behavior. Note that since this special behavior of returning all the elements is true only for small aggregates, it has no effects on the command complexity or latency. However the exact limits to get converted into real hash tables are [user configurable](https://redis.io/topics/memory-optimization), so the maximum number of elements you can see returned in a single call depends on how big an aggregate data type could be and still use the packed representation.
-
-Also note that this behavior is specific of `SSCAN`, `HSCAN` and `ZSCAN`. `SCAN` itself never shows this behavior because the key space is always represented by hash tables.
-
 ## Return value
 
 `SCAN`, `SSCAN`, `HSCAN` and `ZSCAN` return a two elements multi-bulk reply, where the first element is a string representing an unsigned 64 bit number (the cursor), and the second element is a multi-bulk with an array of elements.
@@ -219,10 +204,10 @@ Also note that this behavior is specific of `SSCAN`, `HSCAN` and `ZSCAN`. `SCAN`
 
 Iteration of a Hash value.
 
-```
-redis 127.0.0.1:6379> hmset hash name Jack age 33
-OK
-redis 127.0.0.1:6379> hscan hash 0
+```shell
+dragonfly> hmset hash name Jack age 33
+"OK"
+dragonfly> hscan hash 0
 1) "0"
 2) 1) "name"
    2) "Jack"
