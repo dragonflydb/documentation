@@ -54,8 +54,7 @@ will just return every entry in the stream:
 ... other entries here ...
 ```
 
-The `-` and `+` special IDs mean, respectively, the minimal and maximal range IDs,
-however they are nicer to type.
+The `-` and `+` special IDs mean, respectively, the minimal and maximal range IDs.
 
 ## Incomplete IDs
 
@@ -64,12 +63,12 @@ sequence number for entries inserted in the same millisecond. It is possible
 to use `XRANGE` specifying just the first part of the ID, the millisecond time,
 like in the following example:
 
-```
-> XRANGE somestream 1526985054069 1526985055069
+```shell
+XRANGE somestream 1526985054069 1526985055069
 ```
 
 In this case, `XRANGE` will auto-complete the start interval with `-0`
-and end interval with `-18446744073709551615`, in order to return all the
+and end interval with `-18446744073709551615` (2<sup>64</sup>-1), in order to return all the
 entries that were generated between a given millisecond and the end of
 the other specified millisecond. This also means that repeating the same
 millisecond two times, we get all the entries within such millisecond,
@@ -81,8 +80,8 @@ of past events in a stream.
 
 ## Exclusive ranges
 
-The range is close (inclusive) by default, meaning that the reply can include
-entries with IDs matching the query's start and end intervals. It is possible
+The range is closed (inclusive) by default, meaning that the reply can include
+entries with IDs matching the query's start and end intervals (i.e., the interval `[start, end]`). It is possible
 to specify an open interval (exclusive) by prefixing the ID with the
 character `(`. This is useful for iterating the stream, as explained below.
 
@@ -93,8 +92,8 @@ reported. This is a very important feature even if it may look marginal,
 because it allows, for instance, to model operations such as *give me
 the entry greater or equal to the following*:
 
-```
-> XRANGE somestream 1526985054069-0 + COUNT 1
+```shell
+dragonfly> XRANGE somestream 1526985054069-0 + COUNT 1
 1) 1) 1526985054069-0
    2) 1) "duration"
       2) "72"
@@ -115,7 +114,7 @@ we want two elements per iteration. We start fetching the first two
 elements, which is trivial:
 
 ```
-> XRANGE writers - + COUNT 2
+dragonfly> XRANGE writers - + COUNT 2
 1) 1) 1526985676425-0
    2) 1) "name"
       2) "Virginia"
@@ -136,7 +135,7 @@ The ID of the last entry is `1526985685298-0`, so we just prefix it
 with a '(', and continue our iteration:
 
 ```
-> XRANGE writers (1526985685298-0 + COUNT 2
+dragonfly> XRANGE writers (1526985685298-0 + COUNT 2
 1) 1) 1526985691746-0
    2) 1) "name"
       2) "Toni"
@@ -155,50 +154,18 @@ a specific time, by providing a given incomplete start ID. Moreover, we
 can limit the iteration to a given ID or time, by providing an end
 ID or incomplete ID instead of `+`.
 
-The command `XREAD` is also able to iterate the stream.
 The command `XREVRANGE` can iterate the stream reverse, from higher IDs
 (or times) to lower IDs (or times).
-
-### Iterating with earlier versions of Redis
-
-While exclusive range intervals are only available from Redis 6.2, it is still
-possible to use a similar stream iteration pattern with earlier versions. You
-start fetching from the stream the same way as described above to obtain the
-first entries.
-
-For the subsequent calls, you'll need to programmatically advance the last
-entry's ID returned. Most Redis client should abstract this detail, but the
-implementation can also be in the application if needed. In the example above,
-this means incrementing the sequence of `1526985685298-0` by one, from 0 to 1.
-The second call would, therefore, be:
-
-```
-> XRANGE writers 1526985685298-1 + COUNT 2
-1) 1) 1526985691746-0
-   2) 1) "name"
-      2) "Toni"
-...
-```
-
-Also, note that once the sequence part of the last ID equals 
-18446744073709551615, you'll need to increment the timestamp and reset the
-sequence part to 0. For example, incrementing the ID
-`1526985685298-18446744073709551615` should result in `1526985685299-0`.
-
-A symmetrical pattern applies to iterating the stream with `XREVRANGE`. The
-only difference is that the client needs to decrement the ID for the subsequent
-calls. When decrementing an ID with a sequence part of 0, the timestamp needs
-to be decremented by 1 and the sequence set to 18446744073709551615.
 
 ## Fetching single items
 
 If you look for an `XGET` command you'll be disappointed because `XRANGE`
 is effectively the way to go in order to fetch a single entry from a
 stream. All you have to do is to specify the ID two times in the arguments
-of XRANGE:
+of `XRANGE`:
 
 ```
-> XRANGE mystream 1526984818136-0 1526984818136-0
+dragonfly> XRANGE mystream 1526984818136-0 1526984818136-0
 1) 1) 1526984818136-0
    2) 1) "duration"
       2) "1532"
@@ -207,11 +174,6 @@ of XRANGE:
       5) "user-id"
       6) "7782813"
 ```
-
-## Additional information about streams
-
-For further information about Redis streams please check our
-[introduction to Redis Streams document](https://redis.io/topics/streams-intro).
 
 ## Return
 
@@ -249,3 +211,4 @@ dragonfly> XRANGE writers - + COUNT 2
 3) "surname"
 4) "Austen"
 ```
+

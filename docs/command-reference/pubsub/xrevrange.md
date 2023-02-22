@@ -28,6 +28,8 @@ enough to send:
 
     XREVRANGE somestream + - COUNT 1
 
+See [`XRANGE`](xrange) for more detail.
+
 ## Return
 
 [Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays), specifically:

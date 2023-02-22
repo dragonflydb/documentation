@@ -12,12 +12,22 @@ description: Post a message to a channel
 
 Posts a message to the given channel.
 
-In a Redis Cluster clients can publish to every node. The cluster makes sure
-that published messages are forwarded as needed, so clients can subscribe to any
-channel by connecting to any one of the nodes.
-
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the number of clients that received the message. Note that in a
-Redis Cluster, only clients that are connected to the same node as the
-publishing client are included in the count.
+[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the number of clients that received the message. 
+
+## Examples
+
+```shell
+user:1> PSUBSCRIBE "h[ae]llo"
+user:2> PSUBSCRIBE "h*llo"
+---
+dragonfly> PUBLISH "hello" message1
+(integer) 2 
+dragonfly> PUBLISH "hllo" message2
+(integer) 1 # user 2
+dragonfly> PUBLISH "heello" message3
+(integer) 1 # user 2
+dragonfly> PUBLISH "hello world" message4
+(integer) 0
+```

@@ -19,7 +19,7 @@ An entry is composed of a list of field-value pairs.
 The field-value pairs are stored in the same order they are given by the user.
 Commands that read the stream, such as `XRANGE` or `XREAD`, are guaranteed to return the fields and values exactly in the same order they were added by `XADD`.
 
-`XADD` is the *only Redis command* that can add data to a stream, but 
+`XADD` is the *only command* that can add data to a stream, but 
 there are other commands, such as `XDEL` and `XTRIM`, that are able to
 remove data from a stream.
 
@@ -37,17 +37,17 @@ IDs are specified by two numbers separated by a `-` character:
     1526919030474-55
 
 Both quantities are 64-bit numbers. When an ID is auto-generated, the
-first part is the Unix time in milliseconds of the Redis instance generating
+first part is the Unix time in milliseconds of the Dragonfly instance generating
 the ID. The second part is just a sequence number and is used in order to
 distinguish IDs generated in the same millisecond.
 
 You can also specify an incomplete ID, that consists only of the milliseconds part, which is interpreted as a zero value for sequence part.
 To have only the sequence part automatically generated, specify the milliseconds part followed by the `-` separator and the `*` character:
 
-```
-> XADD mystream 1526919030474-55 message "Hello,"
+```shell
+dragonfly> XADD mystream 1526919030474-55 message "Hello,"
 "1526919030474-55"
-> XADD mystream 1526919030474-* message " World!"
+dragonfly> XADD mystream 1526919030474-* message " World!"
 "1526919030474-56"
 ```
 
@@ -64,7 +64,7 @@ When a user specified an explicit ID to `XADD`, the minimum valid ID is
 `0-1`, and the user *must* specify an ID which is greater than any other
 ID currently inside the stream, otherwise the command will fail and return an error. Usually
 resorting to specific IDs is useful only if you have another system generating
-unique IDs (for instance an SQL table) and you really want the Redis stream
+unique IDs (for instance an SQL table) and you really want the Dragonfly stream
 IDs to match the one of this other system.
 
 ## Capped streams
@@ -78,11 +78,6 @@ For example, calling `XADD` in the following form:
     XADD mystream MAXLEN ~ 1000 * ... entry fields here ...
  
 Will add a new entry but will also evict old entries so that the stream will contain only 1000 entries, or at most a few tens more.
-
-## Additional information about streams
-
-For further information about Redis streams please check our
-[introduction to Redis Streams document](https://redis.io/topics/streams-intro).
 
 ## Return
 
