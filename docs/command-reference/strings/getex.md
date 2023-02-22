@@ -23,6 +23,8 @@ The `GETEX` command supports a set of options that modify its behavior:
 * `PXAT` *timestamp-milliseconds* -- Set the specified Unix time at which the key will expire, in milliseconds.
 * `PERSIST` -- Remove the time to live associated with the key.
 
+When supplied with no options, `GETEX` is equivalent to `GET`.
+
 ## Return
 
 [Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the value of `key`, or `nil` when `key` does not exist.

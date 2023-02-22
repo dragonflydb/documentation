@@ -40,6 +40,4 @@ dragonfly> TTL mykey
 dragonfly> GET mykey
 "Hello"
 ```
-## See also
 
-`TTL`
