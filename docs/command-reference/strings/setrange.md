@@ -37,19 +37,19 @@ Basic usage:
 ```shell
 dragonfly> SET key1 "Hello World"
 "OK"
-dragonfly> SETRANGE key1 6 "Redis"
-(integer) 11
+dragonfly> SETRANGE key1 6 "Dragonfly"
+(integer) 15
 dragonfly> GET key1
-"Hello Redis"
+"Hello Dragonfly"
 ```
 
 Example of zero padding:
 
 ```shell
-dragonfly> SETRANGE key2 6 "Redis"
-(integer) 11
+dragonfly> SETRANGE key2 6 "Dragonfly"
+(integer) 15
 dragonfly> GET key2
-"������Redis"
+"\x00\x00\x00\x00\x00\x00Dragonfly
 ```
 
-where &#0; stands for the NUL character, inserted by the zero padding.
+where `\x00`  stands for the NUL character, inserted by the zero padding.
