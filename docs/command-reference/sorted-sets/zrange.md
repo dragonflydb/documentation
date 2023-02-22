@@ -141,12 +141,15 @@ The following example using `WITHSCORES` shows how the command returns always an
 
 ```shell
 dragonfly> ZRANGE myzset 0 1 WITHSCORES
-
+1) "one"
+2) "1"
+3) "two"
+4) "2"
 ```
 
 This example shows how to query the sorted set by score, excluding the value `1` and up to infinity, returning only the second element of the result:
 
 ```shell
 dragonfly> ZRANGE myzset (1 +inf BYSCORE LIMIT 1 1
-
+1) "three"
 ```
