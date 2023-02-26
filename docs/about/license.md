@@ -2,13 +2,19 @@
 sidebar_position: 3
 ---
 
-## License
+# License
+
+## Software Licensing
+Dragonfly is released under [BSL 1.1](https://github.com/dragonflydb/dragonfly/blob/main/LICENSE.md) (Business Source License). 
+
+## Documentation Licensing
+
 DragonflyDB docs are licensed under the
 [Creative Commons Attribution-ShareAlike 4.0 International Public License](https://creativecommons.org/licenses/by-sa/4.0/)
 
 ## Attribution
 
-Dragonfly implements lots of Redis server functionality, and DragonflyDB
+Dragonfly implements a lot of Redis server functionality, and DragonflyDB
 has modified & adapted documents from [redis-doc](https://github.com/redis/redis-doc/)
 for its use here as applicable to DragonflyDB.
 
