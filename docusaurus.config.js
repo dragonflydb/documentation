@@ -89,6 +89,10 @@ const config = {
             target: "_self",
           },
           {
+            href: "/",
+            label: "Docs",
+          },
+          {
             type: "dropdown",
             label: "Community",
             items: [
