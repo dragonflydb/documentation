@@ -189,32 +189,11 @@ a > svg[class*="ExternalLink"] {
 }
 
 /* Search */
-.navbar__search {
-  margin: 0 !important;
-
-  --ifm-navbar-search-input-icon: url('data:image/svg+xml;utf8,<svg fill="white" opacity="0.8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16px" width="16px"><path d="M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z" /></svg>');
+.DocSearch.DocSearch-Button {
+  height: 42px;
+  min-width: 42px;
 }
 
-.navbar__search-input {
-  --ifm-navbar-search-input-background-color: rgba(255, 255, 255, 0.1);
-
-  padding-top: 13px;
-  padding-bottom: 13px;
-  border-radius: 6px;
-  height: auto !important;
-  transition: 0.2s;
-  font-family: inherit;
-}
-
-@media (max-width: 576px) {
-  .navbar__search-input:focus {
-    --ifm-navbar-search-input-background-color: var(--ifm-color-emphasis-200);
-  }
-
-  .navbar__search-input:not(:focus) {
-    border-radius: 50%;
-    padding-right: 0.2rem;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
+.DocSearch-Button-Container {
+  margin-left: 3px;
 }
