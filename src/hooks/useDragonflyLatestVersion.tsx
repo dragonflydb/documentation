@@ -47,7 +47,10 @@ const useDragonflyLatestVersion = () => {
       fetch("https://api.github.com/repos/dragonflydb/dragonfly/releases")
         .then((response) => response.json())
         .then((releases) => {
-          setVersion(releases[0].tag_name);
+          setVersion(
+            releases.find((release) => !release.prerelease && !release.draft)
+              .tag_name
+          );
         });
     });
   }, [version, location.pathname]);
