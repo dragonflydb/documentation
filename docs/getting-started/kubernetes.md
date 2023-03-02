@@ -6,35 +6,34 @@ sidebar_position: 1
 
 ## Prerequisites
 
-- This manual uses Helm to deploy Dragonfly on a Kuberenetes cluster. See  [Install Helm](https://helm.sh/docs/intro/install/)
+- This manual uses Helm to deploy Dragonfly on a Kuberenetes cluster. See [Install Helm](https://helm.sh/docs/intro/install/)
 - A Kuberenetes cluster (See [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/) or [Minikube](https://minikube.sigs.k8s.io/docs/start/) if you want to experiment locally)
-- Pick a version frome [here](https://github.com/dragonflydb/dragonfly/pkgs/container/dragonfly%2Fhelm%2Fdragonfly) e.g. `VERSION=v0.15.0`
+- Pick a version frome [here](https://github.com/dragonflydb/dragonfly/pkgs/container/dragonfly%2Fhelm%2Fdragonfly) e.g. `VERSION=$VERSION`
 
 ## Install a standalone master
 
 `helm upgrade --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version $VERSION`
 
-## Install a standalone master with snapshot taken every minute 
+## Install a standalone master with snapshot taken every minute
 
 Create or add to your myvals.yaml values file
 
-
-``` yml "
+```yml "
 storage:
   enabled: true
   requests: 128Mi # Set as desired
 
 extraArgs:
   - --dbfilename=dump.rdb
-  - --save_schedule=*:* # HH:MM glob format 
- 
+  - --save_schedule=*:* # HH:MM glob format
+
 podSecurityContext:
   fsGroup: 2000
 
 securityContext:
   capabilities:
     drop:
-    - ALL
+      - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
@@ -42,16 +41,17 @@ securityContext:
 
 `helm upgrade -f myvals.yaml --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version $VERSION`
 
-## Integrate with Kube-Prometheus Monitoring 
+## Integrate with Kube-Prometheus Monitoring
+
 If you have [Kube-Prometheus](https://github.com/prometheus-operator/kube-prometheus) installed in your cluster, you can have it monitor your dragonfly deployment by enbaling the `serviceMonitor` and `prometheusRule` in your values file. See an example below.
 
-``` yml "
+```yml "
 serviceMonitor:
   enabled: true
 
 prometheusRule:
   enabled: true
-  spec: 
+  spec:
     - alert: DragonflyMissing
       expr: absent(dragonfly_uptime_in_seconds) == 1
       for: 0m
@@ -65,4 +65,3 @@ prometheusRule:
 ## More Customization
 
 For more customization please see the [Dragonfly Chart](https://github.com/dragonflydb/dragonfly/tree/main/contrib/charts/dragonfly)
-
