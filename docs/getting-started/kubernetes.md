@@ -8,11 +8,11 @@ sidebar_position: 1
 
 - This manual uses Helm to deploy Dragonfly on a Kuberenetes cluster. See [Install Helm](https://helm.sh/docs/intro/install/)
 - A Kuberenetes cluster (See [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/) or [Minikube](https://minikube.sigs.k8s.io/docs/start/) if you want to experiment locally)
-- Pick a version frome [here](https://github.com/dragonflydb/dragonfly/pkgs/container/dragonfly%2Fhelm%2Fdragonfly) e.g. `VERSION=$VERSION`
+- Pick a version frome [here](https://github.com/dragonflydb/dragonfly/pkgs/container/dragonfly%2Fhelm%2Fdragonfly) e.g. VERSION=v$VERSION
 
 ## Install a standalone master
 
-`helm upgrade --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version $VERSION`
+`helm upgrade --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version v$VERSION`
 
 ## Install a standalone master with snapshot taken every minute
 
