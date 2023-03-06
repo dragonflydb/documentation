@@ -40,17 +40,14 @@ const useDragonflyLatestVersion = () => {
         return replaceTextInElement(
           markdownContentElement,
           VERSION_VARIABLE,
-          version
+          `v${version}`
         );
       }
 
-      fetch("https://api.github.com/repos/dragonflydb/dragonfly/releases")
+      fetch("https://version.dragonflydb.io/v1")
         .then((response) => response.json())
-        .then((releases) => {
-          setVersion(
-            releases.find((release) => !release.prerelease && !release.draft)
-              .tag_name
-          );
+        .then((body) => {
+          setVersion(body.latest);
         });
     });
   }, [version, location.pathname]);
