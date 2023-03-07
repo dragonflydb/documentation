@@ -8,12 +8,12 @@ sidebar_position: 1
 
 - This manual uses Helm to deploy Dragonfly on a Kuberenetes cluster. See [Install Helm](https://helm.sh/docs/intro/install/)
 - A Kuberenetes cluster (See [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/) or [Minikube](https://minikube.sigs.k8s.io/docs/start/) if you want to experiment locally)
-- For latest version set `VERSION=v$VERSION`
+- For latest version set `VERSION=v{{DRAGONFLY_VERSION}}`
 - Or pick a version from [here](https://github.com/dragonflydb/dragonfly/pkgs/container/dragonfly%2Fhelm%2Fdragonfly)
 
 ## Install a standalone master
 
-`helm upgrade --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version v{{DRAGONFLY_VERSION}}`
+`helm upgrade --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version $VERSION`
 
 ## Install a standalone master with snapshot taken every minute
 
@@ -40,7 +40,7 @@ securityContext:
   runAsUser: 1000
 ```
 
-`helm upgrade -f myvals.yaml --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version {{DRAGONFLY_VERSION}}`
+`helm upgrade -f myvals.yaml --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version $VERSION`
 
 ## Integrate with Kube-Prometheus Monitoring
 
