@@ -3,7 +3,7 @@
 
 const visit = require("unist-util-visit");
 
-const regexp = /\$VERSION/g;
+const regexp = /\{{DRAGONFLY_VERSION}}/g;
 const version = process.env.DRAGONFLY_VERSION;
 
 module.exports = () => {

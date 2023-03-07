@@ -13,7 +13,7 @@ sidebar_position: 1
 
 ## Install a standalone master
 
-`helm upgrade --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version v$VERSION`
+`helm upgrade --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version v{{DRAGONFLY_VERSION}}`
 
 ## Install a standalone master with snapshot taken every minute
 
@@ -40,7 +40,7 @@ securityContext:
   runAsUser: 1000
 ```
 
-`helm upgrade -f myvals.yaml --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version $VERSION`
+`helm upgrade -f myvals.yaml --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version {{DRAGONFLY_VERSION}}`
 
 ## Integrate with Kube-Prometheus Monitoring
 
