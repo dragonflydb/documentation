@@ -2,13 +2,14 @@
 // Note: type annotations allow type checking and IDEs autocompletion
 
 const codeTheme = require("prism-react-renderer/themes/palenight");
+const isPreviewDeployment = process.env.VERCEL_ENV === "preview";
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Dragonfly",
   tagline: "Ultra-fast, scalable in-memory datastore",
   url: "https://dragonflydb.io",
-  baseUrl: process.env.VERCEL_ENV === "preview" ? "/" : "/docs",
+  baseUrl: isPreviewDeployment ? "/" : "/docs",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "website/favicon.ico",
@@ -210,18 +211,19 @@ const config = {
       prism: {
         theme: codeTheme,
       },
-    }),
+      algolia: {
+        appId: "ZXLX1PN8SG",
+        apiKey: "de4ef56c89d1bc997b27afd35c466672",
+        indexName: "dragonflydb",
+        contextualSearch: true,
+        replaceSearchResultPathname: isPreviewDeployment
+          ? { from: "/docs/", to: "/" }
+          : undefined,
 
-  plugins: [
-    [
-      require.resolve("@easyops-cn/docusaurus-search-local"),
-      {
-        indexBlog: false,
-        docsRouteBasePath: "/",
-        searchBarShortcutHint: false,
+        // Optional: path for search page that enabled by default (`false` to disable it)
+        searchPagePath: "search",
       },
-    ],
-  ],
+    }),
 };
 
 module.exports = config;
