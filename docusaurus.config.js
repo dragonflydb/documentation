@@ -55,6 +55,9 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/dragonflydb/documentation/edit/main/",
           routeBasePath: "/",
+          remarkPlugins: [
+            require("./src/theme/plugins/remark-dragonfly-version.js"),
+          ],
         },
         blog: false,
         pages: false,
