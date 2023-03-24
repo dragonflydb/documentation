@@ -131,8 +131,9 @@ const config = {
             position: "right",
           },
           {
-            href: "https://github.com/dragonflydb/dragonfly/blob/main/docs/quick-start/README.md",
-            label: "Get Started",
+            href: "https://dragonflydb.io/cloud",
+            label: "Dragonfly Cloud",
+            target: "_self",
             className: "nav-cta",
             position: "right",
           },
@@ -162,8 +163,8 @@ const config = {
                 target: "_self",
               },
               {
-                label: "Early Access",
-                href: "https://dragonflydb.io/early-access",
+                label: "Dragonfly Cloud",
+                href: "https://dragonflydb.io/cloud",
                 target: "_self",
               },
             ],
