@@ -29,14 +29,15 @@ An example of output when `dragonfly> ROLE` is called in a master instance:
 ```
 1) "master"
 2) 1) 1) "127.0.0.1"
-      2) "stable sync"
+      2) "6380"
+      3) "stable sync"
 
 ```
 
 The master output is composed of the following parts:
 
 1. The string `master`.
-2. An array composed of two elements array representing the connected replicas. Every sub-array contains the replica IP and replication state. For the state meanings see the replica output description below.
+2. An array composed of a three elements array for each connected replica. Every sub-array contains the replica's IP, port, and replication state. For the state meanings see the replica output description below.
 
 ## Output of the command on replicas
 
