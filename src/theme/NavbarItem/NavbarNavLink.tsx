@@ -14,7 +14,7 @@ export default function NavbarNavLinkWrapper(props: Props): JSX.Element {
 
     const storedStars = +sessionStorage.getItem("GITHUB_STARS");
 
-    if (!Number.isNaN(storedStars)) {
+    if (storedStars) {
       return setGithubStars(storedStars);
     }
 
