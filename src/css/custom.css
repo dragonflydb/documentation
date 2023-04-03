@@ -150,6 +150,11 @@ a > svg[class*="ExternalLink"] {
   margin-right: auto;
 }
 
+.nav-github-stars {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .nav-github-stars,
 .footer__title {
   font-family: var(--ifm-heading-font-family);

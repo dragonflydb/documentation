@@ -123,7 +123,6 @@ const config = {
           },
           {
             href: "https://github.com/dragonflydb/documentation/",
-            label: "16.8k stars",
             className: "nav-github-stars",
             position: "right",
           },
