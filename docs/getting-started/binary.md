@@ -62,3 +62,7 @@ You would run:
 ```
 dragonfly --logtostderr --requirepass=youshallnotpass --cache_mode=true -dbnum 1 --bind localhost --port 6379  --save_schedule "*:30" --maxmemory=12gb --keys_output_limit=12288 --dbfilename dump.rdb
 ```
+
+#### Flag files
+
+Flags can be also provided from a configuration file with the `--flagfile <filename>` flag. The file should list one flag per line, with equal signs instead of spaces for key-value flags.
