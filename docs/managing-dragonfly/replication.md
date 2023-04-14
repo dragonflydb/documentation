@@ -6,11 +6,11 @@ sidebar_position: 4
 
 ## Managing Replicas
 
-DragonflyDB supports a primary/secondary replication model, similarly to Redis’s [replication](https://redis.io/topics/replication). When using replication, DragonflyDB creates exact copies of the primary instance. Once configured properly, secondary instances reconnect to the primary any time their connections break and will always aim to remain an exact copy of the primary.
+Dragonfly supports a primary/secondary replication model, similarly to Redis’s [replication](https://redis.io/topics/replication). When using replication, Dragonfly creates exact copies of the primary instance. Once configured properly, secondary instances reconnect to the primary any time their connections break and will always aim to remain an exact copy of the primary.
 
-DragonflyDB replication management API is compatible with Redis API and consists of two user-facing commands: ROLE and REPLICAOF (SLAVEOF).
+Dragonfly replication management API is compatible with Redis API and consists of two user-facing commands: ROLE and REPLICAOF (SLAVEOF).
 
-If you’re not sure whether the DragonflyDB instance you’re currently connected to is a primary instance or a replica, you can check by running the  `role ` command:
+If you’re not sure whether the Dragonfly instance you’re currently connected to is a primary instance or a replica, you can check by running the  `role ` command:
 
 ```bash
 role
@@ -18,16 +18,16 @@ role
 
 This command will return either  `master ` or  `replica `.
 
-## Redis/DragonflyDB replication
-DragonflyDB supports Redis -> DragonflyDB replication to allow a convenient migration of Redis workloads to DragonflyDB. We currently support data structures and replication protocol of Redis OSS up to version 6.2. The instructions below apply to this type of replication as well with only difference that the primary instance is a running Redis server.
+## Redis/Dragonfly replication
+Dragonfly supports Redis -> Dragonfly replication to allow a convenient migration of Redis workloads to Dragonfly. We currently support data structures and replication protocol of Redis OSS up to version 6.2. The instructions below apply to this type of replication as well with only difference that the primary instance is a running Redis server.
 
-## DragonflyDB/DragonflyDB replication
-This replication process internally is vastly different from the original Redis replication algorithm, but from the outside, the API is kept the same to make it compatible with the current ecosystem. 
+## Dragonfly/Dragonfly replication
+This replication process internally is vastly different from the original Redis replication algorithm, but from the outside, the API is kept the same to make it compatible with the current ecosystem.
 
-To designate a DragonflyDB instance as a replica of another instance on the fly, run the  `replicaof ` command. This command takes the intended primary server’s hostname or IP address and port as arguments:
+To designate a Dragonfly instance as a replica of another instance on the fly, run the  `replicaof ` command. This command takes the intended primary server’s hostname or IP address and port as arguments:
 
 ```bash
-replicaof hostname_or_IP port 
+replicaof hostname_or_IP port
 ```
 
 If the server is already a replica of another primary, it will stop replicating the old server and immediately start synchronizing with the new one. It will also discard the old dataset.
