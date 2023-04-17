@@ -15,16 +15,15 @@ _point in time_ snapshot of all the data inside the Dragonfly instance, in the f
 of a set of [DFS files](../../managing-dragonfly/snapshotting).
 
 Use `SAVE RDB` to save the snapshot in form of an RDB file instead.
+Please refer to the [persistence documentation][tp] for detailed information about RDB files.
 
-Please refer to the [persistence documentation][tp] for detailed information.
+## Flags
 
-The output filename can be configured with the `--dbfilename` flag. Any occurences of the substring `{timestamp}`
-will also be replaced with a timestamp of the local time in a lexicographically sorted format. If given, the filename extension must be either `.rdb` or `.dfs` and match the dump format. If no extension is given, it will be appended
-automatically.
-
+* **`df_snapshot_format`** - Use the new DF file format (on by default).
+* **`dbfilename`** - The file name to use for the dump. To generate a dump file with a timestamp, set the macro `{timestamp}` in the filename, e.g. `dump-{timestamp}`.
+The macro will be replaced with a timestamp of the local time in a lexicographically sorted format.
 The default filename is `dump-{timestamp}`.
-
-In addition to the `SAVE` command, you can generate snapshots periodically using the `--save_schedule` flag.
+* **`save_schedule`** - Generate snapshots periodically.
 
 [tp]: https://redis.io/topics/persistence
 
