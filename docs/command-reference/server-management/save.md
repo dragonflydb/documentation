@@ -19,11 +19,11 @@ Please refer to the [persistence documentation][tp] for detailed information abo
 
 ## Flags
 
-* **`df_snapshot_format`** - Use the new DF file format (on by default).
-* **`dbfilename`** - The file name to use for the dump. To generate a dump file with a timestamp, set the macro `{timestamp}` in the filename, e.g. `dump-{timestamp}`.
+* **`df_snapshot_format`** - Set true to save dump in Dragonfly file format (true by default).
+* **`dbfilename`** - The file name to save and load the database. To generate a file with a timestamp, set the macro `{timestamp}` in the filename, e.g. `dump-{timestamp}`.
 The macro will be replaced with a timestamp of the local time in a lexicographically sorted format.
 The default filename is `dump-{timestamp}`.
-* **`save_schedule`** - Generate snapshots periodically.
+* **`save_schedule`** - Generate snapshots periodically. The argument is a `HH:MM` format that supports globbing (e.g. `23:45`, `*:15`, `*:*`)
 
 [tp]: https://redis.io/topics/persistence
 
