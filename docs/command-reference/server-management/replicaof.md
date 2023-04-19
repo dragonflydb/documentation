@@ -31,3 +31,5 @@ dragonfly> REPLICAOF NO ONE
 dragonfly> REPLICAOF 127.0.0.1 6799
 "OK"
 ```
+## Flags
+* **`masterauth`** - the credentials for accessing authenticated master server
