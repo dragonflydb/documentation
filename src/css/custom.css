@@ -39,6 +39,9 @@
     rgba(197, 62, 224, 1) 103.72%
   );
 
+  --ifm-menu-link-padding-vertical: 7px;
+  --ifm-menu-link-padding-horizontal: 16px;
+
   background-image: url("/website/bg-gradient.svg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -93,8 +96,7 @@ a > svg[class*="ExternalLink"] {
 
 .menu__caret:before,
 .menu__link--sublist-caret:after {
-  background-size: 1.25rem;
-  opacity: 0.6;
+  background-size: 1.3rem;
 }
 
 .theme-doc-footer-edit-meta-row a {
@@ -193,6 +195,10 @@ a > svg[class*="ExternalLink"] {
   text-align: right;
 }
 
+.card {
+  background: var(--brand-gradient-bg);
+}
+
 /* Search */
 .DocSearch.DocSearch-Button {
   height: 42px;
@@ -201,4 +207,89 @@ a > svg[class*="ExternalLink"] {
 
 .DocSearch-Button-Container {
   margin-left: 3px;
+}
+
+/* Sidebar */
+.theme-doc-sidebar-menu {
+  padding: 0 calc(var(--ifm-navbar-padding-horizontal) - 0.5rem);
+  font-size: 15px;
+}
+
+.menu__link--sublist-caret:after {
+  margin-right: -8px;
+}
+
+.menu__list .menu__list {
+  position: relative;
+  padding-left: 32px;
+}
+
+.menu__list .menu__list:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 24px;
+  bottom: 0;
+  width: 1px;
+  background: #525256;
+}
+
+.menu__caret {
+  padding: 0 8px;
+}
+
+.menu__link,
+.menu__caret,
+.menu__list-item-collapsible {
+  border-radius: 8px;
+}
+
+.menu__list-item-collapsible:has(> .menu__link--active) {
+  background-image: var(--brand-gradient-bg);
+}
+
+.theme-doc-sidebar-item-category-level-1
+  > .menu__list-item-collapsible
+  > .menu__link:before {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  opacity: 0.6;
+}
+
+.theme-doc-sidebar-item-category-level-1
+  > .menu__list-item-collapsible
+  > .menu__link--active:before {
+  opacity: 1;
+}
+
+.theme-doc-sidebar-item-category-level-1:nth-child(1)
+  > .menu__list-item-collapsible
+  > .menu__link:before {
+  content: url("/website/sidebar/docs.svg");
+}
+
+.theme-doc-sidebar-item-category-level-1:nth-child(2)
+  > .menu__list-item-collapsible
+  > .menu__link:before {
+  content: url("/website/sidebar/getting-started.svg");
+}
+
+.theme-doc-sidebar-item-category-level-1:nth-child(3)
+  > .menu__list-item-collapsible
+  > .menu__link:before {
+  content: url("/website/sidebar/command-reference.svg");
+}
+
+.theme-doc-sidebar-item-category-level-1:nth-child(4)
+  > .menu__list-item-collapsible
+  > .menu__link:before {
+  content: url("/website/sidebar/managing-dragonfly.svg");
+}
+
+.theme-doc-sidebar-item-category-level-1:nth-child(5)
+  > .menu__list-item-collapsible
+  > .menu__link:before {
+  content: url("/website/sidebar/development.svg");
 }
