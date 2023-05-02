@@ -30,7 +30,7 @@ An example of output when `dragonfly> ROLE` is called in a master instance:
 1) "master"
 2) 1) 1) "127.0.0.1"
       2) "6380"
-      3) "stable sync"
+      3) "stable_sync"
 
 ```
 
@@ -47,7 +47,7 @@ An example of output when `ROLE` is called in a replica instance:
 1) "replica"
 2) "127.0.0.1"
 3) "6379"
-4) "stable sync"
+4) "stable_sync"
 ```
 
 The replica output is composed of the following parts:
@@ -55,7 +55,7 @@ The replica output is composed of the following parts:
 1. The string `replica`, because of backward compatibility (see note at the end of this page).
 2. The IP of the master.
 3. The port number of the master.
-4. The current replication state, that can be `connecting` (the connection is in progress), `full sync` (the master and replica are performing a full synchronization) and `stable sync` (the replica is online)
+4. The current replication state, that can be `connecting` (trying to form a network link), `preparation` (initial connection has been made), `full_sync` (the master and replica are performing a full synchronization) and `stable_sync` (the replica is online)
 
 ## Return
 
