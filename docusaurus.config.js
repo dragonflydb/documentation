@@ -8,7 +8,7 @@ const isPreviewDeployment = process.env.VERCEL_ENV === "preview";
 const config = {
   title: "Dragonfly",
   tagline: "Ultra-fast, scalable in-memory datastore",
-  url: "https://dragonflydb.io",
+  url: "https://www.dragonflydb.io",
   baseUrl: isPreviewDeployment ? "/" : "/docs",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -84,12 +84,12 @@ const config = {
         logo: {
           alt: "Dragonfly Logo",
           src: "website/logo.svg",
-          href: "https://dragonflydb.io",
+          href: "https://www.dragonflydb.io",
           target: "_self",
         },
         items: [
           {
-            href: "https://dragonflydb.io/features",
+            href: "https://www.dragonflydb.io/features",
             label: "Features",
             target: "_self",
           },
@@ -112,12 +112,12 @@ const config = {
             ],
           },
           {
-            href: "https://dragonflydb.io/blog",
+            href: "https://www.dragonflydb.io/blog",
             label: "Blog",
             target: "_self",
           },
           {
-            href: "https://dragonflydb.io/careers",
+            href: "https://www.dragonflydb.io/careers",
             label: "Careers",
             target: "_self",
           },
@@ -131,7 +131,7 @@ const config = {
             position: "right",
           },
           {
-            href: "https://dragonflydb.io/cloud",
+            href: "https://www.dragonflydb.io/cloud",
             label: "Dragonfly Cloud",
             target: "_self",
             className: "nav-cta",
@@ -144,7 +144,7 @@ const config = {
         logo: {
           alt: "Dragonfly Logo",
           src: "website/logo.svg",
-          href: "https://dragonflydb.io",
+          href: "https://www.dragonflydb.io",
           target: "_self",
           width: 150,
         },
@@ -154,17 +154,17 @@ const config = {
             items: [
               {
                 label: "Features",
-                href: "https://dragonflydb.io/features",
+                href: "https://www.dragonflydb.io/features",
                 target: "_self",
               },
               {
                 label: "Blog",
-                href: "https://dragonflydb.io/blog",
+                href: "https://www.dragonflydb.io/blog",
                 target: "_self",
               },
               {
                 label: "Dragonfly Cloud",
-                href: "https://dragonflydb.io/cloud",
+                href: "https://www.dragonflydb.io/cloud",
                 target: "_self",
               },
             ],
@@ -187,17 +187,17 @@ const config = {
             items: [
               {
                 label: "Careers",
-                href: "https://dragonflydb.io/careers",
+                href: "https://www.dragonflydb.io/careers",
                 target: "_self",
               },
               {
                 label: "Privacy",
-                href: "https://dragonflydb.io/privacy",
+                href: "https://www.dragonflydb.io/privacy",
                 target: "_self",
               },
               {
                 label: "Terms of Use",
-                href: "https://dragonflydb.io/terms",
+                href: "https://www.dragonflydb.io/terms",
                 target: "_self",
               },
             ],

@@ -9,9 +9,9 @@ sidebar_position: 2
 Dragonfly is released under [BSL 1.1](https://github.com/dragonflydb/dragonfly/blob/main/LICENSE.md) (Business Source License). We believe that a BSL license is more permissive than AGPL-like licenses. In general terms, it means that dragonfly's code is free to use and free to change as long as you do not sell services directly related to dragonfly or in-memory datastores.
 We followed the model set by other companies like Elastic, Redis, MongoDB, Cockroach labs, Redpanda Data to protect our rights to provide service and support for the software we are building.
 
-## Can I use dragonfly in production?
+## Can I use Dragonfly in production?
 
-License wise you are free to use dragonfly in production as long as you do not provide dragonfly as a managed service. If you would like help from the DragonflyDB team in getting up and runnning, you may apply for our [free Early Access Program](https://dragonflydb.io/early-access).
+License wise you are free to use dragonfly in production as long as you do not provide dragonfly as a managed service. If you would like help from the DragonflyDB team in getting up and runnning, you may apply for our [free Early Access Program](https://www.dragonflydb.io/early-access).
 
 ## How does Dragonfly's vertical scaling compare to a Redis cluster?
 
