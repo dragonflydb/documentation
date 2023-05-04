@@ -11,5 +11,5 @@ Install Dragonfly
 - [Install with Docker](./docker.md)
 - [Install with Docker Compose](./docker-compose.md)
 - [Install Dragonfly Kubernetes Operator](./kubernetes-operator.md)
-- [Install with Kubernetes](./kubernetes.md)
+- [Install on Kubernetes with Helm Chart](./kubernetes.md)
 - [Install from Binary](./binary.md)
