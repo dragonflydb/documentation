@@ -2,10 +2,12 @@
 sidebar_position: 3
 ---
 
-# Snapshotting
+# Dragonfly Point-in-Time Snapshotting Design
 
-The following document describes Dragonfly's point in time, forkless snapshotting procedure,
-including all its configurations.
+The following document describes internals of Dragonfly's point in time,
+forkless snapshotting procedure.
+For guidance on setting up Dragonfly backup settings, refer to the [Backups](./backups.md)
+documentation.
 
 ## Redis-compatible RDB snapshot
 
