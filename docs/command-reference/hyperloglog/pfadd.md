@@ -22,8 +22,8 @@ If the approximated cardinality estimated by the HyperLogLog changed after execu
 structure (that is, a string of a specified length and with a given encoding) if the specified key
 does not exist.
 
-To call the command without elements but just the variable name is valid, this will result into no
-operation performed if the variable already exists, or just the creation of the data structure if
+It is valid to call the command without elements with only the key name. This will result in no
+operation being performed if the key already exists, or in the creation of the data structure if
 the key does not exist (in the latter case 1 is returned).
 
 For an introduction to HyperLogLog data structure check the `PFCOUNT` command page.
