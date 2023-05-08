@@ -26,7 +26,7 @@ It is valid to call the command without elements with only the key name. This wi
 operation being performed if the key already exists, or in the creation of the data structure if
 the key does not exist (in the latter case 1 is returned).
 
-For an introduction to HyperLogLog data structure check the `PFCOUNT` command page.
+For an introduction to the HyperLogLog data structure, check the `PFCOUNT` command page.
 
 
 ## Return
