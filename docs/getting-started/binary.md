@@ -8,7 +8,7 @@ Below are step by step instructions for running Dragonfly from binary.
 
 ## Prerequisites
 
-- You must be running a Linux based OS (if using mac run using [Docker](getting-started/docker)). Windows WSL will work as well.
+- You must be running a Linux based OS (if using mac run using [Docker](/getting-started/docker)). Windows WSL will work as well.
 - Network access
 
 ## Download preferred file

@@ -1,4 +1,6 @@
 ---
+title: Documentation
+description: Dragonfly is a modern in-memory datastore, fully compatible with Redis & Memcached APIs. Learn how to use Dragonfly with our comprehensive documentation.
 sidebar_position: 0
 slug: /
 ---
