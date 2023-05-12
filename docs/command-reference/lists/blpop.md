@@ -16,6 +16,8 @@ are no elements to pop from any of the given lists.
 An element is popped from the head of the first list that is non-empty, with the
 given keys being checked in the order that they are given.
 
+**Note** that the unblock order can differ from the one used by Redis. See [below](#what-key-is-served-first-what-client-what-element-priority-ordering-details) for more details.
+
 ## Non-blocking behavior
 
 When `BLPOP` is called, if at least one of the specified keys contains a
@@ -53,17 +55,19 @@ A timeout of zero can be used to block indefinitely.
 
 ## What key is served first? What client? What element? Priority ordering details.
 
-* If the client tries to blocks for multiple keys, but at least one key contains elements, the returned key / element pair is the first key from left to right that has one or more elements. In this case the client is not blocked. So for instance `BLPOP key1 key2 key3 key4 0`, assuming that both `key2` and `key4` are non-empty, will always return an element from `key2`.
-* If multiple clients are blocked for the same key, the first client to be served is the one that was waiting for more time (the first that blocked for the key). Once a client is unblocked it does not retain any priority, when it blocks again with the next call to `BLPOP` it will be served accordingly to the number of clients already blocked for the same key, that will all be served before it (from the first to the last that blocked).
-* When a client is blocking for multiple keys at the same time, and elements are available at the same time in multiple keys (because of a transaction or a Lua script added elements to multiple lists), the client will be unblocked using the first key that received a push operation (assuming it has enough elements to serve our client, as there may be other clients as well waiting for this key). Basically after the execution of every command, Dragonfly will run a list of all the keys that received data AND that have at least a client blocked. The list is ordered by new element arrival time, from the first key that received data to the last. For every key processed, Dragonfly will serve all the clients waiting for that key in a FIFO fashion, as long as there are elements in this key. When the key is empty or there are no longer clients waiting for this key, the next key that received new data in the previous command / transaction / script is processed, and so forth.
+* If the client tries to block on mulitiple keys, but at least one key contains elements, the result is taken form the first key from left to right that has one or more elements. In this case the client is not blocked. For example, the command `BLPOP key1 key2 key3 key4 0`, assuming that both `key2` and `key4` are non-empty, will always return an element from `key2`.
 
-## Behavior of `!BLPOP` when multiple elements are pushed inside a list.
+* If multiple clients are blocked for the same key, the first client to be served is the one that was waiting the longest (the first that blocked for the key). Once a client is unblocked, it does not retain any priority when it blocks again with the next call to `BLPOP`. It will be served accordingly to the number of clients already blocked for the same key.
 
-There are times when a list can receive multiple elements in the context of the same conceptual command:
+* If a client is blocked on multiple keys, it will unblock on the key that first recevied a push operation. If multiple push operations on different keys happened within a single `MULTI`/`EXEC` transaction or a single script invocation, then the resulting key, in the general case, is not determined.
+
+## Behavior of `BLPOP` when multiple elements are pushed inside a list.
+
+Its possible for a single command to add multiple elements to a single list:
 
 * Variadic push operations such as `LPUSH mylist a b c`.
 * After an `EXEC` of a `MULTI` block with multiple push operations against the same list.
-* Executing a Lua Script.
+* Executing a Lua Script with multiple push operations against the same list.
 
 If a command performing multiple pushes is executed, *only after* the execution of the command,
 the blocked clients are served. Consider this sequence of commands.
@@ -75,7 +79,26 @@ Client **A** will be served with the `c` element, because after the `LPUSH` comm
 
 Note that for the same reason a Lua script or a `MULTI/EXEC` block may push elements into a list and afterward **delete the list**. In this case the blocked clients will not be served at all and will continue to be blocked as long as no data is present on the list after the execution of a single command, transaction, or script.
 
-## `!BLPOP` inside a `!MULTI` / `!EXEC` transaction
+## Behavior of `BLPOP` when elements are pushed inside `MULTI`/`EXEC` transactions or scripts
+
+Dragonfly can potentially parallelize the execution of a single `MULTI`/`EXEC` transaction or script, which makes it impossible to determine what key will receive a new elemenet first. Because of this, `BLPOP` can return an element from any of the listed keys that have become non-empty after the last `MULTI`/`EXEC` transaction or script.
+
+To disable parallel execution, `multi_exec_squash=false` and `lua_auto_async=false` flags should be used. This will make `BLPOP` return an element from the first key that 
+received a new element.
+
+For example, let's assume a client is blocked on `BLPOP c b a` and the following sequence of commands is run:
+
+```
+MULTI
+LPUSH a 1
+LPUSH b 2
+LPUSH c 3
+EXEC
+```
+
+By default, BLPOP can return any element. If parallel execution is disabled, it's guaranteed to return `a 1`.
+
+## `BLPOP` inside a `MULTI` / `EXEC` transaction
 
 `BLPOP` can be used with pipelining (sending multiple commands and
 reading the replies in batch), however this setup makes sense almost solely
