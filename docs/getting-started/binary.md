@@ -17,8 +17,8 @@ You can download the latest Dragonfly release from one of the links below. You c
 
 - [Download Latest (Aarch64)](https://dragonflydb.gateway.scarf.sh/{{DRAGONFLY_VERSION}}/dragonfly-aarch64.tar.gz)
 - [Download Latest (X86-64)](https://dragonflydb.gateway.scarf.sh/{{DRAGONFLY_VERSION}}/dragonfly-x86_64.tar.gz)
-- [Download Latest (ARM64 Debian)](https://dragonflydb.gateway.scarf.sh/{{DRAGONFLY_VERSION}}/dragonfly_{{DRAGONFLY_VERSION}}_arm64.deb)
-- [Download Latest (AMD64 Debian)](https://dragonflydb.gateway.scarf.sh/{{DRAGONFLY_VERSION}}/dragonfly_{{DRAGONFLY_VERSION}}_amd64.deb)
+- [Download Latest (ARM64 Debian)](https://dragonflydb.gateway.scarf.sh/{{DRAGONFLY_VERSION}}/dragonfly_arm64.deb)
+- [Download Latest (AMD64 Debian)](https://dragonflydb.gateway.scarf.sh/{{DRAGONFLY_VERSION}}/dragonfly_amd64.deb)
 
 ## Uncompress and rename
 
