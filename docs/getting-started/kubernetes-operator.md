@@ -14,6 +14,11 @@ Main features include:
 Currently, Dragonfly Operator is in **Alpha**. You can find more information about Dragonfly
 in the [official documentation](https://dragonflydb.io/docs/).
 
+## Prerequisites
+
+- Working Kubernetes cluster (tested with Kubernetes 1.19+)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/) installed and configured to connect to your cluster
+
 ## Installation
 
 Make sure to have your Kubernetes cluster up and running. Dragonfly Operator can be installed by running

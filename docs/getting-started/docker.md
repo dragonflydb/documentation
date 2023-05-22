@@ -2,11 +2,17 @@
 sidebar_position: 0
 ---
 
-# Install with Docker 
+# Install with Docker
 
 Starting with `docker run` is the simplest way to get up and running with Dragonfly.
 
 If you do not have docker on your machine, [Install Docker](https://docs.docker.com/get-docker/) before continuing.
+
+## Prerequisites
+
+- Minimum 4GB of RAM to get the benefits of Dragonfly
+- Minimum 1 CPU Core
+- Linux Kernel 4.19 or higher
 
 ## Step 1
 
@@ -49,4 +55,3 @@ OK
 ## Step 3
 
 Continue being great and build your app with the power of Dragonfly!
-
