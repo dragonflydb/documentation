@@ -10,6 +10,9 @@ Below are step by step instructions for running Dragonfly from binary.
 
 - You must be running a Linux based OS (if using mac run using [Docker](/getting-started/docker)). Windows WSL will work as well.
 - Network access
+- Minimum 4GB of RAM to get the benefits of Dragonfly
+- Minimum 1 CPU Core
+- Linux Kernel 4.19 or higher
 
 ## Download preferred file
 
