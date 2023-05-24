@@ -55,7 +55,7 @@ A timeout of zero can be used to block indefinitely.
 
 ## What key is served first? What client? What element? Priority ordering details.
 
-* If the client tries to block on mulitiple keys, but at least one key contains elements, the result is taken form the first key from left to right that has one or more elements. In this case the client is not blocked. For example, the command `BLPOP key1 key2 key3 key4 0`, assuming that both `key2` and `key4` are non-empty, will always return an element from `key2`.
+* If the client tries to block on mulitiple keys, but at least one key is not empty, the result is taken from the first key from left to right that has one or more elements. In this case the client is not blocked. For example, the command `BLPOP key1 key2 key3 key4 0`, assuming that both `key2` and `key4` are non-empty, will always return an element from `key2`.
 
 * If multiple clients are blocked for the same key, the first client to be served is the one that was waiting the longest (the first that blocked for the key). Once a client is unblocked, it does not retain any priority when it blocks again with the next call to `BLPOP`. It will be served accordingly to the number of clients already blocked for the same key.
 
