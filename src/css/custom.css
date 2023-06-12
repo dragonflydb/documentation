@@ -19,6 +19,8 @@
   --ifm-menu-color: #8a898e;
   --ifm-menu-color-active: white;
   --ifm-navbar-shadow: none;
+  --ifm-table-stripe-background: transparent;
+  --ifm-table-border-color: #313138;
 
   --font-family-base: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
     Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI", Helvetica,
@@ -76,6 +78,10 @@
 
 .footer__link-item:hover {
   text-decoration: none;
+}
+
+table thead tr {
+  background: var(--brand-gradient-bg);
 }
 
 a > svg[class*="ExternalLink"] {

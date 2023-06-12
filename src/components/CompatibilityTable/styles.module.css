@@ -1,0 +1,61 @@
+.compatibilityTable {
+  width: 100%;
+  border: 1px solid var(--ifm-table-border-color);
+}
+
+.compatibilityTable table {
+  margin: -1px;
+}
+
+.compatibilityTable td {
+  vertical-align: top;
+}
+
+.compatibilityTable th {
+  white-space: nowrap;
+  text-align: left;
+}
+
+.command {
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.support {
+  display: inline-flex;
+  padding: 0.1em 0.5em 0;
+  border-radius: 10em;
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.support.supported {
+  background: var(--brand-gradient);
+  font-weight: 700;
+}
+
+.support.unsupported {
+  background: #525259;
+}
+
+.support.partial {
+  background: linear-gradient(
+    -115.45deg,
+    rgba(90, 62, 224, 0.3) -17.45%,
+    rgba(197, 62, 224, 0.3) 103.72%
+  );
+}
+
+.family {
+  font-weight: 500;
+}
+
+.notes {
+  vertical-align: middle;
+  font-size: 0.9em;
+  line-height: 1.4;
+}

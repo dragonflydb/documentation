@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "ES2015",
-    "moduleResolution": "node16"
+    "moduleResolution": "node16",
+    "resolveJsonModule": true
   }
 }
