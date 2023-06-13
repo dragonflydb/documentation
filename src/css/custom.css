@@ -42,7 +42,7 @@
   --ifm-menu-link-padding-vertical: 7px;
   --ifm-menu-link-padding-horizontal: 16px;
 
-  background-image: url("/website/bg-gradient.svg");
+  background-image: url("/website/bg-gradient.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top right;
@@ -67,7 +67,7 @@
 
 .footer--dark {
   --ifm-footer-background-color: #272730;
-  background-image: url("/website/footer-gradient.svg");
+  background-image: url("/website/footer-gradient.png");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: cover;
