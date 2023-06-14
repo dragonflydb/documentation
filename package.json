@@ -13,6 +13,7 @@
     "write-translations": "yarn run docusaurus write-translations",
     "write-heading-ids": "yarn run docusaurus write-heading-ids",
     "pull-redis-docs": "ts-node ./scripts/pull-redis-docs.ts",
+    "generate-compatibility-json": "ts-node ./scripts/generate-compatibility-json.ts",
     "dragonfly-latest-version": "curl -s https://version.dragonflydb.io/v1 | grep -oE '[0-9.]+'"
   },
   "dependencies": {
@@ -30,6 +31,7 @@
     "@types/adm-zip": "^0.5.0",
     "adm-zip": "^0.5.10",
     "cross-fetch": "^3.1.5",
+    "csv": "^6.3.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4",
     "yaml": "^2.2.1"
