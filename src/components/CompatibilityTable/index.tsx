@@ -10,58 +10,54 @@ const CompatibilityTable = () => {
   let familyCursor = "";
 
   return (
-    <div className={styles.compatibilityTable}>
-      <table>
-        <thead>
-          <tr>
-            <th>Command Family</th>
-            <th>Command</th>
-            <th>Dragonfly Support</th>
-            <th>Comments</th>
-          </tr>
-        </thead>
+    <table className={styles.compatibilityTable}>
+      <thead>
+        <tr>
+          <th>Command Family</th>
+          <th>Command</th>
+          <th>Dragonfly Support</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          {data.map((row, index) => {
-            const showFamilyCol = row.family !== familyCursor;
-            const nextFamilyIndex = showFamilyCol
-              ? data
-                  .slice(index)
-                  .findIndex((nextRow) => nextRow.family !== row.family)
-              : 1;
+      <tbody>
+        {data.map((row, index) => {
+          const showFamilyCol = row.family !== familyCursor;
+          const nextFamilyIndex = showFamilyCol
+            ? data
+                .slice(index)
+                .findIndex((nextRow) => nextRow.family !== row.family)
+            : 1;
 
-            if (showFamilyCol) {
-              familyCursor = row.family;
-            }
+          if (showFamilyCol) {
+            familyCursor = row.family;
+          }
 
-            return (
-              <tr key={index}>
-                {showFamilyCol ? (
-                  <td rowSpan={nextFamilyIndex} className={styles.family}>
-                    {row.family}
-                  </td>
-                ) : null}
-                <td>
-                  <div className={styles.command}>{row.command}</div>
+          return (
+            <tr key={index}>
+              {showFamilyCol ? (
+                <td rowSpan={nextFamilyIndex} className={styles.family}>
+                  {row.family}
                 </td>
-                <td>
-                  <div
-                    className={clsx(styles.support, {
-                      [styles.supported]: row.support === "Fully supported",
-                      [styles.unsupported]: row.support === "Unsupported",
-                      [styles.partial]: row.support === "Partially supported",
-                    })}
-                  >
-                    {row.support}
-                  </div>
-                </td>
-                <td className={styles.notes}>{row.notes}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+              ) : null}
+              <td>
+                <div className={styles.command}>{row.command}</div>
+              </td>
+              <td>
+                <div
+                  className={clsx(styles.support, {
+                    [styles.supported]: row.support === "Fully supported",
+                    [styles.unsupported]: row.support === "Unsupported",
+                    [styles.partial]: row.support === "Partially supported",
+                  })}
+                >
+                  {row.support}
+                </div>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 };
 
