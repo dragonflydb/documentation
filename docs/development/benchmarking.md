@@ -12,7 +12,7 @@ Do you wonder how many replicas you need to support your workload?
 
 If so, read on, because this page is for you!
 
-## Choosing an Environment
+## Squeezing the Best Performance
 
 A benchmark is done to assess the performance aspects of a system. In the case of Dragonfly, a
 benchmark is commonly used to assess the CPU and memory performance & utilization.
@@ -21,19 +21,34 @@ Depending on the goals of your benchmark, you should choose the machine size acc
 production mimicking benchmark, you should use a machine size and traffic load similar to that of
 your busiest production timing, or even higher to allow for some cushion.
 
-If you do not use a cloud instance, it might be a good idea to configure your CPU's governance to
-performance by issuing:
+### `io_uring`
+
+Dragonfly supports both `epoll` and [`io_uring`](https://en.wikipedia.org/wiki/Io_uring) Linux APIs.
+`io_uring` is a newer API, which is faster. Dragonfly runs best with `io_uring`, but it is only
+available with Linux kernels >= 5.1.
+
+`io_uring` is available in Debian versions Bullseye (11) or later, Ubuntu 21.04 or later, Red Hat
+Enterprise Linux 9.3 or later, Fedora 37 or later.
+
+To find if your machine has `io_uring` support you could run the following:
 
 ```shell
-sudo apt install linux-tools-common linux-tools-generic
-sudo cpupower frequency-set --governor performance
+grep io_uring_setup /proc/kallsyms
 ```
 
-Then, when you're done with the benchmark you could reboot your machine or run the following:
+### Choosing Instance Type
 
-```shell
-sudo cpupower frequency-set --governor powersave
-```
+Cloud providers, such as Amazon AWS, provide different types and sizes of virtual machines. When in
+doubt, you could always opt in for a bigger instance (for both Dragonfly and the client to send the
+benchmarking traffic) so that you'll know what the upper limit is.
+
+### Choosing Thread Count
+
+By default, Dragonfly will create a thread for each available CPU on the machine. You can modify
+this behavior with the `--proactor_threads` flag. Generally you should not use this flag for a
+machine dedicated to running Dragonfly. You can specify a lower number if you only want Dragonfly to
+utilize some of the machine, but don't specify a higher number (i.e. more than CPUs) as it would
+degrade performance.
 
 ## Setting Up Dragonfly
 
@@ -50,8 +65,8 @@ dedicated). If you plan to do so in your production setup as well (which we high
 consider running the benchmark in a similar way.
 
 In practice, it means that any other systems in your setup (like other services & databases) should
-run in other machines. Importantly, also the software that sends the traffic should run in another
-machine.
+run in other machines. Importantly, also **the software that sends the traffic should run in another
+machine.**
 
 ## Sending Traffic
 
@@ -68,8 +83,10 @@ expected key and value sizes.
 
 If you choose to use an existing benchmarking tool, a popular and mature one is
 [`memtier_benchmark`](https://github.com/RedisLabs/memtier_benchmark). It's an Open Source tool for
-generic load generation and benchmarking with many features. Check out their documentation page for
-more details, but as a quick reference you could use:
+generic load generation and benchmarking with many features. We use it for benchmarking constantly.
+Check out their [documentation
+page](https://redis.com/blog/memtier_benchmark-a-high-throughput-benchmarking-tool-for-redis-memcached/)
+for more details, but as a quick reference you could use:
 
 ```shell
 memtier_benchmark \
