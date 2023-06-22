@@ -6,11 +6,18 @@ description: Synchronously save the dataset to disk and then shut down the serve
 
 ## Syntax
 
-    SHUTDOWN
+    SHUTDOWN [NOSAVE | SAVE]
 
 **Time complexity:** O(1)
 
-The command behavior is the following:
+
+## Options
+
+The `SHUTDOWN` command supports optional modifiers to alter the behavior of the command:
+
+* `SAVE` will force a DB saving operation even if no save points are configured.
+* `NOSAVE` will prevent a DB saving operation even if one or more save points are configured.
+
 
 <!-- we dont do any of that useful stuff:
 
