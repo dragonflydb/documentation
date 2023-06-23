@@ -97,3 +97,5 @@ To vertically scale the instance, you can edit the `spec.resources` field in the
 ```sh
 kubectl patch dragonfly dragonfly-sample --type merge -p '{"spec":{"resources":{"requests":{"memory":"1Gi"},"limits":{"memory":"2Gi"}}}}'
 ```
+
+To understand how to configure High Availability, please refer to the [High Availability](/docs/managing-dragonfly/high-availability.md#high-availability-with-dragonfly-operator) section.
