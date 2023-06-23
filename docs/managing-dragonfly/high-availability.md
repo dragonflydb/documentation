@@ -62,6 +62,14 @@ dragonfly-sample.default:6379> exit
 pod "redis-cli" deleted
 ```
 
+You can check which pod is the master by running
+
+```sh
+kubectl get pods -l role=master
+NAME                 READY   STATUS    RESTARTS   AGE
+dragonfly-sample-0   1/1     Running   0          2m
+```
+
 Let's see how the Operator maintains high availability in the face of failures.
 
 Delete the master pod:
@@ -74,7 +82,8 @@ The Operator will automatically create a new master pod and update the service t
 
 ```sh
 kubectl get pods -l role=master
-dragonfly-sample-0  1/1     Running   0          2m
+NAME                 READY   STATUS    RESTARTS   AGE
+dragonfly-sample-1  1/1     Running   0          2m
 ```
 
 The data should also be preserved. You can check this by running
