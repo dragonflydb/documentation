@@ -55,7 +55,7 @@ For example, to run dragonfly with:
 - Listen on port `6379` and `localhost` traffic only
 - Persist data at `30` minute intervals
 - Max memory set to 12GB
-- The number of keys that “KEY” commands return (set to 12288)
+- The number of keys that `KEY` commands return (set to 12288)
 - Set the dump file name (to `dump.db`)
 
 You would run:
@@ -66,4 +66,4 @@ dragonfly --logtostderr --requirepass=youshallnotpass --cache_mode=true -dbnum 1
 
 #### Flag files
 
-To add flags from a configuration file, use the `--flagfile <filename>` flag. The file must list one flag per line. For key-value flags, an equals sign (`=`) replaces space characters (` `).
+To add flags from a configuration file, use the `--flagfile <filename>` flag. The file must list one flag per line. For key-value flags, use the `--<flag_name>=<flag_value>` format (note the equals character, you can't use a space character).

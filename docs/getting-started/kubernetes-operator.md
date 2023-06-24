@@ -36,31 +36,34 @@ By default, the operator will be installed in the `dragonfly-operator-system` na
 
 ## Usage
 
-### Create a Dragonfly cluster
+### Create a Dragonfly instance with replicas
 
-1. To create a sample Dragonfly cluster with a master and three replicas instances, run the this command:
+1. To create a sample Dragonfly instance with a master and three replicas, run the this command:
 
     ```sh
     kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/config/samples/v1alpha1_dragonfly.yaml
     ```
 
-1. To check the status of the cluster, run:
+1. To check the status of the instance, run:
 
     ```sh
     kubectl describe dragonflies.dragonflydb.io dragonfly-sample
     ```
 
-    The master instance of the service is available at `<dragonfly-name>.<namespace>.svc.cluster.local`, which you can use to connect to the cluster. As pods are added or removed, the service automatically updates to point to the new master.
+1.  Connect to the master instance of the service at:    
+    `<dragonfly-name>.<namespace>.svc.cluster.local`.
+    
+    As pods are added or removed, the service automatically updates to point to the new master.
 
 #### Connect with `redis-cli`
 
-To connect to the cluster using `redis-cli`, run:
+To connect to the instance using `redis-cli`, run:
 
 ```sh
 kubectl run -it --rm --restart=Never redis-cli --image=redis:7.0.10 -- redis-cli -h dragonfly-sample.default
 ```
 
-The command creates a temporary pod that runs the `redis-cli` and connects to the cluster. To run Redis commands, press `shift + R` and then enter the Redis commands. For example, to set and retrieve a key, you can run:
+The command creates a temporary pod that runs the `redis-cli` and connects to the instance. To run Redis commands, press `shift + R` and then enter the Redis commands. For example, to set and retrieve a key, you can run:
 
 ```sh
 If you don't see a command prompt, try pressing enter.
@@ -74,9 +77,9 @@ dragonfly-sample.default:6379> exit
 pod "redis-cli" deleted
 ```
 
-### Scale replica instances
+### Change the number of replica instances
 
-To scale the number of replica instances up or down, edit the `spec.replicas` field in the Dragonfly instance. For example, to scale up to 5 replicas, run:
+To change the number of replica instances, edit the `spec.replicas` field in the Dragonfly instance. For example, to scale up to 5 replicas run:
 
 ```sh
 kubectl patch dragonfly dragonfly-sample --type merge -p '{"spec":{"replicas":5}}'
@@ -84,7 +87,7 @@ kubectl patch dragonfly dragonfly-sample --type merge -p '{"spec":{"replicas":5}
 
 ### Pass custom Dragonfly arguments
 
-To pass custom arguments to Dragonfly, edit the `spec.args` field in the Dragonfly instance. For example, to configure Dragonfly to a password, run:
+To pass custom arguments to Dragonfly, edit the `spec.args` field in the Dragonfly instance. For example, to configure Dragonfly to require a password run:
 
 ```sh
 kubectl patch dragonfly dragonfly-sample --type merge -p '{"spec":{"args":["--requirepass=supersecret"]}}'
@@ -92,7 +95,7 @@ kubectl patch dragonfly dragonfly-sample --type merge -p '{"spec":{"args":["--re
 
 ### Vertically scale the instance
 
-To vertically scale the instance, edit the `spec.resources` field in the Dragonfly instance. For example, to increase the CPU limit to 2 cores, run:
+To vertically scale the instance, edit the `spec.resources` field in the Dragonfly instance. For example, to increase the CPU limit to 2 cores run:
 
 ```sh
 kubectl patch dragonfly dragonfly-sample --type merge -p '{"spec":{"resources":{"requests":{"memory":"1Gi"},"limits":{"memory":"2Gi"}}}}'
