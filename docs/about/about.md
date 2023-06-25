@@ -12,6 +12,6 @@ Dragonfly is a modern in-memory datastore, fully compatible with Redis and Memca
 
  Dragonfly is fully compatible with the Redis ecosystem and requires no code changes to implement.
 
-![A graph comparing performance of Redis vs. Drafgonfly](/img/comparison.png)
+![A graph comparing performance of Redis vs. Dragonfly](/img/comparison.png)
 
 Visit the [getting started section](/getting-started) to explore deployment options and try Dragonfly yourself. 

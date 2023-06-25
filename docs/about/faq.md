@@ -11,11 +11,11 @@ We followed the model set by other companies like Elastic, Redis, MongoDB, Cockr
 
 ## Can I use Dragonfly in production?
 
-License wise you are free to use dragonfly in production as long as you do not provide dragonfly as a managed service. If you would like help from the DragonflyDB team in getting up and runnning, you may apply for our [free Early Access Program](https://www.dragonflydb.io/early-access).
+License wise you are free to use dragonfly in production as long as you do not provide dragonfly as a managed service. If you would like help from the DragonflyDB team in getting up and running, you may apply for our [free Early Access Program](https://www.dragonflydb.io/early-access).
 
 ## How does Dragonfly's vertical scaling compare to a Redis cluster?
 
-Dragonfly utilizes the underlying hardware in an optimal way. This means that it can run on small 8GB instances and scale vertically to large 768GB machines with 64 cores. This versatility allows for far less complexity as well as lower infrastructure costs when compared to running cluster workloads. In addition, Redis cluster-mode imposes some limitations on multi-key and transactional operations while Dragonfly provides the same semantics as single node Redis.
+Dragonfly utilizes the underlying hardware in an optimal way. This means that it can run on small 8GB instances and scale vertically to large 768GB machines with 64 cores. This versatility allows for far less complexity as well as lower infrastructure costs when compared to running cluster workloads. In addition, Redis cluster-mode imposes some limitations on multi-key and transactional operations while Dragonfly provides the same semantics as a single node Redis.
 
 ## When will you support X command?
 

@@ -7,7 +7,7 @@ sidebar_position: 1
 
 This guide will have you up running Dragonfly with `docker-compose` in just a few minutes.
 
-| This guide assumes you have `docker` and `docker-compose` installed on your machine. If not, [Install Docker](https://docs.docker.com/get-docker/) and [Install Docker Compose](https://docs.docker.com/compose/install/) before continuing.
+If you do not have `docker` and `docker-compose` installed on your machine, before continuing install [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/).
 
 ## Step 1
 
@@ -26,7 +26,7 @@ docker ps | grep dragonfly
 docker logs -f docker_dragonfly_1
 ```
 
-Dragonfly will answer to both `http` and `redis` requests out of the box!
+Dragonfly will respond to both `http` and `redis` requests out of the box!
 
 You can use `redis-cli` to connect to `localhost:6379` or open a browser and visit `http://localhost:6379`
 
@@ -53,9 +53,9 @@ Continue being great and build your app with the power of Dragonfly!
 
 ## Tuning Dragonfly
 If you are attempting to tune Dragonfly for performance, consider `NAT` performance costs associated with containerization.  
-> ## Performance Tuning
-> ---
-> In `docker-compose`, there is a meaningful difference between an `overlay` network(which relies on docker `NAT` traversal on every request) and using the `host` network(see [`docker-compose.yml`](https://github.com/dragonflydb/dragonfly/blob/main/contrib/docker/docker-compose.yml)).  
-> &nbsp;  
-> Fore more information, see the [official docker-compose network_mode Docs](https://docs.docker.com/compose/compose-file/compose-file-v3/#network_mode)  
-> &nbsp;  
+
+### Performance Tuning
+
+In `docker-compose`, there is a significant difference between using an `overlay` network (which relies on docker `NAT` traversal for every request) and the `host` network (see [`docker-compose.yml`](https://github.com/dragonflydb/dragonfly/blob/main/contrib/docker/docker-compose.yml)).
+
+For more information, see the Docker compose file [network_mode docs](https://docs.docker.com/compose/compose-file/compose-file-v3/#network_mode).
