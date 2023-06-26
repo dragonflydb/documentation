@@ -16,7 +16,7 @@ If you do not have `docker` and `docker-compose` installed on your machine, befo
 wget https://raw.githubusercontent.com/dragonflydb/dragonfly/main/contrib/docker/docker-compose.yml
 
 # Launch the Dragonfly Instance
-docker-compose up -d
+docker compose up -d
 
 # Confirm image is up
 docker ps | grep dragonfly
