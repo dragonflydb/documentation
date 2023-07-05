@@ -19,6 +19,8 @@
   --ifm-menu-color: #8a898e;
   --ifm-menu-color-active: white;
   --ifm-navbar-shadow: none;
+  --ifm-table-stripe-background: transparent;
+  --ifm-table-border-color: #313138;
 
   --font-family-base: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
     Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI", Helvetica,
@@ -42,7 +44,7 @@
   --ifm-menu-link-padding-vertical: 7px;
   --ifm-menu-link-padding-horizontal: 16px;
 
-  background-image: url("/website/bg-gradient.svg");
+  background-image: url("/website/bg-gradient.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top right;
@@ -67,7 +69,7 @@
 
 .footer--dark {
   --ifm-footer-background-color: #272730;
-  background-image: url("/website/footer-gradient.svg");
+  background-image: url("/website/footer-gradient.png");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: cover;
@@ -76,6 +78,10 @@
 
 .footer__link-item:hover {
   text-decoration: none;
+}
+
+table thead tr {
+  background: var(--brand-gradient-bg);
 }
 
 a > svg[class*="ExternalLink"] {
