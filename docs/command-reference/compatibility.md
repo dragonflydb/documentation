@@ -238,83 +238,83 @@ import CompatibilityTable from '@site/src/components/CompatibilityTable'
 |                  | <span class="command">SWAPDB</span>                        | <span class="support unsupported">Unsupported</span>     |
 |                  | <span class="command">TIME</span>                          | <span class="support supported">Fully supported</span>   |
 | Set              | <span class="command">SADD</span>                          | <span class="support supported">Fully supported</span>   |
-|                  | SCARD                                                      | <span class="support supported">Fully supported</span>   |
-|                  | SDIFF                                                      | <span class="support supported">Fully supported</span>   |
-|                  | SDIFFSTORE                                                 | <span class="support supported">Fully supported</span>   |
-|                  | SINTER                                                     | <span class="support supported">Fully supported</span>   |
-|                  | SINTERCARD                                                 | <span class="support unsupported">Unsupported</span>     |
-|                  | SINTERSTORE                                                | <span class="support supported">Fully supported</span>   |
-|                  | SISMEMBER                                                  | <span class="support supported">Fully supported</span>   |
-|                  | SMEMBERS                                                   | <span class="support supported">Fully supported</span>   |
-|                  | SMISMEMBER                                                 | <span class="support supported">Fully supported</span>   |
-|                  | SMOVE                                                      | <span class="support supported">Fully supported</span>   |
-|                  | SPOP                                                       | <span class="support supported">Fully supported</span>   |
-|                  | SRANDMEMBER                                                | <span class="support unsupported">Unsupported</span>     |
-|                  | SREM                                                       | <span class="support supported">Fully supported</span>   |
-|                  | SSCAN                                                      | <span class="support supported">Fully supported</span>   |
-|                  | SUNION                                                     | <span class="support supported">Fully supported</span>   |
-|                  | SUNIONSTORE                                                | <span class="support supported">Fully supported</span>   |
-| Sorted Set       | BZMPOP                                                     | <span class="support unsupported">Unsupported</span>     |
-|                  | BZPOPMZX                                                   | <span class="support supported">Fully supported</span>   |
-|                  | BZPOPMIN                                                   | <span class="support supported">Fully supported</span>   |
-|                  | ZADD                                                       | <span class="support supported">Fully supported</span>   |
-|                  | ZCARD                                                      | <span class="support supported">Fully supported</span>   |
-|                  | ZCOUNT                                                     | <span class="support supported">Fully supported</span>   |
-|                  | ZDIFF                                                      | <span class="support unsupported">Unsupported</span>     |
-|                  | ZDIFFSTORE                                                 | <span class="support unsupported">Unsupported</span>     |
-|                  | ZINCRBY                                                    | <span class="support supported">Fully supported</span>   |
-|                  | ZINTER                                                     | <span class="support unsupported">Unsupported</span>     |
-|                  | ZINTERCARD                                                 | <span class="support supported">Fully supported</span>   |
-|                  | ZINTERSTORE                                                | <span class="support supported">Fully supported</span>   |
-|                  | ZLEXCOUNT                                                  | <span class="support supported">Fully supported</span>   |
-|                  | ZMPOP                                                      | <span class="support unsupported">Unsupported</span>     |
-|                  | ZMSCORE                                                    | <span class="support supported">Fully supported</span>   |
-|                  | ZPOPMAX                                                    | <span class="support supported">Fully supported</span>   |
-|                  | ZPOPMIN                                                    | <span class="support supported">Fully supported</span>   |
-|                  | ZRANDMEMBER                                                | <span class="support unsupported">Unsupported</span>     |
-|                  | ZRANGE                                                     | <span class="support supported">Fully supported</span>   |
-|                  | ZRANGEBYLEX                                                | <span class="support supported">Fully supported</span>   |
-|                  | ZRANGEBYSCORE                                              | <span class="support supported">Fully supported</span>   |
-|                  | ZRANK                                                      | <span class="support supported">Fully supported</span>   |
-|                  | ZREM                                                       | <span class="support supported">Fully supported</span>   |
-|                  | ZREMRANGEBYLEX                                             | <span class="support supported">Fully supported</span>   |
-|                  | ZREMRANGEBYRANK                                            | <span class="support supported">Fully supported</span>   |
-|                  | ZREMRANGEBYSCORE                                           | <span class="support supported">Fully supported</span>   |
-|                  | ZREVRANGE                                                  | <span class="support supported">Fully supported</span>   |
-|                  | ZREVRANGEBYLEX                                             | <span class="support supported">Fully supported</span>   |
-|                  | ZREVRANGEBYSCORE                                           | <span class="support supported">Fully supported</span>   |
-|                  | ZREVRANK                                                   | <span class="support supported">Fully supported</span>   |
-|                  | ZSCAN                                                      | <span class="support supported">Fully supported</span>   |
-|                  | ZSCORE                                                     | <span class="support supported">Fully supported</span>   |
-|                  | ZUNION                                                     | <span class="support supported">Fully supported</span>   |
-|                  | ZUNIONSTORE                                                | <span class="support supported">Fully supported</span>   |
-| Stream           | XAUTOCLAIM                                                 | <span class="support unsupported">Unsupported</span>     |
-|                  | XCLAIM                                                     | TBD                                                      |
-|                  | XREAD                                                      | <span class="support supported">Fully supported</span>   |
-|                  | XADD                                                       | <span class="support supported">Fully supported</span>   |
-|                  | XPENDING                                                   | TBD                                                      |
-|                  | XGROUP                                                     | <span class="support partial">Partially supported</span> |
-|                  | XRANGE                                                     | <span class="support supported">Fully supported</span>   |
-|                  | XSETID                                                     | <span class="support supported">Fully supported</span>   |
-|                  | XREVRANGE                                                  | <span class="support supported">Fully supported</span>   |
-|                  | XREADGROUP                                                 | <span class="support unsupported">Unsupported</span>     |
-|                  | XDEL                                                       | <span class="support supported">Fully supported</span>   |
-|                  | XINFO                                                      | <span class="support partial">Partially supported</span> |
-|                  | XACK                                                       | <span class="support unsupported">Unsupported</span>     |
-|                  | XTRIM                                                      | <span class="support partial">Partially supported</span> |
-| String           | APPEND                                                     | <span class="support supported">Fully supported</span>   |
-|                  | DECR                                                       | <span class="support supported">Fully supported</span>   |
-|                  | DECRBY                                                     | <span class="support supported">Fully supported</span>   |
-|                  | GET                                                        | <span class="support supported">Fully supported</span>   |
-|                  | GETDEL                                                     | <span class="support supported">Fully supported</span>   |
-|                  | GETEX                                                      | <span class="support supported">Fully supported</span>   |
-|                  | GETRANGE                                                   | <span class="support supported">Fully supported</span>   |
-|                  | GETSET                                                     | <span class="support supported">Fully supported</span>   |
-|                  | INCR                                                       | <span class="support supported">Fully supported</span>   |
-|                  | INCRBY                                                     | <span class="support supported">Fully supported</span>   |
-|                  | INCRBYFLOAT                                                | <span class="support supported">Fully supported</span>   |
-|                  | LCS                                                        | <span class="support unsupported">Unsupported</span>     |
-|                  | MGET                                                       | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SCARD</span>                         | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SDIFF</span>                         | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SDIFFSTORE</span>                    | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SINTER</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SINTERCARD</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                  | <span class="command">SINTERSTORE</span>                   | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SISMEMBER</span>                     | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SMEMBERS</span>                      | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SMISMEMBER</span>                    | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SMOVE</span>                         | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SPOP</span>                          | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SRANDMEMBER</span>                   | <span class="support unsupported">Unsupported</span>     |
+|                  | <span class="command">SREM</span>                          | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SSCAN</span>                         | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SUNION</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">SUNIONSTORE</span>                   | <span class="support supported">Fully supported</span>   |
+| Sorted Set       | <span class="command">BZMPOP</span>                        | <span class="support unsupported">Unsupported</span>     |
+|                  | <span class="command">BZPOPMZX</span>                      | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">BZPOPMIN</span>                      | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZADD</span>                          | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZCARD</span>                         | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZCOUNT</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZDIFF</span>                         | <span class="support unsupported">Unsupported</span>     |
+|                  | <span class="command">ZDIFFSTORE</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                  | <span class="command">ZINCRBY</span>                       | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZINTER</span>                        | <span class="support unsupported">Unsupported</span>     |
+|                  | <span class="command">ZINTERCARD</span>                    | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZINTERSTORE</span>                   | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZLEXCOUNT</span>                     | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZMPOP</span>                         | <span class="support unsupported">Unsupported</span>     |
+|                  | <span class="command">ZMSCORE</span>                       | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZPOPMAX</span>                       | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZPOPMIN</span>                       | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZRANDMEMBER</span>                   | <span class="support unsupported">Unsupported</span>     |
+|                  | <span class="command">ZRANGE</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZRANGEBYLEX</span>                   | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZRANGEBYSCORE</span>                 | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZRANK</span>                         | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZREM</span>                          | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZREMRANGEBYLEX</span>                | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZREMRANGEBYRANK</span>               | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZREMRANGEBYSCORE</span>              | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZREVRANGE</span>                     | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZREVRANGEBYLEX</span>                | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZREVRANGEBYSCORE</span>              | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZREVRANK</span>                      | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZSCAN</span>                         | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZSCORE</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZUNION</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">ZUNIONSTORE</span>                   | <span class="support supported">Fully supported</span>   |
+| Stream           | <span class="command">XAUTOCLAIM</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                  | <span class="command">XCLAIM</span>                        | TBD                                                      |
+|                  | <span class="command">XREAD</span>                         | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">XADD</span>                          | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">XPENDING</span>                      | TBD                                                      |
+|                  | <span class="command">XGROUP</span>                        | <span class="support partial">Partially supported</span> |
+|                  | <span class="command">XRANGE</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">XSETID</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">XREVRANGE</span>                     | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">XREADGROUP</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                  | <span class="command">XDEL</span>                          | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">XINFO</span>                         | <span class="support partial">Partially supported</span> |
+|                  | <span class="command">XACK</span>                          | <span class="support unsupported">Unsupported</span>     |
+|                  | <span class="command">XTRIM</span>                         | <span class="support partial">Partially supported</span> |
+| String           | <span class="command">APPEND</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">DECR</span>                          | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">DECRBY</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">GET</span>                           | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">GETDEL</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">MSGETEXET</span>                     | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">GETRANGE</span>                      | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">GETSET</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">INCR</span>                          | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">INCRBY</span>                        | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">INCRBYFLOAT</span>                   | <span class="support supported">Fully supported</span>   |
+|                  | <span class="command">LCS</span>                           | <span class="support unsupported">Unsupported</span>     |
+|                  | <span class="command">MGET</span>                          | <span class="support supported">Fully supported</span>   |
 |                  | <span class="command">MSET</span>                          | <span class="support supported">Fully supported</span>   |
 |                  | <span class="command">MSETNX</span>                        | <span class="support supported">Fully supported</span>   |
 |                  | <span class="command">PSETEX</span>                        | <span class="support supported">Fully supported</span>   |
