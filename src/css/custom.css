@@ -193,6 +193,13 @@ a > svg[class*="ExternalLink"] {
   opacity: 0.9;
 }
 
+.command {
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
 .support {
   display: inline-flex;
   padding: 0.1em 0.5em 0;
