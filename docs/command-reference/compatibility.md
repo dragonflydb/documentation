@@ -6,362 +6,361 @@ import CompatibilityTable from '@site/src/components/CompatibilityTable'
 
 # Dragonfly API Compatibility
 
-| Command Family   | Command                       | Dragonfly Support   |
-| ---------------- | ----------------------------- | ------------------- |
-| Bitmap           | BITCOUNT                      | Fully supported     |
-|                  | BITFIELD                      | Unsupported         |
-|                  | BITFIELD_RO                   | Unsupported         |
-|                  | BITOP                         | Fully supported     |
-|                  | BITPOS                        | Fully supported     |
-|                  | GETBIT                        | Fully supported     |
-|                  | SETBIT                        | Fully supported     |
-| Cluster          | ASKING                        | Unsupported         |
-|                  | CLUSTER ADDSLOTS              | Unsupported         |
-|                  | CLUSTER ADDSLOTSRANGE         | Unsupported         |
-|                  | CLUSTER BUMPEPOCH             | Unsupported         |
-|                  | CLUSTER COUNT-FAILURE-REPORTS | Unsupported         |
-|                  | CLUSTER COUNTKEYSINSLOT       | Unsupported         |
-|                  | CLUSTER DELSLOTS              | Unsupported         |
-|                  | CLUSTER DELSLOTRANGE          | Unsupported         |
-|                  | CLUSTER FAILOVER              | Unsupported         |
-|                  | CLUSTER FLUSHSLOTS            | Unsupported         |
-|                  | CLUSTER FORGET                | Unsupported         |
-|                  | CLUSTER GETKEYSINSLOT         | Unsupported         |
-|                  | CLUSTER INFO                  | Fully supported     |
-|                  | CLUSTER KEYSLOT               | Unsupported         |
-|                  | CLUSTER LINKS                 | Unsupported         |
-|                  | CLUSTER MEET                  | Unsupported         |
-|                  | CLUSTER MYID                  | Unsupported         |
-|                  | CLUSTER MYSHARDID             | Unsupported         |
-|                  | CLUSTER NODES                 | Fully supported     |
-|                  | CLUSTER REPLICAS              | Unsupported         |
-|                  | CLUSTER REPLICATE             | Unsupported         |
-|                  | CLUSTER RESET                 | Unsupported         |
-|                  | CLUSTER SAVECONFIG            | Unsupported         |
-|                  | CLUSTER SET-CONFIG-EPOCH      | Unsupported         |
-|                  | CLUSTER SETSLOT               | Unsupported         |
-|                  | CLUSTER SHARDS                | Fully supported     |
-|                  | CLUSTER SLAVES                | Unsupported         |
-|                  | CLUSTER SLOTS                 | Fully supported     |
-|                  | READONLY                      | Unsupported         |
-|                  | READWRITE                     | Unsupported         |
-| Connection       | AUTH                          | Partially supported |
-|                  | CLIENT CACHING                | Unsupported         |
-|                  | CLIENT GETNAME                | Fully supported     |
-|                  | CLIENT GETREDIR               | Unsupported         |
-|                  | CLIENT ID                     | Unsupported         |
-|                  | CLIENT INFO                   | Unsupported         |
-|                  | CLIENT KILL                   | Unsupported         |
-|                  | CLIENT LIST                   | Fully supported     |
-|                  | CLIENT NO-EVICT               | Unsupported         |
-|                  | CLIENT NO-TOUCH               | Unsupported         |
-|                  | CLIENT PAUSE                  | Unsupported         |
-|                  | CLIENT REPLY                  | Unsupported         |
-|                  | CLIENT SETINFO                | Unsupported         |
-|                  | CLIENT SETNAME                | Fully supported     |
-|                  | CLIENT TRACKING               | Unsupported         |
-|                  | CLIENT TRACKINGINFO           | Unsupported         |
-|                  | CLIENT UNBLOCK                | Unsupported         |
-|                  | CLIENT UNPAUSE                | Unsupported         |
-|                  | ECHO                          | Fully supported     |
-|                  | HELLO                         | Partially supported |
-|                  | PING                          | Fully supported     |
-|                  | QUIT                          | Fully supported     |
-|                  | RESET                         | Unsupported         |
-|                  | SELECT                        | Fully supported     |
-| Generic          | COPY                          | Unsupported         |
-|                  | DEL                           | Fully supported     |
-|                  | DUMP                          | Fully supported     |
-|                  | EXISTS                        | Fully supported     |
-|                  | EXPIRE                        | Fully supported     |
-|                  | EXPIREAT                      | Fully supported     |
-|                  | EXPIRETIME                    | Unsupported         |
-|                  | KEYS                          | Fully supported     |
-|                  | MIGRATE                       | Unsupported         |
-|                  | MOVE                          | Fully supported     |
-|                  | OBJECT ENCODING               | Unsupported         |
-|                  | OBJECT FREQ                   | Unsupported         |
-|                  | OBJECT IDLETIME               | Unsupported         |
-|                  | OBJECT REFCOUNT               | Unsupported         |
-|                  | PRESIST                       | Fully supported     |
-|                  | PEXPIRE                       | Fully supported     |
-|                  | PEXPIREAT                     | Fully supported     |
-|                  | PEXPIRETIME                   | Unsupported         |
-|                  | PTTL                          | Fully supported     |
-|                  | RANDOMKEY                     | Unsupported         |
-|                  | RENAME                        | Fully supported     |
-|                  | RENAMENX                      | Fully supported     |
-|                  | RESTORE                       | Partially supported |
-|                  | SCAN                          | Fully supported     |
-|                  | SORT                          | Partially supported |
-|                  | SORT_RO                       | Unsupported         |
-|                  | TOUCH                         | Fully supported     |
-|                  | TTL                           | Fully supported     |
-|                  | TYPE                          | Fully supported     |
-|                  | UNLINK                        | Fully supported     |
-|                  | WAIT                          | Unsupported         |
-|                  | WAITAOF                       | Unsupported         |
-| Geo              | GEOADD                        | Unsupported         |
-|                  | GEODIST                       | Unsupported         |
-|                  | GEOHASH                       | Unsupported         |
-|                  | GEOPOS                        | Unsupported         |
-|                  | GEORADIUS                     | Unsupported         |
-|                  | GEORADIUS_RO                  | Unsupported         |
-|                  | GEORADIUSBYMEMBER             | Unsupported         |
-|                  | GEORADIUSBYMEMBER_RO          | Unsupported         |
-|                  | GEOSEARCH                     | Unsupported         |
-|                  | GEOSEARCHSTORE                | Unsupported         |
-| Hash             | HDEL                          | Fully supported     |
-|                  | HEXISTS                       | Fully supported     |
-|                  | HGET                          | Fully supported     |
-|                  | HGETALL                       | Fully supported     |
-|                  | HINCRBY                       | Fully supported     |
-|                  | HINCRBYFLOAT                  | Fully supported     |
-|                  | HKEYS                         | Fully supported     |
-|                  | HLEN                          | Fully supported     |
-|                  | HMGET                         | Fully supported     |
-|                  | HMSET                         | Unsupported         |
-|                  | HRANDFIELD                    | Partially supported |
-|                  | HSCAN                         | Fully supported     |
-|                  | HSET                          | Fully supported     |
-|                  | HSETNX                        | Fully supported     |
-|                  | HSTRLEN                       | Fully supported     |
-|                  | HVALS                         | Fully supported     |
-| HyperLogLog      | PFADD                         | Fully supported     |
-|                  | PFMERGE                       | Fully supported     |
-|                  | PFCOUNT                       | Fully supported     |
-|                  | PFDEBUG                       | Unsupported         |
-|                  | PFSELFTEST                    | Unsupported         |
-|                  |                               |                     |
-| List             | BRPOPLPUSH                    | Fully supported     |
-|                  | BRPOP                         | Fully supported     |
-|                  | BLMPOP                        | Unsupported         |
-|                  | LINDEX                        | Fully supported     |
-|                  | LINSERT                       | Fully supported     |
-|                  | LLEN                          | Fully supported     |
-|                  | LMOVE                         | Fully supported     |
-|                  | LPUSH                         | Fully supported     |
-|                  | LRANGE                        | Fully supported     |
-|                  | LSET                          | Fully supported     |
-|                  | LTRIM                         | Fully supported     |
-|                  | RPOPLPUSH                     | Fully supported     |
-|                  | RPUSH                         | Fully supported     |
-|                  | RPUSHX                        | Fully supported     |
-|                  | RPOP                          | Fully supported     |
-|                  | LREM                          | Fully supported     |
-|                  | LPUSHX                        | Fully supported     |
-|                  | LMPOP                         | Unsupported         |
-|                  | LPOS                          | Fully supported     |
-|                  | LPOP                          | Fully supported     |
-|                  | BLPOP                         | Fully supported     |
-|                  | BLMOVE                        | Fully supported     |
-| PubSub           | PSUBSCRIBE                    | Fully supported     |
-|                  | PUBLISH                       | Fully supported     |
-|                  | PUBSUB CHANNELS               | Fully supported     |
-|                  | PUBSUB NUMPAT                 | Fully supported     |
-|                  | PUBSUB NUMSUB                 | Fully supported     |
-|                  | PUBSUB SHARDCHANNELS          | Fully supported     |
-|                  | PUBSUB SHARDNUMSUB            | Fully supported     |
-|                  | PUNSUBSCRIBE                  | Fully supported     |
-|                  | SPUBLISH                      | Unsupported         |
-|                  | SSUBSCRIBE                    | Unsupported         |
-|                  | SUNSUBSCRIBE                  | Unsupported         |
-|                  | SUBSCRIBE                     | Fully supported     |
-|                  | UNSUBSCRIBE                   | Fully supported     |
-| Scripting        | EVAL                          | Fully supported     |
-|                  | EVAL_RO                       | Unsupported         |
-|                  | EVALSHA                       | Fully supported     |
-|                  | EVALSHA_RO                    | Unsupported         |
-|                  | FCALL                         | Unsupported         |
-|                  | FUNCTION FLUSH                | Unsupported         |
-|                  | FUNCTION \*                   | Unsupported         |
-|                  | SCRIPT LOAD                   | Fully supported     |
-|                  | SCRIPT EXISTS                 | Fully supported     |
-|                  | SCRIPT FLUSH                  | Unsupported         |
-|                  | SCRIPT DEBUG                  | Unsupported         |
-|                  | SCRIPT KILL                   | Unsupported         |
-| Server           | ACL CAT                       | Unsupported         |
-|                  | ACL DELUSER                   | Unsupported         |
-|                  | ACL DRYRUN                    | Unsupported         |
-|                  | ACL GENPASS                   | Unsupported         |
-|                  | ACL GETUSER                   | Unsupported         |
-|                  | ACL LIST                      | Unsupported         |
-|                  | ACL LOAD                      | Unsupported         |
-|                  | ACL LOG                       | Unsupported         |
-|                  | ACL SAVE                      | Unsupported         |
-|                  | ACL SETUSER                   | Unsupported         |
-|                  | ACL USERS                     | Unsupported         |
-|                  | ACL WHOAMI                    | Unsupported         |
-|                  | BGREWRITEAOF                  | Unsupported         |
-|                  | BGSAVE                        | Fully supported     |
-|                  | COMMAND                       | Fully supported     |
-|                  | COMMAND COUNT                 | Fully supported     |
-|                  | COMMAND DOCS                  | Unsupported         |
-|                  | COMMAND GETKEYS               | Unsupported         |
-|                  | COMMAND GETKEYSANDFLAGS       | Unsupported         |
-|                  | COMMAND INFO                  | Unsupported         |
-|                  | COMMAND LIST                  | Unsupported         |
-|                  | CONFIG GET                    | Unsupported         |
-|                  | CONFIG RESETSTAT              | FULLY SUPPORTED     |
-|                  | CONFIG REWRITE                | Unsupported         |
-|                  | CONFIG SET                    | Unsupported         |
-|                  | DBSIZE                        | Fully supported     |
-|                  | FAILOVER                      | Unsupported         |
-|                  | FLUSHALL                      | Fully supported     |
-|                  | FLUSHDB                       | Fully supported     |
-|                  | INFO                          | Fully supported     |
-|                  | LASTSAVE                      | Fully supported     |
-|                  | LATENCY DOCTOR                | Unsupported         |
-|                  | LATENCY GRAPH                 | Unsupported         |
-|                  | LATENCY HISTOGRAM             | Unsupported         |
-|                  | LATENCY HISTORY               | Unsupported         |
-|                  | LATENCY LATEST                | Unsupported         |
-|                  | LATENCY RESET                 | Unsupported         |
-|                  | LOLWUT                        | Unsupported         |
-|                  | MEMORY DOCTOR                 | Unsupported         |
-|                  | MEMORY MALLOC-STATS           | Fully supported     |
-|                  | MEMORY PURGE                  | Unsupported         |
-|                  | MEMORY STATS                  | Unsupported         |
-|                  | MEMORY USAGE                  | Unsupported         |
-|                  | MODULE LIST                   | Unsupported         |
-|                  | MODULE LOAD                   | Unsupported         |
-|                  | MODULE LOADEX                 | Unsupported         |
-|                  | MODULE UNLOAD                 | Unsupported         |
-|                  | MONITOR                       | Fully supported     |
-|                  | REPLICAOF                     | Fully supported     |
-|                  | ROLE                          | Fully supported     |
-|                  | SAVE                          | Fully supported     |
-|                  | SHUTDOWN                      | Fully supported     |
-|                  | SLAVEOF                       | Fully supported     |
-|                  | SLOWLOG GET                   | Unsupported         |
-|                  | SLOWLOG LEN                   | Unsupported         |
-|                  | SLOWLOG RESET                 | Unsupported         |
-|                  | SWAPDB                        | Unsupported         |
-|                  | TIME                          | Fully supported     |
-| Set              | SADD                          | Fully supported     |
-|                  | SCARD                         | Fully supported     |
-|                  | SDIFF                         | Fully supported     |
-|                  | SDIFFSTORE                    | Fully supported     |
-|                  | SINTER                        | Fully supported     |
-|                  | SINTERCARD                    | Unsupported         |
-|                  | SINTERSTORE                   | Fully supported     |
-|                  | SISMEMBER                     | Fully supported     |
-|                  | SMEMBERS                      | Fully supported     |
-|                  | SMISMEMBER                    | Fully supported     |
-|                  | SMOVE                         | Fully supported     |
-|                  | SPOP                          | Fully supported     |
-|                  | SRANDMEMBER                   | Unsupported         |
-|                  | SREM                          | Fully supported     |
-|                  | SSCAN                         | Fully supported     |
-|                  | SUNION                        | Fully supported     |
-|                  | SUNIONSTORE                   | Fully supported     |
-| Sorted Set       | BZMPOP                        | Unsupported         |
-|                  | BZPOPMZX                      | Fully supported     |
-|                  | BZPOPMIN                      | Fully supported     |
-|                  | ZADD                          | Fully supported     |
-|                  | ZCARD                         | Fully supported     |
-|                  | ZCOUNT                        | Fully supported     |
-|                  | ZDIFF                         | Unsupported         |
-|                  | ZDIFFSTORE                    | Unsupported         |
-|                  | ZINCRBY                       | Fully supported     |
-|                  | ZINTER                        | Unsupported         |
-|                  | ZINTERCARD                    | Fully supported     |
-|                  | ZINTERSTORE                   | Fully supported     |
-|                  | ZLEXCOUNT                     | Fully supported     |
-|                  | ZMPOP                         | Unsupported         |
-|                  | ZMSCORE                       | Fully supported     |
-|                  | ZPOPMAX                       | Fully supported     |
-|                  | ZPOPMIN                       | Fully supported     |
-|                  | ZRANDMEMBER                   | Unsupported         |
-|                  | ZRANGE                        | Fully supported     |
-|                  | ZRANGEBYLEX                   | Fully supported     |
-|                  | ZRANGEBYSCORE                 | Fully supported     |
-|                  | ZRANK                         | Fully supported     |
-|                  | ZREM                          | Fully supported     |
-|                  | ZREMRANGEBYLEX                | Fully supported     |
-|                  | ZREMRANGEBYRANK               | Fully supported     |
-|                  | ZREMRANGEBYSCORE              | Fully supported     |
-|                  | ZREVRANGE                     | Fully supported     |
-|                  | ZREVRANGEBYLEX                | Fully supported     |
-|                  | ZREVRANGEBYSCORE              | Fully supported     |
-|                  | ZREVRANK                      | Fully supported     |
-|                  | ZSCAN                         | Fully supported     |
-|                  | ZSCORE                        | Fully supported     |
-|                  | ZUNION                        | Fully supported     |
-|                  | ZUNIONSTORE                   | Fully supported     |
-| Stream           | XAUTOCLAIM                    | Unsupported         |
-|                  | XCLAIM                        | TBD                 |
-|                  | XREAD                         | Fully supported     |
-|                  | XADD                          | Fully supported     |
-|                  | XPENDING                      | TBD                 |
-|                  | XGROUP                        | Partially supported |
-|                  | XRANGE                        | Fully supported     |
-|                  | XSETID                        | Fully supported     |
-|                  | XREVRANGE                     | Fully supported     |
-|                  | XREADGROUP                    | Unsupported         |
-|                  | XDEL                          | Fully supported     |
-|                  | XINFO                         | Partially supported |
-|                  | XACK                          | Unsupported         |
-|                  | XTRIM                         | Partially supported |
-| String           | APPEND                        | Fully supported     |
-|                  | DECR                          | Fully supported     |
-|                  | DECRBY                        | Fully supported     |
-|                  | GET                           | Fully supported     |
-|                  | GETDEL                        | Fully supported     |
-|                  | GETEX                         | Fully supported     |
-|                  | GETRANGE                      | Fully supported     |
-|                  | GETSET                        | Fully supported     |
-|                  | INCR                          | Fully supported     |
-|                  | INCRBY                        | Fully supported     |
-|                  | INCRBYFLOAT                   | Fully supported     |
-|                  | LCS                           | Unsupported         |
-|                  | MGET                          | Fully supported     |
-|                  | MSET                          | Fully supported     |
-|                  | MSETNX                        | Fully supported     |
-|                  | PSETEX                        | Fully supported     |
-|                  | SET                           | Fully supported     |
-|                  | SETEX                         | Fully supported     |
-|                  | SETNX                         | Fully supported     |
-|                  | SETRANGE                      | Fully supported     |
-|                  | STRLEN                        | Fully supported     |
-|                  | SUBSTR                        | Fully supported     |
-| Transactions     | DISCARD                       | Fully supported     |
-|                  | EXEC                          | Fully supported     |
-|                  | MULTI                         | Fully supported     |
-|                  | UNWATCH                       | Fully supported     |
-|                  | WATCH                         | Fully supported     |
-| Bloom Filter     | TBD                           | Unsupported         |
-| Cuckoo Filter    | TBD                           | Unsupported         |
-| Count-min Sketch | TBD                           | Unsupported         |
-| Graph            | TBD                           | Unsupported         |
-| JSON             | ARRAPPEND                     | Fully supported     |
-|                  | ARRINDEX                      | Fully supported     |
-|                  | ARRINSERT                     | Fully supported     |
-|                  | ARRLEN                        | Fully supported     |
-|                  | ARRPOP                        | Fully supported     |
-|                  | ARRTRIM                       | Fully supported     |
-|                  | CLEAR                         | Fully supported     |
-|                  | DEBUG                         | Fully supported     |
-|                  | DEBUG MEMORY                  | Unsupported         |
-|                  | DEL                           | Fully supported     |
-|                  | FORGET                        | Fully supported     |
-|                  | GET                           | Fully supported     |
-|                  | MERGE                         | Unsupported         |
-|                  | MGET                          | Fully supported     |
-|                  | MSET                          | Unsupported         |
-|                  | NUMINCRBY                     | Fully supported     |
-|                  | NUMMULTBY                     | Fully supported     |
-|                  | OBJKEYS                       | Fully supported     |
-|                  | OBJLEN                        | Fully supported     |
-|                  | RESP                          | Fully supported     |
-|                  | SET                           | Fully supported     |
-|                  | STRAPPEND                     | Fully supported     |
-|                  | STRLEN                        | Fully supported     |
-|                  | TOGGLE                        | Fully supported     |
-|                  | TYPE                          | Fully supported     |
-| Search           | FT.CREATE                     | Unsupported         |
-|                  | FT.SEARCH                     | Unsupported         |
-| Auto Suggest     | TBD                           | Unsupported         |
-| T-Digest         | TBD                           | Unsupported         |
-| Time Series      | TBD                           | Unsupported         |
-| Top-K            | TBD                           | Unsupported         |
+| Command Family   | Command                       | Dragonfly Support                                        |
+| ---------------- | ----------------------------- | -------------------------------------------------------- |
+| Bitmap           | BITCOUNT                      | <span class="support supported">Fully supported</span>   |
+|                  | BITFIELD                      | <span class="support unsupported">Unsupported</span>     |
+|                  | BITFIELD_RO                   | <span class="support unsupported">Unsupported</span>     |
+|                  | BITOP                         | <span class="support supported">Fully supported</span>   |
+|                  | BITPOS                        | <span class="support supported">Fully supported</span>   |
+|                  | GETBIT                        | <span class="support supported">Fully supported</span>   |
+|                  | SETBIT                        | <span class="support supported">Fully supported</span>   |
+| Cluster          | ASKING                        | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER ADDSLOTS              | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER ADDSLOTSRANGE         | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER BUMPEPOCH             | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER COUNT-FAILURE-REPORTS | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER COUNTKEYSINSLOT       | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER DELSLOTS              | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER DELSLOTRANGE          | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER FAILOVER              | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER FLUSHSLOTS            | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER FORGET                | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER GETKEYSINSLOT         | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER INFO                  | <span class="support supported">Fully supported</span>   |
+|                  | CLUSTER KEYSLOT               | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER LINKS                 | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER MEET                  | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER MYID                  | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER MYSHARDID             | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER NODES                 | <span class="support supported">Fully supported</span>   |
+|                  | CLUSTER REPLICAS              | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER REPLICATE             | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER RESET                 | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER SAVECONFIG            | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER SET-CONFIG-EPOCH      | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER SETSLOT               | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER SHARDS                | <span class="support supported">Fully supported</span>   |
+|                  | CLUSTER SLAVES                | <span class="support unsupported">Unsupported</span>     |
+|                  | CLUSTER SLOTS                 | <span class="support supported">Fully supported</span>   |
+|                  | READONLY                      | <span class="support unsupported">Unsupported</span>     |
+|                  | READWRITE                     | <span class="support unsupported">Unsupported</span>     |
+| Connection       | AUTH                          | <span class="support partial">Partially supported</span> |
+|                  | CLIENT CACHING                | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT GETNAME                | <span class="support supported">Fully supported</span>   |
+|                  | CLIENT GETREDIR               | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT ID                     | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT INFO                   | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT KILL                   | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT LIST                   | <span class="support supported">Fully supported</span>   |
+|                  | CLIENT NO-EVICT               | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT NO-TOUCH               | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT PAUSE                  | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT REPLY                  | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT SETINFO                | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT SETNAME                | <span class="support supported">Fully supported</span>   |
+|                  | CLIENT TRACKING               | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT TRACKINGINFO           | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT UNBLOCK                | <span class="support unsupported">Unsupported</span>     |
+|                  | CLIENT UNPAUSE                | <span class="support unsupported">Unsupported</span>     |
+|                  | ECHO                          | <span class="support supported">Fully supported</span>   |
+|                  | HELLO                         | <span class="support partial">Partially supported</span> |
+|                  | PING                          | <span class="support supported">Fully supported</span>   |
+|                  | QUIT                          | <span class="support supported">Fully supported</span>   |
+|                  | RESET                         | <span class="support unsupported">Unsupported</span>     |
+|                  | SELECT                        | <span class="support supported">Fully supported</span>   |
+| Generic          | COPY                          | <span class="support unsupported">Unsupported</span>     |
+|                  | DEL                           | <span class="support supported">Fully supported</span>   |
+|                  | DUMP                          | <span class="support supported">Fully supported</span>   |
+|                  | EXISTS                        | <span class="support supported">Fully supported</span>   |
+|                  | EXPIRE                        | <span class="support supported">Fully supported</span>   |
+|                  | EXPIREAT                      | <span class="support supported">Fully supported</span>   |
+|                  | EXPIRETIME                    | <span class="support unsupported">Unsupported</span>     |
+|                  | KEYS                          | <span class="support supported">Fully supported</span>   |
+|                  | MIGRATE                       | <span class="support unsupported">Unsupported</span>     |
+|                  | MOVE                          | <span class="support supported">Fully supported</span>   |
+|                  | OBJECT ENCODING               | <span class="support unsupported">Unsupported</span>     |
+|                  | OBJECT FREQ                   | <span class="support unsupported">Unsupported</span>     |
+|                  | OBJECT IDLETIME               | <span class="support unsupported">Unsupported</span>     |
+|                  | OBJECT REFCOUNT               | <span class="support unsupported">Unsupported</span>     |
+|                  | PRESIST                       | <span class="support supported">Fully supported</span>   |
+|                  | PEXPIRE                       | <span class="support supported">Fully supported</span>   |
+|                  | PEXPIREAT                     | <span class="support supported">Fully supported</span>   |
+|                  | PEXPIRETIME                   | <span class="support unsupported">Unsupported</span>     |
+|                  | PTTL                          | <span class="support supported">Fully supported</span>   |
+|                  | RANDOMKEY                     | <span class="support unsupported">Unsupported</span>     |
+|                  | RENAME                        | <span class="support supported">Fully supported</span>   |
+|                  | RENAMENX                      | <span class="support supported">Fully supported</span>   |
+|                  | RESTORE                       | <span class="support partial">Partially supported</span> |
+|                  | SCAN                          | <span class="support supported">Fully supported</span>   |
+|                  | SORT                          | <span class="support partial">Partially supported</span> |
+|                  | SORT_RO                       | <span class="support unsupported">Unsupported</span>     |
+|                  | TOUCH                         | <span class="support supported">Fully supported</span>   |
+|                  | TTL                           | <span class="support supported">Fully supported</span>   |
+|                  | TYPE                          | <span class="support supported">Fully supported</span>   |
+|                  | UNLINK                        | <span class="support supported">Fully supported</span>   |
+|                  | WAIT                          | <span class="support unsupported">Unsupported</span>     |
+|                  | WAITAOF                       | <span class="support unsupported">Unsupported</span>     |
+| Geo              | GEOADD                        | <span class="support unsupported">Unsupported</span>     |
+|                  | GEODIST                       | <span class="support unsupported">Unsupported</span>     |
+|                  | GEOHASH                       | <span class="support unsupported">Unsupported</span>     |
+|                  | GEOPOS                        | <span class="support unsupported">Unsupported</span>     |
+|                  | GEORADIUS                     | <span class="support unsupported">Unsupported</span>     |
+|                  | GEORADIUS_RO                  | <span class="support unsupported">Unsupported</span>     |
+|                  | GEORADIUSBYMEMBER             | <span class="support unsupported">Unsupported</span>     |
+|                  | GEORADIUSBYMEMBER_RO          | <span class="support unsupported">Unsupported</span>     |
+|                  | GEOSEARCH                     | <span class="support unsupported">Unsupported</span>     |
+|                  | GEOSEARCHSTORE                | <span class="support unsupported">Unsupported</span>     |
+| Hash             | HDEL                          | <span class="support supported">Fully supported</span>   |
+|                  | HEXISTS                       | <span class="support supported">Fully supported</span>   |
+|                  | HGET                          | <span class="support supported">Fully supported</span>   |
+|                  | HGETALL                       | <span class="support supported">Fully supported</span>   |
+|                  | HINCRBY                       | <span class="support supported">Fully supported</span>   |
+|                  | HINCRBYFLOAT                  | <span class="support supported">Fully supported</span>   |
+|                  | HKEYS                         | <span class="support supported">Fully supported</span>   |
+|                  | HLEN                          | <span class="support supported">Fully supported</span>   |
+|                  | HMGET                         | <span class="support supported">Fully supported</span>   |
+|                  | HMSET                         | <span class="support unsupported">Unsupported</span>     |
+|                  | HRANDFIELD                    | <span class="support partial">Partially supported</span> |
+|                  | HSCAN                         | <span class="support supported">Fully supported</span>   |
+|                  | HSET                          | <span class="support supported">Fully supported</span>   |
+|                  | HSETNX                        | <span class="support supported">Fully supported</span>   |
+|                  | HSTRLEN                       | <span class="support supported">Fully supported</span>   |
+|                  | HVALS                         | <span class="support supported">Fully supported</span>   |
+| HyperLogLog      | PFADD                         | <span class="support supported">Fully supported</span>   |
+|                  | PFMERGE                       | <span class="support supported">Fully supported</span>   |
+|                  | PFCOUNT                       | <span class="support supported">Fully supported</span>   |
+|                  | PFDEBUG                       | <span class="support unsupported">Unsupported</span>     |
+|                  | PFSELFTEST                    | <span class="support unsupported">Unsupported</span>     |
+| List             | BRPOPLPUSH                    | <span class="support supported">Fully supported</span>   |
+|                  | BRPOP                         | <span class="support supported">Fully supported</span>   |
+|                  | BLMPOP                        | <span class="support unsupported">Unsupported</span>     |
+|                  | LINDEX                        | <span class="support supported">Fully supported</span>   |
+|                  | LINSERT                       | <span class="support supported">Fully supported</span>   |
+|                  | LLEN                          | <span class="support supported">Fully supported</span>   |
+|                  | LMOVE                         | <span class="support supported">Fully supported</span>   |
+|                  | LPUSH                         | <span class="support supported">Fully supported</span>   |
+|                  | LRANGE                        | <span class="support supported">Fully supported</span>   |
+|                  | LSET                          | <span class="support supported">Fully supported</span>   |
+|                  | LTRIM                         | <span class="support supported">Fully supported</span>   |
+|                  | RPOPLPUSH                     | <span class="support supported">Fully supported</span>   |
+|                  | RPUSH                         | <span class="support supported">Fully supported</span>   |
+|                  | RPUSHX                        | <span class="support supported">Fully supported</span>   |
+|                  | RPOP                          | <span class="support supported">Fully supported</span>   |
+|                  | LREM                          | <span class="support supported">Fully supported</span>   |
+|                  | LPUSHX                        | <span class="support supported">Fully supported</span>   |
+|                  | LMPOP                         | <span class="support unsupported">Unsupported</span>     |
+|                  | LPOS                          | <span class="support supported">Fully supported</span>   |
+|                  | LPOP                          | <span class="support supported">Fully supported</span>   |
+|                  | BLPOP                         | <span class="support supported">Fully supported</span>   |
+|                  | BLMOVE                        | <span class="support supported">Fully supported</span>   |
+| PubSub           | PSUBSCRIBE                    | <span class="support supported">Fully supported</span>   |
+|                  | PUBLISH                       | <span class="support supported">Fully supported</span>   |
+|                  | PUBSUB CHANNELS               | <span class="support supported">Fully supported</span>   |
+|                  | PUBSUB NUMPAT                 | <span class="support supported">Fully supported</span>   |
+|                  | PUBSUB NUMSUB                 | <span class="support supported">Fully supported</span>   |
+|                  | PUBSUB SHARDCHANNELS          | <span class="support supported">Fully supported</span>   |
+|                  | PUBSUB SHARDNUMSUB            | <span class="support supported">Fully supported</span>   |
+|                  | PUNSUBSCRIBE                  | <span class="support supported">Fully supported</span>   |
+|                  | SPUBLISH                      | <span class="support unsupported">Unsupported</span>     |
+|                  | SSUBSCRIBE                    | <span class="support unsupported">Unsupported</span>     |
+|                  | SUNSUBSCRIBE                  | <span class="support unsupported">Unsupported</span>     |
+|                  | SUBSCRIBE                     | <span class="support supported">Fully supported</span>   |
+|                  | UNSUBSCRIBE                   | <span class="support supported">Fully supported</span>   |
+| Scripting        | EVAL                          | <span class="support supported">Fully supported</span>   |
+|                  | EVAL_RO                       | <span class="support unsupported">Unsupported</span>     |
+|                  | EVALSHA                       | <span class="support supported">Fully supported</span>   |
+|                  | EVALSHA_RO                    | <span class="support unsupported">Unsupported</span>     |
+|                  | FCALL                         | <span class="support unsupported">Unsupported</span>     |
+|                  | FUNCTION FLUSH                | <span class="support unsupported">Unsupported</span>     |
+|                  | FUNCTION \*                   | <span class="support unsupported">Unsupported</span>     |
+|                  | SCRIPT LOAD                   | <span class="support supported">Fully supported</span>   |
+|                  | SCRIPT EXISTS                 | <span class="support supported">Fully supported</span>   |
+|                  | SCRIPT FLUSH                  | <span class="support unsupported">Unsupported</span>     |
+|                  | SCRIPT DEBUG                  | <span class="support unsupported">Unsupported</span>     |
+|                  | SCRIPT KILL                   | <span class="support unsupported">Unsupported</span>     |
+| Server           | ACL CAT                       | <span class="support unsupported">Unsupported</span>     |
+|                  | ACL DELUSER                   | <span class="support unsupported">Unsupported</span>     |
+|                  | ACL DRYRUN                    | <span class="support unsupported">Unsupported</span>     |
+|                  | ACL GENPASS                   | <span class="support unsupported">Unsupported</span>     |
+|                  | ACL GETUSER                   | <span class="support unsupported">Unsupported</span>     |
+|                  | ACL LIST                      | <span class="support unsupported">Unsupported</span>     |
+|                  | ACL LOAD                      | <span class="support unsupported">Unsupported</span>     |
+|                  | ACL LOG                       | <span class="support unsupported">Unsupported</span>     |
+|                  | ACL SAVE                      | <span class="support unsupported">Unsupported</span>     |
+|                  | ACL SETUSER                   | <span class="support unsupported">Unsupported</span>     |
+|                  | ACL USERS                     | <span class="support unsupported">Unsupported</span>     |
+|                  | ACL WHOAMI                    | <span class="support unsupported">Unsupported</span>     |
+|                  | BGREWRITEAOF                  | <span class="support unsupported">Unsupported</span>     |
+|                  | BGSAVE                        | <span class="support supported">Fully supported</span>   |
+|                  | COMMAND                       | <span class="support supported">Fully supported</span>   |
+|                  | COMMAND COUNT                 | <span class="support supported">Fully supported</span>   |
+|                  | COMMAND DOCS                  | <span class="support unsupported">Unsupported</span>     |
+|                  | COMMAND GETKEYS               | <span class="support unsupported">Unsupported</span>     |
+|                  | COMMAND GETKEYSANDFLAGS       | <span class="support unsupported">Unsupported</span>     |
+|                  | COMMAND INFO                  | <span class="support unsupported">Unsupported</span>     |
+|                  | COMMAND LIST                  | <span class="support unsupported">Unsupported</span>     |
+|                  | CONFIG GET                    | <span class="support unsupported">Unsupported</span>     |
+|                  | CONFIG RESETSTAT              | <span class="support supported">Fully supported</span>   |
+|                  | CONFIG REWRITE                | <span class="support unsupported">Unsupported</span>     |
+|                  | CONFIG SET                    | <span class="support unsupported">Unsupported</span>     |
+|                  | DBSIZE                        | <span class="support supported">Fully supported</span>   |
+|                  | FAILOVER                      | <span class="support unsupported">Unsupported</span>     |
+|                  | FLUSHALL                      | <span class="support supported">Fully supported</span>   |
+|                  | FLUSHDB                       | <span class="support supported">Fully supported</span>   |
+|                  | INFO                          | <span class="support supported">Fully supported</span>   |
+|                  | LASTSAVE                      | <span class="support supported">Fully supported</span>   |
+|                  | LATENCY DOCTOR                | <span class="support unsupported">Unsupported</span>     |
+|                  | LATENCY GRAPH                 | <span class="support unsupported">Unsupported</span>     |
+|                  | LATENCY HISTOGRAM             | <span class="support unsupported">Unsupported</span>     |
+|                  | LATENCY HISTORY               | <span class="support unsupported">Unsupported</span>     |
+|                  | LATENCY LATEST                | <span class="support unsupported">Unsupported</span>     |
+|                  | LATENCY RESET                 | <span class="support unsupported">Unsupported</span>     |
+|                  | LOLWUT                        | <span class="support unsupported">Unsupported</span>     |
+|                  | MEMORY DOCTOR                 | <span class="support unsupported">Unsupported</span>     |
+|                  | MEMORY MALLOC-STATS           | <span class="support supported">Fully supported</span>   |
+|                  | MEMORY PURGE                  | <span class="support unsupported">Unsupported</span>     |
+|                  | MEMORY STATS                  | <span class="support unsupported">Unsupported</span>     |
+|                  | MEMORY USAGE                  | <span class="support unsupported">Unsupported</span>     |
+|                  | MODULE LIST                   | <span class="support unsupported">Unsupported</span>     |
+|                  | MODULE LOAD                   | <span class="support unsupported">Unsupported</span>     |
+|                  | MODULE LOADEX                 | <span class="support unsupported">Unsupported</span>     |
+|                  | MODULE UNLOAD                 | <span class="support unsupported">Unsupported</span>     |
+|                  | MONITOR                       | <span class="support supported">Fully supported</span>   |
+|                  | REPLICAOF                     | <span class="support supported">Fully supported</span>   |
+|                  | ROLE                          | <span class="support supported">Fully supported</span>   |
+|                  | SAVE                          | <span class="support supported">Fully supported</span>   |
+|                  | SHUTDOWN                      | <span class="support supported">Fully supported</span>   |
+|                  | SLAVEOF                       | <span class="support supported">Fully supported</span>   |
+|                  | SLOWLOG GET                   | <span class="support unsupported">Unsupported</span>     |
+|                  | SLOWLOG LEN                   | <span class="support unsupported">Unsupported</span>     |
+|                  | SLOWLOG RESET                 | <span class="support unsupported">Unsupported</span>     |
+|                  | SWAPDB                        | <span class="support unsupported">Unsupported</span>     |
+|                  | TIME                          | <span class="support supported">Fully supported</span>   |
+| Set              | SADD                          | <span class="support supported">Fully supported</span>   |
+|                  | SCARD                         | <span class="support supported">Fully supported</span>   |
+|                  | SDIFF                         | <span class="support supported">Fully supported</span>   |
+|                  | SDIFFSTORE                    | <span class="support supported">Fully supported</span>   |
+|                  | SINTER                        | <span class="support supported">Fully supported</span>   |
+|                  | SINTERCARD                    | <span class="support unsupported">Unsupported</span>     |
+|                  | SINTERSTORE                   | <span class="support supported">Fully supported</span>   |
+|                  | SISMEMBER                     | <span class="support supported">Fully supported</span>   |
+|                  | SMEMBERS                      | <span class="support supported">Fully supported</span>   |
+|                  | SMISMEMBER                    | <span class="support supported">Fully supported</span>   |
+|                  | SMOVE                         | <span class="support supported">Fully supported</span>   |
+|                  | SPOP                          | <span class="support supported">Fully supported</span>   |
+|                  | SRANDMEMBER                   | <span class="support unsupported">Unsupported</span>     |
+|                  | SREM                          | <span class="support supported">Fully supported</span>   |
+|                  | SSCAN                         | <span class="support supported">Fully supported</span>   |
+|                  | SUNION                        | <span class="support supported">Fully supported</span>   |
+|                  | SUNIONSTORE                   | <span class="support supported">Fully supported</span>   |
+| Sorted Set       | BZMPOP                        | <span class="support unsupported">Unsupported</span>     |
+|                  | BZPOPMZX                      | <span class="support supported">Fully supported</span>   |
+|                  | BZPOPMIN                      | <span class="support supported">Fully supported</span>   |
+|                  | ZADD                          | <span class="support supported">Fully supported</span>   |
+|                  | ZCARD                         | <span class="support supported">Fully supported</span>   |
+|                  | ZCOUNT                        | <span class="support supported">Fully supported</span>   |
+|                  | ZDIFF                         | <span class="support unsupported">Unsupported</span>     |
+|                  | ZDIFFSTORE                    | <span class="support unsupported">Unsupported</span>     |
+|                  | ZINCRBY                       | <span class="support supported">Fully supported</span>   |
+|                  | ZINTER                        | <span class="support unsupported">Unsupported</span>     |
+|                  | ZINTERCARD                    | <span class="support supported">Fully supported</span>   |
+|                  | ZINTERSTORE                   | <span class="support supported">Fully supported</span>   |
+|                  | ZLEXCOUNT                     | <span class="support supported">Fully supported</span>   |
+|                  | ZMPOP                         | <span class="support unsupported">Unsupported</span>     |
+|                  | ZMSCORE                       | <span class="support supported">Fully supported</span>   |
+|                  | ZPOPMAX                       | <span class="support supported">Fully supported</span>   |
+|                  | ZPOPMIN                       | <span class="support supported">Fully supported</span>   |
+|                  | ZRANDMEMBER                   | <span class="support unsupported">Unsupported</span>     |
+|                  | ZRANGE                        | <span class="support supported">Fully supported</span>   |
+|                  | ZRANGEBYLEX                   | <span class="support supported">Fully supported</span>   |
+|                  | ZRANGEBYSCORE                 | <span class="support supported">Fully supported</span>   |
+|                  | ZRANK                         | <span class="support supported">Fully supported</span>   |
+|                  | ZREM                          | <span class="support supported">Fully supported</span>   |
+|                  | ZREMRANGEBYLEX                | <span class="support supported">Fully supported</span>   |
+|                  | ZREMRANGEBYRANK               | <span class="support supported">Fully supported</span>   |
+|                  | ZREMRANGEBYSCORE              | <span class="support supported">Fully supported</span>   |
+|                  | ZREVRANGE                     | <span class="support supported">Fully supported</span>   |
+|                  | ZREVRANGEBYLEX                | <span class="support supported">Fully supported</span>   |
+|                  | ZREVRANGEBYSCORE              | <span class="support supported">Fully supported</span>   |
+|                  | ZREVRANK                      | <span class="support supported">Fully supported</span>   |
+|                  | ZSCAN                         | <span class="support supported">Fully supported</span>   |
+|                  | ZSCORE                        | <span class="support supported">Fully supported</span>   |
+|                  | ZUNION                        | <span class="support supported">Fully supported</span>   |
+|                  | ZUNIONSTORE                   | <span class="support supported">Fully supported</span>   |
+| Stream           | XAUTOCLAIM                    | <span class="support unsupported">Unsupported</span>     |
+|                  | XCLAIM                        | TBD                                                      |
+|                  | XREAD                         | <span class="support supported">Fully supported</span>   |
+|                  | XADD                          | <span class="support supported">Fully supported</span>   |
+|                  | XPENDING                      | TBD                                                      |
+|                  | XGROUP                        | <span class="support partial">Partially supported</span> |
+|                  | XRANGE                        | <span class="support supported">Fully supported</span>   |
+|                  | XSETID                        | <span class="support supported">Fully supported</span>   |
+|                  | XREVRANGE                     | <span class="support supported">Fully supported</span>   |
+|                  | XREADGROUP                    | <span class="support unsupported">Unsupported</span>     |
+|                  | XDEL                          | <span class="support supported">Fully supported</span>   |
+|                  | XINFO                         | <span class="support partial">Partially supported</span> |
+|                  | XACK                          | <span class="support unsupported">Unsupported</span>     |
+|                  | XTRIM                         | <span class="support partial">Partially supported</span> |
+| String           | APPEND                        | <span class="support supported">Fully supported</span>   |
+|                  | DECR                          | <span class="support supported">Fully supported</span>   |
+|                  | DECRBY                        | <span class="support supported">Fully supported</span>   |
+|                  | GET                           | <span class="support supported">Fully supported</span>   |
+|                  | GETDEL                        | <span class="support supported">Fully supported</span>   |
+|                  | GETEX                         | <span class="support supported">Fully supported</span>   |
+|                  | GETRANGE                      | <span class="support supported">Fully supported</span>   |
+|                  | GETSET                        | <span class="support supported">Fully supported</span>   |
+|                  | INCR                          | <span class="support supported">Fully supported</span>   |
+|                  | INCRBY                        | <span class="support supported">Fully supported</span>   |
+|                  | INCRBYFLOAT                   | <span class="support supported">Fully supported</span>   |
+|                  | LCS                           | <span class="support unsupported">Unsupported</span>     |
+|                  | MGET                          | <span class="support supported">Fully supported</span>   |
+|                  | MSET                          | <span class="support supported">Fully supported</span>   |
+|                  | MSETNX                        | <span class="support supported">Fully supported</span>   |
+|                  | PSETEX                        | <span class="support supported">Fully supported</span>   |
+|                  | SET                           | <span class="support supported">Fully supported</span>   |
+|                  | SETEX                         | <span class="support supported">Fully supported</span>   |
+|                  | SETNX                         | <span class="support supported">Fully supported</span>   |
+|                  | SETRANGE                      | <span class="support supported">Fully supported</span>   |
+|                  | STRLEN                        | <span class="support supported">Fully supported</span>   |
+|                  | SUBSTR                        | <span class="support supported">Fully supported</span>   |
+| Transactions     | DISCARD                       | <span class="support supported">Fully supported</span>   |
+|                  | EXEC                          | <span class="support supported">Fully supported</span>   |
+|                  | MULTI                         | <span class="support supported">Fully supported</span>   |
+|                  | UNWATCH                       | <span class="support supported">Fully supported</span>   |
+|                  | WATCH                         | <span class="support supported">Fully supported</span>   |
+| Bloom Filter     | TBD                           | <span class="support unsupported">Unsupported</span>     |
+| Cuckoo Filter    | TBD                           | <span class="support unsupported">Unsupported</span>     |
+| Count-min Sketch | TBD                           | <span class="support unsupported">Unsupported</span>     |
+| Graph            | TBD                           | <span class="support unsupported">Unsupported</span>     |
+| JSON             | ARRAPPEND                     | <span class="support supported">Fully supported</span>   |
+|                  | ARRINDEX                      | <span class="support supported">Fully supported</span>   |
+|                  | ARRINSERT                     | <span class="support supported">Fully supported</span>   |
+|                  | ARRLEN                        | <span class="support supported">Fully supported</span>   |
+|                  | ARRPOP                        | <span class="support supported">Fully supported</span>   |
+|                  | ARRTRIM                       | <span class="support supported">Fully supported</span>   |
+|                  | CLEAR                         | <span class="support supported">Fully supported</span>   |
+|                  | DEBUG                         | <span class="support supported">Fully supported</span>   |
+|                  | DEBUG MEMORY                  | <span class="support unsupported">Unsupported</span>     |
+|                  | DEL                           | <span class="support supported">Fully supported</span>   |
+|                  | FORGET                        | <span class="support supported">Fully supported</span>   |
+|                  | GET                           | <span class="support supported">Fully supported</span>   |
+|                  | MERGE                         | <span class="support unsupported">Unsupported</span>     |
+|                  | MGET                          | <span class="support supported">Fully supported</span>   |
+|                  | MSET                          | <span class="support unsupported">Unsupported</span>     |
+|                  | NUMINCRBY                     | <span class="support supported">Fully supported</span>   |
+|                  | NUMMULTBY                     | <span class="support supported">Fully supported</span>   |
+|                  | OBJKEYS                       | <span class="support supported">Fully supported</span>   |
+|                  | OBJLEN                        | <span class="support supported">Fully supported</span>   |
+|                  | RESP                          | <span class="support supported">Fully supported</span>   |
+|                  | SET                           | <span class="support supported">Fully supported</span>   |
+|                  | STRAPPEND                     | <span class="support supported">Fully supported</span>   |
+|                  | STRLEN                        | <span class="support supported">Fully supported</span>   |
+|                  | TOGGLE                        | <span class="support supported">Fully supported</span>   |
+|                  | TYPE                          | <span class="support supported">Fully supported</span>   |
+| Search           | FT.CREATE                     | <span class="support unsupported">Unsupported</span>     |
+|                  | FT.SEARCH                     | <span class="support unsupported">Unsupported</span>     |
+| Auto Suggest     | TBD                           | <span class="support unsupported">Unsupported</span>     |
+| T-Digest         | TBD                           | <span class="support unsupported">Unsupported</span>     |
+| Time Series      | TBD                           | <span class="support unsupported">Unsupported</span>     |
+| Top-K            | TBD                           | <span class="support unsupported">Unsupported</span>     |
