@@ -193,6 +193,10 @@ a > svg[class*="ExternalLink"] {
   opacity: 0.9;
 }
 
+.family {
+  font-weight: 500;
+}
+
 .command {
   white-space: nowrap;
   font-family: monospace;

@@ -13,36 +13,6 @@ sidebar_position: 0
 |                                              | <span class="command">BITPOS</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GETBIT</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SETBIT</span>                        | <span class="support supported">Fully supported</span>   |
-| <span class="family">Cluster</span>          | <span class="command">ASKING</span>                        | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER ADDSLOTS</span>              | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER ADDSLOTSRANGE</span>         | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER BUMPEPOCH</span>             | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER COUNT-FAILURE-REPORTS</span> | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER COUNTKEYSINSLOT</span>       | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER DELSLOTS</span>              | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER DELSLOTRANGE</span>          | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER FAILOVER</span>              | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER FLUSHSLOTS</span>            | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER FORGET</span>                | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER GETKEYSINSLOT</span>         | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER INFO</span>                  | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">CLUSTER KEYSLOT</span>               | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER LINKS</span>                 | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER MEET</span>                  | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER MYID</span>                  | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER MYSHARDID</span>             | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER NODES</span>                 | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">BICLUSTER REPLICASTCOUNT</span>      | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER REPLICATE</span>             | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER RESET</span>                 | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER SAVECONFIG</span>            | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER SET-CONFIG-EPOCH</span>      | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER SETSLOT</span>               | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER SHARDS</span>                | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">CLUSTER SLAVES</span>                | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLUSTER SLOTS</span>                 | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">READONLY</span>                      | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">READWRITE</span>                     | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Connection</span>       | <span class="command">AUTH</span>                          | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">CLIENT CACHING</span>                | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT GETNAME</span>                | <span class="support supported">Fully supported</span>   |
@@ -99,16 +69,6 @@ sidebar_position: 0
 |                                              | <span class="command">UNLINK</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">WAIT</span>                          | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">WAITAOF</span>                       | <span class="support unsupported">Unsupported</span>     |
-| <span class="family">Geo</span>              | <span class="command">GEOADD</span>                        | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEODIST</span>                       | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEOHASH</span>                       | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEOPOS</span>                        | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEORADIUS</span>                     | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEORADIUS_RO</span>                  | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEORADIUSBYMEMBER</span>             | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEORADIUSBYMEMBER_RO</span>          | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEOSEARCH</span>                     | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEOSEARCHSTORE</span>                | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Hash</span>             | <span class="command">HDEL</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HEXISTS</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HGET</span>                          | <span class="support supported">Fully supported</span>   |
@@ -362,3 +322,43 @@ sidebar_position: 0
 | <span class="family">T-Digest</span>         | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Time Series</span>      | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Top-K</span>            | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">Cluster</span>          | <span class="command">ASKING</span>                        | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER ADDSLOTS</span>              | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER ADDSLOTSRANGE</span>         | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER BUMPEPOCH</span>             | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER COUNT-FAILURE-REPORTS</span> | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER COUNTKEYSINSLOT</span>       | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER DELSLOTS</span>              | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER DELSLOTRANGE</span>          | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER FAILOVER</span>              | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER FLUSHSLOTS</span>            | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER FORGET</span>                | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER GETKEYSINSLOT</span>         | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER INFO</span>                  | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">CLUSTER KEYSLOT</span>               | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER LINKS</span>                 | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER MEET</span>                  | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER MYID</span>                  | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER MYSHARDID</span>             | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER NODES</span>                 | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">BICLUSTER REPLICASTCOUNT</span>      | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER REPLICATE</span>             | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER RESET</span>                 | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER SAVECONFIG</span>            | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER SET-CONFIG-EPOCH</span>      | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER SETSLOT</span>               | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER SHARDS</span>                | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">CLUSTER SLAVES</span>                | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLUSTER SLOTS</span>                 | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">READONLY</span>                      | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">READWRITE</span>                     | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">Geo</span>              | <span class="command">GEOADD</span>                        | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEODIST</span>                       | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEOHASH</span>                       | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEOPOS</span>                        | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEORADIUS</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEORADIUS_RO</span>                  | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEORADIUSBYMEMBER</span>             | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEORADIUSBYMEMBER_RO</span>          | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEOSEARCH</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEOSEARCHSTORE</span>                | <span class="support unsupported">Unsupported</span>     |
