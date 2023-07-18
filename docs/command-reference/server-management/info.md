@@ -143,7 +143,7 @@ Here is the meaning of all fields in the **server** section:
 Here is the meaning of all fields in the **clients** section:
 
 *   `connected_clients`: Number of client connections (excluding connections
-    from replicas)
+     from replicas)
 *   `client_read_buf_capacity`: Client read buffer size in bytes.
 *   `blocked_clients`: Number of clients pending on a blocking call (`BLPOP`,
     `BRPOP`, `BRPOPLPUSH`, `BLMOVE`, `BZPOPMIN`, `BZPOPMAX`)
@@ -151,12 +151,12 @@ Here is the meaning of all fields in the **clients** section:
 Here is the meaning of all fields in the **memory** section:
 
 *   `used_memory`: Total number of bytes allocated by Dragonfly using its
-    allocator
+     allocator
 *   `used_memory_human`: Human readable representation of previous value
 *   `used_memory_peak`: Peak memory consumed by Dragonfly (in bytes)
 *   `used_memory_rss`: Number of bytes that Dragonfly allocated as seen by the
-    operating system (a.k.a resident set size). This is the number reported by
-    tools such as `top(1)` and `ps(1)`
+     operating system (a.k.a resident set size). This is the number reported by
+     tools such as `top(1)` and `ps(1)`
 *   `used_memory_rss_human`: Human readable representation of previous value
 *   `maxmemory`: The value of the `maxmemory` configuration directive
 *   `maxmemory_human`: Human readable representation of previous value
@@ -180,7 +180,7 @@ Here is the meaning of all fields in the **persistence** section:
 Here is the meaning of all fields in the **stats** section:
 
 *   `total_connections_received`: Total number of connections accepted by the
-    server
+     server
 *   `total_commands_processed`: Total number of commands processed by the server
 *   `instantaneous_ops_per_sec`: Number of commands processed per second
 *   `total_pipelined_commands`: Total number of commands pipelined to the server
@@ -188,7 +188,8 @@ Here is the meaning of all fields in the **stats** section:
 *   `total_net_output_bytes`: The total number of bytes written to the network
 *   `instantaneous_input_kbps`: The network's read rate per second in KB/sec
 *   `instantaneous_output_kbps`: The network's write rate per second in KB/sec
-*   `rejected_connections`: Number of connections rejected because of `maxclients` limit
+*   `rejected_connections`: Number of connections rejected because of
+     `maxclients` limit
 *   `expired_keys`: Total number of key expiration events
 *   `evicted_keys`: Number of evicted keys due to `maxmemory` limit
 *   `keyspace_hits`: Number of successful lookup of keys in the main dictionary
@@ -208,7 +209,7 @@ If the instance is a replica, these additional fields are provided:
 *   `master_port`: Master listening TCP port
 *   `master_link_status`: Status of the link (up/down)
 *   `master_last_io_seconds_ago`: Number of seconds since the last interaction
-    with master
+     with master
 *   `master_sync_in_progress`: Indicate the master is syncing to the replica
 
 For each replica, the following line is added:
@@ -225,11 +226,11 @@ Here is the meaning of all fields in the **cpu** section:
 *   `used_cpu_user_main_thread`: User CPU consumed by the Dragonfly server main thread
 
 The **commandstats** section provides statistics based on the command type,
-including the number of calls that reached command execution (not rejected),
-the total CPU time consumed by these commands, the average CPU consumed
-per command execution, the number of rejected calls
-(errors prior command execution), and the number of failed calls
-(errors within the command execution).
+ including the number of calls that reached command execution (not rejected),
+ the total CPU time consumed by these commands, the average CPU consumed
+ per command execution, the number of rejected calls
+ (errors prior command execution), and the number of failed calls
+ (errors within the command execution).
 
 For each command type, the following line is added:
 
