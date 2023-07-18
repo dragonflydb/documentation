@@ -144,7 +144,7 @@ Here is the meaning of all fields in the **clients** section:
 
 *   `connected_clients`: Number of client connections (excluding connections
      from replicas)
-*   `client_read_buf_capacity`: Client read buffer size in bytes.
+*   `client_read_buf_capacity`: Client read buffer size in bytes
 *   `blocked_clients`: Number of clients pending on a blocking call (`BLPOP`,
      `BRPOP`, `BRPOPLPUSH`, `BLMOVE`, `BZPOPMIN`, `BZPOPMAX`)
 
