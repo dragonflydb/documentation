@@ -10,7 +10,37 @@ description: Get information and statistics about the server
 
 **Time complexity:** O(1)
 
-The `dragonfly> INFO
+The `INFO` command returns information and statistics about the server in a
+format that is simple to parse by computers and easy to read by humans.
+
+The optional parameter can be used to select a specific section of information:
+
+*   `server`: General information about the Dragonfly server
+*   `clients`: Client connections section
+*   `memory`: Memory consumption related information
+*   `persistence`: Persistence related information
+*   `stats`: General statistics
+*   `replication`: Master/replica replication information
+*   `cpu`: CPU consumption statistics
+*   `commandstats`: Command statistics
+*   `keyspace`: Database related statistics
+*   `errorstats`: Error statistics
+
+It can also take the following values:
+
+*   `all`: Return all sections (excluding module generated ones)
+
+When no parameter is provided, the `default` option is assumed.
+
+## Return
+
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): as a collection of text lines.
+
+Lines can contain a section name (starting with a # character) or a property.
+All the properties are in the form of `field:value` terminated by `\r\n`.
+
+``` bash
+dragonfly> INFO
 # Server
 redis_version:df-dev
 redis_mode:standalone
@@ -91,38 +121,6 @@ used_cpu_sys_children:0.0
 used_cpu_user_children:0.0
 used_cpu_sys_main_thread:0.32040
 used_cpu_user_main_thread:4.681903
-
-"` command returns information and statistics about the server in a
-format that is simple to parse by computers and easy to read by humans.
-
-The optional parameter can be used to select a specific section of information:
-
-*   `server`: General information about the Dragonfly server
-*   `clients`: Client connections section
-*   `memory`: Memory consumption related information
-*   `persistence`: Persistence related information
-*   `stats`: General statistics
-*   `replication`: Master/replica replication information
-*   `cpu`: CPU consumption statistics
-*   `commandstats`: Command statistics
-*   `keyspace`: Database related statistics
-*   `errorstats`: Error statistics
-
-It can also take the following values:
-
-*   `all`: Return all sections (excluding module generated ones)
-
-When no parameter is provided, the `default` option is assumed.
-
-## Return
-
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): as a collection of text lines.
-
-Lines can contain a section name (starting with a # character) or a property.
-All the properties are in the form of `field:value` terminated by `\r\n`.
-
-```shell
-INFO
 ```
 
 ## Notes
@@ -145,20 +143,20 @@ Here is the meaning of all fields in the **server** section:
 Here is the meaning of all fields in the **clients** section:
 
 *   `connected_clients`: Number of client connections (excluding connections
-     from replicas)
-*    `client_read_buf_capacity`: TODO
+    from replicas)
+*   `client_read_buf_capacity`: Client read buffer size in bytes.
 *   `blocked_clients`: Number of clients pending on a blocking call (`BLPOP`,
-     `BRPOP`, `BRPOPLPUSH`, `BLMOVE`, `BZPOPMIN`, `BZPOPMAX`)
+    `BRPOP`, `BRPOPLPUSH`, `BLMOVE`, `BZPOPMIN`, `BZPOPMAX`)
 
 Here is the meaning of all fields in the **memory** section:
 
 *   `used_memory`: Total number of bytes allocated by Dragonfly using its
-     allocator
+    allocator
 *   `used_memory_human`: Human readable representation of previous value
 *   `used_memory_peak`: Peak memory consumed by Dragonfly (in bytes)
 *   `used_memory_rss`: Number of bytes that Dragonfly allocated as seen by the
-     operating system (a.k.a resident set size). This is the number reported by
-     tools such as `top(1)` and `ps(1)`
+    operating system (a.k.a resident set size). This is the number reported by
+    tools such as `top(1)` and `ps(1)`
 *   `used_memory_rss_human`: Human readable representation of previous value
 *   `maxmemory`: The value of the `maxmemory` configuration directive
 *   `maxmemory_human`: Human readable representation of previous value
@@ -182,16 +180,15 @@ Here is the meaning of all fields in the **persistence** section:
 Here is the meaning of all fields in the **stats** section:
 
 *   `total_connections_received`: Total number of connections accepted by the
-     server
+    server
 *   `total_commands_processed`: Total number of commands processed by the server
 *   `instantaneous_ops_per_sec`: Number of commands processed per second
-*   `total_pipelined_commands`: TODO
+*   `total_pipelined_commands`: Total number of commands pipelined to the server
 *   `total_net_input_bytes`: The total number of bytes read from the network
 *   `total_net_output_bytes`: The total number of bytes written to the network
 *   `instantaneous_input_kbps`: The network's read rate per second in KB/sec
 *   `instantaneous_output_kbps`: The network's write rate per second in KB/sec
-*   `rejected_connections`: Number of connections rejected because of
-     `maxclients` limit
+*   `rejected_connections`: Number of connections rejected because of `maxclients` limit
 *   `expired_keys`: Total number of key expiration events
 *   `evicted_keys`: Number of evicted keys due to `maxmemory` limit
 *   `keyspace_hits`: Number of successful lookup of keys in the main dictionary
@@ -211,7 +208,7 @@ If the instance is a replica, these additional fields are provided:
 *   `master_port`: Master listening TCP port
 *   `master_link_status`: Status of the link (up/down)
 *   `master_last_io_seconds_ago`: Number of seconds since the last interaction
-     with master
+    with master
 *   `master_sync_in_progress`: Indicate the master is syncing to the replica
 
 For each replica, the following line is added:
@@ -228,11 +225,11 @@ Here is the meaning of all fields in the **cpu** section:
 *   `used_cpu_user_main_thread`: User CPU consumed by the Dragonfly server main thread
 
 The **commandstats** section provides statistics based on the command type,
- including the number of calls that reached command execution (not rejected),
- the total CPU time consumed by these commands, the average CPU consumed
- per command execution, the number of rejected calls
- (errors prior command execution), and the number of failed calls
- (errors within the command execution).
+including the number of calls that reached command execution (not rejected),
+the total CPU time consumed by these commands, the average CPU consumed
+per command execution, the number of rejected calls
+(errors prior command execution), and the number of failed calls
+(errors within the command execution).
 
 For each command type, the following line is added:
 
