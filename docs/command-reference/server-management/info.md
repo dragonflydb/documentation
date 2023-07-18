@@ -146,7 +146,7 @@ Here is the meaning of all fields in the **clients** section:
      from replicas)
 *   `client_read_buf_capacity`: Client read buffer size in bytes.
 *   `blocked_clients`: Number of clients pending on a blocking call (`BLPOP`,
-    `BRPOP`, `BRPOPLPUSH`, `BLMOVE`, `BZPOPMIN`, `BZPOPMAX`)
+     `BRPOP`, `BRPOPLPUSH`, `BLMOVE`, `BZPOPMIN`, `BZPOPMAX`)
 
 Here is the meaning of all fields in the **memory** section:
 
