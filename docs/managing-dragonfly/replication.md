@@ -41,4 +41,4 @@ This will stop the instance from replicating the primary server but will not dis
 
 ## Monitoring Lag
 
-Dragonfly defines the replication lag as the maximum amount of unacknowledged database changes over all the shards. This metric is calculated by the master instance and is visible both as the `dfly_connected_replica_lag_records` field in the [prometheus metrics](./monitoring.md), and through the `INFO REPLICATION` command.
+Dragonfly defines the replication lag as the maximal amount of unacknowledged database among all shards. This metric is calculated by the master instance and is visible both as the `dfly_connected_replica_lag_records` field in the [prometheus metrics](./monitoring.md), and through the `INFO REPLICATION` command.
