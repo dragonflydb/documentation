@@ -42,7 +42,7 @@ All the properties are in the form of `field:value` terminated by `\r\n`.
 ``` bash
 dragonfly> INFO
 # Server
-redis_version:df-dev
+dragonfly_version:df-dev
 redis_mode:standalone
 arch_bits:64
 multiplexing_api:iouring
@@ -52,7 +52,7 @@ uptime_in_days:0
 
 # Clients
 connected_clients:1
-client_read_buf_capacity:256
+client_read_buffer_bytes:256
 blocked_clients:0
 
 # Memory
@@ -132,7 +132,7 @@ missing fields.
 
 Here is the meaning of all fields in the **server** section:
 
-*   `redis_version`: Version of the Dragonfly server
+*   `dragonfly_version`: Version of the Dragonfly server
 *   `redis_mode`: The server's mode ("standalone", "sentinel" or "cluster")
 *   `arch_bits`: Architecture (32 or 64 bits)
 *   `multiplexing_api`: Event loop mechanism used by Dragonfly
@@ -144,7 +144,7 @@ Here is the meaning of all fields in the **clients** section:
 
 *   `connected_clients`: Number of client connections (excluding connections
      from replicas)
-*   `client_read_buf_capacity`: Client read buffer size in bytes
+*   `client_read_buffer_bytes`: Client read buffer size in bytes
 *   `blocked_clients`: Number of clients pending on a blocking call (`BLPOP`,
      `BRPOP`, `BRPOPLPUSH`, `BLMOVE`, `BZPOPMIN`, `BZPOPMAX`)
 
