@@ -1,14 +1,14 @@
 # Using Dragonfly With TLS
 
 If you deploy Dragonfly over an endpoint that's connected to the internet, you
-probably need to make sure your data can not leak or be intercepted.
-In order to support that, dragonfly supports serving your data over TLS, an ISO
+probably need to protect your data from leaking or being intercepted.
+In order to support that, dragonfly can serve your data over TLS, an ISO
 standardized protocol that provides encryption and authentication. 
 
 In this tutorial we'll show how easy it is to configure Dragonfly to use TLS!
 To get a valid TLS certificate, we're going to assume that you have a shell open
 on an Ubuntu server and a DNS address that points to this server. This DNS
-address will then be used to server our database.
+address will then be used to server our datastore.
 
 ## Getting a certificate
 
@@ -32,7 +32,7 @@ If all went well, the private key and the certificate are now located in `/etc/l
 
 ## Running Dragonfly
 
-Choose a password for authenticating users to the database:
+Choose a password for authenticating users to the datastore:
 
 `export DFLY_PASSWORD=<???>`
 
@@ -46,7 +46,7 @@ $ sudo ./dragonfly \
   --requirepass=${DFLY_PASSWORD}
 ```
 
-And connect to see that the database is working:
+And connect to see that the datastore is working:
 
 ```bash
 $ redis-cli --tls -h dfly.scalable-meteorite-collections.com -a ${DFLY_PASSWORD}
