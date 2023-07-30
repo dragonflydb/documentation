@@ -44,13 +44,12 @@ This will stop the instance from replicating the primary server but will not dis
 
 Dragonfly supports replication over TLS. To make it work you need:
 
-1. A valid certificate issued by a CA. We recommend [let's encrypt](https://letsencrypt.org/).
-2. An x509 server certificate and private key.
-3. An x509 client certificate and private key.
+1. To configure your Dragonfly instance to use TLS. That includes getting or generating a server certificate.
+2. To choose a method of authentication between the replica and the master. This can be either with a password or with client certificates.
 
 Also note that we only support `.pem` files, any other format won't work with dragonfly.
 
-For the second and third step you can use `OpenSSL` lib to generate the required files. For example, the process of generating a server certificate is:
+You can use `OpenSSL` to generate the required certificates. For example, the process of generating a server certificate and signing it with a self-managed CA is as follows:
 
 Generate Dragonfly's private key and certificate signing request (CSR):
 ```bash
@@ -69,53 +68,54 @@ related to the certificate. The attributes of the subject are key-value pairs an
 The `-nodes` part means `no DES`, that is, do not encrypt the private key. For production use cases,
 you should always consider encrypting private keys.
 
-Finally, you should use CA's private key to sign dragonfly's CSR and get back the signed certificate
+Finally, you should use the CA's private key to sign dragonfly's CSR and get back the signed certificate
 ```bash
 openssl x509 -req -in server-req.pem -days 365 -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem
 ```
 
-The `ca-cert.pem` and `ca-key.pem` are retrieved on the first step described above.
+The `ca-cert.pem` and `ca-key.pem` can be generated like in the first step described above. The same process applies for generating client keys.
 
-The same process applies for generating client keys.
+When generating private keys, always be mindful about storing and provisoning them securely!
 
 ## Secure replication with TLS
 
 To enable TLS for dragonfly, you must supply the following arguments:
 
 ```bash
-./dragonfly --tls --tls_key_file=server-key.pem --tls_cert_file=server-cert.pem --tls_ca_cert_file=ca-cert.pem --tls_replication=true
+dragonfly --tls --tls_key_file=server-key.pem --tls_cert_file=server-cert.pem --tls_ca_cert_file=ca-cert.pem
 ```
 
 Start the replica on a different port (in this example the port is 6380, and the host is local host):
 ```bash
-./dragonfly --tls --tls_key_file=server-key.pem --tls_cert_file=server-cert.pem --tls_ca_cert_file=ca-cert.pem --tls_replication=true --port 6380
+dragonfly --tls --tls_key_file=client-key.pem --tls_cert_file=client-cert.pem --tls_ca_cert_file=ca-cert.pem --tls_replication=true --port 6380
 ```
 
-Finally, connect to the replica and initiate a `REPLICAOF` command:
+Finally, connect to the replica and issue a `REPLICAOF` command:
 
 ```bash
 redis-cli --tls --key ./client-key.pem --cert ./client-cert.pem --cacert ./ca-cert.pem -p 6380
 
 REPLICAOF LOCALHOST 6379
 ```
-Now, replication works over TLS and is secure.
+Now, replication works over TLS and is secure. This example assumes that `ca-cert.pem` is a root certificate
+used to authenticate both the server and the client. For example, if the server is using a certificate
+signed by a public CA this flag should not be passed as an argument to the replica.
 
 ## Non TLS connections over admin port on TLS configured dragonfly
 
-Sometimes, it might be the case, that both master and replica are on the same private network. For that case, you might still want to have TLS for incoming connections outside of the private network without having the master and replica communicating over TLS (since they are part of the same private network and the connection is secured). For cases like that you must enable non-tls replication on admin port:
-
+Sometimes, it might be the case that both the master and the replica are on the same private network. For that case, you might want TLS for connections outside of the private network but have plaintext communication over the more secure private network. In cases like this you can disable tls replication specifically on the admin port:
 
 Start master with:
 ```bash
-./dragonfly --tls --tls_key_file=server-key.pem --tls_cert_file=server-cert.pem --tls_ca_cert_file=ca-cert.pem -admin_port=6380 --no_tls_on_admin_port=true
+dragonfly --tls --tls_key_file=server-key.pem --tls_cert_file=server-cert.pem --tls_ca_cert_file=ca-cert.pem -admin_port=6380 --no_tls_on_admin_port=true
 ```
 
 Start replica with:
 ```bash
-./dragonfly --tls --tls_key_file=server-key.pem --tls_cert_file=server-cert.pem --tls_ca_cert_file=ca-cert.pem --tls_replication=true --port 6381 -admin_port=6382 --no_tls_on_admin_port=true
+dragonfly --tls --tls_key_file=client-key.pem --tls_cert_file=client-cert.pem --tls_ca_cert_file=ca-cert.pem --port 6381 -admin_port=6382
 ```
 
-And then initiate a `REPLICAOF` command through the admin port via:
+And then issue a `REPLICAOF` command through the admin port via:
 
 ```bash
 redis-cli -p 6382
