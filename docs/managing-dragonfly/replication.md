@@ -87,7 +87,7 @@ dragonfly --tls --tls_key_file=server-key.pem --tls_cert_file=server-cert.pem --
 
 Start the replica on a different port (in this example the port is 6380, and the host is local host):
 ```bash
-dragonfly --tls --tls_key_file=client-key.pem --tls_cert_file=client-cert.pem --tls_ca_cert_file=ca-cert.pem --tls_replication=true --port 6380
+dragonfly --tls --tls_key_file=replica-client-key.pem --tls_cert_file=replica-client-cert.pem --tls_ca_cert_file=ca-cert.pem --tls_replication=true --port 6380
 ```
 
 Finally, connect to the replica and issue a `REPLICAOF` command:
@@ -112,7 +112,7 @@ dragonfly --tls --tls_key_file=server-key.pem --tls_cert_file=server-cert.pem --
 
 Start replica with:
 ```bash
-dragonfly --tls --tls_key_file=client-key.pem --tls_cert_file=client-cert.pem --tls_ca_cert_file=ca-cert.pem --port 6381 -admin_port=6382
+dragonfly --tls --tls_key_file=replica-client-key.pem --tls_cert_file=replica-client-cert.pem --tls_ca_cert_file=ca-cert.pem --port 6381 -admin_port=6382
 ```
 
 And then issue a `REPLICAOF` command through the admin port via:
