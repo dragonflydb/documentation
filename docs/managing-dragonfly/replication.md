@@ -75,7 +75,7 @@ openssl x509 -req -in server-req.pem -days 365 -CA ca-cert.pem -CAkey ca-key.pem
 
 The `ca-cert.pem` and `ca-key.pem` can be generated like in the first step described above. The same process applies for generating client keys.
 
-When generating private keys, always be mindful about storing and provisoning them securely!
+When generating private keys, always be mindful about storing and provisioning them securely!
 
 ## Secure replication with TLS
 
