@@ -39,7 +39,6 @@ replicaof no one
 
 This will stop the instance from replicating the primary server but will not discard the dataset it has already replicated. This syntax is useful in cases where the original primary fails. After running `replicaof no one` on a replica of the failed primary, the former replica can be used as the new primary and have its own replicas as a failsafe.
 
-
 ## Secure replication with TLS -- Prerequisites
 
 Dragonfly supports replication over TLS. To make it work you need:
@@ -124,3 +123,7 @@ REPLICAOF HOST 6380
 ```
 
 from now on the replica *does not* communicate over TLS but incoming connections on ports `6379, 6381` require TLS and are considered secure.
+
+## Monitoring Lag
+
+Dragonfly defines the replication lag as the maximal amount of unacknowledged database among all shards. This metric is calculated by the master instance and is visible both as the `dfly_connected_replica_lag_records` field in the [prometheus metrics](./monitoring.md), and through the `INFO REPLICATION` command.

@@ -10,9 +10,39 @@ description: Get information and statistics about the server
 
 **Time complexity:** O(1)
 
-The `dragonfly> INFO
+The `INFO` command returns information and statistics about the server in a
+format that is simple to parse by computers and easy to read by humans.
+
+The optional parameter can be used to select a specific section of information:
+
+*   `server`: General information about the Dragonfly server
+*   `clients`: Client connections section
+*   `memory`: Memory consumption related information
+*   `persistence`: Persistence related information
+*   `stats`: General statistics
+*   `replication`: Master/replica replication information
+*   `cpu`: CPU consumption statistics
+*   `commandstats`: Command statistics
+*   `keyspace`: Database related statistics
+*   `errorstats`: Error statistics
+
+It can also take the following values:
+
+*   `all`: Return all sections (excluding module generated ones)
+
+When no parameter is provided, the `default` option is assumed.
+
+## Return
+
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): as a collection of text lines.
+
+Lines can contain a section name (starting with a # character) or a property.
+All the properties are in the form of `field:value` terminated by `\r\n`.
+
+``` bash
+dragonfly> INFO
 # Server
-redis_version:df-dev
+dragonfly_version:df-dev
 redis_mode:standalone
 arch_bits:64
 multiplexing_api:iouring
@@ -22,7 +52,7 @@ uptime_in_days:0
 
 # Clients
 connected_clients:1
-client_read_buf_capacity:256
+client_read_buffer_bytes:256
 blocked_clients:0
 
 # Memory
@@ -91,38 +121,6 @@ used_cpu_sys_children:0.0
 used_cpu_user_children:0.0
 used_cpu_sys_main_thread:0.32040
 used_cpu_user_main_thread:4.681903
-
-"` command returns information and statistics about the server in a
-format that is simple to parse by computers and easy to read by humans.
-
-The optional parameter can be used to select a specific section of information:
-
-*   `server`: General information about the Dragonfly server
-*   `clients`: Client connections section
-*   `memory`: Memory consumption related information
-*   `persistence`: Persistence related information
-*   `stats`: General statistics
-*   `replication`: Master/replica replication information
-*   `cpu`: CPU consumption statistics
-*   `commandstats`: Command statistics
-*   `keyspace`: Database related statistics
-*   `errorstats`: Error statistics
-
-It can also take the following values:
-
-*   `all`: Return all sections (excluding module generated ones)
-
-When no parameter is provided, the `default` option is assumed.
-
-## Return
-
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): as a collection of text lines.
-
-Lines can contain a section name (starting with a # character) or a property.
-All the properties are in the form of `field:value` terminated by `\r\n`.
-
-```shell
-INFO
 ```
 
 ## Notes
@@ -134,7 +132,7 @@ missing fields.
 
 Here is the meaning of all fields in the **server** section:
 
-*   `redis_version`: Version of the Dragonfly server
+*   `dragonfly_version`: Version of the Dragonfly server
 *   `redis_mode`: The server's mode ("standalone", "sentinel" or "cluster")
 *   `arch_bits`: Architecture (32 or 64 bits)
 *   `multiplexing_api`: Event loop mechanism used by Dragonfly
@@ -146,7 +144,7 @@ Here is the meaning of all fields in the **clients** section:
 
 *   `connected_clients`: Number of client connections (excluding connections
      from replicas)
-*    `client_read_buf_capacity`: TODO
+*   `client_read_buffer_bytes`: Client read buffer size in bytes
 *   `blocked_clients`: Number of clients pending on a blocking call (`BLPOP`,
      `BRPOP`, `BRPOPLPUSH`, `BLMOVE`, `BZPOPMIN`, `BZPOPMAX`)
 
@@ -185,7 +183,7 @@ Here is the meaning of all fields in the **stats** section:
      server
 *   `total_commands_processed`: Total number of commands processed by the server
 *   `instantaneous_ops_per_sec`: Number of commands processed per second
-*   `total_pipelined_commands`: TODO
+*   `total_pipelined_commands`: Total number of commands pipelined to the server
 *   `total_net_input_bytes`: The total number of bytes read from the network
 *   `total_net_output_bytes`: The total number of bytes written to the network
 *   `instantaneous_input_kbps`: The network's read rate per second in KB/sec
