@@ -8,7 +8,7 @@ description: Add one or more members to a geospatial index
 
     GEOADD key [NX | XX] [CH] longitude latitude member [longitude latitude member ...]
 
-**Time complexity:** O(log(N)) for each item added, where N is the number of elements in the geospatial index represented by a sorted set.
+**Time complexity:** O(log(N)) for each item added, where N is the number of elements in the geospatial index represented by the sorted set.
 
 Adds the specified geospatial items (longitude, latitude, name) to the specified key.
 Data is stored into the key as a sorted set, in a way that makes it possible to query the items with the `GEOSEARCH` command.

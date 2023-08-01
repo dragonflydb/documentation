@@ -8,7 +8,7 @@ description: Get the distance between two members in a geospatial index
 
     GEODIST key member1 member2 [M | KM | FT | MI]
 
-**Time complexity:** O(log(N)), where N is the number of elements in the geospatial index represented by a sorted set.
+**Time complexity:** O(log(N)), where N is the number of elements in the geospatial index represented by the sorted set.
 
 Return the distance between two members in the geospatial index represented by the sorted set.
 
