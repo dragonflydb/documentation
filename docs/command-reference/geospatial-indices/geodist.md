@@ -12,16 +12,16 @@ description: Get the distance between two members in a geospatial index
 
 Return the distance between two members in the geospatial index represented by the sorted set.
 
-Given a sorted set representing a geospatial index, populated using the [GEOADD](geoadd) command, the command returns the distance between the two specified members in the specified unit.
+Given a sorted set representing a geospatial index, populated using the [`GEOADD`](geoadd) command, the command returns the distance between the two specified members in the specified unit.
 
 If one or both the members are missing, the command returns NULL.
 
 The unit must be one of the following, and defaults to meters:
 
-- **m** for meters.
-- **km** for kilometers.
-- **mi** for miles.
-- **ft** for feet.
+- `m` for meters.
+- `km` for kilometers.
+- `mi` for miles.
+- `ft` for feet.
 
 The distance is computed assuming that the Earth is a perfect sphere, so errors up to 0.5% are possible in edge cases.
 

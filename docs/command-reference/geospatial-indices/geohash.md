@@ -11,7 +11,7 @@ description: Get the Geohash strings of specified members in a geospatial index
 **Time complexity:** O(log(N)) for each member requested, where N is the number of elements in the geospatial index represented by the sorted set.
 
 Return valid [Geohash](https://en.wikipedia.org/wiki/Geohash) strings representing the position of one or more elements
-in a sorted set value representing a geospatial index (where elements were added using [GEOADD](geoadd)).
+in a sorted set value representing a geospatial index (where elements were added using [`GEOADD`](geoadd)).
 
 ## Geohash string properties
 
