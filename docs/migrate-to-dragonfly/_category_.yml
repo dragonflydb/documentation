@@ -1,2 +1,5 @@
 position: 5
 label: "Migrate to Dragonfly"
+link:
+  type: "generated-index"
+
