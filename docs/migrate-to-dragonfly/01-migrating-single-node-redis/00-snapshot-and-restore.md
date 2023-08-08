@@ -15,3 +15,20 @@ To learn more about RDB files and Dragonfly snapshot mechanism, please refer to 
 
 ## Migration Steps
 
+- We have a Redis instance running. Issue the `SAVE` or `BGSAVE` command to create a snapshot.
+
+```shell
+redis> SAVE
+OK
+```
+
+- By default, Redis saves the snapshot dump file `dump.rdb` to the directory `/var/lib/redis/`
+
+```shell
+bash> ls /var/lib/redis/
+dump.rdb
+```
+
+```shell
+./dragonfly --logtostderr --dir ./data  --dbfilename dump
+```
