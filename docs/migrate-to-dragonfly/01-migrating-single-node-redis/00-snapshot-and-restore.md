@@ -22,13 +22,31 @@ redis> SAVE
 OK
 ```
 
-- By default, Redis saves the snapshot dump file `dump.rdb` to the directory `/var/lib/redis/`
+- Locate the snapshot dump file `dump.rdb`.
+- Note that by default, Redis saves the snapshot dump file to the directory `/var/lib/redis/` in Linux.
+- If running with Docker, Redis image(s) may be configured to save the dump file to the `/data` directory in the container.
 
 ```shell
-bash> ls /var/lib/redis/
+$> ls /var/lib/redis/
 dump.rdb
 ```
 
+- Once we have the snapshot dump file, we can configure Dragonfly with the directory name and filename for saving and loading the database.
+- Copy the original Redis snapshot dump file `dump.rdb` to desired directory (`/data` in this example).
+- Assume we have the Dragonfly binary within the current directory as well.
+
 ```shell
-./dragonfly --logtostderr --dir ./data  --dbfilename dump
+$> tree
+.
+├── data
+│   └── dump.rdb # Redis snapshot dump file
+└── dragonfly    # Dragonfly binary
 ```
+
+- If using the following command to run Dragonfly, upon successful start, the Dragonfly instance should contain the data from the `dump.rdb` file.
+
+```shell
+$> ./dragonfly --logtostderr --dir ./data --dbfilename dump
+```
+
+- Read more about [Saving Backups](../../managing-dragonfly/backups.md) and the related configuration flags `dir` and `dbfilename`.
