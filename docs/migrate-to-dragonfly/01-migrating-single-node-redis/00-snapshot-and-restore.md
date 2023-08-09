@@ -69,8 +69,8 @@ In the command above, the `dir` flag designates the location for loading and sav
 
 ### 5. Reconfigure and Restart Applications
 
-As part of the migration process, update the connection string or credentials used by the backend application to connect to the data store.
-This step involves modifying your application's configuration to point to the Dragonfly instance instead of the previous Redis instance.
+As part of the migration process, update the connection string or credentials used by your server applications to connect to Dragonfly.
+This step involves modifying your applications' configuration to point to the Dragonfly instance instead of the previous Redis instance.
 
 ## Downtime Considerations
 
