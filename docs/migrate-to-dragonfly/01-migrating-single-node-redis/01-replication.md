@@ -4,6 +4,8 @@ sidebar_position: 1
 
 # Replication
 
+## Overview
+
 Replication is a versatile migration technique that offers a robust way to transition data between database instances.
 This strategic approach revolves around the establishment of a dynamic primary-replica relationship.
 Within this approach, data originating from the source Redis instance is meticulously replicated onto a designated replica instance,
@@ -17,8 +19,10 @@ This distinctive advantage ensures that the replica stays current and reflects t
 
 ## Migration Steps
 
-In the following example, we will assume that the source Redis instance runs on the `redis-source` host with the port number `6379`.
-And the new Dragonfly instance runs on the `dragonfly` host with the port number `6380`.
+In the following example, we will assume that:
+
+- The source Redis instance runs on the **`redis-source`** host with the port number **`6379`**.
+- The new Dragonfly instance runs on the **`dragonfly`** host with the port number **`6380`**.
 
 ### 1. Set Up Replication
 
@@ -43,7 +47,7 @@ repl_backlog_first_byte_offset:1
 repl_backlog_histlen:15302
 ```
 
-- On the new Dragonfly instance, use the `REPLICAOF` command to instruct itself to replicate data from the source.
+- On the new Dragonfly instance, use the [`REPLICAOF`](../../command-reference/server-management/replicaof.md) command to instruct itself to replicate data from the source.
 
 ```shell
 dragonfly-6380$> REPLICAOF redis-source 6379
@@ -85,7 +89,7 @@ master_sync_in_progress:0
 
 Once replication is active and data synchronization between the primary (`redis-source`) and replica (`dragonfly`) is confirmed, the old primary instance can be decommissioned.
 This is achieved by promoting the new Dragonfly instance to become the new primary.
-Use the command `REPLICAOF no one` on the Dragonfly instance to break the replication link from the source:
+Use the command [`REPLICAOF NO ONE`](../../command-reference/server-management/replicaof.md) on the Dragonfly instance to break the replication link from the source:
 
 ```shell
 dragonfly-6380$> REPLICAOF no one
