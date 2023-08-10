@@ -1,5 +1,6 @@
 ---
 sidebar_position: 0
+description: Load an RDB file into Dragonfly
 ---
 
 # Snapshot and Restore
@@ -48,14 +49,14 @@ dump.rdb
 ### 3. Configure Dragonfly
 
 Prepare Dragonfly for the migration process by configuring the appropriate directory and filename settings for snapshot management.
-For illustration purposes, let's assume the original RDB file `dump.rdb` is copied to the desired directory `/data`, and the Dragonfly binary resides within the same directory:
+For illustration purposes, let's assume the Dragonfly binary resides within the current directory `./` and the RDB file `dump.rdb` is copied to the `./data` subdirectory of the current directory:
 
 ```shell
 $> tree
 .
 ├── data
-│   └── dump.rdb # original Redis snapshot dump file
-└── dragonfly    # Dragonfly binary
+│   └── dump.rdb # the Redis snapshot file
+└── dragonfly    # the Dragonfly binary
 ```
 
 ### 4. Launch Dragonfly

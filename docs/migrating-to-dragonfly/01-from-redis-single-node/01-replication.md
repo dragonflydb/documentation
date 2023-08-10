@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+description: Use the `REPLICAOF` command for migration
 ---
 
 # Replication
@@ -21,8 +22,8 @@ This distinctive advantage ensures that the replica stays current and reflects t
 
 In the following example, we will assume that:
 
-- The source Redis instance runs on the **`redis-source`** host with the port number **`6379`**.
-- The new Dragonfly instance runs on the **`dragonfly`** host with the port number **`6380`**.
+- The source Redis instance runs with the hostname **`redis-source`** and the port number **`6379`**.
+- The new Dragonfly instance runs with the hostname **`dragonfly`** and the port number **`6380`**.
 
 ### 1. Set Up Replication
 
