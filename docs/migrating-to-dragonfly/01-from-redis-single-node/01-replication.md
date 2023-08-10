@@ -92,7 +92,7 @@ This is achieved by promoting the new Dragonfly instance to become the new prima
 Use the command [`REPLICAOF NO ONE`](../../command-reference/server-management/replicaof.md) on the Dragonfly instance to break the replication link from the source:
 
 ```shell
-dragonfly-6380$> REPLICAOF no one
+dragonfly-6380$> REPLICAOF NO ONE
 "OK"
 
 dragonfly-6380$> INFO replication

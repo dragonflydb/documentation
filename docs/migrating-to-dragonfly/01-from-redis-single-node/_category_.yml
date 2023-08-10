@@ -1,4 +1,4 @@
 position: 1
-label: "Migrating Redis Single Node"
+label: "From Redis Single Node"
 link:
   type: generated-index
