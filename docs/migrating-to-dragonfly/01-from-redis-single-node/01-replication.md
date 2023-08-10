@@ -22,10 +22,10 @@ This distinctive advantage ensures that the replica stays current and reflects t
 
 In the following example, we will assume that:
 
-- The source Redis instance runs with the hostname **`redis-source`** and the port number **`6379`**.
-- The new Dragonfly instance runs with the hostname **`dragonfly`** and the port number **`6380`**.
+- The source Redis instance runs with the hostname **`redis-source`**, the IP address **`77.1.63.79`**, and the port **`6379`**.
+- The new Dragonfly instance runs with the hostname **`dragonfly`**, the IP address **`77.1.63.80`**, and the port **`6380`**.
 
-### 1. Set Up Replication
+### 1. Configure Replication
 
 Initiate the migration by establishing a primary-replica relationship between the source Redis instance and the new Dragonfly instance.
 This ensures that changes made on the source Redis instance are automatically propagated to the replica.
@@ -33,25 +33,16 @@ This ensures that changes made on the source Redis instance are automatically pr
 On the Redis source instance, check its replication information:
 
 ```shell
-redis-source-6379$> INFO replication
+redis-source:6379$> INFO replication
 # Replication
 role:master
 connected_slaves:0
-master_replid:b728e54c84b190ed555817e1d05c4d932a145f45
-master_replid2:0000000000000000000000000000000000000000
-master_repl_offset:15302
-master_repl_meaningful_offset:0
-second_repl_offset:-1
-repl_backlog_active:1
-repl_backlog_size:1048576
-repl_backlog_first_byte_offset:1
-repl_backlog_histlen:15302
 ```
 
 On the new Dragonfly instance, use the [`REPLICAOF`](../../command-reference/server-management/replicaof.md) command to instruct itself to replicate data from the source:
 
 ```shell
-dragonfly-6380$> REPLICAOF redis-source 6379
+dragonfly:6380$> REPLICAOF 77.1.63.79 6379
 "OK"
 ```
 
@@ -59,27 +50,18 @@ After the primary-replica relationship is established, you should see data repli
 We can check the replication information again on both instances:
 
 ```shell
-redis-source-6379$> INFO replication
+redis-source:6379$> INFO replication
 # Replication
 role:master
 connected_slaves:1
-slave0:ip=172.xx.x.4,port=6380,state=online,offset=15693,lag=2
-master_replid:b728e54c84b190ed555817e1d05c4d932a145f45
-master_replid2:0000000000000000000000000000000000000000
-master_repl_offset:15693
-master_repl_meaningful_offset:15441
-second_repl_offset:-1
-repl_backlog_active:1
-repl_backlog_size:1048576
-repl_backlog_first_byte_offset:1
-repl_backlog_histlen:15693
+slave0:ip=77.1.63.80,port=6380,state=online,offset=15693,lag=2
 ```
 
 ```shell
-dragonfly-6380$> INFO replication
+dragonfly:6380$> INFO replication
 # Replication
 role:replica
-master_host:redis-source
+master_host:77.1.63.79
 master_port:6379
 master_link_status:up
 master_last_io_seconds_ago:8
@@ -93,10 +75,10 @@ This is achieved by promoting the new Dragonfly instance to become the new prima
 Use the command [`REPLICAOF NO ONE`](../../command-reference/server-management/replicaof.md) on the Dragonfly instance to break the replication link from the source:
 
 ```shell
-dragonfly-6380$> REPLICAOF NO ONE
+dragonfly:6380$> REPLICAOF NO ONE
 "OK"
 
-dragonfly-6380$> INFO replication
+dragonfly:6380$> INFO replication
 # Replication
 role:master
 connected_slaves:0

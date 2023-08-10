@@ -39,34 +39,30 @@ In the following example, we will assume that:
 - The new Dragonfly instance runs with the hostname **`dragonfly`**, the IP address **`77.1.63.80`**, and the port **`6380`**.
 - The Sentinel instance runs with the hostname **`sentinel`**, the IP address **`77.1.50.50`**, and the port **`5050`**.
 
-### 1. Source Instance & Sentinel
+### 1. Source Instance
 
 Assume the original source Redis instance is running, and you can check its replication information:
 
 ```shell
-redis-source-6379$> INFO replication
+redis-source:6379$> INFO replication
 # Replication
 role:master
 connected_slaves:0
-master_replid:b728e54c84b190ed555817e1d05c4d932a145f45
-master_replid2:0000000000000000000000000000000000000000
-master_repl_offset:15302
-master_repl_meaningful_offset:0
-second_repl_offset:-1
-repl_backlog_active:1
-repl_backlog_size:1048576
-repl_backlog_first_byte_offset:1
-repl_backlog_histlen:15302
 ```
 
 **Assume the source Redis instance is already managed by a Sentinel instance or a Sentinel cluster.
 Otherwise, reconfiguration of your server applications is still needed which implies a potential downtime window.**
 However, if your applications are running on a container orchestrator such as Kubernetes, the rolling update mechanism can help minimize the downtime.
 
+### 2. Sentinel
+
+**If your source Redis instance is not managed by Sentinel yet, follow the steps below.** Otherwise, continue to [Configure Replication](#3-configure-replication).
+
 To start a Redis instance in Sentinel mode, you can use a minimal `sentinel.conf` file like the following:
 
 ```text
-port 5000
+# sentinel.conf
+port 5050
 sentinel monitor master-instance 77.1.63.79 6379 1
 sentinel down-after-milliseconds master-instance 5000
 sentinel failover-timeout master-instance 60000
@@ -79,6 +75,12 @@ Read more about Sentinel configuration [here](https://github.com/redis/redis/blo
 
 ```text
 sentinel monitor <master-name> <ip> <redis-port> <quorum>
+```
+
+Run a Redis instance in the Sentinel mode:
+
+```shell
+$> redis-server sentinel.conf --sentinel
 ```
 
 Once the Sentinel instance and the Sentinel-managed Redis instance are running, it is important to confirm that the applications connect to them with the proper client.
@@ -97,12 +99,63 @@ client := redis.NewFailoverClient(&redis.FailoverOptions{
 })
 ```
 
-As shown in the code snippet above, clients connect to the Sentinel-managed Redis not directly but via Sentinel instance(s).
-The reason is that during a failover process, Sentinel needs to notify the clients about different events and information such as:
+As shown in the snippet above, clients connect to the Sentinel-managed Redis not directly but via Sentinel instance(s).
+The reason is that during a failover process, Sentinel needs to notify the clients about various of events and information such as:
 
 - The primary instance is offline.
 - Sentinel has promoted a new primary instance, and here is the network information.
 
+The Sentinel-to-clients notification mechanism is powered by Pub/Sub, you can read more about Sentinel internals [here](https://redis.io/docs/management/sentinel/).
 **Using a Sentinel-compatible client is essential to achieve the goal of zero-downtime migration.**
 
-### 2. Set Up Replication
+### 3. Configure Replication
+
+With comprehensive introduction to Sentinel, the goal is still to migrate the Redis instance to a Dragonfly instance.
+Start a new Dragonfly instance and use the [`REPLICAOF`](../../command-reference/server-management/replicaof.md) command to instruct itself to replicate data from the source:
+
+```shell
+dragonfly:6380$> REPLICAOF 77.1.63.79 6379
+"OK"
+```
+
+After the primary-replica relationship is established, you should see data replicated into the new Dragonfly instance.
+We can check the replication information again on both instances:
+
+```shell
+redis-source:6379$> INFO replication
+# Replication
+role:master
+connected_slaves:1
+slave0:ip=77.1.63.80,port=6380,state=online,offset=15693,lag=2
+```
+
+```shell
+dragonfly:6380$> INFO replication
+# Replication
+role:replica
+master_host:77.1.63.79
+master_port:6379
+master_link_status:up
+master_last_io_seconds_ago:8
+master_sync_in_progress:0
+```
+
+Sentinel should also be aware of the primary Redis instance, as well as the new Dragonfly instance joining as a replica:
+
+```shell
+sentinel:5000$> SENTINEL get-master-addr-by-name master-instance
+1) "77.1.63.79"
+2) "6379"
+```
+
+```shell
+sentinel:5000$> SENTINEL replicas master-instance
+1)  1) "name"
+    2) "77.1.63.80:6380"
+    3) "ip"
+    4) "77.1.63.80"
+    5) "port"
+    6) "6380"
+```
+
+### 4. Failover to Replica
