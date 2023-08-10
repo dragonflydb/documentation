@@ -29,7 +29,7 @@ In the following example, we will assume that:
 Initiate the migration by establishing a primary-replica relationship between the source Redis instance and the new Dragonfly instance.
 This ensures that changes made on the source Redis instance are automatically propagated to the replica.
 
-- On the Redis source instance, check its replication information.
+On the Redis source instance, check its replication information:
 
 ```shell
 redis-source-6379$> INFO replication
@@ -47,7 +47,7 @@ repl_backlog_first_byte_offset:1
 repl_backlog_histlen:15302
 ```
 
-- On the new Dragonfly instance, use the [`REPLICAOF`](../../command-reference/server-management/replicaof.md) command to instruct itself to replicate data from the source.
+On the new Dragonfly instance, use the [`REPLICAOF`](../../command-reference/server-management/replicaof.md) command to instruct itself to replicate data from the source:
 
 ```shell
 dragonfly-6380$> REPLICAOF redis-source 6379
