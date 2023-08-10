@@ -233,6 +233,7 @@ sidebar_position: 0
 |                                              | <span class="command">ZRANGE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZRANGEBYLEX</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZRANGEBYSCORE</span>                 | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">ZRANGESTORE</span>                   | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">ZRANK</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZREM</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZREMRANGEBYLEX</span>                | <span class="support supported">Fully supported</span>   |
