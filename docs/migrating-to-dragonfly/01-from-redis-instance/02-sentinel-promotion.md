@@ -28,7 +28,7 @@ At a high level, here are the steps involved:
 - Start a new Dragonfly instance and configure it as a replica of the source (primary) Redis instance.
 - Replicate data from the source (primary) Redis instance to the new Dragonfly instance.
 - Allow replication to reach a steady state and monitor using the `INFO replication` command.
-- Stop the primary Redis node and let Sentinel promote the Dragonfly instance to become the new primary.
+- Let Sentinel promote the Dragonfly instance to become the new primary.
 
 As you can see, these steps are similar to the [Replication](./01-replication.md) technique.
 The key difference here is to utilize Sentinel for the automatic and reliable transition, promoting the Dragonfly instance as the new primary.
@@ -106,7 +106,7 @@ The reason is that during a failover process, Sentinel needs to notify the clien
 - Sentinel has promoted a new primary instance, and here is the network information of the new primary.
 
 The Sentinel-to-clients notification mechanism is powered by Pub/Sub, you can read more about Sentinel internals [here](https://redis.io/docs/management/sentinel/).
-**Using a Sentinel-compatible client is essential to achieve the goal of zero-downtime migration.**
+**Using a Sentinel-compatible client is essential to achieve the goal of minimal downtime migration.**
 
 ### 3. Configure Replication
 
@@ -198,9 +198,14 @@ sentinel:5000$> SENTINEL REPLICAS mymaster
     4) "200.0.0.1"
     5) "port"
     6) "6379"
+# ... more
+# ... output
+# ... omitted
 ```
 
 As you can see, now the Dragonfly instance is the primary, and we can safely turn off the Redis instance, which is the replica.
+After turning off the Redis instance, Sentinel would not be able to promote it again as the primary.
+You have successfully migrated to Dragonfly.
 
 ## Considerations
 
