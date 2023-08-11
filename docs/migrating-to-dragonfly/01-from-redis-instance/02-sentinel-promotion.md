@@ -3,7 +3,7 @@ sidebar_position: 2
 description: Use Sentinel for migration with minimal downtime
 ---
 
-# Sentinel
+# Sentinel Promotion
 
 ## Overview
 

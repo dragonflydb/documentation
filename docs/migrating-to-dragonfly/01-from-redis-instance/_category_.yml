@@ -1,4 +1,4 @@
 position: 1
-label: "From Redis Single Node"
+label: "From Redis Instance"
 link:
   type: generated-index
