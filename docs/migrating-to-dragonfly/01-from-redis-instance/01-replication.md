@@ -74,7 +74,7 @@ master_last_io_seconds_ago:8
 master_sync_in_progress:0
 ```
 
-### 2. Decommission the Source Redis Instance
+### 2. Decommission the Redis Instance
 
 Once replication is active and data synchronization between the primary (`redis-source`) and replica (`dragonfly`) is confirmed, the old primary instance can be decommissioned.
 This is achieved by promoting the new Dragonfly instance to become the new primary.

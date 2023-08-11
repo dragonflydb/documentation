@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-description: Use Sentinel for migration with minimal downtime
+description: Use Sentinel for migration with minimal or zero downtime
 ---
 
 # Sentinel Promotion
@@ -191,7 +191,7 @@ sentinel:5000$> SENTINEL GET-MASTER-ADDR-BY-NAME master-instance
 1) "200.0.0.2"
 2) "6380"
 
-sentinel:5000$> SENTINEL REPLICAS mymaster
+sentinel:5000$> SENTINEL REPLICAS master-instance
 1)  1) "name"
     2) "200.0.0.1:6379"
     3) "ip"
