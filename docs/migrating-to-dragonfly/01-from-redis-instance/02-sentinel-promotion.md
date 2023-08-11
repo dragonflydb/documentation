@@ -83,7 +83,7 @@ Run a Redis instance in the Sentinel mode:
 $> redis-server sentinel.conf --sentinel
 ```
 
-Once the Sentinel instance and the Sentinel-managed Redis instance are running, it is important to confirm that the applications connect to them with the proper client.
+Once the Sentinel instance and the Sentinel-managed Redis instance (in this case the source Redis instance) are running, it is important to confirm that the applications connect to them with the proper client.
 Take the [go-redis](https://github.com/redis/go-redis) library as an example:
 
 ```go
