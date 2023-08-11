@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-description: Use Sentinel for migration without downtime
+description: Use Sentinel for migration with minimal downtime
 ---
 
 # Sentinel
@@ -12,7 +12,7 @@ However, while this technique offers notable benefits, a minor drawback persists
 This necessitates reconfiguration and restarts of your server applications.
 
 In this section, we ascend to the next level of sophistication by introducing an advanced technique: harnessing the capabilities of Redis Sentinel.
-This technique promises to transcend the constraints of downtime, enabling you to execute a migration with uninterrupted service continuity.
+This technique promises to transcend the constraints of downtime, enabling you to execute a migration with _**practically uninterrupted**_ service continuity.
 
 ## Redis Sentinel
 
@@ -54,7 +54,7 @@ connected_slaves:0
 Otherwise, reconfiguration of your server applications is still needed which implies a potential downtime window.**
 However, if your applications are running on a container orchestrator such as Kubernetes, the rolling update mechanism can help minimize the downtime.
 
-### 2. Sentinel
+### 2. Configure Sentinel
 
 **If your source Redis instance is not managed by Sentinel yet, follow the steps below.** Otherwise, continue to [Configure Replication](#3-configure-replication).
 
@@ -103,7 +103,7 @@ As shown in the snippet above, clients connect to the Sentinel-managed Redis not
 The reason is that during a failover process, Sentinel needs to notify the clients about various of events and information such as:
 
 - The primary instance is offline.
-- Sentinel has promoted a new primary instance, and here is the network information.
+- Sentinel has promoted a new primary instance, and here is the network information of the new primary.
 
 The Sentinel-to-clients notification mechanism is powered by Pub/Sub, you can read more about Sentinel internals [here](https://redis.io/docs/management/sentinel/).
 **Using a Sentinel-compatible client is essential to achieve the goal of zero-downtime migration.**
@@ -146,13 +146,13 @@ master_sync_in_progress:0
 Sentinel should also be aware of the primary Redis instance, as well as the new Dragonfly instance joining as a replica:
 
 ```shell
-sentinel:5000$> SENTINEL get-master-addr-by-name master-instance
+sentinel:5000$> SENTINEL GET-MASTER-ADDR-BY-NAME master-instance
 1) "200.0.0.1"
 2) "6379"
 ```
 
 ```shell
-sentinel:5000$> SENTINEL replicas master-instance
+sentinel:5000$> SENTINEL REPLICAS master-instance
 1)  1) "name"
     2) "200.0.0.2:6380"
     3) "ip"
@@ -165,3 +165,68 @@ sentinel:5000$> SENTINEL replicas master-instance
 ```
 
 ### 4. Failover to Replica
+
+Now you have finished the setup. Let's recap the current topology:
+
+- There is a primary Redis instance (`redis-source`, `200.0.0.1:6379`).
+- The new Dragonfly instance (`dragonfly`, `200.0.0.2:6380`) is a replica of the primary Redis instance.
+- There is also a Sentinel instance (`sentinel`, `200.0.0.3:5000`) monitoring the primary and the replica.
+
+The server applications connect to the primary-replica via the Sentinel instance.
+If you force the Sentinel to failover, which means promoting the Dragonfly instance as the new primary, it will be a successful migration to Dragonfly.
+
+There are multiple ways to trigger the failover, for instance:
+
+- Turn off the primary Redis instance directly. Sentinel will promote the Dragonfly instance as the primary.
+- Use the `SENTINEL FAILOVER <master-name>` command to force a failover as if the master was not reachable, then turn off the Redis instance.
+
+**Note that the methods above are based on the assumption that the Dragonfly instance is the only candidate that can be promoted, as there are no other replicas in the topology.**
+Let's use the second method:
+
+```shell
+sentinel:5000$> SENTINEL FAILOVER master-instance
+OK
+
+sentinel:5000$> SENTINEL GET-MASTER-ADDR-BY-NAME master-instance
+1) "200.0.0.2"
+2) "6380"
+
+sentinel:5000$> SENTINEL REPLICAS mymaster
+1)  1) "name"
+    2) "200.0.0.1:6379"
+    3) "ip"
+    4) "200.0.0.1"
+    5) "port"
+    6) "6379"
+```
+
+As you can see, now the Dragonfly instance is the primary, and we can safely turn off the Redis instance, which is the replica.
+
+## Considerations
+
+Using Redis Sentinel to perform a migration introduces a set of considerations that are essential for ensuring a smooth and successful transition.
+Here are some key considerations to keep in mind:
+
+- **Downtime:** While Redis Sentinel is designed to minimize downtime, there might still be minor disruptions during failover. Evaluate your application's tolerance for downtime and plan accordingly.
+
+- **Compatibility and Versioning:** Ensure that the Redis and Sentinel versions you're using are compatible with each other and with Dragonfly. Mismatched versions could lead to unexpected behavior or issues during migration.
+
+- **Network Latency:** Since data needs to be synchronized between the source Redis primary and the Dragonfly replica, consider the network latency and bandwidth between these instances. Slow or unstable connections might affect data replication speed and stability.
+
+- **Data Volume:** Evaluate the size of your dataset and the rate at which data changes. Larger datasets or high write rates might require more time for data replication and synchronization.
+
+- **Failover Testing:** Test failover scenarios in a controlled environment to ensure that Sentinel behaves as expected. This helps identify and resolve any potential issues before migrating in a production setting.
+
+- **Monitoring and Alerts:** Implement robust monitoring for both the source Redis cluster and the Dragonfly cluster. Set up alerts to notify you of any anomalies or potential problems.
+
+- **Load Balancing:** Consider how your application's load balancer or DNS is configured. Sentinel-driven failover might require adjustments to your load balancing setup to ensure traffic is directed to the new primary node.
+
+- **Backup Strategy:** Have a solid backup strategy in place before starting the migration. While Redis Sentinel helps with failover, having backups as a safety net is crucial.
+
+- **Rollback Plan:** Despite careful planning, unforeseen issues can arise. Develop a rollback plan that allows you to revert to the previous setup if the migration encounters significant problems.
+
+- **Documentation and Training:** Ensure that your team is familiar with Redis Sentinel concepts, configuration, and failover procedures. Proper documentation and training can mitigate confusion during the migration process.
+
+- **Testing Environment:** Whenever possible, test the migration in a staging or testing environment that closely mimics your production setup. This helps identify and address any issues before performing the actual migration.
+
+By taking these considerations into account and tailoring your migration plan accordingly, you can effectively leverage Redis Sentinel to execute a seamless migration from Redis to Dragonfly, while minimizing risks and ensuring a successful transition.
