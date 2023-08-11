@@ -35,9 +35,9 @@ The key difference here is to utilize Sentinel for the automatic and reliable tr
 
 In the following example, we will assume that:
 
-- The source Redis instance runs with the hostname **`redis-source`**, the IP address **`77.1.63.79`**, and the port **`6379`**.
-- The new Dragonfly instance runs with the hostname **`dragonfly`**, the IP address **`77.1.63.80`**, and the port **`6380`**.
-- The Sentinel instance runs with the hostname **`sentinel`**, the IP address **`77.1.50.50`**, and the port **`5050`**.
+- The source Redis instance runs with the hostname **`redis-source`**, the IP address **`200.0.0.1`**, and the port **`6379`**.
+- The new Dragonfly instance runs with the hostname **`dragonfly`**, the IP address **`200.0.0.2`**, and the port **`6380`**.
+- The Sentinel instance runs with the hostname **`sentinel`**, the IP address **`200.0.0.3`**, and the port **`5000`**.
 
 ### 1. Source Instance
 
@@ -62,8 +62,8 @@ To start a Redis instance in Sentinel mode, you can use a minimal `sentinel.conf
 
 ```text
 # sentinel.conf
-port 5050
-sentinel monitor master-instance 77.1.63.79 6379 1
+port 5000
+sentinel monitor master-instance 200.0.0.1 6379 1
 sentinel down-after-milliseconds master-instance 5000
 sentinel failover-timeout master-instance 60000
 ```
@@ -95,7 +95,7 @@ import "github.com/redis/go-redis/v9"
 // In a production environment, multiple Sentinel instances with a reasonable 'quorum' value can be very important to achieve high availability.
 client := redis.NewFailoverClient(&redis.FailoverOptions{
     MasterName:    "master-instance",
-    SentinelAddrs: []string{"77.1.50.50:5050"},
+    SentinelAddrs: []string{"200.0.0.3:5000"},
 })
 ```
 
@@ -114,7 +114,7 @@ With comprehensive introduction to Sentinel, the goal is still to migrate the Re
 Start a new Dragonfly instance and use the [`REPLICAOF`](../../command-reference/server-management/replicaof.md) command to instruct itself to replicate data from the source:
 
 ```shell
-dragonfly:6380$> REPLICAOF 77.1.63.79 6379
+dragonfly:6380$> REPLICAOF 200.0.0.1 6379
 "OK"
 ```
 
@@ -126,14 +126,17 @@ redis-source:6379$> INFO replication
 # Replication
 role:master
 connected_slaves:1
-slave0:ip=77.1.63.80,port=6380,state=online,offset=15693,lag=2
+slave0:ip=200.0.0.2,port=6380,state=online,offset=15693,lag=2
+# ... more
+# ... output
+# ... omitted
 ```
 
 ```shell
 dragonfly:6380$> INFO replication
 # Replication
 role:replica
-master_host:77.1.63.79
+master_host:200.0.0.1
 master_port:6379
 master_link_status:up
 master_last_io_seconds_ago:8
@@ -144,18 +147,21 @@ Sentinel should also be aware of the primary Redis instance, as well as the new 
 
 ```shell
 sentinel:5000$> SENTINEL get-master-addr-by-name master-instance
-1) "77.1.63.79"
+1) "200.0.0.1"
 2) "6379"
 ```
 
 ```shell
 sentinel:5000$> SENTINEL replicas master-instance
 1)  1) "name"
-    2) "77.1.63.80:6380"
+    2) "200.0.0.2:6380"
     3) "ip"
-    4) "77.1.63.80"
+    4) "200.0.0.2"
     5) "port"
     6) "6380"
+# ... more
+# ... output
+# ... omitted
 ```
 
 ### 4. Failover to Replica

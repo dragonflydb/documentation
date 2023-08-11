@@ -22,8 +22,8 @@ This distinctive advantage ensures that the replica stays current and reflects t
 
 In the following example, we will assume that:
 
-- The source Redis instance runs with the hostname **`redis-source`**, the IP address **`77.1.63.79`**, and the port **`6379`**.
-- The new Dragonfly instance runs with the hostname **`dragonfly`**, the IP address **`77.1.63.80`**, and the port **`6380`**.
+- The source Redis instance runs with the hostname **`redis-source`**, the IP address **`200.0.0.1`**, and the port **`6379`**.
+- The new Dragonfly instance runs with the hostname **`dragonfly`**, the IP address **`200.0.0.2`**, and the port **`6380`**.
 
 ### 1. Configure Replication
 
@@ -37,12 +37,15 @@ redis-source:6379$> INFO replication
 # Replication
 role:master
 connected_slaves:0
+# ... more
+# ... output
+# ... omitted
 ```
 
 On the new Dragonfly instance, use the [`REPLICAOF`](../../command-reference/server-management/replicaof.md) command to instruct itself to replicate data from the source:
 
 ```shell
-dragonfly:6380$> REPLICAOF 77.1.63.79 6379
+dragonfly:6380$> REPLICAOF 200.0.0.1 6379
 "OK"
 ```
 
@@ -54,14 +57,17 @@ redis-source:6379$> INFO replication
 # Replication
 role:master
 connected_slaves:1
-slave0:ip=77.1.63.80,port=6380,state=online,offset=15693,lag=2
+slave0:ip=200.0.0.2,port=6380,state=online,offset=15693,lag=2
+# ... more
+# ... output
+# ... omitted
 ```
 
 ```shell
 dragonfly:6380$> INFO replication
 # Replication
 role:replica
-master_host:77.1.63.79
+master_host:200.0.0.1
 master_port:6379
 master_link_status:up
 master_last_io_seconds_ago:8
