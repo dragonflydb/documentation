@@ -26,7 +26,7 @@ A backup can be triggered manually with the [`SAVE`](../command-reference/server
 
 ## Automatic Loading
 
-When a Dragonfly instance is started, it will try to find a snapshot file in its current `dir` path and will load it automatically.
+When a Dragonfly instance is started, it will try to find a snapshot file in its configured `dir` path and will load it automatically.
 Like automatic backups, this can be disabled by configuring `dbfilename` with an empty value.
 
 ## Flags
@@ -34,12 +34,12 @@ Like automatic backups, this can be disabled by configuring `dbfilename` with an
 - **`dir`** -- A path to the directory where the backup snapshot files will be saved.
 - **`df_snapshot_format`** -- Set to `true` to save snapshots in Dragonfly file format, `true` by default.
 - **`dbfilename`** -- The filename to save and load the database. See more details about this flag [below](#the-dbfilename-flag).
-- **`snapshot_cron`** -- Generate snapshots based on a cron schedule. See more details about this flag [below](#the-snapshotcron-flag).
+- **`snapshot_cron`** -- Generate snapshots based on a cron schedule. See more details about this flag [below](#the-snapshot_cron-flag).
 - **`save_schedule` (deprecated)** -- Generate snapshots periodically.
 The argument is a `HH:MM` format that supports [globbing](https://en.wikipedia.org/wiki/Glob_(programming)) (i.e., `23:45`, `*:15`, `*:*`).
 **This flag is deprecated, and the support will be completely removed in a future release.**
 
-### `dbfilename`
+### The `dbfilename` Flag
 
 The `dbfilename` flag controls the filename Dragonfly uses for loading and saving backup snapshots.
 It is notable that the passed argument should only contain the filename without any file extensions.
@@ -51,7 +51,7 @@ The macro will be replaced with timestamps of the local server time upon each sn
 
 **The default value for this flag is `dump-{timestamp}`.**
 
-Let's look at an example. Start a Dragonfly instance with the following command:
+Let's look at an example using the `dbfilename` flag. Start a Dragonfly instance with the following command:
 
 ```shell
 $> ./dragonfly --logtostderr --dir my-snapshot-dir --dbfilename my-snapshot-file-{timestamp}
@@ -75,14 +75,71 @@ There should be 3 snapshots created with the desired filename `my-snapshot-file`
 
 ```shell
 $> ls my-snapshot-dir
-my-snapshot-file-2023-08-10T04:24:38-0000.dfs
-my-snapshot-file-2023-08-10T04:24:38-summary.dfs
-my-snapshot-file-2023-08-10T04:24:43-0000.dfs
-my-snapshot-file-2023-08-10T04:24:43-summary.dfs
-my-snapshot-file-2023-08-10T04:24:48-0000.dfs
-my-snapshot-file-2023-08-10T04:24:48-summary.dfs
+my-snapshot-file-2023-08-10T00:00:00-0000.dfs
+my-snapshot-file-2023-08-10T00:00:00-summary.dfs
+my-snapshot-file-2023-08-10T00:00:05-0000.dfs
+my-snapshot-file-2023-08-10T00:00:05-summary.dfs
+my-snapshot-file-2023-08-10T00:00:10-0000.dfs
+my-snapshot-file-2023-08-10T00:00:10-summary.dfs
 ```
 
-### `snapshot_cron`
+### The `snapshot_cron` Flag
 
-- **For Dragonfly version >= 1.7.1, this flag is preferred over `save_schedule`.**
+In Dragonfly >= 1.7.1, the `snapshot_cron` flag was introduced.
+When available, it's recommended to prioritize the `snapshot_cron` flag over the deprecated `save_schedule` flag.
+As implied by its name, `snapshot_cron` establishes a cron schedule for the Dragonfly instance, enabling automatic backup snapshots.
+
+Cron (or crontab) serves as a widely used job scheduler on Unix-like operating systems:
+
+- If you'd like to delve deeper into cron, you can explore its [Wikipedia page](https://en.wikipedia.org/wiki/Cron).
+- The [crontab guru](https://crontab.guru/) website is a useful online tool to translate and validate your cron schedule.
+
+The general structure of the cron schedule is as follows:
+
+```text
+┌───────────────────── minute (0 - 59)
+│ ┌─────────────────── hour (0 - 23)
+│ │ ┌───────────────── day of the month (1 - 31)
+│ │ │ ┌─────────────── month (1 - 12)
+│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
+│ │ │ │ │
+│ │ │ │ │
+│ │ │ │ │
+* * * * *
+```
+
+Here are some example cron schedules:
+
+| CRON	             | Description                                    |
+|-------------------|------------------------------------------------|
+| `* * * * *`       | At every minute                                |
+| `*/5 * * * *`     | At every 5th minute                            |
+| `*/30 * * * *`    | At every 30th minute                           |
+| `0 */2 * * *`     | At minute 0 past every 2nd hour                |
+| `5 */2 * * *`     | At minute 5 past every 2nd hour                |
+| `0 0 * * *`       | At 00:00 (midnight) every day                  |
+| `0 0 * * 1-5`     | At 00:00 (midnight) from Monday through Friday |
+| `0 6 * * 1-5`     | At 06:00 (dawn) from Monday through Friday     |
+
+Let's look at an example using the `snapshot_cron` flag. Start a Dragonfly instance with the following command:
+
+```shell
+$> ./dragonfly --logtostderr --dir my-snapshot-dir --snapshot_cron "*/5 * * * *"
+```
+
+The Dragonfly instance will automatically create backup snapshots at every 5th minute.
+
+```shell
+$> ls my-snapshot-dir
+dump-2023-08-10T00:00:00-0000.dfs
+dump-2023-08-10T00:00:00-summary.dfs
+dump-2023-08-10T00:05:00-0000.dfs
+dump-2023-08-10T00:05:00-summary.dfs
+dump-2023-08-10T00:10:00-0000.dfs
+dump-2023-08-10T00:10:00-summary.dfs
+dump-2023-08-10T00:15:00-0000.dfs
+dump-2023-08-10T00:15:00-summary.dfs
+# ... more
+# ... output
+# ... omitted
+```
