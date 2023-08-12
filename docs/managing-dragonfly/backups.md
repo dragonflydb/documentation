@@ -57,7 +57,7 @@ Let's look at an example using the `dbfilename` flag. Start a Dragonfly instance
 $> ./dragonfly --logtostderr --dir my-snapshot-dir --dbfilename my-snapshot-file-{timestamp}
 ```
 
-While the Dragonfly instance is running, issue the [`SAVE`](../command-reference/server-management/save.md) command twice, with 5 seconds in between:
+While the Dragonfly instance is running, issue the [`SAVE`](../command-reference/server-management/save.md) command twice, with roughly 5 seconds in between:
 
 ```shell
 dragonfly$> SAVE
@@ -69,24 +69,26 @@ dragonfly$> SAVE
 OK
 ```
 
-Then turn off the Dragonfly instance after 5 more seconds, which will trigger an automatic backup snapshot upon shutdown.
-Now, inspect the `my-snapshot-dir` directory, which was passed as the argument to the `dir` flag.
-There should be 3 snapshots created with the desired filename `my-snapshot-file` with automatic timestamps that are 5 seconds apart.
+Subsequently, deactivate the Dragonfly instance about 5 seconds later.
+This action will promptly initiate an automatic backup snapshot as the Dragonfly instance shuts down.
+At this point, examine the contents of the `my-snapshot-dir` directory, which was initially designated as the input argument for the `dir` flag.
+Within this directory, you should now observe the presence of three snapshots, each bearing the intended filename `my-snapshot-file`,
+distinguished by generated timestamps replacing the `{timestamp}` macro, spaced approximately 5 seconds apart.
 
 ```shell
 $> ls my-snapshot-dir
-my-snapshot-file-2023-08-10T00:00:00-0000.dfs
-my-snapshot-file-2023-08-10T00:00:00-summary.dfs
-my-snapshot-file-2023-08-10T00:00:05-0000.dfs
-my-snapshot-file-2023-08-10T00:00:05-summary.dfs
-my-snapshot-file-2023-08-10T00:00:10-0000.dfs
-my-snapshot-file-2023-08-10T00:00:10-summary.dfs
+my-snapshot-file-2023-08-10T07:23:02-0000.dfs
+my-snapshot-file-2023-08-10T07:23:02-summary.dfs
+my-snapshot-file-2023-08-10T07:23:07-0000.dfs
+my-snapshot-file-2023-08-10T07:23:07-summary.dfs
+my-snapshot-file-2023-08-10T07:23:12-0000.dfs
+my-snapshot-file-2023-08-10T07:23:12-summary.dfs
 ```
 
 ### The `snapshot_cron` Flag
 
 In Dragonfly >= 1.7.1, the `snapshot_cron` flag was introduced.
-When available, it's recommended to prioritize the `snapshot_cron` flag over the deprecated `save_schedule` flag.
+When available, it's highly recommended to prioritize the `snapshot_cron` flag over the deprecated `save_schedule` flag.
 As implied by its name, `snapshot_cron` establishes a cron schedule for the Dragonfly instance, enabling automatic backup snapshots.
 
 Cron (or crontab) serves as a widely used job scheduler on Unix-like operating systems:
@@ -108,7 +110,7 @@ The general structure of the cron schedule is as follows:
 * * * * *
 ```
 
-Here are some example cron schedules:
+Here are some cron schedule examples:
 
 | CRON	             | Description                                    |
 |-------------------|------------------------------------------------|
@@ -139,6 +141,10 @@ dump-2023-08-10T00:10:00-0000.dfs
 dump-2023-08-10T00:10:00-summary.dfs
 dump-2023-08-10T00:15:00-0000.dfs
 dump-2023-08-10T00:15:00-summary.dfs
+dump-2023-08-10T00:20:00-0000.dfs
+dump-2023-08-10T00:20:00-summary.dfs
+dump-2023-08-10T00:25:00-0000.dfs
+dump-2023-08-10T00:25:00-summary.dfs
 # ... more
 # ... output
 # ... omitted
