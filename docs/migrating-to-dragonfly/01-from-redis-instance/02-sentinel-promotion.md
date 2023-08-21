@@ -222,7 +222,7 @@ Here are some key considerations to keep in mind:
 
 - **Failover Testing:** Test failover scenarios in a controlled environment to ensure that Sentinel behaves as expected. This helps identify and resolve any potential issues before migrating in a production setting.
 
-- **Monitoring and Alerts:** Implement robust monitoring for both the source Redis cluster and the Dragonfly cluster. Set up alerts to notify you of any anomalies or potential problems.
+- **Monitoring and Alerts:** Implement robust monitoring for both the source Redis instance and the Dragonfly instance. Set up alerts to notify you of any anomalies or potential problems.
 
 - **Load Balancing:** Consider how your application's load balancer or DNS is configured. Sentinel-driven migration might require adjustments to your load balancing setup to ensure traffic is directed to the new primary node.
 
