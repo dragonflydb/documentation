@@ -18,10 +18,10 @@ Below are step-by-step instructions for running Dragonfly from binary.
 
 Download the latest Dragonfly release from one of the links below. You can also checkout [all releases here](https://github.com/dragonflydb/dragonfly/releases).
 
-- [Download Latest (Aarch64)](https://dragonflydb.gateway.scarf.sh/{{DRAGONFLY_VERSION}}/dragonfly-aarch64.tar.gz)
-- [Download Latest (X86-64)](https://dragonflydb.gateway.scarf.sh/{{DRAGONFLY_VERSION}}/dragonfly-x86_64.tar.gz)
-- [Download Latest (ARM64 Debian)](https://dragonflydb.gateway.scarf.sh/{{DRAGONFLY_VERSION}}/dragonfly_arm64.deb)
-- [Download Latest (AMD64 Debian)](https://dragonflydb.gateway.scarf.sh/{{DRAGONFLY_VERSION}}/dragonfly_amd64.deb)
+- [Download Latest (Aarch64)](https://dragonflydb.gateway.scarf.sh/latest/dragonfly-aarch64.tar.gz)
+- [Download Latest (X86-64)](https://dragonflydb.gateway.scarf.sh/latest/dragonfly-x86_64.tar.gz)
+- [Download Latest (ARM64 Debian)](https://dragonflydb.gateway.scarf.sh/latest/dragonfly_arm64.deb)
+- [Download Latest (AMD64 Debian)](https://dragonflydb.gateway.scarf.sh/latest/dragonfly_amd64.deb)
 
 ## Step 2: Uncompress and rename file
 
