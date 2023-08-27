@@ -16,7 +16,7 @@ If you do not have `docker` and `docker-compose` installed on your machine, befo
 wget https://raw.githubusercontent.com/dragonflydb/dragonfly/main/contrib/docker/docker-compose.yml
 
 # Launch the Dragonfly Instance
-docker-compose up -d
+docker compose up -d
 
 # Confirm image is up
 docker ps | grep dragonfly
@@ -56,6 +56,6 @@ If you are attempting to tune Dragonfly for performance, consider `NAT` performa
 
 ### Performance Tuning
 
-In `docker-compose`, there is a significant difference between using an `overlay` network (which relies on docker `NAT` traversal for every request) and the `host` network (see [`docker-compose.yml`](https://github.com/dragonflydb/dragonfly/blob/main/contrib/docker/docker-compose.yml)).
+In `docker compose`, there is a significant difference between using an `overlay` network (which relies on docker `NAT` traversal for every request) and the `host` network (see [`docker-compose.yml`](https://github.com/dragonflydb/dragonfly/blob/main/contrib/docker/docker-compose.yml)).
 
 For more information, see the Docker compose file [network_mode docs](https://docs.docker.com/compose/compose-file/compose-file-v3/#network_mode).
