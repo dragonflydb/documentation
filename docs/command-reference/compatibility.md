@@ -78,7 +78,7 @@ sidebar_position: 0
 |                                              | <span class="command">HKEYS</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HLEN</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HMGET</span>                         | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">HMSET</span>                         | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">HMSET</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HRANDFIELD</span>                    | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">HSCAN</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HSET</span>                          | <span class="support supported">Fully supported</span>   |
