@@ -214,7 +214,7 @@ const config = {
       },
       algolia: {
         appId: "ZXLX1PN8SG",
-        apiKey: "de4ef56c89d1bc997b27afd35c466672",
+        apiKey: "abad5ee4b6f688bf466290763737a957",
         indexName: "dragonflydb",
         contextualSearch: true,
         replaceSearchResultPathname: isPreviewDeployment
