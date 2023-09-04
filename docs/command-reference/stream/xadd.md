@@ -10,6 +10,8 @@ description: Add new entries to streams
 
 **Time complexity:** O(1) when adding a new entry, O(N) when trimming where N being the number of entries evicted
 
+**ACL categories:** @write, @stream, @fast
+
 **XADD** command appends new entry to the specified key i.e. stream.
 The command returns the *ID* of the new entry. User can either explicitly
 specify the ID of the newly created entry or the command automatically

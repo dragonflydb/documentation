@@ -10,6 +10,8 @@ description: Move a key to another database
 
 **Time complexity:** O(1)
 
+**ACL categories:** @keyspace, @write, @fast
+
 Move `key` from the currently selected database (see `SELECT`) to the specified
 destination database.
 When `key` already exists in the destination database, or it does not exist in

@@ -10,6 +10,8 @@ description: Return the number of keys in the selected database
 
 **Time complexity:** O(1)
 
+**ACL categories:** @keyspace, @read, @fast
+
 Return the number of keys in the currently-selected database.
 
 ## Return

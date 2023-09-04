@@ -10,6 +10,8 @@ description: Get a substring of the string stored at a key
 
 **Time complexity:** O(N) where N is the length of the returned string. The complexity is ultimately determined by the returned length, but because creating a substring from an existing string is very cheap, it can be considered O(1) for small strings.
 
+**ACL categories:** @read, @string, @slow
+
 Returns the substring of the string value stored at `key`, determined by the
 offsets `start` and `end` (both are inclusive).
 Negative offsets can be used in order to provide an offset starting from the end

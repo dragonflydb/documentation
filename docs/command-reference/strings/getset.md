@@ -10,6 +10,8 @@ description: Set the string value of a key and return its old value
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @string, @fast
+
 Atomically sets `key` to `value` and returns the old value stored at `key`.
 Returns an error when `key` exists but does not hold a string value.  Any 
 previous time to live associated with the key is discarded on successful 

@@ -10,6 +10,8 @@ description: Set the value and expiration in milliseconds of a key
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @string, @slow
+
 `PSETEX` works exactly like `SETEX` with the sole difference that the expire
 time is specified in milliseconds instead of seconds.
 

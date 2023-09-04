@@ -10,6 +10,8 @@ description: Discard all commands issued after MULTI
 
 **Time complexity:** O(N), when N is the number of queued commands
 
+**ACL categories:** @fast, @transaction
+
 Flushes all previously queued commands in a [transaction][tt] and restores the
 connection state to normal.
 

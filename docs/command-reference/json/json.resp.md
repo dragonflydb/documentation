@@ -10,6 +10,8 @@ description: Returns the JSON value at path in Redis Serialization Protocol (RES
 
 **Time complexity:** O(N) when path is evaluated to a single value, where N is the size of the value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
+**ACL categories:** @json
+
 Return the JSON in `key` in [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec) form 
 
 [Examples](#examples)

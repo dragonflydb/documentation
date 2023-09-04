@@ -10,6 +10,8 @@ description: Get the distance between two members in a geospatial index
 
 **Time complexity:** O(log(N)), where N is the number of elements in the geospatial index represented by the sorted set.
 
+**ACL categories:** @read, @geo, @slow
+
 Return the distance between two members in the geospatial index represented by the sorted set.
 
 Given a sorted set representing a geospatial index, populated using the [`GEOADD`](./geoadd.md) command, the command returns the distance between the two specified members in the specified unit.

@@ -10,6 +10,8 @@ description: Rename a key, only if the new key does not exist
 
 **Time complexity:** O(1)
 
+**ACL categories:** @keyspace, @write, @fast
+
 Renames `key` to `newkey` if `newkey` does not yet exist.
 It returns an error when `key` does not exist.
 

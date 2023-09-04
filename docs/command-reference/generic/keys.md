@@ -10,6 +10,8 @@ description: Find all keys matching the given pattern
 
 **Time complexity:** O(N) with N being the number of keys in the database, under the assumption that the key names in the database and the given pattern have limited length.
 
+**ACL categories:** @keyspace, @read, @slow, @dangerous
+
 Returns all keys matching `pattern`.
 
 While the time complexity for this operation is O(N), the constant times are

@@ -10,6 +10,8 @@ description: Incrementally iterate the keys space
 
 **Time complexity:** O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection.
 
+**ACL categories:** @keyspace, @read, @slow
+
 The `SCAN` command and the closely related commands `SSCAN`, `HSCAN` and `ZSCAN` are used in order to incrementally iterate over a collection of elements.
 
 * `SCAN` iterates the set of keys in the currently selected Dragonfly database.

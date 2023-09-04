@@ -10,6 +10,8 @@ description: Shows helpful information
 
 **Time complexity:** N/A
 
+**ACL categories:** @json
+
 Return helpful information about the `JSON.DEBUG` command
 
 ## Return

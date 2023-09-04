@@ -11,6 +11,8 @@ description: Append one or more json values into the array at path after the
 
 **Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
+**ACL categories:** @json
+
 Append the `json` values into the array at `path` after the last element in it
 
 [Examples](#examples)

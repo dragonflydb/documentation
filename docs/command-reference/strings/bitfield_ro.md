@@ -11,6 +11,8 @@ description: Perform arbitrary bitfield integer operations on strings. Read-only
 
 **Time complexity:** O(1) for each subcommand specified
 
+**ACL categories:** @read, @bitmap, @fast
+
 Read-only variant of the `BITFIELD` command.
 It is like the original `BITFIELD` but only accepts `GET` subcommand and can safely be used in read-only replicas.
 

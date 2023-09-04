@@ -10,6 +10,8 @@ description: Remove and get the first element in a list, or block until one is a
 
 **Time complexity:** O(N) where N is the number of provided keys.
 
+**ACL categories:** @write, @list, @slow, @blocking
+
 `BLPOP` is a blocking list pop primitive.
 It is the blocking version of `LPOP` because it blocks the connection when there
 are no elements to pop from any of the given lists.

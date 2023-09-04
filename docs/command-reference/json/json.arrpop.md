@@ -10,6 +10,8 @@ description: Removes and returns the element at the specified index in the array
 
 **Time complexity:** O(N) when path is evaluated to a single value where N is the size of the array and the specified index is not the last element, O(1) when path is evaluated to a single value and the specified index is the last element, or O(N) when path is evaluated to multiple values, where N is the size of the key
 
+**ACL categories:** @json
+
 Remove and return an element from the index in the array
 
 [Examples](#examples)

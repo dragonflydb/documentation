@@ -10,6 +10,10 @@ description: Rate Limiting API
 
 **Time complexity:** O(1)
 
+https://redis.com/blog/redis-cell-rate-limiting-redis-module/ 
+
+**ACL categories:** @throttle
+
 This command provides functionality for implementing a rate limit mechanism and
 is based on the Redis module called [redis-cell](https://github.com/brandur/redis-cell).
 

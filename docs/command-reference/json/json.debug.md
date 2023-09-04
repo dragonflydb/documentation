@@ -10,4 +10,6 @@ description: Debugging container command
 
 **Time complexity:** N/A
 
+**ACL categories:** @json
+
 This is a container command for debugging related tasks.

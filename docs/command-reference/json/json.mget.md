@@ -10,6 +10,8 @@ description: Returns the values at a path from one or more keys
 
 **Time complexity:** O(M*N) when path is evaluated to a single value where M is the number of keys and N is the size of the value, O(N1+N2+...+Nm) when path is evaluated to multiple values where m is the number of keys and Ni is the size of the i-th key
 
+**ACL categories:** @json
+
 Return the values at `path` from multiple `key` arguments
 
 [Examples](#examples)

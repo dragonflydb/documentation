@@ -12,6 +12,8 @@ description: Returns a range of stream entries
 being returned. If N is constant (e.g. always asking for the
 first 10 elements with COUNT), you can consider it O(1).
 
+**ACL categories:** @read, @stream, @slow
+
 The **XRANGE** command returns stream entries matching the
 given range of IDs. The range is specified by a minimum and
 maximum ID. All the entries having an ID between the two

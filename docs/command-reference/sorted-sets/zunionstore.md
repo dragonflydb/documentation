@@ -10,6 +10,8 @@ description: Add multiple sorted sets and store the resulting sorted set in a ne
 
 **Time complexity:** O(N)+O(M log(M)) with N being the sum of the sizes of the input sorted sets, and M being the number of elements in the resulting sorted set.
 
+**ACL categories:** @write, @sortedset, @slow
+
 Computes the union of `numkeys` sorted sets given by the specified keys, and
 stores the result in `destination`.
 It is mandatory to provide the number of input keys (`numkeys`) before passing

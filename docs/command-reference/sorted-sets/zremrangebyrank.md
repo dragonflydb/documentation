@@ -10,6 +10,8 @@ description: Remove all members in a sorted set within the given indexes
 
 **Time complexity:** O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements removed by the operation.
 
+**ACL categories:** @write, @sortedset, @slow
+
 Removes all elements in the sorted set stored at `key` with rank between `start`
 and `stop`.
 Both `start` and `stop` are `0` -based indexes with `0` being the element with

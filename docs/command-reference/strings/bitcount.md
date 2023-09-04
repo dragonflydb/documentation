@@ -10,6 +10,8 @@ description: Count set bits in a string
 
 **Time complexity:** O(N)
 
+**ACL categories:** @read, @bitmap, @slow
+
 Count the number of set bits (population counting) in a string.
 
 By default all the bytes contained in the string are examined.

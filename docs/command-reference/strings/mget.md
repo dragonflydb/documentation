@@ -10,6 +10,8 @@ description: Get the values of all the given keys
 
 **Time complexity:** O(N) where N is the number of keys to retrieve.
 
+**ACL categories:** @read, @string, @fast
+
 Returns the values of all specified keys.
 For every key that does not hold a string value or does not exist, the special
 value `nil` is returned.

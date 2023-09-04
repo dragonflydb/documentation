@@ -10,6 +10,8 @@ description: Forget about all watched keys
 
 **Time complexity:** O(1)
 
+**ACL categories:** @fast, @transaction
+
 Flushes all the previously watched keys for a [transaction][tt].
 
 [tt]: https://redis.io/topics/transactions

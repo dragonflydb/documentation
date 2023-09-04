@@ -10,6 +10,8 @@ description: Clears all values from an array or an object and sets numeric value
 
 **Time complexity:** O(N) when path is evaluated to a single value where N is the size of the values, O(N) when path is evaluated to multiple values, where N is the size of the key
 
+**ACL categories:** @json
+
 Clear container values (arrays/objects) and set numeric values to `0`
 
 [Examples](#examples)

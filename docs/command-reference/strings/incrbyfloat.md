@@ -10,6 +10,8 @@ description: Increment the float value of a key by the given amount
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @string, @fast
+
 Increment the string representing a floating point number stored at `key` by the
 specified `increment`. By using a negative `increment` value, the result is
 that the value stored at the key is decremented (by the obvious properties

@@ -10,6 +10,8 @@ description: Find first bit set or clear in a string
 
 **Time complexity:** O(N)
 
+**ACL categories:** @read, @bitmap, @slow
+
 Return the position of the first bit set to 1 or 0 in a string.
 
 The position is returned, thinking of the string as an array of bits from left to

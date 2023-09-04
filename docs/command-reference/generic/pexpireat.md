@@ -10,6 +10,8 @@ description: Set the expiration for a key as a UNIX timestamp specified in milli
 
 **Time complexity:** O(1)
 
+**ACL categories:** @keyspace, @write, @fast
+
 `PEXPIREAT` has the same effect and semantic as `EXPIREAT`, but the Unix time at
 which the key will expire is specified in milliseconds instead of seconds.
 

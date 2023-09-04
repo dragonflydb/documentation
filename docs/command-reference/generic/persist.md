@@ -10,6 +10,8 @@ description: Remove the expiration from a key
 
 **Time complexity:** O(1)
 
+**ACL categories:** @keyspace, @write, @fast
+
 Remove the existing timeout on `key`, turning the key from _volatile_ (a key
 with an expire set) to _persistent_ (a key that will never expire as no timeout
 is associated).

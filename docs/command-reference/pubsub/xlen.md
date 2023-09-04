@@ -10,6 +10,8 @@ description: Return the number of entries in a stream
 
 **Time complexity:** O(1)
 
+**ACL categories:** @read, @stream, @fast
+
 Returns the number of entries inside a stream. If the specified key does not
 exist the command returns zero, as if the stream was empty.
 However note that unlike other Redis types, zero-length streams are

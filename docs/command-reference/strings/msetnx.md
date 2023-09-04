@@ -10,6 +10,8 @@ description: Set multiple keys to multiple values, only if none of the keys exis
 
 **Time complexity:** O(N) where N is the number of keys to set.
 
+**ACL categories:** @write, @string, @slow
+
 Sets the given keys to their respective values.
 `MSETNX` will not perform any operation at all even if just a single key already
 exists.

@@ -10,6 +10,8 @@ description: Get the count of unique patterns pattern subscriptions
 
 **Time complexity:** O(1)
 
+**ACL categories:** @pubsub, @slow
+
 Returns the number of unique patterns that are subscribed to by clients (that are performed using the `PSUBSCRIBE` command).
 
 Note that this isn't the count of clients subscribed to patterns, but the total number of unique patterns all the clients are subscribed to.

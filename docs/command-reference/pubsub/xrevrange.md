@@ -12,6 +12,8 @@ description: Return a range of elements in a stream, with IDs matching the
 
 **Time complexity:** O(N) with N being the number of elements returned. If N is constant (e.g. always asking for the first 10 elements with COUNT), you can consider it O(1).
 
+**ACL categories:** @read, @stream, @slow
+
 This command is exactly like `XRANGE`, but with the notable difference of
 returning the entries in reverse order, and also taking the start-end
 range in reverse order: in `XREVRANGE` you need to state the *end* ID

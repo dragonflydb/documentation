@@ -8,6 +8,8 @@ description: Append an element to a list, only if the list exists
 
     RPUSHX key element [element ...]
 
+**ACL categories:** @write, @list, @fast
+
 **Time complexity:** O(1) for each element added, so O(N) to add N elements when the command is called with multiple arguments.
 
 Inserts specified values at the tail of the list stored at `key`, only if `key`

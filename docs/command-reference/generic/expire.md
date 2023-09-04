@@ -10,6 +10,8 @@ description: Set a key's time to live in seconds
 
 **Time complexity:** O(1)
 
+**ACL categories:** @keyspace, @write, @fast
+
 Set a timeout on `key`.
 After the timeout has expired, the key will automatically be deleted.
 A key with an associated timeout is often said to be _volatile_ in Dragonfly

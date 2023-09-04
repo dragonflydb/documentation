@@ -10,6 +10,8 @@ description: Get the time to live for a key in seconds
 
 **Time complexity:** O(1)
 
+**ACL categories:** @keyspace, @read, @fast
+
 Returns the remaining time to live of a key that has a timeout.
 This introspection capability allows a Dragonfly client to check how many seconds a
 given key will continue to be part of the dataset.

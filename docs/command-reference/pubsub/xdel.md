@@ -12,6 +12,8 @@ description: Removes the specified entries from the stream. Returns the number
 
 **Time complexity:** O(1) for each single item to delete in the stream, regardless of the stream size.
 
+**ACL categories:** @write, @stream, @fast
+
 Removes the specified entries from a stream, and returns the number of entries
 deleted.  This number may be less than the number of IDs passed to the command in
 the case where some of the specified IDs do not exist in the stream.

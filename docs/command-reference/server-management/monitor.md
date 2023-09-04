@@ -10,6 +10,8 @@ description: Listen for all requests received by the server in real time
 
 **Time complexity:** undefined
 
+**ACL categories:** @admin, @slow, @dangerous
+
 `MONITOR` is a debugging command that streams back every command processed by
 the Dragonfly server.
 It can help in understanding what is happening to the database.

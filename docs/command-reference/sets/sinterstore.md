@@ -10,6 +10,8 @@ description: Intersect multiple sets and store the resulting set in a key
 
 **Time complexity:** O(N*M) worst case where N is the cardinality of the smallest set and M is the number of sets.
 
+**ACL categories:** @write, @set, @slow
+
 This command is equal to `SINTER`, but instead of returning the resulting set,
 it is stored in `destination`.
 

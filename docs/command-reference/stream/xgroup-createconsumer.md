@@ -10,6 +10,8 @@ description: Create consumer in a particular group
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @stream, @slow
+
 Create a consumer in a group. *<key\>* denotes the stream
 and *<group\>* is the group name in which the *<consumer\>*
 is being created. Both the stream and group must already

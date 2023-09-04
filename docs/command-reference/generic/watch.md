@@ -10,6 +10,8 @@ description: Watch the given keys to determine execution of the MULTI/EXEC block
 
 **Time complexity:** O(1) for every key.
 
+**ACL categories:** @fast, @transaction
+
 Marks the given keys to be watched for conditional execution of a
 [transaction][tt].
 

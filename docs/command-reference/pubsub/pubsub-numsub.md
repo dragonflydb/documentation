@@ -10,6 +10,8 @@ description: Get the count of subscribers for channels
 
 **Time complexity:** O(N) for the NUMSUB subcommand, where N is the number of requested channels
 
+**ACL categories:** @pubsub, @slow
+
 Returns the number of subscribers (exclusive of clients subscribed to patterns) for the specified channels.
 
 Note that it is valid to call this command without channels. In this case it will just return an empty list.

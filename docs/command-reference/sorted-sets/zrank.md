@@ -10,6 +10,8 @@ description: Determine the index of a member in a sorted set
 
 **Time complexity:** O(log(N))
 
+**ACL categories:** @read, @sortedset, @fast
+
 Returns the rank of `member` in the sorted set stored at `key`, with the scores
 ordered from low to high.
 The rank (or index) is 0-based, which means that the member with the lowest

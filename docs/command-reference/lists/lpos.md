@@ -10,6 +10,8 @@ description: Return the index of matching elements on a list
 
 **Time complexity:** O(N) where N is the number of elements in the list, for the average case. When searching for elements near the head or the tail of the list, or when the MAXLEN option is provided, the command may run in constant time.
 
+**ACL categories:** @read, @list, @slow
+
 The command returns the index of matching elements inside a list.
 By default, when no options are given, it will scan the list from head to tail,
 looking for the first match of "element". If the element is found, its index (the zero-based position in the list) is returned. Otherwise, if no match is found, `nil` is returned.

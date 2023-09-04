@@ -10,6 +10,8 @@ description: Remove and get the last elements in a list
 
 **Time complexity:** O(N) where N is the number of elements returned
 
+**ACL categories:** @write, @list, @fast
+
 Removes and returns the last elements of the list stored at `key`.
 
 By default, the command pops a single element from the end of the list.

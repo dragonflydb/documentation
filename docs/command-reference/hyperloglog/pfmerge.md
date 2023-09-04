@@ -10,6 +10,7 @@ description: Merges one or more HyperLogLog values into a single key.
 
 **Time complexity:** O(N) to merge N HyperLogLogs, but with high constant times.
 
+**ACL categories:** @write, @hyperloglog, @slow
 
 Merge multiple HyperLogLog values into a unique value that will approximate the cardinality of the
 union of the observed Sets of the source HyperLogLog structures.

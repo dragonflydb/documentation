@@ -10,6 +10,8 @@ description: Return a serialized version of the value stored at the specified ke
 
 **Time complexity:** O(1) to access the key and additional O(N*M) to serialize it, where N is the number of Redis objects composing the value and M their average size. For small string values the time complexity is thus O(1)+O(1*M) where M is small, so simply O(1).
 
+**ACL categories:** @keyspace, @read, @slow
+
 Serialize the value stored at key in a Dragonfly-specific format and return it to
 the user.
 The returned value can be synthesized back into a Dragonfly key using the `RESTORE`

@@ -10,6 +10,8 @@ description: Create consumer group
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @stream, @slow
+
 Create a new consumer group for the specified stream. *group* is
 the name of the consumer group. *key* is the stream name.
 

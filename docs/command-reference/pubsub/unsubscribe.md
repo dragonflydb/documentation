@@ -10,6 +10,8 @@ description: Stop listening for messages posted to the given channels
 
 **Time complexity:** O(N) where N is the number of clients already subscribed to a channel.
 
+**ACL categories:** @pubsub, @slow
+
 Unsubscribes the client from the given channels, or from all of them if none is
 given.
 

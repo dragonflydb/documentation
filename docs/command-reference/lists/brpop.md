@@ -10,6 +10,8 @@ description: Remove and get the last element in a list, or block until one is av
 
 **Time complexity:** O(N) where N is the number of provided keys.
 
+**ACL categories:** @write, @list, @slow, @blocking
+
 `BRPOP` is a blocking list pop primitive.
 It is the blocking version of `RPOP` because it blocks the connection when there
 are no elements to pop from any of the given lists.

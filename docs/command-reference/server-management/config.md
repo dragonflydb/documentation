@@ -10,6 +10,8 @@ description: A container for server configuration commands
 
 **Time complexity:** Depends on subcommand.
 
+**ACL categories:** @slow
+
 This is a container command for runtime configuration commands.
 
 <!-- To see the list of available commands you can call `CONFIG HELP`. -->

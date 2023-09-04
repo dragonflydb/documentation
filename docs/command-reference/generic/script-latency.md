@@ -10,6 +10,8 @@ description: Prints latency histograms in usec for all called scripts.
 
 **Time complexity:** O(N) with N being the number of called scripts.
 
+**ACL categories:** @slow, @scripting
+
 Prints latency histograms in usec for all called scripts.
 
 ## Return

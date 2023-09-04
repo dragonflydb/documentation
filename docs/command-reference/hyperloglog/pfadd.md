@@ -10,6 +10,7 @@ description: Adds elements to a HyperLogLog key. Creates the key if it doesn't e
 
 **Time complexity:** O(1) for each element added.
 
+**ACL categories:** @write, @hyperloglog, @fast
 
 Adds all the element arguments to the HyperLogLog data structure stored at the variable name
 specified as first argument.

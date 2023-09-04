@@ -11,6 +11,8 @@ description: Trims the array at path to contain only the specified inclusive
 
 **Time complexity:** O(N) when path is evaluated to a single value where N is the size of the array, O(N) when path is evaluated to multiple values, where N is the size of the key
 
+**ACL categories:** @json
+
 Trim an array so that it contains only the specified inclusive range of elements
 
 [Examples](#examples)

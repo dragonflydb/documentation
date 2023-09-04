@@ -10,6 +10,8 @@ description: Get the score associated with the given members in a sorted set
 
 **Time complexity:** O(N) where N is the number of members being requested.
 
+**ACL categories:** @read, @sortedset, @fast
+
 Returns the scores associated with the specified `members` in the sorted set stored at `key`.
 
 For every `member` that does not exist in the sorted set, a `nil` value is returned.

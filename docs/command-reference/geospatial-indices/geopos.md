@@ -10,6 +10,8 @@ description: Get the positions of specified members in a geospatial index
 
 **Time complexity:** O(N) where N is the number of members requested.
 
+**ACL categories:** @read, @geo, @slow
+
 Return the positions (longitude, latitude) of all the specified members of the geospatial index represented by the sorted set.
 
 Given a sorted set representing a geospatial index, populated using the [`GEOADD`](./geoadd.md) command, it is often useful to obtain back the coordinates of specified members.

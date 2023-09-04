@@ -10,6 +10,8 @@ description: Perform bitwise operations between strings
 
 **Time complexity:** O(N)
 
+**ACL categories:** @write, @bitmap, @slow
+
 Perform a bitwise operation between multiple keys (containing string values) and
 store the result in the destination key.
 

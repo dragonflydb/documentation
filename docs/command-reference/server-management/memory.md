@@ -10,6 +10,8 @@ description: A container for memory diagnostics commands
 
 **Time complexity:** Depends on subcommand.
 
+**ACL categories:** @slow
+
 This is a container command for memory introspection and management commands.
 
 <!-- To see the list of available commands you can call `MEMORY HELP`. -->

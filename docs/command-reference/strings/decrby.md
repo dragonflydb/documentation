@@ -10,6 +10,8 @@ description: Decrement the integer value of a key by the given number
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @string, @fast
+
 Decrements the number stored at `key` by `decrement`.
 If the key does not exist, it is set to `0` before performing the operation.
 An error is returned if the key contains a value of the wrong type or contains a

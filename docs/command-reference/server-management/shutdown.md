@@ -10,6 +10,7 @@ description: Synchronously save the dataset to disk and then shut down the serve
 
 **Time complexity:** O(1)
 
+**ACL categories:** @admin, @slow, @dangerous
 
 ## Options
 

@@ -10,6 +10,8 @@ description: Prepend an element to a list, only if the list exists
 
 **Time complexity:** O(1) for each element added, so O(N) to add N elements when the command is called with multiple arguments.
 
+**ACL categories:** @write, @list, @fast
+
 Inserts specified values at the head of the list stored at `key`, only if `key`
 already exists and holds a list.
 In contrary to `LPUSH`, no operation will be performed when `key` does not yet

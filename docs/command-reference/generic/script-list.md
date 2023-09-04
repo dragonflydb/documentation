@@ -10,6 +10,8 @@ description: List all scripts in the script cache.
 
 **Time complexity:** O(N) with N being the number of scripts in script cache.
 
+**ACL categories:** @slow, @scripting
+
 Returns information about all the scripts in the script cache.
 
 ## Return

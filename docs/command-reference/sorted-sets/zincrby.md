@@ -10,6 +10,8 @@ description: Increment the score of a member in a sorted set
 
 **Time complexity:** O(log(N)) where N is the number of elements in the sorted set.
 
+**ACL categories:** @write, @sortedset, @fast
+
 Increments the score of `member` in the sorted set stored at `key` by
 `increment`.
 If `member` does not exist in the sorted set, it is added with `increment` as

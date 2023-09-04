@@ -10,6 +10,8 @@ description: Return the role of the instance in the context of replication
 
 **Time complexity:** O(1)
 
+**ACL categories:** @admin, @fast, @dangerous
+
 Provide information on the role of a Dragonfly instance in the context of replication, by returning if the instance is currently a `master` or `slave`. The command also returns additional information about the state of the replication.
 
 ## Output format

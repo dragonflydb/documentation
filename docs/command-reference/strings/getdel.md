@@ -10,6 +10,8 @@ description: Get the value of a key and delete the key
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @string, @fast
+
 Get the value of `key` and delete the key.
 This command is similar to `GET`, except for the fact that it also deletes the key on success (if and only if the key's value type is a string).
 

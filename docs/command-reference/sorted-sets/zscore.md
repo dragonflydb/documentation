@@ -10,6 +10,8 @@ description: Get the score associated with the given member in a sorted set
 
 **Time complexity:** O(1)
 
+**ACL categories:** @read, @sortedset, @fast
+
 Returns the score of `member` in the sorted set at `key`.
 
 If `member` does not exist in the sorted set, or `key` does not exist, `nil` is

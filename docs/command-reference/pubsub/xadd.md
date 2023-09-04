@@ -10,6 +10,8 @@ description: Appends a new entry to a stream
 
 **Time complexity:** O(1) when adding a new entry, O(N) when trimming where N being the number of entries evicted.
 
+**ACL categories:** @write, @stream, @fast
+
 Appends the specified stream entry to the stream at the specified key.
 If the key does not exist, as a side effect of running this command the
 key is created with a stream value. The creation of stream's key can be

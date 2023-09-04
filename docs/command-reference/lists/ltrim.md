@@ -10,6 +10,8 @@ description: Trim a list to the specified range
 
 **Time complexity:** O(N) where N is the number of elements to be removed by the operation.
 
+**ACL categories:** @write, @list, @slow
+
 Trim an existing list so that it will contain only the specified range of
 elements specified.
 Both `start` and `stop` are zero-based indexes, where `0` is the first element

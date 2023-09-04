@@ -10,6 +10,8 @@ description: Determine if a given value is a member of a set
 
 **Time complexity:** O(1)
 
+**ACL categories:** @read, @set, @fast
+
 Returns if `member` is a member of the set stored at `key`.
 
 ## Return

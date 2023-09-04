@@ -10,5 +10,7 @@ description: An internal command for replicating stream values
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @stream, @fast
+
 The `XSETID` command is an internal command.
 It is used to replicate the last delivered ID of streams.

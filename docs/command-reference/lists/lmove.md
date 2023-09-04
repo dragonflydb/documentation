@@ -10,6 +10,8 @@ description: Pop an element from a list, push it to another list and return it
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @list, @slow
+
 Atomically returns and removes the first/last element (head/tail depending on
 the `wherefrom` argument) of the list stored at `source`, and pushes the
 element at the first/last element (head/tail depending on the `whereto`

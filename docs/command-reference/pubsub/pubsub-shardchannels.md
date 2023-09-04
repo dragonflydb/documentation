@@ -10,6 +10,8 @@ description: List active shard channels
 
 **Time complexity:** O(N) where N is the number of active shard channels, and assuming constant time pattern matching (relatively short shard channels).
 
+**ACL categories:** @pubsub, @slow
+
 Lists the currently *active shard channels*.
 
 An active shard channel is a Pub/Sub shard channel with one or more subscribers.
