@@ -6,14 +6,18 @@ description: Authenticate to the server
 
 ## Syntax
 
-    AUTH password
+    AUTH [username] password
 
-**Time complexity:** O(1)/
+**Time complexity:** O(1)
+
+**ACL categories:** @fast, @connection
 
 The AUTH command authenticates the current connection if the Dragonfly server is password protected via the `requirepass` option. Dragonfly will deny any command executed by the just
 connected clients, unless the connection gets authenticated via `AUTH`.
 
 If the password provided via AUTH matches the configured password, the server replies with the `OK` status code and starts accepting commands. Otherwise, an error is returned and the clients needs to try a new password.
+
+Additionally, `AUTH` can be used to authenticate users created by the `ACL SETUSER` command.
 
 ## Security notice
 
