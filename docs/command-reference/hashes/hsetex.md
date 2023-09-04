@@ -10,6 +10,8 @@ description: Set the string value and the ttl of a hash field
 
 **Time complexity:** O(1) for each field/value pair added, so O(N) to add N field/value pairs when the command is called with multiple field/value pairs.
 
+**ACL categories:** @read, @hash, @fast
+
 **Warning:** Experimental! Dragonfly specific.
 
 Simimar to HSET but adds one or more hash fieds that expire after specified number of seconds.

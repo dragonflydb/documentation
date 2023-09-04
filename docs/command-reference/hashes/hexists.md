@@ -10,6 +10,8 @@ description: Determine if a hash field exists
 
 **Time complexity:** O(1)
 
+**ACL categories:** @read, @hash, @fast
+
 Returns if `field` is an existing field in the hash stored at `key`.
 
 ## Return

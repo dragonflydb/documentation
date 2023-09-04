@@ -10,6 +10,8 @@ description: Get the number of fields in a hash
 
 **Time complexity:** O(1)
 
+**ACL categories:** @read, @hash, @fast
+
 Returns the number of fields contained in the hash stored at `key`.
 
 ## Return

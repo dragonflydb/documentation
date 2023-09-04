@@ -10,6 +10,8 @@ description: Get the value of a hash field
 
 **Time complexity:** O(1)
 
+**ACL categories:** @read, @hash, @fast
+
 Returns the value associated with `field` in the hash stored at `key`.
 
 ## Return

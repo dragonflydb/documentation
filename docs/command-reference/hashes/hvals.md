@@ -10,6 +10,8 @@ description: Get all the values in a hash
 
 **Time complexity:** O(N) where N is the size of the hash.
 
+**ACL categories:** @read, @hash, @fast
+
 Returns all values in the hash stored at `key`.
 
 ## Return

@@ -10,6 +10,8 @@ description: Increment the integer value of a hash field by the given number
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @hash, @fast
+
 Increments the number stored at `field` in the hash stored at `key` by
 `increment`.
 If `key` does not exist, a new key holding a hash is created.
