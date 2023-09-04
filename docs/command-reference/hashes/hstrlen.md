@@ -10,6 +10,8 @@ description: Get the length of the value of a hash field
 
 **Time complexity:** O(1)
 
+**ACL categories:** @read, @hash, @fast
+
 Returns the string length of the value associated with `field` in the hash stored at `key`. If the `key` or the `field` do not exist, 0 is returned.
 
 ## Return

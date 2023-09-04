@@ -10,6 +10,8 @@ description: Set multiple hash fields to multiple values
 
 **Time complexity:** O(N) where N is the number of fields being set.
 
+**ACL categories:** @write, @hash, @fast
+
 Sets the specified fields to their respective values in the hash stored at
 `key`.
 This command overwrites any specified fields already existing in the hash.

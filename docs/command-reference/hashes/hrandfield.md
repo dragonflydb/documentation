@@ -10,6 +10,8 @@ description: Get one or multiple random fields from a hash
 
 **Time complexity:** O(N) where N is the number of fields returned
 
+**ACL categories:** @read, @hash, @slow
+
 When called with just the `key` argument, return a random field from the hash value stored at `key`.
 
 If the provided `count` argument is positive, return an array of **distinct fields**.

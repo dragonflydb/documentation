@@ -10,6 +10,8 @@ description: Get the values of all the given hash fields
 
 **Time complexity:** O(N) where N is the number of fields being requested.
 
+**ACL categories:** @read, @hash, @fast
+
 Returns the values associated with the specified `fields` in the hash stored at
 `key`.
 

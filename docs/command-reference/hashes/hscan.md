@@ -10,4 +10,6 @@ description: Incrementally iterate hash fields and associated values
 
 **Time complexity:** O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection.
 
+**ACL categories:** @read, @hash, @slow
+
 See [SCAN](../generic/scan) for `HSCAN` documentation.

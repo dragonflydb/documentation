@@ -10,6 +10,8 @@ description: Get all the fields in a hash
 
 **Time complexity:** O(N) where N is the size of the hash.
 
+**ACL categories:** @read, @hash, @slow
+
 Returns all field names in the hash stored at `key`.
 
 ## Return

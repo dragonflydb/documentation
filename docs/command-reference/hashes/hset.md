@@ -10,6 +10,8 @@ description: Set the string value of a hash field
 
 **Time complexity:** O(1) for each field/value pair added, so O(N) to add N field/value pairs when the command is called with multiple field/value pairs.
 
+**ACL categories:** @write, @hash, @fast
+
 Sets the specified fields to their respective values in the hash stored at `key`.
 
 This command overwrites the values of specified fields that exist in the hash.

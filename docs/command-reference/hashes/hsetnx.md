@@ -10,6 +10,8 @@ description: Set the value of a hash field, only if the field does not exist
 
 **Time complexity:** O(1)
 
+**ACL categories:** @read, @hash, @fast
+
 Sets `field` in the hash stored at `key` to `value`, only if `field` does not
 yet exist.
 If `key` does not exist, a new key holding a hash is created.

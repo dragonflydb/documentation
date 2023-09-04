@@ -10,6 +10,8 @@ description: Delete one or more hash fields
 
 **Time complexity:** O(N) where N is the number of fields to be removed.
 
+**ACL categories:** @write, @hash, @fast
+
 Removes the specified fields from the hash stored at `key`.
 Specified fields that do not exist within this hash are ignored.
 If `key` does not exist, it is treated as an empty hash and this command returns

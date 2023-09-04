@@ -10,6 +10,8 @@ description: Increment the float value of a hash field by the given amount
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @hash, @fast
+
 Increment the specified `field` of a hash stored at `key`, and representing a
 floating point number, by the specified `increment`. If the increment value
 is negative, the result is to have the hash field value **decremented** instead of incremented.
