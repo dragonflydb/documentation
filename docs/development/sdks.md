@@ -18,7 +18,7 @@ However, in Dragonfly it cannot work out of the box due to our multi-threaded tr
 
 As such, one could run Dragonfly with Lua global transaction mode:
 
-```shell
+```
 dragonfly --default_lua_flags=allow-undeclared-keys
 ```
 
@@ -30,7 +30,7 @@ To employ Dragonfly in this mode, please follow the provided guide:
 
 1. Run Dragonfly with the following flags
 
-```shell
+```
 dragonfly -cluster_mode=emulated --lock_on_hashtags
 ```
 
