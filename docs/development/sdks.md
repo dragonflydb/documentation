@@ -6,7 +6,7 @@ sidebar_position: 0
 
 Your favorite Redis SDK or library should work as expected with Dragonfly as well. If you run in to any issues using a Redis SDK with Dragonfly please reach out via [Discord](https://discord.gg/HsPjXGVH85) or [get in touch with our team](https://www.dragonflydb.io/early-access).
 
-# BullMQ - https://docs.bullmq.io/
+# [BullMQ](https://docs.bullmq.io/)
 
 The integration of Dragonfly with BullMQ involves some specific configuration steps to ensure optimal performance and compatibility with BullMQ internals.
 
