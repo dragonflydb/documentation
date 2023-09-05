@@ -10,6 +10,8 @@ description: Add multiple sets and store the resulting set in a key
 
 **Time complexity:** O(N) where N is the total number of elements in all given sets.
 
+**ACL categories:** @write, @set, @slow
+
 This command is equal to `SUNION`, but instead of returning the resulting set,
 it is stored in `destination`.
 

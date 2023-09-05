@@ -10,6 +10,8 @@ description: Multiplies the numeric value at path by a value
 
 **Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
+**ACL categories:** @json
+
 Multiply the number value stored at `path` by `number`
 
 [Examples](#examples)

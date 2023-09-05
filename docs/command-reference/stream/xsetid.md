@@ -10,6 +10,8 @@ description: Set last id of a stream
 
 **Time Complexity:** O(1)
 
+**ACL categories:** @write, @stream, @fast
+
 **XSETID** sets the last id of the specified stream. **<key\>**
 must exists before executing the command. The **<last-id\>** can't
 be smaller than target stream top entry.

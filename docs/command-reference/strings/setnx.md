@@ -10,6 +10,8 @@ description: Set the value of a key, only if the key does not exist
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @string, @fast
+
 Set `key` to hold string `value` if `key` does not exist.
 When `key` already holds a value, no operation is performed.
 `SETNX` is short for "**SET** if **N**ot e**X**ists".

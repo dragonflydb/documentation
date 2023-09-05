@@ -10,6 +10,8 @@ description: Set the current connection name
 
 **Time complexity:** O(1)
 
+**ACL categories:** @slow, @connection
+
 The `CLIENT SETNAME` command assigns a name to the current connection.
 
 The assigned name is displayed in the output of `CLIENT LIST` so that it is possible to identify the client that performed a given connection.

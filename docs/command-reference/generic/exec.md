@@ -10,6 +10,8 @@ description: Execute all commands issued after MULTI
 
 **Time complexity:** Depends on commands in the transaction
 
+**ACL categories:** @slow, @transaction
+
 Executes all previously queued commands in a [transaction][tt] and restores the
 connection state to normal.
 

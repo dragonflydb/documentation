@@ -10,6 +10,8 @@ description: Load the specified Lua script into the script cache.
 
 **Time complexity:** O(N) with N being the length in bytes of the script body.
 
+**ACL categories:** @slow, @scripting
+
 Load a script into the scripts cache, without executing it.
 After the specified command is loaded into the script cache it will be callable
 using `EVALSHA` with the correct SHA1 digest of the script, exactly like after

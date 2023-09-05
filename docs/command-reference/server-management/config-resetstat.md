@@ -10,6 +10,8 @@ description: Reset the stats returned by INFO
 
 **Time complexity:** O(1)
 
+**ACL categories:** @admin, @slow, @dangerous
+
 Resets the statistics reported by Dragonfly using the `INFO` command.
 
 ## Return

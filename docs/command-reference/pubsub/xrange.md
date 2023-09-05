@@ -11,6 +11,8 @@ description: Return a range of elements in a stream, with IDs matching the
 
 **Time complexity:** O(N) with N being the number of elements being returned. If N is constant (e.g. always asking for the first 10 elements with COUNT), you can consider it O(1).
 
+**ACL categories:** @read, @stream, @slow
+
 The command returns the stream entries matching a given range of IDs.
 The range is specified by a minimum and maximum ID. All the entries having
 an ID between the two specified or exactly one of the two IDs specified

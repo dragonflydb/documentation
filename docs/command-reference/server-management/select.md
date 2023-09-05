@@ -10,6 +10,8 @@ description: Change the selected database for the current connection
 
 **Time complexity:** O(1)
 
+**ACL categories:** @fast, @connection
+
 Select the Dragonfly logical database having the specified zero-based numeric index.
 New connections always use the database 0.
 

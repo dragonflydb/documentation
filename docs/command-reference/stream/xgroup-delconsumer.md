@@ -10,6 +10,8 @@ description: Delete consumer from a particular group
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @stream, @slow
+
 **XGROUP DELCONSUMER** deletes the specified consumer from
 the given consumer **<group\>**. **<key\>** denotes the stream
 to which the group belongs. Both stream and group must already

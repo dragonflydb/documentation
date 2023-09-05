@@ -10,6 +10,8 @@ description: Remove and return one or multiple random members from a set
 
 **Time complexity:** Without the count argument O(1), otherwise O(N) where N is the value of the passed count.
 
+**ACL categories:** @write, @set, @fast
+
 Removes and returns one or more random members from the set value store at `key`.
 
 This operation is similar to `SRANDMEMBER`, that returns one or more random elements from a set but does not remove it.

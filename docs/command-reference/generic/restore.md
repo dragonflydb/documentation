@@ -11,6 +11,8 @@ description: Create a key using the provided serialized value, previously
 
 **Time complexity:** O(1) to create the new key and additional O(N*M) to reconstruct the serialized value, where N is the number of Dragonfly objects composing the value and M their average size. For small string values the time complexity is thus O(1)+O(1*M) where M is small, so simply O(1). However for sorted set values the complexity is O(N*M*log(N)) because inserting values into sorted sets is O(log(N)).
 
+**ACL categories:** @keyspace, @write, @slow, @dangerous
+
 Create a key associated with a value that is obtained by deserializing the
 provided serialized value (obtained via `DUMP`).
 

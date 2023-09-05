@@ -8,6 +8,8 @@ description: Destroy group
 
     XGROUP DESTROY key group
 
+**ACL categories:** @write, @stream, @slow
+
 **Time complexity:** O(N) where N is the number of entries in the
 group's pending entries list (PEL).
 

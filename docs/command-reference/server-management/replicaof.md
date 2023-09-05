@@ -10,6 +10,8 @@ description: Make the server a replica of another instance, or promote it as mas
 
 **Time complexity:** O(1)
 
+**ACL categories:** @admin, @slow, @dangerous
+
 The `REPLICAOF` command can change the replication settings of a replica on the fly.
 
 If a Dragonfly server is already acting as replica, the command `REPLICAOF NO ONE` will turn off the replication, turning the Dragonfly server into a MASTER.

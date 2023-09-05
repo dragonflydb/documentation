@@ -10,6 +10,8 @@ description: Remove the last element in a list, prepend it to another list and r
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @list, @slow
+
 Atomically returns and removes the last element (tail) of the list stored at
 `source`, and pushes the element at the first element (head) of the list stored
 at `destination`.

@@ -13,6 +13,8 @@ Constant times are very small however, since entries are organized in
 macro nodes containing multiple entries that can be released with a
 single deallocation.
 
+**ACL categories:** @write, @stream, @slow
+
 **XTRIM** works same like how trimming works in **XADD** (when option
 specified). But instead of adding a new entry, **XTRIM** focuses
 completely on trimming entries. **<key\>** is the stream name of

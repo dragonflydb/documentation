@@ -10,6 +10,8 @@ description: Return a range of members in a sorted set, by score
 
 **Time complexity:** O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements being returned. If M is constant (e.g. always asking for the first 10 elements with LIMIT), you can consider it O(log(N)).
 
+**ACL categories:** @read, @sortedset, @slow
+
 Returns all the elements in the sorted set at `key` with a score between `min`
 and `max` (including elements with score equal to `min` or `max`).
 The elements are considered to be ordered from low to high scores.

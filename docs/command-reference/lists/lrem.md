@@ -10,6 +10,8 @@ description: Remove elements from a list
 
 **Time complexity:** O(N+M) where N is the length of the list and M is the number of elements removed.
 
+**ACL categories:** @write, @list, @slow
+
 Removes the first `count` occurrences of elements equal to `element` from the list
 stored at `key`.
 The `count` argument influences the operation in the following ways:

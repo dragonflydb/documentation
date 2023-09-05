@@ -10,6 +10,8 @@ description: Get the count of subscribers for shard channels
 
 **Time complexity:** O(N) for the SHARDNUMSUB subcommand, where N is the number of requested shard channels
 
+**ACL categories:** @pubsub, @slow
+
 Returns the number of subscribers for the specified shard channels.
 
 Note that it is valid to call this command without channels, in this case it will just return an empty list.

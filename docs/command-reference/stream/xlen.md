@@ -10,6 +10,8 @@ description: Get the length of a stream
 
 **Time Complexity:** O(1)
 
+**ACL categories:** @read, @stream, @fast
+
 Returns the number of entries inside a stream. If the specified
 key does not exist the command returns zero, as if the stream was
 empty. Note that a stream can be empty and hence **XLEN** is not

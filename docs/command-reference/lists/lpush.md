@@ -10,6 +10,8 @@ description: Prepend one or multiple elements to a list
 
 **Time complexity:** O(1) for each element added, so O(N) to add N elements when the command is called with multiple arguments.
 
+**ACL categories:** @write, @list, @fast
+
 Insert all the specified values at the head of the list stored at `key`.
 If `key` does not exist, it is created as empty list before performing the push
 operations.

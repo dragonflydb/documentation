@@ -11,6 +11,8 @@ description: Return a range of members in a sorted set, by index, with scores
 
 **Time complexity:** O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements returned.
 
+**ACL categories:** @read, @sortedset, @slow
+
 Returns the specified range of elements in the sorted set stored at `key`.
 The elements are considered to be ordered from the highest to the lowest score.
 Descending lexicographical order is used for elements with equal score.

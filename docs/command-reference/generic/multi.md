@@ -10,6 +10,8 @@ description: Mark the start of a transaction block
 
 **Time complexity:** O(1)
 
+**ACL categories:** @fast, @transaction
+
 Marks the start of a [transaction][tt] block.
 Subsequent commands will be queued for atomic execution using `EXEC`.
 

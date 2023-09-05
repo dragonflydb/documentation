@@ -10,6 +10,8 @@ description: Get information and statistics about the server
 
 **Time complexity:** O(1)
 
+**ACL categories:** @slow, @dangerous
+
 The `INFO` command returns information and statistics about the server in a
 format that is simple to parse by computers and easy to read by humans.
 

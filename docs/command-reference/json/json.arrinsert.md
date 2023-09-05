@@ -10,6 +10,8 @@ description: Inserts the JSON scalar(s) value at the specified index in the arra
 
 **Time complexity:** O(N) when path is evaluated to a single value where N is the size of the array, O(N) when path is evaluated to multiple values, where N is the size of the key
 
+**ACL categories:** @json
+
 Insert the `json` values into the array at `path` before the `index` (shifts to the right)
 
 [Examples](#examples)

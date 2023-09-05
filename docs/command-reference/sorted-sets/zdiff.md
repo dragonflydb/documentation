@@ -11,6 +11,8 @@ description: this command is similar to zdiffstore, but instead of storing the r
 
 **Time complexity:** : O(L + K log K) worst case where L is the total number of elements in all the sets, and K is the size of the result set.
 
+**ACL categories:** @read, @sortedset, @slow
+
 This command is similar to ZDIFFSTORE, but instead of storing the resulting sorted set, it is returned to the client
 
 ## Return

@@ -10,6 +10,8 @@ description: Get the list of client connections
 
 **Time complexity:** O(N) where N is the number of client connections
 
+**ACL categories:** @admin, @slow, @dangerous, @connection
+
 The `CLIENT LIST` command returns information and statistics about the client
 connections server in a mostly human readable format.
 

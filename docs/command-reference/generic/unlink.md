@@ -10,6 +10,8 @@ description: Delete a key.
 
 **Time complexity:** O(N) where N is the number of keys that will be removed.
 
+**ACL categories:** @keyspace, @write, @fast
+
 This command is equivalent to `DEL` command, see `DEL` for more information.
 
 ## Return

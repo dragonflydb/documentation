@@ -10,6 +10,8 @@ description: Count the members in a sorted set with scores within the given valu
 
 **Time complexity:** O(log(N)) with N being the number of elements in the sorted set.
 
+**ACL categories:** @read, @sortedset, @fast
+
 Returns the number of elements in the sorted set at `key` with a score between
 `min` and `max`.
 

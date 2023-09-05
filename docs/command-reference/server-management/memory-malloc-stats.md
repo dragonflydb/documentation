@@ -10,6 +10,8 @@ description: Show allocator internal stats
 
 **Time complexity:** Depends on how much memory is allocated, could be slow
 
+**ACL categories:** @slow
+
 The `MEMORY MALLOC-STATS` command provides an internal statistics report from
 the memory allocator.
 

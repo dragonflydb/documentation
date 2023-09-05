@@ -10,6 +10,8 @@ description: Check existence of scripts in the script cache.
 
 **Time complexity:** O(N) with N being the number of scripts to check (so checking a single script is an O(1) operation).
 
+**ACL categories:** @slow, @scripting
+
 Returns information about the existence of the scripts in the script cache.
 
 This command accepts one or more SHA1 digests and returns a list of ones or

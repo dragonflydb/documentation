@@ -10,6 +10,8 @@ description: Get the UNIX time stamp of the last successful save to disk
 
 **Time complexity:** O(1)
 
+**ACL categories:** @admin, @fast, @dangerous
+
 Return the UNIX TIME of the last DB save executed with success.
 A client may check if a `BGSAVE` command succeeded reading the `LASTSAVE` value,
 then issuing a `BGSAVE` command and checking at regular intervals every N

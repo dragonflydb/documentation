@@ -10,6 +10,8 @@ description: Add one or more expiring members to a set
 
 **Time complexity:** O(1) for each element added, so O(N) to add N elements when the command is called with multiple arguments.
 
+**ACL categories:** @write, @set, @fast
+
 **Warning:** Experimental! Dragonfly specific.
 
 Simimar to SADD but adds one or more members that expire after specified number of seconds.

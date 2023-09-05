@@ -11,6 +11,8 @@ description: Count the number of members in a sorted set between a given
 
 **Time complexity:** O(log(N)) with N being the number of elements in the sorted set.
 
+**ACL categories:** @read, @sortedset, @fast
+
 When all the elements in a sorted set are inserted with the same score, in order to force lexicographical ordering, this command returns the number of elements in the sorted set at `key` with a value between `min` and `max`.
 
 The `min` and `max` arguments have the same meaning as described for

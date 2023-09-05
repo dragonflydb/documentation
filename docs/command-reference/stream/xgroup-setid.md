@@ -10,6 +10,8 @@ description: Destroy group
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @stream, @slow
+
 Set the last delivered ID of a consumer group.
 
 Normally, a consumer group's last delivered ID is set when the

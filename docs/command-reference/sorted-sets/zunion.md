@@ -10,6 +10,8 @@ description: Add multiple sorted sets
 
 **Time complexity:** O(N)+O(M*log(M)) with N being the sum of the sizes of the input sorted sets, and M being the number of elements in the resulting sorted set.
 
+**ACL categories:** @read, @sortedset, @slow
+
 This command is similar to `ZUNIONSTORE`, but instead of storing the resulting
 sorted set, it is returned to the client.
 

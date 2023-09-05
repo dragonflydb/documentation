@@ -10,6 +10,7 @@ description: Asynchronously save the dataset to disk
 
 **Time complexity:** O(1)
 
+**ACL categories:** @admin, @slow, @dangerous
 
 Equvalent to [SAVE](../server-management/save) and kept for compatibility reasons.
 

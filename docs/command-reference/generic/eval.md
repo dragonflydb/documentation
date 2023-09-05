@@ -10,6 +10,8 @@ description: Execute a Lua script server side
 
 **Time complexity:** Depends on the script that is executed.
 
+**ACL categories:** @slow, @scripting
+
 Invoke the execution of a server-side Lua script.
 
 The first argument is the script's source code.

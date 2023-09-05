@@ -10,6 +10,8 @@ description: Get the number of members in a set
 
 **Time complexity:** O(1)
 
+**ACL categories:** @read, @set, @fast
+
 Returns the set cardinality (number of elements) of the set stored at `key`.
 
 ## Return

@@ -10,6 +10,8 @@ description: Set the string value of a key
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @string, @slow
+
 Set `key` to hold the string `value`.
 If `key` already holds a value, it is overwritten, regardless of its type.
 Any previous time to live associated with the key is discarded on successful `SET` operation.

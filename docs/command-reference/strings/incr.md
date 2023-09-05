@@ -10,6 +10,8 @@ description: Increment the integer value of a key by one
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @string, @fast
+
 Increments the number stored at `key` by one.
 If the key does not exist, it is set to `0` before performing the operation.
 An error is returned if the key contains a value of the wrong type or contains a

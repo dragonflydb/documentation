@@ -10,6 +10,8 @@ description: Gets the value at one or more paths in JSON serialized form
 
 **Time complexity:** O(N) when path is evaluated to a single value where N is the size of the value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
+**ACL categories:** @json
+
 Return the value at `path` in JSON serialized form
 
 [Examples](#examples)

@@ -10,6 +10,8 @@ description: Remove one or more members from a sorted set
 
 **Time complexity:** O(M*log(N)) with N being the number of elements in the sorted set and M the number of elements to be removed.
 
+**ACL categories:** @write, @sortedset, @fast
+
 Removes the specified members from the sorted set stored at `key`.
 Non existing members are ignored.
 

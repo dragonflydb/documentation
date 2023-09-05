@@ -10,6 +10,8 @@ description: Close the connection
 
 **Time complexity:** O(1)
 
+**ACL categories:** @fast, @connection
+
 Ask the server to close the connection.
 The connection is closed as soon as all pending replies have been written to the
 client.

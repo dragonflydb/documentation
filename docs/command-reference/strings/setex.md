@@ -10,6 +10,8 @@ description: Set the value and expiration of a key
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @string, @slow
+
 Set `key` to hold the string `value` and set `key` to timeout after a given
 number of seconds.
 This command is equivalent to executing the following commands:

@@ -12,6 +12,8 @@ description: Returns a range from streams (reversed)
 being returned. If N is constant (e.g. always asking for the
 first 10 elements with COUNT), you can consider it O(1).
 
+**ACL categories:** @read, @stream, @slow
+
 **XREVRANGE** is almost same as **XRANGE**. The only difference
 is it returns the entries in reverse order, and also takes the
 start-end range in reverse order (as you can notice in the

@@ -10,6 +10,8 @@ description: Remove and return members with the highest scores in a sorted set
 
 **Time complexity:** O(log(N)*M) with N being the number of elements in the sorted set, and M being the number of elements popped.
 
+**ACL categories:** @write, @sortedset, @fast
+
 Removes and returns up to `count` members with the highest scores in the sorted
 set stored at `key`.
 

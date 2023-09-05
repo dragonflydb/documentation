@@ -11,6 +11,8 @@ description: Alters the last access time of a key(s). Returns the number of
 
 **Time complexity:** O(N) where N is the number of keys that will be touched.
 
+**ACL categories:** @keyspace, @read, @fast
+
 Alters the last access time of a key(s).
 A key is ignored if it does not exist.
 

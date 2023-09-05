@@ -10,6 +10,8 @@ description: Set a key's time to live in milliseconds
 
 **Time complexity:** O(1)
 
+**ACL categories:** @keyspace, @write, @fast
+
 This command works exactly like `EXPIRE` but the time to live of the key is
 specified in milliseconds instead of seconds.
 

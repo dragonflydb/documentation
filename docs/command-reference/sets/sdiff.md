@@ -10,6 +10,8 @@ description: Subtract multiple sets
 
 **Time complexity:** O(N) where N is the total number of elements in all given sets.
 
+**ACL categories:** @read, @set, @slow
+
 Returns the members of the set resulting from the difference between the first
 set and all the successive sets.
 

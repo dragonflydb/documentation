@@ -10,6 +10,8 @@ description: Set the value of an element in a list by its index
 
 **Time complexity:** O(N) where N is the length of the list. Setting either the first or the last element of the list is O(1).
 
+**ACL categories:** @write, @list, @slow
+
 Sets the list element at `index` to `element`.
 For more information on the `index` argument, see `LINDEX`.
 

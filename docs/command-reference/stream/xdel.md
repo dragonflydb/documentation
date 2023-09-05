@@ -10,6 +10,8 @@ description: Delete entries from stream
 
 **Time complexity:** O(1) for each single item to delete in the stream.
 
+**ACL categories:** @write, @stream, @fast
+
 **XDEL** deletes entries from the given stream. The key and ids specify
 the stream name and entry IDs respectively. Refer to [XADD referece
 page](./xadd.md#specifying-id) for more information about IDs.

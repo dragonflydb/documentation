@@ -10,6 +10,8 @@ description: Add one or more members to a set
 
 **Time complexity:** O(1) for each element added, so O(N) to add N elements when the command is called with multiple arguments.
 
+**ACL categories:** @write, @set, @fast
+
 Add the specified members to the set stored at `key`.
 Specified members that are already a member of this set are ignored.
 If `key` does not exist, a new set is created before adding the specified

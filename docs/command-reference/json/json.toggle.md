@@ -10,6 +10,8 @@ description: Toggles a boolean value
 
 **Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
+**ACL categories:** @json
+
 Toggle a Boolean value stored at `path`
 
 [Examples](#examples)

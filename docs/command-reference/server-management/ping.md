@@ -10,6 +10,8 @@ description: Ping the server
 
 **Time complexity:** O(1)
 
+**ACL categories:** @fast, @connection
+
 Returns `PONG` if no argument is provided, otherwise return a copy of the
 argument as a bulk.
 This command is useful for:

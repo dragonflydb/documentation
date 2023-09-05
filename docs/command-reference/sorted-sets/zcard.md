@@ -10,6 +10,8 @@ description: Get the number of members in a sorted set
 
 **Time complexity:** O(1)
 
+**ACL categories:** @read, @sortedset, @fast
+
 Returns the sorted set cardinality (number of elements) of the sorted set stored
 at `key`.
 

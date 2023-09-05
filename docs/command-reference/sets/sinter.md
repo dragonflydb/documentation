@@ -10,6 +10,8 @@ description: Intersect multiple sets
 
 **Time complexity:** O(N*M) worst case where N is the cardinality of the smallest set and M is the number of sets.
 
+**ACL categories:** @read, @set, @slow
+
 Returns the members of the set resulting from the intersection of all the given
 sets.
 

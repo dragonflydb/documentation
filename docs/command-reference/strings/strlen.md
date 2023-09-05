@@ -10,6 +10,8 @@ description: Get the length of the value stored in a key
 
 **Time complexity:** O(1)
 
+**ACL categories:** @read, @string, @fast
+
 Returns the length of the string value stored at `key`.
 An error is returned when `key` holds a non-string value.
 

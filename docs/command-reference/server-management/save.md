@@ -10,6 +10,8 @@ description: Synchronously save the dataset to disk
 
 **Time complexity:** O(N) where N is the total number of keys in all databases
 
+**ACL categories:** @admin, @slow, @dangerous
+
 The `SAVE` commands performs a save of the dataset producing a
 _point in time_ snapshot of all the data inside the Dragonfly instance, in the form
 of a set of [DFS files](../../managing-dragonfly/snapshotting).

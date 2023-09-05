@@ -10,6 +10,8 @@ description: Returns the length of the JSON String at path in key
 
 **Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
+**ACL categories:** @json
+
 Report the length of the JSON String at `path` in `key`
 
 [Examples](#examples)

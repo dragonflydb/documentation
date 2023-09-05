@@ -10,6 +10,8 @@ description: Sort the elements in a list, set or sorted set
 
 **Time complexity:** O(N+M*log(M)) where N is the number of elements in the list or set to sort, and M the number of returned elements. When the elements are not sorted, complexity is O(N).
 
+**ACL categories:** @write, @set, @sortedset, @list, @slow, @dangerous
+
 Returns or stores the elements contained in the [list][tdtl], [set][tdts] or
 [sorted set][tdtss] at `key`.
 

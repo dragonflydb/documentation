@@ -10,6 +10,8 @@ description: Handshake with Dragonfly
 
 **Time complexity:** O(1)
 
+**ACL categories:** @fast, @connection
+
 Switch to a different protocol, optionally authenticating and setting the connection's name, or provide a contextual client report.
 
 Dragonfly supports two protocols: RESP2 and RESP3.

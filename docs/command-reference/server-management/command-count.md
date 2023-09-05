@@ -10,6 +10,8 @@ description: Get total number of Dragonfly commands
 
 **Time complexity:** O(1)
 
+**ACL categories:** @slow, @connection
+
 Returns [Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers) of number of total commands in this Dragonfly server.
 
 ## Return

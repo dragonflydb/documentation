@@ -10,6 +10,8 @@ description: Remove all keys from the current database
 
 **Time complexity:** O(N) where N is the number of keys in the selected database
 
+**ACL categories:** @keyspace, @write, @slow, @dangerous
+
 Delete all the keys of the currently selected DB.
 This command never fails.
 

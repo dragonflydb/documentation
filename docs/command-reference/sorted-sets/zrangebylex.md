@@ -10,6 +10,8 @@ description: Return a range of members in a sorted set, by lexicographical range
 
 **Time complexity:** O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements being returned. If M is constant (e.g. always asking for the first 10 elements with LIMIT), you can consider it O(log(N)).
 
+**ACL categories:** @read, @sortedset, @slow
+
 When all the elements in a sorted set are inserted with the same score, in order to force lexicographical ordering, this command returns all the elements in the sorted set at `key` with a value between `min` and `max`.
 
 If the elements in the sorted set have different scores, the returned elements are unspecified.

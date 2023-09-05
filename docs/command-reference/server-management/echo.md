@@ -10,6 +10,8 @@ description: Echo the given string
 
 **Time complexity:** O(1)
 
+**ACL categories:** @admin, @slow, @dangerous
+
 Returns `message`.
 
 ## Return

@@ -10,6 +10,8 @@ description: Get a range of elements from a list
 
 **Time complexity:** O(S+N) where S is the distance of start offset from HEAD for small lists, from nearest end (HEAD or TAIL) for large lists; and N is the number of elements in the specified range.
 
+**ACL categories:** @read, @list, @slow
+
 Returns the specified elements of the list stored at `key`.
 The offsets `start` and `stop` are zero-based indexes, with `0` being the first
 element of the list (the head of the list), `1` being the next element and so

@@ -9,6 +9,8 @@ description: Read entries from one or multiple streams
     XREAD [COUNT count] [BLOCK Milliseconds] STREAMS key [key ...] id [id ...]
 
 
+**ACL categories:** @read, @stream, @slow, @blocking
+
 Read entries from one or multiple streams. In case of multiple
 streams, the order of stream entries is maintained. Note that
 XREAD returns entries with IDs **greater** than the specified

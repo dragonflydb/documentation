@@ -10,6 +10,8 @@ description: Execute a Lua script server side
 
 **Time complexity:** Depends on the script that is executed.
 
+**ACL categories:** @slow, @scripting
+
 Evaluate a script from the server's cache by its SHA1 digest.
 
 The server caches scripts by using the `SCRIPT LOAD` command.

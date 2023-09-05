@@ -10,6 +10,8 @@ description: List active channels
 
 **Time complexity:** O(N) where N is the number of active channels, and assuming constant time pattern matching (relatively short channels and patterns)
 
+**ACL categories:** @pubsub, @fast
+
 Lists the currently *active channels*, whose name matches `pattern`.
 
 An active channel is a Pub/Sub channel with one or more subscribers (excluding clients subscribed to patterns).

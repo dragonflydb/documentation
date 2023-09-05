@@ -11,6 +11,8 @@ description: Add one or more members to a sorted set, or update its score if it
 
 **Time complexity:** O(log(N)) for each item added, where N is the number of elements in the sorted set.
 
+**ACL categories:** @write, @sortedset, @fast
+
 Adds all the specified members with the specified scores to the sorted set
 stored at `key`.
 It is possible to specify multiple score / member pairs.

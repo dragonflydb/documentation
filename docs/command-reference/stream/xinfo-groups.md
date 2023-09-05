@@ -8,6 +8,8 @@ description: Get info about all consumer groups in a stream
 
 	XINFO GROUPS key
 
+**ACL categories:** @read, @stream, @slow
+
 **XINFO GROUPS** command returns details of every consumer group
 that belong to the specified stream **<key\>**.
 

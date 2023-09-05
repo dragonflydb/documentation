@@ -10,6 +10,8 @@ description: Return a range of members in a sorted set
 
 **Time complexity:** O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements returned.
 
+**ACL categories:** @read, @sortedset, @slow
+
 Returns the specified range of elements in the sorted set stored at `<key>`.
 
 `ZRANGE` can perform different types of range queries: by index (rank), by the score, or by lexicographical order.

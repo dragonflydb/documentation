@@ -10,6 +10,8 @@ description: Listen for messages published to channels matching the given patter
 
 **Time complexity:** O(N) where N is the number of patterns the client is already subscribed to.
 
+**ACL categories:** @pubsub, @slow
+
 Subscribes the client to the given patterns.
 
 Supported glob-style patterns:

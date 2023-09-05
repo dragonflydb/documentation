@@ -11,6 +11,8 @@ description: Pop an element from a list, push it to another list and return it;
 
 **Time complexity:** O(1)
 
+**ACL categories:** @write, @list, @slow, @blocking
+
 `BRPOPLPUSH` is the blocking variant of `RPOPLPUSH`.
 When `source` contains elements, this command behaves exactly like `RPOPLPUSH`.
 When used inside a `MULTI`/`EXEC` block, this command behaves exactly like `RPOPLPUSH`.

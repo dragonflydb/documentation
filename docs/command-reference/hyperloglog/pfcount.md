@@ -12,6 +12,7 @@ description: Returns the approximated cardinality of the set(s) observed by the 
 O(N) with N being the number of keys, and much bigger constant times, when called with multiple
 keys.
 
+**ACL categories:** @read, @hyperloglog, @slow
 
 When called with a single key, returns the approximated cardinality computed by the HyperLogLog data
 structure stored at the specified variable, which is 0 if the variable does not exist.

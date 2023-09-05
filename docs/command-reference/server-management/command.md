@@ -10,6 +10,8 @@ description: Get array of Dragonfly command details
 
 **Time complexity:** O(N) where N is the total number of Dragonfly commands
 
+**ACL categories:** @slow, @connection
+
 Return an array with details about every Dragonfly command.
 
 The `COMMAND` command is introspective.

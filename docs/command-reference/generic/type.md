@@ -10,6 +10,8 @@ description: Determine the type stored at key
 
 **Time complexity:** O(1)
 
+**ACL categories:** @keyspace, @read, @fast
+
 Returns the string representation of the type of the value stored at `key`.
 The different types that can be returned are: `string`, `list`, `set`, `zset`,
 `hash`, `stream` and `ReJSON-RL`.

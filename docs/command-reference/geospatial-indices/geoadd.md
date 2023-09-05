@@ -10,6 +10,8 @@ description: Add one or more members to a geospatial index
 
 **Time complexity:** O(log(N)) for each item added, where N is the number of elements in the geospatial index represented by the sorted set.
 
+**ACL categories:** @write, @geo, @slow
+
 Adds the specified geospatial items (longitude, latitude, name) to the specified key.
 Data is stored into the key as a sorted set, in a way that makes it possible to query the items with the `GEOSEARCH` command.
 
