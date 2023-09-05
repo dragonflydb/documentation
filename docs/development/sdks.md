@@ -36,15 +36,15 @@ dragonfly -cluster_mode=emulated --lock_on_hashtags
 
 2. Queue Naming Strategies: When setting up your application, use hash tags in your queue names. This can be done by initializing a queue as follows:
 
-```shell
-const queue = new Queue('{name}');
+```javascript
+const queue = new Queue("{name}");
 ```
 
 Alternatively, you can utilize the bull queue prefix feature:
 
-```shell
-const queue = new Queue('name', {
-  prefix: '{myprefix}'
+```javascript
+const queue = new Queue("name", {
+  prefix: "{myprefix}",
 });
 ```
 
