@@ -95,7 +95,7 @@ OK
 With a single JSONPath (JSON array bulk string):
 
 ``` bash
-dragonfly>  JSON.GET doc $..b
+dragonfly> JSON.GET doc $..b
 "[3,null]"
 ```
 

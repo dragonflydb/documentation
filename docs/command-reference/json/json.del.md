@@ -52,21 +52,21 @@ For more information about replies, see [Redis serialization protocol specificat
 Create a JSON document.
 
 ``` bash
-127.0.0.1:6379> JSON.SET doc $ '{"a": 1, "nested": {"a": 2, "b": 3}}'
+dragonfly> JSON.SET doc $ '{"a": 1, "nested": {"a": 2, "b": 3}}'
 OK
 ```
 
 Delete specified values.
 
 ``` bash
-127.0.0.1:6379> JSON.DEL doc $..a
+dragonfly> JSON.DEL doc $..a
 (integer) 2
 ```
 
 Get the updated document.
 
 ``` bash
-127.0.0.1:6379> JSON.GET doc $
+dragonfly> JSON.GET doc $
 "[{\"nested\":{\"b\":3}}]"
 ```
 </details>

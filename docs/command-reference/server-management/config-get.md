@@ -40,7 +40,7 @@ You can also read all the supported configuration parameters by using the `*` wi
 ```shell
 dragonfly> CONFIG GET *
  1) "maxmemory"
- 2) "12.11GiB"
+ 2) "32.00GiB"
  3) "tcp_keepalive"
  4) "300"
  5) "dbnum"

@@ -58,11 +58,11 @@ For more information about replies, see [Redis serialization protocol specificat
 <summary><b>Replace an existing value</b></summary>
 
 ``` bash
-127.0.0.1:6379> JSON.SET doc $ '{"a":2}'
+dragonfly> JSON.SET doc $ '{"a":2}'
 OK
-127.0.0.1:6379> JSON.SET doc $.a '3'
+dragonfly> JSON.SET doc $.a '3'
 OK
-127.0.0.1:6379> JSON.GET doc $
+dragonfly> JSON.GET doc $
 "[{\"a\":3}]"
 ```
 </details>
@@ -71,11 +71,11 @@ OK
 <summary><b>Add a new value</b></summary>
 
 ``` bash
-127.0.0.1:6379> JSON.SET doc $ '{"a":2}'
+dragonfly> JSON.SET doc $ '{"a":2}'
 OK
-127.0.0.1:6379> JSON.SET doc $.b '8'
+dragonfly> JSON.SET doc $.b '8'
 OK
-127.0.0.1:6379> JSON.GET doc $
+dragonfly> JSON.GET doc $
 "[{\"a\":2,\"b\":8}]"
 ```
 </details>
@@ -84,11 +84,11 @@ OK
 <summary><b>Update multi-paths</b></summary>
 
 ``` bash
-127.0.0.1:6379> JSON.SET doc $ '{"f1": {"a":1}, "f2":{"a":2}}'
+dragonfly> JSON.SET doc $ '{"f1": {"a":1}, "f2":{"a":2}}'
 OK
-127.0.0.1:6379> JSON.SET doc $..a 3
+dragonfly> JSON.SET doc $..a 3
 OK
-127.0.0.1:6379> JSON.GET doc
+dragonfly> JSON.GET doc
 "{\"f1\":{\"a\":3},\"f2\":{\"a\":3}}"
 ```
 </details>
