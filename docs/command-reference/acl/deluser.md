@@ -1,5 +1,5 @@
 ---
-description: Delete a user
+description: Delete an ACL user
 ---
 
 # ACL DELUSER

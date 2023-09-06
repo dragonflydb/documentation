@@ -1,5 +1,5 @@
 ---
-description: Returh which user is authenticated with the current connection
+description: Shows the currently active ACL rules in the Dragonfly server
 ---
 
 # ACL LIST
@@ -11,7 +11,7 @@ description: Returh which user is authenticated with the current connection
 **ACL categories:** @admin, @slow, @dangerous
 
 This command returns an array of the different users and their respective ACL rules.
-Each line consists of the username, followed by a 15 char preview of the hashed password, their status (ON/OFF) and their rules.
+Each line consists of the username, followed by their status (ON/OFF), a 15-character preview of the hashed password or `nopass`, and their rules.
 
 ## Return
 
