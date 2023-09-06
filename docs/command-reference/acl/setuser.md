@@ -10,24 +10,33 @@ description: Create or update ACL users
 
 **ACL categories:** @admin, @slow, @dangerous
 
-## Rules/Options
+## ACL Rules
 
-The following are the currently allowed rules
+Dragonfly ACL rules are split into two categories:
 
-`Status` -- `ON/OFF` if the user is allowed to authenticate with `auth` command.
+- [Command Rules](#command-rules) that define command permissions.
+- [User Management Rules](#user-management-rules) that define the user state.
 
-`Password` -- `>password`. Set or update the password of the user.
+This is a list of all the supported Dragonfly rules:
 
-`ACL Categories` -- To add a category user `+@category_name` and to remove a category `-@category_name`.
+### Command Rules
+
+- `+@<category>`: Adds all the commands in the specified category to the list of commands the user is able to execute. For example, `+@string` adds all the string commands.
+- `-@<category>`: Like `+@<category>` but removes all the commands in the category instead of adding them.
+
+### User Management Rules
+
+- `ON`: Set the user as active, it will be possible to authenticate as this user using `AUTH <username> <password>`.
+- `OFF`: Set user as not active, it will be impossible to authenticate as this user.
+- `>password`: Set or update the password of this user.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): `OK` if there was no error. Otherwise, the error message of the error.
-
+[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): `OK` on success. If the rules contain errors, the error is returned.
 
 ## Examples
 
 ```shell
 dragonfly> ACL SETUSER myuser ON >mypass +@string +@fast -@slow
-"ok"
+OK
 ```

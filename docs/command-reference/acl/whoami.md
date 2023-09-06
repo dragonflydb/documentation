@@ -3,19 +3,18 @@ description: Return which user is authenticated with the current connection
 ---
 
 # ACL WHOAMI
-**ACL categories:** @slow
 
 ## Syntax
 
     ACL WHOAMI
 
-Return which user is authenticated with the current connection
+**ACL categories:** @slow
 
+Return the username the current connection is authenticated with.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): `username` of the connected user
-
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): the username of the current connection.
 
 ## Examples
 

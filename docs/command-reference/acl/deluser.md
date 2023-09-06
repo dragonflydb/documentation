@@ -10,17 +10,25 @@ description: Delete a user
 
 **ACL categories:** @admin, @slow, @dangerous
 
-
-Delete a user from the ACL registry. If the user has open connections, these will be killed. Keep in mind that if the user is in the middle of a running script or if any other transaction from that user has started, the connection will close and the transaction will complete normally(unless there was an error). This is a deterministic behaviour since by the time the user was deleted from the system, he had already begun (and consequently had the credentials) to start and complete that transaction.
+Delete a user from the ACL registry. If the user has open connections, those connections will be killed.
+Keep in mind that if the user is in the middle of a running script or if any other transactions from that user have started,
+the connection will close and the transaction will complete normally (unless there was an error).
+This is a deterministic behavior since, by the time the user was deleted from the system,
+the user had already begun (and consequently had the credentials) to start and complete that transaction.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): `ok` if the user was deleted, error otherwise.
-
+[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): `OK` if the user was deleted, error otherwise.
 
 ## Examples
 
 ```shell
 dragonfly> ACL DELUSER myuser
-"ok"
+(error) ERR User myuser does not exist
+
+dragonfly> ACL SETUSER myuser ON >mypass +@string +@fast -@slow
+OK
+
+dragonfly> ACL DELUSER myuser
+OK
 ```
