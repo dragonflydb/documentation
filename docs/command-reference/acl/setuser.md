@@ -17,8 +17,6 @@ Dragonfly ACL rules are split into two categories:
 - [Command Rules](#command-rules) that define command permissions.
 - [User Management Rules](#user-management-rules) that define the user state.
 
-This is a list of all the supported Dragonfly rules:
-
 ### Command Rules
 
 - `+@<category>`: Adds all the commands in the specified category to the list of commands the user is able to execute. For example, `+@string` adds all the string commands.
