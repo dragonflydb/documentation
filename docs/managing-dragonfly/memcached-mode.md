@@ -21,7 +21,11 @@ AcceptServer - listening on port 6379
 ## Keyspace Sharing
 
 It is notable that **the Memcached API shares the same keyspace with the Redis logical database `0`**.
-However, Memcached doesn't support complex data types (lists, sets, sorted sets, hashes, etc.), and it's not recommended to mix up operations from both APIs other than on the string data type.
+This is a designed behavior, which allows your backend services using different APIs to operate on the same set of data.
+By doing so, a soft migration strategy can be achieved—you can gradually migrate individual services away from the Memcached API.
+
+However, Memcached doesn't support complex data types (lists, sets, sorted sets, hashes, etc.),
+and it's not recommended to mix up operations from both APIs other than on the string data type.
 
 ```shell
 # Set a key in Redis logical database '0', which is the default database.
