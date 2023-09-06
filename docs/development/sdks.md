@@ -26,21 +26,21 @@ This mode locks the entire data-store for each Lua script. In other words, it is
 
 To utilize Dragonfly's multi-threaded performance and achieve superior performance for your application, we introduce a mode that enables locks on hash tags instead of individual keys.
 In this mode each BullMQ queue will be exclusively owned by a single thread, and accessing multiple queues could be done in parallel.
-To employ Dragonfly in this mode, please follow the provided guide:
+To employ Dragonfly in this mode, please follow these steps:
 
 1. Run Dragonfly with the following flags
 
 ```
-dragonfly -cluster_mode=emulated --lock_on_hashtags
+dragonfly --cluster_mode=emulated --lock_on_hashtags
 ```
 
-2. Queue Naming Strategies: When setting up your application, use hash tags in your queue names. This can be done by initializing a queue as follows:
+2. Queue Naming Strategies: When setting up your application, use [hash tags](https://redis.io/docs/reference/cluster-spec/#hash-tags) in your queue names. This can be done by initializing a queue as follows:
 
 ```javascript
-const queue = new Queue("{name}");
+const queue = new Queue("{name}"); // Note the wrapping curly brackets
 ```
 
-Alternatively, you can utilize the bull queue prefix feature:
+Alternatively, you can utilize the BullMQ queue prefix feature:
 
 ```javascript
 const queue = new Queue("name", {
@@ -52,4 +52,4 @@ Ensuring Shard Consistency: By adopting the configuration mentioned above, queue
 
 3. Queue Dependencies: If you have queue dependencies, especially a parent-child relationship, it's important to use the same hash tag for both queues. This ensures that they are processed within the same Dragonfly thread and maintains the integrity of the dependencies.
 
-4. Enhancing Application Performance: To achieve superior performance for your application, consider employing a larger number of queues with different hashtag for each. By distributing the queues across distinct Dragonfly threads, you can optimize the utilization of the Dragonfly architecture efficiently.
+4. Enhancing Application Performance: To achieve superior performance for your application, consider employing a larger number of queues with a different hash tag for each. By distributing the queues across distinct Dragonfly threads, you can optimize the utilization of the Dragonfly architecture efficiently.
