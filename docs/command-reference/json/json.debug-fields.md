@@ -20,8 +20,8 @@ Report the number of fields in the JSON element.
 
 ## Examples
 
-Check number of fields in a JSON object.
-Note that the command reports the total number of fields including those from child objects.
+Check the number of fields in a JSON object.
+Note that the command reports the total number of fields at a path, including those from child objects.
 
 ```shell
 dragonfly> JSON.SET obj_doc $ '{"a":1, "b":2, "c":{"k1":1,"k2":2}}'
@@ -40,16 +40,18 @@ dragonfly> JSON.DEBUG fields obj_doc '$'
 1) (integer) 5
 ```
 
-Check number of fields in a JSON array.
-Note that we can use JSONPath syntax including wildcards.
+Check the number of fields in a JSON array.
+Note that the array itself has 9 elements.
+Among these 9 elements, there is one object `{"a":1,"b":2}` with 2 fields, and one array `[1,2,3,4]` with 4 fields.
+So in total, there are 9 + 2 + 4 = 15 fields.
 
 ```shell
-dragonfly> JSON.SET arr_doc . '[1, 2.3, "foo", true, null, {}, [], {"a":1,"b":2}, [1,2,3]]'
+dragonfly> JSON.SET arr_doc . '[1, 2.3, "foo", true, null, {}, [], {"a":1,"b":2}, [1,2,3,4]]'
 OK
- 
+
 dragonfly> JSON.GET arr_doc '$[*]'
-"[1,2.3,\"foo\",true,null,{},[],{\"a\":1,\"b\":2},[1,2,3]]"
- 
+"[1,2.3,\"foo\",true,null,{},[],{\"a\":1,\"b\":2},[1,2,3,4]]"
+
 dragonfly> JSON.DEBUG fields arr_doc '$[*]'
 1) (integer) 1  # 1
 2) (integer) 1  # 2.3
@@ -59,9 +61,12 @@ dragonfly> JSON.DEBUG fields arr_doc '$[*]'
 6) (integer) 0  # {}
 7) (integer) 0  # []
 8) (integer) 2  # {"a":1,"b":2}
-9) (integer) 3  # [1,2,3]
+9) (integer) 4  # [1,2,3,4]
 
 dragonfly> JSON.DEBUG fields arr_doc '$[7,8]'
 1) (integer) 2  # {"a":1,"b":2}
-2) (integer) 3  # [1,2,3]
+2) (integer) 4  # [1,2,3,4]
+
+dragonfly> JSON.DEBUG fields arr_doc '$'
+1) (integer) 15
 ```
