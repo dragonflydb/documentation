@@ -12,17 +12,21 @@ description: Shows helpful information
 
 **ACL categories:** @json
 
-Return helpful information about the `JSON.DEBUG` command
+Return helpful information about the [`JSON.DEBUG`](./json.debug.md) command.
 
 ## Return
 
-JSON.DEBUG HELP returns an array with helpful messages.
+[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): a list of helpful messages.
 
-## See also
+## Examples
 
-`JSON.DEBUG` 
+```shell
+dragonfly> JSON.DEBUG HELP
+1) "JSON.DEBUG FIELDS <key> <path> - report number of fields in the JSON element."
+2) "JSON.DEBUG HELP - print help message."
+```
 
-## Related topics
+## Related Topics
 
 * [RedisJSON](https://redis.io/docs/stack/json)
 * [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)

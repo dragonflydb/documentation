@@ -49,13 +49,13 @@ For more information about replies, see [Redis serialization protocol specificat
 ## Examples
 
 ``` bash
-127.0.0.1:6379> JSON.SET doc $ '{"a":"foo", "nested": {"a": "hello"}, "nested2": {"a": 31}}'
+dragonfly> JSON.SET doc $ '{"a":"foo", "nested": {"a": "hello"}, "nested2": {"a": 31}}'
 OK
-127.0.0.1:6379> JSON.STRAPPEND doc $..a '"baz"'
+dragonfly> JSON.STRAPPEND doc $..a '"baz"'
 1) (integer) 6
 2) (integer) 8
 3) (nil)
-127.0.0.1:6379> JSON.GET doc $
+dragonfly> JSON.GET doc $
 "[{\"a\":\"foobaz\",\"nested\":{\"a\":\"hellobaz\"},\"nested2\":{\"a\":31}}]"
 ```
 
