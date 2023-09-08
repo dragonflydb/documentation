@@ -17,7 +17,7 @@ at `key`.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the cardinality (number of elements) of the sorted set, or `0`
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the cardinality (number of elements) of the sorted set, or `0`
 if `key` does not exist.
 
 ## Examples

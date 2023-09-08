@@ -26,7 +26,7 @@ others are unchanged.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers), specifically:
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
 * `1` if the all the keys were set.
 * `0` if no key was set (at least one key already existed).

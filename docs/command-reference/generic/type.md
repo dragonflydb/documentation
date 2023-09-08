@@ -18,7 +18,7 @@ The different types that can be returned are: `string`, `list`, `set`, `zset`,
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): type of `key`, or `none` when `key` does not exist.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): type of `key`, or `none` when `key` does not exist.
 
 ## Examples
 

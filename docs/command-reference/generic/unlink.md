@@ -16,7 +16,7 @@ This command is equivalent to `DEL` command, see `DEL` for more information.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): The number of keys that were unlinked.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): The number of keys that were unlinked.
 
 ## Examples
 

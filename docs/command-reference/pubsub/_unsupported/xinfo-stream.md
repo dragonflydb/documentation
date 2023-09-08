@@ -33,7 +33,7 @@ The default `COUNT` is 10 and a `COUNT` of 0 means that all entries will be retu
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): a list of informational bits
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of informational bits
 
 ## Examples
 

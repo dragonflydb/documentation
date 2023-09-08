@@ -27,5 +27,5 @@ For more information about `EVAL` scripts please refer to [Introduction to Eval 
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings) This command returns the SHA1 digest of the script added into the
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings) This command returns the SHA1 digest of the script added into the
 script cache.

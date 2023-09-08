@@ -33,7 +33,7 @@ XREVRANGE mystream + - COUNT 2
 ```
 
 ## Return
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays)
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays)
 
 The return format is exactly same as **XRANGE** command.
 

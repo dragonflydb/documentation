@@ -21,7 +21,7 @@ a non-existing `key` will return a list of `nil` values.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of values associated with the given fields, in the same
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of values associated with the given fields, in the same
 order as they are requested.
 
 ```shell

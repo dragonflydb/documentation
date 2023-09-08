@@ -30,4 +30,4 @@ Tip: setting names to connections is a good way to debug connection leaks due to
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): `OK` if the connection name was successfully set.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if the connection name was successfully set.

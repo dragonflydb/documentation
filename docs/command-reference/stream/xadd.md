@@ -108,7 +108,7 @@ operations used for **MAXLEN** or **MINID**.
 
 ## Return
 
-[Bulk String Reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings).
+[Bulk String Reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings).
 The command returns the ID of the added entry. The ID is the
 one auto-generated if * is passed as ID argument, otherwise
 the command just returns the same ID specified by the user

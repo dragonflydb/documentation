@@ -40,7 +40,7 @@ zero bytes up to the length of the longest string.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the size of the string stored in the destination key, which is equal to the
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the size of the string stored in the destination key, which is equal to the
 size of the longest input string.
 
 ## Examples

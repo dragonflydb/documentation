@@ -22,7 +22,7 @@ The information returned about the active shard channels are at the shard level 
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): a list of active channels, optionally matching the specified pattern.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of active channels, optionally matching the specified pattern.
 
 ## Examples
 

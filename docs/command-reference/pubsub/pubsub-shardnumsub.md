@@ -20,7 +20,7 @@ Cluster note: in a Redis Cluster, `PUBSUB`'s replies in a cluster only report in
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): a list of channels and number of subscribers for every channel.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of channels and number of subscribers for every channel.
 
 The format is channel, count, channel, count, ..., so the list is flat. The order in which the channels are listed is the same as the order of the shard channels specified in the command call.
 

@@ -22,7 +22,7 @@ The range of values supported by `HINCRBY` is limited to 64 bit signed integers.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the value at `field` after the increment operation.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the value at `field` after the increment operation.
 
 ## Examples
 

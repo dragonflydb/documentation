@@ -19,7 +19,7 @@ Apart from the reversed ordering, `ZREVRANGEBYLEX` is similar to `ZRANGEBYLEX`.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of elements in the specified score range.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of elements in the specified score range.
 
 ## Examples
 

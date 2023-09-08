@@ -22,7 +22,7 @@ Note: the command has a complexity of just O(log(N)) because it uses elements ra
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the number of elements in the specified score range.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of elements in the specified score range.
 
 ## Examples
 

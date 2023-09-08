@@ -18,5 +18,5 @@ be smaller than target stream top entry.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings):
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings):
 **OK** on success.

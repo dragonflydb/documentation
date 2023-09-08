@@ -37,6 +37,6 @@ See also [Signal Handling](https://redis.io/topics/signals).
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): `OK` if `ABORT` was specified and shutdown was aborted.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if `ABORT` was specified and shutdown was aborted.
 On successful shutdown, nothing is returned since the server quits and the connection is closed.
 On failure, an error is returned.

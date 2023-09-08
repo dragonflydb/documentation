@@ -16,7 +16,7 @@ Returns the set cardinality (number of elements) of the set stored at `key`.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the cardinality (number of elements) of the set, or `0` if `key`
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the cardinality (number of elements) of the set, or `0` if `key`
 does not exist.
 
 ## Examples

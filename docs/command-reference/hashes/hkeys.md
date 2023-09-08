@@ -16,7 +16,7 @@ Returns all field names in the hash stored at `key`.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of fields in the hash, or an empty list when `key` does
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of fields in the hash, or an empty list when `key` does
 not exist.
 
 ## Examples

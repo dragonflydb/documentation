@@ -22,7 +22,7 @@ others are unchanged.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): always `OK` since `MSET` can't fail.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): always `OK` since `MSET` can't fail.
 
 ## Examples
 

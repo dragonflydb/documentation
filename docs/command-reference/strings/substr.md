@@ -23,7 +23,7 @@ the actual length of the string.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the substring indicated by `start`, `end` of the string stored at key `key`.
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the substring indicated by `start`, `end` of the string stored at key `key`.
 
 ## Examples
 

@@ -23,7 +23,7 @@ the second highest score and so forth.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the number of elements removed.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of elements removed.
 
 ## Examples
 

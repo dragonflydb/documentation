@@ -30,7 +30,7 @@ Dragonfly ACL rules are split into two categories:
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): `OK` on success. If the rules contain errors, the error is returned.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` on success. If the rules contain errors, the error is returned.
 
 ## Examples
 

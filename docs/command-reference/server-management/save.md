@@ -31,4 +31,4 @@ The default filename is `dump-{timestamp}`.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): The commands returns OK on success.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): The commands returns OK on success.

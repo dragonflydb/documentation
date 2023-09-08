@@ -29,7 +29,7 @@ Use `\` to escape special characters if you want to match them verbatim.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of keys matching `pattern`.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of keys matching `pattern`.
 
 **Number of elements returned:**
  

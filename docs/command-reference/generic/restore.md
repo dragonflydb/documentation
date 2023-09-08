@@ -31,7 +31,7 @@ exists unless you use the `REPLACE` modifier.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): The command returns OK on success.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): The command returns OK on success.
 
 ## Examples
 

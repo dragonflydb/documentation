@@ -20,7 +20,7 @@ See the [`CONFIG GET` documentation](./config-get.md) for more details.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): `OK` when the configuration was set properly, error otherwise.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` when the configuration was set properly, error otherwise.
 
 ## Examples
 

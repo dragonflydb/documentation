@@ -17,7 +17,7 @@ An error is returned when `key` holds a non-string value.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the length of the string at `key`, or `0` when `key` does not
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the length of the string at `key`, or `0` when `key` does not
 exist.
 
 ## Examples

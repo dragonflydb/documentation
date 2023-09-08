@@ -26,5 +26,5 @@ XGROUP SETID mystream mygroup 0
 ```
 
 ## Return
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings):
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings):
 OK on success.

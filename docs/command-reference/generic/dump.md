@@ -35,7 +35,7 @@ If `key` does not exist a nil bulk reply is returned.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the serialized value.
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the serialized value.
 
 ## Examples
 

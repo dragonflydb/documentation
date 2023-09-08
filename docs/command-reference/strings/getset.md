@@ -36,7 +36,7 @@ dragonfly> GET mycounter
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the old value stored at `key`, or `nil` when `key` did not exist.
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the old value stored at `key`, or `nil` when `key` did not exist.
 
 ## Examples
 

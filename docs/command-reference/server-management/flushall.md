@@ -19,4 +19,4 @@ Note: an asynchronous `FLUSHALL` command only deletes keys that were present at 
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings)
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings)

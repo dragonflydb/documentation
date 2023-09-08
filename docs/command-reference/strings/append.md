@@ -19,7 +19,7 @@ will be similar to `SET` in this special case.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the length of the string after the append operation.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the length of the string after the append operation.
 
 ## Examples
 

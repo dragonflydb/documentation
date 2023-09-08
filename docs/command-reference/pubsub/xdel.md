@@ -44,7 +44,7 @@ not a good idea to add such complexity.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the number of entries actually deleted.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of entries actually deleted.
 
 ## Examples
 

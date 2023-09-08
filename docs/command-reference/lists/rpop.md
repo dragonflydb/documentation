@@ -22,11 +22,11 @@ to `count` elements, depending on the list's length.
 
 When called without the `count` argument:
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the value of the last element, or `nil` when `key` does not exist.
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the value of the last element, or `nil` when `key` does not exist.
 
 When called with the `count` argument:
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of popped elements, or `nil` when `key` does not exist.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of popped elements, or `nil` when `key` does not exist.
 
 ## Examples
 

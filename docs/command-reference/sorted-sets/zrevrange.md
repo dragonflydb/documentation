@@ -21,7 +21,7 @@ Apart from the reversed ordering, `ZREVRANGE` is similar to `ZRANGE`.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of elements in the specified range (optionally with
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of elements in the specified range (optionally with
 their scores).
 
 ## Examples

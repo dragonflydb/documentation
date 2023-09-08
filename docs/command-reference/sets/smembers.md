@@ -18,7 +18,7 @@ This has the same effect as running `SINTER` with one argument `key`.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): all elements of the set.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): all elements of the set.
 
 ## Examples
 

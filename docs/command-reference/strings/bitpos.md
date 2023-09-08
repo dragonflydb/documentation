@@ -38,7 +38,7 @@ Non-existent keys are treated as empty strings.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the command returns the position of the first bit set to 1 or 0 according to the request.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the command returns the position of the first bit set to 1 or 0 according to the request.
 
 If we look for set bits (the bit argument is 1) and the string is empty or composed of just zero bytes, -1 is returned.
 

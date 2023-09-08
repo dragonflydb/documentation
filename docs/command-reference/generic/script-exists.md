@@ -26,7 +26,7 @@ For more information about `EVAL` scripts please refer to [Introduction to Eval 
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays) The command returns an array of integers that correspond to
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays) The command returns an array of integers that correspond to
 the specified SHA1 digest arguments.
 For every corresponding SHA1 digest of a script that actually exists in the
 script cache, a 1 is returned, otherwise 0 is returned.

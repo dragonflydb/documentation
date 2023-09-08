@@ -107,7 +107,7 @@ dragonfly> XREAD STREAMS key $
 
 ## Return
 
-[Array Reply](https://redis.io/docs/reference/protocol-spec#resp-arrays).
+[Array Reply](https://redis.io/docs/reference/protocol-spec/#arrays).
 In some cases, the command returns a null reply. For example, when **BLOCK**
 is used.
 

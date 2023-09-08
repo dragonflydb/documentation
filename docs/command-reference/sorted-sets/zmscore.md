@@ -18,7 +18,7 @@ For every `member` that does not exist in the sorted set, a `nil` value is retur
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of scores or `nil` associated with the specified `member` values (a double precision floating point number),
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of scores or `nil` associated with the specified `member` values (a double precision floating point number),
 represented as strings.
 
 ## Examples

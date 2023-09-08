@@ -21,7 +21,7 @@ An error is returned when the value stored at `key` is not a set.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the number of members that were removed from the set, not
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of members that were removed from the set, not
 including non existing members.
 
 ## Examples

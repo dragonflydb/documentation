@@ -20,5 +20,5 @@ consumers, and pending messages, so make sure to call this
 command only when really needed.
 
 ## Return
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers):
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
 the number of destroyed consumer groups (0 or 1)

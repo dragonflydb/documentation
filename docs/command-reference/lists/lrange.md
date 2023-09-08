@@ -39,7 +39,7 @@ the last element of the list.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of elements in the specified range.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of elements in the specified range.
 
 ## Examples
 

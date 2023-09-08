@@ -39,7 +39,7 @@ regardless of the actual internal precision of the computation.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the value of `key` after the increment.
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the value of `key` after the increment.
 
 ## Examples
 

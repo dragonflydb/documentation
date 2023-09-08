@@ -93,7 +93,7 @@ dragonfly> XRANGE mystream - + COUNT 1
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays):
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays):
 
 The returned entries are complete, that means that the ID and all the
 fields they are composed are returned. Moreover, the entries are

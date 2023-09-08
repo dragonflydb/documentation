@@ -19,7 +19,7 @@ Because of this, the operation never fails.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of values at the specified keys.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of values at the specified keys.
 
 ## Examples
 

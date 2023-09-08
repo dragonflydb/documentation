@@ -19,7 +19,7 @@ returned.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the score of `member` (a double precision floating point number),
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the score of `member` (a double precision floating point number),
 represented as string.
 
 ## Examples

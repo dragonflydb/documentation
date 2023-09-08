@@ -19,7 +19,7 @@ An error is returned when `key` exists and does not hold a sorted set.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers), specifically:
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
 * The number of members removed from the sorted set, not including non existing
   members.

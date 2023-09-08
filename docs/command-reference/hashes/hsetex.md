@@ -21,7 +21,7 @@ updated according to the latest value and the current clock.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): The number of fields that were added.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): The number of fields that were added.
 
 ## Examples
 

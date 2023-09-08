@@ -26,9 +26,9 @@ of the argument.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings), and specifically `PONG`, when no argument is provided.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings), and specifically `PONG`, when no argument is provided.
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings) the argument provided, when applicable.
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings) the argument provided, when applicable.
 
 ## Examples
 

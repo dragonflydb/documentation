@@ -23,7 +23,7 @@ sure it holds a string large enough to be able to set _value_ at _offset_.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the length of the string after it was modified by the command.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the length of the string after it was modified by the command.
 
 ## Patterns
 
