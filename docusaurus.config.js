@@ -122,7 +122,7 @@ const config = {
             target: "_self",
           },
           {
-            href: "https://github.com/dragonflydb/documentation/",
+            href: "https://github.com/dragonflydb/dragonfly",
             className: "nav-github-stars",
             position: "right",
           },
