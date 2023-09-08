@@ -18,8 +18,6 @@ The list of configuration parameters supported by `CONFIG SET` can be obtained b
 which is the symmetrical command used to obtain information about the configuration of a running Dragonfly instance.
 See the [`CONFIG GET` documentation](./config-get.md) for more details.
 
-All the configuration parameters set using `CONFIG SET` are immediately loaded by Dragonfly and will take effect starting with the next command executed.
-
 ## Return
 
 [Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): `OK` when the configuration was set properly, error otherwise.
