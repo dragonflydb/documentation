@@ -29,7 +29,7 @@ When supplied with no options, `GETEX` is equivalent to `GET`.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the value of `key`, or `nil` when `key` does not exist.
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the value of `key`, or `nil` when `key` does not exist.
 
 ## Examples
 

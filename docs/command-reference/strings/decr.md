@@ -22,7 +22,7 @@ See `INCR` for extra information on increment/decrement operations.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the value of `key` after the decrement
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the value of `key` after the decrement
 
 ## Examples
 

@@ -25,7 +25,7 @@ Later when the other Dragonfly server is fixed, it can be reconfigured to work a
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings)
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings)
 
 ## Examples
 

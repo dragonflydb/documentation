@@ -26,5 +26,5 @@ are not yet read by other consumers).
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers):
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
 the number of created consumers (0 or 1)

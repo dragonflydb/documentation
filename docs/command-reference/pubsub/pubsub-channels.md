@@ -20,7 +20,7 @@ If no `pattern` is specified, all the channels are listed, otherwise if pattern 
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): a list of active channels, optionally matching the specified pattern.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of active channels, optionally matching the specified pattern.
 
 ## Examples
 

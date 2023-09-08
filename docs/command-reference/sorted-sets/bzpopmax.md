@@ -26,7 +26,7 @@ with the only difference being that it pops members with the highest scores inst
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays), specifically:
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays), specifically:
 
 - A `nil` multi-bulk when no element could be popped and the timeout expired.
 - A three-element multi-bulk with the first element being the name of the key where a member was popped, the second element is the popped member itself, and the third element is the score of the popped element.

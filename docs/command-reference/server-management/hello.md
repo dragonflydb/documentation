@@ -64,4 +64,4 @@ When called with the optional protover argument, this command switches the proto
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): a list of server properties. The reply is a map instead of an array when RESP3 is selected. The command returns an error if the protover requested does not exist.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of server properties. The reply is a map instead of an array when RESP3 is selected. The command returns an error if the protover requested does not exist.

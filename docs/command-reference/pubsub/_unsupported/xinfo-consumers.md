@@ -20,7 +20,7 @@ The following information is provided for each consumer in the group:
 
 @reply
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): a list of consumers.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of consumers.
 
 ## Examples
 

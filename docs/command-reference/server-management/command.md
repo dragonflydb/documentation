@@ -118,7 +118,7 @@ Unlike `MGET`, which uses a step value of _1_.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): a nested list of command details.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a nested list of command details.
 
 The order of commands in the array is random.
 

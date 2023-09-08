@@ -17,7 +17,7 @@ specified in milliseconds instead of seconds.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers), specifically:
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
 * `1` if the timeout was set.
 * `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.

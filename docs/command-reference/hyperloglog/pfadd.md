@@ -32,7 +32,7 @@ For an introduction to the HyperLogLog data structure, check the `PFCOUNT` comma
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers), specifically:
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 *  1 if at least 1 HyperLogLog internal register was altered. 0 otherwise.
 
 ## Examples

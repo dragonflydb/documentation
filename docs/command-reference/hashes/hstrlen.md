@@ -16,7 +16,7 @@ Returns the string length of the value associated with `field` in the hash store
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the string length of the value associated with `field`, or zero when `field` is not present in the hash or `key` does not exist at all.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the string length of the value associated with `field`, or zero when `field` is not present in the hash or `key` does not exist at all.
 
 ## Examples
 

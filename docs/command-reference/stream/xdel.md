@@ -18,7 +18,7 @@ page](./xadd.md#specifying-id) for more information about IDs.
 
 ## Return
 
-[Integer Reply](https://redis.io/docs/reference/protocol-spec#resp-integers).
+[Integer Reply](https://redis.io/docs/reference/protocol-spec/#integers).
 **XDEL** returns the number of deleted entries.
 
 ## Example

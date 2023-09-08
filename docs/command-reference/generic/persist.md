@@ -18,7 +18,7 @@ is associated).
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers), specifically:
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
 * `1` if the timeout was removed.
 * `0` if `key` does not exist or does not have an associated timeout.

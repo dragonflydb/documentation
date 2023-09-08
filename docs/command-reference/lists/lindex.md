@@ -23,7 +23,7 @@ When the value at `key` is not a list, an error is returned.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the requested element, or `nil` when `index` is out of range.
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the requested element, or `nil` when `index` is out of range.
 
 ## Examples
 

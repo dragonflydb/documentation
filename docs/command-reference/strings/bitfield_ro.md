@@ -29,4 +29,4 @@ BITFIELD_RO hello GET i8 16
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): An array with each entry being the corresponding result of the subcommand given at the same position.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): An array with each entry being the corresponding result of the subcommand given at the same position.

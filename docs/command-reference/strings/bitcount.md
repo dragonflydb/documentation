@@ -31,7 +31,7 @@ For negative values, -1 is the last bit, -2 is the penultimate, and so forth.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers)
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers)
 
 The number of bits set to 1.
 

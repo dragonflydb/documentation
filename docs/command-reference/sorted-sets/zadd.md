@@ -74,12 +74,12 @@ If the user inserts all the elements in a sorted set with the same score (for ex
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers), specifically:
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
 * When used without optional arguments, the number of elements added to the sorted set (excluding score updates).
 * If the `CH` option is specified, the number of elements that were changed (added or updated).
 
-If the `INCR` option is specified, the return value will be [Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings):
+If the `INCR` option is specified, the return value will be [Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings):
 
 * The new score of `member` (a double precision floating point number) represented as string, or `nil` if the operation was aborted (when called with either the `XX` or the `NX` option).
 

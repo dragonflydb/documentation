@@ -56,7 +56,7 @@ Will return all the elements with `5 < score < 10` (5 and 10 excluded).
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of elements in the specified score range (optionally
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of elements in the specified score range (optionally
 with their scores).
 
 ## Examples

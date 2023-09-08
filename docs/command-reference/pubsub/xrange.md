@@ -179,7 +179,7 @@ dragonfly> XRANGE mystream 1526984818136-0 1526984818136-0
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays), specifically:
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays), specifically:
 
 The command returns the entries with IDs matching the specified range.
 The returned entries are complete, that means that the ID and all the fields

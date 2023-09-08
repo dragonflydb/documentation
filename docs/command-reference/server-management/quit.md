@@ -22,4 +22,4 @@ Terminating a connection on the client side is preferable, as it eliminates `TIM
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): always OK.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): always OK.

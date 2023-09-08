@@ -18,7 +18,7 @@ A key is ignored if it does not exist.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): The number of keys that were touched.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): The number of keys that were touched.
 
 ## Examples
 

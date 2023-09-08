@@ -18,7 +18,7 @@ The meaning of `min` and `max` are the same of the `ZRANGEBYLEX` command. Simila
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the number of elements removed.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of elements removed.
 
 ## Examples
 

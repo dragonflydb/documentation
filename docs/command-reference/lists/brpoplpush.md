@@ -23,8 +23,8 @@ See `RPOPLPUSH` for more information.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the element being popped from `source` and pushed to `destination`.
-If `timeout` is reached, a [Null reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings) is returned.
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the element being popped from `source` and pushed to `destination`.
+If `timeout` is reached, a [Null reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings) is returned.
 
 ## Pattern: Reliable queue
 

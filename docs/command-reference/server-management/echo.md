@@ -16,7 +16,7 @@ Returns `message`.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings)
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings)
 
 ## Examples
 

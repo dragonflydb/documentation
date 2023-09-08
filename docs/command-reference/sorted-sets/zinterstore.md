@@ -29,7 +29,7 @@ If `destination` already exists, it is overwritten.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the number of elements in the resulting sorted set at
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of elements in the resulting sorted set at
 `destination`.
 
 ## Examples

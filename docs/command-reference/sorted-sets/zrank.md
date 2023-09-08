@@ -24,8 +24,8 @@ to low.
 
 ## Return
 
-* If `member` exists in the sorted set [Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the rank of `member`.
-* If `member` does not exist in the sorted set or `key` does not exist [Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): `nil`.
+* If `member` exists in the sorted set [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the rank of `member`.
+* If `member` does not exist in the sorted set or `key` does not exist [Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): `nil`.
   
 ## Examples
 

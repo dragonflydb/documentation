@@ -117,7 +117,7 @@ If you like science fiction, think of time flowing at infinite speed inside a
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): specifically:
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): specifically:
 
 * A `nil` multi-bulk when no element could be popped and the timeout expired.
 * A two-element multi-bulk with the first element being the name of the key

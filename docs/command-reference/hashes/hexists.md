@@ -16,7 +16,7 @@ Returns if `field` is an existing field in the hash stored at `key`.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers), specifically:
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
 * `1` if the hash contains `field`.
 * `0` if the hash does not contain `field`, or `key` does not exist.

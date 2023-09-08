@@ -18,7 +18,7 @@ the user had already begun (and consequently had the credentials) to start and c
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): `OK` if the user was deleted, error otherwise.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if the user was deleted, error otherwise.
 
 ## Examples
 

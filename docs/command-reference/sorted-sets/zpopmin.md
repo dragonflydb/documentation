@@ -22,7 +22,7 @@ be the first, followed by the elements with greater scores.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of popped elements and scores.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of popped elements and scores.
 
 ## Examples
 

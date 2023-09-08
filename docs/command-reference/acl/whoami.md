@@ -14,7 +14,7 @@ Return the username the current connection is authenticated with.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): the username of the current connection.
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): the username of the current connection.
 
 ## Examples
 

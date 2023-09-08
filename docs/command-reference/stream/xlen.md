@@ -22,7 +22,7 @@ Streams are not auto-deleted once they have no entries inside
 consumer groups associated with it.
 
 ## Return
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers):
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
 the number of entries of the stream at key.
 
 ## Example

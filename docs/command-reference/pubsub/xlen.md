@@ -24,7 +24,7 @@ associated with it.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the number of entries of the stream at `key`.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of entries of the stream at `key`.
 
 ## Examples
 

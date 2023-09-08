@@ -17,7 +17,7 @@ This command is similar to `GET`, except for the fact that it also deletes the k
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the value of `key`, `nil` when `key` does not exist, or an error if the key's value type isn't a string.
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the value of `key`, `nil` when `key` does not exist, or an error if the key's value type isn't a string.
 
 ## Examples
 

@@ -63,7 +63,7 @@ we can store the value of the element we are actually indexing.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of elements in the specified score range.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of elements in the specified score range.
 
 ## Examples
 

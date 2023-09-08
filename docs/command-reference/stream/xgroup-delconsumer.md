@@ -24,6 +24,6 @@ or acknowledged prior to deleting the consumer from the group.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers):
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
 the number of pending messages that the consumer had before it was
 deleted

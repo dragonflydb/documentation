@@ -16,7 +16,7 @@ Report the number of fields in the JSON element.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): a list that represents the number of fields of JSON value at each path.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list that represents the number of fields of JSON value at each path.
 
 ## Examples
 

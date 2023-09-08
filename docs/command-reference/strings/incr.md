@@ -29,7 +29,7 @@ representation of the integer.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the value of `key` after the increment
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the value of `key` after the increment
 
 ## Examples
 

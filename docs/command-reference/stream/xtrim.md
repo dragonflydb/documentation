@@ -56,7 +56,7 @@ dragonfly> XTRIM mystream MAXLEN ~ 100 LIMIT 2
 ```
 
 ## Return
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers):
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
 The number of entries deleted from the stream.
 
 ## Example

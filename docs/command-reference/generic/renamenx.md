@@ -17,7 +17,7 @@ It returns an error when `key` does not exist.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers), specifically:
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
 * `1` if `key` was renamed to `newkey`.
 * `0` if `newkey` already exists.

@@ -83,13 +83,13 @@ Will add a new entry but will also evict old entries so that the stream will con
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings), specifically:
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings), specifically:
 
 The command returns the ID of the added entry. The ID is the one auto-generated
 if `*` is passed as ID argument, otherwise the command just returns the same ID
 specified by the user during insertion.
 
-The command returns a [Null reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings) when used with the `NOMKSTREAM` option and the
+The command returns a [Null reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings) when used with the `NOMKSTREAM` option and the
 key doesn't exist.
 
 ## Examples

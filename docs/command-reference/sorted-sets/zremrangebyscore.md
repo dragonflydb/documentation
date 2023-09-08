@@ -17,7 +17,7 @@ Removes all elements in the sorted set stored at `key` with a score between
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the number of elements removed.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of elements removed.
 
 ## Examples
 

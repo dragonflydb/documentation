@@ -34,4 +34,4 @@ Set the `entries_read` the stream's `entries_added` subtracted by the number of 
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings): `OK` on success.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` on success.

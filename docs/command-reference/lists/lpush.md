@@ -26,7 +26,7 @@ containing `c` as first element, `b` as second element and `a` as third element.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the length of the list after the push operations.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the length of the list after the push operations.
 
 ## Examples
 

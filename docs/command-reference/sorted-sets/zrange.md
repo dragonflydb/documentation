@@ -116,7 +116,7 @@ The binary nature of the comparison allows to use sorted sets as a general purpo
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of elements in the specified range (optionally with
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of elements in the specified range (optionally with
 their scores, in case the `WITHSCORES` option is given).
 
 ## Examples

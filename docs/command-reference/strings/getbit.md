@@ -22,7 +22,7 @@ always out of range and the value is also assumed to be a contiguous space with
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the bit value stored at _offset_.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the bit value stored at _offset_.
 
 ## Examples
 

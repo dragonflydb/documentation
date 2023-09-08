@@ -27,4 +27,4 @@ strong and very long password so that this attack is infeasible.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec#resp-simple-strings) or an error if the password is invalid.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings) or an error if the password is invalid.

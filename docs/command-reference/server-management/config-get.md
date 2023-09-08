@@ -21,7 +21,7 @@ Any configuration parameters matching the pattern are reported as a list of key-
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of key-value pairs for configuration parameters.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of key-value pairs for configuration parameters.
 
 ## Examples
 

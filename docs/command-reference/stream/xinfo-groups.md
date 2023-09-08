@@ -24,7 +24,7 @@ The command returns the following details for each group:
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays):
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays):
 a list of consumer groups.
 
 ## Example

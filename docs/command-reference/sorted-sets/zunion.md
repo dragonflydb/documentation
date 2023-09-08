@@ -19,7 +19,7 @@ For a description of the `WEIGHTS` and `AGGREGATE` options, see `ZUNIONSTORE`.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): the result of union (optionally with their scores, in case 
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): the result of union (optionally with their scores, in case 
 the `WITHSCORES` option is given).
 
 ## Examples

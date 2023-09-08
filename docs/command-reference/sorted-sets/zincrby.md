@@ -27,7 +27,7 @@ It is possible to provide a negative value to decrement the score.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec#resp-bulk-strings): the new score of `member` (a double precision floating point
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the new score of `member` (a double precision floating point
 number), represented as string.
 
 ## Examples

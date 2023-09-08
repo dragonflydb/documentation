@@ -26,7 +26,7 @@ Apart from the reversed ordering, `ZREVRANGEBYSCORE` is similar to
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays): list of elements in the specified score range (optionally
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of elements in the specified score range (optionally
 with their scores).
 
 ## Examples

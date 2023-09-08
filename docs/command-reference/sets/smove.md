@@ -28,7 +28,7 @@ An error is returned if `source` or `destination` does not hold a set value.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers), specifically:
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
 * `1` if the element is moved.
 * `0` if the element is not a member of `source` and no operation was performed.

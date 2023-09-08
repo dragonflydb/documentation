@@ -18,4 +18,4 @@ Note that this isn't the count of clients subscribed to patterns, but the total 
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers): the number of patterns all the clients are subscribed to.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of patterns all the clients are subscribed to.

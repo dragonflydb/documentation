@@ -18,7 +18,7 @@ When `key` already holds a value, no operation is performed.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec#resp-integers), specifically:
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
 * `1` if the key was set
 * `0` if the key was not set
