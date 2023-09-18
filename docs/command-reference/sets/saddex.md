@@ -14,7 +14,7 @@ description: Add one or more expiring members to a set
 
 **Warning:** Experimental! Dragonfly specific.
 
-Simimar to SADD but adds one or more members that expire after specified number of seconds.
+Similar to SADD but adds one or more members that expire after specified number of seconds.
 An error is returned when the value stored at `key` is not a set.
 
 ## Return
