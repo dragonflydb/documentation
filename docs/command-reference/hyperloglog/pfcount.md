@@ -6,7 +6,7 @@ description: Returns the approximated cardinality of the set(s) observed by the 
 
 ## Syntax
 
-    PFADD key [key ...]
+    PFCOUNT key [key ...]
 
 **Time complexity:** O(1) with a very small average constant time when called with a single key.
 O(N) with N being the number of keys, and much bigger constant times, when called with multiple
