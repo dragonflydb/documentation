@@ -251,7 +251,7 @@ sidebar_position: 0
 |                                              | <span class="command">XCLAIM</span>                        | TBD                                                      |
 |                                              | <span class="command">XREAD</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">XADD</span>                          | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">XPENDING</span>                      | TBD                                                      |
+|                                              | <span class="command">XPENDING</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">XGROUP</span>                        | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">XRANGE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">XSETID</span>                        | <span class="support supported">Fully supported</span>   |
