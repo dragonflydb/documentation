@@ -1,5 +1,5 @@
 ---
-description: Fetch data from a stream via a consumer group, and not acknowledging such data
+description: Get info and entries from a consumer group pending entries list
 ---
 
 # XPENDING
