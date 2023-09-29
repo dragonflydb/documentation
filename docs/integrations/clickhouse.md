@@ -17,17 +17,32 @@ Since Dragonfly is highly compatible with Redis, ClickHouse can be used with Dra
 
 ## Dragonfly x ClickHouse
 
+To utilize Dragonfly's multi-threaded capability and achieve superior performance for your application,
+please follow the steps below to configure ClickHouse using Dragonfly as a table engine.
+
+First, you can run Dragonfly with the following flags, assuming you have a local Dragonfly binary:
 
 ```bash
 $> ./dragonfly --logtostderr --bind localhost --port 6379
 ```
 
+Next, [install ClickHouse locally](https://clickhouse.com/docs/en/install#quick-install) and use the `clickhouse local` client application as follows:
+
 ```bash
 $> ./clickhouse local
 ```
 
+Note that the above installation steps might be the simplest way to get started with Dragonfly and ClickHouse locally in order to demonstrate the integration.
+For production deployments, we recommend reading through the [Managing Dragonfly section](../managing-dragonfly/managing-dragonfly.md) for Dragonfly
+and the [Production Deployments section](https://clickhouse.com/docs/en/install#available-installation-options) for ClickHouse.
+
+Despite an easy local installation, the integration of Dragonfly with ClickHouse is seamless,
+thanks to the fact that ClickHouse supports various table engines and Dragonfly is highly compatible with Redis.
+
+Create a table in ClickHouse using the `Redis` table engine along with the `localhost:6379` address of the Dragonfly server:
+
 ```sql
--- within the ClickHouse CLI
+-- Within the ClickHouse CLI:
 CREATE TABLE dragonfly_table
 (
     `key` String,
@@ -36,7 +51,24 @@ CREATE TABLE dragonfly_table
     `v3` Float32
 )
 ENGINE = Redis('localhost:6379') PRIMARY KEY(key);
+-- 'localhost:6379' is the Dragonfly server address initialized above.
 ```
+
+Insert data into the table:
+
+```sql
+INSERT INTO dragonfly_table Values('1', 1, '1', 1.0), ('2', 2, '2', 2.0);
+```
+
+Query the table:
+
+```sql
+SELECT * FROM dragonfly_table WHERE key='1';
+SELECT COUNT(*) FROM dragonfly_table;
+```
+
+That's it! It is that simple, and you have successfully integrated ClickHouse with Dragonfly.
+Next, we will explore the advantages of using Dragonfly with ClickHouse.
 
 ## Dragonfly Advantages
 

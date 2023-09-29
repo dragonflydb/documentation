@@ -14,7 +14,7 @@ BullMQ is a Node.js library that implements a fast and robust queue system built
 Since Dragonfly is highly compatible with Redis, BullMQ can be used with Dragonfly with zero to minimal code changes in your application.
 By replacing Redis with Dragonfly, you can achieve superior performance and scalability for your BullMQ application.
 
-The integration of Dragonfly with BullMQ involves some specific configuration steps to ensure optimal performance and compatibility with BullMQ internals.
+However, the integration of Dragonfly with BullMQ involves some specific configuration steps to ensure optimal performance and compatibility with BullMQ internals.
 
 BullMQ extensively uses Lua scripts (server-side scripting) for executing commands in Redis.
 When running a Lua script in Redis, it's essential to explicitly specify all the keys the script will access.
@@ -30,7 +30,7 @@ $> ./dragonfly --default_lua_flags=allow-undeclared-keys
 
 This mode locks the entire data store for each Lua script. In other words, it is slow, but it is safe and does not require any changes from the code that uses BullMQ.
 
-To utilize Dragonfly's multi-threaded performance and achieve superior performance for your application, we introduce a mode that enables locks on hashtags instead of individual keys.
+To utilize Dragonfly's multi-threaded capability and achieve superior performance for your application, we introduce a mode that enables locks on hashtags instead of individual keys.
 In this mode, each BullMQ queue will be exclusively owned by a single thread, and accessing multiple queues could be done in parallel.
 To employ Dragonfly in this mode, please follow the steps below to configure Dragonfly and utilize BullMQ in your application.
 
