@@ -80,7 +80,25 @@ Next, we will explore the advantages of using Dragonfly with ClickHouse.
 
 ### High Throughput
 
-### Emulated Cluster Mode
+One of the major advantages of integrating Dragonfly with ClickHouse is the potential for increased throughput.
+On a single AWS EC2 `c6gn.16xlarge` instance, Dragonfly is able to achieve a throughput of 4M ops/sec for `GET` and `SET` commands.
+While the precise benchmarking data for the Dragonfly/ClickHouse integration is still in the works,
+the underlying multi-threaded architecture and design of Dragonfly are geared towards ensuring higher throughput.
+We will update this section with more details once the benchmarking data is available.
+
+### Large Dataset Size
+
+As suggested by ClickHouse, when using a table engine of the key-value model, it is recommended to use point queries instead of range queries.
+However, if range queries are required, ClickHouse can still utilize the `SCAN` command to fulfill them.
+
+- Point query example -- `WHERE key = xx` or `WHERE key IN (xx, yy)`
+- Range query example -- `WHERE key > xx`
+
+Dragonfly is able to support up to 1TB on a single instance.
+Redis, on the other hand, is typically constrained to handling tens of GB on an individual instance.
+Further, the use of Redis Cluster, which might seem like a solution, is off the table as it doesn't support the `SCAN` command in its cluster mode.
+Hence, for applications requiring expansive datasets and range queries, Dragonfly stands as the most effective and reliable choice for the key-value table engine when paired with ClickHouse.
+We do understand that 1TB is probably not "big data" in modern terms, but supporting 1TB on a single instance is still an advantage and should be sufficient for many ad-hoc analytics use cases.
 
 ## Useful Resources
 
