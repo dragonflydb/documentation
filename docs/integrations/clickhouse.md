@@ -20,6 +20,8 @@ Since Dragonfly is highly compatible with Redis, ClickHouse can be used with Dra
 To utilize Dragonfly's multi-threaded capability and achieve superior performance for your application,
 please follow the steps below to configure ClickHouse using Dragonfly as a table engine.
 
+### 1. Installations
+
 First, you can run Dragonfly with the following flags, assuming you have a local Dragonfly binary:
 
 ```bash
@@ -35,6 +37,8 @@ $> ./clickhouse local
 Note that the above installation steps might be the simplest way to get started with Dragonfly and ClickHouse locally in order to demonstrate the integration.
 For production deployments, we recommend reading through the [Managing Dragonfly section](../managing-dragonfly/managing-dragonfly.md) for Dragonfly
 and the [Production Deployments section](https://clickhouse.com/docs/en/install#available-installation-options) for ClickHouse.
+
+### 2. Table Engine Configuration
 
 Despite an easy local installation, the integration of Dragonfly with ClickHouse is seamless,
 thanks to the fact that ClickHouse supports various table engines and Dragonfly is highly compatible with Redis.
@@ -54,6 +58,8 @@ ENGINE = Redis('localhost:6379') PRIMARY KEY(key);
 -- 'localhost:6379' is the Dragonfly server address initialized above.
 ```
 
+### 3. Usage
+
 Insert data into the table:
 
 ```sql
@@ -67,7 +73,7 @@ SELECT * FROM dragonfly_table WHERE key='1';
 SELECT COUNT(*) FROM dragonfly_table;
 ```
 
-That's it! It is that simple, and you have successfully integrated ClickHouse with Dragonfly.
+That's it! Just that simple, you have successfully integrated ClickHouse with Dragonfly.
 Next, we will explore the advantages of using Dragonfly with ClickHouse.
 
 ## Dragonfly Advantages
