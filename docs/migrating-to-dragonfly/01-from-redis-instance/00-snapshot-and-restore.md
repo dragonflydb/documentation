@@ -5,7 +5,7 @@ description: Load an RDB file into Dragonfly
 
 # Snapshot and Restore
 
-## Overview
+## Introduction
 
 Snapshot and Restore is a widely adopted technique for migrating data across different database instances.
 To facilitate a transition from a Redis setup to a Dragonfly environment, the process involves configuring Redis to generate snapshots, known as RDB (Redis Database) files, on disk.
