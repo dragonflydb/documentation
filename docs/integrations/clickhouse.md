@@ -78,7 +78,7 @@ Next, we will explore the advantages of using Dragonfly with ClickHouse.
 
 ## Dragonfly Advantages
 
-### High Throughput
+### 1. High Throughput
 
 One of the major advantages of integrating Dragonfly with ClickHouse is the potential for increased throughput.
 On a single AWS EC2 `c6gn.16xlarge` instance, Dragonfly is able to achieve a throughput of 4M ops/sec for `GET` and `SET` commands.
@@ -86,7 +86,7 @@ While the precise benchmarking data for the Dragonfly/ClickHouse integration is 
 the underlying multi-threaded architecture and design of Dragonfly are geared towards ensuring higher throughput.
 We will update this section with more details once the benchmarking data is available.
 
-### Large Dataset Size
+### 2. Large Datasets
 
 As suggested by ClickHouse, when using a table engine of the key-value model, it is recommended to use point queries instead of range queries.
 However, if range queries are required, ClickHouse can still utilize the `SCAN` command to fulfill them.
