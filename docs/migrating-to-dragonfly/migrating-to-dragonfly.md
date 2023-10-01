@@ -4,6 +4,8 @@ position: 0
 
 # Migration Overview
 
+## Introduction
+
 Migrating your existing applications from Redis to Dragonfly is a pivotal step in harnessing the power of our advanced database solution.
 While migration might seem challenging at first glance, our comprehensive set of migration techniques, detailed in this section, aims to simplify the process for various scenarios.
 
