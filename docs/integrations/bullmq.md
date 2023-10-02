@@ -7,11 +7,11 @@ description: BullMQ
 
 ## Introduction
 
-BullMQ is a Node.js library that implements a fast and robust queue system built on top of Redis that helps in resolving many modern-age microservices architectures.
+BullMQ is a Node.js library that implements a fast and robust queue system built on top of Redis that helps in resolving many modern-age architectures of microservices.
 
 ## Dragonfly x BullMQ
 
-Since Dragonfly is highly compatible with Redis, BullMQ can be used with Dragonfly with zero to minimal code changes.
+Since Dragonfly is highly compatible with Redis, BullMQ can be used with Dragonfly with zero or minimal code changes.
 By replacing Redis with Dragonfly, you can achieve superior performance and scalability for your BullMQ application.
 
 However, the integration of Dragonfly with BullMQ involves some specific configuration steps to ensure optimal performance and compatibility with BullMQ internals.

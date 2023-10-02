@@ -16,9 +16,6 @@ Since Dragonfly is highly compatible with Redis, it can be used as an alternativ
 
 ## Dragonfly x Feast
 
-Since Dragonfly is highly compatible with Redis, Feast can be used with Dragonfly with zero to minimal code changes.
-By replacing Redis with Dragonfly, you can achieve superior performance and scalability for your Feast application.
-
 Please follow the steps below to configure Dragonfly and utilize Feast in your application.
 
 ### 1. Prerequisites

@@ -88,7 +88,7 @@ We will update this section with more details once the benchmarking data is avai
 
 ### 2. Large Datasets
 
-As suggested by ClickHouse, when using a table engine of the key-value model, it is recommended to use point queries instead of range queries.
+As suggested by ClickHouse, when using a table engine for the key-value model, it is recommended to use point queries instead of range queries.
 However, if range queries are required, ClickHouse can still utilize the `SCAN` command to fulfill them.
 
 - Point query example -- `WHERE key = xx` or `WHERE key IN (xx, yy)`
