@@ -30,3 +30,4 @@ This section will guide you through the integration process and any nuances or s
 
 For developers or teams eyeing new ventures or seeking to integrate other existing projects, you'll be pleased to know that Dragonfly compatibility is robust.
 This means various projects that leverage Redis can also be configured to use Dragonfly with minimal effort.
+We will be adding more integration projects to the officially supported list in the future.

@@ -9,10 +9,10 @@ description: BullMQ
 
 BullMQ is a Node.js library that implements a fast and robust queue system built on top of Redis that helps in resolving many modern-age architectures of microservices.
 
-## Dragonfly x BullMQ
-
 Since Dragonfly is highly compatible with Redis, BullMQ can be used with Dragonfly with zero or minimal code changes.
 By replacing Redis with Dragonfly, you can achieve superior performance and scalability for your BullMQ application.
+
+## Dragonfly x BullMQ
 
 However, the integration of Dragonfly with BullMQ involves some specific configuration steps to ensure optimal performance and compatibility with BullMQ internals.
 
@@ -35,7 +35,7 @@ In other words, it is slow, but it is safe and does not require any changes from
 
 To utilize Dragonfly's multi-threaded capability and achieve superior performance for your application, we introduce a mode that enables locks on hashtags instead of individual keys.
 In this mode, each BullMQ queue will be exclusively owned by a single thread, and accessing multiple queues could be done in parallel.
-To employ Dragonfly in this mode, please follow the steps below to configure Dragonfly and utilize BullMQ in your application.
+To employ Dragonfly in this mode, please follow the steps below.
 
 ### 1. Hashtag Locking
 
