@@ -15,7 +15,7 @@ From a user perspective, the configured integration looks like a normal table, b
 Redis is one of the external integrations supported by ClickHouse.
 Since Dragonfly is highly compatible with Redis, ClickHouse can be used with Dragonfly with zero code changes and minimal configuration changes in your application.
 
-## Dragonfly x ClickHouse
+## Running ClickHouse with Dragonfly
 
 To utilize Dragonfly's multi-threaded capability and achieve superior performance for your application,
 please follow the steps below to configure ClickHouse using Dragonfly as a table engine.
@@ -25,7 +25,7 @@ please follow the steps below to configure ClickHouse using Dragonfly as a table
 First, you can run Dragonfly with the following flags, assuming you have a local Dragonfly binary:
 
 ```bash
-$> ./dragonfly --logtostderr --bind localhost --port 6379
+$> ./dragonfly --bind localhost --port 6379
 ```
 
 Next, [install ClickHouse locally](https://clickhouse.com/docs/en/install#quick-install) and use the `clickhouse local` client application as follows:

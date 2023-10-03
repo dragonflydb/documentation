@@ -12,7 +12,7 @@ BullMQ is a Node.js library that implements a fast and robust queue system built
 Since Dragonfly is highly compatible with Redis, BullMQ can be used with Dragonfly with zero or minimal code changes.
 By replacing Redis with Dragonfly, you can achieve superior performance and scalability for your BullMQ application.
 
-## Dragonfly x BullMQ
+## Running BullMQ with Dragonfly
 
 However, the integration of Dragonfly with BullMQ involves some specific configuration steps to ensure optimal performance and compatibility with BullMQ internals.
 
@@ -53,7 +53,7 @@ $> ./dragonfly --cluster_mode=emulated --lock_on_hashtags
 When setting up your application, use hashtags in your queue names.
 In short, when a hashtag is present in a key, along with the `--lock_on_hashtags` flag, Dragonfly will lock the key to a thread based on the hashtag.
 Read more about the original hashtag design for the Redis Cluster specification [here](https://redis.io/docs/reference/cluster-spec/#hash-tags),
-as well as the Dragonfly emulated cluster mode [here](./../managing-dragonfly/cluster-mode.md).
+as well as the Dragonfly emulated cluster mode [here](../managing-dragonfly/cluster-mode.md).
 
 In order to use a hashtag in a queue name, you can initialize a queue as follows:
 

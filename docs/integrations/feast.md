@@ -14,7 +14,7 @@ Feature values are loaded from data sources into the online store via materializ
 Redis is one of the online stores supported by Feast.
 Since Dragonfly is highly compatible with Redis, it can be used as an alternative online store for Feast with zero code changes and minimal configuration changes in your application.
 
-## Dragonfly x Feast
+## Running Feast with Dragonfly
 
 Please follow the steps below to configure Dragonfly and utilize Feast in your application.
 
@@ -60,7 +60,7 @@ Assuming you have a local Dragonfly binary, you can run Dragonfly with the follo
 Make sure to use the same address and port as specified in the `feature_store.yaml` file above.
 
 ```bash
-$> ./dragonfly --logtostderr --bind localhost --port 6379
+$> ./dragonfly --bind localhost --port 6379
 ```
 
 ### 4. Feast Usage
