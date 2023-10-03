@@ -83,15 +83,22 @@ const queue = new Queue("myqueue", {
 By adopting the queue naming strategies mentioned above, queues that share the same hashtag will be assigned to the same Dragonfly thread.
 This ensures shard consistency and efficient hardware resource utilization.
 
-### 3. Queue Dependencies
+However, because of this, it is important to **use unique per-queue prefixes so that not all queues are handled by the same Dragonfly thread**.
+See [Thread Balancing](#3-thread-balancing) below for more details.
 
-If you have queue dependencies, especially a parent-child relationship, it's important to use the same hashtag for both queues.
-This ensures that they are processed within the same Dragonfly thread and maintains the integrity of the dependencies.
+You should always avoid using the same hashtag for all queues.
+But sometimes, it is fine to strategically place certain queues on the same Dragonfly thread.
+See [Queue Dependencies](#4-queue-dependencies) below for more details.
 
-### 4. Thread Balancing
+### 3. Thread Balancing
 
 To achieve superior performance for your application, consider employing a larger number of queues with a different hashtag for each.
 By distributing the queues across distinct Dragonfly threads, you can optimize the utilization of the Dragonfly architecture efficiently.
+
+### 4. Queue Dependencies
+
+If you have queue dependencies, especially a parent-child relationship, it's important to use the same hashtag for both queues.
+This ensures that they are processed within the same Dragonfly thread and maintains the integrity of the dependencies.
 
 ## Useful Resources
 
