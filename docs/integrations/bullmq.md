@@ -62,12 +62,13 @@ import { Queue } from 'bullmq';
 
 // Note the wrapping curly brackets in the queue name string.
 //
-// Dragonfly assigns this queue to a specific thread based on only the substring "myprefix",
-// instead of the full queue name string "{myprefix}:myqueue".
+// Dragonfly assigns this queue to a specific thread based on only the substring "myqueue",
+// instead of the full queue name string "{myqueue}". Despite how your queue name is formatted,
+// Dragonfly will only consider the substring "myqueue" as the hashtag.
 //
 // Also, do not confuse the curly brackets here with JavaScript template literals.
 // These curly brackets are part of the queue name string that will be used by Dragonfly.
-const queue = new Queue("{myprefix}:myqueue");
+const queue = new Queue("{myqueue}");
 ```
 
 Alternatively, you can utilize the BullMQ `prefix` option for queue initialization:
