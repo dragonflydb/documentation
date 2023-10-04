@@ -84,7 +84,7 @@ const queue = new Queue("myqueue", {
 By adopting the queue naming strategies mentioned above, queues that share the same hashtag will be assigned to the same Dragonfly thread.
 This ensures shard consistency and efficient hardware resource utilization.
 
-However, because of this, it is important to **use unique per-queue prefixes so that not all queues are handled by the same Dragonfly thread**.
+However, because of this, if you use prefix hashtags, it is important to **use unique per-queue prefixes so that not all queues are handled by the same Dragonfly thread**.
 See [Thread Balancing](#3-thread-balancing) below for more details.
 
 You should always avoid using the same hashtag for all queues.
