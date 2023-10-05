@@ -247,20 +247,20 @@ sidebar_position: 0
 |                                              | <span class="command">ZSCORE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZUNION</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZUNIONSTORE</span>                   | <span class="support supported">Fully supported</span>   |
-| <span class="family">Stream</span>           | <span class="command">XAUTOCLAIM</span>                    | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">XCLAIM</span>                        | <span class="support partial">Partially supported</span> |
+| <span class="family">Stream</span>           | <span class="command">XAUTOCLAIM</span>                    | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">XCLAIM</span>                        | <span class="support supported">Fully supported</span> |
 |                                              | <span class="command">XREAD</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">XADD</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">XPENDING</span>                      | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">XGROUP</span>                        | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">XGROUP</span>                        | <span class="support supported">Fully supported</span> |
 |                                              | <span class="command">XRANGE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">XSETID</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">XREVRANGE</span>                     | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">XREADGROUP</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">XREADGROUP</span>                    | <span class="support supported">Fully supported</span>     |
 |                                              | <span class="command">XDEL</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">XINFO</span>                         | <span class="support partial">Partially supported</span> |
-|                                              | <span class="command">XACK</span>                          | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">XTRIM</span>                         | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">XACK</span>                          | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">XTRIM</span>                         | <span class="support supported">Fully supported</span> |
 | <span class="family">String</span>           | <span class="command">APPEND</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">DECR</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">DECRBY</span>                        | <span class="support supported">Fully supported</span>   |
