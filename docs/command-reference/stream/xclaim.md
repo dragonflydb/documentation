@@ -49,9 +49,9 @@ In the latter case, the message will also be deleted from the PEL in which it wa
 The command has multiple options, however most are mainly for internal use in order to transfer the effects of `XCLAIM` or other commands
 to the AOF file and to propagate the same effects to the replicas, and are unlikely to be useful to normal users:
 
-1. `IDLE <ms>` **(not supported yet)**: Set the idle time (last time it was delivered) of the message.
+1. `IDLE <ms>`: Set the idle time (last time it was delivered) of the message.
    If `IDLE` is not specified, an `IDLE` of 0 is assumed, that is, the time count is reset because the message has now a new owner trying to process it.
-2. `TIME <ms-unix-time>` **(not supported yet)**: This is the same as `IDLE` but instead of a relative amount of milliseconds, it sets the idle time to a specific Unix time (in milliseconds).
+2. `TIME <ms-unix-time>` : This is the same as `IDLE` but instead of a relative amount of milliseconds, it sets the idle time to a specific Unix time (in milliseconds).
    This is useful in order to rewrite the AOF file generating `XCLAIM` commands.
 3. `RETRYCOUNT <count>`: Set the retry counter to the specified value. This counter is incremented every time a message is delivered again.
    Normally `XCLAIM` does not alter this counter, which is just served to clients when the [`XPENDING`](./xpending.md) command is called:
@@ -60,7 +60,8 @@ to the AOF file and to propagate the same effects to the replicas, and are unlik
    However, the message must exist in the stream. Otherwise, the IDs of non-existing messages are ignored. 
 5. `JUSTID`: Return just an array of IDs of messages successfully claimed, without returning the actual message.
    Using this option means the retry counter is not incremented.
-6. `LASTID` **(not supported yet)**: More information about this option is yet to come.
+6. `LASTID` : Update the consumer group last ID with the specified ID if the current last ID is smaller than the provided one.
+
 
 ## Return
 
