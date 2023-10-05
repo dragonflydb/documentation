@@ -17,7 +17,7 @@ description: Acknowledge a received message and removes the message from consume
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#resp-integers), specifically:
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
 The command returns the number of messages successfully acknowledged. Certain message IDs may no longer be part of the PEL (for example because they have already been acknowledged), and XACK will not count them as successfully acknowledged.
 
