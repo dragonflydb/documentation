@@ -33,11 +33,11 @@ This command generates static content into the `build` directory and can be serv
 ## Working with Search
 
 Search is powered by Algolia.
-For community members who maintain the documentation search functionality (those who have access to the Algolia account)
+For community members who maintain the documentation search functionality (those who have access to the Algolia account),
 please refer to the [Docusaurus Search documentation](https://docusaurus.io/docs/search) first for an overview with more information.
 
 There are a few components that might be useful to know about when debugging search-related issues:
 
-- [DocSearch](https://docsearch.algolia.com/) is a program supporting documentation search, which is free for any open-source project. Dragonfly should be part of the program already.
-- [Algolia Crawler](https://crawler.algolia.com/) request our documentation pages and creates indexes for them once a while.
-- Algolia is where the indexes are actually stored and served from, you can access the [dashboard](https://dashboard.algolia.com/) to see the indexes and search analytics.
+- [DocSearch](https://docsearch.algolia.com/) is a program supporting documentation search that is free for any open-source project. Dragonfly should be part of the program already.
+- [Algolia Crawler](https://crawler.algolia.com/) requests our documentation pages and creates indexes for them once in a while.
+- Algolia is where the indexes are actually stored and served from. You can access the [dashboard](https://dashboard.algolia.com/) to see the indexes and search analytics.
