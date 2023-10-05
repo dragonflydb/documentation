@@ -5,7 +5,7 @@ description: Use Sentinel for migration with minimal or zero downtime
 
 # Sentinel Promotion
 
-## Overview
+## Introduction
 
 In the preceding section, we delved into the [Replication](./01-replication.md) technique, which is a powerful approach employing the `REPLICAOF` command for reliable data transfer.
 However, while this technique offers notable benefits, a minor drawback persists: the need for a downtime window, albeit a potentially brief one.

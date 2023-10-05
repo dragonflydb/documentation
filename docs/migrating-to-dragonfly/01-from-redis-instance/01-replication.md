@@ -5,7 +5,7 @@ description: Use the `REPLICAOF` command for migration
 
 # Replication
 
-## Overview
+## Introduction
 
 Replication is a versatile migration technique that offers a robust way to transition data between database instances.
 This strategic approach revolves around the establishment of a dynamic primary-replica relationship.
