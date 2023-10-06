@@ -213,9 +213,9 @@ const config = {
         theme: codeTheme,
       },
       algolia: {
-        appId: "ZXLX1PN8SG",
-        apiKey: "abad5ee4b6f688bf466290763737a957",
-        indexName: "dragonflydb",
+        appId: "K99HHMZV85",
+        apiKey: "8da5c5e30bdba633dfde075f0d4bc2a0",
+        indexName: "dragonflydb_docs",
         contextualSearch: true,
         replaceSearchResultPathname: isPreviewDeployment
           ? { from: "/docs/", to: "/" }
