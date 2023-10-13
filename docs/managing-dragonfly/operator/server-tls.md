@@ -26,6 +26,20 @@ a relevant secret to be present with `tls.crt`, `tls.key` keys.
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
 ```
 
+
+Create a self-signed issuer:
+
+```sh
+kubectl apply -f - <<EOF
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: ca-issuer
+spec:
+  selfSigned: {}
+EOF
+```
+
 Request a certificate from the self-signed issuer:
 
 ```sh
@@ -58,17 +72,24 @@ spec:
     name: ca-issuer
     kind: Issuer
     group: cert-manager.io
----
-apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
-  name: ca-issuer
-spec:
-  selfSigned: {}
 EOF
 ```
 
 ## Dragonfly Instance With TLS
+
+As atleast one auth mechanism is required, we will use the password auth mechanism:
+
+```sh
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dragonfly-password
+type: Opaque
+stringData:
+  password: dragonfly
+EOF
+```
 
 Create a Dragonfly instance with one at-least one auth mechanism as its needed when TLS is enabled.
 
@@ -79,12 +100,13 @@ kind: Dragonfly
 metadata:
   name: dragonfly-sample
 spec:
-    auth:
+    authentication:
       passwordFromSecret:
-        name: dragonfly-sample
+        name: dragonfly-password
         key: password
     replicas: 2
-    tlsSecretRef: dragonfly-sample
+    tlsSecretRef:
+      name: dragonfly-sample
 EOF
 ```
 
@@ -112,6 +134,16 @@ kubectl run -it --rm redis-cli --image=redis:7.0.10 --restart=Never --overrides=
                 "image": "redis:7.0.10",
                 "tty": true,
                 "stdin": true,
+                "command": [
+                    "redis-cli",
+                    "-h",
+                    "dragonfly-sample.default",
+                    "-a",
+                    "dragonfly",
+                    "--tls",
+                    "--cacert",
+                    "/etc/ssl/ca.crt"
+                ],
                 "volumeMounts": [
                     {
                         "name": "ca-certs",
@@ -136,7 +168,7 @@ kubectl run -it --rm redis-cli --image=redis:7.0.10 --restart=Never --overrides=
             }
         ]
     }
-}' -- redis-cli -h dragonfly-sample.default -a dragonfly --tls --cacert /etc/ssl/ca.crt
+}'
 ```
 
 You should see the redis-cli prompt, and you can run redis commands.
