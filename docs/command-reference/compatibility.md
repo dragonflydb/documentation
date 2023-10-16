@@ -258,7 +258,7 @@ sidebar_position: 0
 |                                              | <span class="command">XREVRANGE</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">XREADGROUP</span>                    | <span class="support supported">Fully supported</span>     |
 |                                              | <span class="command">XDEL</span>                          | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">XINFO</span>                         | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">XINFO</span>                         | <span class="support supported">Fully supported</span> |
 |                                              | <span class="command">XACK</span>                          | <span class="support supported">Fully supported</span>     |
 |                                              | <span class="command">XTRIM</span>                         | <span class="support supported">Fully supported</span> |
 | <span class="family">String</span>           | <span class="command">APPEND</span>                        | <span class="support supported">Fully supported</span>   |
