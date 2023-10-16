@@ -149,3 +149,51 @@ dump-2023-08-10T00:25:00-summary.dfs
 # ... output
 # ... omitted
 ```
+
+## Cloud Storage
+
+Dragonfly supports saving and restoring backups to and from [AWS S3](https://aws.amazon.com/s3/) rather than a local disk.
+
+To use S3 storage, or an S3-compatible service like [MinIO](https://github.com/minio/minio), configure the `--dir` flag described above with your S3 bucket URL.
+
+Such as to use the bucket `acme-backups`, configure Dragonfly with:
+```shell
+$> ./dragonfly --logtostderr --dir s3://acme-backups
+```
+
+You can also include an optional path prefix, such as to store all backups under path `dragonfly/staging/`, configure:
+```shell
+$> ./dragonfly --logtostderr --dir s3://acme-backups/dragonfly/staging
+```
+
+As with disk backups, Dragonfly will automatically load the latest snapshot from the S3 bucket on startup and store a snapshot on shutdown.
+
+:warning: Dragonfly S3 cloud storage is a preview feature and does not yet support HTTPS. Please open a [GitHub](https://github.com/dragonflydb/dragonfly) issue if you find any problems or require HTTPS support.
+
+### Flags
+
+In addition to the backups flags described above, cloud storage includes flags:
+- **`s3_endpoint`** -- When using an S3-compatible service overrides the S3 endpoint.
+- **`s3_ec2_metadata`** -- Whether to load AWS credentials from EC2 metadata. Only enable this flag when running in EC2. Disabled by default.
+- **`s3_sign_payload`** -- Whether to sign the request payload when uploading snapshots to S3. Enabled by default, though signing the payload does have a performance overhead so can be disabled if needed.
+
+### Authentication
+
+Dragonfly will infer your AWS credentials from the environment using [standard AWS credential providers](https://docs.aws.amazon.com/sdkref/latest/guide/standardized-credentials.html).
+
+Dragonfly supports providers:
+- Environment variables: Such as `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_SESSION_TOKEN`. See [AWS access keys](https://docs.aws.amazon.com/sdkref/latest/guide/feature-static-credentials.html).
+- Shared Credentials File: Loads credentials from the local `~/.aws/credentials` file. Override the credentials path with `AWS_SHARED_CREDENTIALS_FILE` and the default AWS profile with `AWS_PROFILE`. See [Configuration and credential file settings](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
+- EC2 metadata: When running in EC2 loads credentials from EC2 instance metadata. Must be enabled with `--s3_ec2_metadata`.
+
+You must also configure the AWS region of your bucket, either using the `AWS_REGION` environment variable, shared configuration file or EC2 metadata.
+
+### S3-Compatible Services
+
+To use S3 compatible services like [MinIO](https://github.com/minio/minio), configure credentials as described above, then set the `--s3_endpoint`  flag to your services endpoint.
+
+Such as you're running a MinIO container locally on `localhost:9000`, configure:
+
+```shell
+$> ./dragonfly --logtostderr --dir s3://acme-backups --s3_endpoint localhost:9000
+```
