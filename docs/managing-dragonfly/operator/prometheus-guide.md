@@ -2,17 +2,19 @@
 sidebar_position: 4
 ---
 
-# Integrate Prometheus with Dragonfly operator
+# Integrate Prometheus with the Dragonfly Operator
 
-This guide provides a step-by-step instruction to set up Prometheus to monitor
-Dragonfly pods. In this guide, you're going to use [Promethues Operator](https://github.com/prometheus-operator/prometheus-operator) along with PodMonitor.
+This guide provides step-by-step instructions to set up Prometheus with the Dragonfly
+Operator. In this guide, you'll use the [Promethues Operator](https://github.com/prometheus-operator/prometheus-operator)
+and PodMonitor to manage Prometheus resources.
 
 ## Prerequisites
 
-- A kubernetes cluster with [Dragonfly installed](./installation.md)
+- A Kubernetes cluster with [Dragonfly installed](./installation.md)
 
 ## Install Prometheus Operator
-First make sure you have all the prometheus crds installed in your cluster. Run the
+
+First make sure you have all the Prometheus CRDs installed in your cluster. Run the
 below commands to install the Prometheus Operator.
 
 ```
@@ -23,25 +25,26 @@ curl -sL https://github.com/prometheus-operator/prometheus-operator/releases/dow
 ## Create the PodMonitor Resource
 
 PodMonitors allow Prometheus to monitor specific pods that has the target labels. It
-is the easiest way to monitor Dragonfly pods. Either create your own PodMonitor
-config file or use our sample [podMonitor.yaml](https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/podMonitor.yaml) file to create a PodMonitor
-object.
+is the easiest way to monitor Dragonfly pods. You can either create your own
+PodMonitor config file or use our sample [podMonitor.yaml](https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/podMonitor.yaml)
+file to create a PodMonitor object.
 
 ```
 kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/podMonitor.yaml
 ```
 
-Note that you must use `app: <dragonfly-name>` label as selector label in the
-PodMonitor in order to target the correct dragonfly instances. The value of `app`
-label is the name of your dragonfly resource name (in this case, `dragonfly-sample`).
+Note you must use `app: <dragonfly-name>` as a selector label in the PodMonitor to
+target the correct Dragonfly instances. The label value is the name of your Dragonfly
+resource (in this case, `dragonfly-sample`).
 
-Dragonfly resources expose a port named `admin` and you can use it as the endpoint in PodMonitor.
+The Dragonfly pod exposes a port named `admin` which you can use as the endpoint in
+PodMonitor.
 
 ## Create Promethues Resources
 
-Now that you have installed the operator and pod-monitor, it is time to create
-`prometheus` resources. If you have RBAC enabled, create necessary `serviceaccount`,
-`clusterrole` and `clusterrolebinding` resources first.
+Now you have installed the operator and PodMonitor, it is time to create the
+`prometheus` resources. If you have RBAC enabled, create the necessary
+`serviceaccount`, `clusterrole` and `clusterrolebinding` resources first.
 
 ```
 $ kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/promServiceAccount.yaml
@@ -49,21 +52,20 @@ $ kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/m
 $ kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/promClusterBinding.yaml
 ```
 
-This will allow prometheus to scrape data from dragonfly resources. Run the below
-command to create a Prometheus pod named `prometheus-prometheus-0`.
+This will allow Prometheus to scrape data from Dragonfly resources. Run the below
+command to create the Prometheus object. It will create a pod named `prometheus-prometheus-0`.
 
 ```
 $ kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/prometheus-config.yaml
 ```
 
-You can also create a service that points to the prometheus pod.
+You can also create a service that points to the Prometheus pod.
 
 ```
 $ kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/prometheus-service.yaml
 ```
 
-You can run `kubectl get all` to check if all the resources has successfully
-created.
+Run `kubectl get all` to check if all the resources have successfully been created.
 
 ```
 $ kubectl get all
@@ -93,9 +95,9 @@ statefulset.apps/prometheus-prometheus   1/1     11d
 
 ## Access Prometheus UI
 
-Prometheus has a beautiful UI that you can use to query certain metrics. You can
-use `port-forward` command to either directly expose the prometheus pod 9090 port
-or expose the prometheus service.
+Prometheus has a beautiful UI that you can use to query certain metrics. Use the
+`port-forward` command to either directly expose the Prometheus pod (port 9090) or
+expose the Prometheus service.
 
 ```
 kubectl port-forward prometheus-prometheus-0 9090:9090
