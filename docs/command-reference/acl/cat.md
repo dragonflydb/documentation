@@ -1,3 +1,7 @@
+---
+description: Print ACL categories and per-group commands
+---
+
 # ACL CAT
 
 ## Syntax

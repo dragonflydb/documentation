@@ -1,3 +1,7 @@
+---
+description: Load all ACL configuration from a file
+---
+
 # ACL LOAD
 
 ## Syntax
@@ -10,7 +14,8 @@ When Dragonfly is configured to use an ACL file (with the `--aclfile` configurat
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` on successthe error otherwise.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` on success.
+The error otherwise.
 
 ## Examples
 

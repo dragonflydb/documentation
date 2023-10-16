@@ -1,3 +1,7 @@
+---
+description: Print ACL's of a user
+---
+
 # ACL GETUSER
 
 ## Syntax

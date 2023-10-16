@@ -1,3 +1,7 @@
+---
+description: Print the ACL logs
+---
+
 # ACL LOG
 
 ## Syntax
@@ -21,8 +25,8 @@ When called to show security events:
 
 [Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of ACL security events.
 
-When called with RESET:
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): OK if the security log was cleared.
+When called with `RESET`:
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if the security log was cleared.
 
 ## Examples
 

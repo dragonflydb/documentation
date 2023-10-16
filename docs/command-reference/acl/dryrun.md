@@ -1,3 +1,7 @@
+---
+description: Simulate execution of a command from a user
+---
+
 # ACL DRYRUN
 
 ## Syntax
@@ -10,7 +14,8 @@ This command simulates the execution of a given command by a user. It can be use
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` on successor the reason the user can't execute the command.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` on success
+or the reason the user can't execute the command.
 
 ## Examples
 

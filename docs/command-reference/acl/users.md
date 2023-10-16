@@ -1,3 +1,7 @@
+---
+description: Print the usernames of all users
+---
+
 # ACL USERS
 
 ## Syntax
