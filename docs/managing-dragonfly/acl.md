@@ -3,7 +3,7 @@
 Dragonfly has built in support for ACL. DF operators, get fine grained control on how and who accesses the datastore via the ACL family of commands.
 Since, DF is designed as a drop in replacement for Redis, you can expect the same API functionality for ACL as in Redis.
 
-All connections in DF default to the user `default` (unless the operator turns them off). `default` can `auth` in DF using any password, is allowed to 
+All connections in DF default to the user `default` (unless the operator turns them off). `default` can `auth` in DF using any password, is allowed to
 execute any command and is part of all the available ACL groups.
 
 Permissions for a given user are controlled via a domain specific language (DSP) and are divided into 4 categories:
@@ -19,8 +19,8 @@ Granting or revoking permissions for a user is as easy as calling the `ACL SETUS
 ACL SETUSER John ON >mypassword +@ADMIN +SET
 ```
 
-If the user `John` does not exist, then the user is created with the permissions specified in the argument list of the command. 
-Otherwise, `SETUSER` acts as an `update` of the entry (and its permissions) for that user. 
+If the user `John` does not exist, then the user is created with the permissions specified in the argument list of the command.
+Otherwise, `SETUSER` acts as an `update` of the entry (and its permissions) for that user.
 
 A user can be `ON` or `OFF`. By default, all users (except `default`) are `OFF` (unless you explicitly grant them `ON`). The
 `ON/OFF` mechanism grants or revokes the user the ability to `authenticate` in the sytem via the `AUTH` command.
@@ -82,7 +82,7 @@ the user should not be a part of.
 
 ## Commands
 
-Dividing the commands into groups offers a great flexibility of quickly granting/revoking permissions but it's somehow limited because it 
+Dividing the commands into groups offers a great flexibility of quickly granting/revoking permissions but it's somehow limited because it
 these groups are not user defined. Therefore, for finer control, the user can specify a list of commands that is explicitly allowed to execute.
 For example:
 
@@ -99,13 +99,19 @@ The special `+ALL` (note without the `@`) is used to denote all of the currently
 ## Persistence
 
 The state of all of the users and their permissions can be captured and placed in a file. As with redis,
-the `--aclfile` option is used to specify the file from which Dragonfly will load the ACL state from. 
+the `--aclfile` option is used to specify the file from which Dragonfly will load the ACL state from.
 
-Afterwards, any change done at runtime, can be persisted at anytime via the command `ACL SAVE` which 
+Afterwards, any change done at runtime, can be persisted at anytime via the command `ACL SAVE` which
 evicts the currently stored ACL state to the file specified in the `--aclfile` option.
 
-Note, that the `aclfile` file is compatible with Redis (however it must not contain any keys or 
+Note, that the `aclfile` file is compatible with Redis (however it must not contain any keys or
 pub/sub DSL's because these yet are not supported so if you plan to migrate, just open the file and strip them away).
+
+If you want the `aclfile` to be writable, that is, if you want `ACL SAVE` to work, we would advice against placing the `aclfile`
+under `/etc` directory because the folder is only accesible by Dragonfly as `readonly`. You change this behaviour, by editing 
+the systemd service file located in `/lib/systemd/system/dragonfly.service`.
+
+For convenience, we suggest to place `acl` files in `/var/lib/dragonfly/`.
 
 ## Logs
 
@@ -114,7 +120,7 @@ of their permissions) are stored in a log. The size of the log can be configured
 This flag, operates a little bit differently from Redis. Specifically, because Dragonfly uses a shared nothing thread per core architecture,
 each thread of execution gets its own log. Therefore, the total size of the log entries, is the `flag number` multiplied
 by the available number of cores in the system. So for example, if you are running on a 4 core machine with `--acllog_max_len=8`
-then the total number of log entries stored in the system at any time can be `32` and each core can store up to `8` entries. 
+then the total number of log entries stored in the system at any time can be `32` and each core can store up to `8` entries.
 If any of the thresholds is reached, each new log entry will cause the oldest entry to be evicted.
 
 Log information can be printed via the command `ACL LOG`.
