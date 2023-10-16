@@ -82,15 +82,16 @@ the user should not be a part of.
 
 ## Commands
 
-Dividing the commands into groups offers a great flexibility of quickly granting/revoking permissions but it's somehow limited because it
+Dividing the commands into groups offers a great flexibility of quickly granting/revoking permissions but it's somehow limited because
 these groups are not user defined. Therefore, for finer control, the user can specify a list of commands that is explicitly allowed to execute.
 For example:
 
 ```
-ACL SETUSER John +@STRING -SET
+ACL SETUSER John +GET +SET +@FAST
 ```
 
-This allows the user `John` to execute all but the `SET` commands specified in the group `STRING`
+This allows the user `John` to execute only the `SET` && `GET` commands and all of the commands associated with the group `FAST`.
+Any attempt of user `John` to issue a command other than the above, will be rejected by the system.
 
 Note that the syntax is similar to the ACL groups, but without the prefix `@`.
 
@@ -118,9 +119,9 @@ For convenience, we suggest to place `acl` files in `/var/lib/dragonfly/`.
 All connections that fail to authenticate and all of the authenticated users who fail to run a command (because 
 of their permissions) are stored in a log. The size of the log can be configured by the option `--acllog_max_len`.
 This flag, operates a little bit differently from Redis. Specifically, because Dragonfly uses a shared nothing thread per core architecture,
-each thread of execution gets its own log. Therefore, the total size of the log entries, is the `flag number` multiplied
+each thread of execution has its own log. Therefore, the total size of the log entries, is the flag number multiplied
 by the available number of cores in the system. So for example, if you are running on a 4 core machine with `--acllog_max_len=8`
 then the total number of log entries stored in the system at any time can be `32` and each core can store up to `8` entries.
-If any of the thresholds is reached, each new log entry will cause the oldest entry to be evicted.
+When the per-thread threshold is reached, each new log entry will cause the oldest one to get evicted.
 
 Log information can be printed via the command `ACL LOG`.
