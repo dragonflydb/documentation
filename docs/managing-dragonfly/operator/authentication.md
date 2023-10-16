@@ -218,15 +218,13 @@ kubectl run -it --rm redis-cli --image=redis:7.0.10 --restart=Never --overrides=
                     "redis-cli",
                     "-h",
                     "dragonfly-sample.default",
-                    "-a",
-                    "dragonfly",
                     "--tls",
                     "--cacert",
                     "/etc/ssl/ca.crt",
                     "--cert",
-                    "/etc/ssl/client.crt",
+                    "/etc/tls/client.crt",
                     "--key",
-                    "/etc/ssl/client.key"
+                    "/etc/tls/client.key"
                 ],
                 "volumeMounts": [
                     {
@@ -236,7 +234,7 @@ kubectl run -it --rm redis-cli --image=redis:7.0.10 --restart=Never --overrides=
                     },
                     {
                         "name": "client-certs",
-                        "mountPath": "/etc/ssl",
+                        "mountPath": "/etc/tls",
                         "readOnly": true
                     }
                 ]
