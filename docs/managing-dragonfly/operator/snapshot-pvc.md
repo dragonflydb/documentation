@@ -25,7 +25,8 @@ kind: Dragonfly
 metadata:
   name: dragonfly-pvc
 spec:
-    replicas: 1
+  replicas: 1
+  snapshot:
     cron: "*/5 * * * *"
     persistentVolumeClaimSpec:
       accessModes:
@@ -33,6 +34,7 @@ spec:
       resources:
         requests:
           storage: 2Gi
+EOF
 ```
 
 This will create a Dragonfly statefulset with the given PVC spec. The `persistentVolumeClaimSpec` field is the same as the one used in [Kubernetes PVC](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) and can be used to configure the PVC as per your requirements.
@@ -49,6 +51,8 @@ Connect to the Dragonfly instance and add some data:
 
 ```bash
 kubectl run -it --rm --restart=Never redis-cli --image=redis:7.0.10 -- redis-cli -h dragonfly-pvc.default SET foo bar
+If you don't see a command prompt, try pressing enter.
+pod "redis-cli" deleted
 ```
 
 Delete the Dragonfly pod:
@@ -57,10 +61,18 @@ Delete the Dragonfly pod:
 kubectl delete pod dragonfly-pvc-0
 ```
 
-Wait for the pod to be recreated and then connect to the Dragonfly instance again:
+Wait for the pod to be recreated:
+
+```bash
+kubectl get pods -w
+```
+
+Connect to the Dragonfly instance, and check if the data is still there:
 
 ```bash
 kubectl run -it --rm --restart=Never redis-cli --image=redis:7.0.10 -- redis-cli -h dragonfly-pvc.default GET foo
+"bar"
+pod "redis-cli" deleted
 ```
 
 You should see the value `bar` for the key `foo`. This means that the data was restored from the snapshot that was stored in the PVC.
