@@ -69,8 +69,8 @@ certificates like this:
 ```bash
 $ sudo ./dragonfly \
   --tls \
-  --tls_key_file=/etc/letsencrypt/live/dfly.scalable-meteorite-collections.com/privkey.pem \
-  --tls_cert_file=/etc/letsencrypt/live/dfly.scalable-meteorite-collections.com/fullchain.pem \
+  --tls_key_file=/etc/mycerts/server_key.pem \
+  --tls_cert_file=/etc/mycerts/server_cert.pem \
   --tls_ca_cert_file=/etc/mycerts/clients_root_ca.pem
 ```
 
