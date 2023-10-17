@@ -4,7 +4,10 @@ sidebar_position: 2
 
 # Snapshots through PVC
 
-This guide provides step-by-step instructions for setting up Dragonfly with snapshots through PVC. [Dragonfly already supports snapshots](https://www.dragonflydb.io/docs/managing-dragonfly/backups), which allows you to create a snapshot of your database at any point in time and restore it later. With this PVC integration, you can now store your snapshots in [persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)  and get them automatically restored when your Dragonfly pods get restarted or rescheduled across nodes. This is possible as a specific PVC is attached to each Dragonfly statefulset and the snapshot is stored in that PVC. The persistent volume can be backed by any storage provider that Kubernetes supports.
+This guide provides step-by-step instructions for setting up Dragonfly with snapshots through PVC. [Dragonfly already supports snapshots](https://www.dragonflydb.io/docs/managing-dragonfly/backups), which allows
+you to create a snapshot of your database at any point in time and restore it later. With this PVC integration, you can now store your snapshots in [persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+and get them automatically restored when your Dragonfly pods get restarted or rescheduled across nodes. This is possible as a specific PVC is attached to each Dragonfly `statefulset` and the snapshot is stored in that PVC.
+The persistent volume can be backed by any storage provider that Kubernetes supports.
 
 While this feature can help you recover from failures, It is not a replacement for Replication. You should still use replication if you want to
 maintain high availability.
@@ -37,7 +40,8 @@ spec:
 EOF
 ```
 
-This will create a Dragonfly statefulset with the given PVC spec. The `persistentVolumeClaimSpec` field is the same as the one used in [Kubernetes PVC](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) and can be used to configure the PVC as per your requirements.
+This will create a Dragonfly statefulset with the given PVC spec. The `persistentVolumeClaimSpec` field is the same as the one used in [Kubernetes PVC](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)
+and can be used to configure the PVC as per your requirements.
 
 Wait for the Dragonfly instance to be ready:
 
