@@ -1,8 +1,12 @@
 ---
-description: Remove and return one or multiple random members from a set
+description:  Learn how to remove and return random members from a set with Redis SPOP command.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SPOP
+
+<PageTitle title="Redis SPOP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

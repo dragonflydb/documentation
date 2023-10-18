@@ -1,8 +1,11 @@
 ---
-description: Stop listening for messages posted to channels matching the given patterns
+description:  Learn using Redis PUNSUBSCRIBE to unsubscribe from specific patterns of channels, ideal for dynamic message filtering.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PUNSUBSCRIBE
+
+<PageTitle title="Redis PUNSUBSCRIBE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

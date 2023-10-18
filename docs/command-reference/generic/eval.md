@@ -1,8 +1,12 @@
 ---
-description: Execute a Lua script server side
+description: "Learn how to use Redis EVAL command to execute a Lua script."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # EVAL
+
+<PageTitle title="Redis EVAL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

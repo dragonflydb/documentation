@@ -1,8 +1,12 @@
 ---
-description: Move a key to another database
+description: "Learn usage of Redis MOVE command that moves a key to another database."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # MOVE
+
+<PageTitle title="Redis MOVE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -22,5 +26,5 @@ It is possible to use `MOVE` as a locking primitive because of this.
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
-* `1` if `key` was moved.
-* `0` if `key` was not moved.
+- `1` if `key` was moved.
+- `0` if `key` was not moved.

@@ -1,8 +1,12 @@
 ---
-description: Set the string value of a key
+description:  Discover how to use Redis SET command to attach a value to a specific key in the database.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SET
+
+<PageTitle title="Redis SET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

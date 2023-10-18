@@ -1,8 +1,11 @@
 ---
-description: Prepend an element to a list, only if the list exists
+description:  Learn to use Redis LPUSHX for prepending a value to a list when list exists.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # LPUSHX
+
+<PageTitle title="Redis LPUSHX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

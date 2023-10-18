@@ -1,12 +1,16 @@
 ---
-description: Discard all commands issued after MULTI
+description: "Master Redis DISCARD command that discards all commands issued after MULTI."
 ---
+
+import PageTitle from '@site/src/components/PageTitle';
 
 # DISCARD
 
+<PageTitle title="Redis DISCARD Command (Documentation) | Dragonfly" />
+
 ## Syntax
 
-    DISCARD 
+    DISCARD
 
 **Time complexity:** O(N), when N is the number of queued commands
 

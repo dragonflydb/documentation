@@ -1,8 +1,12 @@
 ---
-description: Decrement the integer value of a key by one
+description:  Discover the use of Redis DECR for decrementing the integer value of a key.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # DECR
+
+<PageTitle title="Redis DECR Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

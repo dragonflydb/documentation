@@ -1,8 +1,11 @@
 ---
-description: Adds elements to a HyperLogLog key. Creates the key if it doesn't exist
+description: Learn how to use Redis PFADD command for adding elements to HyperLogLog data structure.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PFADD
+
+<PageTitle title="Redis PFADD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

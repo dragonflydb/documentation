@@ -1,8 +1,12 @@
 ---
-description: Get the score associated with the given members in a sorted set
+description:  Learn to use Redis ZMSCORE which returns scores for given members in a sorted set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZMSCORE
+
+<PageTitle title="Redis ZMSCORE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

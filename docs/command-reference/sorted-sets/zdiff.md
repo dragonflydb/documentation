@@ -1,9 +1,12 @@
 ---
-description: this command is similar to zdiffstore, but instead of storing the resulting sorted set, it is returned to the client.
-  already exists
+description:  Learn to use Redis ZDIFF command to compute the difference between two or more sorted sets.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZDIFF
+
+<PageTitle title="Redis ZDIFF Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

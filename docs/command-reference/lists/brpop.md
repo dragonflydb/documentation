@@ -1,8 +1,11 @@
 ---
-description: Remove and get the last element in a list, or block until one is available
+description:  Learn how to use the Redis BRPOP command to remove and fetch the last element from list.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # BRPOP
+
+<PageTitle title="Redis BRPOP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

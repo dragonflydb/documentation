@@ -1,8 +1,12 @@
 ---
-description: Get the value of a hash field
+description: "Learn how to use Redis HGET command to retrieve the value of a hash field. Perfect for data fetching tasks."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HGET
+
+<PageTitle title="Redis HGET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

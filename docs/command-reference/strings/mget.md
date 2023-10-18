@@ -1,8 +1,12 @@
 ---
-description: Get the values of all the given keys
+description:  Learn how to use Redis MGET to retrieve the values of all specified keys.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # MGET
+
+<PageTitle title="Redis MGET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

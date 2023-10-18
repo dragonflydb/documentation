@@ -1,8 +1,12 @@
 ---
-description: Add one or more expiring members to a set
+description:  Learn how to use Redis SADDEX command adding in a value only if it does not exist.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SADDEX
+
+<PageTitle title="Redis SADDEX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

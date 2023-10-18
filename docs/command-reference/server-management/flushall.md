@@ -1,8 +1,12 @@
 ---
-description: Remove all keys from all databases
+description:  Learn how to use Redis FLUSHALL command to delete all keys in every database.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # FLUSHALL
+
+<PageTitle title="Redis FLUSHALL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

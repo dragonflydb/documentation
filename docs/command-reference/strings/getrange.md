@@ -1,8 +1,12 @@
 ---
-description: Get a substring of the string stored at a key
+description:  Learn how to use Redis GETRANGE to get substrings from a string value.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # GETRANGE
+
+<PageTitle title="Redis GETRANGE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

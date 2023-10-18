@@ -1,8 +1,12 @@
 ---
-description: Set a key's time to live in seconds
+description: "Learn Redis EXPIRE command that sets a key's time-to-live in seconds."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # EXPIRE
+
+<PageTitle title="Redis EXPIRE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -45,7 +49,6 @@ will be `del`, not `expired`).
 [del]: ./del.md
 [ntf]: https://redis.io/topics/notifications
 
-
 ## Refreshing expires
 
 It is possible to call `EXPIRE` using as argument a key that already has an
@@ -54,13 +57,12 @@ In this case the time to live of a key is _updated_ to the new value.
 There are many useful applications for this, an example is documented in the
 _Navigation session_ pattern section below.
 
-
 ## Return
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
-* `1` if the timeout was set.
-* `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.
+- `1` if the timeout was set.
+- `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.
 
 ## Examples
 

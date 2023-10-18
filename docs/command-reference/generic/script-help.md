@@ -1,12 +1,16 @@
 ---
-description: Show helpful text about the different subcommands
+description: "Use Redis SCRIPT HELP command to understand script debugging capabilities."
 ---
+
+import PageTitle from '@site/src/components/PageTitle';
 
 # SCRIPT HELP
 
+<PageTitle title="Redis SCRIPT HELP Command (Documentation) | Dragonfly" />
+
 ## Syntax
 
-    SCRIPT HELP 
+    SCRIPT HELP
 
 **Time complexity:** O(1)
 

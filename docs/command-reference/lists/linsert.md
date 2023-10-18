@@ -1,8 +1,11 @@
 ---
-description: Insert an element before or after another element in a list
+description:  Learn how to use the Redis LINSERT command to insert an element before or after a pivot in the list.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # LINSERT
+
+<PageTitle title="Redis LINSERT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

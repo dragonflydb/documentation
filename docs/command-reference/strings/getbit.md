@@ -1,8 +1,12 @@
 ---
-description: Returns the bit value at offset in the string value stored at key
+description:  Understand how Redis GETBIT retrieves a specific bit from a string value.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # GETBIT
+
+<PageTitle title="Redis GETBIT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,11 @@
 ---
-description: Trim a list to the specified range
+description:  Learn using Redis LTRIM to precisely control the size of your lists by trimming elements.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # LTRIM
+
+<PageTitle title="Redis LTRIM Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

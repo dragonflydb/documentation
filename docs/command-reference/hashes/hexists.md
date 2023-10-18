@@ -1,8 +1,12 @@
 ---
-description: Determine if a hash field exists
+description: "Learn how to use Redis HEXISTS command to check if a hash field exists. A handy tool in your data validation arsenal."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HEXISTS
+
+<PageTitle title="Redis HEXISTS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -18,8 +22,8 @@ Returns if `field` is an existing field in the hash stored at `key`.
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
-* `1` if the hash contains `field`.
-* `0` if the hash does not contain `field`, or `key` does not exist.
+- `1` if the hash contains `field`.
+- `0` if the hash does not contain `field`, or `key` does not exist.
 
 ## Examples
 

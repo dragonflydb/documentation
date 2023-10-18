@@ -1,8 +1,12 @@
 ---
-description: Get all the members in a set
+description:  Learn how to get all members of a set with the Redis SMEMBERS command.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SMEMBERS
+
+<PageTitle title="Redis SMEMBERS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

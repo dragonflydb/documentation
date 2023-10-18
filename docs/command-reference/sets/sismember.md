@@ -1,8 +1,12 @@
 ---
-description: Determine if a given value is a member of a set
+description:  Learn how to use Redis SISMEMBER command, to check if a given value is present in a set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SISMEMBER
+
+<PageTitle title="Redis SISMEMBER Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

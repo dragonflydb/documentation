@@ -1,8 +1,11 @@
 ---
-description: Post a message to a channel
+description:  Learn how to use Redis PUBLISH to distribute data to all subscribers of a specific channel in your messaging system.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PUBLISH
+
+<PageTitle title="Redis PUBLISH Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

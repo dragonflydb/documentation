@@ -1,8 +1,12 @@
 ---
-description: Get the length of a stream
+description:  Learn how to use Redis XLEN to get the length of a stream.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XLEN
+
+<PageTitle title="Redis XLEN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

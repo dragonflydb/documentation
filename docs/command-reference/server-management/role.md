@@ -1,8 +1,12 @@
 ---
-description: Return the role of the instance in the context of replication
+description:  Learn how to use Redis ROLE command to retrieve the role of the server.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ROLE
+
+<PageTitle title="Redis ROLE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

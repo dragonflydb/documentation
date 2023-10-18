@@ -1,8 +1,12 @@
 ---
-description: Get all the values in a hash
+description: "Learn how to use Redis HVALS command to fetch all the values in a hash. Simplify your data retrieval tasks with this command."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HVALS
+
+<PageTitle title="Redis HVALS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: Set the value of a key, only if the key does not exist
+description:  Learn how to use Redis SETNX for setting a key's value, only if the key does not exist.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SETNX
+
+<PageTitle title="Redis SETNX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

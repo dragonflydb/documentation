@@ -1,8 +1,12 @@
 ---
-description: Get info and entries from a consumer group pending entries list
+description:  Learn how to use Redis XPENDING to list pending messages of a stream's consumer group.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XPENDING
+
+<PageTitle title="Redis XPENDING Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

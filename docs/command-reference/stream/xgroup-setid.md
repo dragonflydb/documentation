@@ -1,8 +1,12 @@
 ---
-description: Destroy group
+description:  Learn how to use Redis XGROUP SETID to set the last delivered ID of a stream.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XGROUP SETID
+
+<PageTitle title="Redis XGROUP SETID Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

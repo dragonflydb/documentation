@@ -1,8 +1,12 @@
 ---
-description: Asynchronously save the dataset to disk
+description:  Learn how to use Redis BGSAVE command to create a backup of the database in background.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # BGSAVE
+
+<PageTitle title="Redis BGSAVE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

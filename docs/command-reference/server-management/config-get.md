@@ -1,8 +1,12 @@
 ---
-description: Read the configuration parameters of a running Dragonfly server
+description:  Learn how to use Redis CONFIG GET command to retrieve configuration parameters.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # CONFIG GET
+
+<PageTitle title="Redis CONFIG GET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

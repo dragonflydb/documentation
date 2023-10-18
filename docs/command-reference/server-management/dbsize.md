@@ -1,8 +1,12 @@
 ---
-description: Return the number of keys in the selected database
+description:  Learn how to use Redis DBSIZE command to fetch the number of keys in the current database.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # DBSIZE
+
+<PageTitle title="Redis DBSIZE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

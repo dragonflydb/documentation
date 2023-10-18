@@ -1,12 +1,16 @@
 ---
-description: A container for consumer groups commands
+description: Learn how to use Redis XGROUP to create, delete or set consumer groups in Redis Streams.
 ---
+
+import PageTitle from '@site/src/components/PageTitle';
 
 # XGROUP
 
+<PageTitle title="Redis XGROUP Command (Documentation) | Dragonfly" />
+
 ## Syntax
 
-    XGROUP 
+    XGROUP
 
 **Time complexity:** Depends on subcommand.
 

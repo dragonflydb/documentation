@@ -1,8 +1,11 @@
 ---
-description: Listen for messages published to the given channels
+description:  Learn how to use Redis SUBSCRIBE to listen for new messages published on specified channels, ideal for event-driven programming paradigms.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # SUBSCRIBE
+
+<PageTitle title="Redis SUBSCRIBE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

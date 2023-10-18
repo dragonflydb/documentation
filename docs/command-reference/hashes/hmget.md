@@ -1,8 +1,12 @@
 ---
-description: Get the values of all the given hash fields
+description: "Learn how to use Redis HMGET command to retrieve the values associated with the specified fields in a hash. Boost your data fetch efficiency."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HMGET
+
+<PageTitle title="Redis HMGET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: Create or update ACL users
+description: "Learn how to use Redis ACL SETUSER to modify or create new user rules in the Access Control List."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ACL SETUSER
+
+<PageTitle title="Redis ACL SETUSER Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: Set the expiration for a key as a UNIX timestamp
+description: "Make use of Redis EXPIREAT command to set key expiry with UNIX timestamp."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # EXPIREAT
+
+<PageTitle title="Redis EXPIREAT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -26,8 +30,8 @@ Please for the specific semantics of the command refer to the documentation of
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
-* `1` if the timeout was set.
-* `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.
+- `1` if the timeout was set.
+- `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.
 
 ## Examples
 

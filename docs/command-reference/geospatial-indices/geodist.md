@@ -1,8 +1,12 @@
 ---
-description: Get the distance between two members in a geospatial index
+description: "Learn how to use Redis GEODIST to accurately calculate distances between geographical points in your data-set."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # GEODIST
+
+<PageTitle title="Redis GEODIST Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

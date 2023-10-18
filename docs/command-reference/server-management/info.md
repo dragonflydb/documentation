@@ -1,8 +1,12 @@
 ---
-description: Get information and statistics about the server
+description:  Learn how to use Redis INFO command to yield information and statistics of the server.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # INFO
+
+<PageTitle title="Redis INFO Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

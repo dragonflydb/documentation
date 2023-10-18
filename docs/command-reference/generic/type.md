@@ -1,8 +1,12 @@
 ---
-description: Determine the type stored at key
+description: "Explore the Redis TYPE command for finding a key's data type."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # TYPE
+
+<PageTitle title="Redis TYPE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

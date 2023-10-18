@@ -1,8 +1,12 @@
 ---
-description: Get the value of a key and optionally set its expiration
+description:  Discover how to use Redis GETEX for fetching a key's value and setting its expiration.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # GETEX
+
+<PageTitle title="Redis GETEX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

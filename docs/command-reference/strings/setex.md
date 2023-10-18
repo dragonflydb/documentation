@@ -1,8 +1,12 @@
 ---
-description: Set the value and expiration of a key
+description:  Discover how to use Redis SETEX for setting key-value pairs with an expiration time.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SETEX
+
+<PageTitle title="Redis SETEX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

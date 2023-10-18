@@ -1,8 +1,12 @@
 ---
-description: Authenticate to the server
+description:  Learn how to use Redis AUTH command for server authentication.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # AUTH
+
+<PageTitle title="Redis AUTH Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

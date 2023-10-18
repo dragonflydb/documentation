@@ -1,12 +1,16 @@
 ---
-description: Show helpful text about the different subcommands
+description: Learn how to use Redis XINFO HELP command offering help with the numerous XINFO subcommands.
 ---
+
+import PageTitle from '@site/src/components/PageTitle';
 
 # XINFO HELP
 
+<PageTitle title="Redis XINFO HELP Command (Documentation) | Dragonfly" />
+
 ## Syntax
 
-    XINFO HELP 
+    XINFO HELP
 
 **Time complexity:** O(1)
 

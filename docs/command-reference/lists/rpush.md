@@ -1,8 +1,11 @@
 ---
-description: Append one or multiple elements to a list
+description:  Learn how to use Redis RPUSH command for appending a value at the end of a list.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # RPUSH
+
+<PageTitle title="Redis RPUSH Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

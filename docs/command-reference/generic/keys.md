@@ -1,8 +1,12 @@
 ---
-description: Find all keys matching the given pattern
+description: "Learn to use Redis KEYS command to find keys that match a pattern."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # KEYS
+
+<PageTitle title="Redis KEYS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -19,11 +23,11 @@ fairly low.
 
 Supported glob-style patterns:
 
-* `h?llo` matches `hello`, `hallo` and `hxllo`
-* `h*llo` matches `hllo` and `heeeello`
-* `h[ae]llo` matches `hello` and `hallo,` but not `hillo`
-* `h[^e]llo` matches `hallo`, `hbllo`, ... but not `hello`
-* `h[a-b]llo` matches `hallo` and `hbllo`
+- `h?llo` matches `hello`, `hallo` and `hxllo`
+- `h*llo` matches `hllo` and `heeeello`
+- `h[ae]llo` matches `hello` and `hallo,` but not `hillo`
+- `h[^e]llo` matches `hallo`, `hbllo`, ... but not `hello`
+- `h[a-b]llo` matches `hallo` and `hbllo`
 
 Use `\` to escape special characters if you want to match them verbatim.
 
@@ -32,8 +36,8 @@ Use `\` to escape special characters if you want to match them verbatim.
 [Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of keys matching `pattern`.
 
 **Number of elements returned:**
- 
- Dragonfly protects itself from an overwhelming number of returned keys by imposing a limit on the quantity. To modify this limit, update the value of the "keys_output_limit" flag. Please refer to [Dragonfly configuration](https://github.com/dragonflydb/dragonfly#configuration) for more information how to change dragonfly flag values.
+
+Dragonfly protects itself from an overwhelming number of returned keys by imposing a limit on the quantity. To modify this limit, update the value of the "keys_output_limit" flag. Please refer to [Dragonfly configuration](https://github.com/dragonflydb/dragonfly#configuration) for more information how to change dragonfly flag values.
 
 ## Examples
 

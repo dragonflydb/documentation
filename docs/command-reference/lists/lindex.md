@@ -1,8 +1,11 @@
 ---
-description: Get an element from a list by its index
+description:  Learn to use Redis LINDEX to retrieve an element from a specified position in a list.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # LINDEX
+
+<PageTitle title="Redis LINDEX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

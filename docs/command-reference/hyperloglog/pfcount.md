@@ -1,8 +1,11 @@
 ---
-description: Returns the approximated cardinality of the set(s) observed by the HyperLogLog key(s).
+description: Learn how to use Redis PFCOUNT command to get an estimated count of unique elements.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PFCOUNT
+
+<PageTitle title="Redis PFCOUNT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

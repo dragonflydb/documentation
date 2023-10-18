@@ -1,8 +1,11 @@
 ---
-description: Remove and get the last elements in a list
+description:  Discover how to use Redis RPOP command to remove and fetch the last element of a list.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # RPOP
+
+<PageTitle title="Redis RPOP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

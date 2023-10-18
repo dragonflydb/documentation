@@ -1,8 +1,11 @@
 ---
-description: Pop an element from a list, push it to another list and return it
+description:  Learn using Redis LMOVE to shift an element from source list to destination list.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # LMOVE
+
+<PageTitle title="Redis LMOVE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

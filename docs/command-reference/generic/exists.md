@@ -1,8 +1,12 @@
 ---
-description: Determine if a key exists
+description: "Learn how Redis EXISTS command checks if a key exists."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # EXISTS
+
+<PageTitle title="Redis EXISTS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

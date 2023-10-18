@@ -1,8 +1,12 @@
 ---
-description: Rename a key, only if the new key does not exist
+description: "Learn Redis RENAMENX command to rename a key, only if the new key does not exist."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # RENAMENX
+
+<PageTitle title="Redis RENAMENX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -19,8 +23,8 @@ It returns an error when `key` does not exist.
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
-* `1` if `key` was renamed to `newkey`.
-* `0` if `newkey` already exists.
+- `1` if `key` was renamed to `newkey`.
+- `0` if `newkey` already exists.
 
 ## Examples
 

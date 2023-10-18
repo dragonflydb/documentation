@@ -1,8 +1,12 @@
 ---
-description: Add multiple sets
+description:  Learn how to use Redis SUNION command to form a set by combining other sets.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SUNION
+
+<PageTitle title="Redis SUNION Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

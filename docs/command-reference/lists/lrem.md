@@ -1,8 +1,11 @@
 ---
-description: Remove elements from a list
+description:  Learn how to use Redis LREM command to remove matching elements from a list.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # LREM
+
+<PageTitle title="Redis LREM Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

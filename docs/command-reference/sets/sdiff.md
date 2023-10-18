@@ -1,8 +1,12 @@
 ---
-description: Subtract multiple sets
+description:  Learn how to use Redis SDIFF command to get the difference from the first set against all the other sets.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SDIFF
+
+<PageTitle title="Redis SDIFF Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

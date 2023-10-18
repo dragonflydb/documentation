@@ -1,8 +1,12 @@
 ---
-description: Change the selected database for the current connection
+description:  Learn how to use Redis SELECT command to switch the database for the present connection. 
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SELECT
+
+<PageTitle title="Redis SELECT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

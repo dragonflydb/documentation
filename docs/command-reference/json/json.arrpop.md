@@ -1,8 +1,11 @@
 ---
-description: Removes and returns the element at the specified index in the array at path
+description: Understand how to use Redis JSON.ARRPOP command to remove and return the last element of an array.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.ARRPOP
+
+<PageTitle title="Redis JSON.ARRPOP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,9 +1,12 @@
 ---
-description: Alters the last access time of a key(s). Returns the number of
-  existing keys specified.
+description: "Learn how the Redis TOUCH command alters the last access time of a key."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # TOUCH
+
+<PageTitle title="Redis TOUCH Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

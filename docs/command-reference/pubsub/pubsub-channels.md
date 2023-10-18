@@ -1,8 +1,11 @@
 ---
-description: List active channels
+description:  Learn how to use Redis PUBSUB CHANNELS to get the list of active channels in a Pub/Sub system, seamless for data monitoring.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PUBSUB CHANNELS
+
+<PageTitle title="Redis PUBSUB CHANNELS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

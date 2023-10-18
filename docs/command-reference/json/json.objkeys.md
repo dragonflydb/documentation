@@ -1,8 +1,11 @@
 ---
-description: Returns the JSON keys of the object at path
+description: Discover Redis JSON.OBJKEYS command to fetch keys from a JSON object.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.OBJKEYS
+
+<PageTitle title="Redis JSON.OBJKEYS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

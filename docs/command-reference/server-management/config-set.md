@@ -1,8 +1,12 @@
 ---
-description: Reconfigure the server at run time without the need to restart Dragonfly
+description:  Learn how to use Redis CONFIG SET command to set the configuration of the server.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # CONFIG SET
+
+<PageTitle title="Redis CONFIG SET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

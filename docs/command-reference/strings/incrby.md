@@ -1,8 +1,12 @@
 ---
-description: Increment the integer value of a key by the given amount
+description:  Learn to use Redis INCRBY to increase the integer value of a key by a given amount.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # INCRBY
+
+<PageTitle title="Redis INCRBY Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

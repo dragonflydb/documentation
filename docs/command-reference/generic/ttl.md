@@ -1,8 +1,12 @@
 ---
-description: Get the time to live for a key in seconds
+description: "Learn the Redis TTL command to get remaining time-to-live of a key."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # TTL
+
+<PageTitle title="Redis TTL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -20,8 +24,8 @@ given key will continue to be part of the dataset.
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): TTL in seconds, or a negative value in order to signal an error.
 
-* The command returns `-2` if the key does not exist.
-* The command returns `-1` if the key exists but has no associated expire.
+- The command returns `-2` if the key does not exist.
+- The command returns `-1` if the key exists but has no associated expire.
 
 ## Examples
 

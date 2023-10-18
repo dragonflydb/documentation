@@ -1,8 +1,11 @@
 ---
-description: Returns the values at a path from one or more keys
+description: Discover using Redis JSON.MGET command to retrieve multiple JSON documents from a database.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.MGET
+
+<PageTitle title="Redis JSON.MGET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

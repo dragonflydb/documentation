@@ -1,8 +1,12 @@
 ---
-description: Remove all keys from the current database
+description:  Learn how to use Redis FLUSHDB command to remove all keys from the current database.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # FLUSHDB
+
+<PageTitle title="Redis FLUSHDB Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

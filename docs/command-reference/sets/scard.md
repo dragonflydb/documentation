@@ -1,8 +1,12 @@
 ---
-description: Get the number of members in a set
+description:  Learn how to use Redis SCARD command to get the count of members in a set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SCARD
+
+<PageTitle title="Redis SCARD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

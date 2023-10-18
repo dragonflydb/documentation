@@ -1,14 +1,18 @@
 ---
-description: Sort the elements in a list, set or sorted set
+description: "Discover how to use Redis SORT command for sorting elements in list, set or sorted sets."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SORT
+
+<PageTitle title="Redis SORT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
     SORT key [LIMIT offset count] [ASC | DESC] [ALPHA]
 
-**Time complexity:** O(N+M*log(M)) where N is the number of elements in the list or set to sort, and M the number of returned elements. When the elements are not sorted, complexity is O(N).
+**Time complexity:** O(N+M\*log(M)) where N is the number of elements in the list or set to sort, and M the number of returned elements. When the elements are not sorted, complexity is O(N).
 
 **ACL categories:** @write, @set, @sortedset, @list, @slow, @dangerous
 

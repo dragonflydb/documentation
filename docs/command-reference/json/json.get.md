@@ -1,8 +1,11 @@
 ---
-description: Gets the value at one or more paths in JSON serialized form
+description: Learn using Redis JSON.GET command to retrieve a value from a JSON document.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.GET
+
+<PageTitle title="Redis JSON.GET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

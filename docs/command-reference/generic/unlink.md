@@ -1,8 +1,12 @@
 ---
-description: Delete a key.
+description: "Understand the use of Redis UNLINK command to delete keys avoiding blocking operations."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # UNLINK
+
+<PageTitle title="Redis UNLINK Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

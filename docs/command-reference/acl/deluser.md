@@ -1,8 +1,12 @@
 ---
-description: Delete an ACL user
+description: "Learn how to use Redis ACL DELUSER to remove specified users from the Access Control List and enhance database security."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ACL DELUSER
+
+<PageTitle title="Redis ACL DELUSER Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

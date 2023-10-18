@@ -1,8 +1,12 @@
 ---
-description: Perform arbitrary bitfield integer operations on strings
+description:  Discover how to handle string values as an array of bits with Redis BITFIELD.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # BITFIELD
+
+<PageTitle title="Redis BITFIELD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

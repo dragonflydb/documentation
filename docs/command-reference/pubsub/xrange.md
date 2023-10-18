@@ -1,9 +1,11 @@
 ---
-description: Return a range of elements in a stream, with IDs matching the
-  specified IDs interval
+description:  Learn how to use Redis XRANGE to retrieve a range of messages from a stream.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # XRANGE
+
+<PageTitle title="Redis XRANGE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

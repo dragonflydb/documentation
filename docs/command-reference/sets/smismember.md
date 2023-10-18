@@ -1,8 +1,12 @@
 ---
-description: Returns the membership associated with the given elements for a set
+description:  Learn how to use Redis SMISMEMBER command to verify the membership of multiple keys in a set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SMISMEMBER
+
+<PageTitle title="Redis SMISMEMBER Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

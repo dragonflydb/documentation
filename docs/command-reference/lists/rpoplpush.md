@@ -1,8 +1,11 @@
 ---
-description: Remove the last element in a list, prepend it to another list and return it
+description:  Learn to use Redis RPOPLPUSH to shift elements between two lists and provide basic queueing.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # RPOPLPUSH
+
+<PageTitle title="Redis RPOPLPUSH Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

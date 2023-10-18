@@ -1,8 +1,12 @@
 ---
-description: Get total number of Dragonfly commands
+description:  Learn how to use Redis COMMAND COUNT to count the total number of commands.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # COMMAND COUNT
+
+<PageTitle title="Redis COMMAND COUNT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

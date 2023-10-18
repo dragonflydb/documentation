@@ -1,8 +1,12 @@
 ---
-description: Remove all members in a sorted set within the given scores
+description:  Learn how to use Redis ZREMRANGEBYSCORE command to remove all members in a sorted set within the given scores.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZREMRANGEBYSCORE
+
+<PageTitle title="Redis ZREMRANGEBYSCORE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

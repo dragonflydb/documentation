@@ -1,8 +1,12 @@
 ---
-description: Shows the currently active ACL rules in the Dragonfly server
+description: "Learn how to use Redis ACL LIST to retrieve the list of rules for all the existing users."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ACL LIST
+
+<PageTitle title="Redis ACL LIST Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

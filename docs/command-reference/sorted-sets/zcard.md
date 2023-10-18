@@ -1,8 +1,12 @@
 ---
-description: Get the number of members in a sorted set
+description:  Learn to use Redis ZCARD command to get the total number of elements in a sorted set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZCARD
+
+<PageTitle title="Redis ZCARD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

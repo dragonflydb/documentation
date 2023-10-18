@@ -1,8 +1,12 @@
 ---
-description: Change the ownership of pending stream entries that match the specified criteria.
+description:  Learn how to use Redis XAUTOCLAIM to help with message recovery, claiming pending messages from other consumers.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XAUTOCLAIM
+
+<PageTitle title="Redis XAUTOCLAIM Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

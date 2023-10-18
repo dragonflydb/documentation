@@ -1,8 +1,12 @@
 ---
-description: Show helpful text about the different subcommands
+description:  Learn how to use Redis MEMORY HELP command to know all the MEMORY subcommands.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # MEMORY HELP
+
+<PageTitle title="Redis MEMORY HELP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
