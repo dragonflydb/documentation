@@ -1,8 +1,11 @@
 ---
-description: Increments the numeric value at path by a value
+description: Learn how to use Redis JSON.NUMINCRBY command to increment a number inside a JSON document.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.NUMINCRBY
+
+<PageTitle title="Redis JSON.NUMINCRBY Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

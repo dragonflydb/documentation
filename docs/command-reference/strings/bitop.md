@@ -1,8 +1,12 @@
 ---
-description: Perform bitwise operations between strings
+description:  Learn how to conduct bitwise operations on strings using Redis BITOP.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # BITOP
+
+<PageTitle title="Redis BITOP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

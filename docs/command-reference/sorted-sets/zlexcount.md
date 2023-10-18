@@ -1,9 +1,12 @@
 ---
-description: Count the number of members in a sorted set between a given
-  lexicographical range
+description:  Learn how to use Redis ZLEXCOUNT command to count elements in a sorted set between two given lexicographical values.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZLEXCOUNT
+
+<PageTitle title="Redis ZLEXCOUNT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

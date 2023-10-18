@@ -1,8 +1,11 @@
 ---
-description: Get the length of a list
+description:  Understand using Redis LLEN to fetch the length of a list to manage data effectively.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # LLEN
+
+<PageTitle title="Redis LLEN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: Rate Limiting API
+description:  Learn how to manage rate limiting in Redis with CL.THROTTLE command.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # CL.THROTTLE
+
+<PageTitle title="Redis CL.THROTTLE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

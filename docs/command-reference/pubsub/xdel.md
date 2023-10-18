@@ -1,10 +1,11 @@
 ---
-description: Removes the specified entries from the stream. Returns the number
-  of items actually deleted, that may be different from the number of IDs passed
-  in case certain IDs do not exist.
+description:  Learn how to use Redis XDEL to delete a message from a stream.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # XDEL
+
+<PageTitle title="Redis XDEL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

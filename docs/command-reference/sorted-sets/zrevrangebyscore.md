@@ -1,9 +1,12 @@
 ---
-description: Return a range of members in a sorted set, by score, with scores
-  ordered from high to low
+description:  Learn how to use Redis ZREVRANGEBYSCORE command to retrieve members of a sorted set by score in descending order.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZREVRANGEBYSCORE
+
+<PageTitle title="Redis ZREVRANGEBYSCORE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

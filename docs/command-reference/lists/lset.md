@@ -1,8 +1,11 @@
 ---
-description: Set the value of an element in a list by its index
+description:  Understand using Redis LSET command to modify a specified index of a list.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # LSET
+
+<PageTitle title="Redis LSET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

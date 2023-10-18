@@ -1,8 +1,12 @@
 ---
-description: Remove one or more members from a set
+description:  Learn how to use Redis SREM command to remove specified members from a set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SREM
+
+<PageTitle title="Redis SREM Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

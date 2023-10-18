@@ -1,8 +1,12 @@
 ---
-description: Count the members in a sorted set with scores within the given values
+description:  Learn to use Redis ZCOUNT command which counts elements in a sorted set with scores within a given range.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZCOUNT
+
+<PageTitle title="Redis ZCOUNT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

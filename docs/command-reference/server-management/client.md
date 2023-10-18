@@ -1,8 +1,12 @@
 ---
-description: A container for client connection commands
+description:  Learn how to use Redis CLIENT command to manage clients connected to the Redis server.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # CLIENT
+
+<PageTitle title="Redis CLIENT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

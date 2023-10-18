@@ -1,8 +1,12 @@
 ---
-description: Destroy group
+description:  Learn how to use Redis XGROUP DESTROY to remove a consumer group.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XGROUP DESTROY
+
+<PageTitle title="Redis XGROUP DESTROY Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

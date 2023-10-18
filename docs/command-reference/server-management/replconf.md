@@ -1,8 +1,12 @@
 ---
-description: An internal command for configuring the replication stream
+description:  Learn how to use Redis REPLCONF command for assisting in the replication process.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # REPLCONF
+
+<PageTitle title="Redis REPLCONF Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: A container for debugging commands
+description:  Learn how to use Redis DEBUG command for debugging tasks.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # DEBUG
+
+<PageTitle title="Redis DEBUG Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

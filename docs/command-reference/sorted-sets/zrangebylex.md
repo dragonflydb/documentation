@@ -1,8 +1,12 @@
 ---
-description: Return a range of members in a sorted set, by lexicographical range
+description:  Learn to use Redis ZRANGEBYLEX command to retrieve elements by their lexical range in a sorted set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZRANGEBYLEX
+
+<PageTitle title="Redis ZRANGEBYLEX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

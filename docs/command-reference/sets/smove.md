@@ -1,8 +1,12 @@
 ---
-description: Move a member from one set to another
+description:  Learn how to use Redis SMOVE command to shift a member from a source set to a target set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SMOVE
+
+<PageTitle title="Redis SMOVE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

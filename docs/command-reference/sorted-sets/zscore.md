@@ -1,8 +1,12 @@
 ---
-description: Get the score associated with the given member in a sorted set
+description:  Learn how to use Redis ZSCORE command to get the score associated with the given element in a sorted set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZSCORE
+
+<PageTitle title="Redis ZSCORE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

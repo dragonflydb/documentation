@@ -1,8 +1,12 @@
 ---
-description: Returns a range of stream entries
+description:  Learn how to use Redis XRANGE to retrieve a range of messages from a stream.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XRANGE
+
+<PageTitle title="Redis XRANGE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

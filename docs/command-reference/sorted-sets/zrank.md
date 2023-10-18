@@ -1,8 +1,12 @@
 ---
-description: Determine the index of a member in a sorted set
+description:  Learn how to use Redis ZRANK command to determine the index of a member in a sorted set, with scores ordered from low to high.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZRANK
+
+<PageTitle title="Redis ZRANK Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

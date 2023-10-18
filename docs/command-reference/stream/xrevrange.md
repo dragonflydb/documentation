@@ -1,8 +1,12 @@
 ---
-description: Returns a range from streams (reversed)
+description:  Learn how to use Redis XREVRANGE to fetch a range of messages from a stream in reverse order.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XREVRANGE
+
+<PageTitle title="Redis XREVRANGE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

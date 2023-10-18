@@ -1,8 +1,12 @@
 ---
-description: Handshake with Dragonfly
+description:  Learn how to use Redis HELLO command as a handshake for the Redis protocol.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HELLO
+
+<PageTitle title="Redis HELLO Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

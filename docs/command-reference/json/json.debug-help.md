@@ -1,12 +1,16 @@
 ---
-description: Shows helpful information
+description: Learn how to use Redis `JSON.DEBUG HELP` to understand how to troubleshoot JSON objects with this command.
 ---
+
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.DEBUG HELP
 
+<PageTitle title="Redis `JSON.DEBUG HELP` Command (Documentation) | Dragonfly" />
+
 ## Syntax
 
-    JSON.DEBUG HELP 
+    JSON.DEBUG HELP
 
 **Time complexity:** N/A
 
@@ -28,5 +32,5 @@ dragonfly> JSON.DEBUG HELP
 
 ## Related Topics
 
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)
+- [RedisJSON](https://redis.io/docs/stack/json)
+- [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)

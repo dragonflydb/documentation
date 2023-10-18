@@ -1,8 +1,12 @@
 ---
-description: Show allocator internal stats
+description:  Learn how to use Redis MEMORY MALLOC-STATS command to retrieve memory allocator stats.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # MEMORY MALLOC-STATS
+
+<PageTitle title="Redis MEMORY MALLOC-STATS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

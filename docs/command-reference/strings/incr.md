@@ -1,8 +1,12 @@
 ---
-description: Increment the integer value of a key by one
+description:  Learn how to use Redis INCR command for incrementing the integer value of a key.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # INCR
+
+<PageTitle title="Redis INCR Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

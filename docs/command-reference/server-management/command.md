@@ -1,8 +1,12 @@
 ---
-description: Get array of Dragonfly command details
+description:  Learn how to use Redis COMMAND for information about all other commands.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # COMMAND
+
+<PageTitle title="Redis COMMAND Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

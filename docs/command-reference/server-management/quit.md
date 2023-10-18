@@ -1,8 +1,12 @@
 ---
-description: Close the connection
+description:  Learn how to use Redis QUIT command to close present connection.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # QUIT
+
+<PageTitle title="Redis QUIT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

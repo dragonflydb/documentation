@@ -1,10 +1,11 @@
 ---
-description: Return a range of elements in a stream, with IDs matching the
-  specified IDs interval, in reverse order (from greater to smaller IDs)
-  compared to XRANGE
+description:  Learn how to use Redis XREVRANGE to fetch a range of messages from a stream in reverse order.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # XREVRANGE
+
+<PageTitle title="Redis XREVRANGE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,9 +1,11 @@
 ---
-description: Pop an element from a list, push it to another list and return it;
-  or block until one is available
+description:  Understand Redis BRPOPLPUSH for moving an element from one list to another with blocking.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # BRPOPLPUSH
+
+<PageTitle title="Redis BRPOPLPUSH Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

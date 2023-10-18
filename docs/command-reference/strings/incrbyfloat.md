@@ -1,8 +1,12 @@
 ---
-description: Increment the float value of a key by the given amount
+description:  Discover how to use Redis INCRBYFLOAT to increment a key's float value. 
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # INCRBYFLOAT
+
+<PageTitle title="Redis INCRBYFLOAT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

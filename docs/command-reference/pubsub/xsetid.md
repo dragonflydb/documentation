@@ -1,8 +1,11 @@
 ---
-description: An internal command for replicating stream values
+description:  Learn how to use Redis XSETID to set the last delivered ID for streams.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # XSETID
+
+<PageTitle title="Redis XSETID Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

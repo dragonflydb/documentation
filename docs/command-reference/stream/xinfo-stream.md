@@ -1,8 +1,12 @@
 ---
-description: Get info about a stream
+description:  Learn how to use Redis XINFO STREAM command to get information about a stream.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XINFO STREAM
+
+<PageTitle title="Redis XINFO STREAM Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

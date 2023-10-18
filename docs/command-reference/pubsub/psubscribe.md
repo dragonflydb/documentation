@@ -1,8 +1,11 @@
 ---
-description: Listen for messages published to channels matching the given patterns
+description:  Learn how to use Redis PSUBSCRIBE to receive messages from channels matching certain patterns, ideal for flexible message handling.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PSUBSCRIBE
+
+<PageTitle title="Redis PSUBSCRIBE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: Incrementally iterate Set elements
+description:  Learn how to incrementally iterate over a collection using Redis SSCAN command.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SSCAN
+
+<PageTitle title="Redis SSCAN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,11 @@
 ---
-description: Get the count of unique patterns pattern subscriptions
+description:  Learn how to use Redis PUBSUB NUMPAT to get the count of active pattern subscriptions across your Redis Pub/Sub system.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PUBSUB NUMPAT
+
+<PageTitle title="Redis PUBSUB NUMPAT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

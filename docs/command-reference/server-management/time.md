@@ -1,8 +1,12 @@
 ---
-description: Return the current server time
+description:  Learn how to use Redis TIME command to fetch the current server time.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # TIME
+
+<PageTitle title="Redis TIME Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

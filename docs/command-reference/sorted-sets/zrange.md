@@ -1,8 +1,12 @@
 ---
-description: Return a range of members in a sorted set
+description:  Learn to use Redis ZRANGE command to fetch elements in a specific range from a sorted set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZRANGE
+
+<PageTitle title="Redis ZRANGE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

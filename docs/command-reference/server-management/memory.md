@@ -1,8 +1,12 @@
 ---
-description: A container for memory diagnostics commands
+description:  Learn how to use Redis MEMORY command to fetch information on memory.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # MEMORY
+
+<PageTitle title="Redis MEMORY Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

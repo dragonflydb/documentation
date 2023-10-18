@@ -1,9 +1,12 @@
 ---
-description: Determine the index of a member in a sorted set, with scores
-  ordered from high to low
+description:  Learn how to use Redis ZREVRANK to determine the index of a member in a sorted set, with scores ordered from high to low.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZREVRANK
+
+<PageTitle title="Redis ZREVRANK Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

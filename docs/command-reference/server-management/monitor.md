@@ -1,8 +1,12 @@
 ---
-description: Listen for all requests received by the server in real time
+description:  Learn how to use Redis MONITOR command to inspect the operations.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # MONITOR
+
+<PageTitle title="Redis MONITOR Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

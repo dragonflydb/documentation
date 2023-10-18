@@ -1,8 +1,12 @@
 ---
-description: Get the list of client connections
+description:  Learn how to use Redis CLIENT LIST command to fetch details about all client connections.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # CLIENT LIST
+
+<PageTitle title="Redis CLIENT LIST Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

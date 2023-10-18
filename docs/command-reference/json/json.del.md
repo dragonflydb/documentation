@@ -1,8 +1,11 @@
 ---
-description: Deletes a value
+description: Learn how to use Redis JSON.DEL command to delete a key from a JSON document.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.DEL
+
+<PageTitle title="Redis JSON.DEL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

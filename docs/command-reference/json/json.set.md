@@ -1,8 +1,11 @@
 ---
-description: Sets or updates the JSON value at a path
+description: Find how to use Redis JSON.SET command to set a JSON document in a database.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.SET
+
+<PageTitle title="Redis JSON.SET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

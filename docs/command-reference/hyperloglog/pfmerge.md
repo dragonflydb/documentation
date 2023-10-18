@@ -1,8 +1,11 @@
 ---
-description: Merges one or more HyperLogLog values into a single key.
+description: Discover the use of Redis PFMERGE command for merging multiple HyperLogLog data structures.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PFMERGE
+
+<PageTitle title="Redis PFMERGE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

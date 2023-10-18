@@ -1,8 +1,12 @@
 ---
-description: Set the current connection name
+description:  Learn how to use Redis CLIENT SETNAME command to assign connection a name.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # CLIENT SETNAME
+
+<PageTitle title="Redis CLIENT SETNAME Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,11 @@
 ---
-description: Stop listening for messages posted to the given channels
+description:  Learn how to use Redis UNSUBSCRIBE to stop receiving messages published on specific channels in your Pub/Sub setup.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # UNSUBSCRIBE
+
+<PageTitle title="Redis UNSUBSCRIBE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: Change the ownership of a message in a consumer group
+description:  Learn how to use Redis XCLAIM to change the ownership of a pending message.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XCLAIM
+
+<PageTitle title="Redis XCLAIM Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

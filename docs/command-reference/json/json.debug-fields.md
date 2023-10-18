@@ -1,8 +1,12 @@
 ---
-description: Report the number of fields in the JSON element
+description: Learn how to use Redis `JSON.DEBUG FIELDS` to get the field names in a JSON object for efficient debugging.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # JSON.DEBUG FIELDS
+
+<PageTitle title="Redis `JSON.DEBUG FIELDS` Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

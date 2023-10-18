@@ -1,8 +1,12 @@
 ---
-description: Delete entries from stream
+description:  Learn how to use Redis XDEL to delete a message from a stream.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XDEL
+
+<PageTitle title="Redis XDEL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

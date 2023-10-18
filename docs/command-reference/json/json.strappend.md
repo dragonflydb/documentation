@@ -1,8 +1,11 @@
 ---
-description: Appends a string to a JSON string value at path
+description: Discover the Redis JSON.STRAPPEND command for appending strings in a JSON document.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.STRAPPEND
+
+<PageTitle title="Redis JSON.STRAPPEND Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

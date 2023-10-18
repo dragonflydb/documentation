@@ -1,8 +1,12 @@
 ---
-description: Get the UNIX time stamp of the last successful save to disk
+description:  Learn how to use Redis LASTSAVE command to obtain the UNIX timestamp of the last database save.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # LASTSAVE
+
+<PageTitle title="Redis LASTSAVE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

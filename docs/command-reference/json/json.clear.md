@@ -1,8 +1,11 @@
 ---
-description: Clears all values from an array or an object and sets numeric values to `0`
+description: Learn how to use Redis JSON.CLEAR command to delete all the keys from a JSON object.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.CLEAR
+
+<PageTitle title="Redis JSON.CLEAR Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

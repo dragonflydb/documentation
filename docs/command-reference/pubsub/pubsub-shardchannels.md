@@ -1,8 +1,11 @@
 ---
-description: List active shard channels
+description:  Learn how to use Redis PUBSUB SHARDCHANNELS for a list of active channels across your shard network.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PUBSUB SHARDCHANNELS
+
+<PageTitle title="Redis PUBSUB SHARDCHANNELS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

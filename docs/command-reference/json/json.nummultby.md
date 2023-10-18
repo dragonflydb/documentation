@@ -1,8 +1,11 @@
 ---
-description: Multiplies the numeric value at path by a value
+description: Understand Redis JSON.NUMMULTBY command to multiply a numeric value within a JSON document.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.NUMMULTBY
+
+<PageTitle title="Redis JSON.NUMMULTBY Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: Create a consumer group.
+description: Learn how to use Redis XGROUP CREATE to create a new consumer group.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XGROUP CREATE
+
+<PageTitle title="Redis XGROUP CREATE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -12,7 +16,7 @@ description: Create a consumer group.
 
 Create a new consumer group uniquely identified by `<groupname>` for the stream stored at `<key>`
 
-Every group has a unique name in a given stream. 
+Every group has a unique name in a given stream.
 When a consumer group with the same name already exists, the command returns a `-BUSYGROUP` error.
 
 The command's `<id>` argument specifies the last delivered entry in the stream from the new group's perspective.

@@ -1,8 +1,12 @@
 ---
-description: Get the value of a key
+description:  Discover how to use Redis GET for fetching the value of a defined key.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # GET
+
+<PageTitle title="Redis GET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

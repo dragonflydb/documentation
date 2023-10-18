@@ -1,8 +1,11 @@
 ---
-description: Toggles a boolean value
+description: Learn how to use the Redis JSON.TOGGLE command to invert a boolean value in a JSON document.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.TOGGLE
+
+<PageTitle title="Redis JSON.TOGGLE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

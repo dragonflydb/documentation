@@ -1,8 +1,12 @@
 ---
-description: Get a substring of the string stored at a key
+description:  Learn how to use Redis SUBSTR to return a substring from a string value.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SUBSTR
+
+<PageTitle title="Redis SUBSTR Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
