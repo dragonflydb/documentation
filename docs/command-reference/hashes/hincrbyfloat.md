@@ -1,8 +1,12 @@
 ---
-description: Increment the float value of a hash field by the given amount
+description: "Learn how to use Redis HINCRBYFLOAT command to increment the float value of a hash field with precision."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HINCRBYFLOAT
+
+<PageTitle title="Redis HINCRBYFLOAT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -18,8 +22,8 @@ is negative, the result is to have the hash field value **decremented** instead 
 If the field does not exist, it is set to `0` before performing the operation.
 An error is returned if one of the following conditions occur:
 
-* The field contains a value of the wrong type (not a string).
-* The current field content or the specified increment are not parsable as a
+- The field contains a value of the wrong type (not a string).
+- The current field content or the specified increment are not parsable as a
   double precision floating point number.
 
 The exact behavior of this command is identical to the one of the `INCRBYFLOAT`

@@ -1,8 +1,12 @@
 ---
-description: Set the value of a hash field, only if the field does not exist
+description: "Learn how to use Redis HSETNX command to set the value of a hash field, only if the field does not exist. Perfect for unique data entries."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HSETNX
+
+<PageTitle title="Redis HSETNX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -21,8 +25,8 @@ If `field` already exists, this operation has no effect.
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
-* `1` if `field` is a new field in the hash and `value` was set.
-* `0` if `field` already exists in the hash and no operation was performed.
+- `1` if `field` is a new field in the hash and `value` was set.
+- `0` if `field` already exists in the hash and no operation was performed.
 
 ## Examples
 

@@ -1,12 +1,16 @@
 ---
-description: Forget about all watched keys
+description: "Learn to use Redis UNWATCH command that flushes all previously watched keys."
 ---
+
+import PageTitle from '@site/src/components/PageTitle';
 
 # UNWATCH
 
+<PageTitle title="Redis UNWATCH Command (Documentation) | Dragonfly" />
+
 ## Syntax
 
-    UNWATCH 
+    UNWATCH
 
 **Time complexity:** O(1)
 

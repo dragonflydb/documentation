@@ -1,8 +1,12 @@
 ---
-description: Set a key's time to live in milliseconds
+description: "Understand the use of Redis PEXPIRE command to set key expiry in milliseconds."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # PEXPIRE
+
+<PageTitle title="Redis PEXPIRE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -19,8 +23,8 @@ specified in milliseconds instead of seconds.
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
-* `1` if the timeout was set.
-* `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.
+- `1` if the timeout was set.
+- `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.
 
 ## Examples
 

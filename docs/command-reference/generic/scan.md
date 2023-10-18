@@ -1,8 +1,12 @@
 ---
-description: Incrementally iterate the keys space
+description: "Discover how to use Redis SCAN command for incremental iteration over a collection of keys."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SCAN
+
+<PageTitle title="Redis SCAN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -14,10 +18,10 @@ description: Incrementally iterate the keys space
 
 The `SCAN` command and the closely related commands `SSCAN`, `HSCAN` and `ZSCAN` are used in order to incrementally iterate over a collection of elements.
 
-* `SCAN` iterates the set of keys in the currently selected Dragonfly database.
-* `SSCAN` iterates elements of Sets types.
-* `HSCAN` iterates fields of Hash types and their associated values.
-* `ZSCAN` iterates elements of Sorted Set types and their associated scores.
+- `SCAN` iterates the set of keys in the currently selected Dragonfly database.
+- `SSCAN` iterates elements of Sets types.
+- `HSCAN` iterates fields of Hash types and their associated values.
+- `ZSCAN` iterates elements of Sorted Set types and their associated scores.
 
 Note that `SCAN`, `SSCAN`, `HSCAN` and `ZSCAN` all work very similarly, so this documentation covers all the four commands. However an obvious difference is that in the case of `SSCAN`, `HSCAN` and `ZSCAN` the first argument is the name of the key holding the Set, Hash or Sorted Set value. The `SCAN` command does not need any key name argument as it iterates keys in the current database, so the iterated object is the database itself.
 
@@ -26,7 +30,6 @@ Note that `SCAN`, `SSCAN`, `HSCAN` and `ZSCAN` all work very similarly, so this 
 SCAN is a cursor based iterator. This means that at every call of the command, the server returns an updated cursor that the user needs to use as the cursor argument in the next call.
 
 An iteration starts when the cursor is set to 0, and terminates when the cursor returned by the server is 0. The following is an example of SCAN iteration:
-
 
 ```shell
 dragonfly> scan 0
@@ -65,13 +68,13 @@ Since in the second call the returned cursor is 0, the server signaled to the ca
 
 The `SCAN` command, and the other commands in the `SCAN` family, are able to provide to the user a set of guarantees associated to full iterations.
 
-* A full iteration always retrieves all the elements that were present in the collection from the start to the end of a full iteration. This means that if a given element is inside the collection when an iteration is started, and is still there when an iteration terminates, then at some point `SCAN` returned it to the user.
-* A full iteration never returns any element that was NOT present in the collection from the start to the end of a full iteration. So if an element was removed before the start of an iteration, and is never added back to the collection for all the time an iteration lasts, `SCAN` ensures that this element will never be returned.
+- A full iteration always retrieves all the elements that were present in the collection from the start to the end of a full iteration. This means that if a given element is inside the collection when an iteration is started, and is still there when an iteration terminates, then at some point `SCAN` returned it to the user.
+- A full iteration never returns any element that was NOT present in the collection from the start to the end of a full iteration. So if an element was removed before the start of an iteration, and is never added back to the collection for all the time an iteration lasts, `SCAN` ensures that this element will never be returned.
 
 However because `SCAN` has very little state associated (just the cursor) it has the following drawbacks:
 
-* A given element may be returned multiple times. It is up to the application to handle the case of duplicated elements, for example only using the returned elements in order to perform operations that are safe when re-applied multiple times.
-* Elements that were not constantly present in the collection during a full iteration, may be returned or not: it is undefined.
+- A given element may be returned multiple times. It is up to the application to handle the case of duplicated elements, for example only using the returned elements in order to perform operations that are safe when re-applied multiple times.
+- Elements that were not constantly present in the collection during a full iteration, may be returned or not: it is undefined.
 
 ## Number of elements returned at every SCAN call
 
@@ -83,11 +86,11 @@ However there is a way for the user to tune the order of magnitude of the number
 
 ## The COUNT option
 
-While `SCAN` does not provide guarantees about the number of elements returned at every iteration, it is possible to empirically adjust the behavior of `SCAN` using the **COUNT** option. Basically with COUNT the user specified the *amount of work that should be done at every call in order to retrieve elements from the collection*. This is **just a hint** for the implementation, however generally speaking this is what you could expect most of the times from the implementation.
+While `SCAN` does not provide guarantees about the number of elements returned at every iteration, it is possible to empirically adjust the behavior of `SCAN` using the **COUNT** option. Basically with COUNT the user specified the _amount of work that should be done at every call in order to retrieve elements from the collection_. This is **just a hint** for the implementation, however generally speaking this is what you could expect most of the times from the implementation.
 
-* The default COUNT value is 10.
-* When iterating the key space, or a Set, Hash or Sorted Set, assuming no **MATCH** option is used, the server will usually return *count* or a bit more than *count* elements per call. 
-* When iterating Sets encoded as intsets (small sets composed of just integers) usually all the elements are returned in the first `SCAN` call regardless of the COUNT value.
+- The default COUNT value is 10.
+- When iterating the key space, or a Set, Hash or Sorted Set, assuming no **MATCH** option is used, the server will usually return _count_ or a bit more than _count_ elements per call.
+- When iterating Sets encoded as intsets (small sets composed of just integers) usually all the elements are returned in the first `SCAN` call regardless of the COUNT value.
 
 Important: **there is no need to use the same COUNT value** for every iteration. The caller is free to change the count from one iteration to the other as required, as long as the cursor passed in the next call is the one obtained in the previous call to the command.
 
@@ -148,7 +151,6 @@ dragonfly> scan 176 MATCH *11* COUNT 1000
 
 As you can see most of the calls returned zero elements, but the last call where a COUNT of 1000 was used in order to force the command to do more scanning for that iteration.
 
-
 ## The TYPE option
 
 You can use the `!TYPE` option to ask `SCAN` to only return objects that match a given `type`, allowing you to iterate through the database looking for keys of a specific type. The **TYPE** option is only available on the whole-database `SCAN`, not `HSCAN` or `ZSCAN` etc.
@@ -184,8 +186,8 @@ Calling `SCAN` with a broken, negative, out of range, or otherwise invalid curso
 
 The only valid cursors to use are:
 
-* The cursor value of 0 when starting an iteration.
-* The cursor returned by the previous call to SCAN in order to continue the iteration.
+- The cursor value of 0 when starting an iteration.
+- The cursor returned by the previous call to SCAN in order to continue the iteration.
 
 ## Guarantee of termination
 
@@ -197,10 +199,10 @@ This is easy to see intuitively: if the collection grows there is more and more 
 
 `SCAN`, `SSCAN`, `HSCAN` and `ZSCAN` return a two elements multi-bulk reply, where the first element is a string representing an unsigned 64 bit number (the cursor), and the second element is a multi-bulk with an array of elements.
 
-* `SCAN` array of elements is a list of keys.
-* `SSCAN` array of elements is a list of Set members.
-* `HSCAN` array of elements contain two elements, a field and a value, for every returned element of the Hash.
-* `ZSCAN` array of elements contain two elements, a member and its associated score, for every returned element of the sorted set.
+- `SCAN` array of elements is a list of keys.
+- `SSCAN` array of elements is a list of Set members.
+- `HSCAN` array of elements contain two elements, a field and a value, for every returned element of the Hash.
+- `ZSCAN` array of elements contain two elements, a member and its associated score, for every returned element of the sorted set.
 
 ## Additional examples
 

@@ -1,8 +1,12 @@
 ---
-description: Get the Geohash strings of specified members in a geospatial index
+description: "Learn how to use Redis GEOHASH to convert latitude and longitude into a single string representing the geographical location."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # GEOHASH
+
+<PageTitle title="Redis GEOHASH Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

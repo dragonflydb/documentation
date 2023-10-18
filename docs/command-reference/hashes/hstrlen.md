@@ -1,8 +1,12 @@
 ---
-description: Get the length of the value of a hash field
+description: "Learn how to use Redis HSTRLEN command to get the length of a hash field value. A helpful command for data size calculations."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HSTRLEN
+
+<PageTitle title="Redis HSTRLEN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

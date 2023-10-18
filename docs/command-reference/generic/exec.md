@@ -1,12 +1,16 @@
 ---
-description: Execute all commands issued after MULTI
+description: "Discover how to use Redis EXEC command to execute all commands issued after MULTI."
 ---
+
+import PageTitle from '@site/src/components/PageTitle';
 
 # EXEC
 
+<PageTitle title="Redis EXEC Command (Documentation) | Dragonfly" />
+
 ## Syntax
 
-    EXEC 
+    EXEC
 
 **Time complexity:** Depends on commands in the transaction
 

@@ -1,12 +1,16 @@
 ---
-description: Mark the start of a transaction block
+description: "Discover the Redis MULTI command used for transactions."
 ---
+
+import PageTitle from '@site/src/components/PageTitle';
 
 # MULTI
 
+<PageTitle title="Redis MULTI Command (Documentation) | Dragonfly" />
+
 ## Syntax
 
-    MULTI 
+    MULTI
 
 **Time complexity:** O(1)
 

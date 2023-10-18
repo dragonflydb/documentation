@@ -1,8 +1,12 @@
 ---
-description: Load the specified Lua script into the script cache.
+description: "Learn to use the Redis SCRIPT LOAD command which loads a script into cache."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SCRIPT LOAD
+
+<PageTitle title="Redis SCRIPT LOAD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

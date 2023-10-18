@@ -1,8 +1,12 @@
 ---
-description: Watch the given keys to determine execution of the MULTI/EXEC block
+description: "Learn the use of Redis WATCH command to monitor keys for conditional transactions."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # WATCH
+
+<PageTitle title="Redis WATCH Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

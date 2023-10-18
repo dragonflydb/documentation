@@ -1,8 +1,12 @@
 ---
-description: Remove the expiration from a key
+description: "Learn how Redis PERSIST command removes a key's time-to-live."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # PERSIST
+
+<PageTitle title="Redis PERSIST Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -20,8 +24,8 @@ is associated).
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
-* `1` if the timeout was removed.
-* `0` if `key` does not exist or does not have an associated timeout.
+- `1` if the timeout was removed.
+- `0` if `key` does not exist or does not have an associated timeout.
 
 ## Examples
 

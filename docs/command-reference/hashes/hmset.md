@@ -1,8 +1,12 @@
 ---
-description: Set multiple hash fields to multiple values
+description: "Learn how to use Redis HMSET command to set multiple hash fields to multiple values. Excellent for bulk data operations."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HMSET
+
+<PageTitle title="Redis HMSET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

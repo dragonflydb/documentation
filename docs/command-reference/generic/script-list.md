@@ -1,8 +1,12 @@
 ---
-description: List all scripts in the script cache.
+description: "Learn how to use Redis SCRIPT LIST to return a list of issued script commands."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SCRIPT LIST
+
+<PageTitle title="Redis SCRIPT LIST Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

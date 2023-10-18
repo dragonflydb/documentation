@@ -1,8 +1,12 @@
 ---
-description: Get one or multiple random fields from a hash
+description: "Learn how to use Redis HRANDFIELD command to get one or more random fields from a hash. Add randomness in your data fetching."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HRANDFIELD
+
+<PageTitle title="Redis HRANDFIELD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -55,12 +59,12 @@ dragonfly> HRANDFIELD coin -5 WITHVALUES
 
 When the `count` argument is a positive value this command behaves as follows:
 
-* No repeated fields are returned.
-* If `count` is bigger than the number of fields in the hash, the command will only return the whole hash without additional fields.
-* The order of fields in the reply is not truly random, so it is up to the client to shuffle them if needed.
+- No repeated fields are returned.
+- If `count` is bigger than the number of fields in the hash, the command will only return the whole hash without additional fields.
+- The order of fields in the reply is not truly random, so it is up to the client to shuffle them if needed.
 
 When the `count` is a negative value, the behavior changes as follows:
 
-* Repeating fields are possible.
-* Exactly `count` fields, or an empty array if the hash is empty (non-existing key), are always returned.
-* The order of fields in the reply is truly random.
+- Repeating fields are possible.
+- Exactly `count` fields, or an empty array if the hash is empty (non-existing key), are always returned.
+- The order of fields in the reply is truly random.

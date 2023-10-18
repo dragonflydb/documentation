@@ -1,8 +1,12 @@
 ---
-description: Incrementally iterate hash fields and associated values
+description: "Learn how to use Redis HSCAN command to iteratively scan over a hash. Improve your data access strategy with this command."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HSCAN
+
+<PageTitle title="Redis HSCAN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

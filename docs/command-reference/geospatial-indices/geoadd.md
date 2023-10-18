@@ -1,8 +1,12 @@
 ---
-description: Add one or more members to a geospatial index
+description: "Learn how to use Redis GEOADD to add geographical data to your Redis database by defining latitude and longitude."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # GEOADD
+
+<PageTitle title="Redis GEOADD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -25,9 +29,9 @@ There are limits to the coordinates that can be indexed: areas very near to the 
 - `XX` -- Only update elements that already exist. Never add elements.
 - `NX` -- Don't update already existing elements. Always add new elements.
 - `CH` -- Modify the return value from the number of new elements added, to the total number of elements changed (`CH` is an abbreviation of changed).
-Changed elements are new elements added and elements already existing for which the coordinates were updated.
-So elements specified in the command line having the same score as they had in the past are not counted.
-Normally, the return value of `GEOADD` only counts the number of new elements added.
+  Changed elements are new elements added and elements already existing for which the coordinates were updated.
+  So elements specified in the command line having the same score as they had in the past are not counted.
+  Normally, the return value of `GEOADD` only counts the number of new elements added.
 
 Note: The `XX` and `NX` options are mutually exclusive.
 

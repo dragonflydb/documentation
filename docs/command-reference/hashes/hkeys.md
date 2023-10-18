@@ -1,8 +1,12 @@
 ---
-description: Get all the fields in a hash
+description: "Learn how to use Redis HKEYS command to fetch all the keys in a hash. Make large dataset navigation simpler and faster."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HKEYS
+
+<PageTitle title="Redis HKEYS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

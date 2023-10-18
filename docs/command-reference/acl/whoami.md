@@ -1,8 +1,12 @@
 ---
-description: Return which user is authenticated with the current connection
+description: "Learn how to use Redis ACL WHOAMI to return the name of the authenticated user."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ACL WHOAMI
+
+<PageTitle title="Redis ACL WHOAMI Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
