@@ -10,9 +10,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    CONFIG SET parameter value [parameter value ...]
+    CONFIG SET parameter value
 
-**Time complexity:** O(N) when N is the number of configuration parameters provided
+**Time complexity:** O(1)
 
 **ACL categories:** @admin, @slow, @dangerous
 
@@ -22,6 +22,8 @@ The list of configuration parameters supported by `CONFIG SET` can be obtained b
 which is the symmetrical command used to obtain information about the configuration of a running Dragonfly instance.
 See the [`CONFIG GET` documentation](./config-get.md) for more details.
 
+Note we only support configuring a single parameter at a time.
+
 ## Return
 
 [Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` when the configuration was set properly, error otherwise.
@@ -29,7 +31,7 @@ See the [`CONFIG GET` documentation](./config-get.md) for more details.
 ## Examples
 
 ```shell
-dragonfly> CONFIG SET maxmemory 10gb maxclients 32000
+dragonfly> CONFIG SET maxmemory 10gb
 OK
 
 dragonfly> CONFIG GET *
@@ -40,7 +42,7 @@ dragonfly> CONFIG GET *
  5) "dbnum"
  6) "16"
  7) "maxclients"
- 8) "32000"
+ 8) "64000"
  9) "dir"
 10) "./data"
 11) "masterauth"
