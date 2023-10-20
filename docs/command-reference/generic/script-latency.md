@@ -1,8 +1,12 @@
 ---
-description: Prints latency histograms in usec for all called scripts.
+description: "Get the Redis SCRIPT LATENCY command to manage script evaluation latency."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SCRIPT LATENCY
+
+<PageTitle title="Redis SCRIPT LATENCY Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

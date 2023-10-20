@@ -1,8 +1,11 @@
 ---
-description: Remove and get the first element in a list, or block until one is available
+description:  Learn how to use Redis BLPOP to fetch and remove first element from list in blocking way.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # BLPOP
+
+<PageTitle title="Redis BLPOP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: Ping the server
+description:  Learn how to use Redis PING command to check the server's status.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # PING
+
+<PageTitle title="Redis PING Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

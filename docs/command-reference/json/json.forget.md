@@ -1,8 +1,11 @@
 ---
-description: Deletes a value
+description: Know how to use Redis JSON.FORGET command for deleting a key-value pair from a JSON object.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.FORGET
+
+<PageTitle title="Redis JSON.FORGET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

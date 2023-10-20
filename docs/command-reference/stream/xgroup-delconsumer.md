@@ -1,8 +1,12 @@
 ---
-description: Delete consumer from a particular group
+description:  Learn how to use Redis XGROUP DELCONSUMER to remove a consumer from a consumer group.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XGROUP DELCONSUMER
+
+<PageTitle title="Redis XGROUP DELCONSUMER Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

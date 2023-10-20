@@ -1,8 +1,12 @@
 ---
-description: Set multiple keys to multiple values
+description:  Learn the proper use of Redis MSET to set multiple keys to multiple values simultaneously.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # MSET
+
+<PageTitle title="Redis MSET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

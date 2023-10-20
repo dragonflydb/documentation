@@ -1,8 +1,12 @@
 ---
-description: Acknowledge a received message and removes the message from consumer group's pending entries list.
+description:  Learn how to use Redis XACK to acknowledge the processing of a message from a stream by a consumer.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XACK
+
+<PageTitle title="Redis XACK Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

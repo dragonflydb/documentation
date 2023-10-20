@@ -1,8 +1,12 @@
 ---
-description: Trim a particular stream
+description:  Learn how to use Redis XTRIM to limit the length of a stream to a certain size.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XTRIM
+
+<PageTitle title="Redis XTRIM Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

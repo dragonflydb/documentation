@@ -1,8 +1,12 @@
 ---
-description: Reset the stats returned by INFO
+description:  Learn how to use Redis CONFIG RESETSTAT command to reset statistics of the server.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # CONFIG RESETSTAT
+
+<PageTitle title="Redis CONFIG RESETSTAT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: Append a value to a key
+description:  Learn to extend a string value in Redis using the APPEND command.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # APPEND
+
+<PageTitle title="Redis APPEND Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

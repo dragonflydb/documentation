@@ -1,8 +1,12 @@
 ---
-description: Add multiple sorted sets and store the resulting sorted set in a new key
+description:  Learn how to use Redis ZUNIONSTORE command to apply set operations on sorted sets and store the resulting set in a new key.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZUNIONSTORE
+
+<PageTitle title="Redis ZUNIONSTORE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

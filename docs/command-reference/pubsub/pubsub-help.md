@@ -1,8 +1,11 @@
 ---
-description: Show helpful text about the different subcommands
+description:  Learn how to use Redis PUBSUB HELP to get guidance on usage details of the PUBSUB command in your Redis messaging setup.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PUBSUB HELP
+
+<PageTitle title="Redis PUBSUB HELP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

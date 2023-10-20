@@ -1,8 +1,12 @@
 ---
-description: Returns the length of the array at path
+description: Learn how to use Redis JSON.ARRLEN command to find the length of a JSON array.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # JSON.ARRLEN
+
+<PageTitle title="Redis JSON.ARRLEN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -18,22 +22,24 @@ Report the length of the JSON array at `path` in `key`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to parse.
+
 </details>
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`, if not provided. Returns null if the `key` or `path` do not exist.
+
 </details>
 
 ## Return
 
 `JSON.ARRLEN` returns an [array](https://redis.io/docs/reference/protocol-spec/#resp-arrays) of integer replies, an integer for each matching value, each is the array's length, or `nil`, if the matching value is not an array.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec). 
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
 
 ## Examples
 
@@ -42,14 +48,14 @@ For more information about replies, see [Redis serialization protocol specificat
 
 Create a document for wireless earbuds.
 
-``` bash
+```bash
 dragonfly> JSON.SET item:2 $ '{"name":"Wireless earbuds","description":"Wireless Bluetooth in-ear headphones","connection":{"wireless":true,"type":"Bluetooth"},"price":64.99,"stock":17,"colors":["black","white"], "max_level":[80, 100, 120]}'
 OK
 ```
 
 Find lengths of arrays in all objects of the document.
 
-``` bash
+```bash
 dragonfly> JSON.ARRLEN item:2 '$.*'
 1) (nil)
 2) (nil)
@@ -62,14 +68,14 @@ dragonfly> JSON.ARRLEN item:2 '$.*'
 
 Return the length of the `max_level` array.
 
-``` bash
+```bash
 dragonfly> JSON.ARRLEN item:2 '$..max_level'
 1) (integer) 3
 ```
 
 Get all the maximum level values.
 
-``` bash
+```bash
 dragonfly> JSON.GET item:2 '$..max_level'
 "[[80,100,120]]"
 ```
@@ -78,4 +84,4 @@ dragonfly> JSON.GET item:2 '$..max_level'
 
 ## See also
 
-`JSON.ARRINDEX` | `JSON.ARRINSERT` 
+`JSON.ARRINDEX` | `JSON.ARRINSERT`

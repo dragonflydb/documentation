@@ -1,8 +1,12 @@
 ---
-description: Echo the given string
+description:  Learn how to use Redis ECHO command to display provided string.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ECHO
+
+<PageTitle title="Redis ECHO Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

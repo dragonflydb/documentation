@@ -1,8 +1,12 @@
 ---
-description: Remove one or more members from a sorted set
+description:  Learn how to use Redis ZREM command to remove members from a sorted set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZREM
+
+<PageTitle title="Redis ZREM Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

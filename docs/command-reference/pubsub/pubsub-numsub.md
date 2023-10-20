@@ -1,8 +1,11 @@
 ---
-description: Get the count of subscribers for channels
+description:  Learn how to use Redis PUBSUB NUMSUB to get a count of subscriptions for specific channels in your Pub/Sub system.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PUBSUB NUMSUB
+
+<PageTitle title="Redis PUBSUB NUMSUB Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

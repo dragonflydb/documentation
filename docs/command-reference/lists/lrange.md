@@ -1,8 +1,11 @@
 ---
-description: Get a range of elements from a list
+description:  Understand how to use Redis LRANGE to fetch a range of elements from a list.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # LRANGE
+
+<PageTitle title="Redis LRANGE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

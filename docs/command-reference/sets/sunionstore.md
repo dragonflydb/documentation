@@ -1,8 +1,12 @@
 ---
-description: Add multiple sets and store the resulting set in a key
+description:  Learn how to use Redis SUNIONSTORE command to combine multiple sets and store the result in a new set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SUNIONSTORE
+
+<PageTitle title="Redis SUNIONSTORE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

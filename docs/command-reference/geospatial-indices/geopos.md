@@ -1,8 +1,12 @@
 ---
-description: Get the positions of specified members in a geospatial index
+description: "Learn how to use Redis GEOPOS to retrieve the longitude and latitude of a geographical point from your database."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # GEOPOS
+
+<PageTitle title="Redis GEOPOS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,11 @@
 ---
-description: Remove and get the first elements in a list
+description:  Learn how to use the Redis LPOP command for removing and getting the first element in the list.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # LPOP
+
+<PageTitle title="Redis LPOP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: Read entries from one or multiple streams
+description:  Learn how to use Redis XREAD to read data from one or more streams.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XREAD
+
+<PageTitle title="Redis XREAD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

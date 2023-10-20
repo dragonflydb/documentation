@@ -1,8 +1,12 @@
 ---
-description: A container for server configuration commands
+description:  Learn how to use Redis CONFIG command to configure Redis server at runtime.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # CONFIG
+
+<PageTitle title="Redis CONFIG Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: Count set bits in a string
+description:  Learn how to use Redis BITCOUNT to get the count of set bits in a string.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # BITCOUNT
+
+<PageTitle title="Redis BITCOUNT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: BZPOPMIN is the blocking variant of the sorted set ZPOPMIN primitive
+description:  Learn to use Redis BZPOPMIN command which removes and returns the member with the smallest score from one or more sorted sets.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # BZPOPMIN
+
+<PageTitle title="Redis BZPOPMIN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

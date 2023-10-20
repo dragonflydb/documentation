@@ -1,8 +1,12 @@
 ---
-description: Intersect multiple sets and store the resulting set in a key
+description:  Learn how to use Redis SINTERSTORE command to find the intersection of sets and store the result.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SINTERSTORE
+
+<PageTitle title="Redis SINTERSTORE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

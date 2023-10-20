@@ -1,8 +1,12 @@
 ---
-description: Execute a Lua script server side
+description: "Get insights on Redis EVALSHA command for executing Lua scripts using SHA-1."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # EVALSHA
+
+<PageTitle title="Redis EVALSHA Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

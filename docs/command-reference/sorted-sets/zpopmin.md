@@ -1,8 +1,12 @@
 ---
-description: Remove and return members with the lowest scores in a sorted set
+description:  Learn how to use Redis ZPOPMIN command to remove and return the member with the lowest score in a sorted set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZPOPMIN
+
+<PageTitle title="Redis ZPOPMIN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

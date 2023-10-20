@@ -1,9 +1,12 @@
 ---
-description: Perform arbitrary bitfield integer operations on strings. Read-only
-  variant of BITFIELD
+description:  Master the use of Redis BITFIELD_RO for performing readonly bitfield operations.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # BITFIELD_RO
+
+<PageTitle title="Redis BITFIELD_RO Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

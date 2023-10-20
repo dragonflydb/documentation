@@ -1,8 +1,12 @@
 ---
-description: Set the string value of a hash field
+description: "Learn how to use Redis HSET command to set the value of a hash field. A fundamental function for data update tasks."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HSET
+
+<PageTitle title="Redis HSET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

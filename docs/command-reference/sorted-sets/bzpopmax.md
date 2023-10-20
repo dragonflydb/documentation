@@ -1,8 +1,12 @@
 ---
-description: BZPOPMAX is the blocking variant of the sorted set ZPOPMAX primitive
+description:  Learn to use Redis BZPOPMAX command which removes and returns the member with the highest score from one or more sorted sets.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # BZPOPMAX
+
+<PageTitle title="Redis BZPOPMAX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

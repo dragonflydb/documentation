@@ -1,8 +1,12 @@
 ---
-description: Make the server a replica of another instance, or promote it as master.
+description:  Learn how to use Redis REPLICAOF command to convert a master instance into its replicas.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # REPLICAOF
+
+<PageTitle title="Redis REPLICAOF Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

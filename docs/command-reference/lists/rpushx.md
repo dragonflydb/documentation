@@ -1,8 +1,11 @@
 ---
-description: Append an element to a list, only if the list exists
+description:  Learn how to use Redis RPUSHX to append value to a list only if the list exists.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # RPUSHX
+
+<PageTitle title="Redis RPUSHX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

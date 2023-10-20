@@ -1,8 +1,12 @@
 ---
-description: Add new entries to streams
+description:  Learn how to use Redis XADD to append a new entry to a stream.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XADD
+
+<PageTitle title="Redis XADD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

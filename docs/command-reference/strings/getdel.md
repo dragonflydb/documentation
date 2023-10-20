@@ -1,8 +1,12 @@
 ---
-description: Get the value of a key and delete the key
+description:  Learn how to use Redis GETDEL to retrieve and delete a key’s value.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # GETDEL
+
+<PageTitle title="Redis GETDEL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

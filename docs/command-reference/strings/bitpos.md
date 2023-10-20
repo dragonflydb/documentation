@@ -1,8 +1,12 @@
 ---
-description: Find first bit set or clear in a string
+description:  Discover how to find the position of a bit set to 1 or 0 in a string with Redis BITPOS.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # BITPOS
+
+<PageTitle title="Redis BITPOS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

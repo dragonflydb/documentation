@@ -1,8 +1,12 @@
 ---
-description: Increment the integer value of a hash field by the given number
+description: "Learn how to use Redis HINCRBY command to increment the integer value of a hash field."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HINCRBY
+
+<PageTitle title="Redis HINCRBY Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

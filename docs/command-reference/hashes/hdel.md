@@ -1,8 +1,12 @@
 ---
-description: Delete one or more hash fields
+description: "Learn how to use Redis HDEL command to remove a field from a hash map. Great for data maintenance operations."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HDEL
+
+<PageTitle title="Redis HDEL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

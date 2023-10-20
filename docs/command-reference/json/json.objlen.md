@@ -1,8 +1,11 @@
 ---
-description: Returns the number of keys of the object at path
+description: Learn using Redis JSON.OBJLEN command to get the length of a JSON object.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.OBJLEN
+
+<PageTitle title="Redis JSON.OBJLEN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

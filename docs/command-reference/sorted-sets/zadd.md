@@ -1,9 +1,12 @@
 ---
-description: Add one or more members to a sorted set, or update its score if it
-  already exists
+description:  Learn how to use Redis ZADD command to add a member to a sorted set with a given score.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZADD
+
+<PageTitle title="Redis ZADD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

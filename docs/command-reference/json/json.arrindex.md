@@ -1,9 +1,11 @@
 ---
-description: Returns the index of the first occurrence of a JSON scalar value in
-  the array at path
+description: Learn how to use Redis JSON.ARRINDEX command to find the index of an element in a JSON array.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.ARRINDEX
+
+<PageTitle title="Redis JSON.ARRINDEX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

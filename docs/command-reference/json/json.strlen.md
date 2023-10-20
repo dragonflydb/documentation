@@ -1,8 +1,11 @@
 ---
-description: Returns the length of the JSON String at path in key
+description: Learn how to use Redis JSON.STRLEN to measure the length of a string in a JSON document.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.STRLEN
+
+<PageTitle title="Redis JSON.STRLEN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

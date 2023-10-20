@@ -1,12 +1,16 @@
 ---
-description: Show helpful text about the different subcommands
+description: Learn how to use Redis XGROUP HELP to obtain assistance while managing Redis Stream consumer group.
 ---
+
+import PageTitle from '@site/src/components/PageTitle';
 
 # XGROUP HELP
 
+<PageTitle title="Redis XGROUP HELP Command (Documentation) | Dragonfly" />
+
 ## Syntax
 
-    XGROUP HELP 
+    XGROUP HELP
 
 **Time complexity:** O(1)
 

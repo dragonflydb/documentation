@@ -1,8 +1,12 @@
 ---
-description: Set the string value and the ttl of a hash field
+description: "Learn how to use Redis HSETEX command to set the value of a hash field and its expiry time. A smart way to manage temporary data."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HSETEX
+
+<PageTitle title="Redis HSETEX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

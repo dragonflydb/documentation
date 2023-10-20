@@ -1,8 +1,11 @@
 ---
-description: Return the index of matching elements on a list
+description:  Understand using Redis LPOS for finding the index of a value in a list.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # LPOS
+
+<PageTitle title="Redis LPOS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

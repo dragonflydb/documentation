@@ -1,8 +1,12 @@
 ---
-description: Get info about all consumer groups in a stream
+description:  Learn how to use Redis XINFO GROUPS to get information about consumer groups of a stream.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XINFO GROUPS
+
+<PageTitle title="Redis XINFO GROUPS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

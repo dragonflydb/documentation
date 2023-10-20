@@ -1,8 +1,12 @@
 ---
-description: Intersect multiple sets
+description:  Learn how to use Redis SINTER command to get the intersection of multiple sets.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SINTER
+
+<PageTitle title="Redis SINTER Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

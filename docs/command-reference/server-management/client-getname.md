@@ -1,8 +1,12 @@
 ---
-description: Get the current connection name
+description:  Learn how to use Redis CLIENT GETNAME command to fetch name of current connection.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # CLIENT GETNAME
+
+<PageTitle title="Redis CLIENT GETNAME Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

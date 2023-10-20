@@ -1,8 +1,11 @@
 ---
-description: A container for Pub/Sub commands
+description:  Learn how to use Redis PUBSUB to inspect the state of the Pub/Sub subsystem, perfect for monitoring your messaging infrastructure.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PUBSUB
+
+<PageTitle title="Redis PUBSUB Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

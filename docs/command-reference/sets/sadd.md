@@ -1,8 +1,12 @@
 ---
-description: Add one or more members to a set
+description:  Learn how to use Redis SADD command to add one or more members to a set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SADD
+
+<PageTitle title="Redis SADD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

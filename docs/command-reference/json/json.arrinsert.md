@@ -1,8 +1,11 @@
 ---
-description: Inserts the JSON scalar(s) value at the specified index in the array at path
+description: Discover how to use Redis JSON.ARRINSERT command to insert an element at a specified position in an array.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.ARRINSERT
+
+<PageTitle title="Redis JSON.ARRINSERT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

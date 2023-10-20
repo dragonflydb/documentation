@@ -1,8 +1,12 @@
 ---
-description: Synchronously save the dataset to disk
+description:  Learn how to use Redis SAVE command to create a backup of the current database.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SAVE
+
+<PageTitle title="Redis SAVE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

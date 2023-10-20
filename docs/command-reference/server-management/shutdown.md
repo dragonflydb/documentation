@@ -1,8 +1,12 @@
 ---
-description: Synchronously save the dataset to disk and then shut down the server
+description:  Learn how to use Redis SHUTDOWN command which terminates the server securely.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SHUTDOWN
+
+<PageTitle title="Redis SHUTDOWN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

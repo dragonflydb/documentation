@@ -1,8 +1,12 @@
 ---
-description: Create consumer in a particular group
+description:  Learn how to use Redis XGROUP CREATECONSUMER to create a new consumer in a consumer group.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XGROUP CREATECONSUMER
+
+<PageTitle title="Redis XGROUP CREATECONSUMER Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

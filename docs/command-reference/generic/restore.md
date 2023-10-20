@@ -1,9 +1,12 @@
 ---
-description: Create a key using the provided serialized value, previously
-  obtained using DUMP.
+description: "Get insights on using Redis RESTORE command to create key using serialized value."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # RESTORE
+
+<PageTitle title="Redis RESTORE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

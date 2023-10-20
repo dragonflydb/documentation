@@ -1,8 +1,12 @@
 ---
-description: Check existence of scripts in the script cache.
+description: "Understand Redis SCRIPT EXISTS command for checking scripts' existence in the cache."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SCRIPT EXISTS
+
+<PageTitle title="Redis SCRIPT EXISTS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

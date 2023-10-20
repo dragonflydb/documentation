@@ -1,8 +1,12 @@
 ---
-description: Get the length of the value stored in a key
+description:  Learn how to use Redis STRLEN to get the length of the string stored in a key.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # STRLEN
+
+<PageTitle title="Redis STRLEN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

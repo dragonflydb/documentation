@@ -1,8 +1,12 @@
 ---
-description: Intersect multiple sorted sets and store the resulting sorted set in a new key
+description:  Learn how to use Redis ZINTERSTORE command to intersect multiple sorted sets and store the result.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZINTERSTORE
+
+<PageTitle title="Redis ZINTERSTORE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,12 @@
 ---
-description: Get all the fields and values in a hash
+description: "Learn how to use Redis HGETALL command to fetch all fields and values of a hash. Streamline your data retrieval with ease."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HGETALL
+
+<PageTitle title="Redis HGETALL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

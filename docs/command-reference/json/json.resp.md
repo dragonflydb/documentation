@@ -1,8 +1,11 @@
 ---
-description: Returns the JSON value at path in Redis Serialization Protocol (RESP)
+description: Learn how to use the Redis JSON.RESP command to change the response format of JSON commands.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.RESP
+
+<PageTitle title="Redis JSON.RESP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

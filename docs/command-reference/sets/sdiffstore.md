@@ -1,8 +1,12 @@
 ---
-description: Subtract multiple sets and store the resulting set in a key
+description:  Learn how to use Redis SDIFFSTORE command to extract the difference of sets and store it.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SDIFFSTORE
+
+<PageTitle title="Redis SDIFFSTORE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

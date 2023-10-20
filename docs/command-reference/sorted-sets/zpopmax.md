@@ -1,8 +1,12 @@
 ---
-description: Remove and return members with the highest scores in a sorted set
+description:  Learn how to use Redis ZPOPMAX command to remove and return the member with the highest score in a sorted set.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZPOPMAX
+
+<PageTitle title="Redis ZPOPMAX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -1,8 +1,11 @@
 ---
-description: Get the count of subscribers for shard channels
+description:  Learn how to use Redis PUBSUB SHARDNUMSUB for a list of specific channel subscriptions for shard Pub/Sub networks.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # PUBSUB SHARDNUMSUB
+
+<PageTitle title="Redis PUBSUB SHARDNUMSUB Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

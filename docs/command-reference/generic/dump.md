@@ -1,8 +1,12 @@
 ---
-description: Return a serialized version of the value stored at the specified key.
+description: "Understand how to use Redis DUMP command for returning a serialized version of stored value."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # DUMP
+
+<PageTitle title="Redis DUMP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -20,12 +24,11 @@ command.
 The serialization format is opaque and non-standard, however it has a few
 semantic characteristics:
 
-* It contains a 64-bit checksum that is used to make sure errors will be
+- It contains a 64-bit checksum that is used to make sure errors will be
   detected.
   The `RESTORE` command makes sure to check the checksum before synthesizing a
   key using the serialized value.
-* Values are encoded in the same format used by the snapshotting algorithm.
-
+- Values are encoded in the same format used by the snapshotting algorithm.
 
 The serialized value does NOT contain expire information.
 In order to capture the time to live of the current value the `PTTL` command

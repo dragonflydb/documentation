@@ -1,8 +1,12 @@
 ---
-description: Add multiple sorted sets
+description:  Learn how to use Redis ZUNION command to perform a union of multiple sorted sets, getting the sorted set of unique elements.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ZUNION
+
+<PageTitle title="Redis ZUNION Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

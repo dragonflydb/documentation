@@ -1,8 +1,12 @@
 ---
-description: Overwrite part of a string at key starting at the specified offset
+description:  Learn how to use Redis SETRANGE to overwrite part of a string at the specified key.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # SETRANGE
+
+<PageTitle title="Redis SETRANGE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

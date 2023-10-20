@@ -1,8 +1,11 @@
 ---
-description: List the consumers in a consumer group
+description:  Learn how to use Redis XINFO CONSUMERS to fetch information about a stream's consumers.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # XINFO CONSUMERS
+
+<PageTitle title="Redis XINFO CONSUMERS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

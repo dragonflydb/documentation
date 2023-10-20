@@ -1,8 +1,12 @@
 ---
-description: Read entries from a stream for a consumer group
+description:  Learn how to use Redis XREADGROUP for consumer groups to read from streams.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # XREADGROUP
+
+<PageTitle title="Redis XREADGROUP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

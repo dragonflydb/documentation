@@ -1,8 +1,12 @@
 ---
-description: Get the number of fields in a hash
+description: "Learn how to use Redis HLEN command to get the number of fields in a hash. A command that improves your data analysis."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # HLEN
+
+<PageTitle title="Redis HLEN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

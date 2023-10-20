@@ -1,8 +1,12 @@
 ---
-description: Set the expiration for a key as a UNIX timestamp specified in milliseconds
+description: "Use Redis PEXPIREAT command sets a key's time-to-live in UNIX time."
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # PEXPIREAT
+
+<PageTitle title="Redis PEXPIREAT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -15,13 +19,12 @@ description: Set the expiration for a key as a UNIX timestamp specified in milli
 `PEXPIREAT` has the same effect and semantic as `EXPIREAT`, but the Unix time at
 which the key will expire is specified in milliseconds instead of seconds.
 
-
 ## Return
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
-* `1` if the timeout was set.
-* `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.
+- `1` if the timeout was set.
+- `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.
 
 ## Examples
 

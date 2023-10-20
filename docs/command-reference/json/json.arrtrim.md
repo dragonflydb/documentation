@@ -1,9 +1,11 @@
 ---
-description: Trims the array at path to contain only the specified inclusive
-  range of indices from start to stop
+description: Get to know about the Redis JSON.ARRTRIM command to trim an array to a specified range.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.ARRTRIM
+
+<PageTitle title="Redis JSON.ARRTRIM Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

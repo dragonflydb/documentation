@@ -1,12 +1,16 @@
 ---
-description: A container for Lua scripts management commands
+description: "Get insights on how to use the Redis SCRIPT command for managing Lua scripts."
 ---
+
+import PageTitle from '@site/src/components/PageTitle';
 
 # SCRIPT
 
+<PageTitle title="Redis SCRIPT Command (Documentation) | Dragonfly" />
+
 ## Syntax
 
-    SCRIPT 
+    SCRIPT
 
 **Time complexity:** Depends on subcommand.
 

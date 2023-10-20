@@ -1,8 +1,12 @@
 ---
-description: Set the value and expiration in milliseconds of a key
+description:  Learn how to use Redis PSETEX to set key's value and expiration in milliseconds. 
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # PSETEX
+
+<PageTitle title="Redis PSETEX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

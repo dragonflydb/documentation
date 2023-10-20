@@ -1,9 +1,11 @@
 ---
-description: Append one or more json values into the array at path after the
-  last element in it.
+description: Understand how to use Redis JSON.ARRAPPEND command to append an element into a JSON array.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.ARRAPPEND
+
+<PageTitle title="Redis JSON.ARRAPPEND Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

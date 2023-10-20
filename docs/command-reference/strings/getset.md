@@ -1,8 +1,12 @@
 ---
-description: Set the string value of a key and return its old value
+description:  Learn how Redis GETSET sets a new value for a key & returns the old value.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # GETSET
+
+<PageTitle title="Redis GETSET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

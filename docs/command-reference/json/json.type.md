@@ -1,8 +1,11 @@
 ---
-description: Returns the type of the JSON value at path
+description: Grasp how to use Redis JSON.TYPE command to get the type of data present in a JSON document.
 ---
+import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.TYPE
+
+<PageTitle title="Redis JSON.TYPE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

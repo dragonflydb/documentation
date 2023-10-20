@@ -1,8 +1,12 @@
 ---
-description: Decrement the integer value of a key by the given number
+description:  Learn how to use Redis DECRBY to decrease the integer value of a key.
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # DECRBY
+
+<PageTitle title="Redis DECRBY Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
