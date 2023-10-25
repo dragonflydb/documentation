@@ -61,7 +61,7 @@ statefulset.apps/prometheus-prometheus   1/1     167m
 
 ## Create Prometheus Service
 
-Create a prometheus Service to let Grafana access prometheus trough it. If you already
+Create a prometheus Service to let Grafana access prometheus through it. If you already
 have a Prometheus Service object, move to the next step.
 
 ```
