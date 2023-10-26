@@ -51,7 +51,7 @@ is JSONPath to specify. Default is root `$`.
 
 ## Return value 
 
-`JSON.ARRINSERT` returns an [array](https://redis.io/docs/reference/protocol-spec/#resp-arrays) of integer replies for each path, the array's new size, or `nil`, if the matching JSON value is not an array. 
+`JSON.ARRINSERT` returns an [array](https://redis.io/docs/reference/protocol-spec/#arrays) of integer replies for each path, the array's new size, or `nil`, if the matching JSON value is not an array. 
 For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec). 
 
 ## Examples
