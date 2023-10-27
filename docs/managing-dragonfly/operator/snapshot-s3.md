@@ -8,15 +8,20 @@ pod.
 As this mechanism uses OIDC (OpenID Connect) to authenticate the service account, we will also get the benefits of
 credentials isolation and automatic rotation of credentials. This way we can avoid having to pass long lived credentials. This is all done automatically by EKS.
 
+## Prerequisites
+
+- A Kubernetes cluster with [Dragonfly installed](./installation.md)
+
 ## Create an EKS cluster
 
 ```bash
-eksctl create cluster --name df-storage --region us-east-1  
+eksctl create cluster --name df-s3 --region us-east-1  
 ```
 
 ## Create and Associate IAM OIDC Provider for your cluster
 
 By following the [AWS documentation](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html), create and associate an IAM OIDC provider for your cluster.
+
 This is a required step for the next steps to work.
 
 ## Create an S3 bucket
@@ -24,7 +29,7 @@ This is a required step for the next steps to work.
 Now, we will create an S3 bucket to store the snapshots. This bucket can be created using the AWS console or using the AWS CLI.
 
 ```bash
-aws s3api create-bucket --bucket dragonfly-backup --region us-east-1
+aws s3 mb s3://df-s3 
 ```
 
 ## Create a policy to read a specific S3 bucket
@@ -40,8 +45,8 @@ cat <<EOF > policy.json
             "Effect": "Allow",
             "Action": "s3:*",
             "Resource": [
-                "arn:aws:s3:::dragonfly-backup/*",
-                "arn:aws:s3:::dragonfly-backup"
+                "arn:aws:s3:::df-s3/*",
+                "arn:aws:s3:::df-s3"
             ]
         }
     ]
@@ -57,8 +62,10 @@ aws iam create-policy --policy-name dragonfly-backup --policy-document file://po
 
 Now, we will associate the policy we created in the previous step with a role. This role will be used by the service account called `dragonfly-backup` which will also be created in this step.
 
+Replace `<account-no>` with your AWS account number.
+
 ```bash
-eksctl create iamserviceaccount --name dragonfly-backup --namespace default --cluster df-storage --role-name dragonfly-backup --attach-policy-arn arn:aws:iam::<account-no>:policy/dragonfly-backup --approve
+eksctl create iamserviceaccount --name dragonfly-backup --namespace default --cluster df-s3 --role-name dragonfly-backup --attach-policy-arn arn:aws:iam::<account-no>:policy/dragonfly-backup --approve
 ```
 
 ## Create a Dragonfly Instance with that service account
@@ -76,9 +83,10 @@ metadata:
   name: dragonfly-sample
 spec:
   replicas: 1
-  image: <>
+  serviceAccountName: dragonfly-backup
+  image: "ghcr.io/dragonflydb/dragonfly-weekly:8f28a3826b1a02cdb54e5e001a03373c956b7cf7-alpine"
   snapshot:
-    dir: "s3://dragonfly-backup"
+    dir: "s3://df-s3"
 EOF
 ```
 
@@ -105,7 +113,7 @@ kubectl delete pod dragonfly-sample-0
 ### Verify that the backups are created in the S3 bucket
 
 ```bash
-aws s3 ls s3://dragonfly-backup
+aws s3 ls s3://df-s3
 ```
 
 ### Verify that the data is automatically restored
