@@ -52,7 +52,7 @@ kubectl describe dragonflies.dragonflydb.io dragonfly-auth
 kubectl run -it --rm --restart=Never redis-cli --image=redis:7.0.10 -- redis-cli -h dragonfly-auth.default
 if you don't see a command prompt, try pressing enter.
 dragonfly-auth.default:6379> GET 1
-(error) NOAUTH A
+(error) NOAUTH Authentication required. 
 dragonfly-auth.default:6379> AUTH dragonfly
 OK
 dragonfly-auth.default:6379> GET 1
@@ -100,25 +100,19 @@ kind: Certificate
 metadata:
   name: dragonfly-sample
 spec:
-  # Secret names are always required.
   secretName: dragonfly-sample
   duration: 2160h # 90d
   renewBefore: 360h # 15d
   subject:
     organizations:
       - dragonfly-sample
-  # The use of the common name field has been deprecated since 2000 and is
-  # discouraged from being used.
-  commonName: example.com
   privateKey:
     algorithm: RSA
     encoding: PKCS1
     size: 2048
-  # At least one of a DNS Name, URI, or IP address is required.
   dnsNames:
     - dragonfly-sample.com
     - www.dragonfly-sample.com
-  # Issuer references are always required.
   issuerRef:
     name: ca-issuer
     kind: Issuer
@@ -150,25 +144,21 @@ kind: Certificate
 metadata:
   name: dragonfly-client-ca
 spec:
-    # Secret names are always required.
     secretName: dragonfly-client-ca
     duration: 2160h # 90d
     renewBefore: 360h # 15d
     subject:
         organizations:
         - dragonfly-client-ca
-    # The use of the common name field has been deprecated since 2000 and is
-    # discouraged from being used.
-    commonName: example.com
     privateKey:
         algorithm: RSA
         encoding: PKCS1
         size: 2048
-    # At least one of a DNS Name, URI, or IP address is required.
     dnsNames:
         - dragonfly-client-ca.com
         - www.dragonfly-client-ca.com
-    # Issuer references are always required.
+    usages:
+        - client auth
     issuerRef:
         name: client-ca-issuer
         kind: Issuer
@@ -188,6 +178,7 @@ spec:
     authentication:
       clientCaCertSecret:
         name: dragonfly-client-ca
+        key: ca.crt
     replicas: 2
     tlsSecretRef:
       name: dragonfly-sample
@@ -222,9 +213,9 @@ kubectl run -it --rm redis-cli --image=redis:7.0.10 --restart=Never --overrides=
                     "--cacert",
                     "/etc/ssl/ca.crt",
                     "--cert",
-                    "/etc/tls/client.crt",
+                    "/etc/tls/tls.crt",
                     "--key",
-                    "/etc/tls/client.key"
+                    "/etc/tls/tls.key"
                 ],
                 "volumeMounts": [
                     {
@@ -244,29 +235,13 @@ kubectl run -it --rm redis-cli --image=redis:7.0.10 --restart=Never --overrides=
             {
                 "name": "ca-certs",
                 "secret": {
-                    "secretName": "dragonfly-sample",
-                    "items": [
-                        {
-                            "key": "ca.crt",
-                            "path": "ca.crt"
-                        }
-                    ]
+                    "secretName": "dragonfly-sample"
                 }
             },
             {
                 "name": "client-certs",
                 "secret": {
-                    "secretName": "dragonfly-client-ca",
-                    "items": [
-                        {
-                            "key": "tls.crt",
-                            "path": "client.crt"
-                        },
-                        {
-                            "key": "tls.key",
-                            "path": "client.key"
-                        }
-                    ]
+                    "secretName": "dragonfly-client-ca"
                 }
             }
         ]
