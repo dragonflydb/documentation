@@ -54,7 +54,7 @@ A Dragonfly Cluster is similar to a Redis Cluster:
 **Any client-side code that uses Redis Cluster should be able to migrate to Dragonfly Cluster with
 no changes.** Dragonfly Cluster is similar to Redis Cluster in all client facing behavior but it
 does not self managed as Redis Cluster in which nodes communicate with each other to discover
-cluster setup and state
+cluster setup and state.
 
 Setting up and managing a Dragonfly Cluster is different from managing a Redis Cluster.  Unlike
 Redis, Dragonfly nodes do not communicate with each other (except for replication). Nodes are
