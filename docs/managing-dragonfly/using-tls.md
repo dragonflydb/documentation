@@ -1,3 +1,7 @@
+---
+sidebar_position: 9
+---
+
 # Using Dragonfly With TLS
 
 If you deploy Dragonfly over an endpoint that's connected to the internet, you
