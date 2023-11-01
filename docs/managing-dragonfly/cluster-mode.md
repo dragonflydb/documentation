@@ -52,10 +52,12 @@ A Dragonfly Cluster is similar to a Redis Cluster:
 * It supports [hash tags](https://redis.io/docs/reference/cluster-spec/#hash-tags)
 
 **Any client-side code that uses Redis Cluster should be able to migrate to Dragonfly Cluster with
-no changes.**
+no changes.** Dragonfly Cluster is similar to Redis Cluster in all client facing behavior but it
+does not self managed as Redis Cluster in which nodes communicate with each other to discover
+cluster setup and state
 
-However, setting up and managing a Dragonfly Cluster is different from managing a Redis Cluster.
-Unlike Redis, Dragonfly nodes do not communicate with each other (except for replication). Nodes are
+Setting up and managing a Dragonfly Cluster is different from managing a Redis Cluster.  Unlike
+Redis, Dragonfly nodes do not communicate with each other (except for replication). Nodes are
 unaware of other nodes being unavailable, and cluster configuration is done separately to each node.
 
 Dragonfly only provides a _data plane_ (which is the Dragonfly server), but we do **not** provide a
@@ -92,9 +94,14 @@ slots, etc.
 The first thing you'll need to do is to get each node's _id_, which is a unique string identifying
 the node. The id can be retrieved by issuing the command `DFLYCLUSTER MYID` on each of the nodes.
 
-Once you have all of the IDs, build the configuration string and pass it to all nodes using the
-`DFLYCLUSTER CONFIG <str>` command. It is important to pass the exact same configuration to all
-nodes.
+Once you have all of the IDs, build the configuration string (see below) and pass it to all nodes
+using the `DFLYCLUSTER CONFIG <str>` command.
+
+Once a server is configured, it will only handle the slots which it owns. This means that any keys
+not owned by it will be deleted, and any attempts to access such keys will be rejected.
+
+Dragonfly servers do not communicate with other servers to make sure all config is identical. It is
+important to pass the exact same configuration to all nodes.
 
 Configuration is a JSON-encoded string in the following format:
 
@@ -178,4 +185,5 @@ etc.
   [`cluster_mgr.py`](https://github.com/dragonflydb/dragonfly/blob/main/tools/cluster_mgr.py) as a
   reference for how to set up and configure a cluster. This script starts a cluster _locally_, but
   much of its logic can be reused for nodes present on remote machines as well.
-* Dragonfly does not yet support migration of slots data between nodes. Stay tuned.
+* Dragonfly does not yet support migration of slots data between nodes. Changing slot allocation
+  will result in data removal.
