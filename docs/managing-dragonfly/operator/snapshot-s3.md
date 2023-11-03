@@ -72,9 +72,6 @@ eksctl create iamserviceaccount --name dragonfly-backup --namespace default --cl
 
 Let's create a Dragonfly Instance with the service account we created in the previous step. We will also configure the snapshot location to be the S3 bucket we created in the previous steps.
 
-Important to note that this feature is only available from the `v1.12.0` version of the Dragonfly. Currently, We will
-use the weekly release of Dragonfly to use this feature.
-
 ```bash
 kubectl apply -f - <<EOF
 apiVersion: dragonflydb.io/v1alpha1
@@ -84,7 +81,6 @@ metadata:
 spec:
   replicas: 1
   serviceAccountName: dragonfly-backup
-  image: "ghcr.io/dragonflydb/dragonfly-weekly:8f28a3826b1a02cdb54e5e001a03373c956b7cf7-alpine"
   snapshot:
     dir: "s3://df-s3"
 EOF
