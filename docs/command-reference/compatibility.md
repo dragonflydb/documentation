@@ -32,7 +32,7 @@ sidebar_position: 0
 |                                              | <span class="command">CLIENT UNBLOCK</span>                | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT UNPAUSE</span>                | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">ECHO</span>                          | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">HELLO</span>                         | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">HELLO</span>                         | <span class="support supported">Fully supported</span> |
 |                                              | <span class="command">PING</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">QUIT</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">RESET</span>                         | <span class="support unsupported">Unsupported</span>     |
@@ -156,7 +156,7 @@ sidebar_position: 0
 |                                              | <span class="command">COMMAND DOCS</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">COMMAND GETKEYS</span>               | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">COMMAND GETKEYSANDFLAGS</span>       | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">COMMAND INFO</span>                  | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">COMMAND INFO</span>                  | <span class="support supported">Fully supported</span>     |
 |                                              | <span class="command">COMMAND LIST</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CONFIG GET</span>                    | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">CONFIG RESETSTAT</span>              | <span class="support supported">Fully supported</span>   |
@@ -179,7 +179,7 @@ sidebar_position: 0
 |                                              | <span class="command">MEMORY MALLOC-STATS</span>           | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">MEMORY PURGE</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">MEMORY STATS</span>                  | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">MEMORY USAGE</span>                  | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">MEMORY USAGE</span>                  | <span class="support supported">Fully supported</span>     |
 |                                              | <span class="command">MODULE LIST</span>                   | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">MODULE LOAD</span>                   | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">MODULE LOADEX</span>                 | <span class="support unsupported">Unsupported</span>     |
@@ -190,9 +190,9 @@ sidebar_position: 0
 |                                              | <span class="command">SAVE</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SHUTDOWN</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SLAVEOF</span>                       | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">SLOWLOG GET</span>                   | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">SLOWLOG LEN</span>                   | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">SLOWLOG RESET</span>                 | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">SLOWLOG GET</span>                   | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">SLOWLOG LEN</span>                   | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">SLOWLOG RESET</span>                 | <span class="support supported">Fully supported</span>     |
 |                                              | <span class="command">SWAPDB</span>                        | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">TIME</span>                          | <span class="support supported">Fully supported</span>   |
 | <span class="family">Set</span>              | <span class="command">SADD</span>                          | <span class="support supported">Fully supported</span>   |
@@ -288,6 +288,16 @@ sidebar_position: 0
 |                                              | <span class="command">MULTI</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">UNWATCH</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">WATCH</span>                         | <span class="support supported">Fully supported</span>   |
+| <span class="family">Geo</span>              | <span class="command">GEOADD</span>                        | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">GEODIST</span>                       | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">GEOHASH</span>                       | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">GEOPOS</span>                        | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">GEORADIUS</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEORADIUS_RO</span>                  | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEORADIUSBYMEMBER</span>             | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEORADIUSBYMEMBER_RO</span>          | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEOSEARCH</span>                     | <span class="support partial">Partially supported</span>     |
+|                                              | <span class="command">GEOSEARCHSTORE</span>                | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Bloom Filter</span>     | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Cuckoo Filter</span>    | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Count-min Sketch</span> | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
@@ -317,8 +327,8 @@ sidebar_position: 0
 |                                              | <span class="command">STRLEN</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">TOGGLE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">TYPE</span>                          | <span class="support supported">Fully supported</span>   |
-| <span class="family">Search</span>           | <span class="command">FT.CREATE</span>                     | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">FT.SEARCH</span>                     | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">Search</span>           | <span class="command">FT.CREATE</span>                     | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">FT.SEARCH</span>                     | <span class="support supported">Fully supported</span>     |
 | <span class="family">Auto Suggest</span>     | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">T-Digest</span>         | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Time Series</span>      | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
@@ -353,13 +363,3 @@ sidebar_position: 0
 |                                              | <span class="command">CLUSTER SLOTS</span>                 | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">READONLY</span>                      | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">READWRITE</span>                     | <span class="support unsupported">Unsupported</span>     |
-| <span class="family">Geo</span>              | <span class="command">GEOADD</span>                        | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEODIST</span>                       | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEOHASH</span>                       | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEOPOS</span>                        | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEORADIUS</span>                     | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEORADIUS_RO</span>                  | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEORADIUSBYMEMBER</span>             | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEORADIUSBYMEMBER_RO</span>          | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEOSEARCH</span>                     | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEOSEARCHSTORE</span>                | <span class="support unsupported">Unsupported</span>     |
