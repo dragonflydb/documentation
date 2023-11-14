@@ -1,16 +1,61 @@
-# Command line arguments(flags)
+# Command line arguments (flags)
 
 Dragonfly can be tuned and configured by a set of config flags. These flags can be:
 
-1. Passed to a Dragonfly instance directly at startup. E.g, `./dragonfly --port=6379`.
+1. Passed to a Dragonfly as command line arguments. E.g, `./dragonfly --port=6379`.
 2. Loaded from a file by a Dragonfly instance. E.g. `./dragonfly --flagfile=path_to_flags/flags.txt`
-3. Can be set via env variables by adding the prefix `DFLY` followed by the flag name. E.g. `export DFLY_port=6379` (note it's case sensitive)
-4. At runtime via `CONFIG SET` command. Not all flags, can be configured at runtime.
+3. Can be set via env variables by adding the prefix `DFLY_` followed by the flag name. E.g. `export DFLY_port=6379` (note it's case sensitive)
+4. At runtime via `CONFIG SET` command. Not all flags can be configured at runtime.
 
 You can try `./dragonfly --helpfull` to get a list of all flags or `--help=substring` shows help for
 flags which include specified substring in either in the name, description or path.
 
 ## Available flags
+
+### `--port`
+  Redis port. 0 disables the port, -1 will bind on a random available port.
+
+   `default: 6379`
+
+### `--cache_mode`
+  If true, the backend behaves like a cache, by evicting entries when getting close to maxmemory limit
+
+  `default: false`
+
+### `--cluster_mode`
+  Cluster mode supported.
+
+  `default: ""`
+
+### `--maxmemory`
+  Limit on maximum-memory that is used by the database. 0 - means the program will automatically determine its maximum memory usage.
+
+  `default: 0`
+
+### `--dbnum`
+  Number of databases.
+
+   `default: 16`
+
+### `--bind`
+  Bind address. If empty - binds on all interfaces. It's not advised due to security implications.
+
+  `default: ""`
+
+### `--requirepass`
+  Password for AUTH authentication.
+
+   `default: ""`
+
+### `--dbfilename`
+  The filename to save/load the DB.
+
+  `default: "dump-{timestamp}"`
+
+### `--snapshot_cron`
+  Cron expression for the time to save a snapshot, crontab style.
+
+  `default:`
 
 ### `--use_set2`
   If true use DenseSet for an optimized set data structure. 
@@ -161,11 +206,6 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 4`
 
-### `--bind`
-  Bind address. If empty - binds on all interfaces. It's not advised due to security implications.
-
-  `default: ""`
-
 ### `--force_epoll`
   If true - uses linux epoll engine underneath. Can fit for kernels older than 5.10. 
 
@@ -191,11 +231,6 @@ flags which include specified substring in either in the name, description or pa
   If true, Will monitor for new releases on Dragonfly servers once a day. 
 
   `default: true`
-
-### `--cache_mode`
-  If true, the backend behaves like a cache, by evicting entries when getting close to maxmemory limit
-
-  `default: false`
 
 ### `--hz`
   Base frequency at which the server performs other background tasks. Warning: not advised to decrease in production.
@@ -231,11 +266,6 @@ flags which include specified substring in either in the name, description or pa
 
   `default: ""`
 
-### `--dbnum`
-  Number of databases.
-
-   `default: 16`
-
 ### `--keys_output_limit`
   Maximum number of keys output by keys command.
   
@@ -260,12 +290,6 @@ flags which include specified substring in either in the name, description or pa
   If set, would enable open admin access to console on the assigned port, without authorization needed.
 
   `default: false`
-
-### `--maxmemory`
-  Limit on maximum-memory that is used by the database. 0 - means the program will automatically determine 
-  its maximum memory usage. 
-
-  `default: 0`
 
 ### `--memcached_port`
   Memcached port: 
@@ -297,15 +321,16 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 1.1`
 
-### `--port`
-  Redis port. 0 disables the port, -1 will bind on a random available port.
-
-   `default: 6379`
-
 ### `--masterauth`
   Password for authentication with master. 
 
   `default: ""`
+
+### `--replicaof`
+  Specifies a host and port which point to a target master to replicate.
+  Format should be `<IPv4>:<PORT>` or `host:<PORT>` or `[<IPv6>]:<PORT>`.
+
+  `default:`
 
 ### `--tls_replication`
   Enable TLS on replication. 
@@ -367,11 +392,6 @@ flags which include specified substring in either in the name, description or pa
 
   `default: false`
 
-### `--dbfilename`
-  The filename to save/load the DB.
-
-  `default: "dump-{timestamp}"`
-
 ### `--df_snapshot_format`
   If true, save in dragonfly-specific snapshotting format
 
@@ -391,17 +411,6 @@ flags which include specified substring in either in the name, description or pa
   Maximum number of concurrent clients allowed.
    
   `default: 64000`
-
-### `--replicaof`
-  Specifies a host and port which point to a target master to replicate. 
-  Format should be `<IPv4>:<PORT>` or `host:<PORT>` or `[<IPv6>]:<PORT>`. 
-
-  `default:`
-
-### `--requirepass`
-  Password for AUTH authentication.
-
-   `default: ""`
 
 ### `--s3_ec2_metadata`
   Whether to load credentials and configuration from EC2 metadata. 
@@ -423,11 +432,6 @@ flags which include specified substring in either in the name, description or pa
 
   `default: true`
 
-### `--save_schedule`
-  The flag is deprecated, please use `snapshot_cron instead.
-  
-  `default: ""`
-
 ### `--slowlog_log_slower_than`
   Add commands slower than this threshold to slow log. The value is expressed in microseconds 
   and if it's negative disables the slowlog.
@@ -438,11 +442,6 @@ flags which include specified substring in either in the name, description or pa
   Slow log maximum length.
 
   `default: 20`
-
-### `--snapshot_cron`
-  Cron expression for the time to save a snapshot, crontab style. 
-
-  `default:`
 
 ### `--interpreter_per_thread`
   Lua interpreters per thread
@@ -469,11 +468,6 @@ flags which include specified substring in either in the name, description or pa
   the total number of entries are `acllog_max_len * threads`
 
   `default: 32`
-
-### `--cluster_mode`
-  Cluster mode supported.
-
-  `default: ""`
 
 ### `--cluster_announce_ip`
   Ip that cluster commands announce to the client.
@@ -502,16 +496,6 @@ flags which include specified substring in either in the name, description or pa
 
 ### `--flagfile`
   Comma-separated list of files to load flags from. 
-
-  `default:`
-
-### `--fromenv`
-  Comma-separated list of flags to set from the environment [use `export FLAGS_flag1=value`]). 
-
-  `default:`
-
-### `--tryfromenv`
-  Comma-separated list of flags to try to set from the environment if present.
 
   `default:`
 
