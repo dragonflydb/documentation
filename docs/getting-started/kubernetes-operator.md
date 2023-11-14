@@ -8,13 +8,12 @@ Dragonfly Operator is a Kubernetes operator used to deploy and manage [Dragonfly
 
 The main features include:
 
-- Automatic failover
-- Scaling horizontally and vertically
-- Custom configuration options
-
-**Important**: Currently, Dragonfly Operator is in **Alpha**. You can find more information about Dragonfly
-in the [official documentation](https://dragonflydb.io/docs/).
-<!-- which is here? -->
+- Automatic Failover
+- Scaling Horizontally and Vertically (with Custom Rollout Strategy)
+- Custom Configuration Options
+- Authentication and Server TLS
+- Snapshots to Persistent Volume Claims (PVCs) and S3-Compatible Cloud Storage
+- Monitoring with Prometheus and Grafana
 
 ## Prerequisites
 
@@ -42,13 +41,13 @@ By default, the operator will be installed in the `dragonfly-operator-system` na
     kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/config/samples/v1alpha1_dragonfly.yaml
     ```
 
-1. To check the status of the instance, run:
+2. To check the status of the instance, run:
 
     ```sh
     kubectl describe dragonflies.dragonflydb.io dragonfly-sample
     ```
 
-1.  Connect to the master instance of the service at:    
+3. Connect to the master instance of the service at:    
     `<dragonfly-name>.<namespace>.svc.cluster.local`.
     
     As pods are added or removed, the service automatically updates to point to the new master.
