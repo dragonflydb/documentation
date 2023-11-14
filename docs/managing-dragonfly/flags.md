@@ -2,12 +2,12 @@
 
 Dragonfly can be tuned and configured by a set of config flags. These flags can be:
 
-1. Passed to a Dragonfly as command line arguments. E.g, `./dragonfly --port=6379`.
-2. Loaded from a file by a Dragonfly instance. E.g. `./dragonfly --flagfile=path_to_flags/flags.txt`
+1. Passed to a Dragonfly as command line arguments. E.g, `dragonfly --port=6379`.
+2. Loaded from a file. E.g. `dragonfly --flagfile=path_to_flags/flags.txt`
 3. Can be set via env variables by adding the prefix `DFLY_` followed by the flag name. E.g. `export DFLY_port=6379` (note it's case sensitive)
 4. At runtime via `CONFIG SET` command. Not all flags can be configured at runtime.
 
-You can try `./dragonfly --helpfull` to get a list of all flags or `--help=substring` shows help for
+You can try `dragonfly --helpfull` to get a list of all flags or `--help=substring` shows help for
 flags which include specified substring in either in the name, description or path.
 
 ## Available flags
@@ -23,7 +23,7 @@ flags which include specified substring in either in the name, description or pa
   `default: false`
 
 ### `--cluster_mode`
-  Cluster mode supported.
+  Set cluster mode. Available options are: `yes`, `emulated` and empty `""`.
 
   `default: ""`
 
