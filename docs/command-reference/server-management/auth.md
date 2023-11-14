@@ -16,12 +16,12 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @fast, @connection
 
-The AUTH command authenticates the current connection. If the `username` is omitted, it implies the user `default` from ACL. Dragonfly will deny any command executed by the just
+The AUTH command authenticates the current connection. If the `username` is omitted, it implies the user `default` from ACL. Dragonfly will deny any command executed by the already
 connected clients, unless the connection gets authenticated via `AUTH`.
 
 If the password provided via AUTH matches the configured password, the server replies with the `OK` status code and starts accepting commands. Otherwise, an error is returned and the clients needs to try a new password.
 
-Note, that `requirepass` now also changes the ACL default user `password`.
+Note that `requirepass` also changes the ACL default user `password`.
 
 ## Security notice
 
