@@ -93,10 +93,10 @@ kubectl patch dragonfly dragonfly-sample --type merge -p '{"spec":{"args":["--re
 
 ### Vertically scale the instance
 
-To vertically scale the instance, edit the `spec.resources` field in the Dragonfly instance. For example, to increase the CPU limit to 2 cores run:
+To vertically scale the instance, edit the `spec.resources` field in the Dragonfly instance. For example, to increase the CPU requests to 2 cores run:
 
 ```sh
-kubectl patch dragonfly dragonfly-sample --type merge -p '{"spec":{"resources":{"requests":{"memory":"1Gi"},"limits":{"memory":"2Gi"}}}}'
+kubectl patch dragonfly dragonfly-sample --type merge -p '{"spec":{"resources":{"requests":{"cpu":"2"}}}}'
 ```
 
 To understand how to configure High Availability, please refer to the [High Availability](/docs/managing-dragonfly/high-availability.md#high-availability-with-dragonfly-operator) section.
