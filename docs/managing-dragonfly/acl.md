@@ -1,12 +1,12 @@
 # Access Control Lists (ACL)
 
-Dragonfly has built in support for ACL. Dragonfly operators get fine grained control on how and who accesses the datastore via the ACL family of commands.
-Since, Dragonfly is designed as a drop in replacement for Redis, you can expect the same API functionality for ACL as in Redis.
+Dragonfly has built-in support for ACL. Dragonfly operators get fine-grained control over how and who accesses the datastore via the ACL family of commands.
+Since Dragonfly is designed as a drop-in replacement for Redis, you can expect the same API functionality for ACL as in Redis.
 
 All connections in Dragofnly default to the user `default` (unless that user is disabled). By default, user `default` can `AUTH` in Dragonfly using any password, 
 and is allowed to execute any command and is part of all the available ACL groups.
 
-Permissions for a given user are controlled via a domain specific language (DSP) and are divided into 4 categories:
+Permissions for a given user are controlled via a domain-specific language (DSL) and are divided into 4 categories:
 
 1. ACL groups
 2. Commands
@@ -39,12 +39,12 @@ Users can use `AUTH <username> <password>` to authorize their connection with a 
 will abide by the user's specified permissions. Changing the `default` user's status to `OFF` or password, will require all incoming connections
 to authenticate.
 
-Note that, if the password is changed and a user has already `authenticated` then they don't need to re-authenticate until they reconnect.
+Note that if the password is changed and a user has already `authenticated` then they don't need to re-authenticate until they reconnect.
 Basically, password change does not act as a connection eviction mechanism. However, if the `ACL DELUSER` is used to remove the user from the system,
 then their connection is killed by the system. Furthermore, any change to a user's permission list with `ACL SETUSER` will propagate to the already
 active and authenticated connections.
 
-Also note, that the flag `--requirepass` also changes the `default` user password. So, if during Dragonfly startup the flag `requirepass` is set,
+Also note that the flag `--requirepass` also changes the `default` user password. So, if during Dragonfly startup the flag `requirepass` is set,
 then the `default` user's password will be the one specified in that flag.
 
 ## ACL Groups
