@@ -63,7 +63,7 @@ Because `HELLO` replies with useful information, and given that protover is opti
 
 When called with the optional protover argument, this command switches the protocol to the specified version and also accepts the following options:
 
-`AUTH <username> <password>`: directly authenticates the connection in addition to switching to the specified protocol version. This makes calling `AUTH` before `HELLO` unnecessary when setting up a new connection. Note that the username must be set to "default" as Dragonfly does not support ACLs, but rather uses the requirepass mechanism.
+`AUTH <username> <password>`: directly authenticates the connection in addition to switching to the specified protocol version. This makes calling `AUTH` before `HELLO` unnecessary when setting up a new connection. Note that the default username is `default` as Dragonfly has built in support for ACLs.
 `SETNAME <clientname>`: this is the equivalent of calling CLIENT SETNAME.
 
 ## Return
