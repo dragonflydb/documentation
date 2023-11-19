@@ -17,7 +17,7 @@ Flags can be configured in multiple ways:
 #### 1. Inside the script souce code
 
 ```lua
-#!lua flags=allow-undeclared-keys,disable-atomicty
+#!lua flags=allow-undeclared-keys,disable-atomicity
 -- script body below
 ```
 
@@ -25,7 +25,7 @@ Flags can be configured in multiple ways:
 
 Default flags are applied to all scripts and can be provided as an argument to Dragonfly.
 
-`./dragonfly --default_lua_flags=allow-undeclared-keys,disable-atomicty`
+`./dragonfly --default_lua_flags=allow-undeclared-keys,disable-atomicity`
 
 
 #### 3. With `SCRIPT FLAGS` command
