@@ -168,7 +168,7 @@ $> ./dragonfly --logtostderr --dir s3://acme-backups/dragonfly/staging
 
 As with disk backups, Dragonfly will automatically load the latest snapshot from the S3 bucket on startup and store a snapshot on shutdown.
 
-:warning: Dragonfly S3 cloud storage is a preview feature and does not yet support HTTPS. Please open a [GitHub](https://github.com/dragonflydb/dragonfly) issue if you find any problems or require HTTPS support.
+:warning: Dragonfly S3 cloud storage is a preview feature. Please open a [GitHub](https://github.com/dragonflydb/dragonfly) issue if you find any problems.
 
 ### Flags
 
@@ -176,6 +176,7 @@ In addition to the backups flags described above, cloud storage includes flags:
 - **`s3_endpoint`** -- When using an S3-compatible service overrides the S3 endpoint.
 - **`s3_ec2_metadata`** -- Whether to load AWS credentials from EC2 metadata. Only enable this flag when running in EC2. Disabled by default.
 - **`s3_sign_payload`** -- Whether to sign the request payload when uploading snapshots to S3. Enabled by default, though signing the payload does have a performance overhead so can be disabled if needed.
+- **`s3_use_https`** -- Whether to use HTTPS. Enabled by default.
 
 ### Authentication
 
