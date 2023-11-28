@@ -1,5 +1,5 @@
 ---
-description: Searches the index with a textual query, returning either documents or just ids
+description: Searches the index with a query, returning docs or just ids
 ---
 
 # FT.SEARCH

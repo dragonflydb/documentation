@@ -1,5 +1,5 @@
 ---
-description: Performs a `FT.SEARCH` or `FT.AGGREGATE` command and collects performance information
+description: Uses SEARCH/AGGREGATE command to collect performance info
 ---
 
 # FT.PROFILE
