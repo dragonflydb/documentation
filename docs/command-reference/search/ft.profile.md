@@ -10,9 +10,9 @@ description: Uses SEARCH/AGGREGATE command to collect performance info
 
 **Time complexity:** O(N)
 
-Apply `FT.SEARCH` or `FT.AGGREGATE` command to collect performance details.
+## Description
 
-[Examples](#examples)
+Apply `FT.SEARCH` or `FT.AGGREGATE` command to collect performance details.
 
 ## Required arguments
 
@@ -26,12 +26,11 @@ is index name, created using `FT.CREATE`.
 <summary><code>SEARCH | AGGREGATE</code></summary>
 
 is difference between `FT.SEARCH` and `FT.AGGREGATE`.
-</details>
 
-<details open>
-<summary><code>LIMITED</code></summary>
-
-removes details of `reader` iterator.
+:::note About `FT.AGGREGATE`
+- `FT.AGGREGATE` is not supported by Dragonfly yet.
+- Thus, using the `AGGREGATE` option will still return the same results as the `SEARCH` option.
+:::
 </details>
 
 <details open>
@@ -40,102 +39,64 @@ removes details of `reader` iterator.
 is query string, sent to `FT.SEARCH`.
 </details>
 
-<note><b>Note:</b> To reduce the size of the output, use `NOCONTENT` or `LIMIT 0 0` to reduce the reply results or `LIMITED` to not reply with details of `reader iterators` inside built-in unions such as `fuzzy` or `prefix`.</note>
+**Note**: To reduce the size of the output, use `NOCONTENT` or `LIMIT 0 0` to reduce the reply results or `LIMITED` to not reply with details of `reader iterators` inside built-in unions such as `fuzzy` or `prefix`.
 
 ## Return
 
-`FT.PROFILE` returns an array reply, with the first array reply identical to the reply of `FT.SEARCH` and `FT.AGGREGATE` and a second array reply with information of time in milliseconds (ms) used to create the query and time and count of calls of iterators and result-processors.
+`FT.PROFILE` returns an array reply.
+The return value has an array with the following elements:
 
-Return value has an array with two elements:
-
-- Results - The normal reply from RediSearch, similar to a cursor.
-- Profile - The details in the profile are:
-  - Total profile time - The total runtime of the query, in ms.
-  - Parsing time - Parsing time of the query and parameters into an execution plan, in ms.
-  - Pipeline creation time - Creation time of execution plan including iterators,
-  result processors, and reducers creation, in ms.
-  - Iterators profile - Index iterators information including their type, term, count, and time data.
-  Inverted-index iterators have in addition the number of elements they contain. Hybrid vector iterators returning the top results from the vector index in batches, include the number of batches.
-  - Result processors profile - Result processors chain with type, count, and time data.
+- `took`: time in microseconds (μs) used to execute the query.
+- `hits`: number of documents returned by the query.
+- `serialized`: number of documents serialized by the query.
 
 ## Examples
 
 <details open>
 <summary><b>Collect performance information about an index</b></summary>
 
-``` bash
-127.0.0.1:6379> FT.PROFILE idx SEARCH QUERY "hello world"
-1) 1) (integer) 1
-   2) "doc1"
-   3) 1) "t"
-      2) "hello world"
-2) 1) 1) Total profile time
-      2) "0.47199999999999998"
-   2) 1) Parsing time
-      2) "0.218"
-   3) 1) Pipeline creation time
-      2) "0.032000000000000001"
-   4) 1) Iterators profile
-      2) 1) Type
-         2) INTERSECT
-         3) Time
-         4) "0.025000000000000001"
-         5) Counter
-         6) (integer) 1
-         7) Child iterators
-         8)  1) Type
-             2) TEXT
-             3) Term
-             4) hello
-             5) Time
-             6) "0.0070000000000000001"
-             7) Counter
-             8) (integer) 1
-             9) Size
-            10) (integer) 1
-         9)  1) Type
-             2) TEXT
-             3) Term
-             4) world
-             5) Time
-             6) "0.0030000000000000001"
-             7) Counter
-             8) (integer) 1
-             9) Size
-            10) (integer) 1
-   5) 1) Result processors profile
-      2) 1) Type
-         2) Index
-         3) Time
-         4) "0.036999999999999998"
-         5) Counter
-         6) (integer) 1
-      3) 1) Type
-         2) Scorer
-         3) Time
-         4) "0.025000000000000001"
-         5) Counter
-         6) (integer) 1
-      4) 1) Type
-         2) Sorter
-         3) Time
-         4) "0.013999999999999999"
-         5) Counter
-         6) (integer) 1
-      5) 1) Type
-         2) Loader
-         3) Time
-         4) "0.10299999999999999"
-         5) Counter
-         6) (integer) 1
+```bash
+dragonfly> HSET blog:post:1 title "blog post 1" published_at 1701210030 category "default" description "this is a blog"
+(integer) 4
+
+dragonfly> FT.CREATE idx ON HASH PREFIX 1 blog:post: SCHEMA title TEXT SORTABLE published_at NUMERIC SORTABLE category TAG SORTABLE description TEXT NOINDEX
+OK
+
+dragonfly> FT.PROFILE idx SEARCH QUERY "@category: { default }"
+1) 1) "took"
+   2) (integer) 488
+   3) "hits"
+   4) (integer) 1
+   5) "serialized"
+   6) (integer) 1
+2) 1) "took"
+   2) (integer) 13
+   3) "tree"
+   4) 1) t=9          n=0          Field{category}
+      2) 1) t=5          n=0          Tags{default}
+3) 1) "took"
+   2) (integer) 35
+   3) "tree"
+   4) 1) t=30         n=0          Field{category}
+      2) 1) t=5          n=0          Tags{default}
+4) 1) "took"
+   2) (integer) 24
+   3) "tree"
+   4) 1) t=19         n=0          Field{category}
+      2) 1) t=14         n=0          Tags{default}
+5) 1) "took"
+   2) (integer) 54
+   3) "tree"
+   4) 1) t=11         n=1          Field{category}
+      2) 1) t=9          n=1          Tags{default}
+6) 1) "took"
+   2) (integer) 9
+   3) "tree"
+   4) 1) t=6          n=0          Field{category}
+      2) 1) t=5          n=0          Tags{default}
 ```
 </details>
 
 ## See also
 
-`FT.SEARCH` | `FT.AGGREGATE` 
-
-## Related topics
-
-[RediSearch](https://redis.io/docs/stack/search)
-
+[`FT.SEARCH`](./ft.search.md) | `FT.AGGREGATE` 

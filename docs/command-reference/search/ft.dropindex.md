@@ -13,14 +13,13 @@ description: Deletes the index
 ## Description
 
 Delete an index.
-For usage, see [examples](#examples) below.
 
 ## Required arguments
 
 <details open>
 <summary><code>index</code></summary>
 
-is the full-text index name. You must first create the index using [`FT.CREATE`](./ft.create.md).
+is index name. You must first create the index using [`FT.CREATE`](./ft.create.md).
 </details>
 
 ## Optional arguments

@@ -13,14 +13,13 @@ description: Returns information and statistics on the index
 ## Description
 
 Return information and statistics on the index.
-For usage, see [examples](#examples) below.
 
 ## Required arguments
 
 <details open>
 <summary><code>index</code></summary>
 
-is the full-text index name. You must first create the index using [`FT.CREATE`](./ft.create.md).
+is index name. You must first create the index using [`FT.CREATE`](./ft.create.md).
 </details>
 
 ## Return
@@ -39,6 +38,9 @@ Returned values include:
 <summary><b>Return statistics about an index</b></summary>
 
 ```bash
+dragonfly> HSET blog:post:1 title "blog post 1" published_at 1701210030 category "default" description "this is a blog"
+(integer) 4
+
 dragonfly> FT.CREATE idx ON HASH PREFIX 1 blog:post: SCHEMA title TEXT SORTABLE published_at NUMERIC SORTABLE category TAG SORTABLE description TEXT NOINDEX
 OK
 
@@ -71,7 +73,7 @@ dragonfly> FT.INFO idx
       5) type
       6) TEXT
 5) num_docs
-6) (integer) 0
+6) (integer) 1
 ```
 </details>
 
