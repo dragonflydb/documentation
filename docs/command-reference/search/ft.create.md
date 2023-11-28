@@ -6,32 +6,27 @@ description: Creates an index with the given spec
 
 ## Syntax
 
-    FT.CREATE index [ON <HASH | JSON>] [PREFIX count prefix [prefix ...]] [FILTER filter] [LANGUAGE default_lang] [LANGUAGE_FIELD lang_attribute] [SCORE default_score] [SCORE_FIELD score_attribute] [PAYLOAD_FIELD payload_attribute] [MAXTEXTFIELDS] [TEMPORARY seconds] [NOOFFSETS] [NOHL] [NOFIELDS] [NOFREQS] [STOPWORDS count [stopword [stopword ...]]] [SKIPINITIALSCAN] SCHEMA field_name [AS alias] <TEXT | TAG | NUMERIC | GEO | VECTOR> [WITHSUFFIXTRIE] [SORTABLE [UNF]] [NOINDEX] [field_name [AS alias] <TEXT | TAG | NUMERIC | GEO | VECTOR> [WITHSUFFIXTRIE] [SORTABLE [UNF]] [NOINDEX] ...]
+    FT.CREATE index
+      [ON HASH | JSON]
+      [PREFIX count prefix [prefix ...]]
+      [FILTER {filter}]
+      [LANGUAGE default_lang]
+      [LANGUAGE_FIELD lang_attribute]
+      [SCORE default_score]
+      [SCORE_FIELD score_attribute]
+      [PAYLOAD_FIELD payload_attribute]
+      [MAXTEXTFIELDS]
+      [TEMPORARY seconds]
+      [NOOFFSETS]
+      [NOHL]
+      [NOFIELDS]
+      [NOFREQS]
+      [STOPWORDS count [stopword ...]]
+      [SKIPINITIALSCAN]
+      SCHEMA field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAPE [ SORTABLE [UNF]]
+      [NOINDEX] [ field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAPE [ SORTABLE [UNF]] [NOINDEX] ...]
 
-**Time complexity:** O(K) at creation where K is the number of fields, O(N) if scanning the keyspace is triggered, where N is the number of keys in the keyspace
-
----
-syntax: |
-  FT.CREATE index 
-    [ON HASH | JSON] 
-    [PREFIX count prefix [prefix ...]] 
-    [FILTER {filter}]
-    [LANGUAGE default_lang] 
-    [LANGUAGE_FIELD lang_attribute] 
-    [SCORE default_score] 
-    [SCORE_FIELD score_attribute] 
-    [PAYLOAD_FIELD payload_attribute] 
-    [MAXTEXTFIELDS] 
-    [TEMPORARY seconds] 
-    [NOOFFSETS] 
-    [NOHL] 
-    [NOFIELDS] 
-    [NOFREQS] 
-    [STOPWORDS count [stopword ...]] 
-    [SKIPINITIALSCAN]
-    SCHEMA field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAPE [ SORTABLE [UNF]] 
-    [NOINDEX] [ field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAPE [ SORTABLE [UNF]] [NOINDEX] ...]
----
+**Time complexity:** O(K) at creation where K is the number of fields, O(N) if scanning the keyspace is triggered, where N is the number of keys in the keyspace.
 
 ## Description
 
@@ -39,15 +34,17 @@ Create an index with the given specification. For usage, see [Examples](#example
 
 ## Required arguments
 
-<a name="index"></a><details open>
+<a name="index"></a>
+<details open>
 <summary><code>index</code></summary>
 
-is index name to create.
-If such index already exists, returns an error reply `(error) Index already exists`.
+is index name to create. If such index already exists, returns an error reply `(error) Index already exists`.
+
 </details>
 
-<a name="SCHEMA"></a><details open>
-<summary><code>SCHEMA {identifier} AS {attribute} {attribute type} {options...</code></summary> 
+<a name="SCHEMA"></a>
+<details open>
+<summary><code>SCHEMA field_name [AS alias] TEXT | TAG | NUMERIC | GEO | VECTOR | GEOSHAPE [ SORTABLE [UNF]]</code></summary> 
 
 after the SCHEMA keyword, declares which fields to index:
 
@@ -101,37 +98,44 @@ after the SCHEMA keyword, declares which fields to index:
 
   - `CASESENSITIVE` for `TAG` attributes, keeps the original letter cases of the tags. If not specified, the characters are converted to lowercase.
 
-  - `WITHSUFFIXTRIE` for `TEXT` and `TAG` attributes, keeps a suffix trie with all terms which match the suffix. It is used to optimize `contains` (*foo*) and `suffix` (*foo) queries. Otherwise, a brute-force search on the trie is performed. If suffix trie exists for some fields, these queries will be disabled for other fields.
+  - `WITHSUFFIXTRIE` for `TEXT` and `TAG` attributes, keeps a suffix trie with all terms which match the suffix. It is used to optimize `contains` (*foo*) and `suffix` (*foo) queries. Otherwise, a brute-force search on the trie is performed.
+    If suffix trie exists for some fields, these queries will be disabled for other fields.
+
 </details>
 
 ## Optional arguments
 
-<a name="ON"></a><details open>
-<summary><code>ON {data_type}</code></summary>
+<a name="ON"></a>
+<details open>
+<summary><code>ON data_type</code></summary>
 
 currently supports HASH (default) and JSON. To index JSON, you must have the [RedisJSON](https://redis.io/docs/stack/json) module installed.
 </details>
 
-<a name="PREFIX"></a><details open>
-<summary><code>PREFIX {count} {prefix}</code></summary> 
+<a name="PREFIX"></a>
+<details open>
+<summary><code>PREFIX count prefix</code></summary> 
 
 tells the index which keys it should index. You can add several prefixes to index. Because the argument is optional, the default is `*` (all keys).
 </details>
 
-<a name="FILTER"></a><details open>
-<summary><code>FILTER {filter}</code></summary> 
+<a name="FILTER"></a>
+<details open>
+<summary><code>FILTER filter</code></summary> 
 
 is a filter expression with the full RediSearch aggregation expression language. It is possible to use `@__key` to access the key that was just added/changed. A field can be used to set field name by passing `'FILTER @indexName=="myindexname"'`.
 </details>
 
-<a name="LANGUAGE"></a><details open>
-<summary><code>LANGUAGE {default_lang}</code></summary> 
+<a name="LANGUAGE"></a>
+<details open>
+<summary><code>LANGUAGE default_lang</code></summary> 
 
 if set, indicates the default language for documents in the index. Default is English.
 </details>
 
-<a name="LANGUAGE_FIELD"></a><details open>
-<summary><code>LANGUAGE_FIELD {lang_attribute}</code></summary> 
+<a name="LANGUAGE_FIELD"></a>
+<details open>
+<summary><code>LANGUAGE_FIELD lang_attribute</code></summary> 
 
 is document attribute set as the document language.
 
@@ -142,38 +146,44 @@ Spanish, Swedish, Tamil, Turkish, and Chinese.
 When adding Chinese language documents, set `LANGUAGE chinese` for the indexer to properly tokenize the terms. If you use the default language, then search terms are extracted based on punctuation characters and whitespace. The Chinese language tokenizer makes use of a segmentation algorithm (via [Friso](https://github.com/lionsoul2014/friso)), which segments text and checks it against a predefined dictionary. See [Stemming](https://redis.io/docs/interact/search-and-query/advanced-concepts/stemming) for more information.
 </details>
 
-<a name="SCORE"></a><details open>
-<summary><code>SCORE {default_score}</code></summary> 
+<a name="SCORE"></a>
+<details open>
+<summary><code>SCORE default_score</code></summary> 
 
 is default score for documents in the index. Default score is 1.0.
 </details>
 
-<a name="SCORE_FIELD"></a><details open>
-<summary><code>SCORE_FIELD {score_attribute}</code></summary> 
+<a name="SCORE_FIELD"></a>
+<details open>
+<summary><code>SCORE_FIELD score_attribute</code></summary> 
 
 is document attribute that you use as the document rank based on the user ranking. Ranking must be between 0.0 and 1.0. If not set, the default score is 1.
 </details>
 
-<a name="PAYLOAD_FIELD"></a><details open>
-<summary><code>PAYLOAD_FIELD {payload_attribute}</code></summary> 
+<a name="PAYLOAD_FIELD"></a>
+<details open>
+<summary><code>PAYLOAD_FIELD payload_attribute</code></summary> 
 
 is document attribute that you use as a binary safe payload string to the document that can be evaluated at query time by a custom scoring function or retrieved to the client.
 </details>
 
-<a name="MAXTEXTFIELDS"></a><details open>
+<a name="MAXTEXTFIELDS"></a>
+<details open>
 <summary><code>MAXTEXTFIELDS</code></summary> 
 
 forces RediSearch to encode indexes as if there were more than 32 text attributes, which allows you to add additional attributes (beyond 32) using `FT.ALTER`. For efficiency, RediSearch encodes indexes differently if they are created with less than 32 text attributes.
 </details>
 
-<a name="NOOFFSETS"></a><details open>
+<a name="NOOFFSETS"></a>
+<details open>
 <summary><code>NOOFFSETS</code></summary> 
 
 does not store term offsets for documents. It saves memory, but does not allow exact searches or highlighting. It implies `NOHL`.
 </details>
 
-<a name="TEMPORARY"></a><details open>
-<summary><code>TEMPORARY {seconds}</code></summary> 
+<a name="TEMPORARY"></a>
+<details open>
+<summary><code>TEMPORARY seconds</code></summary> 
 
 creates a lightweight temporary index that expires after a specified period of inactivity, in seconds. The internal idle timer is reset whenever the index is searched or added to. Because such indexes are lightweight, you can create thousands of such indexes without negative performance implications and, therefore, you should consider using `SKIPINITIALSCAN` to avoid costly scanning.
 
@@ -191,40 +201,45 @@ In version 2.x, RediSearch indexes hashes and JSONs, and the dependency between 
 
 </details>
 
-<a name="NOHL"></a><details open>
+<a name="NOHL"></a>
+<details open>
 <summary><code>NOHL</code></summary> 
 
 conserves storage space and memory by disabling highlighting support. If set, the corresponding byte offsets for term positions are not stored. `NOHL` is also implied by `NOOFFSETS`.
 </details>
 
-<a name="NOFIELDS"></a><details open>
+<a name="NOFIELDS"></a>
+<details open>
 <summary><code>NOFIELDS</code></summary> 
 
 does not store attribute bits for each term. It saves memory, but it does not allow
   filtering by specific attributes.
 </details>
 
-<a name="NOFREQS"></a><details open>
+<a name="NOFREQS"></a>
+<details open>
 <summary><code>NOFREQS</code></summary> 
 
 avoids saving the term frequencies in the index. It saves memory, but does not allow sorting based on the frequencies of a given term within the document.
 </details>
 
-<a name="STOPWORDS"></a><details open>
-<summary><code>STOPWORDS {count}</code></summary> 
+<a name="STOPWORDS"></a>
+<details open>
+<summary><code>STOPWORDS count</code></summary> 
 
 sets the index with a custom stopword list, to be ignored during indexing and search time. `{count}` is the number of stopwords, followed by a list of stopword arguments exactly the length of `{count}`.
 
 If not set, FT.CREATE takes the default list of stopwords. If `{count}` is set to 0, the index does not have stopwords.
 </details>
 
-<a name="SKIPINITIALSCAN"></a><details open>
+<a name="SKIPINITIALSCAN"></a>
+<details open>
 <summary><code>SKIPINITIALSCAN</code></summary> 
 
 if set, does not scan and index.
 </details>
-        
-<note><b>Notes:</b>
+
+<b>Notes:</b>
 
  - **Attribute number limits:** RediSearch supports up to 1024 attributes per schema, out of which at most 128 can be TEXT attributes. On 32 bit builds, at most 64 attributes can be TEXT attributes. The more attributes you have, the larger your index, as each additional 8 attributes require one extra byte per index record to encode. You can always use the `NOFIELDS` option and not encode attribute information into the index, for saving space, if you do not need filtering by text attributes. This will still allow filtering by numeric and geo attributes.
  - **Running in clustered databases:** When having several indices in a clustered database, you need to make sure the documents you want to index reside on the same shard as the index. You can achieve this by having your documents tagged by the index name.
@@ -235,8 +250,6 @@ if set, does not scan and index.
    ```
 
    When Running RediSearch in a clustered database, you can span the index across shards using [RSCoordinator](https://github.com/RedisLabsModules/RSCoordinator). In this case the above does not apply.
-
-</note>
 
 ## Return
 

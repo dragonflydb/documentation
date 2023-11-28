@@ -6,38 +6,32 @@ description: Searches the index with a textual query, returning either documents
 
 ## Syntax
 
-    FT.SEARCH index query [NOCONTENT] [VERBATIM] [NOSTOPWORDS] [WITHSCORES] [WITHPAYLOADS] [WITHSORTKEYS] [FILTER numeric_field min max [FILTER numeric_field min max ...]] [GEOFILTER geo_field lon lat radius <m | km | mi | ft> [GEOFILTER geo_field lon lat radius <m | km | mi | ft> ...]] [INKEYS count key [key ...]] [INFIELDS count field [field ...]] [RETURN count identifier [AS property] [identifier [AS property] ...]] [SUMMARIZE [FIELDS count field [field ...]] [FRAGS num] [LEN fragsize] [SEPARATOR separator]] [HIGHLIGHT [FIELDS count field [field ...]] [TAGS open close]] [SLOP slop] [TIMEOUT timeout] [INORDER] [LANGUAGE language] [EXPANDER expander] [SCORER scorer] [EXPLAINSCORE] [PAYLOAD payload] [SORTBY sortby [ASC | DESC]] [LIMIT offset num] [PARAMS nargs name value [name value ...]] [DIALECT dialect]
+    FT.SEARCH index query
+      [NOCONTENT]
+      [VERBATIM] [NOSTOPWORDS]
+      [WITHSCORES]
+      [WITHPAYLOADS]
+      [WITHSORTKEYS]
+      [FILTER numeric_field min max [ FILTER numeric_field min max ...]]
+      [GEOFILTER geo_field lon lat radius m | km | mi | ft [ GEOFILTER geo_field lon lat radius m | km | mi | ft ...]]
+      [INKEYS count key [key ...]] [ INFIELDS count field [field ...]]
+      [RETURN count identifier [AS property] [ identifier [AS property] ...]]
+      [SUMMARIZE [ FIELDS count field [field ...]] [FRAGS num] [LEN fragsize] [SEPARATOR separator]]
+      [HIGHLIGHT [ FIELDS count field [field ...]] [ TAGS open close]]
+      [SLOP slop]
+      [TIMEOUT timeout]
+      [INORDER]
+      [LANGUAGE language]
+      [EXPANDER expander]
+      [SCORER scorer]
+      [EXPLAINSCORE]
+      [PAYLOAD payload]
+      [SORTBY sortby [ ASC | DESC] [WITHCOUNT]]
+      [LIMIT offset num]
+      [PARAMS nargs name value [ name value ...]]
+      [DIALECT dialect]
 
 **Time complexity:** O(N)
-
-
----
-syntax: |
-  FT.SEARCH index query 
-    [NOCONTENT] 
-    [VERBATIM] [NOSTOPWORDS] 
-    [WITHSCORES] 
-    [WITHPAYLOADS] 
-    [WITHSORTKEYS] 
-    [FILTER numeric_field min max [ FILTER numeric_field min max ...]] 
-    [GEOFILTER geo_field lon lat radius m | km | mi | ft [ GEOFILTER geo_field lon lat radius m | km | mi | ft ...]] 
-    [INKEYS count key [key ...]] [ INFIELDS count field [field ...]] 
-    [RETURN count identifier [AS property] [ identifier [AS property] ...]] 
-    [SUMMARIZE [ FIELDS count field [field ...]] [FRAGS num] [LEN fragsize] [SEPARATOR separator]] 
-    [HIGHLIGHT [ FIELDS count field [field ...]] [ TAGS open close]] 
-    [SLOP slop] 
-    [TIMEOUT timeout] 
-    [INORDER] 
-    [LANGUAGE language] 
-    [EXPANDER expander] 
-    [SCORER scorer] 
-    [EXPLAINSCORE] 
-    [PAYLOAD payload] 
-    [SORTBY sortby [ ASC | DESC] [WITHCOUNT]] 
-    [LIMIT offset num] 
-    [PARAMS nargs name value [ name value ...]] 
-    [DIALECT dialect]
----
 
 Search the index with a textual query, returning either documents or just ids
 
@@ -97,25 +91,25 @@ limits results to those having numeric values ranging between `min` and `max`, i
 </details>
 
 <details open>
-<summary><code>GEOFILTER {geo_attribute} {lon} {lat} {radius} m|km|mi|ft</code></summary>
+<summary><code>GEOFILTER geo_attribute lon lat radius m|km|mi|ft</code></summary>
 
 filter the results to a given `radius` from `lon` and `lat`. Radius is given as a number and units. See `GEORADIUS` for more details.
 </details>
 
 <details open>
-<summary><code>INKEYS {num} {attribute} ...</code></summary>
+<summary><code>INKEYS num attribute ...</code></summary>
 
 limits the result to a given set of keys specified in the list. The first argument must be the length of the list and greater than zero. Non-existent keys are ignored, unless all the keys are non-existent.
 </details>
 
 <details open>
-<summary><code>INFIELDS {num} {attribute} ...</code></summary>
+<summary><code>INFIELDS num attribute ...</code></summary>
 
 filters the results to those appearing only in specific attributes of the document, like `title` or `URL`. You must include `num`, which is the number of attributes you're filtering by. For example, if you request `title` and `URL`, then `num` is 2.
 </details>
 
 <details open>
-<summary><code>RETURN {num} {identifier} AS {property} ...</code></summary>
+<summary><code>RETURN num identifier AS property ...</code></summary>
 
 limits the attributes returned from the document. `num` is the number of attributes following the keyword. If `num` is 0, it acts like `NOCONTENT`.
   `identifier` is either an attribute name (for hashes and JSON) or a JSON Path expression (for JSON).
@@ -135,7 +129,7 @@ formats occurrences of matched text. See [Highlighting](https://redis.io/docs/in
 </details>
 
 <details open>
-<summary><code>SLOP {slop}</code></summary>
+<summary><code>SLOP slop</code></summary>
 
 is the number of intermediate terms allowed to appear between the terms of the query. 
 Suppose you're searching for a phrase _hello world_.
@@ -151,7 +145,7 @@ requires the terms in the document to have the same order as the terms in the qu
 </details>
 
 <details open>
-<summary><code>LANGUAGE {language}</code></summary>
+<summary><code>LANGUAGE language</code></summary>
 
 use a stemmer for the supplied language during search for query expansion. If querying documents in Chinese, set to `chinese` to
   properly tokenize the query terms. Defaults to English. If an unsupported language is sent, the command returns an error.
@@ -159,13 +153,13 @@ use a stemmer for the supplied language during search for query expansion. If qu
 </details>
 
 <details open>
-<summary><code>EXPANDER {expander}</code></summary>
+<summary><code>EXPANDER expander</code></summary>
 
 uses a custom query expander instead of the stemmer. See [Extensions](https://redis.io/docs/interact/search-and-query/administration/extensions/).
 </details>
 
 <details open>
-<summary><code>SCORER {scorer}</code></summary>
+<summary><code>SCORER scorer</code></summary>
 
 uses a [built-in](https://redis.io/docs/interact/search-and-query/advanced-concepts/scoring/) or a [user-provided](https://redis.io/docs/interact/search-and-query/administration/extensions/) scoring function.
 </details>
@@ -177,13 +171,13 @@ returns a textual description of how the scores were calculated. Using this opti
 </details>
 
 <details open>
-<summary><code>PAYLOAD {payload}</code></summary>
+<summary><code>PAYLOAD payload</code></summary>
 
 adds an arbitrary, binary safe payload that is exposed to custom scoring functions. See [Extensions](https://redis.io/docs/interact/search-and-query/administration/extensions/).
 </details>
 
 <details open>
-<summary><code>SORTBY {attribute} [ASC|DESC] [WITHCOUNT]</code></summary>
+<summary><code>SORTBY attribute [ASC|DESC] [WITHCOUNT]</code></summary>
 
 orders the results by the value of this attribute. This applies to both text and numeric attributes. Attributes needed for `SORTBY` should be declared as `SORTABLE` in the index, in order to be available with very low latency. Note that this adds memory overhead.
 
@@ -205,13 +199,13 @@ limits the results to the offset and number of results given. Note that the offs
 </details>
 
 <details open>
-<summary><code>TIMEOUT {milliseconds}</code></summary>
+<summary><code>TIMEOUT milliseconds</code></summary>
 
 overrides the timeout parameter of the module.
 </details>
 
 <details open>
-<summary><code>PARAMS {nargs} {name} {value}</code></summary>
+<summary><code>PARAMS nargs name value</code></summary>
 
 defines one or more value parameters. Each parameter has a name and a value. 
 
@@ -219,7 +213,7 @@ You can reference parameters in the `query` by a `$`, followed by the parameter 
 </details>
 
 <details open>
-<summary><code>DIALECT {dialect_version}</code></summary>
+<summary><code>DIALECT dialect_version</code></summary>
 
 selects the dialect version under which to execute the query. If not specified, the query will execute under the default dialect version set during module initial loading or via `FT.CONFIG SET` command.
 </details>

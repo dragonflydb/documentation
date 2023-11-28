@@ -1,6 +1,5 @@
 ---
-description: Performs a `FT.SEARCH` or `FT.AGGREGATE` command and collects
-  performance information
+description: Performs a `FT.SEARCH` or `FT.AGGREGATE` command and collects performance information
 ---
 
 # FT.PROFILE
@@ -11,12 +10,7 @@ description: Performs a `FT.SEARCH` or `FT.AGGREGATE` command and collects
 
 **Time complexity:** O(N)
 
----
-syntax: |
-  FT.PROFILE index SEARCH | AGGREGATE [LIMITED] QUERY query
----
-
-Apply `FT.SEARCH` or `FT.AGGREGATE` command to collect performance details
+Apply `FT.SEARCH` or `FT.AGGREGATE` command to collect performance details.
 
 [Examples](#examples)
 
@@ -41,7 +35,7 @@ removes details of `reader` iterator.
 </details>
 
 <details open>
-<summary><code>QUERY {query}</code></summary>
+<summary><code>QUERY query</code></summary>
 
 is query string, sent to `FT.SEARCH`.
 </details>
