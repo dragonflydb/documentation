@@ -10,9 +10,9 @@ description: Deletes the index
 
 **Time complexity:** O(1) or O(N) if documents are deleted, where N is the number of keys in the keyspace.
 
-Delete an index.
+## Description
 
-[Examples](#examples)
+Delete an index. For usage, see [examples](#examples) below.
 
 ## Required arguments
 
@@ -45,7 +45,7 @@ To check the completion of the indexing, use [`FT.INFO`](./ft.info.md).
 <details open>
 <summary><b>Delete an index</b></summary>
 
-``` bash
+```bash
 dragonfly> FT.DROPINDEX idx DD
 OK
 ```

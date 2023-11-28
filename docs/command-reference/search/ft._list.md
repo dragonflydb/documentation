@@ -10,6 +10,8 @@ description: Returns a list of all existing indexes
 
 **Time complexity:** O(1)
 
+## Description
+
 Returns a list of all existing indexes.
 
 The prefix `_` in the command indicates, this is a temporary command. 
@@ -17,11 +19,11 @@ In the future, a `SCAN` type of command will be added, for use when a database c
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#resp-arrays) with index names.
+[Array reply](https://redis.io/docs/reference/protocol-spec#arrays) with index names.
 
 ## Examples
 
-``` bash
+```bash
 dragonfly> FT._LIST
 1) "idx"
 2) "movies"
