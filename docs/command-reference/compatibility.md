@@ -7,8 +7,8 @@ sidebar_position: 0
 | Command Family                               | Command                                                    | Dragonfly Support                                        |
 | :------------------------------------------- | :--------------------------------------------------------- | :------------------------------------------------------- |
 | <span class="family">Bitmap</span>           | <span class="command">BITCOUNT</span>                      | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">BITFIELD</span>                      | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">BITFIELD_RO</span>                   | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">BITFIELD</span>                      | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">BITFIELD_RO</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BITOP</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BITPOS</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GETBIT</span>                        | <span class="support supported">Fully supported</span>   |
