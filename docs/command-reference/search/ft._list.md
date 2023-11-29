@@ -29,3 +29,7 @@ dragonfly> FT._LIST
 2) "movies"
 3) "imdb"
 ```
+
+## Related topics
+
+- [RediSearch](https://redis.io/docs/stack/search)

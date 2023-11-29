@@ -100,3 +100,7 @@ dragonfly> FT.PROFILE idx SEARCH QUERY "@category: { default }"
 ## See also
 
 [`FT.SEARCH`](./ft.search.md) | `FT.AGGREGATE` 
+
+## Related topics
+
+- [RediSearch](https://redis.io/docs/stack/search)

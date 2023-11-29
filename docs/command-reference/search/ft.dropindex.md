@@ -54,3 +54,7 @@ OK
 ## See also
 
 [`FT.CREATE`](./ft.create.md) | [`FT.INFO`](./ft.info.md)
+
+## Related topics
+
+- [RediSearch](https://redis.io/docs/stack/search)

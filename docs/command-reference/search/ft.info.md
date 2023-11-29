@@ -80,3 +80,7 @@ dragonfly> FT.INFO idx
 ## See also
 
 [`FT.CREATE`](./ft.create.md) | [`FT.SEARCH`](./ft.search.md)
+
+## Related topics
+
+- [RediSearch](https://redis.io/docs/stack/search)
