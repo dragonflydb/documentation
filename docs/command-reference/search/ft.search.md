@@ -97,7 +97,7 @@ You cannot reference parameters in the query string where concrete values are no
 
 ## Complexity
 
-`FT.SEARCH` complexity is O(n) for single word queries, where `n` is the number of the results in the result set.
+`FT.SEARCH` complexity is O(N) for single word queries, where `N` is the number of the results in the result set.
 Finding all the documents that have a specific term is O(1).
 However, a scan on all those documents is needed to load the documents data from Hash or JSON values and return them.
 
