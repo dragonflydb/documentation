@@ -16,7 +16,8 @@ description: Creates an index with the given spec
 
 ## Description
 
-Create an index with the given specification. For usage, see [examples](#examples) below.
+Create an index with the given specification.
+For usage, see [examples](#examples) below.
 
 ## Required arguments
 
