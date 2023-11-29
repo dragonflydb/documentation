@@ -112,7 +112,7 @@ the number of intersection points between them and the number of results in the 
 Search for the term "wizard" in every TEXT attribute of an index containing book data.
 
 ``` bash
-127.0.0.1:6379> FT.SEARCH books-idx "wizard"
+dragonfly> FT.SEARCH books-idx "wizard"
 ```
 </details>
 
@@ -122,7 +122,7 @@ Search for the term "wizard" in every TEXT attribute of an index containing book
 Search for the term _dogs_ in the `title` attribute.
 
 ``` bash
-127.0.0.1:6379> FT.SEARCH books-idx "@title:dogs"
+dragonfly> FT.SEARCH books-idx "@title:dogs"
 ```
 </details>
 
@@ -132,7 +132,7 @@ Search for the term _dogs_ in the `title` attribute.
 Search for books published in 2020 or 2021.
 
 ``` bash
-127.0.0.1:6379> FT.SEARCH books-idx "@published_at:[2020 2021]"
+dragonfly> FT.SEARCH books-idx "@published_at:[2020 2021]"
 ```
 </details>
 
@@ -142,7 +142,7 @@ Search for books published in 2020 or 2021.
 Search for books with _space_ in the title that have `science` in the TAG attribute `categories`.
 
 ``` bash
-127.0.0.1:6379> FT.SEARCH books-idx "@title:space @categories:{science}"
+dragonfly> FT.SEARCH books-idx "@title:space @categories:{science}"
 ```
 </details>
 
@@ -153,7 +153,7 @@ Search for books with _Python_ in any `TEXT` attribute, returning 10 results sta
 entire result set (the offset parameter is zero-based), and return only the `title` attribute for each result.
 
 ``` bash
-127.0.0.1:6379> FT.SEARCH books-idx "python" LIMIT 10 10 RETURN 1 title
+dragonfly> FT.SEARCH books-idx "python" LIMIT 10 10 RETURN 1 title
 ```
 </details>
 
@@ -163,7 +163,7 @@ entire result set (the offset parameter is zero-based), and return only the `tit
 Search for books with _Python_ in any `TEXT` attribute, returning the price stored in the original JSON document.
 
 ``` bash
-127.0.0.1:6379> FT.SEARCH books-idx "python" RETURN 3 $.book.price AS price
+dragonfly> FT.SEARCH books-idx "python" RETURN 3 $.book.price AS price
 ```
 </details>
 
