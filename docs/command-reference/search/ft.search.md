@@ -63,6 +63,10 @@ orders the results by the value of this attribute.
 This applies to both text and numeric attributes.
 Attributes needed for `SORTBY` should be declared as `SORTABLE` in the index, in order to be available with very low latency.
 Note that this adds memory overhead.
+
+:::note About `SORTBY`
+The attributed used in `SORTBY` must be declared as `SORTABLE` in the index upon creation.
+:::
 </details>
 
 <details open>
@@ -169,11 +173,9 @@ dragonfly> FT.SEARCH books-idx "python" RETURN 3 $.book.price AS price
 
 ## See also
 
-[`FT.CREATE`](./ft.create.md) | `FT.AGGREGATE` 
+[`FT.CREATE`](./ft.create.md)
 
 ## Related topics
 
 - [RediSearch](https://redis.io/docs/stack/search)
-- [Extensions](https://redis.io/docs/interact/search-and-query/administration/extensions/)
-- [Highlighting](https://redis.io/docs/interact/search-and-query/advanced-concepts/highlight/)
 - [Query syntax](https://redis.io/docs/interact/search-and-query/query/)

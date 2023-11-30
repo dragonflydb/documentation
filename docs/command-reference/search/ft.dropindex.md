@@ -6,9 +6,9 @@ description: Deletes the index
 
 ## Syntax
 
-    FT.DROPINDEX index [DD]
+    FT.DROPINDEX index
 
-**Time complexity:** O(1) or O(N) if documents are deleted, where N is the number of keys in the keyspace.
+**Time complexity:** O(1)
 
 ## Description
 
@@ -22,20 +22,6 @@ Delete an index.
 is index name. You must first create the index using [`FT.CREATE`](./ft.create.md).
 </details>
 
-## Optional arguments
-
-<details open>
-<summary><code>DD</code></summary>
-
-drop operation that, if set, deletes the actual document hashes.
-
-By default, `FT.DROPINDEX` does not delete the documents associated with the index. Adding the `DD` option deletes the documents as well. 
-If an index creation is still running ([`FT.CREATE`](./ft.create.md) is running asynchronously), only the document hashes that have already been indexed are deleted. 
-The document hashes left to be indexed remain in the database.
-To check the completion of the indexing, use [`FT.INFO`](./ft.info.md).
-
-</details>
-
 ## Return
 
 `FT.DROPINDEX` returns a simple string reply `OK` if executed correctly, or an error reply otherwise.
@@ -46,7 +32,7 @@ To check the completion of the indexing, use [`FT.INFO`](./ft.info.md).
 <summary><b>Delete an index</b></summary>
 
 ```bash
-dragonfly> FT.DROPINDEX idx DD
+dragonfly> FT.DROPINDEX idx
 OK
 ```
 </details>

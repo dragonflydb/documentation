@@ -26,12 +26,6 @@ For usage, see [examples](#examples) below.
 <summary><code>index</code></summary>
 
 is index name to create.
-
-:::note About Index Name
-- Unlike RediSearch, Dragonfly `FT.CREATE` still returns `OK` if an index name already exists.
-- The command essentially overwrites the existing index with a new one.
-:::
-
 </details>
 
 <a name="SCHEMA"></a>
@@ -48,7 +42,7 @@ after the SCHEMA keyword, declares which fields to index:
 
 Field types are:
 
- - `TEXT` - Allows full-text search queries against the value in this attribute.
+ - `TEXT` - Allows searching for words against the text value in this attribute.
 
  - `TAG` - Allows exact-match queries, such as categories or primary keys, against the value in this attribute. For more information, see [Tag Fields](https://redis.io/docs/interact/search-and-query/advanced-concepts/tags/).
 
@@ -56,7 +50,7 @@ Field types are:
 
  - `VECTOR` - Allows vector similarity queries against the value in this attribute. For more information, see [Vector Fields](https://redis.io/docs/interact/search-and-query/search/vectors/).
 
-:::note VECTOR Options
+:::note About `VECTOR`
 - Full documentation on vector options is available [here](https://redis.io/docs/interact/search-and-query/advanced-concepts/vectors/).
 - Currently, Dragonfly has limited support for vector options.
 - You can specify either the `FLAT` or the `HNSW` index type.
@@ -70,6 +64,10 @@ Field options are:
     As the user [sorts the results by the value of this attribute](https://redis.io/docs/interact/search-and-query/advanced-concepts/sorting/), the results are available with very low latency.
     Note that his adds memory overhead, so consider not declaring it on large text attributes.
     You can sort an attribute without the `SORTABLE` option, but the latency is not as good as with `SORTABLE`.
+
+:::note About `SORTABLE`
+Dragonfly does **not** supporting sorting without the `SORTABLE` option.
+:::
 
  - `NOINDEX` - Attributes can have the `NOINDEX` option, which means they will not be indexed. This is useful in conjunction with `SORTABLE`, to create attributes whose update using PARTIAL will not cause full reindexing of the document. If an attribute has NOINDEX and doesn't have SORTABLE, it will just be ignored by the index.
 
@@ -138,8 +136,5 @@ dragonfly> FT.CREATE idx ON JSON SCHEMA $.title AS title TEXT $.categories AS ca
 ## Related topics
 
 - [RediSearch](https://redis.io/docs/stack/search)
-- [RedisJSON](https://redis.io/docs/stack/json)
-- [Friso](https://github.com/lionsoul2014/friso)
-- [Stemming](https://redis.io/docs/interact/search-and-query/advanced-concepts/stemming)
-- [Phonetic Matching](https://redis.io/docs/interact/search-and-query/advanced-concepts/phonetic_matching/)
-- [RSCoordinator](https://github.com/RedisLabsModules/RSCoordinator)
+- [Hash](../hashes/hset.md)
+- [JSON](../json/json.set.md)

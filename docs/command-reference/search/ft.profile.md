@@ -1,18 +1,18 @@
 ---
-description: Uses SEARCH/AGGREGATE command to collect performance info
+description: Uses SEARCH command to collect performance info
 ---
 
 # FT.PROFILE
 
 ## Syntax
 
-    FT.PROFILE index <SEARCH | AGGREGATE> [LIMITED] QUERY query
+    FT.PROFILE index SEARCH [LIMITED] QUERY query
 
 **Time complexity:** O(N)
 
 ## Description
 
-Apply `FT.SEARCH` or `FT.AGGREGATE` command to collect performance details.
+Apply the `FT.SEARCH` command to collect performance details.
 
 ## Required arguments
 
@@ -23,32 +23,21 @@ is index name, created using `FT.CREATE`.
 </details>
 
 <details open>
-<summary><code>SEARCH | AGGREGATE</code></summary>
-
-is difference between `FT.SEARCH` and `FT.AGGREGATE`.
-
-:::note About `FT.AGGREGATE`
-- `FT.AGGREGATE` is not supported by Dragonfly yet.
-- Thus, using the `AGGREGATE` option will still return the same results as the `SEARCH` option.
-:::
-</details>
-
-<details open>
 <summary><code>QUERY query</code></summary>
 
 is query string, sent to `FT.SEARCH`.
 </details>
 
-**Note**: To reduce the size of the output, use `NOCONTENT` or `LIMIT 0 0` to reduce the reply results or `LIMITED` to not reply with details of `reader iterators` inside built-in unions such as `fuzzy` or `prefix`.
-
 ## Return
 
 `FT.PROFILE` returns an array reply.
-The return value has an array with the following elements:
+The first element of the returned array has the following elements:
 
 - `took`: time in microseconds (μs) used to execute the query.
 - `hits`: number of documents returned by the query.
 - `serialized`: number of documents serialized by the query.
+
+The rest of the elements represent an execution tree on every Dragonfly shard with timings.
 
 ## Examples
 
@@ -99,7 +88,7 @@ dragonfly> FT.PROFILE idx SEARCH QUERY "@category: { default }"
 
 ## See also
 
-[`FT.SEARCH`](./ft.search.md) | `FT.AGGREGATE` 
+[`FT.SEARCH`](./ft.search.md)
 
 ## Related topics
 
