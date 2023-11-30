@@ -65,7 +65,7 @@ Attributes needed for `SORTBY` should be declared as `SORTABLE` in the index, in
 Note that this adds memory overhead.
 
 :::note About `SORTBY`
-The attributed used in `SORTBY` must be declared as `SORTABLE` in the index upon creation.
+The attribute used in `SORTBY` must be declared as `SORTABLE` in the index upon creation.
 :::
 </details>
 

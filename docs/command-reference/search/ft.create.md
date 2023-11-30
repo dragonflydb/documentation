@@ -25,7 +25,7 @@ For usage, see [examples](#examples) below.
 <details open>
 <summary><code>index</code></summary>
 
-is index name to create.
+is index name to create. If such index already exists, returns an error reply.
 </details>
 
 <a name="SCHEMA"></a>
@@ -66,7 +66,7 @@ Field options are:
     You can sort an attribute without the `SORTABLE` option, but the latency is not as good as with `SORTABLE`.
 
 :::note About `SORTABLE`
-Dragonfly does **not** supporting sorting without the `SORTABLE` option.
+Dragonfly does **not** support sorting without the `SORTABLE` option.
 :::
 
  - `NOINDEX` - Attributes can have the `NOINDEX` option, which means they will not be indexed. This is useful in conjunction with `SORTABLE`, to create attributes whose update using PARTIAL will not cause full reindexing of the document. If an attribute has NOINDEX and doesn't have SORTABLE, it will just be ignored by the index.
