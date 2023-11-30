@@ -12,10 +12,10 @@ description: Returns a list of all existing indexes
 
 ## Description
 
-Returns a list of all existing indexes.
+Return a list of all existing indexes.
 
-The prefix `_` in the command indicates, this is a temporary command. 
-In the future, a `SCAN` type of command will be added, for use when a database contains a large number of indices.
+The prefix `_` in the command indicates that this is a temporary command.
+In the future, a `SCAN` type of command will be added for use when a database contains a large number of indices.
 
 ## Return
 

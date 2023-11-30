@@ -12,20 +12,20 @@ description: Uses SEARCH command to collect performance info
 
 ## Description
 
-Apply the `FT.SEARCH` command to collect performance details.
+Apply the [`FT.SEARCH`](./ft.search.md) command to collect performance details.
 
 ## Required arguments
 
 <details open>
 <summary><code>index</code></summary>
 
-is index name, created using `FT.CREATE`.
+is index name, created using the [`FT.CREATE`](./ft.create.md) command.
 </details>
 
 <details open>
 <summary><code>QUERY query</code></summary>
 
-is query string, sent to `FT.SEARCH`.
+is query string, sent to the [`FT.SEARCH`](./ft.search.md) command to collect performance details.
 </details>
 
 ## Return
@@ -37,7 +37,7 @@ The first element of the returned array has the following elements:
 - `hits`: number of documents returned by the query.
 - `serialized`: number of documents serialized by the query.
 
-The rest of the elements represent an execution tree on every Dragonfly shard with timings.
+The rest of the array elements represent an execution tree on every Dragonfly shard with timings.
 
 ## Examples
 

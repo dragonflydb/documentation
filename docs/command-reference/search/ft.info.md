@@ -30,7 +30,7 @@ Returned values include:
 
 - `index_name`: name of the index upon creation by using [`FT.CREATE`](./ft.create.md).
 - `fields`: index schema - field names, types, and attributes.
-- `num_docs`: Number of documents.
+- `num_docs`: Number of documents in the index.
 
 ## Examples
 

@@ -1,5 +1,5 @@
 ---
-description: Searches the index with a query, returning docs or just ids
+description: Searches the index with a query, returning docs or just IDs
 ---
 
 # FT.SEARCH
@@ -25,14 +25,14 @@ For usage, see [examples](#examples) below.
 <details open>
 <summary><code>index</code></summary>
 
-is index name. You must first create the index using `FT.CREATE`.
+is index name. You must first create the index using [`FT.CREATE`](./ft.create.md).
 </details>
 
 <details open>
 <summary><code>query</code></summary> 
 
 is text query to search. If it's more than a single word, put it in quotes.
-Refer to [Query syntax](https://redis.io/docs/interact/search-and-query/query/) for more details.
+Refer to [query syntax](https://redis.io/docs/interact/search-and-query/query/) for more details.
 </details>
 
 ## Optional arguments
@@ -40,7 +40,7 @@ Refer to [Query syntax](https://redis.io/docs/interact/search-and-query/query/) 
 <details open>
 <summary><code>NOCONTENT</code></summary>
 
-returns the document ids and not the content.
+returns the document IDs and not the content.
 
 This is useful if Dragonfly is storing an index on an external document collection.
 </details>
@@ -51,7 +51,7 @@ This is useful if Dragonfly is storing an index on an external document collecti
 limits the attributes returned from the document.
 
 `num` is the number of attributes following the keyword. If `num` is 0, it acts like `NOCONTENT`.
-`identifier` is either an attribute name (for hashes and JSON) or a JSON Path expression (for JSON).
+`identifier` is either an attribute name (for Hash and JSON) or a JSONPath expression (for JSON).
 `property` is an optional name used in the result. If not provided, the `identifier` is used in the result.
 </details>
 
@@ -61,7 +61,7 @@ limits the attributes returned from the document.
 orders the results by the value of this attribute.
 
 This applies to both text and numeric attributes.
-Attributes needed for `SORTBY` should be declared as `SORTABLE` in the index, in order to be available with very low latency.
+Attributes needed for `SORTBY` should be declared as `SORTABLE` in the index in order to be available with very low latency.
 Note that this adds memory overhead.
 
 :::note About `SORTBY`
@@ -92,10 +92,10 @@ You cannot reference parameters in the query string where concrete values are no
 
 ## Return
 
-`FT.SEARCH` returns an array reply, where the first element is an integer reply of the total number of results, and then array reply pairs of document ids, and array replies of attribute/value pairs.
+`FT.SEARCH` returns an array reply, where the first element is an integer reply of the total number of results, and then array reply pairs of document IDs, and array replies of attribute/value pairs.
 
 :::note Notes
-- If `NOCONTENT` is given, an array is returned where the first element is the total number of results, and the rest of the members are document ids.
+- If `NOCONTENT` is given, an array is returned where the first element is the total number of results, and the rest of the members are document IDs.
 - If a hash expires after the query process starts, the hash is counted in the total number of results, but the key name and content return as null.
 :::
 
@@ -113,7 +113,7 @@ the number of intersection points between them and the number of results in the 
 <details open>
 <summary><b>Search for a term in every text attribute</b></summary>
 
-Search for the term "wizard" in every TEXT attribute of an index containing book data.
+Search for the term `wizard` in every `TEXT` attribute of an index containing book data.
 
 ``` bash
 dragonfly> FT.SEARCH books-idx "wizard"
@@ -121,9 +121,9 @@ dragonfly> FT.SEARCH books-idx "wizard"
 </details>
 
 <details open>
-<summary><b>Search for a term in title attribute</b></summary>
+<summary><b>Search for a term in one attribute</b></summary>
 
-Search for the term _dogs_ in the `title` attribute.
+Search for the term `dogs` in the `title` attribute.
 
 ``` bash
 dragonfly> FT.SEARCH books-idx "@title:dogs"
@@ -141,9 +141,9 @@ dragonfly> FT.SEARCH books-idx "@published_at:[2020 2021]"
 </details>
 
 <details open>
-<summary><b>Search for a book by a term and TAG</b></summary>
+<summary><b>Search for a book by a term and tag</b></summary>
 
-Search for books with _space_ in the title that have `science` in the TAG attribute `categories`.
+Search for books with `space` in the `title` attribute that also have `science` in the `TAG` attribute `categories`.
 
 ``` bash
 dragonfly> FT.SEARCH books-idx "@title:space @categories:{science}"
@@ -153,7 +153,7 @@ dragonfly> FT.SEARCH books-idx "@title:space @categories:{science}"
 <details open>
 <summary><b>Search for a book by a term but limit the number</b></summary>
 
-Search for books with _Python_ in any `TEXT` attribute, returning 10 results starting with the 11th result in the
+Search for books with `python` in any `TEXT` attribute, returning `10` results starting with the `11`th result in the
 entire result set (the offset parameter is zero-based), and return only the `title` attribute for each result.
 
 ``` bash
@@ -164,7 +164,7 @@ dragonfly> FT.SEARCH books-idx "python" LIMIT 10 10 RETURN 1 title
 <details open>
 <summary><b>Search for a book by a term and price</b></summary>
 
-Search for books with _Python_ in any `TEXT` attribute, returning the price stored in the original JSON document.
+Search for books with `python` in any `TEXT` attribute, returning the `price` attributed stored in the original document.
 
 ``` bash
 dragonfly> FT.SEARCH books-idx "python" RETURN 3 $.book.price AS price
@@ -178,4 +178,4 @@ dragonfly> FT.SEARCH books-idx "python" RETURN 3 $.book.price AS price
 ## Related topics
 
 - [RediSearch](https://redis.io/docs/stack/search)
-- [Query syntax](https://redis.io/docs/interact/search-and-query/query/)
+- [Query Syntax](https://redis.io/docs/interact/search-and-query/query/)

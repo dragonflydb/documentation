@@ -34,8 +34,9 @@ is index name to create. If such index already exists, returns an error reply.
 
 after the SCHEMA keyword, declares which fields to index:
 
- - `{identifier}` for hashes, is a field name within the hash.
-   For JSON, the identifier is a JSON Path expression.
+ - `{identifier}` is the name of the field to index:
+   - For Hash values, identifier is a field name within the Hash.
+   - For JSON values, the identifier is a JSONPath expression.
 
  - `AS {attribute}` defines the attribute associated to the identifier.
    For example, you can use this feature to alias a complex JSONPath expression with more memorable (and easier to type) name.
@@ -44,11 +45,14 @@ Field types are:
 
  - `TEXT` - Allows searching for words against the text value in this attribute.
 
- - `TAG` - Allows exact-match queries, such as categories or primary keys, against the value in this attribute. For more information, see [Tag Fields](https://redis.io/docs/interact/search-and-query/advanced-concepts/tags/).
+ - `TAG` - Allows exact-match queries, such as categories or primary keys, against the value in this attribute.
+   For more information, see [tag fields](https://redis.io/docs/interact/search-and-query/advanced-concepts/tags/).
 
- - `NUMERIC` - Allows numeric range queries against the value in this attribute. See [query syntax docs](https://redis.io/docs/interact/search-and-query/query/) for details on how to use numeric ranges.
+ - `NUMERIC` - Allows numeric range queries against the value in this attribute.
+   See [query syntax](https://redis.io/docs/interact/search-and-query/query/) for details on how to use numeric ranges.
 
- - `VECTOR` - Allows vector similarity queries against the value in this attribute. For more information, see [Vector Fields](https://redis.io/docs/interact/search-and-query/search/vectors/).
+ - `VECTOR` - Allows vector similarity queries against the value in this attribute.
+   For more information, see [vector fields](https://redis.io/docs/interact/search-and-query/search/vectors/).
 
 :::note About `VECTOR`
 - Full documentation on vector options is available [here](https://redis.io/docs/interact/search-and-query/advanced-concepts/vectors/).
@@ -79,7 +83,7 @@ Dragonfly does **not** support sorting without the `SORTABLE` option.
 <details open>
 <summary><code>ON data_type</code></summary>
 
-currently supports HASH (default) and JSON.
+currently supports `HASH` (default) and `JSON`.
 </details>
 
 <a name="PREFIX"></a>
@@ -91,7 +95,7 @@ You can add several prefixes to index.
 Because the argument is optional, the default is `*` (all keys).
 
 :::note About `PREFIX`
-Currently, Dragonfly supports only one prefix (i.e., `PREFIX 1`), if the `PREFIX` option is used.
+Currently, Dragonfly supports only one prefix (i.e., `PREFIX 1 my_prefix`), if the `PREFIX` option is used.
 :::
 </details>
 
@@ -122,7 +126,7 @@ dragonfly> FT.CREATE idx ON HASH PREFIX 1 blog:post: SCHEMA sku AS sku_text TEXT
 <details open>
 <summary><b>Create index on JSON</b></summary>
 
-Index a JSON document using a JSON Path expression.
+Index a JSON document using a JSONPath expression.
 
 ``` bash
 dragonfly> FT.CREATE idx ON JSON SCHEMA $.title AS title TEXT $.categories AS categories TAG
