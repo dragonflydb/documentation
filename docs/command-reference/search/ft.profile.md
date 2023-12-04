@@ -51,7 +51,7 @@ dragonfly> HSET blog:post:1 title "blog post 1" published_at 1701210030 category
 dragonfly> FT.CREATE idx ON HASH PREFIX 1 blog:post: SCHEMA title TEXT SORTABLE published_at NUMERIC SORTABLE category TAG SORTABLE description TEXT NOINDEX
 OK
 
-dragonfly> FT.PROFILE idx SEARCH QUERY "@category: { default }"
+dragonfly> FT.PROFILE idx SEARCH QUERY "@category:{default}"
 1) 1) "took"
    2) (integer) 488
    3) "hits"

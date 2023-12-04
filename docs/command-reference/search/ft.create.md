@@ -135,7 +135,7 @@ dragonfly> FT.CREATE idx ON JSON SCHEMA $.title AS title TEXT $.categories AS ca
 
 ## See also
 
-`FT.ALTER` | [`FT.DROPINDEX`](./ft.dropindex.md) 
+[`FT.SEARCH`](./ft.search.md) | [`FT.DROPINDEX`](./ft.dropindex.md)
 
 ## Related topics
 
