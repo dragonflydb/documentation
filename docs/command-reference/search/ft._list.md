@@ -10,6 +10,8 @@ description: Returns a list of all existing indexes
 
 **Time complexity:** O(1)
 
+**Important**: New in Dragonfly v1.13. Currently, Dragonfly Search is in **Beta**.
+
 ## Description
 
 Return a list of all existing indexes.

@@ -10,6 +10,8 @@ description: Deletes the index
 
 **Time complexity:** O(1)
 
+**Important**: New in Dragonfly v1.13. Currently, Dragonfly Search is in **Beta**.
+
 ## Description
 
 Delete an index.

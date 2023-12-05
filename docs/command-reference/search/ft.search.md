@@ -15,6 +15,8 @@ description: Searches the index with a query, returning docs or just IDs
 
 **Time complexity:** O(N)
 
+**Important**: New in Dragonfly v1.13. Currently, Dragonfly Search is in **Beta**.
+
 ## Description
 
 Search the index with a textual query, returning either documents or just IDs.

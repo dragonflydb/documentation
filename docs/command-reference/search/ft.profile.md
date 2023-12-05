@@ -10,6 +10,8 @@ description: Uses SEARCH command to collect performance info
 
 **Time complexity:** O(N)
 
+**Important**: New in Dragonfly v1.13. Currently, Dragonfly Search is in **Beta**.
+
 ## Description
 
 Apply the [`FT.SEARCH`](./ft.search.md) command to collect performance details.

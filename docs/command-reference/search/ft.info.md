@@ -10,6 +10,8 @@ description: Returns information and statistics on the index
 
 **Time complexity:** O(1)
 
+**Important**: New in Dragonfly v1.13. Currently, Dragonfly Search is in **Beta**.
+
 ## Description
 
 Return information and statistics on the index.
