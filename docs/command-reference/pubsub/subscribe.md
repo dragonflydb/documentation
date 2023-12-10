@@ -30,7 +30,7 @@ dragonfly> PUBLISH abc message
 (integer) 0
 dragonfly> PUBLISH ab*c message
 (integer) 0
-dragonfly PUBLISH ab[c] message
+dragonfly> PUBLISH ab[c] message
 (integer) 1
 ```
 
