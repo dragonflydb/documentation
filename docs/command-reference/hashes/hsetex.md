@@ -16,12 +16,12 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @read, @hash, @fast
 
-**Warning:** Experimental! Dragonfly specific.
+**Warning:** Experimental! Dragonfly-specific.
 
-Simimar to HSET but adds one or more hash fieds that expire after specified number of seconds.
+Similar to [`HSET`](./hset.md) but adds one or more hash fields that expire after specified number of seconds.
 This command overwrites the values of specified fields that exist in the hash.
-If `key` doesn't exist, a new key holding a hash is created. In any case, the ttl is
-updated according to the latest value and the current clock.
+If `key` doesn't exist, a new key holding a hash is created.
+In any case, the expiration of the field is updated according to the latest value and the current clock.
 
 ## Return
 

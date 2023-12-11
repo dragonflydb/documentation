@@ -16,9 +16,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @write, @set, @fast
 
-**Warning:** Experimental! Dragonfly specific.
+**Warning:** Experimental! Dragonfly-specific.
 
-Similar to SADD but adds one or more members that expire after specified number of seconds.
+Similar to [`SADD`](sadd.md) but adds one or more members that expire after specified number of seconds.
 An error is returned when the value stored at `key` is not a set.
 
 ## Return
