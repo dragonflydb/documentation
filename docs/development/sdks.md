@@ -13,20 +13,37 @@ If you run into any issues using a Redis SDK with Dragonfly, please reach out vi
 ## Officially Supported SDKs
 
 The Dragonfly community invests significant effort into thorough compatibility tests.
-The following SDKs are actively tested and used by the community and thus officially supported:
+The following SDKs are actively tested and used by the community and are thus considered officially supported.
+
+If your favorite Redis SDK is not in the list below, we still encourage you to try using it with Dragonfly since Dragonfly is highly compatible with Redis.
+We will be adding more SDKs to the officially supported list in the future.
+
+### Go
+
+- [go-redis](https://github.com/redis/go-redis)
+
+### Java
+
+- [jedis](https://github.com/redis/jedis)
 
 ### JavaScript/TypeScript
 
 - [node-redis](https://github.com/redis/node-redis)
 - [ioredis](https://github.com/redis/ioredis)
 
-### Go
-
-- [go-redis](https://github.com/redis/go-redis)
-
 ### Python
 
 - [redis-py](https://github.com/redis/redis-py)
 
-If your favorite Redis SDK is not in the list above, you can still use it with Dragonfly due to its high level of compatibility with Redis.
-We will be adding more SDKs to the officially supported list in the future.
+### PHP
+
+- [phpredis](https://github.com/phpredis/phpredis)
+- [predis](https://github.com/predis/predis)
+
+### Ruby
+
+- [redis-rb](https://github.com/redis/redis-rb)
+
+### Rust
+
+- [redis-rs](https://github.com/redis-rs/redis-rs)
