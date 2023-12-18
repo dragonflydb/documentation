@@ -100,8 +100,8 @@ flags which include specified substring in either in the name, description or pa
 
   `default: false`
 
-### `--pipeline_queue_limit`
-  Amount of memory to use for storing pipelined commands in bytes - per IO thread.
+### `--subscriber_thread_limit`
+  Amount of memory to use for storing pub commands in bytes - per IO thread.
 
   `default: 134217728`
 
