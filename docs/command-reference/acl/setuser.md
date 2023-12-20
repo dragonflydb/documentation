@@ -42,6 +42,6 @@ Dragonfly ACL rules are split into two categories:
 ## Examples
 
 ```shell
-dragonfly> ACL SETUSER myuser ON >mypass +@string +@fast -@slow
+dragonfly> ACL SETUSER myuser ON >mypass +@string +@fast -@slow ~*
 OK
 ```

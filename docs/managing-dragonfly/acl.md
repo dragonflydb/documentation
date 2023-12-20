@@ -10,8 +10,8 @@ Permissions for a given user are controlled via a domain-specific language (DSL)
 
 1. ACL groups
 2. Commands
-3. Pub/Sub messages (not implemented yet)
-4. Keys (not implemented yet)
+3. Keys
+4. Pub/Sub messages (not implemented yet)
 
 Granting or revoking permissions for a user is as easy as calling the `ACL SETUSER` command. For example:
 
@@ -97,6 +97,23 @@ Any attempt of user `John` to issue a command other than the above will be rejec
 Note that the syntax is similar to the ACL groups, but without the prefix `@`.
 
 The special `+ALL` (note without the `@`) is used to denote all of the currently implemented commands.
+
+## Keys
+
+It's also possible to restrict operations on given keys. Note, users are permitted to execute a command only when their ACL's both include that command (or group)
+and contain a key pattern that matches the keys of the command. Key patterns are:
+
+`~<pattern>`: Add a pattern of keys that can be mentioned as part of commands. For instance `~*` allows all the keys. The pattern is a glob-style pattern and it is possible to specify multiple patterns.
+
+`%R~<pattern>`: Add the specified read key pattern. This behaves similar to the regular key pattern but only grants permission to read from keys that match the given pattern.
+
+`%W~<pattern>`: Add the specified write key pattern. This behaves similar to the regular key pattern but only grants permission to write to keys that match the given pattern.
+
+`%RW~<pattern>`: Alias for `~<pattern>`.
+
+`allkeys`: Alias for `~*`.
+
+`resetkeys`: Flush the list of allowed keys patterns. For instance the `ACL ~foo* resetkeys ~bar*`, will only allow the client to access keys that match the pattern `~bar*`.
 
 ## Persistence
 
