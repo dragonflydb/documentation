@@ -67,7 +67,7 @@ flags which include specified substring in either in the name, description or pa
 
   `default: true`
 
-### ``--admin_bind`
+### `--admin_bind`
   If set, the admin console TCP connection would be bind to the given address. 
   This supports both HTTP and RESP protocols. 
 
@@ -152,7 +152,7 @@ flags which include specified substring in either in the name, description or pa
   `default: false`
 
 ### `--tls_ca_cert_dir`
-  Certified authority signed certificates directory.
+  Certified authority signed certificates directory. Use [`c_rehash`](https://www.openssl.org/docs/man3.0/man1/c_rehash.html) on the directory before specifying this flag.
 
   `default: ""`
 
