@@ -24,29 +24,29 @@ Run this command:
 
 1. Add the following to the `myvals.yaml` values file (create a new file if it doesn't exist):
 
-  ```yml "
-  storage:
-    enabled: true
-    requests: 128Mi # Set as desired
+```yml "
+storage:
+  enabled: true
+  requests: 128Mi # Set as desired
 
-  extraArgs:
-    - --dbfilename=dump.rdb
-    - --save_schedule=*:* # HH:MM glob format
+extraArgs:
+  - --dbfilename=dump.rdb
+  - --snapshot_cron=* * * * * # cron format
 
-  podSecurityContext:
-    fsGroup: 2000
+podSecurityContext:
+  fsGroup: 2000
 
-  securityContext:
-    capabilities:
-      drop:
-        - ALL
-    readOnlyRootFilesystem: true
-    runAsNonRoot: true
-    runAsUser: 1000
-  ```
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+```
 
 1. Run this command:
-  `helm upgrade -f myvals.yaml --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version $VERSION`
+   `helm upgrade -f myvals.yaml --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version $VERSION`
 
 ## Integrate with Kube-Prometheus Monitoring
 
