@@ -254,9 +254,9 @@ flags which include specified substring in either in the name, description or pa
   `default: 0.2`
 
 ### `--shard_round_robin_prefix`
-  When non-empty, keys with hash-tags, whose hash-tag starts with this prefix are not distributed 
-  across shards based on their value but instead via round-robin. Use cautiously! This can 
-  efficiently support up to a few hundreds of hash-tags. 
+   When non-empty, keys which start with this prefix are not distributed across shards based on their value but instead
+   via round-robin. Use cautiously! This can efficiently support up to a few hundreds of prefixes. Note: prefix is 
+   looked inside hash tags when cluster mode is enabled.
 
   `default: ""`
 
