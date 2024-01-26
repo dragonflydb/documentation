@@ -254,15 +254,20 @@ flags which include specified substring in either in the name, description or pa
   `default: 0.2`
 
 ### `--shard_round_robin_prefix`
-   When non-empty, keys which start with this prefix are not distributed across shards based on their value but instead
-   via round-robin. Use cautiously! This can efficiently support up to a few hundreds of prefixes. Note: prefix is 
-   looked inside hash tags when cluster mode is enabled.
+  When non-empty, keys which start with this prefix are not distributed across shards based on their value but instead
+  via round-robin. Use cautiously! This can efficiently support up to a few hundreds of prefixes. Note: prefix is 
+  looked inside hash tags when cluster mode is enabled.
 
   `default: ""`
 
+### `--singlehop_blocking`
+  Use single hop optimization for blocking commands.
+
+  `default: true`
+
 ### `--spill_file_prefix`
-   Enables tiered storage if set. The string denotes the path and prefix of the files associated
-   with tiered storage. For example, `spill_file_prefix=/path/to/file-prefix`.
+  Enables tiered storage if set. The string denotes the path and prefix of the files associated
+  with tiered storage. For example, `spill_file_prefix=/path/to/file-prefix`.
 
   `default: ""`
 
