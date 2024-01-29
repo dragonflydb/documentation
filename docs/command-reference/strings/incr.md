@@ -22,7 +22,7 @@ An error is returned if the key contains a value of the wrong type or contains a
 string that can not be represented as integer.
 This operation is limited to 64 bit signed integers.
 
-**Note**: this is a string operation because Dragonfly does not have a dedicated
+**Note:** this is a string operation because Dragonfly does not have a dedicated
 integer type.
 The string stored at the key is interpreted as a base-10 **64 bit signed
 integer** to execute the operation.
