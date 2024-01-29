@@ -34,7 +34,7 @@ Dragonfly will respond to both `http` and `redis` requests out of the box!
 
 You can use the `redis-cli` to connect to `localhost:6379` or open a browser and visit `http://localhost:6379`
 
-**NOTE**: On some configurations, running with the `docker run --privileged ...` flag can fix some
+**Note:** On some configurations, running with the `docker run --privileged ...` flag can fix some
 initialization errors.
 
 ## Step 2
