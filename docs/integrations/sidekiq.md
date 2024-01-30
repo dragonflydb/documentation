@@ -46,3 +46,4 @@ For example, if your queues are named `my_queue:1`, `my_queue:2`, `my_queue:3`, 
 ## Useful Resources
 
 - Sidekiq [Homepage](https://sidekiq.org/), [GitHub](https://github.com/sidekiq/sidekiq), and [Documentation](https://github.com/sidekiq/sidekiq/wiki).
+- Sidekiq also has a dedicated documentation page on [Using Dragonfly](https://github.com/sidekiq/sidekiq/wiki/Using-Dragonfly).
