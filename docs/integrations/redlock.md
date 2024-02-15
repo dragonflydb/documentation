@@ -11,10 +11,11 @@ description: Redlock
 distributed locks, ensuring consistent operation and protection against failures such as network partitions and Redis crashes.
 It operates by having a client application send lock requests, using [`SET`](../command-reference/strings/set.md) commands, to multiple **primary Redis instances**.
 The lock is successfully acquired when more than half of these instances agree on the lock acquisition.
-To release the lock, the client issues [`DEL`](../command-reference/generic/del.md) commands to all the instances involved.
+To release the lock, the client application uses a Lua script, which involves the [`GET`](../command-reference/strings/get.md) command
+and the [`DEL`](../command-reference/generic/del.md) command, to perform compare-and-delete operations on all the instances involved.
 Redlock also takes into account the lock validity time, retry on failure, lock extension, and many other aspects, which makes it a robust and reliable solution for distributed locking.
 
-Since Dragonfly is highly compatible with Redis and both `SET` and `DEL` commands are fully supported, Redlock implementations can be easily used with Dragonfly.
+Since Dragonfly is highly compatible with Redis, Redlock implementations can be easily used with Dragonfly.
 
 ## Implementations
 
