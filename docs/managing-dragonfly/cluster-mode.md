@@ -180,10 +180,12 @@ etc.
 
 ### Final Notes
 
-* Cluster mode is still in development. Please file issues if suspect you've found a bug.
+* Cluster mode is still in development. Please file issues if you suspect you've found a bug.
 * You could look at
   [`cluster_mgr.py`](https://github.com/dragonflydb/dragonfly/blob/main/tools/cluster_mgr.py) as a
   reference for how to set up and configure a cluster. This script starts a cluster _locally_, but
   much of its logic can be reused for nodes present on remote machines as well.
+* If you're getting errors trying to issue `DFLYCLUSTER CONFIG`, check Dragonfly's logs (you can
+  pass `--logtostdout` temporarily) to see why the config was rejected.
 * Dragonfly does not yet support migration of slots data between nodes. Changing slot allocation
   will result in data removal.
