@@ -19,10 +19,11 @@ Despite Dragonfly's promise of a seamless switch, the Dragonfly community invest
 Our commitment ensures that these projects are not just compatible but are officially supported,
 providing users with peace of mind and confidence in the stability and performance enhancements Dragonfly offers.
 
-- [BullMQ](./bullmq.md): A premium job and message queue system for Node.js.
-- [ClickHouse](./clickhouse.md): A fast open-source column-oriented DBMS that allows generating analytical data reports in real time.
-- [Feast](./feast.md): A customizable feature store for operational machine learning.
-- [Redlock](./redlock.md): A distributed lock pattern with implementations in various languages.
+- [BullMQ](./bullmq.md): Premium job and message queue system for Node.js.
+- [ClickHouse](./clickhouse.md): Ultra fast and resource efficient open-source database for real-time applications and analytics.
+- [Feast](./feast.md): Customizable feature store for operational machine learning written in Python.
+- [Redlock](./redlock.md): Distributed lock pattern with implementations in various languages.
+- [Relay](./relay.md): Next-generation shared in-memory caching layer for PHP.
 - [Sidekiq](./sidekiq.md): Simple and efficient background job processing for Ruby.
 
 ## Making the Switch

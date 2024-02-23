@@ -101,6 +101,8 @@ By distributing the queues across distinct Dragonfly threads, you can optimize t
 If you have queue dependencies, especially a parent-child relationship, it's important to use the same hashtag for both queues.
 This ensures that they are processed within the same Dragonfly thread and maintains the integrity of the dependencies.
 
-## Useful Resources
+## Useful Resources & Benchmarks
 
 - BullMQ [Homepage](https://bullmq.io/), [GitHub](https://github.com/taskforcesh/bullmq), and [Documentation](https://docs.bullmq.io/).
+- Read our blog post [How We Optimized Dragonfly to Get 30x Throughput with BullMQ](https://www.dragonflydb.io/blog/running-bullmq-with-dragonfly-part-2-optimization)
+  with internal implementation details and performance benchmarks.
