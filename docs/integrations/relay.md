@@ -5,7 +5,10 @@ description: Relay
 
 # Relay
 
-**Note:** Dragonfly v1.14+ is required for this integration.
+**Notes:**
+
+- Dragonfly v1.14+ and the [RESP3](https://github.com/redis/redis-specifications/blob/master/protocol/RESP3.md) protocol are required for this integration.
+- See more details about the [`CLIENT TRACKING`](../command-reference/server-management/client-tracking.md) command that enables this integration.
 
 ## Introduction
 
