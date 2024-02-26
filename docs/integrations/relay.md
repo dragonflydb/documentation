@@ -43,7 +43,7 @@ For different platforms, you can install Relay by following the instructions in 
 Once you have Dragonfly and Relay set up, you can start using Relay with Dragonfly in code.
 For more information on how to use Relay in terms of configuration, integrations, events, and APIs, please refer to the Relay [documentation](https://relay.so/docs).
 
-<!-- PHP is not supported for syntax highlighting yet. -->
+<!-- PHP is not supported for syntax highlighting yet, and the JavaScript highlighting looks fine for this example. -->
 ```javascript
 // Assume Dragonfly is running locally on the default port.
 $relay = new Relay(host: '127.0.0.1', port: 6379);
