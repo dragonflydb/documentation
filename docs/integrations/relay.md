@@ -5,6 +5,8 @@ description: Relay
 
 # Relay
 
+**Note:** Dragonfly v1.14+ is required for this integration.
+
 ## Introduction
 
 [Relay](https://relay.so/) is a revolutionary PHP extension that combines the functionalities of a Redis client
