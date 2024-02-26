@@ -26,7 +26,8 @@ Invalidation messages are sent in the same connection when the RESP3 protocol is
 It is very important to note that **only when the client reads a key after enabling tracking will Dragonfly start tracking that key**.
 Solely creating a key will not make Dragonfly track the key. See the examples below for more details.
 
-When tracking is disabled, Dragonfly stops tracking the keys for the connection, and no invalidation messages are sent.
+The feature will remain active in the current connection for all its life, unless tracking is disabled with `CLIENT TRACKING OFF` at some point,
+and Dragonfly stops tracking the keys for the connection, and no invalidation messages are sent.
 
 ## Return
 
@@ -77,7 +78,8 @@ Back to `client-1` again, it reads the key (within the same session) and receive
 ```shell
 ### client-1 ###
 
-# After client-2 updates the value, client-1 reads the key again and receives an invalidation message.
+# After client-2 updates the value,
+# client-1 reads the key again and receives an invalidation message.
 dragonfly> GET user_count
 -> invalidate: 'user_count'
 "101"
