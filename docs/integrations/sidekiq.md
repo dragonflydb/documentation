@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 1
 description: Sidekiq
 ---
 
@@ -43,7 +43,9 @@ With this configuration, Dragonfly equally spreads the Sidekiq queues (lists) am
 Replace `QUEUE_PREFIX` with the prefix name of the Sidekiq queues.
 For example, if your queues are named `my_queue:1`, `my_queue:2`, `my_queue:3`, etc., then replace `QUEUE_PREFIX` with `my_queue`.
 
-## Useful Resources
+## Useful Resources & Benchmarks
 
 - Sidekiq [Homepage](https://sidekiq.org/), [GitHub](https://github.com/sidekiq/sidekiq), and [Documentation](https://github.com/sidekiq/sidekiq/wiki).
 - Sidekiq also has a dedicated documentation page on [Using Dragonfly](https://github.com/sidekiq/sidekiq/wiki/Using-Dragonfly).
+- Read our blog post [Running and Optimizing Sidekiq Workloads with Dragonfly](https://www.dragonflydb.io/blog/running-sidekiq-with-dragonfly)
+  with internal implementation details and performance benchmarks.
