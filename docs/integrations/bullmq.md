@@ -14,22 +14,24 @@ By replacing Redis with Dragonfly, you can achieve superior performance and scal
 
 ## Running BullMQ with Dragonfly
 
-However, the integration of Dragonfly with BullMQ involves some specific configuration steps to ensure optimal performance and compatibility with BullMQ internals.
+The integration of Dragonfly with BullMQ involves some specific configuration steps to ensure optimal performance and compatibility with BullMQ internals.
 
 BullMQ extensively uses Lua scripts (server-side scripting) for executing commands in Redis.
 When running a Lua script in Redis, it's essential to explicitly specify all the keys the script will access.
 However, the design of BullMQ doesn't allow it to predict in advance which keys its Lua scripts will need.
 Although accessing undeclared keys is unsupported in Redis, it nonetheless works.
-However, in Dragonfly, it cannot work out of the box due to our multi-threaded transactional framework.
 
-As such, one could run Dragonfly with Lua global transaction mode:
+In Dragonfly, accessing undeclared keys from scripts is disabled by default because unpredictability, atomicity, and multithreading don't mix well.
+As such, one could run Dragonfly with the following flag:
 
 ```bash
 $> ./dragonfly --default_lua_flags=allow-undeclared-keys
 ```
 
-This mode locks the entire data store for each Lua script.
-In other words, it is slow, but it is safe and does not require any changes from the code that uses BullMQ.
+**However, it is very important to note that running Dragonfly with `--default_lua_flags=allow-undeclared-keys`
+locks the entire data store for each Lua script execution and slows things down considerably.**
+Thus, we suggest following the [Advanced & Optimized Configurations](#advanced--optimized-configurations) section below to
+completely avoid the `allow-undeclared-keys` flag and achieve superior performance for your BullMQ application.
 
 ## Advanced & Optimized Configurations
 
