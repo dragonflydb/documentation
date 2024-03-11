@@ -21,9 +21,18 @@ add the following flags. This will enhance the performance of your BullMQ worklo
 $> ./dragonfly --cluster_mode=emulated --lock_on_hashtags
 ```
 
-## Running BullMQ with Dragonfly
+Otherwise, you would have to run Dragonfly with the following flag to allow accessing undeclared keys from Lua scripts, **but this will slow things down considerably**.
 
-The integration of Dragonfly with BullMQ involves some specific configuration steps to ensure optimal performance and compatibility with BullMQ internals.
+```bash
+$> ./dragonfly --default_lua_flags=allow-undeclared-keys
+```
+
+That's all you need to know to run BullMQ with Dragonfly.
+If you want to learn more about the details of the server flags used above, please continue reading the sections below.
+
+---
+
+## Using Undeclared Keys (Not Optimized)
 
 BullMQ extensively uses Lua scripts (server-side scripting) for executing commands in Redis.
 When running a Lua script in Redis, it's essential to explicitly specify all the keys the script will access.
@@ -39,10 +48,10 @@ $> ./dragonfly --default_lua_flags=allow-undeclared-keys
 
 **However, it is very important to note that running Dragonfly with `--default_lua_flags=allow-undeclared-keys`
 locks the entire data store for each Lua script execution and slows things down considerably.**
-Thus, we suggest following the [Advanced & Optimized Configurations](#advanced--optimized-configurations) section below to
+Thus, we suggest following the [Using Hashtags & Optimized Configurations](#using-hashtags--optimized-configurations) section below to
 completely avoid the `allow-undeclared-keys` flag and achieve superior performance for your BullMQ application.
 
-## Advanced & Optimized Configurations
+## Using Hashtags & Optimized Configurations
 
 To utilize Dragonfly's multi-threaded capability and achieve superior performance for your application, we introduce a mode that enables locks on hashtags instead of individual keys.
 In this mode, each BullMQ queue will be exclusively owned by a single thread, and accessing multiple queues could be done in parallel.
