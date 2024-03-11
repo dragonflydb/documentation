@@ -106,3 +106,5 @@ We do understand that 1TB is probably not "big data" in modern terms, but suppor
 - Read more about ClickHouse table engine integration with Redis [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/redis),
   which can be replaced with Dragonfly by changing the `host:port` server address within the `ENGINE` clause.
 - Read more about how ClickHouse works with dictionaries [here](https://clickhouse.com/docs/en/sql-reference/dictionaries).
+- Read our blog post [Using Dragonfly as a Table Engine for ClickHouse](https://www.dragonflydb.io/blog/using-dragonfly-as-a-table-engine-for-clickhouse)
+  with more details and performance benchmarks.

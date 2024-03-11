@@ -12,6 +12,15 @@ BullMQ is a Node.js library that implements a fast and robust queue system built
 Since Dragonfly is highly compatible with Redis, BullMQ can be used with Dragonfly with zero or minimal code changes.
 By replacing Redis with Dragonfly, you can achieve superior performance and scalability for your BullMQ application.
 
+## TL;DR
+
+If you can use [hashtags](https://redis.io/docs/reference/cluster-spec/#hash-tags) in your queue names or prefixes (e.g., use `{queue1}` instead of `queue1`),
+execute the following command to run Dragonfly. This will enhance the performance of your BullMQ workloads.
+
+```bash
+$> ./dragonfly --cluster_mode=emulated --lock_on_hashtags
+```
+
 ## Running BullMQ with Dragonfly
 
 The integration of Dragonfly with BullMQ involves some specific configuration steps to ensure optimal performance and compatibility with BullMQ internals.
