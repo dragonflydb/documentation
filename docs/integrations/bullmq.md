@@ -12,26 +12,46 @@ BullMQ is a Node.js library that implements a fast and robust queue system built
 Since Dragonfly is highly compatible with Redis, BullMQ can be used with Dragonfly with zero or minimal code changes.
 By replacing Redis with Dragonfly, you can achieve superior performance and scalability for your BullMQ application.
 
-## Running BullMQ with Dragonfly
+## TL;DR
 
-However, the integration of Dragonfly with BullMQ involves some specific configuration steps to ensure optimal performance and compatibility with BullMQ internals.
+If you can use [hashtags](https://redis.io/docs/reference/cluster-spec/#hash-tags) in your queue names or prefixes (e.g., use `{queue1}` instead of `queue1`),
+add the following flags. This will enhance the performance of your BullMQ workloads.
 
-BullMQ extensively uses Lua scripts (server-side scripting) for executing commands in Redis.
-When running a Lua script in Redis, it's essential to explicitly specify all the keys the script will access.
-However, the design of BullMQ doesn't allow it to predict in advance which keys its Lua scripts will need.
-Although accessing undeclared keys is unsupported in Redis, it nonetheless works.
-However, in Dragonfly, it cannot work out of the box due to our multi-threaded transactional framework.
+```bash
+$> ./dragonfly --cluster_mode=emulated --lock_on_hashtags
+```
 
-As such, one could run Dragonfly with Lua global transaction mode:
+Otherwise, you would have to run Dragonfly with the following flag to allow accessing undeclared keys from Lua scripts, **but this will slow things down considerably**.
 
 ```bash
 $> ./dragonfly --default_lua_flags=allow-undeclared-keys
 ```
 
-This mode locks the entire data store for each Lua script.
-In other words, it is slow, but it is safe and does not require any changes from the code that uses BullMQ.
+That's all you need to know to run BullMQ with Dragonfly.
+If you want to learn more about the details of the server flags used above, please continue reading the sections below.
 
-## Advanced & Optimized Configurations
+---
+
+## Using Undeclared Keys (Not Optimized)
+
+BullMQ extensively uses Lua scripts (server-side scripting) for executing commands in Redis.
+When running a Lua script in Redis, it's essential to explicitly specify all the keys the script will access.
+However, the design of BullMQ doesn't allow it to predict in advance which keys its Lua scripts will need.
+Although accessing undeclared keys is unsupported in Redis, it nonetheless works.
+
+In Dragonfly, accessing undeclared keys from scripts is disabled by default because unpredictability, atomicity, and multithreading don't mix well.
+As such, one could run Dragonfly with the following flag:
+
+```bash
+$> ./dragonfly --default_lua_flags=allow-undeclared-keys
+```
+
+**However, it is very important to note that running Dragonfly with `--default_lua_flags=allow-undeclared-keys`
+locks the entire data store for each Lua script execution and slows things down considerably.**
+Thus, we suggest following the [Using Hashtags & Optimized Configurations](#using-hashtags--optimized-configurations) section below to
+completely avoid the `allow-undeclared-keys` flag and achieve superior performance for your BullMQ application.
+
+## Using Hashtags & Optimized Configurations
 
 To utilize Dragonfly's multi-threaded capability and achieve superior performance for your application, we introduce a mode that enables locks on hashtags instead of individual keys.
 In this mode, each BullMQ queue will be exclusively owned by a single thread, and accessing multiple queues could be done in parallel.

@@ -14,7 +14,7 @@ Dragonfly provides additional flexibility with special script flags. By default,
 
 Flags can be configured in multiple ways:
 
-#### 1. Inside the script souce code
+#### 1. Inside the script source code
 
 ```lua
 #!lua flags=allow-undeclared-keys,disable-atomicity
@@ -34,7 +34,7 @@ Flags can be set for a script by its SHA.
 
 `SCRIPT FLAGS sha1 disable-atomicity allow-undeclared-keys`
 
-This command can be called even *before the script is loaded*. This makes it possible to patch scripts used by frameworks or side applications.
+This command can be called even **before the script is loaded**. This makes it possible to patch scripts used by frameworks or side applications.
 
 First, determine what SHAs are used by the framework/application. This can be done with the `SCRIPT LIST` command. Then, before starting the framework/application, call `SCRIPT FLAGS sha1 [flags ...]` for all required scripts with the desired flags.
 
@@ -47,7 +47,7 @@ script tried accessing undeclared key
 ```
  
 To allow accessing any keys, including undeclared, the flag `allow-undeclared-keys` should be used. 
-This option is disabled by default because unpredictability, atomicity and multithreading don't mix well. If enabled, Dragonlfy has to stop all other operations when the script is running.
+This option is disabled by default because unpredictability, atomicity and multithreading don't mix well. If enabled, Dragonfly has to stop all other operations when the script is running.
 
 ### Disabling atomicity
 
@@ -55,6 +55,6 @@ Disabling atomicity for a script allows Dragonfly to execute commands that acces
 
 The `disable-atomicity` flag disables atomicity. 
 
-This behavior can be useful for long running scripts that don't require strict atomicity. Because the keys will always be available to other clients for both reads and writes, latency spikes can be avoided.
+This behavior can be useful for long-running scripts that don't require strict atomicity. Because the keys will always be available to other clients for both reads and writes, latency spikes can be avoided.
 
 Dragonfly's asynchronous model keeps this flag functional even on with low number of cores. Please note that a script can only be interrupted when calling commands. Intensive computations can still cause latency spikes. 
