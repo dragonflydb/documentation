@@ -80,7 +80,7 @@ $ sudo ./dragonfly \
 
 And connect with a client certificate like this:
 ```bash
-redis-cli -h dfly.scalable-meteorite-collections.com \
+redis-cli --tls -h dfly.scalable-meteorite-collections.com \
   --key /etc/mycerts/client_priv.pem
   --cert /etc/mycerts/client_cert.pem
 ```
