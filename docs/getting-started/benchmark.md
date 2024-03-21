@@ -1,8 +1,8 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# About benchmarking tools
+# Benchmarking Dragonfly
 We have been benchmarking Dragonfly using the [memtier_benchmark](https://github.com/RedisLabs/memtier_benchmark)
 load testing tool.
 There is also a prebuilt container, available on [Docker Hub](https://hub.docker.com/r/redislabs/memtier_benchmark/)
@@ -12,7 +12,7 @@ as memtier_benchmark and it requires more connections to load Dragonfly.
 Finally, we have developed our own tool [dfly_bench](https://github.com/dragonflydb/dragonfly/blob/main/src/server/dfly_bench.cc), which can be built from source in Dragonfly repository.
 
 
-# Methodology
+## Methodology
 Dragonfly is a multi-threaded beast designed to run remotely.
 Therefore, we recommend benchmarking it by running the load test and the server on separate machines.
 
@@ -27,7 +27,7 @@ to achieve the lowest possible latency.
 The remainder of this document will discuss how to set up a benchmark in the AWS cloud
 to observe millions of QPS from a single instance.
 
-# Load testing c6gn.12xlarge
+## Load testing c6gn.12xlarge
 I usually choose a loadtest machine to be stronger than the server instance to eliminate
 any possible bottlenecks on the client side. For this setup, I used `c7gn.16xlarge` for running
 the loadtest client and `c6gn.12xlarge` for running dragonfly.
@@ -40,7 +40,7 @@ argument.
 Both machines run `Ubuntu 23.04` OS with kernel version 6.2.
 
 
-## Writes-only test
+### Writes-only test
 On the loadtest instance (c7gn.16xlarge with 64 vCPUs) I run:
 `memtier_benchmark -s $SERVER_IP --distinct-client-seed --hide-histogram --ratio 1:0 -t 60 -c 20 -n 200000`
 
@@ -54,7 +54,7 @@ Sets      4195628.23          ---          ---         0.39283         0.37500  
 
 ```
 
-## Reads-only test
+### Reads-only test
 Without flushing the database, I run the following command:
 `memtier_benchmark -s $SERVER_IP --distinct-client-seed --hide-histogram --ratio 0:1 -t 60 -c 20 -n 200000`
 
@@ -68,7 +68,7 @@ Gets      4109802.84   4109802.84         0.00         0.40126         0.38300  
 ```
 
 
-## Read test with pipelining
+### Read test with pipelining
 
 There are many other ways to loadtest Dragonfly. Here is one with sending SETs with pipeline of batch size 10:
 `memtier_benchmark -s $SERVER_IP --ratio 0:1 -t 60 -c 5  -n 200000  --distinct-client-seed --hide-histogram --pipeline=10`
@@ -81,12 +81,12 @@ Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency  
 Gets      7083583.57   7083583.57         0.00         0.45821         0.44700         0.69500         1.53500    511131.14
 ```
 
-# Load testing c7gn.12xlarge
+## Load testing c7gn.12xlarge
 
 Next thing I tried running Dragonfly on the next generation instance with the same number of vCPUs (48).
 I used the same commands to test writes, reads and pipelined reads.
 
-## Writes
+### Writes
 `memtier_benchmark -s $SERVER_IP --distinct-client-seed --hide-histogram --ratio 1:0 -t 60 -c 20 -n 200000`
 
 ```
@@ -96,7 +96,7 @@ Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency  
 Sets      5195097.56          ---          ---         0.26012         0.24700         0.49500         0.63100    400230.15
 ```
 
-## Reads
+### Reads
 `memtier_benchmark -s $SERVER_IP --distinct-client-seed --hide-histogram --ratio 0:1 -t 60 -c 20 -n 200000`
 ```
 ============================================================================================================================
@@ -105,7 +105,7 @@ Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency  
 Gets      6078632.89   6078632.89         0.00         0.27177         0.26300         0.49500         0.62300    438616.86
 ```
 
-## Pipelined Reads
+### Pipelined Reads
 `memtier_benchmark -s $SERVER_IP --ratio 0:1 -t 60 -c 5  -n 200000  --distinct-client-seed --hide-histogram --pipeline=10`
 
 ```
