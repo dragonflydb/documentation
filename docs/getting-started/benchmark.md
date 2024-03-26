@@ -34,7 +34,7 @@ the loadtest client and `c6gn.12xlarge` for running dragonfly.
 I used Dragonfly v1.15.0 (latest at the time of writing) with the following arguments:
 `./dragonfly --logtostderr  --dbfilename=`
 
-Please notice that Dragonfly will uses all the available vCPUs by default, in this case 48 vCPUs
+Please notice that Dragonfly will use of all the available vCPUs by default, in this case 48 vCPUs
 If you want to control explicitly number of threads in Dragonfly you can add `--proactor_threads=<N>`
 argument.
 Both machines run `Ubuntu 23.04` OS with kernel version 6.2.
