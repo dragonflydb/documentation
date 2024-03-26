@@ -96,7 +96,7 @@ During the pipelining mode, memtier_benchmark sends `K` requests in batch withou
 for them to complete. In this case `K=10`. Pipelining reduces the CPU load spent in the networking stack.
 As a result, Dragonfly can reach 7M qps with sub-millisecond latency.
 
-## Load testing c7gn.12xlarge
+## Load testing `c7gn.12xlarge`
 
 Next thing we tried running Dragonfly on the next generation instance with the same number of vCPUs (48).
 We used the same commands to test writes, reads and pipelined reads.
