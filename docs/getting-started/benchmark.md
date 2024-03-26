@@ -40,7 +40,7 @@ argument.
 Both machines run `Ubuntu 23.04` OS with kernel version 6.2.
 
 
-### Writes-only test
+### Write-only test
 On the loadtest instance (c7gn.16xlarge with 64 vCPUs) I run:
 `memtier_benchmark -s $SERVER_IP --distinct-client-seed --hide-histogram --ratio 1:0 -t 60 -c 20 -n 200000`
 
