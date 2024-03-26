@@ -27,7 +27,7 @@ to achieve the lowest possible latency.
 The remainder of this document will discuss how to set up a benchmark in the AWS cloud
 to observe millions of QPS from a single instance.
 
-## Load testing c6gn.12xlarge
+## Load testing `c6gn.12xlarge`
 I usually choose a loadtest machine to be stronger than the server instance to eliminate
 any possible bottlenecks on the client side. For this setup, I used `c7gn.16xlarge` for running
 the loadtest client and `c6gn.12xlarge` for running dragonfly.
