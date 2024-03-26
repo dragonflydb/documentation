@@ -17,7 +17,7 @@ Dragonfly is a multi-threaded beast designed to run remotely.
 Therefore, we recommend benchmarking it by running the load test and the server on separate machines.
 
 If your goal is to test the scalability of the software under test, in this case Dragonfly,
-it's advisable to remove any factors that might "level the playing field" compared to other software implementations.
+it's advisable to remove any factors that might skew the test results.
 
 For instance, to minimize the impact of environment and network latency, we strongly recommend
 running both machines as close together as possible, ideally within the same
