@@ -7,7 +7,7 @@ We have been benchmarking Dragonfly using the [memtier_benchmark](https://github
 load testing tool.
 There is also a prebuilt container, available on [Docker Hub](https://hub.docker.com/r/redislabs/memtier_benchmark/)
 While Redis offers the `redis-benchmark` tool in its repository, it has not been as efficient
-as memtier_benchmark and it requires more connections to load Dragonfly.
+as `memtier_benchmark` and it requires more connections to load Dragonfly.
 
 Finally, we have developed our own tool [dfly_bench](https://github.com/dragonflydb/dragonfly/blob/main/src/server/dfly_bench.cc), which can be built from source in Dragonfly repository.
 
