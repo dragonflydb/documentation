@@ -145,3 +145,70 @@ Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency  
 Gets      8975121.86   8975121.86         0.00         0.32325         0.31100         0.52700         0.83900    647619.14
 ```
 
+
+## Garnet on `c6in.12xlarge`
+[Garnet](https://github.com/microsoft/garnet) has been recently released by Microsoft Research
+and people are curious how it compares with Dragonfly. We are not going to cover here about
+the architectural differrences between Garnet and Dragonfly, and their implications on compatibility
+with Redis but we provide a brief summary of Garnet performance and compare it with Dragonfly.
+
+Unfortunately, Garnet does not have aarch64 build available so we run it on intel-powered server
+`c6in.12xlarge`. We run Garnet via docker with native networking via
+`docker run --network=host ghcr.io/romange/garnet:latest --port=6379` command.
+The docker container was built using the Garnet docker build file for ubuntu, located in their
+repository.
+
+Writes
+
+`memtier_benchmark -s $SERVER_PRIVATE_IP --distinct-client-seed --hide-histogram --ratio 1:0 -t 60 -c 20 -n 200000`
+
+============================================================================================================================
+Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
+----------------------------------------------------------------------------------------------------------------------------
+Sets      3491302.66          ---          ---         0.34632         0.32700         0.75900         4.28700    268969.85
+
+
+Reads
+
+`memtier_benchmark -s $SERVER_PRIVATE_IP --distinct-client-seed --hide-histogram --ratio 0:1 -t 60 -c 20 -n 200000`
+
+============================================================================================================================
+Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
+----------------------------------------------------------------------------------------------------------------------------
+Gets      3742398.20   3742398.20         0.00         0.32700         0.31100         0.67900         2.62300    270040.81
+
+
+A curious and random finding - "dbsize" command takes 3s!! to run on Garnet.
+Not only did it run 3s, but it also used all the CPUs on the machine stalling
+all other commands in the meantime.`
+
+### Pipelined Reads
+
+`memtier_benchmark -s $SERVER_PRIVATE_IP --ratio 0:1 -t 60 -c 5  -n 2000000  --distinct-client-seed --hide-histogram --pipeline=10`
+============================================================================================================================
+Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
+----------------------------------------------------------------------------------------------------------------------------
+Gets     25373818.73  25373818.73         0.00         0.11997         0.11900         0.20700         0.37500   1830902.06
+
+
+Dragonfly on `c6in.12xlarge`
+============================================================================================================================
+Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
+----------------------------------------------------------------------------------------------------------------------------
+Sets      3628134.15          ---          ---         0.29145         0.20700         2.02300         6.81500    279511.34
+
+
+
+============================================================================================================================
+Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
+----------------------------------------------------------------------------------------------------------------------------
+Gets      5157473.90   5157473.90         0.00         0.29976         0.21500         1.97500         7.61500    372148.65
+
+
+### Pipelined Reads
+
+`memtier_benchmark -s $SERVER_PRIVATE_IP --ratio 0:1 -t 60 -c 5  -n 2000000  --distinct-client-seed --hide-histogram --pipeline=10`
+============================================================================================================================
+Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
+----------------------------------------------------------------------------------------------------------------------------
+Gets      6931686.45   6931686.45         0.00         0.35867         0.33500         0.67900         1.12700    500170.63
