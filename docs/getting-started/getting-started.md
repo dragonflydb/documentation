@@ -26,3 +26,6 @@ This helps guarantee the reliability and stability of the software.
 Dragonfly is compatible with Linux versions 4.14 or later.
 However, to achieve optimal performance, it is recommended to run Dragonfly on kernel version 5.10 or later.
 The Dragonfly build environment is based on Ubuntu 20.04.
+
+# Benchmarking Dragonfly
+Learn [how to measure the performance of Dragonfly](./benchmark.md) in a cloud environment.
