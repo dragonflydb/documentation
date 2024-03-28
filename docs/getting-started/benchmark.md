@@ -146,69 +146,66 @@ Gets      8975121.86   8975121.86         0.00         0.32325         0.31100  
 ```
 
 
-## Garnet on `c6in.12xlarge`
-[Garnet](https://github.com/microsoft/garnet) has been recently released by Microsoft Research
-and people are curious how it compares with Dragonfly. We are not going to cover here about
-the architectural differrences between Garnet and Dragonfly, and their implications on compatibility
-with Redis but we provide a brief summary of Garnet performance and compare it with Dragonfly.
+## Comparison with Garnet
+Microsoft Research recently released Garnet ([https://github.com/microsoft/garnet]),
+a remote cache store. Due to interest within the Dragonfly community, we decided to compare
+Garnet's performance with Dragonfly's. This comparison focuses on performance results
+and does not delve into architectural differences or Redis compatibility implications.
 
-Unfortunately, Garnet does not have aarch64 build available so we run it on intel-powered server
-`c6in.12xlarge`. We run Garnet via docker with native networking via
+<i>Note: Unfortunately, Garnet does not have aarch64 build available,
+therefore we run both Garnet and Dragonfly on x86_64 server
+`c6in.12xlarge`. We run Garnet via docker with host networking enabled via
 `docker run --network=host ghcr.io/romange/garnet:latest --port=6379` command.
 The docker container was built using the Garnet docker build file for ubuntu, located in their
-repository.
+repository.</i>
 
-Writes
+### Garnet on `c6in.12xlarge`
 
-`memtier_benchmark -s $SERVER_PRIVATE_IP --distinct-client-seed --hide-histogram --ratio 1:0 -t 60 -c 20 -n 200000`
+Similarly to previous tests we run `memtier_benchmark` on `c7gn.16xlarge` with `cluster`
+placement policy for both instances. For writes we used the following command:
 
-============================================================================================================================
-Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
-----------------------------------------------------------------------------------------------------------------------------
-Sets      3491302.66          ---          ---         0.34632         0.32700         0.75900         4.28700    268969.85
+```
+memtier_benchmark -s $SERVER_PRIVATE_IP --distinct-client-seed --hide-histogram --ratio 1:0 -t 60 -c 20 -n 200000
+```
 
+Similarly, for reads we used
+```
+memtier_benchmark -s $SERVER_PRIVATE_IP --distinct-client-seed --hide-histogram --ratio 0:1 -t 60 -c 20 -n 200000
+```
 
-Reads
+and for pipelined reads we used
 
-`memtier_benchmark -s $SERVER_PRIVATE_IP --distinct-client-seed --hide-histogram --ratio 0:1 -t 60 -c 20 -n 200000`
+```
+memtier_benchmark -s $SERVER_PRIVATE_IP --ratio 0:1 -t 60 -c 5  -n 2000000  --distinct-client-seed --hide-histogram --pipeline=10
+```
 
-============================================================================================================================
-Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
-----------------------------------------------------------------------------------------------------------------------------
-Gets      3742398.20   3742398.20         0.00         0.32700         0.31100         0.67900         2.62300    270040.81
+Note that we increased number of requests to `2000000` per client connection in the latter case.
 
+**Results**:
 
-A curious and random finding - "dbsize" command takes 3s!! to run on Garnet.
-Not only did it run 3s, but it also used all the CPUs on the machine stalling
-all other commands in the meantime.`
-
-### Pipelined Reads
-
-`memtier_benchmark -s $SERVER_PRIVATE_IP --ratio 0:1 -t 60 -c 5  -n 2000000  --distinct-client-seed --hide-histogram --pipeline=10`
-============================================================================================================================
-Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
-----------------------------------------------------------------------------------------------------------------------------
-Gets     25373818.73  25373818.73         0.00         0.11997         0.11900         0.20700         0.37500   1830902.06
+| Test          | Ops/sec   | Avg. Latency (us) | P99.9 Latency (us) |
+|---------------|-----------|-------------------|--------------------|
+| Write-Only    | 3.5M      | 346               | 4287               |
+| Read-Only     | 3.7M      | 327               | 2623               |
+| Pipelined Read| 25.4M !!! | 119               | 375                |
 
 
-Dragonfly on `c6in.12xlarge`
-============================================================================================================================
-Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
-----------------------------------------------------------------------------------------------------------------------------
-Sets      3628134.15          ---          ---         0.29145         0.20700         2.02300         6.81500    279511.34
+The interesting part is around pipelined reads, where Garnet scaled linearly to more than 25M qps
+which is a really impressive performance.
 
+On the other hand, a curious and random finding - a single "dbsize" command took 3 seconds
+to run on Garnet.
 
+### Dragonfly on `c6in.12xlarge`
 
-============================================================================================================================
-Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
-----------------------------------------------------------------------------------------------------------------------------
-Gets      5157473.90   5157473.90         0.00         0.29976         0.21500         1.97500         7.61500    372148.65
+We run Dragonfly on the same instances with the same test configurations.
+Below are the results for Dragonfly.
 
+| Test          | Ops/sec   | Avg. Latency (us) | P99.9 Latency (us) |
+|---------------|-----------|-------------------|--------------------|
+| Write-Only    | 3.6M      | 291               | 6815               |
+| Read-Only     | 5.1M      | 299               | 7615               |
+| Pipelined Read| 6.9M      | 358               | 1127               |
 
-### Pipelined Reads
-
-`memtier_benchmark -s $SERVER_PRIVATE_IP --ratio 0:1 -t 60 -c 5  -n 2000000  --distinct-client-seed --hide-histogram --pipeline=10`
-============================================================================================================================
-Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9 Latency       KB/sec
-----------------------------------------------------------------------------------------------------------------------------
-Gets      6931686.45   6931686.45         0.00         0.35867         0.33500         0.67900         1.12700    500170.63
+As you can see Dragonfly shows a comparable throughput for non-pipelined access,
+but its P99.9 was worse. For pipelined commands, Dragonfly had x3.7 less throughput than Garnet.
