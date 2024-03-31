@@ -21,7 +21,7 @@ which can be built from source in the Dragonfly repository.
 
 ## Methodology
 - **Remote Deployment:** Dragonfly is a multi-threaded server designed to run remotely.
-Therefore, we recomment running the load testing client and server on separate machines for a more accurate representation of real-world performance.
+Therefore, we recommend running the load testing client and server on separate machines for a more accurate representation of real-world performance.
 - **Minimizing Latency:** Locate client and server within the same Availability Zone and use private IPs for optimal network performance. If you benchmark in the AWS cloud, consider an AWS Cluster placement group
 for the lowest possible latency. The rationale behind this - to remove any environmental factors
 that might skew the test results.
@@ -39,12 +39,12 @@ Please notice that Dragonfly uses of all the available vCPUs by default on the s
 If you want to control explicitly number of threads in Dragonfly you can add `--proactor_threads=<N>`.
 Both the client and server instances run `Ubuntu 23.04` OS with kernel version 6.2.
 In line with our recommendations above, we used internal IPs for connecting and
-used stronger `c7gn.16xlarge` instance with 64 vCPUs for the load-testing program.
+used stronger `c7gn.16xlarge` instance with 64 vCPUs for the load-testing program (i.e. the client).
 
 ## Dragongly on `c6gn.12xlarge`
 
 ### Write-only test
-On the loadtest instance (c7gn.16xlarge with 64 vCPUs) we run:
+On the loadtest instance (`c7gn.16xlarge` with 64 vCPUs):
 `memtier_benchmark -s $SERVER_PRIVATE_IP --distinct-client-seed --hide-histogram --ratio 1:0 -t 60 -c 20 -n 200000`
 
 The run ended with the following summary:
@@ -58,15 +58,15 @@ Sets      4195628.23          ---          ---         0.39283         0.37500  
 ```
 
 In this test, we reached almost 4.2M queries per second (QPS) with the average latency of
-392us between the `memtier_benchmark` and Dragonfly. Consequently, the P50 latency was 375us, P99 - 687us
-and P99.9 was 2543us. It is a very short and simple test, but it still gives some perspective
+0.4ms between the `memtier_benchmark` and Dragonfly. Consequently, the P50 latency was 0.4ms, P99 - 0.7ms
+and P99.9 was 2.54ms. It is a very short and simple test, but it still gives some perspective
 about the performance of Dragonfly.
 
 ### Reads-only test
-Without flushing the database, we run the following command:
+Without flushing the database:
 `memtier_benchmark -s $SERVER_PRIVATE_IP --distinct-client-seed --hide-histogram --ratio 0:1 -t 60 -c 20 -n 200000`
 
-Note that the ratio changed to "1:0.
+Note that the ratio changed to "0:1", meaning only `GET` commands and *no* `SET` commands.
 
 ```
 ============================================================================================================================
@@ -82,7 +82,9 @@ with P99.9 latency - 903us.
 
 ### Read test with pipelining
 
-Here's another way to loadtest Dragonfly. This one is sending SETs with pipeline of batch size 10:
+Here's another way to loadtest Dragonfly. Below is one with sending `SET`s with pipeline (`--pipeline`)
+of batch size 10. Pipeline means that the client sends multiple commands (10 in this case)
+and only then waits for the responses.
 `memtier_benchmark -s $SERVER_PRIVATE_IP --ratio 0:1 -t 60 -c 5  -n 200000  --distinct-client-seed --hide-histogram --pipeline=10`
 
 ```
@@ -93,8 +95,8 @@ Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50 Latency  
 Gets      7083583.57   7083583.57         0.00         0.45821         0.44700         0.69500         1.53500    511131.14
 ```
 
-During the pipelining mode, memtier_benchmark sends `K` requests in batch without before waiting
-for them to complete. In this case, `K` is `10`. Pipelining reduces the CPU load spent
+During the pipelining mode, memtier_benchmark sends `K` (in this case 10) requests in batch without before waiting
+for them to complete. Pipelining reduces the CPU load spent
 in the networking stack, and as a result, Dragonfly can reach 7M qps with sub-millisecond latency.
 Please note, that for real world usecases, pipelining requires cooperation of a client side app,
 which must send multiple requests on a single connection before waiting for the server to respond.
@@ -105,7 +107,7 @@ benefitting from performance improvements of pipelining.
 
 ## Load testing Dragonfly `c7gn.12xlarge`
 
-Next thing we tried running Dragonfly on the next generation instance with the same number of vCPUs (48).
+Next, we tried running Dragonfly on the next generation instance (`c7gn`) with the same number of vCPUs (48).
 We used the same `c7gn.16xlarge` for running `memtier_benchmark` and we used the same commands
 to test writes, reads and pipelined reads:
 
@@ -147,17 +149,17 @@ Gets      8975121.86   8975121.86         0.00         0.32325         0.31100  
 
 
 ## Comparison with Garnet
-Microsoft Research recently released Garnet ([https://github.com/microsoft/garnet]),
+Microsoft Research recently released [Garnet](https://github.com/microsoft/garnet),
 a remote cache store. Due to interest within the Dragonfly community, we decided to compare
 Garnet's performance with Dragonfly's. This comparison focuses on performance results
 and does not delve into architectural differences or Redis compatibility implications.
 
-<i>Note: Unfortunately, Garnet does not have aarch64 build available,
+*Note:* Unfortunately, Garnet does not have aarch64 build available,
 therefore we run both Garnet and Dragonfly on x86_64 server
 `c6in.12xlarge`. We run Garnet via docker with host networking enabled via
 `docker run --network=host ghcr.io/romange/garnet:latest --port=6379` command.
 The docker container was built using the Garnet docker build file for ubuntu, located in their
-repository.</i>
+repository.
 
 ### Garnet on `c6in.12xlarge`
 
