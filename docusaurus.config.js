@@ -60,6 +60,8 @@ const config = {
           remarkPlugins: [
             require("./src/theme/plugins/remark-dragonfly-version.js"),
           ],
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
         },
         blog: false,
         pages: false,
