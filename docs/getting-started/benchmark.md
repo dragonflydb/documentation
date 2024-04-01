@@ -78,7 +78,7 @@ Gets      4109802.84   4109802.84         0.00         0.40126         0.38300  
 We can observe that both `Ops` and `Hits` are the same, meaning all of the GET requests
 coming from the load test hit the existing keys.
 Dragonfly responded with returning values for each request and its average QPS was 4.1M qps,
-with P99.9 latency - 903us.
+with P99.9 latency - 903us (less than 1 millisecond).
 
 ### Read test with pipelining
 
