@@ -77,7 +77,7 @@ EOF
 
 ## Dragonfly Instance With TLS
 
-For TLS there are two mechanisms used by Dragonfly authenticate its clients. Either with a password or with a CA root certificate. Below,
+For TLS there are two mechanisms used by Dragonfly to authenticate its clients. Either with a password or with a CA root certificate. Below,
 we use password authentication:
 
 ```sh
