@@ -77,7 +77,8 @@ EOF
 
 ## Dragonfly Instance With TLS
 
-As atleast one auth mechanism is required, we will use the password auth mechanism:
+For TLS there are two mechanisms used by Dragonfly to authenticate its clients. Either with a password or with a CA root certificate. Below,
+we use password authentication:
 
 ```sh
 kubectl apply -f - <<EOF
@@ -91,7 +92,7 @@ stringData:
 EOF
 ```
 
-Create a Dragonfly instance with one at-least one auth mechanism as its needed when TLS is enabled.
+Create a Dragonfly instance with at least one auth mechanism as described above.
 
 ```sh
 kubectl apply -f - <<EOF
