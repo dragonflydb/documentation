@@ -179,7 +179,7 @@ sidebar_position: 0
 |                                              | <span class="command">MEMORY MALLOC-STATS</span>           | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">MEMORY PURGE</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">MEMORY STATS</span>                  | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">MEMORY USAGE</span>                  | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">MEMORY USAGE</span>                  | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">MODULE LIST</span>                   | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">MODULE LOAD</span>                   | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">MODULE LOADEX</span>                 | <span class="support unsupported">Unsupported</span>     |
@@ -190,9 +190,9 @@ sidebar_position: 0
 |                                              | <span class="command">SAVE</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SHUTDOWN</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SLAVEOF</span>                       | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">SLOWLOG GET</span>                   | <span class="support supported">Fully supported</span>     |
-|                                              | <span class="command">SLOWLOG LEN</span>                   | <span class="support supported">Fully supported</span>     |
-|                                              | <span class="command">SLOWLOG RESET</span>                 | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">SLOWLOG GET</span>                   | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">SLOWLOG LEN</span>                   | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">SLOWLOG RESET</span>                 | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SWAPDB</span>                        | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">TIME</span>                          | <span class="support supported">Fully supported</span>   |
 | <span class="family">Set</span>              | <span class="command">SADD</span>                          | <span class="support supported">Fully supported</span>   |
@@ -200,14 +200,14 @@ sidebar_position: 0
 |                                              | <span class="command">SDIFF</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SDIFFSTORE</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SINTER</span>                        | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">SINTERCARD</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">SINTERCARD</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SINTERSTORE</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SISMEMBER</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SMEMBERS</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SMISMEMBER</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SMOVE</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SPOP</span>                          | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">SRANDMEMBER</span>                   | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">SRANDMEMBER</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SREM</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SSCAN</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SUNION</span>                        | <span class="support supported">Fully supported</span>   |
@@ -229,7 +229,7 @@ sidebar_position: 0
 |                                              | <span class="command">ZMSCORE</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZPOPMAX</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZPOPMIN</span>                       | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ZRANDMEMBER</span>                   | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">ZRANDMEMBER</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZRANGE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZRANGEBYLEX</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZRANGEBYSCORE</span>                 | <span class="support supported">Fully supported</span>   |
@@ -288,15 +288,15 @@ sidebar_position: 0
 |                                              | <span class="command">MULTI</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">UNWATCH</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">WATCH</span>                         | <span class="support supported">Fully supported</span>   |
-| <span class="family">Geo</span>              | <span class="command">GEOADD</span>                        | <span class="support supported">Fully supported</span>     |
-|                                              | <span class="command">GEODIST</span>                       | <span class="support supported">Fully supported</span>     |
-|                                              | <span class="command">GEOHASH</span>                       | <span class="support supported">Fully supported</span>     |
-|                                              | <span class="command">GEOPOS</span>                        | <span class="support supported">Fully supported</span>     |
+| <span class="family">Geo</span>              | <span class="command">GEOADD</span>                        | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">GEODIST</span>                       | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">GEOHASH</span>                       | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">GEOPOS</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEORADIUS</span>                     | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">GEORADIUS_RO</span>                  | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEORADIUSBYMEMBER</span>             | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEORADIUSBYMEMBER</span>             | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEORADIUSBYMEMBER_RO</span>          | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEOSEARCH</span>                     | <span class="support partial">Partially supported</span>     |
+|                                              | <span class="command">GEOSEARCH</span>                     | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">GEOSEARCHSTORE</span>                | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Bloom Filter</span>     | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Cuckoo Filter</span>    | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
