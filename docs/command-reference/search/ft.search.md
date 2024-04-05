@@ -15,8 +15,6 @@ description: Searches the index with a query, returning docs or just IDs
 
 **Time complexity:** O(N)
 
-**Important**: New in Dragonfly v1.13. Currently, Dragonfly Search is in **Beta**.
-
 ## Description
 
 Search the index with a textual query, returning either documents or just IDs.
@@ -31,7 +29,7 @@ is index name. You must first create the index using [`FT.CREATE`](./ft.create.m
 </details>
 
 <details open>
-<summary><code>query</code></summary> 
+<summary><code>query</code></summary>
 
 is text query to search. If it's more than a single word, put it in quotes.
 Refer to [query syntax](https://redis.io/docs/interact/search-and-query/query/) for more details.

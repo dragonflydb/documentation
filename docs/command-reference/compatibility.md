@@ -23,11 +23,11 @@ sidebar_position: 0
 |                                              | <span class="command">CLIENT LIST</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CLIENT NO-EVICT</span>               | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT NO-TOUCH</span>               | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLIENT PAUSE</span>                  | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLIENT PAUSE</span>                  | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CLIENT REPLY</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT SETINFO</span>                | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT SETNAME</span>                | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">CLIENT TRACKING</span>               | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLIENT TRACKING</span>               | <span class="support partial">Partially supported</span>     |
 |                                              | <span class="command">CLIENT TRACKINGINFO</span>           | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT UNBLOCK</span>                | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT UNPAUSE</span>                | <span class="support unsupported">Unsupported</span>     |
@@ -43,7 +43,7 @@ sidebar_position: 0
 |                                              | <span class="command">EXISTS</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">EXPIRE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">EXPIREAT</span>                      | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">DEXPIRETIMEUMP</span>                | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">EXPIRETIME</span>                    | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">KEYS</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">MIGRATE</span>                       | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">MOVE</span>                          | <span class="support supported">Fully supported</span>   |
@@ -59,7 +59,7 @@ sidebar_position: 0
 |                                              | <span class="command">RANDOMKEY</span>                     | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">RENAME</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">RENAMENX</span>                      | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">RESTORE</span>                       | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">RESTORE</span>                       | <span class="support supported">Fully supported</span> |
 |                                              | <span class="command">SCAN</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SORT</span>                          | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">SORT_RO</span>                       | <span class="support unsupported">Unsupported</span>     |
@@ -158,10 +158,10 @@ sidebar_position: 0
 |                                              | <span class="command">COMMAND GETKEYSANDFLAGS</span>       | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">COMMAND INFO</span>                  | <span class="support supported">Fully supported</span>     |
 |                                              | <span class="command">COMMAND LIST</span>                  | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CONFIG GET</span>                    | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">CONFIG GET</span>                    | <span class="support supported">Fully supported</span> |
 |                                              | <span class="command">CONFIG RESETSTAT</span>              | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CONFIG REWRITE</span>                | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CONFIG SET</span>                    | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">CONFIG SET</span>                    | <span class="support supported">Fully supported</span> |
 |                                              | <span class="command">DBSIZE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">FAILOVER</span>                      | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">FLUSHALL</span>                      | <span class="support supported">Fully supported</span>   |
@@ -298,10 +298,14 @@ sidebar_position: 0
 |                                              | <span class="command">GEORADIUSBYMEMBER_RO</span>          | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">GEOSEARCH</span>                     | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">GEOSEARCHSTORE</span>                | <span class="support unsupported">Unsupported</span>     |
-| <span class="family">Bloom Filter</span>     | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">Bloom Filter</span>     | <span class="command">BF.ADD</span>                        | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">BF.MADD</span>                       | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">BF.EXISTS</span>                     | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">BF.MEXISTS</span>                    | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">BF.RESERVE</span>                    | <span class="support partial">Partially supported</span>     |
 | <span class="family">Cuckoo Filter</span>    | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Count-min Sketch</span> | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
-| <span class="family">Graph</span>            | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">Graph</span>            | <span class="command">Not supported</span>                 | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">JSON</span>             | <span class="command">ARRAPPEND</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ARRINDEX</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ARRINSERT</span>                     | <span class="support supported">Fully supported</span>   |
