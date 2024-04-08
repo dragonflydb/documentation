@@ -137,7 +137,7 @@ sidebar_position: 0
 |                                              | <span class="command">SCRIPT FLUSH</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">SCRIPT DEBUG</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">SCRIPT KILL</span>                   | <span class="support unsupported">Unsupported</span>     |
-| <span class="family">Server</span>           | <span class="command">ACL CAT</span>                       | <span class="support supported">Fully supported</span>   |
+| <span class="family">ACL</span>              | <span class="command">ACL CAT</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ACL DELUSER</span>                   | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">ACL DRYRUN</span>                    | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">ACL GENPASS</span>                   | <span class="support partial">Partially supported</span> |
@@ -149,7 +149,7 @@ sidebar_position: 0
 |                                              | <span class="command">ACL SETUSER</span>                   | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">ACL USERS</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ACL WHOAMI</span>                    | <span class="support supported">Fully Supported</span>   |
-|                                              | <span class="command">BGREWRITEAOF</span>                  | <span class="support unsupported">Unsupported</span>     |
+|  <span class="family">Server</span>          | <span class="command">BGREWRITEAOF</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">BGSAVE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">COMMAND</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">COMMAND COUNT</span>                 | <span class="support supported">Fully supported</span>   |
@@ -298,7 +298,11 @@ sidebar_position: 0
 |                                              | <span class="command">GEORADIUSBYMEMBER_RO</span>          | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">GEOSEARCH</span>                     | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">GEOSEARCHSTORE</span>                | <span class="support unsupported">Unsupported</span>     |
-| <span class="family">Bloom Filter</span>     | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">BloomFilter</span>      | <span class="command">BF.RESERVE</span>                    | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">BF.ADD</span>                        | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">BF.MADD</span>                       | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">BF.EXISTS</span>                     | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">BF.MEXISTS</span>                    | <span class="support supported">Fully supported</span>   |
 | <span class="family">Cuckoo Filter</span>    | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Count-min Sketch</span> | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Graph</span>            | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
@@ -327,8 +331,8 @@ sidebar_position: 0
 |                                              | <span class="command">STRLEN</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">TOGGLE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">TYPE</span>                          | <span class="support supported">Fully supported</span>   |
-| <span class="family">Search</span>           | <span class="command">FT.CREATE</span>                     | <span class="support supported">Fully supported</span>     |
-|                                              | <span class="command">FT.SEARCH</span>                     | <span class="support supported">Fully supported</span>     |
+| <span class="family">Search</span>           | <span class="command">FT.CREATE</span>                     | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">FT.SEARCH</span>                     | <span class="support supported">Fully supported</span>   |
 | <span class="family">Auto Suggest</span>     | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">T-Digest</span>         | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Time Series</span>      | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
