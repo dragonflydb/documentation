@@ -164,7 +164,7 @@ But incoming connections on ports `6379` and `6381` still require TLS and are co
 ## Monitoring Replication Lag
 
 Dragonfly defines the replication lag as the maximal amount of unacknowledged database among all shards.
-This metric is calculated by the primary instance and is visible both as the `dragonfly_connected_replica_lag_records` field in the [prometheus metrics](./monitoring.md)
+This metric is calculated by the primary instance and is visible both as the `dragonfly_connected_replica_lag_records` field in the [Prometheus metrics](./monitoring.md)
 as well as in the `INFO REPLICATION` command output as the `lag` field.
 
 ```bash
