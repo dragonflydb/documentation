@@ -126,4 +126,4 @@ from now on the replica *does not* communicate over TLS but incoming connections
 
 ## Monitoring Lag
 
-Dragonfly defines the replication lag as the maximal amount of unacknowledged database among all shards. This metric is calculated by the master instance and is visible both as the `dfly_connected_replica_lag_records` field in the [prometheus metrics](./monitoring.md), and through the `INFO REPLICATION` command.
+Dragonfly defines the replication lag as the maximal amount of unacknowledged database among all shards. This metric is calculated by the master instance and is visible both as the `dragonfly_connected_replica_lag_records` field in the [prometheus metrics](./monitoring.md), and through the `INFO REPLICATION` command.
