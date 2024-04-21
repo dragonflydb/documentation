@@ -32,9 +32,10 @@ dragonfly> BF.MADD bf Hello World
 1) (integer) 1
 2) (integer) 1
 
-dragonfly> BF.MEXISTS bf Hello World
+dragonfly> BF.MEXISTS bf Hello World SomethingElse
 1) (integer) 1
 2) (integer) 1
+3) (integer) 0
 ```
 
 ## See also
