@@ -1,5 +1,5 @@
 ---
-description: Learn how to use Redis BF.RESERVE to create a new bloom filter entry in Dragonfly.
+description: Learn how to use Redis BF.RESERVE to create a new Bloom filter entry in Dragonfly.
 ---
 import PageTitle from '@site/src/components/PageTitle';
 
@@ -9,19 +9,18 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    BF.RESERVE  key false_positive_rate capacity
+    BF.RESERVE key false_positive_rate capacity
 
 **Time complexity:** O(1)
 
-
 **ACL categories:** @bloom
 
-Creates a new bloom filter with the initial capacity of at least `capacity`,
- and false positive rate `false_positive_rate` that should be a double
- between `0` and `0.5`.
+Creates a new Bloom filter with an initial capacity of at least `capacity`
+and a false positive rate `false_positive_rate` that should be a double between `0` and `0.5`.
 
 ## Returns
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if `SET` was executed correctly.
+
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if the Bloom filter was created successfully.
 
 ## Examples
 
@@ -31,5 +30,5 @@ dragonfly> BF.RESERVE bf 0.0001 500000
 ```
 
 ## See also
-`BF.ADD`
 
+[`BF.ADD`](./bf.add.md) | [`BF.MADD`](./bf.madd.md)
