@@ -3,7 +3,7 @@
 Dragonfly has built-in support for ACL. Dragonfly operators get fine-grained control over how and who accesses the datastore via the ACL family of commands.
 Since Dragonfly is designed as a drop-in replacement for Redis, you can expect the same API functionality for ACL as in Redis.
 
-All connections in Dragofnly default to the user `default` (unless that user is disabled). By default, user `default` can `AUTH` in Dragonfly using any password, 
+All connections in Dragonfly default to the user `default` (unless that user is disabled). By default, user `default` can `AUTH` in Dragonfly using any password, 
 and is allowed to execute any command and is part of all the available ACL groups.
 
 Permissions for a given user are controlled via a domain-specific language (DSL) and are divided into 4 categories:
