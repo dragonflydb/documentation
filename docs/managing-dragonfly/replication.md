@@ -92,7 +92,9 @@ The `-nodes` argument means `no DES`, that is, do not encrypt the private key.
 Finally, you should use the CA's private key to sign Dragonfly's CSR and get back the signed certificate:
 
 ```bash
-openssl x509 -req -in server-req.pem -days 365 -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem
+openssl x509 -req -in server-req.pem -days 365 \
+             -CA ca-cert.pem -CAkey ca-key.pem \
+             -CAcreateserial -out server-cert.pem
 ```
 
 The `ca-cert.pem` and `ca-key.pem` can be generated like in the first step described above.
@@ -104,13 +106,18 @@ The same process applies for generating client keys.
 To enable TLS for Dragonfly, you should supply the following arguments:
 
 ```bash
-dragonfly --tls --tls_key_file=server-key.pem --tls_cert_file=server-cert.pem --tls_ca_cert_file=ca-cert.pem
+dragonfly --tls --tls_key_file=server-key.pem \
+          --tls_cert_file=server-cert.pem \
+          --tls_ca_cert_file=ca-cert.pem
 ```
 
 Start the secondary Dragonfly instance on a different port (i.e., `6380`) with the following arguments:
 
 ```bash
-dragonfly --tls --tls_key_file=replica-client-key.pem --tls_cert_file=replica-client-cert.pem --tls_ca_cert_file=ca-cert.pem --tls_replication=true --port 6380
+dragonfly --tls --tls_key_file=replica-client-key.pem \
+          --tls_cert_file=replica-client-cert.pem \
+          --tls_ca_cert_file=ca-cert.pem \
+          --tls_replication=true --port 6380
 ```
 
 Finally, connect to the secondary Dragonfly instance and issue the `REPLICAOF` command:
