@@ -6,6 +6,7 @@ the same port as the main `TCP` port. However, this can be turned off by the com
 supports `HTTP` on admin port.
 
 ## Authentication
+
 By default, HTTP does not require authentication. However, if `requirepass` is set then
 the HTTP request should authorize with username `default` and the password will be the value
 of `requirepass`.
@@ -18,7 +19,7 @@ the `default` ACL user password because the vice versa is not true, that is,
 Also, if `admin_nopass` is set, it bypasses the `requirepass` option on admin port, allowing
 all requests to that port without any authentication.
 
-## Metrics page
+## Metrics Page
 
 Keep in mind that the `/metrics` page always bypasses auth. That means that a user can freely
 view that page without any authentication.

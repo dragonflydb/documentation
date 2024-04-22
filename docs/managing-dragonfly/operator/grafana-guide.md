@@ -61,8 +61,8 @@ statefulset.apps/prometheus-prometheus   1/1     167m
 
 ## Create Prometheus Service
 
-Create a prometheus Service to let Grafana access prometheus through it. If you already
-have a Prometheus Service object, move to the next step.
+Create a Prometheus Service to let Grafana access prometheus through it.
+If you already have a Prometheus Service object, move to the next step.
 
 ```
 kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/prometheus-service.yaml
