@@ -38,7 +38,7 @@ dragonfly> PFADD hll1 foo bar zap a
 dragonfly> PFADD hll2 a b c foo
 (integer) 1
 dragonfly> PFMERGE hll3 hll1 hll2
-"OK"
+OK
 dragonfly> PFCOUNT hll3
 (integer) 6
 ```

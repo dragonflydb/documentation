@@ -42,7 +42,7 @@ Basic usage:
 
 ```shell
 dragonfly> SET key1 "Hello World"
-"OK"
+OK
 dragonfly> SETRANGE key1 6 "Dragonfly"
 (integer) 15
 dragonfly> GET key1

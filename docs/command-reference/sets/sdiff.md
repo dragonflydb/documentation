@@ -21,7 +21,7 @@ set and all the successive sets.
 
 For example:
 
-```
+```shell
 key1 = {a,b,c,d}
 key2 = {c}
 key3 = {a,c,e}

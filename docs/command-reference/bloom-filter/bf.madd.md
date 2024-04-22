@@ -1,5 +1,5 @@
 ---
-description: Learn how to use Redis BF.MADD command to add an item to the bloom filter.
+description: Learn how to use Redis BF.MADD command to add one or more items to the Bloom filter.
 ---
 import PageTitle from '@site/src/components/PageTitle';
 
@@ -11,16 +11,19 @@ import PageTitle from '@site/src/components/PageTitle';
 
     BF.MADD key item [item ...]
 
-**Time complexity:** O(1) for each element added, so O(N) to add N elements when the command is called with multiple arguments.
-
+**Time complexity:** O(1) for each item added, so O(N) to add N items when the command is called with multiple arguments.
 
 **ACL categories:** @bloom
 
-Adds one or more item to a Bloom filter <code>key</code>
+Adds one or more items to a Bloom filter `key`.
 
 ## Returns
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): each element being the reply
-as with `BF.ADD``.
+
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays):
+an array of integers, each representing the result for an individual item as if being processed by the [`BF.ADD`](./bf.add.md) command:
+
+- `1` if the item was successfully added to the filter.
+- `0` if the item was already added to the filter, which could be a false positive.
 
 ## Examples
 
@@ -32,5 +35,4 @@ dragonfly> BF.MADD bf Hello World
 
 ## See also
 
-`BF.RESERVE` | `BF.ADD`
-
+[`BF.RESERVE`](./bf.reserve.md) | [`BF.ADD`](./bf.add.md)

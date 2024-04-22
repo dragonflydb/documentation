@@ -37,7 +37,7 @@ Please for the specific semantics of the command refer to the documentation of
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> EXISTS mykey
 (integer) 1
 dragonfly> EXPIREAT mykey 1293840000

@@ -28,9 +28,9 @@ If `newkey` already exists it is overwritten, when this happens `RENAME` execute
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> RENAME mykey myotherkey
-"OK"
+OK
 dragonfly> GET myotherkey
 "Hello"
 ```

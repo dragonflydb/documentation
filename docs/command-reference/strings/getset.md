@@ -46,7 +46,7 @@ dragonfly> GET mycounter
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> GETSET mykey "World"
 "Hello"
 dragonfly> GET mykey

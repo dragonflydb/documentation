@@ -26,9 +26,9 @@ This command is equivalent to `DEL` command, see `DEL` for more information.
 
 ```shell
 dragonfly> SET key1 "Hello"
-"OK"
+OK
 dragonfly> SET key2 "World"
-"OK"
+OK
 dragonfly> UNLINK key1 key2 key3
 (integer) 2
 ```

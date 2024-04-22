@@ -26,7 +26,7 @@ Returns the string length of the value associated with `field` in the hash store
 
 ```shell
 dragonfly> HMSET myhash f1 HelloWorld f2 99 f3 -256
-"OK"
+OK
 dragonfly> HSTRLEN myhash f1
 (integer) 10
 dragonfly> HSTRLEN myhash f2

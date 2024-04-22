@@ -32,7 +32,7 @@ others are unchanged.
 
 ```shell
 dragonfly> MSET key1 "Hello" key2 "World"
-"OK"
+OK
 dragonfly> GET key1
 "Hello"
 dragonfly> GET key2

@@ -21,8 +21,10 @@ or the reason the user can't execute the command.
 
 ```shell
 dragonfly> ACL SETUSER mike >mypass +GET -SET
-ACL DRYRUN mike GET
-"OK"
+OK
+
+dragonfly> ACL DRYRUN mike GET
+OK
 
 dragonfly> ACL DRYRUN mike SET
 (error) ERR User: mike is not allowed to execute command: SET

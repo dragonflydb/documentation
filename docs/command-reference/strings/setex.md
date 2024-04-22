@@ -40,7 +40,7 @@ An error is returned when `seconds` is invalid.
 
 ```shell
 dragonfly> SETEX mykey 10 "Hello"
-"OK"
+OK
 dragonfly> TTL mykey
 (integer) 10
 dragonfly> GET mykey

@@ -60,7 +60,7 @@ dragonfly> RPUSH mylist "two"
 dragonfly> RPUSH mylist "three"
 (integer) 3
 dragonfly> LTRIM mylist 1 -1
-"OK"
+OK
 dragonfly> LRANGE mylist 0 -1
 1) "two"
 2) "three"

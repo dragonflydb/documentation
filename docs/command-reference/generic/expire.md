@@ -68,13 +68,13 @@ _Navigation session_ pattern section below.
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> EXPIRE mykey 10
 (integer) 1
 dragonfly> TTL mykey
 (integer) 10
 dragonfly> SET mykey "Hello World"
-"OK"
+OK
 dragonfly> TTL mykey
 (integer) -1
 ```

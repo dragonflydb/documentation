@@ -27,7 +27,7 @@ This command is similar to `GET`, except for the fact that it also deletes the k
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> GETDEL mykey
 "Hello"
 dragonfly> GET mykey

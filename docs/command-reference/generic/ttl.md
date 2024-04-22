@@ -31,7 +31,7 @@ given key will continue to be part of the dataset.
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> EXPIRE mykey 10
 (integer) 1
 dragonfly> TTL mykey

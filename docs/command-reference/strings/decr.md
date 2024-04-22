@@ -32,11 +32,11 @@ See `INCR` for extra information on increment/decrement operations.
 
 ```shell
 dragonfly> SET mykey "10"
-"OK"
+OK
 dragonfly> DECR mykey
 (integer) 9
 dragonfly> SET mykey "234293482390480948029348230948"
-"OK"
+OK
 dragonfly> DECR mykey
 "value is not an integer or out of range"
 ```

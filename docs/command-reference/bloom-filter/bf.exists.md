@@ -1,5 +1,5 @@
 ---
-description: Learn how to use Redis BF.EXISTS command to check for existence of an item in the bloom filter.
+description: Learn how to use Redis BF.EXISTS command to check for the existence of an item in the Bloom filter.
 ---
 import PageTitle from '@site/src/components/PageTitle';
 
@@ -13,23 +13,30 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-
 **ACL categories:** @bloom
 
-Checks for an existense of a single item in a Bloom filter <code>key</code>
+Checks for the existence of a single item in a Bloom filter `key`.
 
 ## Returns
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): 1 if the element probably exists,
-0 if it definitely does not exist.
+
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
+
+- `1` if the item exists with a high probability.
+- `0` if the item definitely does not exist.
 
 ## Examples
 
 ```shell
+dragonfly> BF.ADD bf Hello
+(integer) 1
+
 dragonfly> BF.EXISTS bf Hello
 (integer) 1
+
+dragonfly> BF.EXISTS bf World
+(integer) 0
 ```
 
 ## See also
 
-`BF.ADD` | `BF.MEXISTS`
-
+[`BF.ADD`](./bf.add.md) | [`BF.MEXISTS`](./bf.mexists.md)

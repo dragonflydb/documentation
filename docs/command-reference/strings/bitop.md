@@ -51,9 +51,9 @@ size of the longest input string.
 
 ```shell
 dragonfly> SET key1 "foobar"
-"OK"
+OK
 dragonfly> SET key2 "abcdef"
-"OK"
+OK
 dragonfly> BITOP AND dest key1 key2
 (integer) 6
 dragonfly> GET dest

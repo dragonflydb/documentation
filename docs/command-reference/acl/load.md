@@ -21,5 +21,5 @@ The error otherwise.
 
 ```shell
 dragonfly> ACL LOAD
-"OK"
+OK
 ```
