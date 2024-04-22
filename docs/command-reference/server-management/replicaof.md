@@ -35,10 +35,10 @@ Later when the other Dragonfly server is fixed, it can be reconfigured to work a
 
 ```
 dragonfly> REPLICAOF NO ONE
-"OK"
+OK
 
 dragonfly> REPLICAOF 127.0.0.1 6799
-"OK"
+OK
 ```
 ## Flags
 * **`masterauth`** - the credentials for accessing authenticated master server

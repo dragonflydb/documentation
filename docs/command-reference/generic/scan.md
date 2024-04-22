@@ -210,7 +210,7 @@ Iteration of a Hash value.
 
 ```shell
 dragonfly> hmset hash name Jack age 33
-"OK"
+OK
 dragonfly> hscan hash 0
 1) "0"
 2) 1) "name"

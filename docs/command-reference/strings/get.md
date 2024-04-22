@@ -31,7 +31,7 @@ only handles string values.
 dragonfly> GET nonexisting
 (nil)
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> GET mykey
 "Hello"
 ```

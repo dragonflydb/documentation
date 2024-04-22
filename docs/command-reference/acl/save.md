@@ -25,5 +25,5 @@ The error otherwise.
 
 ```shell
 dragonfly> ACL SAVE
-"OK"
+OK
 ```

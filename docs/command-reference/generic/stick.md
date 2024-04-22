@@ -27,7 +27,7 @@ This command is Dragonfly-specific.
 
 ```shell
 dragonfly> MSET a 1 b 2
-"OK"
+OK
 dragonfly> STICK a
 (integer) 1
 dragonfly> STICK a b c

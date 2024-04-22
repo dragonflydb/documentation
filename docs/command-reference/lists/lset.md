@@ -34,9 +34,9 @@ dragonfly> RPUSH mylist "two"
 dragonfly> RPUSH mylist "three"
 (integer) 3
 dragonfly> LSET mylist 0 "four"
-"OK"
+OK
 dragonfly> LSET mylist -2 "five"
-"OK"
+OK
 dragonfly> LRANGE mylist 0 -1
 1) "four"
 2) "five"

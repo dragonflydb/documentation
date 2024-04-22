@@ -30,7 +30,7 @@ specified in milliseconds instead of seconds.
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> PEXPIRE mykey 1500
 (integer) 1
 dragonfly> TTL mykey

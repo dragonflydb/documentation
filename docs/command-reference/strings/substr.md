@@ -33,7 +33,7 @@ the actual length of the string.
 
 ```shell
 dragonfly> SET mykey "This is a string"
-"OK"
+OK
 dragonfly> GETRANGE mykey 0 3
 "This"
 dragonfly> GETRANGE mykey -3 -1

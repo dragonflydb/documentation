@@ -39,7 +39,7 @@ When supplied with no options, `GETEX` is equivalent to `GET`.
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> GETEX mykey
 "Hello"
 dragonfly> TTL mykey

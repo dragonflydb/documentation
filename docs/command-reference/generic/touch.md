@@ -27,9 +27,9 @@ A key is ignored if it does not exist.
 
 ```shell
 dragonfly> SET key1 "Hello"
-"OK"
+OK
 dragonfly> SET key2 "World"
-"OK"
+OK
 dragonfly> TOUCH key1 key2
 (integer) 2
 ```

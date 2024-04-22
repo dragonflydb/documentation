@@ -43,7 +43,7 @@ Dragonfly protects itself from an overwhelming number of returned keys by imposi
 
 ```shell
 dragonfly> MSET firstname Jack lastname Stuntman age 35
-"OK"
+OK
 dragonfly> KEYS *name*
 1) "lastname"
 2) "firstname"

@@ -51,11 +51,11 @@ If the command is issued with the `GET` option, the above does not apply. It wil
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> GET mykey
 "Hello"
 dragonfly> SET anotherkey "will expire in a minute" EX 60
-"OK"
+OK
 dragonfly> SET mykey "World" GET
 "Hello"
 ```

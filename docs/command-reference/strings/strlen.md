@@ -28,7 +28,7 @@ exist.
 
 ```shell
 dragonfly> SET mykey "Hello world"
-"OK"
+OK
 dragonfly> STRLEN mykey
 (integer) 11
 dragonfly> STRLEN nonexisting

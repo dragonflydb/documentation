@@ -26,7 +26,7 @@ and a false positive rate `false_positive_rate` that should be a double between 
 
 ```shell
 dragonfly> BF.RESERVE bf 0.0001 500000
-"OK"
+OK
 ```
 
 ## See also

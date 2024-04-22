@@ -49,13 +49,13 @@ regardless of the actual internal precision of the computation.
 
 ```shell
 dragonfly> SET mykey 10.50
-"OK"
+OK
 dragonfly> INCRBYFLOAT mykey 0.1
 "10.6"
 dragonfly> INCRBYFLOAT mykey -5
 "5.6"
 dragonfly> SET mykey 5.0e3
-"OK"
+OK
 dragonfly> INCRBYFLOAT mykey 2.0e2
 "5200"
 ```

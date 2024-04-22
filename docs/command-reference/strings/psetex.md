@@ -23,7 +23,7 @@ time is specified in milliseconds instead of seconds.
 
 ```shell
 dragonfly> PSETEX mykey 1000 "Hello"
-"OK"
+OK
 dragonfly> PTTL mykey
 (integer) 1000
 dragonfly> GET mykey

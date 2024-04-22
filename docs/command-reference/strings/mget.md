@@ -29,9 +29,9 @@ Because of this, the operation never fails.
 
 ```shell
 dragonfly> SET key1 "Hello"
-"OK"
+OK
 dragonfly> SET key2 "World"
-"OK"
+OK
 dragonfly> MGET key1 key2 nonexisting
 1) "Hello"
 2) "World"

@@ -29,7 +29,7 @@ If `key` does not exist, a new key holding a hash is created.
 
 ```shell
 dragonfly> HMSET myhash field1 "Hello" field2 "World"
-"OK"
+OK
 dragonfly> HGET myhash field1
 "Hello"
 dragonfly> HGET myhash field2

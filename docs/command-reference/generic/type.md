@@ -28,7 +28,7 @@ The different types that can be returned are: `string`, `list`, `set`, `zset`,
 
 ```shell
 dragonfly> SET key1 "value"
-"OK"
+OK
 dragonfly> LPUSH key2 "value"
 (integer) 1
 dragonfly> SADD key3 "value"

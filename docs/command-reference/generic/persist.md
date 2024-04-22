@@ -31,7 +31,7 @@ is associated).
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> EXPIRE mykey 10
 (integer) 1
 dragonfly> TTL mykey

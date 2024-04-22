@@ -32,7 +32,7 @@ See `INCR` for extra information on increment/decrement operations.
 
 ```shell
 dragonfly> SET mykey "10"
-"OK"
+OK
 dragonfly> INCRBY mykey 5
 (integer) 15
 ```

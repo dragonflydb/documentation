@@ -30,9 +30,9 @@ It returns an error when `key` does not exist.
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> SET myotherkey "World"
-"OK"
+OK
 dragonfly> RENAMENX mykey myotherkey
 (integer) 0
 dragonfly> GET myotherkey

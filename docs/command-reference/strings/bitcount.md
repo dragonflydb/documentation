@@ -43,7 +43,7 @@ The number of bits set to 1.
 
 ```shell
 dragonfly> SET mykey "foobar"
-"OK"
+OK
 dragonfly> BITCOUNT mykey
 (integer) 26
 dragonfly> BITCOUNT mykey 0 0

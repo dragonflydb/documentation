@@ -28,13 +28,13 @@ The user should be aware that if the same existing key is mentioned in the argum
 
 ```shell
 dragonfly> SET key1 "Hello"
-"OK"
+OK
 dragonfly> EXISTS key1
 (integer) 1
 dragonfly> EXISTS nosuchkey
 (integer) 0
 dragonfly> SET key2 "World"
-"OK"
+OK
 dragonfly> EXISTS key1 key2 nosuchkey
 (integer) 2
 ```

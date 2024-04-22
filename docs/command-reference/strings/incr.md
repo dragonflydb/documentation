@@ -39,7 +39,7 @@ representation of the integer.
 
 ```shell
 dragonfly> SET mykey "10"
-"OK"
+OK
 dragonfly> INCR mykey
 (integer) 11
 dragonfly> GET mykey

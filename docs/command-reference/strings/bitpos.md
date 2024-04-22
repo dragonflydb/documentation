@@ -56,21 +56,21 @@ However, this behavior changes if you are looking for clear bits and specify a r
 
 ```shell
 dragonfly> SET mykey "\xff\xf0\x00"
-"OK"
+OK
 dragonfly> BITPOS mykey 0
 (integer) 12 
 dragonfly> SET mykey "\x00\xff\xf0"
-"OK"
+OK
 dragonfly> BITPOS mykey 1 0
 (integer) 8
 dragonfly> BITPOS mykey 1 2
 (integer) 16
 dragonfly> SET mykey "\x00\x00\x00"
-"OK"
+OK
 dragonfly> BITPOS mykey 1
 (integer) -1
 dragonfly> SET mykey "\x00\x00"
-"OK"
+OK
 dragonfly BITPOS mykey 0 8 16 BIT
 (integer) 8
 ```

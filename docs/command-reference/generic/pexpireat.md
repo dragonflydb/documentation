@@ -30,7 +30,7 @@ which the key will expire is specified in milliseconds instead of seconds.
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> PEXPIREAT mykey 1555555555005
 (integer) 1
 dragonfly> TTL mykey

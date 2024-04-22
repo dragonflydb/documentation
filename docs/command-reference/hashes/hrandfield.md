@@ -37,7 +37,7 @@ If the `WITHVALUES` modifier is used, the reply is a list fields and their value
 
 ```shell
 dragonfly> HMSET coin heads obverse tails reverse edge null
-"OK"
+OK
 dragonfly> HRANDFIELD coin
 "heads"
 dragonfly> HRANDFIELD coin

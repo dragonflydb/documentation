@@ -31,7 +31,7 @@ time in seconds while `PTTL` returns it in milliseconds.
 
 ```shell
 dragonfly> SET mykey "Hello"
-"OK"
+OK
 dragonfly> EXPIRE mykey 1
 (integer) 1
 dragonfly> PTTL mykey
