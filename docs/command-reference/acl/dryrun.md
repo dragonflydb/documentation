@@ -21,7 +21,9 @@ or the reason the user can't execute the command.
 
 ```shell
 dragonfly> ACL SETUSER mike >mypass +GET -SET
-ACL DRYRUN mike GET
+OK
+
+dragonfly> ACL DRYRUN mike GET
 OK
 
 dragonfly> ACL DRYRUN mike SET
