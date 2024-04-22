@@ -28,10 +28,10 @@ If the `key` does not exist, a new Bloom filter is created with default paramete
 ## Examples
 
 ```shell
-dragonfly> BF.ADD bf "Hello"
+dragonfly> BF.ADD bf Hello
 (integer) 1
 
-dragonfly> BF.ADD bf "Hello"
+dragonfly> BF.ADD bf Hello
 (integer) 0
 ```
 
