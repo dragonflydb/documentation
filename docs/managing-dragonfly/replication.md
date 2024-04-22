@@ -146,7 +146,7 @@ Start the secondary Dragonfly instance with:
 ```bash
 dragonfly --tls --tls_key_file=replica-client-key.pem \
           --tls_cert_file=replica-client-cert.pem \
-          --tls_ca_cert_file=ca-cert.pem
+          --tls_ca_cert_file=ca-cert.pem \
           --port 6381 -admin_port=6382
 ```
 
