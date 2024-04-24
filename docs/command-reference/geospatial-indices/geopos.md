@@ -26,7 +26,7 @@ The command can accept a variable number of arguments, so it always returns an a
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#resp-arrays), specifically:
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays), specifically:
 
 The command returns an array where each element is a two elements array representing longitude and latitude (x,y) of each member name passed as argument to the command.
 
