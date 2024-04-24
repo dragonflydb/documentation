@@ -10,29 +10,32 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    ACL DELUSER username
+    ACL DELUSER username [username ...]
 
 **ACL categories:** @admin, @slow, @dangerous
 
-Delete a user from the ACL registry. If the user has open connections, those connections will be killed.
-Keep in mind that if the user is in the middle of a running script or if any other transactions from that user have started,
-the connection will close and the transaction will complete normally (unless there was an error).
-This is a deterministic behavior since, by the time the user was deleted from the system,
-the user had already begun (and consequently had the credentials) to start and complete that transaction.
+Delete one or more ACL users and terminate all the connections that are authenticated with such users.
+The `default` user cannot be removed from the system since it is the default user that every new connection is authenticated with.
+The argument list may contain ACL users that do not exist.
+In such cases, no operation is performed for the non-existent ACL users.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if the user was deleted, error otherwise.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of users that were deleted.
+This number will not always match the number of arguments since certain users may not exist.
 
 ## Examples
 
 ```shell
-dragonfly> ACL DELUSER myuser
-(error) ERR User myuser does not exist
-
 dragonfly> ACL SETUSER myuser ON >mypass +@string +@fast -@slow
 OK
 
 dragonfly> ACL DELUSER myuser
-OK
+(integer) 1
+
+dragonfly> ACL DELUSER non_existent_user
+(integer) 0
+
+dragonfly> ACL DELUSER default
+(error) ERR The 'default' user cannot be removed
 ```
