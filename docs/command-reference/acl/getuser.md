@@ -15,7 +15,7 @@ The command returns all the rules defined for an existing ACL user.
 ## Return
 
 - [Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of ACL rule definitions for the user.
-- [Null reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): `(nil)` if the user does not exist.
+- [Null reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): if the user does not exist.
 
 ## Examples
 
