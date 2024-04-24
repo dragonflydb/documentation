@@ -18,7 +18,7 @@ import PageTitle from '@site/src/components/PageTitle';
 Adds a single item to a Bloom filter `key`.
 If the `key` does not exist, a new Bloom filter is created with default parameters.
 
-## Returns
+## Return
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
 

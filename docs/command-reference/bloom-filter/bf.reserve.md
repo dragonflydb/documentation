@@ -18,7 +18,7 @@ import PageTitle from '@site/src/components/PageTitle';
 Creates a new Bloom filter with an initial capacity of at least `capacity`
 and a false positive rate `false_positive_rate` that should be a double between `0` and `0.5`.
 
-## Returns
+## Return
 
 [Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if the Bloom filter was created successfully.
 
