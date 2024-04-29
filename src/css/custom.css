@@ -178,19 +178,27 @@ a > svg[class*="ExternalLink"] {
   margin-right: 6px;
 }
 
-.nav-cta {
+.nav-cta,
+.btn-primary {
   padding: 8px 20px !important;
   margin-left: 8px;
   font-family: var(--ifm-heading-font-family);
   font-weight: 700;
   background-image: linear-gradient(to bottom right, #5a3ee0, #c53ee0);
   border-radius: 6px;
+  border: none;
   color: white;
 }
 
-.nav-cta:hover {
+.nav-cta:hover,
+.btn-primary:hover {
   color: white;
   opacity: 0.9;
+}
+
+.btn-primary:disabled {
+  opacity: 0.1;
+  pointer-events: none;
 }
 
 .family {
@@ -339,13 +347,101 @@ a > svg[class*="ExternalLink"] {
 }
 
 .theme-doc-sidebar-item-category-level-1:nth-child(6)
-> .menu__list-item-collapsible
-> .menu__link:before {
+  > .menu__list-item-collapsible
+  > .menu__link:before {
   content: url("/website/sidebar/development.svg");
 }
 
 .theme-doc-sidebar-item-category-level-1:nth-child(7)
-> .menu__list-item-collapsible
-> .menu__link:before {
+  > .menu__list-item-collapsible
+  > .menu__link:before {
   content: url("/website/sidebar/integrations.svg");
+}
+
+.announcment-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #1f1f29;
+  border-radius: 1.5rem 1.5rem 0 0;
+  color: white;
+  padding: 2em 1em;
+  z-index: 40;
+}
+
+.announcment-bar .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .announcment-bar {
+    padding: 1em 1em;
+  }
+
+  .announcment-bar .container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.announcment-bar .container p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.announcment-bar form {
+  display: flex;
+  gap: 1rem;
+}
+
+.announcment-bar form input {
+  padding: 0.875rem 0.875rem;
+  width: 332px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #525259;
+  background: #272730;
+  color: white;
+}
+
+.announcment-bar form button {
+  font-size: 1rem;
+  margin: 0;
+  padding: 0.875rem 3rem !important;
+}
+
+.announcment-bar .close-button {
+  cursor: pointer;
+  z-index: 50;
+  position: absolute;
+  top: 50%;
+  right: 25px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .announcment-bar form {
+    width: 100%;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .announcment-bar form input {
+    width: 100%;
+  }
+
+  .announcment-bar form button {
+    width: 100%;
+  }
+
+  .announcment-bar .close-button {
+    top: 20px;
+    transform: translateY(0);
+  }
 }
