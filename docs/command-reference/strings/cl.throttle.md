@@ -23,7 +23,7 @@ is based on the Redis module called [redis-cell](https://github.com/brandur/redi
 
 ## Return
 
-An [array](https://redis.io/docs/reference/protocol-spec/#resp-arrays) of 5 integers with the following values:
+An [array](https://redis.io/docs/reference/protocol-spec/#arrays) of 5 integers with the following values:
 
 1. Whether to limit the related action (0 for allowed, 1 for limited).
 2. The total limit of the key. (Equivalent to `X-RateLimit-Limit`)

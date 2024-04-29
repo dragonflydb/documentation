@@ -17,7 +17,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 Adds one or more items to a Bloom filter `key`.
 
-## Returns
+## Return
 
 [Array reply](https://redis.io/docs/reference/protocol-spec/#arrays):
 an array of integers, each representing the result for an individual item as if being processed by the [`BF.ADD`](./bf.add.md) command:
