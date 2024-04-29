@@ -91,38 +91,62 @@ const config = {
         },
         items: [
           {
-            href: "https://www.dragonflydb.io/features",
-            label: "Features",
-            target: "_self",
+            type: "dropdown",
+            label: "Product",
+            items: [
+              {
+                href: "https://github.com/dragonflydb/dragonfly",
+                label: "Community Edition",
+              },
+              {
+                href: "https://www.dragonflydb.io/cloud",
+                label: "Cloud Edition",
+              },
+            ],
           },
           {
             href: "/",
             label: "Docs",
           },
           {
+            href: "https://www.dragonflydb.io/pricing",
+            label: "Pricing",
+          },
+          {
             type: "dropdown",
             label: "Community",
             items: [
               {
-                href: "https://github.com/dragonflydb/dragonfly",
-                label: "GitHub",
+                href: "https://www.dragonflydb.io/blog",
+                label: "Blog",
               },
+
               {
                 href: "https://discord.gg/HsPjXGVH85",
                 label: "Discord",
               },
+              {
+                href: "https://www.dragonflydb.io/events",
+                label: "Events",
+              },
             ],
           },
           {
-            href: "https://www.dragonflydb.io/blog",
-            label: "Blog",
-            target: "_self",
+            type: "dropdown",
+            label: "Company",
+            items: [
+              {
+                href: "https://www.dragonflydb.io/about",
+                label: "About",
+              },
+
+              {
+                href: "https://www.dragonflydb.io/careers",
+                label: "Careers",
+              },
+            ],
           },
-          {
-            href: "https://www.dragonflydb.io/careers",
-            label: "Careers",
-            target: "_self",
-          },
+
           {
             href: "https://github.com/dragonflydb/dragonfly",
             className: "nav-github-stars",
@@ -168,6 +192,11 @@ const config = {
                 label: "Dragonfly Cloud",
                 href: "https://www.dragonflydb.io/cloud",
                 target: "_self",
+              },
+              {
+                type: "custom-announcmentBar",
+                label: "Test",
+                href: "https://www.dragonflydb.io/cloud",
               },
             ],
           },
