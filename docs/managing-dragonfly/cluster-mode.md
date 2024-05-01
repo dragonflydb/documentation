@@ -18,7 +18,7 @@ emulate a Redis Cluster.
 ```bash
 # Running Dragonfly instance in cluster mode
 $ dragonfly --cluster_mode=emulated
-$ redis-cli 
+$ redis-cli
 # See which cluster commands are supported
 127.0.0.1:6379> cluster help
 ```
@@ -43,7 +43,7 @@ Riot](https://developer.redis.com/explore/riot/) helpful.
 
 Sometimes vertical scaling is not enough. In those cases, you'll need to set up a Dragonfly Cluster.
 
-A Dragonfly Cluster is similar to a Redis Cluster:
+A Dragonfly Cluster is similar to a Redis/Valkey Cluster:
 
 * Multiple Dragonfly servers participate in a single logical data store
 * It provides all cluster-related commands required by Redis client libraries
@@ -51,17 +51,20 @@ A Dragonfly Cluster is similar to a Redis Cluster:
   same way Redis does
 * It supports [hash tags](https://redis.io/docs/reference/cluster-spec/#hash-tags)
 
-**Any client-side code that uses Redis Cluster should be able to migrate to Dragonfly Cluster with
-no changes.** Dragonfly Cluster is similar to Redis Cluster in all client facing behavior but it
+**There is one important distinction regarding Dragonfly cluster:**
+Dragonfly only provides a _data plane_ (which is the Dragonfly server), but it does **not** provide a
+_control plane_ to manage cluster deployments. Node health monitoring, automatic failovers, slots
+redistribution are out of scope of Dragonfly backend functionality and are provided
+as part of [Dragonfly Cloud](https://www.dragonflydb.io/cloud) service.
+
+Any client-side code that uses Redis Cluster should be able to migrate to Dragonfly Cluster with
+no changes. Dragonfly Cluster is similar to Redis Cluster in all client facing behavior, but it
 does not self managed as Redis Cluster in which nodes communicate with each other to discover
 cluster setup and state.
 
 Setting up and managing a Dragonfly Cluster is different from managing a Redis Cluster.  Unlike
 Redis, Dragonfly nodes do not communicate with each other (except for replication). Nodes are
 unaware of other nodes being unavailable, and cluster configuration is done separately to each node.
-
-Dragonfly only provides a _data plane_ (which is the Dragonfly server), but we do **not** provide a
-_control plane_ to manage cluster deployments.
 
 Follow the below steps to set up a Dragonfly Cluster
 
@@ -70,7 +73,7 @@ Follow the below steps to set up a Dragonfly Cluster
 Start the Dragonfly nodes you need. Use the flags you would have used otherwise, but make sure to
 add the following (to both masters and replicas):
 * `--cluster_mode=yes` to let the nodes know that they are part of a cluster.
-* `--admin_port=X`, where `X` is some port that you'll use to run _admin commands_. This port should
+* `--admin_port=X`, where `X` is a port that you'll use to run _admin commands_. This port should
   generally not be exposed to users.
 
 Note: when started in cluster mode, nodes will reply with errors to any user requests until they are
@@ -85,7 +88,7 @@ that this is a necessary step even though this information is present in the clu
 ### Configure Nodes
 
 Note: Configuring cluster nodes is done by sending management commands via the _admin port_.
-Dragonfly will refuse to handle cluster management commands via the regular port.
+It is advised to use a dedicated port for management related commands.
 
 Cluster configuration includes information necessary for the cluster nodes to have in order to
 operate, like which nodes participate in the cluster (and in what role), which node owns which
