@@ -88,7 +88,7 @@ that this is a necessary step even though this information is present in the clu
 ### Configure Nodes
 
 Note: Configuring cluster nodes is done by sending management commands via the _admin port_.
-It is advised to use a dedicated port for management related commands.
+It is advised to use a dedicated admin port for management related commands.
 
 Cluster configuration includes information necessary for the cluster nodes to have in order to
 operate, like which nodes participate in the cluster (and in what role), which node owns which
