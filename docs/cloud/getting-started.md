@@ -1,0 +1,40 @@
+---
+sidebar_position: 1
+title: Dragonfly Quickstart
+---
+
+This guide outlines the steps to create a data store instance on DragonflyDB Cloud.
+
+## Create a Data Store 
+
+1. From the **[Data Stores](dragonflydb.cloud/datastores)** menu, at the top right corner of the [dashboard](https://dragonflydb.cloud/datastores),  click **Data Store**
+
+![dashboard](../../static/img/dashboard.png)
+
+
+2. Fill out the "Create Data Store" form:
+
+![create-datastore](../../static/img/create-datastore.png)
+
+   - **Name:** Provide a unique name for your data store.
+   - **Cloud Provider:**
+     - **AWS:** Select this option to create your data store on Amazon Web Services.
+     - **GCP:** Select this option to create your data store on Google Cloud Platform.
+   - **Region:**
+     - For AWS, you can choose from `us-east-1` and `eu-west-1`. More regions are coming soon.
+     - For GCP, available regions are `us-central1` and `us-west2`.
+
+:::tip Tip
+For the best performance, create your DragonFlyDB data store in the region closest to your users.
+:::
+
+   - **Plan:**
+     - **Standard:** Choose this plan for memory-bound workloads.
+     - **Enhanced:** Choose this plan for compute-bound workloads.
+
+3. Review your configuration and click **Create Data Store** to initiate the deployment process.
+
+:::note
+You can click **Cancel** at any time to discard your changes.
+:::
+
