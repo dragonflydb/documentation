@@ -8,7 +8,7 @@ Dragonfly Cloud is a fully managed in-memory data store with an extremely simple
 
 **Pricing:**  See how our pricing plans fit your needs: [DragonflyDB Cloud Pricing](https://www.dragonflydb.io/pricing)
 
-**Launch Your Instance:** Get started quickly with our Getting Started Guide: [DragonflyDB Cloud: Quick Start](./create-an-instance.md)
+**Launch Your Instance:** Get started quickly with our Getting Started Guide: [DragonflyDB Cloud: Quick Start](./getting-started)
 
 
 
