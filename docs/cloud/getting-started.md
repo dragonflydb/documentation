@@ -7,7 +7,7 @@ This guide outlines the steps to create a data store instance on DragonflyDB Clo
 
 ## Create a Data Store 
 
-1. From the **[Data Stores](dragonflydb.cloud/datastores)** menu, at the top right corner of the [dashboard](https://dragonflydb.cloud/datastores),  click **Data Store**
+1. From the **Data Stores** menu, at the top right corner of the dashboard,  click **Data Store**
 
 ![dashboard](../../static/img/dashboard.png)
 
