@@ -16,8 +16,6 @@ For enhanced security, you can create private networks and deploy your data stor
 
 ### Next Steps:
 
-Learn how to create a data store:
-Refer to the Dragonfly Cloud Quick Start guide for  instructions on creating and configuring your data store, checkout the [getting started guide](./getting-started)
+Learn how to create a data store, [Dragonfly Cloud Quick Start](./getting-started) 
 
-Dive deeper into networks: 
 Explore the [Network documentation](./networks)
