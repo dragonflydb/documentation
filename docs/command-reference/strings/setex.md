@@ -32,6 +32,8 @@ because this operation is very common when Redis is used as a cache.
 
 An error is returned when `seconds` is invalid.
 
+The expiration time can be accessed with the [`FIELDTTL`](../generic/fieldttl.md) command.
+
 ## Return
 
 [Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings)

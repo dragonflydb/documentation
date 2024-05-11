@@ -23,6 +23,8 @@ This command overwrites the values of specified fields that exist in the hash.
 If `key` doesn't exist, a new key holding a hash is created.
 In any case, the expiration of the field is updated according to the latest value and the current clock.
 
+The expiration time can be accessed with the [`FIELDTTL`](../generic/fieldttl.md) command.
+
 ## Return
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): The number of fields that were added.
