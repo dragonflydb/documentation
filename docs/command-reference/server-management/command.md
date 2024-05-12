@@ -138,28 +138,5 @@ The following is `COMMAND`'s output for the `GET` command:
     4) (integer) 1
     5) (integer) 1
     6) (integer) 1
-    7) 1) @read
-       2) @string
-       3) @fast
-    8) (empty array)
-    9) 1) 1) "flags"
-          2) 1) read
-          3) "begin_search"
-          4) 1) "type"
-             2) "index"
-             3) "spec"
-             4) 1) "index"
-                2) (integer) 1
-          5) "find_keys"
-          6) 1) "type"
-             2) "range"
-             3) "spec"
-             4) 1) "lastkey"
-                2) (integer) 0
-                3) "keystep"
-                4) (integer) 1
-                5) "limit"
-                6) (integer) 0
-   10) (empty array)
 ...
 ```
