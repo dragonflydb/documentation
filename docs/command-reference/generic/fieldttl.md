@@ -1,5 +1,5 @@
 ---
-description: "Learn the Redis TTL command to get remaining time-to-live of a key."
+description: "Learn the Dragonfly FIELDTTL command to get remaining time-to-live of a key."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
