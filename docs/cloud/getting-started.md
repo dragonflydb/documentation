@@ -16,13 +16,13 @@ This guide outlines the steps to create a data store instance on DragonflyDB Clo
 
 ![create-datastore](../../static/img/create-datastore.png)
 
-   - **Name:** Provide a unique name for your data store.
+   - **Name:** Provide a name for your data store.
    - **Cloud Provider:**
      - **AWS:** Select this option to create your data store on Amazon Web Services.
      - **GCP:** Select this option to create your data store on Google Cloud Platform.
    - **Region:**
-     - For AWS, you can choose from `us-east-1` and `eu-west-1`. More regions are coming soon.
-     - For GCP, available regions are `us-central1` and `us-west2`.
+     - For AWS, select the region closest to your users.
+     - For GCP, select the region closest to your users.
 
 :::tip Tip
 For the best performance, create your DragonFlyDB data store in the region closest to your users.

@@ -5,7 +5,9 @@ sidebar_postion: 2
 
 ## Managing Networks on Drangonfly Cloud
 
-Dragonfly Cloud allows you to create isolated networks where you can deploy your data stores similar to VPC's if you are familiar with AWS. 
+Dragonfly Cloud allows you to create isolated networks where you can deploy your data stores similar to VPC's if you are familiar with AWS. The primary benefits here are improved security, lower latencies and costs as you avoid egress fees.
+
+
 
 
 This guide outlines how you can create networks on Dragonfly Cloud.
@@ -40,7 +42,8 @@ Create Network Form:
 
 :::tip Network Considerations
 When creating a network, consider the following:
-Choose a region close to your applications and users for better performance.
+- Choose a region close to your applications and users for better performance.
+- Private networks enhance security and eliminate egress fees.
 :::
 
 
