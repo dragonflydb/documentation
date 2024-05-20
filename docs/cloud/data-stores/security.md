@@ -1,6 +1,7 @@
 ---
-sidebar_postion: 3
+sidebar_postion: 2
 description: Security 
+title: Security
 ---
 
 ## Securing your Data Stores 
@@ -16,6 +17,6 @@ For enhanced security, you can create private networks and deploy your data stor
 
 ### Next Steps:
 
-Learn how to create a data store, [Dragonfly Cloud Quick Start](./getting-started) 
+Learn how to create a data store, [Dragonfly Cloud Quick Start](./create-datastore) 
 
 Explore the [Network documentation](./networks)
