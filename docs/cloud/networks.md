@@ -1,5 +1,6 @@
 ---
 sidebar_postion: 2
+title: Networks
 --- 
 
 
@@ -13,11 +14,11 @@ Dragonfly Cloud allows you to create isolated networks where you can deploy your
 This guide outlines how you can create networks on Dragonfly Cloud.
 
 :::note Prerequisites
-You need an account before proceeding, create one -> dragonflydb.cloud/signup
+You need an account before proceeding, create one <a href="https://dragonflydb.cloud/signup">here</a>
 :::
 
 
-1. Navigate to the Networks tab. You can find it in the -> https://dragonflydb.cloud/networks
+1. Navigate to the <a href="https://dragonflydb.cloud/networks">Networks tab.</a>
 
 
 ![networks](../../static/img/networks.png)
