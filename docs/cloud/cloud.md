@@ -6,39 +6,17 @@ label: Cloud
 
 ## Getting Started with Dragonfly Cloud
 
-Dragonfly Cloud brings the power of DragonFlyDB, to the cloud. Providing a fully managed experience with automated backups, scaling, and the ability to peer with your existing networks. DragonFly Cloud takes care of the heavy lifting, allowing you to ship faster, more reliable applications at significantly lower costs.
+A Dragonfly Cloud data store represents a Redis Protocol (RESP) endpoint. To create a data store, on the Data Store tab click +Data Store. The minimum configuration consists of a name, cloud provider, cloud region and plan. Note that the cloud provider can not be modified once the data store is created.
 
+The plan specifies the provisioned memory and memory to cpu ratio of the data store. You can modify the data store plan later with zero down time to scale it up or down.
 
-### **Get Started**
+By default the data store will be configured with a public endpoint, TLS and an auto generated passkey, meaning you can securely connect to it from anywhere over the public internet.
 
+To create a data store with a private endpoint, see [Security](./data-stores/security), [Networks](./networks) and Peering Connections.By default the data store will consist of a single Dragonfly server, to create a highly available data store see [Durability and High Availability](./data-stores/duarability-vs-high-availability)
 
-1. **Sign Up**
+Once the data store is created, clicking the data store row will open a drawer with the data store configuration, including the auto generated passkey and redis compatible connection string. 
 
-   Visit <a href="https://dragonflydb.cloud/signup">https://dragonflydb.cloud/signup</a> and sign up for a Dragonfly Cloud account using your email or Google account.
+Once the data store Status becomes `Active` you can try access it with e.g. `redis-cli -u [connection string] PING`.
 
-   ![signup](../../static/img/signup.png)
-
-
-
-
-2. **Access the Data Stores Page**
-
-   After signing up, you'll be redirected to the <a href="https://dragonflydb.cloud/datastores">Data Stores</a> page.
-
-   ![datastores](../../static/img/dashboard.png)
-
-3. **Create Your First Data Store**
-
-   From the Data Stores page, follow the instructions in the [Creating a Data Store](/cloud/data-stores/create-datastore) guide to create your first data store.
-
-
-
-### Next Steps
-
-
-**Pricing:**  See how our <a href="https://www.dragonflydb.io/pricing">pricing</a> plans fit your needs:
-
-
-
-    
+To update the data store configuration click the edit button in the top right of the drawer. Dragonfly cloud performs data store updates with zero downtime.    
 

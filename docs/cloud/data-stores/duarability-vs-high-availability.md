@@ -10,12 +10,21 @@ Dragonfly Cloud prioritizes both data durability and high availability for your 
 
 ## Eviction Policies
 
-Eviction policies determine how Dragonfly Cloud manages data storage capacity within your data store. Here's an explanation of the available options:
+Eviction policy controls the behavior of the datastore when it maxes out its memory.
 
-- **Cache**: The "Cache" eviction policy treats your DragonFly data store as a cache. When the data store reaches its capacity limit, items are evicted to free up space. This policy is useful for caching scenarios where occasional data loss is acceptable.
+No Eviction - Items are never evicted and out of memory errors are returned when the data store is full.
 
-- **No Eviction**: The "No Eviction" policy ensures that data stored in your DragonFly data store is never evicted. Instead, when the data store reaches its capacity limit, it will return an error. This policy is useful for scenarios that require persistent storage, where data loss is unacceptable.
+ 
+Cache - The data store behaves as cache and evicts items to free space for new ones when the data store is full.
 
+
+## High Availability
+
+By default the data store will consist of a single Dragonfly server, this means that in case of software failures,  hardware failures or cloud zone outages data is lost and the data store may be completely unavailable.
+
+To increase availability of your data store you can select up to two replicas in different zones in the High Availability drop down.
+The data store master node will be placed in the primary availability zone.
+To avoid data transfer costs incurred by the cloud provider, select the primary availability zone to match the availability zone of your application. 
 
 
 

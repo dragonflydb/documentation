@@ -4,49 +4,42 @@ title: Networks
 --- 
 
 
-## Managing Networks on Drangonfly Cloud
+## Networks
 
-Dragonfly Cloud allows you to create isolated networks where you can deploy your data stores similar to VPC's if you are familiar with AWS. The primary benefits here are improved security, lower latencies and costs as you avoid egress fees.
+Dragonfly Cloud lets you create private networks for your datastores. After you create a private network you can:
 
+ - Create a VPC peering connection to connect the Dragonfly Cloud private network with a VPC in your cloud account to establish communication between the two networks over private ip space. For more details see[Peering Connections](./peering).  
 
-
-
-This guide outlines how you can create networks on Dragonfly Cloud.
-
-:::note Prerequisites
-You need an account before proceeding, create one <a href="https://dragonflydb.cloud/signup">here</a>
-:::
+- Create a data store in the private network with a private endpoint For more details see [Data Store Security](./data-stores/security).
 
 
-1. Navigate to the <a href="https://dragonflydb.cloud/networks">Networks tab.</a>
-
-
-![networks](../../static/img/networks.png)
-
-
-2. Fill out the "Create Network" form:
-
-
-![create-network](../../static/img/create-networks.png)
-
-
-Create Network Form:
-
-**Name**: Choose a unique and descriptive name for your network.
-   
-**Region**: Select the region where you want to create the network. Region availability depends on your cloud provider (AWS or GCP).
-
-**CIDR**: Dragonfly Cloud supports custom CIDR blocks. Specify a CIDR block to tailor your network's address space to your specific needs. If left empty, Dragonfly Cloud will allocate a default CIDR.
+For more details see [Peering Connections](./peering). Create a data store in the private network with a private endpoint For more details see Data Store Security
 
 
 
+A private endpoint data store in a private network provides better security, performance and reduces data transfer costs.
 
-:::tip Network Considerations
-When creating a network, consider the following:
-- Choose a region close to your applications and users for better performance.
-- Private networks enhance security and eliminate egress fees.
-:::
+To create a private network navigate to the Networks tab and click +Network at the top right corner.
 
+Specify your cloud provider and cloud region.
 
-3. Review your configuration and click **Create** to initiate the network creation process.
+Specify the CIDR block (ip range) of the to be created dragonfly cloud network.
+The CIDR of the dragonfly cloud network must not overlap with any CIDR of your application VPC from where you will be issuing requests.
+
+For example the following CIDR pairs are overlapping:
+```bash
+192.168.0.0/16, 192.168.0.0/16
+192.168.0.0/16, 192.168.1.0/24
+```
+
+While the following CIDR pairs are not overlapping:
+
+```
+192.168.0.0/16, 172.16.0.0/16
+192.168.0.0/16, 172.16.1.0/24
+``` 
+
+Once done click Create.
+
+See Peering Connections to connect the Dragonfly Cloud network to a VPC in your cloud account to establish communication between the two networks.
 
