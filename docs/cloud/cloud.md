@@ -15,7 +15,7 @@ The plan specifies the provisioned memory and memory to cpu ratio of the data st
 
 By default the data store will be configured with a public endpoint, TLS and an auto generated passkey, meaning you can securely connect to it from anywhere over the public internet.
 
-To create a data store with a private endpoint, see [Security](./data-stores/security), [Networks](./networks) and Peering Connections.By default the data store will consist of a single Dragonfly server, to create a highly available data store see [Durability and High Availability](./data-stores/duarability-vs-high-availability)
+To create a data store with a private endpoint, see [Security](cloud/data-stores/security), [Networks](cloud/networks) and Peering Connections.By default the data store will consist of a single Dragonfly server, to create a highly available data store see [Durability and High Availability](./data-stores/duarability-vs-high-availability)
 
 Once the data store is created, clicking the data store row will open a drawer with the data store configuration, including the auto generated passkey and redis compatible connection string. 
 
