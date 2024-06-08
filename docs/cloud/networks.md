@@ -21,6 +21,10 @@ A private endpoint data store in a private network provides better security, per
 
 To create a private network navigate to the Networks tab and click +Network at the top right corner.
 
+![networks](../../static/img/networks.png)  
+
+
+
 Specify your cloud provider and cloud region.
 
 Specify the CIDR block (ip range) of the to be created dragonfly cloud network.
