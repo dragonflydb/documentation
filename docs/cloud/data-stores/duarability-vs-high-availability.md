@@ -4,10 +4,6 @@ title: Durability and Availability
 --- 
 
 
-# Durability and Availability
-Dragonfly Cloud prioritizes both data durability and high availability for your data stores. You can further fine-tune these aspects through the concept of eviction policies when creating a data store. This allows you to strike a balance between data persistence and performance based on your application's needs.
-
-
 ## Eviction Policies
 
 Eviction policy controls the behavior of the datastore when it maxes out its memory.

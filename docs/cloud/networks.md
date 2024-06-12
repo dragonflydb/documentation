@@ -8,7 +8,7 @@ title: Networks
 
 Dragonfly Cloud lets you create private networks for your datastores. After you create a private network you can:
 
- - Create a VPC peering connection to connect the Dragonfly Cloud private network with a VPC in your cloud account to establish communication between the two networks over private ip space. For more details see[Peering Connections](./peering).  
+ - Create a VPC peering connection to connect the Dragonfly Cloud private network with a VPC in your cloud account to establish communication between the two networks over private ip space. For more details see [Peering Connections](./peering).  
 
 - Create a data store in the private network with a private endpoint For more details see [Data Store Security](./data-stores/security).
 
@@ -21,7 +21,7 @@ A private endpoint data store in a private network provides better security, per
 
 To create a private network navigate to the Networks tab and click +Network at the top right corner.
 
-![networks](../../static/img/networks.png)  
+![networks](../../static/img/add-network.png)  
 
 
 
