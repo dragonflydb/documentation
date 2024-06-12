@@ -12,7 +12,7 @@ A Dragonfly Cloud data store represents a Redis Protocol (RESP) endpoint. To cre
 The minimum configuration consists of a name, cloud provider, cloud region and plan. Note that the cloud provider can not be modified once the data store is created.
 
 
-![datastore](../../../static/img/add-datastore.png)
+![datastore](../../static/img/add-datastore.png)
 
 
 The plan specifies the provisioned memory and memory to cpu ratio of the data store. 
@@ -28,7 +28,7 @@ By default the data store will consist of a single Dragonfly server, to create a
 Once the data store is created, clicking the data store row will open a drawer with the data store configuration, including the auto generated passkey and redis compatible connection string. 
 
 
-![edit datastore](../../../static/img/datastore-edit.png)   
+![edit datastore](../../static/img/edit-datastore.png)   
 
 
 
