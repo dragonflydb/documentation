@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Redis ZADD command to add a member to a sorted set with a given score.
+description: Learn how to use Redis ZADD command to add a member to a sorted set with a given score.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -8,100 +8,93 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis ZADD Command (Documentation) | Dragonfly" />
 
+## Introduction and Use Case(s)
+
+`ZADD` adds one or more members to a sorted set, or updates the score of existing members. Sorted sets are like regular sets, but with an associated score for each member that determines their order. Common use cases include leaderboards, priority queues, and any scenario requiring ordered data retrieval.
+
 ## Syntax
 
-    ZADD key [NX | XX] [GT | LT] [CH] [INCR] score member [score member ...]
+```cli
+ZADD key [NX|XX] [CH] [INCR] score member [score member ...]
+```
 
-**Time complexity:** O(log(N)) for each item added, where N is the number of elements in the sorted set.
+## Parameter Explanations
 
-**ACL categories:** @write, @sortedset, @fast
+- `key`: The name of the sorted set.
+- `NX`: Only add new elements. Do not update existing elements.
+- `XX`: Only update existing elements. Do not add new elements.
+- `CH`: Modify the return value from the number of new elements added to the total number of elements changed (new and updated).
+- `INCR`: Increment the score of the specified member by the given amount. This option is only allowed to be used with a single `score`/`member` pair.
+- `score`: The score to associate with the member.
+- `member`: The member to add to the sorted set.
 
-Adds all the specified members with the specified scores to the sorted set
-stored at `key`.
-It is possible to specify multiple score / member pairs.
-If a specified member is already a member of the sorted set, the score is
-updated and the element reinserted at the right position to ensure the correct
-ordering.
+## Return Values
 
-If `key` does not exist, a new sorted set with the specified members as sole
-members is created, like if the sorted set was empty. If the key exists but does not hold a sorted set, an error is returned.
+- Without `CH`, returns the number of new elements added to the sorted set.
+- With `CH`, returns the number of elements added or updated.
+- If used with `INCR`, returns the new score of the member.
 
-The score values should be the string representation of a double precision floating point number. `+inf` and `-inf` values are valid values as well.
+### Examples:
 
-ZADD options
----
+1. Adding new members:
 
-ZADD supports a list of options, specified after the name of the key and before
-the first score argument. Options are:
+   ```cli
+   dragonfly> ZADD myzset 1 "one" 2 "two"
+   (integer) 2
+   ```
 
-* **XX**: Only update elements that already exist. Don't add new elements.
-* **NX**: Only add new elements. Don't update already existing elements.
-* **LT**: Only update existing elements if the new score is **less than** the current score. This flag doesn't prevent adding new elements.
-* **GT**: Only update existing elements if the new score is **greater than** the current score. This flag doesn't prevent adding new elements.
-* **CH**: Modify the return value from the number of new elements added, to the total number of elements changed (CH is an abbreviation of *changed*). Changed elements are **new elements added** and elements already existing for which **the score was updated**. So elements specified in the command line having the same score as they had in the past are not counted. Note: normally the return value of `ZADD` only counts the number of new elements added.
-* **INCR**: When this option is specified `ZADD` acts like `ZINCRBY`. Only one score-element pair can be specified in this mode.
+2. Updating a member's score:
 
-Note: The **GT**, **LT** and **NX** options are mutually exclusive.
+   ```cli
+   dragonfly> ZADD myzset 3 "two"
+   (integer) 0
+   ```
 
-Range of integer scores that can be expressed precisely
----
-Redis sorted sets use a *double 64-bit floating point number* to represent the score. In all the architectures we support, this is represented as an **IEEE 754 floating point number**, that is able to represent precisely integer numbers between `-(2^53)` and `+(2^53)` included. In more practical terms, all the integers between -9007199254740992 and 9007199254740992 are perfectly representable. Larger integers, or fractions, are internally represented in exponential form, so it is possible that you get only an approximation of the decimal number, or of the very big integer, that you set as score.
+3. Using `CH` option:
 
-Sorted sets 101
----
+   ```cli
+   dragonfly> ZADD myzset CH 4 "three"
+   (integer) 1
+   ```
 
-Sorted sets are sorted by their score in an ascending way.
-The same element only exists a single time, no repeated elements are
-permitted. The score can be modified both by `ZADD` that will update the
-element score, and as a side effect, its position on the sorted set, and
-by `ZINCRBY` that can be used in order to update the score relatively to its
-previous value.
+4. Incrementing a member's score:
+   ```cli
+   dragonfly> ZADD myzset INCR 2 "one"
+   "3"
+   ```
 
-The current score of an element can be retrieved using the `ZSCORE` command,
-that can also be used to verify if an element already exists or not.
+## Code Examples
 
-For an introduction to sorted sets, see the data types page on [sorted
-sets][tdtss].
-
-[tdtss]: https://redis.io/topics/data-types#sorted-sets
-
-Elements with the same score
----
-
-While the same element can't be repeated in a sorted set since every element
-is unique, it is possible to add multiple different elements *having the same score*. When multiple elements have the same score, they are *ordered lexicographically* (they are still ordered by score as a first key, however, locally, all the elements with the same score are relatively ordered lexicographically).
-
-The lexicographic ordering used is binary, it compares strings as array of bytes.
-
-If the user inserts all the elements in a sorted set with the same score (for example 0), all the elements of the sorted set are sorted lexicographically, and range queries on elements are possible using the command `ZRANGEBYLEX` (Note: it is also possible to query sorted sets by range of scores using `ZRANGEBYSCORE`).
-
-## Return
-
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
-
-* When used without optional arguments, the number of elements added to the sorted set (excluding score updates).
-* If the `CH` option is specified, the number of elements that were changed (added or updated).
-
-If the `INCR` option is specified, the return value will be [Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings):
-
-* The new score of `member` (a double precision floating point number) represented as string, or `nil` if the operation was aborted (when called with either the `XX` or the `NX` option).
-
-## Examples
-
-```shell
+```cli
 dragonfly> ZADD myzset 1 "one"
 (integer) 1
-dragonfly> ZADD myzset 1 "uno"
+dragonfly> ZADD myzset 2 "two"
 (integer) 1
-dragonfly> ZADD myzset 2 "two" 3 "three"
-(integer) 2
+dragonfly> ZADD myzset 2 "two"
+(integer) 0
 dragonfly> ZRANGE myzset 0 -1 WITHSCORES
 1) "one"
 2) "1"
-3) "uno"
-4) "1"
-5) "two"
-6) "2"
-7) "three"
-8) "3"
+3) "two"
+4) "2"
 ```
+
+## Best Practices
+
+- Use `NX` and `XX` options to ensure you are either adding new members or updating existing ones without mixing both operations.
+- For large bulk inserts where no members' scores need to be incremented, avoid using `INCR`.
+
+## Common Mistakes
+
+- Misunderstanding the `CH` option: It changes the return value to count all changes, not just additions.
+- Using `INCR` with multiple `score`/`member` pairs, which is invalid.
+
+## FAQs
+
+**Q: What happens if I use `NX` and `XX` together?**
+
+A: Using both `NX` and `XX` together is contradictory and will result in an error.
+
+**Q: Can I increment the score of multiple members at once?**
+
+A: No, the `INCR` option can only be used with a single `score`/`member` pair.

@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Redis ZREMRANGEBYRANK command to remove all members in a sorted set within the given indexes.
+description: Learn how to use Redis ZREMRANGEBYRANK command to remove all members in a sorted set within the given indexes.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -8,39 +8,57 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis ZREMRANGEBYRANK Command (Documentation) | Dragonfly" />
 
+## Introduction and Use Case(s)
+
+`ZREMRANGEBYRANK` removes all elements in a sorted set within the given rank range. This command is useful for trimming sets, removing outdated data, or maintaining a fixed number of records.
+
 ## Syntax
 
-    ZREMRANGEBYRANK key start stop
+```plaintext
+ZREMRANGEBYRANK key start stop
+```
 
-**Time complexity:** O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements removed by the operation.
+## Parameter Explanations
 
-**ACL categories:** @write, @sortedset, @slow
+- `key`: The name of the sorted set.
+- `start`: The starting rank (inclusive) to remove. Ranks are 0-based indices where 0 is the element with the smallest score.
+- `stop`: The ending rank (inclusive) to remove.
 
-Removes all elements in the sorted set stored at `key` with rank between `start`
-and `stop`.
-Both `start` and `stop` are `0` -based indexes with `0` being the element with
-the lowest score.
-These indexes can be negative numbers, where they indicate offsets starting at
-the element with the highest score.
-For example: `-1` is the element with the highest score, `-2` the element with
-the second highest score and so forth.
+## Return Values
 
-## Return
+The command returns an integer indicating the number of members removed.
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of elements removed.
+### Examples:
 
-## Examples
+- If three members are removed, it returns `(integer) 3`.
+- If no members are found within the specified rank range, it returns `(integer) 0`.
 
-```shell
-dragonfly> ZADD myzset 1 "one"
-(integer) 1
-dragonfly> ZADD myzset 2 "two"
-(integer) 1
-dragonfly> ZADD myzset 3 "three"
-(integer) 1
-dragonfly> ZREMRANGEBYRANK myzset 0 1
+## Code Examples
+
+```cli
+dragonfly> ZADD myset 1 "one" 2 "two" 3 "three"
+(integer) 3
+dragonfly> ZREMRANGEBYRANK myset 0 1
 (integer) 2
-dragonfly> ZRANGE myzset 0 -1 WITHSCORES
+dragonfly> ZRANGE myset 0 -1 WITHSCORES
 1) "three"
 2) "3"
 ```
+
+## Best Practices
+
+- Use `ZRANGEBYRANK` before `ZREMRANGEBYRANK` to preview the elements that will be removed.
+- Combine `ZREMRANGEBYRANK` with other sorted set commands to manage your dataset efficiently.
+
+## Common Mistakes
+
+- Using incorrect rank values: Ensure the `start` and `stop` parameters are within the existing ranks of the sorted set.
+- Misunderstanding ranks vs. scores: `ZREMRANGEBYRANK` operates on ranks, not scores.
+
+## FAQs
+
+**Q: What happens if `start` and `stop` specify an empty range?**
+A: No elements are removed, and the command returns 0.
+
+**Q: Can negative indices be used for `start` and `stop`?**
+A: Yes, similar to Python slice notation, -1 refers to the last element, -2 to the second last, and so on.

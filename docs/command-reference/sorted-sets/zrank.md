@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Redis ZRANK command to determine the index of a member in a sorted set, with scores ordered from low to high.
+description: Learn how to use Redis ZRANK command to determine the index of a member in a sorted set, with scores ordered from low to high.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -8,40 +8,74 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis ZRANK Command (Documentation) | Dragonfly" />
 
+## Introduction and Use Case(s)
+
+`ZRANK` is used to determine the rank (or index) of a member in a sorted set, ordered from the lowest to highest score. This command is commonly used when you need to retrieve the position of an element within a leaderboard or any application that requires ranking.
+
 ## Syntax
 
-    ZRANK key member
+```plaintext
+ZRANK key member
+```
 
-**Time complexity:** O(log(N))
+## Parameter Explanations
 
-**ACL categories:** @read, @sortedset, @fast
+- `key`: The name of the sorted set.
 
-Returns the rank of `member` in the sorted set stored at `key`, with the scores
-ordered from low to high.
-The rank (or index) is 0-based, which means that the member with the lowest
-score has rank `0`.
+  - Type: String
+  - Example: `"mySortedSet"`
 
-The optional `WITHSCORE` argument supplements the command's reply with the score of the element returned.
+- `member`: The member whose rank you want to determine.
+  - Type: String
+  - Example: `"player1"`
 
-Use `ZREVRANK` to get the rank of an element with the scores ordered from high
-to low.
+## Return Values
 
-## Return
+- **Integer**: The rank of the member, with 0 being the first rank.
+- **nil**: If the member does not exist in the sorted set.
 
-* If `member` exists in the sorted set [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the rank of `member`.
-* If `member` does not exist in the sorted set or `key` does not exist [Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): `nil`.
-  
-## Examples
+### Examples:
 
-```shell
-dragonfly> ZADD myzset 1 "one"
+- Member exists:
+  ```plaintext
+  (integer) 2
+  ```
+- Member does not exist:
+  ```plaintext
+  (nil)
+  ```
+
+## Code Examples
+
+```cli
+dragonfly> ZADD mySortedSet 10 "Alice"
 (integer) 1
-dragonfly> ZADD myzset 2 "two"
+dragonfly> ZADD mySortedSet 20 "Bob"
 (integer) 1
-dragonfly> ZADD myzset 3 "three"
+dragonfly> ZADD mySortedSet 15 "Charlie"
 (integer) 1
-dragonfly> ZRANK myzset "three"
+dragonfly> ZRANK mySortedSet "Charlie"
+(integer) 1
+dragonfly> ZRANK mySortedSet "Bob"
 (integer) 2
-dragonfly> ZRANK myzset "four"
+dragonfly> ZRANK mySortedSet "Dave"
 (nil)
 ```
+
+## Best Practices
+
+- Ensure that the `key` exists and is of type sorted set to avoid unexpected errors.
+- Regularly remove members no longer needed to maintain optimal performance.
+
+## Common Mistakes
+
+- Using `ZRANK` on a key that is not a sorted set will result in an error.
+- Forgetting that ranks are zero-based, which can lead to off-by-one errors in calculations.
+
+## FAQs
+
+**Q: What happens if I use `ZRANK` on a key that doesn't exist?**
+A: Redis will return `nil`, indicating that the member does not exist in the set.
+
+**Q: Can `ZRANK` work with scores that are equal?**
+A: Yes, but the rank is determined by the lexicographical order of members with the same score.
