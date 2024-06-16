@@ -361,7 +361,7 @@ a > svg[class*="ExternalLink"] {
 .theme-doc-sidebar-item-category-level-1:nth-child(8)
 > .menu__list-item-collapsible
 > .menu__link:before {
-  content: url("/website/sidebar/getting-started.svg");
+  content: url("/website/sidebar/cloud.svg");
 }
 
 .announcment-bar {
