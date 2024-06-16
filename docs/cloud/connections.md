@@ -28,7 +28,7 @@ If you haven’t done so already, create a data store with a private endpoint. S
 
 
 ##  GCP
-Specify the CIDR, GCP project ID and VPC ID of your GCP VPC from where you want to connect and click Create.
+Specify the *CIDR*, GCP *project ID* and *VPC ID* of your GCP VPC from where you want to connect and click Create.
 
 The connection will be created in an inactive state. Follow the google cloud guide <a href="https://cloud.google.com/sdk/gcloud/reference/compute/networks/peerings/create">here</a> , specify `--peer-network` and `--peer-project` with the account ID and VPC ID values from the dragonfly cloud private network you wish to connect. Observe the connection becomes active after a few moments.      
 

@@ -67,7 +67,8 @@ To avoid data transfer costs incurred by the cloud provider, select the primary 
 
 ## Specializations
 
-**BullMQ** - Enable this for running BullMQ workloads, this requires you to apply redis cluster curly braces syntax for the queue names as described here.
+**BullMQ** - Enable this for running BullMQ workloads, this requires you to apply redis cluster curly braces syntax for the queue names as described [here](/docs/integrations/bullmq.md).
+
 If that is not possible please contact support.
 
 ## Support
