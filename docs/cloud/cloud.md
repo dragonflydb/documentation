@@ -7,7 +7,7 @@ slug: /cloud
 
 # Dragonfly Cloud
 
-Dragonfly Cloud is a fully managed in-memory datastore service that is fully compatible with Redis, ValKey and Memcached APIs.  
+Dragonfly Cloud is a fully managed in-memory datastore service that is compatible with Redis, ValKey and Memcached APIs.  
 Dragonfly Cloud is designed to be easy to use, cost efficient, highly available, and secure.
 
-To create a Dragonfly Cloud data store visit [Data Stores](./datastores).
+To create a Dragonfly Cloud data store visit [Data Stores](/docs/cloud/datastores.md).
