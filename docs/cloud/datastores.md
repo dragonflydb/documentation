@@ -17,7 +17,7 @@ The *plan* specifies the provisioned memory and memory to cpu ratio of the data 
 You can modify the data store *plan* later with zero down time to scale it up or down.
 
 By default the data store will be configured with a *public endpoint*, *TLS* and an auto generated *passkey*, meaning you can securely connect to it from anywhere over the public internet.  
-To create a data store with a *private endpoint*, see [Security](#security), [Networks] and [Peering Connections].
+To create a data store with a *private endpoint*, see [Security](#security), [Networks](./networks.md) and [Peering Connections](./connections.md).
 
 By default the data store will consist of a single Dragonfly server, to create a highly available data store see [High Availability](#high-availability).
 
