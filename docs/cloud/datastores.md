@@ -10,7 +10,7 @@ To create a data store, on the *Data Stores* tab, click [+Data Store](https://dr
 
 The minimum configuration consists of *name*, *cloud provider*, *cloud region* and *plan*.
 
-Note that the *cloud provider* can not be modified once the data store is created.
+Note that the *cloud provider* and *region* can not be modified once the data store is created.
 
 The *plan* specifies the provisioned memory and memory to cpu ratio of the data store.
 
@@ -39,7 +39,7 @@ To protect your data store from unauthorized access public endpoints are configu
 
 ### Private Endpoint 
 *Private endpoint* provides better security, performance and lower latency as the data transports to and from the data stores over private networks and not via the public internet.  
-It also reduces data transfer costs applied by the cloud provider.
+Using a private endpoint also reduces data transfer costs applied by the cloud provider.
 
 In order to create a data store with a private endpoint, you must first create a private network, see [Networks](./networks) for more information.
 Once you have created a private network, you can select it in the *Endpoint* dropdown box when creating a data store.
@@ -59,7 +59,7 @@ Eviction policy controls the behavior of the datastore when it maxes out its mem
 
 By default the data store will consist of a single Dragonfly server, this means that in case of software failures, hardware failures or cloud zone outages data is lost and the data store may be completely unavailable.
 
-To increase availability of your data store you can add up to two replicas in different zones.
+To increase availability of your data store you can configure it to be deployed in up to three different zones, one primary zone for the master and up to two replica zones.
 Dragonfly Cloud automatically detects failures and performs failover to an available replica.
 Select up to three zones in the *High Availability* dropdown box.  The data store master node will be placed in the primary availability zone selected first.  
 To avoid data transfer costs incurred by the cloud provider, select the primary availability zone to match the availability zone of your application. 
@@ -67,7 +67,7 @@ To avoid data transfer costs incurred by the cloud provider, select the primary 
 
 ## Specializations
 
-**BullMQ** - Enable this for running BullMQ workloads, this requires you to apply redis cluster curly braces syntax for the queue names as described [here](/docs/integrations/bullmq.md).
+**BullMQ** - Enable this for running BullMQ workloads, this requires you to apply Redis Cluster curly braces syntax for the queue names as described [here](/docs/integrations/bullmq.md).
 
 If that is not possible please contact support.
 
