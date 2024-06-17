@@ -358,6 +358,12 @@ a > svg[class*="ExternalLink"] {
   content: url("/website/sidebar/integrations.svg");
 }
 
+.theme-doc-sidebar-item-category-level-1:nth-child(8)
+> .menu__list-item-collapsible
+> .menu__link:before {
+  content: url("/website/sidebar/cloud.svg");
+}
+
 .announcment-bar {
   position: fixed;
   bottom: 0;
