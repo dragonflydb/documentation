@@ -296,13 +296,13 @@ sidebar_position: 0
 |                                              | <span class="command">GEORADIUS_RO</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">GEORADIUSBYMEMBER</span>             | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEORADIUSBYMEMBER_RO</span>          | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEOSEARCH</span>                     | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">GEOSEARCH</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEOSEARCHSTORE</span>                | <span class="support unsupported">Unsupported</span>     |
-| <span class="family">Bloom Filter</span>     | <span class="command">BF.ADD</span>                        | <span class="support supported">Fully supported</span>     |
-|                                              | <span class="command">BF.MADD</span>                       | <span class="support supported">Fully supported</span>     |
-|                                              | <span class="command">BF.EXISTS</span>                     | <span class="support supported">Fully supported</span>     |
-|                                              | <span class="command">BF.MEXISTS</span>                    | <span class="support supported">Fully supported</span>     |
-|                                              | <span class="command">BF.RESERVE</span>                    | <span class="support partial">Partially supported</span>     |
+| <span class="family">Bloom Filter</span>     | <span class="command">BF.ADD</span>                        | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">BF.MADD</span>                       | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">BF.EXISTS</span>                     | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">BF.MEXISTS</span>                    | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">BF.RESERVE</span>                    | <span class="support partial">Partially supported</span> |
 | <span class="family">Cuckoo Filter</span>    | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Count-min Sketch</span> | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Graph</span>            | <span class="command">Not supported</span>                 | <span class="support unsupported">Unsupported</span>     |
