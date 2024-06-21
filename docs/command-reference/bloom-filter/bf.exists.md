@@ -17,7 +17,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 Checks for the existence of a single item in a Bloom filter `key`.
 
-## Returns
+## Return
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
 

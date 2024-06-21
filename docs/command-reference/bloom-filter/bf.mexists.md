@@ -17,7 +17,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 Checks for the existence of one or more items in a Bloom filter `key`.
 
-## Returns
+## Return
 
 [Array reply](https://redis.io/docs/reference/protocol-spec/#arrays):
 an array of integers, each representing the result for an individual item as if being processed by the [`BF.EXISTS`](./bf.exists.md) command:

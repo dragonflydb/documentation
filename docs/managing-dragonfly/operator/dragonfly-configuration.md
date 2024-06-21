@@ -12,7 +12,7 @@ controller and the dragonfly pods. Below is the table of Dragonfly CRD fields.
 | ------ | ---- | ----------- |
 | `affinity` | [Affinity](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#affinity-v1-core) | Dragonfly pod affinity (Optional)<br/><pre>spec:<br/>  affinity: <br/>    nodeaffinity:<br/>      ...</pre> You can learn more about affinity [here](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).|
 | `replicas` | int | The total number of Dragonfly instances including the master. |
-| `image` | string | The dragonfly image to use. Default is `docker.dragonflydb.io/dragonflydb/dragonfly:v1.16.0` |
+| `image` | string | The dragonfly image to use. Default is `docker.dragonflydb.io/dragonflydb/dragonfly:v1.19.0` |
 | `args` | []string | (Optional) Dragonfly container args to pass to the container. Refer to the Dragonfly documentation for the list of supported args. Example - <br/><pre>spec:<br/>  args:<br/>   - "--cluster_mode=emulated"</pre> |
 | `annotations` | object | (Optional) Annotations to add to the Dragonfly pods. See [Annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) to know more about annotations. |
 | `aclFromSecret` (since v1.1.1) | [SecretKeySelector](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#secretkeyselector-v1-core) | (Optional) Acl file Secret to pass to the container |
@@ -21,6 +21,7 @@ controller and the dragonfly pods. Below is the table of Dragonfly CRD fields.
 | `tolerations` | \[][Toleration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#toleration-v1-core) | (Optional) Dragonfly pod tolerations. See [k8s doc](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) to know more about tolerations |
 | `serviceAccountName` | string | (Optional) Dragonfly pod service account name |
 | `serviceSpec.type` | string | (Optional) Dragonfly Service type |
+| `serviceSpec.name`  (since 1.1.3) | string | (Optional) Dragonfly custom Service name |
 | `serviceSpec.annotations` | object | (Optional) Dragonfly Service Annotations |
 | `authentication.passwordFromSecret` | [SecretKeySelector](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#secretkeyselector-v1-core) | (Optional) Dragonfly Password from Secret as a reference to a specific key. Example - <pre>spec:<br/>  authentication:<br/>    passwordFromSecret:<br/>      name: dragonfly-auth-secret<br/>      key: password<br/></pre> |
 | `authentication.clientCaCertSecret` | [SecretReference](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#secretreference-v1-core) | (Optional) If specified, the Dragonfly instance will check if the client certificate is signed by one of this CA. Server TLS must be enabled for this. Multiple CAs can be specified with various key names. Example - <pre>spec:<br/>  authentication:<br/>    clientCaCertSecret:<br/>      name: dragonfly-client-ca<br/></pre> |

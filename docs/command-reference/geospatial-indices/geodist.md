@@ -33,7 +33,7 @@ The distance is computed assuming that the Earth is a perfect sphere, so errors 
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#resp-bulk-strings), specifically:
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings), specifically:
 
 The command returns the distance as a double (represented as a string) in the specified unit, or NULL if one or both the elements are missing.
 

@@ -19,7 +19,7 @@ import PageTitle from '@site/src/components/PageTitle';
 This command is similar to ZDIFFSTORE, but instead of storing the resulting sorted set, it is returned to the client
 
 ## Return
-[Array reply](https://redis.io/docs/reference/protocol-spec/#resp-arrays): the result of the difference (optionally with their scores, in case the WITHSCORES option is given).
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): the result of the difference (optionally with their scores, in case the WITHSCORES option is given).
 
 ## Examples
 

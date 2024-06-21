@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Redis ZRANGEBYSCORE which returns elements with scores within a given range in a sorted set.
+description: Learn how to use Redis ZRANGEBYSCORE which returns elements with scores within a given range in a sorted set.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -8,123 +8,74 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis ZRANGEBYSCORE Command (Documentation) | Dragonfly" />
 
+## Introduction and Use Case(s)
+
+The `ZRANGEBYSCORE` command in Redis is used to return the members of a sorted set whose scores fall within a specified range. This command is particularly useful for retrieving elements based on their ranking or priority, such as fetching leaderboard entries, scheduled tasks within a certain time frame, or items with specific score values.
+
 ## Syntax
 
-    ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]
-
-**Time complexity:** O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements being returned. If M is constant (e.g. always asking for the first 10 elements with LIMIT), you can consider it O(log(N)).
-
-**ACL categories:** @read, @sortedset, @slow
-
-Returns all the elements in the sorted set at `key` with a score between `min`
-and `max` (including elements with score equal to `min` or `max`).
-The elements are considered to be ordered from low to high scores.
-
-The elements having the same score are returned in lexicographical order (this
-follows from a property of the sorted set implementation in Redis and does not
-involve further computation).
-
-The optional `LIMIT` argument can be used to only get a range of the matching
-elements (similar to _SELECT LIMIT offset, count_ in SQL). A negative `count`
-returns all elements from the `offset`.
-Keep in mind that if `offset` is large, the sorted set needs to be traversed for
-`offset` elements before getting to the elements to return, which can add up to
-O(N) time complexity.
-
-The optional `WITHSCORES` argument makes the command return both the element and
-its score, instead of the element alone.
-This option is available since Redis 2.0.
-
-## Exclusive intervals and infinity
-
-`min` and `max` can be `-inf` and `+inf`, so that you are not required to know
-the highest or lowest score in the sorted set to get all elements from or up to
-a certain score.
-
-By default, the interval specified by `min` and `max` is closed (inclusive).
-It is possible to specify an open interval (exclusive) by prefixing the score
-with the character `(`.
-For example:
-
 ```
-ZRANGEBYSCORE zset (1 5
+ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]
 ```
 
-Will return all elements with `1 < score <= 5` while:
+## Parameter Explanations
 
-```
-ZRANGEBYSCORE zset (5 (10
-```
+- `key`: The name of the sorted set.
+- `min`: The minimum score (inclusive) of the range.
+- `max`: The maximum score (inclusive) of the range.
+- `WITHSCORES` (optional): Include this to return the scores of the elements in addition to the elements themselves.
+- `LIMIT offset count` (optional): Used to paginate through the results. `offset` specifies the number of elements to skip, and `count` specifies the maximum number of elements to return.
 
-Will return all the elements with `5 < score < 10` (5 and 10 excluded).
+## Return Values
 
-## Return
+The command returns an array of elements in the specified score range. If `WITHSCORES` is used, the array will alternate between elements and their respective scores.
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of elements in the specified score range (optionally
-with their scores).
+### Examples:
 
-## Examples
+- Without `WITHSCORES`:
+  ```
+  ["element1", "element2", "element3"]
+  ```
+- With `WITHSCORES`:
+  ```
+  ["element1", "1.0", "element2", "2.0", "element3", "3.0"]
+  ```
 
-```shell
-dragonfly> ZADD myzset 1 "one"
-(integer) 1
-dragonfly> ZADD myzset 2 "two"
-(integer) 1
-dragonfly> ZADD myzset 3 "three"
-(integer) 1
-dragonfly> ZRANGEBYSCORE myzset -inf +inf
-1) "one"
-2) "two"
-3) "three"
+## Code Examples
+
+```cli
+dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three"
+(integer) 3
 dragonfly> ZRANGEBYSCORE myzset 1 2
 1) "one"
 2) "two"
-dragonfly> ZRANGEBYSCORE myzset (1 2
-1) "two"
-dragonfly> ZRANGEBYSCORE myzset (1 (2
-
+dragonfly> ZRANGEBYSCORE myzset 1 2 WITHSCORES
+1) "one"
+2) "1"
+3) "two"
+4) "2"
+dragonfly> ZRANGEBYSCORE myzset 2 3 LIMIT 1 1
+1) "three"
 ```
 
-## Pattern: weighted random selection of an element
+## Best Practices
 
-Normally `ZRANGEBYSCORE` is simply used in order to get range of items
-where the score is the indexed integer key, however it is possible to do less
-obvious things with the command.
+- Use `WITHSCORES` only when necessary to avoid additional memory overhead.
+- Apply the `LIMIT` option for large sorted sets to manage memory usage and improve performance.
+- Ensure `min` and `max` are set appropriately to avoid unexpected results.
 
-For example a common problem when implementing Markov chains and other algorithms
-is to select an element at random from a set, but different elements may have
-different weights that change how likely it is they are picked.
+## Common Mistakes
 
-This is how we use this command in order to mount such an algorithm:
+- Using `min` and `max` incorrectly: Ensure that `min` <= `max`.
+- Omitting `WITHSCORES` when scores are needed for further processing, which leads to additional queries.
 
-Imagine you have elements A, B and C with weights 1, 2 and 3.
-You compute the sum of the weights, which is 1+2+3 = 6
+## FAQs
 
-At this point you add all the elements into a sorted set using this algorithm:
+**Q: Can I use negative scores with `ZRANGEBYSCORE`?**
+A: Yes, both `min` and `max` can be negative numbers.
 
-```
-SUM = ELEMENTS.TOTAL_WEIGHT // 6 in this case.
-SCORE = 0
-FOREACH ELE in ELEMENTS
-    SCORE += ELE.weight / SUM
-    ZADD KEY SCORE ELE
-END
-```
+**Q: What happens if no elements fall within the given score range?**
+A: An empty array will be returned.
 
-This means that you set:
-
-```
-A to score 0.16
-B to score .5
-C to score 1
-```
-
-Since this involves approximations, in order to avoid C is set to,
-like, 0.998 instead of 1, we just modify the above algorithm to make sure
-the last score is 1 (left as an exercise for the reader...).
-
-At this point, each time you want to get a weighted random element,
-just compute a random number between 0 and 1 (which is like calling
-`rand()` in most languages), so you can just do:
-
-    RANDOM_ELE = ZRANGEBYSCORE key RAND() +inf LIMIT 0 1
+**Q: How does Redis handle non-numeric `min` or `max` values?**
+A: Redis will return an error as `min` and `max` must be valid numeric values or special strings like `-inf` and `+inf`.

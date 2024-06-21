@@ -37,7 +37,7 @@ Note: The `XX` and `NX` options are mutually exclusive.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#resp-integers), specifically:
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
 - When used without optional arguments, the number of elements added to the sorted set (excluding score updates).
 - If the `CH` option is specified, the number of elements that were changed (added or updated).
