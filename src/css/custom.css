@@ -180,7 +180,7 @@ a > svg[class*="ExternalLink"] {
 
 .nav-cta,
 .btn-primary {
-  padding: 0.75rem 1.5rem !important;
+  padding: 8px 20px !important;
   margin-left: 8px;
   font-family: var(--ifm-heading-font-family);
   font-weight: 700;
@@ -416,7 +416,7 @@ a > svg[class*="ExternalLink"] {
   color: white;
 }
 
-.announcment-bar form button {
+.announcment-bar button {
   font-size: 1rem;
   margin: 0;
   padding: 0.875rem 3rem !important;
