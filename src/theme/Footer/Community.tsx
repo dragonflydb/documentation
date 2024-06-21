@@ -5,7 +5,11 @@ const Community = () => {
     <div className="container">
       <p>Join the Dragonfly Community to get exclusive contenty</p>
 
-      <a type="submit" className="btn-primary" href="/community">
+      <a
+        type="submit"
+        className="btn-primary"
+        href="https://dragonflydb.io/community"
+      >
         Join
       </a>
     </div>
