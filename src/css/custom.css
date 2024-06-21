@@ -180,13 +180,14 @@ a > svg[class*="ExternalLink"] {
 
 .nav-cta,
 .btn-primary {
-  padding: 8px 20px !important;
+  padding: 0.75rem 1.5rem !important;
   margin-left: 8px;
   font-family: var(--ifm-heading-font-family);
   font-weight: 700;
   background-image: linear-gradient(to bottom right, #5a3ee0, #c53ee0);
-  border-radius: 6px;
+  border-radius: 0.375rem;
   border: none;
+  text-decoration: none;
   color: white;
 }
 
@@ -194,6 +195,7 @@ a > svg[class*="ExternalLink"] {
 .btn-primary:hover {
   color: white;
   opacity: 0.9;
+  text-decoration: none;
 }
 
 .btn-primary:disabled {
@@ -366,7 +368,7 @@ a > svg[class*="ExternalLink"] {
   background: #1f1f29;
   border-radius: 1.5rem 1.5rem 0 0;
   color: white;
-  padding: 2em 1em;
+  padding: 2rem 1rem;
   z-index: 40;
 }
 
@@ -374,7 +376,7 @@ a > svg[class*="ExternalLink"] {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 @media (max-width: 768px) {

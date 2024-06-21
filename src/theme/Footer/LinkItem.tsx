@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import ComponentTypes from "@theme-original/Footer/LinkItem";
 import type FooterLinkType from "@theme/Footer/LinkItem";
 import submitHubspotForm from "@site/src/utils/submitHubspotForm";
+import Newsletter from "./Newsletter";
+import Community from "./Community";
 
 type Props = React.ComponentProps<typeof FooterLinkType>;
 
@@ -17,26 +19,7 @@ export default function FooterLink(props: Props): JSX.Element {
 }
 
 const AnnouncmentBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [formSubmitted, setFormSubmitted] = useState("initial");
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setFormSubmitted("loading");
-
-    const formData = new FormData(e.target as HTMLFormElement);
-    const email = formData.get("email") as string;
-
-    try {
-      await submitHubspotForm("3fe97f7a-b2ee-430b-b1c1-acf765bc7587", {
-        email,
-      });
-      setFormSubmitted("success");
-    } catch (error) {
-      alert("An error occurred. Please try again.");
-      setFormSubmitted("initial");
-    }
-  };
+  const [isOpen, setIsOpen] = useState(true);
 
   const showPopup = useCallback(() => {
     if (!sessionStorage.getItem("announcmentBarShown")) {
@@ -70,30 +53,7 @@ const AnnouncmentBar = () => {
   if (isOpen) {
     return (
       <div className="announcment-bar">
-        <div className="container ">
-          {formSubmitted !== "success" ? (
-            <>
-              <p>Keep up to date with Dragonfly</p>
-              <form onSubmit={handleSubmit}>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  placeholder="Enter your email"
-                />
-                <button
-                  type="submit"
-                  className="btn-primary"
-                  disabled={formSubmitted === "loading"}
-                >
-                  Submit
-                </button>
-              </form>
-            </>
-          ) : (
-            <p>Thank you for subscribing to our newsletter!</p>
-          )}
-        </div>
+        <Community />
         <button className="close-button" onClick={() => setIsOpen(false)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
