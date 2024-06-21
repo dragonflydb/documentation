@@ -193,8 +193,6 @@ a > svg[class*="ExternalLink"] {
 
 .nav-cta:hover,
 .btn-primary:hover {
-.nav-cta:hover,
-.btn-primary:hover {
   color: white;
   opacity: 0.9;
   text-decoration: none;
@@ -363,8 +361,8 @@ a > svg[class*="ExternalLink"] {
 }
 
 .theme-doc-sidebar-item-category-level-1:nth-child(8)
-> .menu__list-item-collapsible
-> .menu__link:before {
+  > .menu__list-item-collapsible
+  > .menu__link:before {
   content: url("/website/sidebar/cloud.svg");
 }
 
