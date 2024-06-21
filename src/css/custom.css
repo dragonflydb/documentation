@@ -416,7 +416,7 @@ a > svg[class*="ExternalLink"] {
   color: white;
 }
 
-.announcment-bar button {
+.announcment-bar .btn-primary {
   font-size: 1rem;
   margin: 0;
   padding: 0.875rem 3rem !important;
