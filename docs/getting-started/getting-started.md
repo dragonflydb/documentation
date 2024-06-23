@@ -11,7 +11,7 @@ Use one of these options to get Dragonfly up and running quickly:
 - [Install Dragonfly Kubernetes Operator](./kubernetes-operator.md)
 - [Install on Kubernetes with Helm Chart](./kubernetes.md)
 - [Install from Binary](./binary.md)
-- [Get Started with Dragonfly Cloud](/docs/cloud/getting-started.md)
+- [Get Started with Dragonfly Cloud](./cloud.md)
 
 # Hardware Compatibility
 Dragonfly is specifically optimized to operate in cloud environments.
