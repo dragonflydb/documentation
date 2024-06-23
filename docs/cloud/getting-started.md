@@ -15,8 +15,8 @@ After signing up you will land on the *Data Stores* page, you can create your fi
 You only need to pick a *name*, a *cloud provider* and *cloud region*.  
 For more configuration options see [Data Stores](./datastores).
 
-Before creating you first *data store* you will be asked to add *payment card*.
-You can track your usage and costs under the *Account > Usage* tab.
+Before creating your first *data store* you will be asked to add *payment card*.
+You can track usage and costs under the *Account > Usage* tab.
 
 You are only charged while the *data store* is active, prorated to the hour, and you can delete the data store at any time.
  
