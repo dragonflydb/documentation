@@ -4,9 +4,9 @@ sidebar_position: 5
 
 # Monitoring
 
-Dragonfly Cloud provides data stores observability through a readily available Grafana based [public dashboard](#public-dashboard), and a [Prometheus compatible metrics endpoint](#prometheus-compatible-metrics-endpoint) that you can scrape and integrate with most monitoring and alerts solutions like Datadog and Grafana.
+Dragonfly Cloud provides observability through a readily available Grafana based [public dashboard](#public-dashboard), and a [Prometheus compatible metrics endpoint](#prometheus-compatible-metrics-endpoint) that you can scrape and integrate with most monitoring and alerting solutions like Datadog and Grafana.
 
-If you didn't create a datastore yet, you see [Datastores](./datastores) to create your first datastore.
+If you have not yet created a Dragonfly Cloud datastore, pleaes see [these docs](./datastores) to create your first datastore.
 
 ## Public Dashboard
 
@@ -24,7 +24,7 @@ In order to access the metrics endpoint you first must acquire an API key:
 3. In the Create Key dialog enter a meaningful name for the key (e.g. metrics) and leave `read:metrics` selected in the permissions dropdown.
 4. Click Create. The dialog will show the created key.
 5. Click Copy API Key to copy the key to the clipboard.
-6. Paste and store the key somewhere for later usage, Dragonfly Cloud doesn’t store the key (you can create more keys if needed).
+6. Store the key somewhere for later usage, Dragonfly Cloud doesn’t store the key (you can create more keys if needed).
 
 The metrics endpoint is available for scraping at https://api.dragonflydb.cloud/v1/metrics
 
