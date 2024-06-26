@@ -1,5 +1,5 @@
 ---
-description: Learn how to use Redis ZSCORE command to get the score associated with the given element in a sorted set.
+description: ⚡ Better than official Redis docs ⚡ Learn how to use Redis ZSCORE command to get the score associated with the given element in a sorted set.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

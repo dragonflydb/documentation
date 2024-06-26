@@ -1,5 +1,5 @@
 ---
-description: Learn how to use Redis ZRANGEBYSCORE which returns elements with scores within a given range in a sorted set.
+description: ⚡ Better than official Redis docs ⚡ Learn how to use Redis ZRANGEBYSCORE which returns elements with scores within a given range in a sorted set.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

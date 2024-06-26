@@ -1,5 +1,5 @@
 ---
-description: Learn to use Redis ZCARD command to get the total number of elements in a sorted set.
+description: ⚡ Better than official Redis docs ⚡ Learn to use Redis ZCARD command to get the total number of elements in a sorted set.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

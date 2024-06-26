@@ -1,5 +1,5 @@
 ---
-description: Learn how to use Redis ZADD command to add a member to a sorted set with a given score.
+description: ⚡ Better than official Redis docs ⚡ Learn how to use Redis ZADD command to add a member to a sorted set with a given score.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
