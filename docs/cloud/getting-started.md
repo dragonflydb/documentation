@@ -20,7 +20,7 @@ You can track usage and costs under the *Account > Usage* tab.
 
 You are only charged while the *data store* is active, prorated to the hour, and you can delete the data store at any time.
  
-We offer an unlimited 3GB Development plan for around $35/month (less then $0.5 an hour), depending on the cloud provider and region, as an easy way to get started.
+We offer an unlimited 3GB Development plan for around $35/month (less than $0.05 an hour), depending on the cloud provider and region, as an easy way to get started.
 
 ***Happy building with Dragonfly Cloud!***
 
