@@ -8,7 +8,7 @@ sidebar_position: 4
 
 Private IP space communication is more secure, performant and reduces data transfer costs incurred by cloud providers.
 
-Once you created a *private network* as described in [Networks](./networks) click the network three dots menu and click **+ Connect**
+Once you creat a *private network* as described in [Networks](./networks), click the network three dots menu and click **+ Connect**
 
 Continue to [AWS](#aws) or [GCP](#gcp) based on your cloud provider.
 
