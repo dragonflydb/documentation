@@ -9,7 +9,7 @@ Getting started with *Dragonfly Cloud* is easy. You can have your first *data st
 All you have to do is navigate to [dragonflydb.cloud](https://dragonflydb.cloud) and sign up for an account.
 
 To complete the sign up process you will be required to pick a name for your *organization*.
-You can later add more users to your *organization*.
+You can later [add more users](./users.md) to your *organization*.
 
 After signing up you will land on the *Data Stores* page, where you can create your first *data store* by clicking the [+Data Store](https://dragonflydb.cloud/datastores/new) button.  
 You only need to pick a *name*, a *cloud provider* and *cloud region*.  
