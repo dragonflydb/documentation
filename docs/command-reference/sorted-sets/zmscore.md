@@ -8,32 +8,58 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis ZMSCORE Explained (Better Than Official Docs)" />
 
+## Introduction and Use Case(s)
+
+`ZMSCORE` is a Redis command used to get the scores associated with the specified members in the sorted set stored at a given key. This is useful when you need to retrieve multiple scores in one operation, minimizing network overhead and improving performance.
+
+Typical scenarios include scoring systems, leaderboards, or any application that tracks and ranks items by score.
+
 ## Syntax
 
-    ZMSCORE key member [member ...]
+```cli
+ZMSCORE key member [member ...]
+```
 
-**Time complexity:** O(N) where N is the number of members being requested.
+## Parameter Explanations
 
-**ACL categories:** @read, @sortedset, @fast
+- **key**: The name of the sorted set.
+- **member**: One or more members for which you want to retrieve the scores.
 
-Returns the scores associated with the specified `members` in the sorted set stored at `key`.
+## Return Values
 
-For every `member` that does not exist in the sorted set, a `nil` value is returned.
+The command returns an array of scores for the specified members, where each element corresponds to the score of the respective member. If a member does not exist in the sorted set, the corresponding element will be `nil`.
 
-## Return
+Examples:
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of scores or `nil` associated with the specified `member` values (a double precision floating point number),
-represented as strings.
+- If all members are found: `[score1, score2, ...]`
+- If some members are missing: `[score1, nil, score3, ...]`
 
-## Examples
+## Code Examples
 
-```shell
-dragonfly> ZADD myzset 1 "one"
-(integer) 1
-dragonfly> ZADD myzset 2 "two"
-(integer) 1
-dragonfly> ZMSCORE myzset "one" "two" "nofield"
+```cli
+dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three"
+(integer) 3
+dragonfly> ZMSCORE myzset "one" "two" "four"
 1) "1"
 2) "2"
 3) (nil)
 ```
+
+## Best Practices
+
+- Use `ZMSCORE` instead of multiple `ZSCORE` commands to reduce the number of round-trip times between your application and the Redis server.
+
+## Common Mistakes
+
+- **Using incorrect types**: Ensure the key refers to a sorted set. Using `ZMSCORE` on a key of a different type will result in an error.
+- **Misspelling member names**: Incorrectly spelled member names will return `nil`, which can be mistaken for the member not existing in the set.
+
+## FAQs
+
+### What happens if some of the specified members do not exist?
+
+The command will return `nil` for those members, indicating they are not present in the sorted set.
+
+### Can I use `ZMSCORE` with other data types?
+
+No, the `ZMSCORE` command is specifically designed for sorted sets. Using it with other data types will result in an error.

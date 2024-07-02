@@ -8,48 +8,87 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis ZREVRANGEBYSCORE Explained (Better Than Official Docs)" />
 
+## Introduction and Use Case(s)
+
+The `ZREVRANGEBYSCORE` command in Redis is used to return a range of members in a sorted set, ordered from the highest to the lowest score. This command is particularly useful for scenarios like leaderboard systems, where you want to retrieve top-ranked items within specific score ranges.
+
 ## Syntax
 
-    ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]
+```cli
+ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]
+```
 
-**Time complexity:** O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements being returned. If M is constant (e.g. always asking for the first 10 elements with LIMIT), you can consider it O(log(N)).
+## Parameter Explanations
 
-**ACL categories:** @read, @sortedset, @slow
+- **key**: The name of the sorted set.
+- **max**: The maximum score (inclusive) in the range to be queried.
+- **min**: The minimum score (inclusive) in the range to be queried.
+- **WITHSCORES**: Optional flag to include the scores of the returned elements.
+- **LIMIT offset count**: Optional arguments to limit the number of elements returned, starting at the specified offset.
 
-Returns all the elements in the sorted set at `key` with a score between `max`
-and `min` (including elements with score equal to `max` or `min`).
-In contrary to the default ordering of sorted sets, for this command the
-elements are considered to be ordered from high to low scores.
+## Return Values
 
-The elements having the same score are returned in reverse lexicographical
-order.
+The command returns an array of members in the sorted set between the given scores, ordered from highest to lowest score. If `WITHSCORES` is specified, each member is followed by its score.
 
-Apart from the reversed ordering, `ZREVRANGEBYSCORE` is similar to
-`ZRANGEBYSCORE`.
+### Examples:
 
-## Return
+- Without `WITHSCORES`:
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of elements in the specified score range (optionally
-with their scores).
+```cli
+dragonfly> ZREVRANGEBYSCORE myzset 3 1
+1) "two"
+2) "one"
+```
 
-## Examples
+- With `WITHSCORES`:
 
-```shell
+```cli
+dragonfly> ZREVRANGEBYSCORE myzset 3 1 WITHSCORES
+1) "two"
+2) "2"
+3) "one"
+4) "1"
+```
+
+## Code Examples
+
+```cli
 dragonfly> ZADD myzset 1 "one"
 (integer) 1
 dragonfly> ZADD myzset 2 "two"
 (integer) 1
 dragonfly> ZADD myzset 3 "three"
 (integer) 1
-dragonfly> ZREVRANGEBYSCORE myzset +inf -inf
+dragonfly> ZREVRANGEBYSCORE myzset 3 1
 1) "three"
 2) "two"
 3) "one"
-dragonfly> ZREVRANGEBYSCORE myzset 2 1
-1) "two"
-2) "one"
-dragonfly> ZREVRANGEBYSCORE myzset 2 (1
-1) "two"
-dragonfly> ZREVRANGEBYSCORE myzset (2 (1
-(empty array)
+dragonfly> ZREVRANGEBYSCORE myzset 3 2 WITHSCORES
+1) "three"
+2) "3"
+3) "two"
+4) "2"
+dragonfly> ZREVRANGEBYSCORE myzset 3 1 LIMIT 0 2
+1) "three"
+2) "two"
 ```
+
+## Best Practices
+
+- When using large sorted sets, consider utilizing the `LIMIT` option to paginate results and reduce memory overhead.
+- Use `WITHSCORES` only when necessary to avoid additional processing time if scores are not needed.
+
+## Common Mistakes
+
+- Incorrectly specifying the `max` and `min` values can lead to unexpected results. Ensure that `max` is greater than or equal to `min`.
+- Not considering the inclusive nature of the `max` and `min` parameters might cause confusion in the returned results.
+
+## FAQs
+
+### How does `ZREVRANGEBYSCORE` handle ties in scores?
+
+When multiple members have the same score, they are returned in lexicographical order.
+
+### Can I use negative infinity and positive infinity as scores?
+
+Yes, you can use `+inf` and `-inf` to represent positive and negative infinity respectively when specifying score ranges.

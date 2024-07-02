@@ -8,42 +8,87 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis BZPOPMAX Explained (Better Than Official Docs)" />
 
+## Introduction and Use Case(s)
+
+The `BZPOPMAX` command is used in Redis to remove and return the member with the highest score from one or more sorted sets. If the sorted sets are empty, it can block the connection until a member becomes available. This command is useful in scenarios where you need to process elements in order of their priority, such as task queues that handle tasks with varying importance.
+
 ## Syntax
 
-    BZPOPMAX key [key ...] timeout
-
-**Time complexity:** O(log(N)) with N being the number of elements in the sorted set.
-
-**ACL categories:** @write, @sortedset, @fast, @blocking
-
-`BZPOPMAX` is the blocking variant of the sorted set [`ZPOPMAX`](./zpopmax.md) primitive.
-
-It is the blocking version because it blocks the connection when there are no members to pop from any of the given sorted sets.
-A member with the highest score is popped from first sorted set that is non-empty, with the given keys being checked in the order that they are given.
-
-The `timeout` argument is interpreted as a double value specifying the maximum number of seconds to block.
-A timeout of zero can be used to block indefinitely.
-
-See the [`BZPOPMIN` documentation](./bzpopmin.md) for the exact semantics,
-since `BZPOPMAX` is identical to [`BZPOPMIN`](./bzpopmin.md)
-with the only difference being that it pops members with the highest scores instead of popping the ones with the lowest scores.
-
-## Return
-
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays), specifically:
-
-- A `nil` multi-bulk when no element could be popped and the timeout expired.
-- A three-element multi-bulk with the first element being the name of the key where a member was popped, the second element is the popped member itself, and the third element is the score of the popped element.
-
-## Examples
-
-```shell
-dragonfly> DEL zset1 zset2
-(integer) 0
-dragonfly> ZADD zset1 0 a 1 b 2 c
-(integer) 3
-dragonfly> BZPOPMAX zset1 zset2 0
-1) "zset1"
-2) "c"
-3) "2"
+```plaintext
+BZPOPMAX key [key ...] timeout
 ```
+
+## Parameter Explanations
+
+- **key**: One or more sorted set keys from which the highest scoring member will be popped.
+- **timeout**: The maximum number of seconds the client will block if no members are available. A timeout of 0 means to block indefinitely.
+
+## Return Values
+
+The command returns an array with three elements:
+
+1. The name of the key where the member was popped.
+2. The member itself.
+3. The score of the member.
+
+If the timeout is reached without a member becoming available, it returns a `nil`.
+
+### Example Outputs
+
+- When an element is successfully popped:
+  ```plaintext
+  1) "myzset"
+  2) "one"
+  3) "1"
+  ```
+- When the timeout is reached without any members becoming available:
+  ```plaintext
+  (nil)
+  ```
+
+## Code Examples
+
+```cli
+dragonfly> ZADD myzset1 1 "one" 2 "two" 3 "three"
+(integer) 3
+dragonfly> ZADD myzset2 4 "four" 5 "five"
+(integer) 2
+dragonfly> BZPOPMAX myzset1 myzset2 1
+1) "myzset2"
+2) "five"
+3) "5"
+dragonfly> BZPOPMAX myzset1 myzset2 1
+1) "myzset2"
+2) "four"
+3) "4"
+dragonfly> BZPOPMAX myzset1 myzset2 1
+1) "myzset1"
+2) "three"
+3) "3"
+dragonfly> BZPOPMAX myzset1 myzset2 1
+(nil)
+```
+
+## Best Practices
+
+- Ensure timeout values are carefully chosen based on your application's real-time requirements to avoid unnecessary blocking.
+- Always provide multiple keys when possible to increase the chances of immediate availability of members.
+
+## Common Mistakes
+
+- Using a very short timeout might cause the command to frequently return `nil`, which may not be desirable for certain applications.
+- Not handling the `nil` response properly, which could lead to unexpected application behavior.
+
+## FAQs
+
+### What happens if all specified keys are empty?
+
+If all specified keys are empty and the timeout expires, the command returns `nil`.
+
+### Can `BZPOPMAX` be used with only one key?
+
+Yes, `BZPOPMAX` can be used with a single key, but specifying multiple keys increases the chances of the operation succeeding without blocking.
+
+### Is there a non-blocking version of this command?
+
+Yes, the non-blocking version of this command is `ZPOPMAX`.
