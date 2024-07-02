@@ -1,12 +1,12 @@
 ---
-description:  Learn to use Redis ZRANGEBYLEX command to retrieve elements by their lexical range in a sorted set.
+description: Learn to use the Redis ZRANGEBYLEX command to retrieve elements by their lexical range in a sorted set, plus expert tips beyond the official Redis docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZRANGEBYLEX
 
-<PageTitle title="Redis ZRANGEBYLEX Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZRANGEBYLEX Explained (Better Than Official Docs)" />
 
 ## Syntax
 
@@ -31,9 +31,9 @@ O(N) time complexity.
 
 ## How to specify intervals
 
-Valid *start* and *stop* must start with `(` or `[`, in order to specify
+Valid _start_ and _stop_ must start with `(` or `[`, in order to specify
 if the range item is respectively exclusive or inclusive.
-The special values of `+` or `-` for *start* and *stop* have the special
+The special values of `+` or `-` for _start_ and _stop_ have the special
 meaning or positively infinite and negatively infinite strings, so for
 instance the command **ZRANGEBYLEX myzset - +** is guaranteed to return
 all the elements in the sorted set, if all the elements have the same
@@ -55,7 +55,7 @@ following way:
 
     ZADD autocomplete 0 foo:Foo 0 bar:BAR 0 zap:zap
 
-Because of the first *normalized* part in every element (before the colon character), we are forcing a given comparison, however after the range is queries using `ZRANGEBYLEX` the application can display to the user the second part of the string, after the colon.
+Because of the first _normalized_ part in every element (before the colon character), we are forcing a given comparison, however after the range is queries using `ZRANGEBYLEX` the application can display to the user the second part of the string, after the colon.
 
 The binary nature of the comparison allows to use sorted sets as a general
 purpose index, for example the first part of the element can be a 64 bit

@@ -1,12 +1,12 @@
 ---
-description: ⚡ Better than official Redis docs ⚡ Learn to use Redis ZRANGE command to fetch elements in a specific range from a sorted set.
+description: Learn to use the Redis ZRANGE command to fetch elements in a specific range from a sorted set, plus expert tips beyond the official Redis docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZRANGE
 
-<PageTitle title="Redis ZRANGE Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZRANGE Explained (Better Than Official Docs)" />
 
 ## Introduction and Use Case(s)
 

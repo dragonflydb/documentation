@@ -1,12 +1,12 @@
 ---
-description:  Learn to use Redis BZPOPMAX command which removes and returns the member with the highest score from one or more sorted sets.
+description: Learn how to use the Redis BZPOPMAX command to remove and return the highest score member from sorted sets, plus expert tips beyond the official Redis docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # BZPOPMAX
 
-<PageTitle title="Redis BZPOPMAX Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis BZPOPMAX Explained (Better Than Official Docs)" />
 
 ## Syntax
 

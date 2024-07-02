@@ -1,18 +1,18 @@
 ---
-description:  Learn how to use Redis ZUNION command to perform a union of multiple sorted sets, getting the sorted set of unique elements.
+description: Learn how to use Redis ZUNION command to perform a union of multiple sorted sets, getting the sorted set of unique elements.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZUNION
 
-<PageTitle title="Redis ZUNION Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZUNION Explained (Better Than Official Docs)" />
 
 ## Syntax
 
     ZUNION numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE <SUM | MIN | MAX>] [WITHSCORES]
 
-**Time complexity:** O(N)+O(M*log(M)) with N being the sum of the sizes of the input sorted sets, and M being the number of elements in the resulting sorted set.
+**Time complexity:** O(N)+O(M\*log(M)) with N being the sum of the sizes of the input sorted sets, and M being the number of elements in the resulting sorted set.
 
 **ACL categories:** @read, @sortedset, @slow
 
@@ -23,7 +23,7 @@ For a description of the `WEIGHTS` and `AGGREGATE` options, see `ZUNIONSTORE`.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): the result of union (optionally with their scores, in case 
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): the result of union (optionally with their scores, in case
 the `WITHSCORES` option is given).
 
 ## Examples

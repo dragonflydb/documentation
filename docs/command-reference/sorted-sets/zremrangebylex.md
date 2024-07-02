@@ -1,12 +1,12 @@
 ---
-description:  Learn how to use Redis ZREMRANGEBYLEX command to remove all members in a sorted set between a specified lexicographical range.
+description: Use Redis ZREMRANGEBYLEX to remove sorted set members within a lexicographical range, plus expert tips beyond official Redis docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZREMRANGEBYLEX
 
-<PageTitle title="Redis ZREMRANGEBYLEX Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZREMRANGEBYLEX Explained (Better Than Official Docs)" />
 
 ## Syntax
 

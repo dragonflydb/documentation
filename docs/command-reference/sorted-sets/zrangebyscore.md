@@ -1,12 +1,12 @@
 ---
-description: ⚡ Better than official Redis docs ⚡ Learn how to use Redis ZRANGEBYSCORE which returns elements with scores within a given range in a sorted set.
+description: Learn how to use the Redis ZRANGEBYSCORE command to return elements with scores within a given range in a sorted set.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZRANGEBYSCORE
 
-<PageTitle title="Redis ZRANGEBYSCORE Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZRANGEBYSCORE Explained (Better Than Official Docs)" />
 
 ## Introduction and Use Case(s)
 

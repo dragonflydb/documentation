@@ -1,12 +1,12 @@
 ---
-description: ⚡ Better than official Redis docs ⚡ Learn how to use Redis ZADD command to add a member to a sorted set with a given score.
+description: Learn how to use the Redis ZADD command to add members to sorted sets with ease, plus expert tips beyond the official Redis docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZADD
 
-<PageTitle title="Redis ZADD Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZADD Explained (Better Than Official Docs)" />
 
 ## Introduction and Use Case(s)
 

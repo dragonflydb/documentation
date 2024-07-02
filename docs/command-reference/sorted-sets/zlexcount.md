@@ -1,12 +1,12 @@
 ---
-description:  Learn how to use Redis ZLEXCOUNT command to count elements in a sorted set between two given lexicographical values.
+description: Learn how to use the Redis ZLEXCOUNT command to count elements in a sorted set between two lexicographical values, plus expert tips beyond the official Redis docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZLEXCOUNT
 
-<PageTitle title="Redis ZLEXCOUNT Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZLEXCOUNT Explained (Better Than Official Docs)" />
 
 ## Syntax
 

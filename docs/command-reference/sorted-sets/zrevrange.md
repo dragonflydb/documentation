@@ -1,12 +1,12 @@
 ---
-description:  Learn how to use Redis ZREVRANGE command to return a range of members in a sorted set, by index, with scores ordered from high to low.
+description: Learn how to use Redis ZREVRANGE command to return a range of members in a sorted set, by index, with scores ordered from high to low.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZREVRANGE
 
-<PageTitle title="Redis ZREVRANGE Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZREVRANGE Explained (Better Than Official Docs)" />
 
 ## Syntax
 

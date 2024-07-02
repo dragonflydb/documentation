@@ -1,12 +1,12 @@
 ---
-description:  Learn to use Redis ZCOUNT command which counts elements in a sorted set with scores within a given range.
+description: Learn to use the Redis ZCOUNT command to count elements in a sorted set within a given score range, plus expert tips beyond the official Redis docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZCOUNT
 
-<PageTitle title="Redis ZCOUNT Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZCOUNT Explained (Better Than Official Docs)" />
 
 ## Syntax
 

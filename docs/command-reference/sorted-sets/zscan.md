@@ -1,12 +1,12 @@
 ---
-description:  Learn how to use Redis ZSCAN command to incrementally iterate sorted sets elements and associated scores.
+description: Learn how to use Redis ZSCAN command to incrementally iterate sorted sets elements and associated scores.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZSCAN
 
-<PageTitle title="Redis ZSCAN Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZSCAN Explained (Better Than Official Docs)" />
 
 ## Syntax
 

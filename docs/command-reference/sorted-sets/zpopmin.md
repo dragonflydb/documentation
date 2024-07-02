@@ -1,18 +1,18 @@
 ---
-description:  Learn how to use Redis ZPOPMIN command to remove and return the member with the lowest score in a sorted set.
+description: Learn how to use the Redis ZPOPMIN command to remove and return the member with the lowest score in a sorted set, plus expert tips beyond the official docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZPOPMIN
 
-<PageTitle title="Redis ZPOPMIN Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZPOPMIN Explained (Better Than Official Docs)" />
 
 ## Syntax
 
     ZPOPMIN key [count]
 
-**Time complexity:** O(log(N)*M) with N being the number of elements in the sorted set, and M being the number of elements popped.
+**Time complexity:** O(log(N)\*M) with N being the number of elements in the sorted set, and M being the number of elements popped.
 
 **ACL categories:** @write, @sortedset, @fast
 

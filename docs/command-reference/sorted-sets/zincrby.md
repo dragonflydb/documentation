@@ -1,12 +1,12 @@
 ---
-description:  Learn to use Redis ZINCRBY to increment the score of a member in a sorted set.
+description: Learn to use the Redis ZINCRBY command to increment the score of a member in a sorted set, plus expert tips beyond the official Redis docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZINCRBY
 
-<PageTitle title="Redis ZINCRBY Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZINCRBY Explained (Better Than Official Docs)" />
 
 ## Syntax
 

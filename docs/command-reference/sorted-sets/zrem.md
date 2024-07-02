@@ -1,18 +1,18 @@
 ---
-description:  Learn how to use Redis ZREM command to remove members from a sorted set.
+description: Learn how to use the Redis ZREM command to remove members from a sorted set, plus expert tips beyond the official Redis docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZREM
 
-<PageTitle title="Redis ZREM Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZREM Explained (Better Than Official Docs)" />
 
 ## Syntax
 
     ZREM key member [member ...]
 
-**Time complexity:** O(M*log(N)) with N being the number of elements in the sorted set and M the number of elements to be removed.
+**Time complexity:** O(M\*log(N)) with N being the number of elements in the sorted set and M the number of elements to be removed.
 
 **ACL categories:** @write, @sortedset, @fast
 
@@ -25,7 +25,7 @@ An error is returned when `key` exists and does not hold a sorted set.
 
 [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
-* The number of members removed from the sorted set, not including non existing
+- The number of members removed from the sorted set, not including non existing
   members.
 
 ## Examples

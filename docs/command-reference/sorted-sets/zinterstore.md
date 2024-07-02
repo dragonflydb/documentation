@@ -1,12 +1,12 @@
 ---
-description:  Learn how to use Redis ZINTERSTORE command to intersect multiple sorted sets and store the result.
+description: Learn how to use the Redis ZINTERSTORE command to intersect multiple sorted sets and store the result, plus expert tips beyond the official Redis docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZINTERSTORE
 
-<PageTitle title="Redis ZINTERSTORE Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZINTERSTORE Explained (Better Than Official Docs)" />
 
 ## Syntax
 

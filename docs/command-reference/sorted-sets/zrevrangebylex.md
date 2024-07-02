@@ -1,12 +1,12 @@
 ---
-description:  Learn how to use Redis ZREVRANGEBYLEX command to return all members of a sorted set between a range of lexicographical order in reverse.
+description: Learn how to use Redis ZREVRANGEBYLEX command to return all members of a sorted set between a range of lexicographical order in reverse.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZREVRANGEBYLEX
 
-<PageTitle title="Redis ZREVRANGEBYLEX Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZREVRANGEBYLEX Explained (Better Than Official Docs)" />
 
 ## Syntax
 

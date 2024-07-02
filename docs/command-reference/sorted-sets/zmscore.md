@@ -1,12 +1,12 @@
 ---
-description:  Learn to use Redis ZMSCORE which returns scores for given members in a sorted set.
+description: Learn to use the Redis ZMSCORE command to return scores for given members in a sorted set, plus expert tips beyond the official Redis docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZMSCORE
 
-<PageTitle title="Redis ZMSCORE Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZMSCORE Explained (Better Than Official Docs)" />
 
 ## Syntax
 

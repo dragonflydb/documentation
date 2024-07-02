@@ -1,12 +1,12 @@
 ---
-description:  Learn to use Redis ZDIFF command to compute the difference between two or more sorted sets.
+description: Learn to use the Redis ZCOUNT command to count elements in a sorted set within a given score range, plus expert tips beyond the official Redis docs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZDIFF
 
-<PageTitle title="Redis ZDIFF Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZDIFF Explained (Better Than Official Docs)" />
 
 ## Syntax
 
@@ -19,6 +19,7 @@ import PageTitle from '@site/src/components/PageTitle';
 This command is similar to ZDIFFSTORE, but instead of storing the resulting sorted set, it is returned to the client
 
 ## Return
+
 [Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): the result of the difference (optionally with their scores, in case the WITHSCORES option is given).
 
 ## Examples

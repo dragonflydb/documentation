@@ -1,12 +1,12 @@
 ---
-description:  Learn to use Redis BZPOPMIN command which removes and returns the member with the smallest score from one or more sorted sets.
+description: Learn to use the Redis BZPOPMIN command to remove and return the smallest score member from sorted sets, plus expert tips beyond the official doRedis docscs.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # BZPOPMIN
 
-<PageTitle title="Redis BZPOPMIN Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis BZPOPMIN Explained (Better Than Official Docs)" />
 
 ## Syntax
 

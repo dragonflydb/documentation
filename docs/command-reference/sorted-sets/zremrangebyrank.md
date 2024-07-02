@@ -1,12 +1,12 @@
 ---
-description: ⚡ Better than official Redis docs ⚡ Learn how to use Redis ZREMRANGEBYRANK command to remove all members in a sorted set within the given indexes.
+description: Learn how to use Redis ZREMRANGEBYRANK command to remove all members in a sorted set within the given indexes.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # ZREMRANGEBYRANK
 
-<PageTitle title="Redis ZREMRANGEBYRANK Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ZREMRANGEBYRANK Explained (Better Than Official Docs)" />
 
 ## Introduction and Use Case(s)
 
