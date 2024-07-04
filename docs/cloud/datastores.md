@@ -13,6 +13,9 @@ The minimum configuration consists of *name*, *cloud provider*, *cloud region* a
 Note that the *cloud provider* and *region* can not be modified once the data store is created.
 
 The *plan* specifies the provisioned memory and memory to cpu ratio of the data store.
+The *Enhanced* plan has more CPU for the same amount of provisioned memory and achieves higher throughput compared to the *Standard* plan.
+
+
 
 You can modify the data store *plan* later with zero down time to scale it up or down.
 
