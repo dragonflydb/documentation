@@ -1,40 +1,62 @@
 ---
-description:  Learn the proper use of Redis MSET to set multiple keys to multiple values simultaneously.
+description: Learn the proper use of Redis MSET to set multiple keys to multiple values simultaneously.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # MSET
 
-<PageTitle title="Redis MSET Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis MSET Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `MSET` command in Redis is used to set multiple key-value pairs in a single atomic operation. This command is particularly useful when you need to update several keys at once, ensuring that either all keys are updated or none are if an error occurs.
 
 ## Syntax
 
-    MSET key value [key value ...]
-
-**Time complexity:** O(N) where N is the number of keys to set.
-
-**ACL categories:** @write, @string, @slow
-
-Sets the given keys to their respective values.
-`MSET` replaces existing values with new values, just as regular `SET`.
-See `MSETNX` if you don't want to overwrite existing values.
-
-`MSET` is atomic, so all given keys are set at once.
-It is not possible for clients to see that some of the keys were updated while
-others are unchanged.
-
-## Return
-
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): always `OK` since `MSET` can't fail.
-
-## Examples
-
-```shell
-dragonfly> MSET key1 "Hello" key2 "World"
-OK
-dragonfly> GET key1
-"Hello"
-dragonfly> GET key2
-"World"
+```plaintext
+MSET key1 value1 [key2 value2 ...]
 ```
+
+## Parameter Explanations
+
+- **key1, key2, ...**: The keys that you want to set.
+- **value1, value2, ...**: The values corresponding to each key.
+
+Each key must have a corresponding value and vice versa.
+
+## Return Values
+
+`MSET` always returns `OK` since it will not raise any errors if provided with the correct number of arguments.
+
+## Code Examples
+
+```cli
+dragonfly> MSET key1 "value1" key2 "value2" key3 "value3"
+"OK"
+dragonfly> GET key1
+"value1"
+dragonfly> GET key2
+"value2"
+dragonfly> GET key3
+"value3"
+```
+
+## Best Practices
+
+- Ensure you provide an even number of arguments to `MSET` for proper key-value pairing.
+- Use `MSET` when multiple key updates are required simultaneously to maintain atomicity.
+
+## Common Mistakes
+
+- Providing an odd number of arguments will result in a syntax error since every key needs a corresponding value.
+
+## FAQs
+
+### What happens if one of the keys already exists?
+
+`MSET` will overwrite the existing keys with the new values provided.
+
+### Is `MSET` an atomic operation?
+
+Yes, `MSET` is atomic. All specified keys are set at once, ensuring consistency.

@@ -1,77 +1,78 @@
 ---
-description:  Learn how to conduct bitwise operations on strings using Redis BITOP.
+description: Learn how to conduct bitwise operations on strings using Redis BITOP.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # BITOP
 
-<PageTitle title="Redis BITOP Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis BITOP Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `BITOP` command in Redis performs bitwise operations between strings stored at specified keys and stores the result in a destination key. Typical use cases include manipulating binary data, performing fast aggregations on sets of flags, or implementing efficient counters.
 
 ## Syntax
 
-    BITOP <AND | OR | XOR | NOT> destkey key [key ...]
-
-**Time complexity:** O(N)
-
-**ACL categories:** @write, @bitmap, @slow
-
-Perform a bitwise operation between multiple keys (containing string values) and
-store the result in the destination key.
-
-The `BITOP` command supports four bitwise operations: **AND**, **OR**, **XOR**
-and **NOT**, thus the valid forms to call the command are:
-
-
-* `BITOP AND destkey srckey1 srckey2 srckey3 ... srckeyN`
-* `BITOP OR  destkey srckey1 srckey2 srckey3 ... srckeyN`
-* `BITOP XOR destkey srckey1 srckey2 srckey3 ... srckeyN`
-* `BITOP NOT destkey srckey`
-
-As you can see **NOT** is special as it only takes an input key, because it
-performs inversion of bits so it only makes sense as a unary operator.
-
-The result of the operation is always stored at `destkey`.
-
-## Handling of strings with different lengths
-
-When an operation is performed between strings having different lengths, all the
-strings shorter than the longest string in the set are treated as if they were
-zero-padded up to the length of the longest string.
-
-The same holds true for non-existent keys, that are considered as a stream of
-zero bytes up to the length of the longest string.
-
-## Return
-
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the size of the string stored in the destination key, which is equal to the
-size of the longest input string.
-
-## Examples
-
-```shell
-dragonfly> SET key1 "foobar"
-OK
-dragonfly> SET key2 "abcdef"
-OK
-dragonfly> BITOP AND dest key1 key2
-(integer) 6
-dragonfly> GET dest
-"`bc`ab"
+```
+BITOP operation destkey key [key ...]
 ```
 
-## Pattern: real time metrics using bitmaps
+## Parameter Explanations
 
-`BITOP` is a good complement to the pattern documented in the `BITCOUNT` command
-documentation.
-Different bitmaps can be combined in order to obtain a target bitmap where
-the population counting operation is performed.
+- **operation**: The bitwise operation to perform. Possible values are:
+  - `AND`: Perform a bitwise AND.
+  - `OR`: Perform a bitwise OR.
+  - `XOR`: Perform a bitwise XOR.
+  - `NOT`: Perform a bitwise NOT (only takes one source key).
+- **destkey**: The key where the result will be stored.
+- **key [key ...]**: One or more source keys which hold the strings to operate on.
 
-## Performance considerations
+## Return Values
 
-`BITOP` is a potentially slow command as it runs in O(N) time.
-Care should be taken when running it against long input strings.
+The `BITOP` command returns the length of the string stored in the destination key, which is equal to the length of the longest input string.
 
-For real-time metrics and statistics involving large inputs a good approach is
-to use a replica (with replica-read-only option enabled) where the bit-wise
-operations are performed to avoid blocking the master instance.
+### Examples
+
+```shell
+dragonfly> SET key1 "\x01"
+OK
+dragonfly> SET key2 "\x01"
+OK
+dragonfly> BITOP AND destkey key1 key2
+(integer) 1
+dragonfly> GET destkey
+"\x01"
+
+dragonfly> SET key3 "\x02"
+OK
+dragonfly> BITOP OR destkey key1 key3
+(integer) 1
+dragonfly> GET destkey
+"\x03"
+
+dragonfly> BITOP XOR destkey key1 key3
+(integer) 1
+dragonfly> GET destkey
+"\x03"
+```
+
+## Best Practices
+
+- Ensure that the keys involved contain binary-safe strings.
+- Use the smallest possible number of keys to avoid unnecessary memory usage and processing time.
+
+## Common Mistakes
+
+- Using non-existent keys in the operation can yield unexpected results since Redis treats missing keys as empty strings.
+- Incorrectly assuming `BITOP NOT` supports multiple keys; it only supports a single source key.
+
+## FAQs
+
+### What happens if the keys have different lengths?
+
+Redis pads the shorter strings with zero-bytes so all strings are treated as having the same length as the longest string involved in the operation.
+
+### Can I perform `BITOP` on non-binary string values?
+
+Yes, but make sure the values are interpreted as binary by your application logic. `BITOP` works at the byte level, regardless of the actual content.

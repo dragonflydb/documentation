@@ -1,51 +1,60 @@
 ---
-description:  Discover how to use Redis SETEX for setting key-value pairs with an expiration time.
+description: Discover how to use Redis SETEX for setting key-value pairs with an expiration time.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # SETEX
 
-<PageTitle title="Redis SETEX Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis SETEX Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `SETEX` command in Redis sets the value of a key with an expiration time. This is useful for caching data that should expire after a certain period, such as session tokens or temporary data.
 
 ## Syntax
 
-    SETEX key seconds value
-
-**Time complexity:** O(1)
-
-**ACL categories:** @write, @string, @slow
-
-Set `key` to hold the string `value` and set `key` to timeout after a given
-number of seconds.
-This command is equivalent to executing the following commands:
-
-```
-SET mykey value
-EXPIRE mykey seconds
+```cli
+SETEX key seconds value
 ```
 
-`SETEX` is atomic, and can be reproduced by using the previous two commands
-inside an `MULTI` / `EXEC` block.
-It is provided as a faster alternative to the given sequence of operations,
-because this operation is very common when Redis is used as a cache.
+## Parameter Explanations
 
-An error is returned when `seconds` is invalid.
+- `key`: The name of the key you want to set.
+- `seconds`: The expiration time for the key, specified in seconds.
+- `value`: The value to associate with the key.
 
-The expiration time can be accessed with the [`FIELDTTL`](../generic/fieldttl.md) command.
+## Return Values
 
-## Return
+- **OK**: If the operation is successful.
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings)
+## Code Examples
 
-## Examples
-
-```shell
-dragonfly> SETEX mykey 10 "Hello"
+```cli
+dragonfly> SETEX mykey 60 "example"
 OK
-dragonfly> TTL mykey
-(integer) 10
 dragonfly> GET mykey
-"Hello"
+"example"
+dragonfly> TTL mykey
+(integer) 59
 ```
 
+## Best Practices
+
+- Use `SETEX` for setting keys that need an automatic expiration, like session identifiers or temporary caches.
+- Choose an appropriate expiration time based on your use case to avoid premature deletion or stale data lingering.
+
+## Common Mistakes
+
+- Setting the expiration time too short, causing the key to expire before it can be used.
+- Forgetting that the expiration time is in seconds, leading to confusion with other time units.
+
+## FAQs
+
+### What happens if I call `SETEX` on an existing key?
+
+Calling `SETEX` on an existing key will overwrite its value and reset its expiration time.
+
+### Can I change the expiration time of a key without changing its value?
+
+No, `SETEX` sets both the value and the expiration. To change only the expiration, use the `EXPIRE` or `PEXPIRE` commands.

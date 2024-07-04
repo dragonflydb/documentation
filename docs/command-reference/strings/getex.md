@@ -1,51 +1,84 @@
 ---
-description:  Discover how to use Redis GETEX for fetching a key's value and setting its expiration.
+description: Discover how to use Redis GETEX for fetching a key's value and setting its expiration.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # GETEX
 
-<PageTitle title="Redis GETEX Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis GETEX Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `GETEX` command in Redis is used to get the value of a key and optionally set its expiration. This command is particularly useful when you need to retrieve the value of a key while simultaneously updating its time-to-live (TTL). Typical scenarios include caching mechanisms where you want to extend the TTL of frequently accessed items without additional commands.
 
 ## Syntax
 
-    GETEX key [EX seconds | PX milliseconds | EXAT unix-time-seconds | PXAT unix-time-milliseconds | PERSIST]
+```plaintext
+GETEX key [EX seconds] [PX milliseconds] [EXAT timestamp-seconds] [PXAT timestamp-milliseconds] [PERSIST]
+```
 
-**Time complexity:** O(1)
+## Parameter Explanations
 
-**ACL categories:** @write, @string, @fast
+- `key`: The key whose value you want to retrieve.
+- `EX seconds`: Sets the expiration time of the key in seconds.
+- `PX milliseconds`: Sets the expiration time of the key in milliseconds.
+- `EXAT timestamp-seconds`: Sets the expiration time of the key as a Unix timestamp in seconds.
+- `PXAT timestamp-milliseconds`: Sets the expiration time of the key as a Unix timestamp in milliseconds.
+- `PERSIST`: Removes the expiration time from the key.
 
-Get the value of `key` and optionally set its expiration.
-`GETEX` is similar to `GET`, but is a write command with additional options.
+## Return Values
 
-## Options
+The `GETEX` command returns the value of the specified key if it exists, or `nil` if the key does not exist.
 
-The `GETEX` command supports a set of options that modify its behavior:
+### Examples:
 
-* `EX` *seconds* -- Set the specified expire time, in seconds.
-* `PX` *milliseconds* -- Set the specified expire time, in milliseconds.
-* `EXAT` *timestamp-seconds* -- Set the specified Unix time at which the key will expire, in seconds.
-* `PXAT` *timestamp-milliseconds* -- Set the specified Unix time at which the key will expire, in milliseconds.
-* `PERSIST` -- Remove the time to live associated with the key.
+- If the key exists:
+  ```plaintext
+  "value"
+  ```
+- If the key does not exist:
+  ```plaintext
+  (nil)
+  ```
 
-When supplied with no options, `GETEX` is equivalent to `GET`.
+## Code Examples
 
-## Return
-
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the value of `key`, or `nil` when `key` does not exist.
-
-## Examples
-
-```shell
+```cli
 dragonfly> SET mykey "Hello"
 OK
-dragonfly> GETEX mykey
+dragonfly> GETEX mykey EX 10
+"Hello"
+dragonfly> TTL mykey
+(integer) 10
+dragonfly> GETEX mykey PX 5000
+"Hello"
+dragonfly> TTL mykey
+(integer) 5
+dragonfly> GETEX mykey PERSIST
 "Hello"
 dragonfly> TTL mykey
 (integer) -1
-dragonfly> GETEX mykey EX 60
-"Hello"
-dragonfly> TTL mykey
-(integer) 60
+dragonfly> GETEX nonexistingkey EX 10
+(nil)
 ```
+
+## Best Practices
+
+- Use the `GETEX` command to minimize the number of operations needed for cache access and TTL updates, improving performance and reducing complexity.
+- Be mindful of setting appropriate expiration times to balance between cache freshness and resource utilization.
+
+## Common Mistakes
+
+- Forgetting that if the key does not exist, `GETEX` will return `nil`, which can lead to unexpected null value handling if not properly checked.
+- Misunderstanding TTL values, especially when switching between seconds and milliseconds, which may cause keys to expire sooner or later than intended.
+
+## FAQs
+
+### What happens if no expiration parameter is given?
+
+If no expiration parameter is provided, `GETEX` behaves like the `GET` command and returns the value without modifying the TTL.
+
+### Can I use `GETEX` on non-string data types?
+
+No, `GETEX` is designed to work with string values. Using it on other data types will result in an error.
