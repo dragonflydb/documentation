@@ -116,7 +116,7 @@ See [Queue Dependencies](#4-queue-dependencies) below for more details.
 To achieve superior performance for your application, consider employing a larger number of queues with a different hashtag for each.
 By distributing the queues across distinct Dragonfly threads, you can optimize the utilization of the Dragonfly architecture efficiently.
 
-### 4. Queue Dependencies
+### 4. Queue Dependencies (Parent / Child)
 
 If you have queue dependencies, especially a parent-child relationship, it's important to use the same hashtag for both queues.
 This ensures that they are processed within the same Dragonfly thread and maintains the integrity of the dependencies.
