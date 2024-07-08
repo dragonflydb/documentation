@@ -1,139 +1,75 @@
 ---
-description:  Learn how to use Redis XREAD to read data from one or more streams.
+description: Learn how to use Redis XREAD to read data from one or more streams.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # XREAD
 
-<PageTitle title="Redis XREAD Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis XREAD Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `XREAD` command is used to read data from one or multiple streams in Redis. It is commonly utilized in real-time data processing scenarios, where streams are used as logs or message queues. This command allows consumers to fetch new entries added to the streams since the last read, enabling efficient event streaming and data ingestion.
 
 ## Syntax
 
-    XREAD [COUNT count] [BLOCK Milliseconds] STREAMS key [key ...] id [id ...]
+```plaintext
+XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] ID [ID ...]
+```
 
+## Parameter Explanations
 
-**ACL categories:** @read, @stream, @slow, @blocking
+- `COUNT count`: Optional parameter that limits the number of entries returned per stream.
+- `BLOCK milliseconds`: Optional parameter that makes the command block for a specified number of milliseconds if no data is available. If not specified, the command returns immediately with whatever data is available.
+- `STREAMS key [key ...]`: Specifies the keys of the streams to read from.
+- `ID [ID ...]`: Specifies the IDs from which to start reading in each respective stream. Use `$` to read only new messages.
 
-Read entries from one or multiple streams. In case of multiple
-streams, the order of stream entries is maintained. Note that
-XREAD returns entries with IDs **greater** than the specified
-ones. This is useful in cases where user need to know the new
-unread entries from specified streams.
+## Return Values
 
-The number of keys and ids should be balanced. User in no way
-can provide keys with fewer ids or vice-versa. The i'th id
-corresponds to the i'th key. Below is an example -
+The `XREAD` command returns an array, where each element represents a stream. Each stream element contains the stream name and an array of entries. Each entry consists of an ID and its corresponding fields and values.
 
-```shell
-dragonfly> XREAD STREAMS mystream other-stream 1687926136634-0 1687921762755-0
+Example:
+
+```plaintext
 1) 1) "mystream"
-   2) 1) 1) "1687926140032-0"
-         2) 1) "k"
-            2) "v"
-2) 1) "other-stream"
-   2) 1) 1) "1687924609465-0"
-         2) 1) "k2"
-            2) "v2"
+   2) 1) 1) "1625837942341-0"
+         2) 1) "field1" 2) "value1" 3) "field2" 4) "value2"
+      2) 1) "1625837942342-0"
+         2) 1) "field1" 2) "value3" 3) "field2" 4) "value4"
 ```
 
+## Code Examples
 
-### COUNT
-
-User can limit the number of received entries by specifying the
-**COUNT** limit. It takes an integer value and returns atmost
-that number of entries.
-
-```shell
-dragonfly> XREAD COUNT 2 STREAMS mystream 0
+```cli
+dragonfly> XADD mystream * field1 value1 field2 value2
+"1625837942341-0"
+dragonfly> XADD mystream * field1 value3 field2 value4
+"1625837942342-0"
+dragonfly> XREAD STREAMS mystream 0
 1) 1) "mystream"
-   2) 1) 1) "1686831019899-0"
-         2) 1) "a"
-            2) "1"
-      2) 1) "1686831037806-0"
-         2) 1) "b"
-            2) "2"
+   2) 1) 1) "1625837942341-0"
+         2) 1) "field1" 2) "value1" 3) "field2" 4) "value2"
+      2) 1) "1625837942342-0"
+         2) 1) "field1" 2) "value3" 3) "field2" 4) "value4"
 ```
 
-### BLOCK
+## Best Practices
 
-Sometimes, the specified stream doesn't have any new entries to
-consume. New entries may be added in some interval or time range.
-In that case, **BLOCK** option comes in handy. **BLOCK** takes
-a value denoting the *milliseconds* the command will block for.
+- **Use IDs efficiently**: When polling for new entries, use `$` for the ID to avoid re-reading old entries.
+- **Handle blocking appropriately**: The `BLOCK` option should be used carefully to prevent high latencies in applications.
 
-Once **BLOCK** is used in the command, the command waits for the
-specified time interval. The command returns immediately if one of
-the requested stream receive new entries within the specified time
-range. Else it simply returns a Null reply.
+## Common Mistakes
 
-If new entries are already present in the stream before executing
-command, it immediately returns those entries even if **BLOCK**
-option is specified.
+- **Incorrect ID usage**: Specifying incorrect or non-sequential IDs can result in missing data or duplicate reads.
+- **Not using COUNT with BLOCK**: Without `COUNT`, a blocked read might return too few entries than expected when data becomes available.
 
-Note that, all clients who are waiting for the same range of IDs
-get same new entries.
+## FAQs
 
-### STREAMS
+### How do I ensure I only read new entries?
 
-**STREAMS** is a required option and it must be the last specified
-option. It takes lists of keys and ids. The format is as follows -
+Use `$` for the ID in the `XREAD` command to read only newly added entries.
 
-```shell
-STREAMS key1 key2 key3 ... id1 id2 id3 ...
-```
+### What happens if I don’t specify the `BLOCK` parameter?
 
-The number of keys and ids should be exactly same. Else a *syntax
-error* will be triggered. For a given list of keys and ids, the
-command searches for entries greater than i'th id of the i'th stream
-(like in the above example, XREAD searches for entries greater than
-*id1* for the stream *key1* and so on). Keys should be valid streams.
-
-User can specify IDs in three ways - 
- * **Incomplete IDs:** Client only specifies the timestamp. Here the sequence
-   part is interpreted as 0.
-```shell
-dragonfly> XREAD STREAMS key1 key2 1 0
-```
-   The above command is equivalent to the below command:
-```shell
-dragonfly> XREAD STREAMS key1 key2 1-0 0-0
-```
- * **Complete IDs:** Client specifies the full ID.
- * **Special "$" ID:** In some cases, client wants only the recent entries
- which are not previously read. Using hard-coded IDs is not an option
- here. The special ID **$** is what we need to use to accomplish that.
- When specified, the command returns the recent unread entries. It is
- equivalent to specifying the last read stream entry ID.
-```shell
-dragonfly> XREAD STREAMS key $
-```
-
-## Return
-
-[Array Reply](https://redis.io/docs/reference/protocol-spec/#arrays).
-In some cases, the command returns a null reply. For example, when **BLOCK**
-is used.
-
-## Example
-
-```shell
-dragonfly> XADD mystream * k v
-"1687927570399-0"
-dragonfly> XADD mystream * k2 v2
-"1687927576419-0"
-dragonfly> XADD mystream * k3 v3
-"1687927580654-0"
-dragonfly> xread streams mystream 1687927570398
-1) 1) "mystream"
-   2) 1) 1) "1687927570399-0"
-         2) 1) "k"
-            2) "v"
-      2) 1) "1687927576419-0"
-         2) 1) "k2"
-            2) "v2"
-      3) 1) "1687927580654-0"
-         2) 1) "k3"
-            2) "v3"
-```
-
+If `BLOCK` is not specified, `XREAD` returns immediately with whatever data is available, potentially resulting in empty responses if there are no new entries.

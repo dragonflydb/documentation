@@ -1,137 +1,105 @@
 ---
-description:  Learn how to use Redis XINFO STREAM command to get information about a stream.
+description: Learn how to use Redis XINFO STREAM command to get information about a stream.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # XINFO STREAM
 
-<PageTitle title="Redis XINFO STREAM Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis XINFO STREAM Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`XINFO STREAM` provides detailed information about a Redis stream, including the length of the stream, the first and last entry IDs, and various other statistics. It is typically used for monitoring, debugging, and understanding the state of a Redis stream.
 
 ## Syntax
 
-    XINFO STREAM key [FULL [COUNT count]]
+```cli
+XINFO STREAM <key>
+```
 
-**ACL categories:** @read, @stream, @slow
+## Parameter Explanations
 
-**XINFO STREAM** command returns information about the stream stored at **<key\>**.
+- `<key>`: The name of the stream to retrieve information from. This parameter is required.
 
-The informative details provided by this command are:
+## Return Values
 
- * **length:** the number of entries in the stream (see **XLEN**)
- * **radix-tree-keys:** the number of keys in the underlying radix data structure
- * **radix-tree-nodes:** the number of nodes in the underlying radix data structure
- * **groups:** the number of consumer groups defined for the stream
- * **last-generated-id:** the ID of the least-recently entry that was added to the stream
- * **max-deleted-entry-id:** the maximal entry ID that was deleted from the stream
- * **entries-added:** the count of all entries added to the stream during its lifetime
- * **first-entry:** the ID and field-value tuples of the first entry in the stream
- * **last-entry:** the ID and field-value tuples of the last entry in the stream
+The command returns a list of key-value pairs representing various pieces of information about the stream. For example:
 
-The optional **FULL** modifier provides a more verbose reply. When provided, the **FULL** reply includes an **entries** array that consists of the stream entries (ID and field-value tuples) in ascending order. Furthermore, **groups** is also an array, and for each of the consumer groups it consists of the information reported by **XINFO GROUPS** and **XINFO CONSUMERS**.
+- `length`: The number of entries in the stream.
+- `radix-tree-keys`: Number of radix tree nodes.
+- `radix-tree-nodes`: Number of radix tree nodes.
+- `groups`: Number of consumer groups associated with the stream.
+- `last-generated-id`: The ID of the last entry added to the stream.
+- `first-entry` and `last-entry`: Details of the first and last entries, respectively.
 
-The **COUNT** option can be used to limit the number of stream and PEL entries that are returned (The first **<count\>** entries are returned). The default **COUNT** is **10** and a **COUNT** of **0** means that all entries will be returned (execution time may be long if the stream has a lot of entries).
+Example output:
 
-## Return
+```plaintext
+1) "length"
+2) (integer) 10
+3) "radix-tree-keys"
+4) (integer) 5
+5) "radix-tree-nodes"
+6) (integer) 10
+7) "groups"
+8) (integer) 2
+9) "last-generated-id"
+10) "1609459200000-0"
+11) "first-entry"
+12) 1) "1609459200000-0"
+    2) 1) "field1"
+       2) "value1"
+13) "last-entry"
+14) 1) "1609459201000-0"
+    2) 1) "field2"
+       2) "value2"
+```
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays):
-a list of informational bits.
+## Code Examples
 
-## Example
-
-```shell
+```cli
+dragonfly> XADD mystream * field1 value1
+"1609459200000-0"
+dragonfly> XADD mystream * field2 value2
+"1609459201000-0"
 dragonfly> XINFO STREAM mystream
- 1) "length"
- 2) (integer) 2
- 3) "radix-tree-keys"
- 4) (integer) 1
- 5) "radix-tree-nodes"
- 6) (integer) 2
- 7) "last-generated-id"
- 8) "1638125141232-0"
- 9) "max-deleted-entry-id"
-10) "0-0"
-11) "entries-added"
-12) (integer) 2
-13) "groups"
-14) (integer) 1
-15) "first-entry"
-16) 1) "1638125133432-0"
-    2) 1) "message"
-       2) "apple"
-17) "last-entry"
-18) 1) "1638125141232-0"
-    2) 1) "message"
-       2) "banana"
+1) "length"
+2) (integer) 2
+3) "radix-tree-keys"
+4) (integer) 1
+5) "radix-tree-nodes"
+6) (integer) 2
+7) "groups"
+8) (integer) 0
+9) "last-generated-id"
+10) "1609459201000-0"
+11) "first-entry"
+12) 1) "1609459200000-0"
+    2) 1) "field1"
+       2) "value1"
+13) "last-entry"
+14) 1) "1609459201000-0"
+    2) 1) "field2"
+       2) "value2"
 ```
 
-Full reply:
+## Best Practices
 
-```shell
-dragonfly> XADD mystream * foo bar
-"1638125133432-0"
+- Regularly monitor your streams using `XINFO STREAM` to ensure they are functioning as expected and to identify any potential issues early on.
+- Use this command alongside other stream commands to gain a comprehensive view of stream health and performance.
 
-dragonfly> XADD mystream * foo bar2
-"1638125141232-0"
+## Common Mistakes
 
-dragonfly> XGROUP CREATE mystream mygroup 0-0
-OK
+- Forgetting that the key parameter is mandatory. Always specify the stream key you want to inspect.
+- Misinterpreting the output structure; ensure correct parsing to extract meaningful data.
 
-dragonfly> XREADGROUP GROUP mygroup Alice COUNT 1 STREAMS mystream >
-1) 1) "mystream"
-   2) 1) 1) "1638125133432-0"
-         2) 1) "foo"
-            2) "bar"
+## FAQs
 
-dragonfly> XINFO STREAM mystream FULL
- 1) "length"
- 2) (integer) 2
- 3) "radix-tree-keys"
- 4) (integer) 1
- 5) "radix-tree-nodes"
- 6) (integer) 2
- 7) "last-generated-id"
- 8) "1638125141232-0"
- 9) "max-deleted-entry-id"
-10) "0-0"
-11) "entries-added"
-12) (integer) 2
-13) "entries"
-14) 1) 1) "1638125133432-0"
-       2) 1) "foo"
-          2) "bar"
-    2) 1) "1638125141232-0"
-       2) 1) "foo"
-          2) "bar2"
-15) "groups"
-16) 1)  1) "name"
-        2) "mygroup"
-        3) "last-delivered-id"
-        4) "1638125133432-0"
-        5) "entries-read"
-        6) (integer) 1
-        7) "lag"
-        8) (integer) 1
-        9) "pel-count"
-       10) (integer) 1
-       11) "pending"
-       12) 1) 1) "1638125133432-0"
-              2) "Alice"
-              3) (integer) 1638125153423
-              4) (integer) 1
-       13) "consumers"
-       14) 1) 1) "name"
-              2) "Alice"
-              3) "seen-time"
-              4) (integer) 1638125133422
-              5) "active-time"
-              6) (integer) 1638125133432
-              7) "pel-count"
-              8) (integer) 1
-              9) "pending"
-              10) 1) 1) "1638125133432-0"
-                     2) (integer) 1638125133432
-                     3) (integer) 1
-```
+### Why does `XINFO STREAM` return zero groups even though I have consumers reading from the stream?
 
+`XINFO STREAM` shows the number of consumer groups, not individual consumers. Ensure you have created consumer groups explicitly using `XGROUP CREATE`.
 
+### Can `XINFO STREAM` be used to check if a stream exists?
+
+Yes, if the stream does not exist, `XINFO STREAM` will return an error, indicating the stream's absence.

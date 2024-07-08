@@ -1,33 +1,76 @@
 ---
-description:  Learn how to use Redis XACK to acknowledge the processing of a message from a stream by a consumer.
+description: Learn how to use Redis XACK to acknowledge the processing of a message from a stream by a consumer.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # XACK
 
-<PageTitle title="Redis XACK Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis XACK Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`XACK` is a Redis Stream command used to acknowledge the successful processing of one or more messages in a stream. It is typically used in scenarios involving message queues where consumers need to signal that they have processed specific messages, allowing for proper tracking and potential re-processing of unacknowledged messages.
 
 ## Syntax
 
-    XACK key group id [id ... ]
+```cli
+XACK <key> <group> <ID> [<ID> ...]
+```
 
-**Time complexity:** O(1) for each message ID processed.
+## Parameter Explanations
 
-**ACL categories:** @write, @stream, @fast
+- `<key>`: The name of the stream.
+- `<group>`: The consumer group that is acknowledging the messages.
+- `<ID>`: The ID of the message being acknowledged. Multiple IDs can be specified.
 
-**XACK** command acknowledges one or more messages by removing the messages from the pending entries list (PEL) of the specified consumer stream group. A message is pending, and as such stored inside the PEL, when it was delivered to some consumer, normally as a side effect of calling XREADGROUP, or when a consumer took ownership of a message calling XCLAIM. The pending message was delivered to some consumer but the server is yet not sure it was processed at least once. So new calls to XREADGROUP to grab the messages history for a consumer (for instance using an ID of 0), will return such message. Similarly the pending message will be listed by the XPENDING command, that inspects the PEL. Once a consumer successfully processes a message, it should call **XACK** so that such message does not get processed again, and as a side effect, the PEL entry about this message is also purged, releasing memory from the Dragonfly server.
+## Return Values
 
+`XACK` returns the number of messages successfully acknowledged.
 
-## Return
+### Examples:
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
+1. Acknowledging a single message:
+   ```cli
+   (integer) 1
+   ```
+2. Acknowledging multiple messages:
+   ```cli
+   (integer) 2
+   ```
 
-The command returns the number of messages successfully acknowledged. Certain message IDs may no longer be part of the PEL (for example because they have already been acknowledged), and XACK will not count them as successfully acknowledged.
+## Code Examples
 
-## Examples
-
-```shell
-dragonfly> XACK mystream mygroup 1526569495631-0
+```cli
+dragonfly> XADD mystream * name "Alice"
+"1626529532936-0"
+dragonfly> XGROUP CREATE mystream mygroup $ MKSTREAM
+OK
+dragonfly> XREADGROUP GROUP mygroup Alice COUNT 1 STREAMS mystream >
+1) 1) "mystream"
+   2) 1) 1) "1626529532936-0"
+         2) 1) "name"
+            2) "Alice"
+dragonfly> XACK mystream mygroup 1626529532936-0
 (integer) 1
 ```
+
+## Best Practices
+
+- Ensure that consumer processes are designed to reliably call `XACK` after processing a message to maintain accurate tracking.
+- Consider implementing retry mechanisms for cases where `XACK` fails due to transient issues.
+
+## Common Mistakes
+
+- Forgetting to specify the consumer group name, which results in an error.
+- Attempting to acknowledge message IDs that do not exist or belong to a different stream.
+
+## FAQs
+
+### What happens if I `XACK` a message that doesn't exist?
+
+If you acknowledge a non-existent message ID, Redis will simply return `(integer) 0`, indicating no messages were acknowledged.
+
+### Can I acknowledge messages from different streams in a single `XACK` command?
+
+No, `XACK` operates on a single stream per command. Each `XACK` command only targets the specified stream.
