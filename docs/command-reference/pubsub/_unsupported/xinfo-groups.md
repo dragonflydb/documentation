@@ -1,11 +1,12 @@
 ---
-description:  Learn how to use Redis XINFO GROUPS to get information about consumer groups of a stream.
+description: Learn how to use Redis XINFO GROUPS to get information about consumer groups of a stream.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # XINFO GROUPS
 
-<PageTitle title="Redis XINFO GROUPS Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis XINFO GROUPS Explained (Better Than Official Docs)" />
 
 ## Syntax
 
@@ -17,12 +18,12 @@ This command returns the list of all consumers groups of the stream stored at `<
 
 By default, only the following information is provided for each of the groups:
 
-* **name**: the consumer group's name
-* **consumers**: the number of consumers in the group
-* **pending**: the length of the group's pending entries list (PEL), which are messages that were delivered but are yet to be acknowledged
-* **last-delivered-id**: the ID of the last entry delivered the group's consumers
-* **entries-read**: the logical "read counter" of the last entry delivered to group's consumers
-* **lag**: the number of entries in the stream that are still waiting to be delivered to the group's consumers, or a NULL when that number can't be determined.
+- **name**: the consumer group's name
+- **consumers**: the number of consumers in the group
+- **pending**: the length of the group's pending entries list (PEL), which are messages that were delivered but are yet to be acknowledged
+- **last-delivered-id**: the ID of the last entry delivered the group's consumers
+- **entries-read**: the logical "read counter" of the last entry delivered to group's consumers
+- **lag**: the number of entries in the stream that are still waiting to be delivered to the group's consumers, or a NULL when that number can't be determined.
 
 ### Consumer group lag
 
@@ -45,7 +46,7 @@ The `entries_read` counter is accurate only in a perfect world, where a consumer
 There are two special cases in which this mechanism is unable to report the lag:
 
 1. A consumer group is created or set with an arbitrary last delivered ID (the `XGROUP CREATE` and `XGROUP SETID` commands, respectively).
-    An arbitrary ID is any ID that isn't the ID of the stream's first entry, its last entry or the zero ("0-0") ID.
+   An arbitrary ID is any ID that isn't the ID of the stream's first entry, its last entry or the zero ("0-0") ID.
 2. One or more entries between the group's `last-delivered-id` and the stream's `last-generated-id` were deleted (with `XDEL` or a trimming operation).
 
 In both cases, the group's read counter is considered invalid, and the returned value is set to NULL to signal that the lag isn't currently available.

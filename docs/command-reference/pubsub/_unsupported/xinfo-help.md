@@ -6,7 +6,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # XINFO HELP
 
-<PageTitle title="Redis XINFO HELP Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis XINFO HELP Explained (Better Than Official Docs)" />
 
 ## Syntax
 

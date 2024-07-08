@@ -1,68 +1,81 @@
 ---
-description:  Learn how to use Redis XDEL to delete a message from a stream.
+description: Learn how to use Redis XDEL to delete a message from a stream.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # XDEL
 
-<PageTitle title="Redis XDEL Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis XDEL Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`XDEL` is a command in Redis used to delete entries from a stream. This is useful in scenarios where you need to remove specific messages from a stream, such as purging outdated or irrelevant data.
 
 ## Syntax
 
-    XDEL key id [id ...]
+```plaintext
+XDEL key ID [ID ...]
+```
 
-**Time complexity:** O(1) for each single item to delete in the stream, regardless of the stream size.
+## Parameter Explanations
 
-**ACL categories:** @write, @stream, @fast
+- **key**: The name of the stream from which you want to delete entries.
+- **ID**: One or more entry IDs that specify which entries to delete from the stream.
 
-Removes the specified entries from a stream, and returns the number of entries
-deleted.  This number may be less than the number of IDs passed to the command in
-the case where some of the specified IDs do not exist in the stream.
+## Return Values
 
-Normally you may think at a Redis stream as an append-only data structure,
-however Redis streams are represented in memory, so we are also able to 
-delete entries. This may be useful, for instance, in order to comply with
-certain privacy policies.
+The `XDEL` command returns an integer representing the number of entries that were successfully removed.
 
-## Understanding the low level details of entries deletion
+### Example
 
-Redis streams are represented in a way that makes them memory efficient:
-a radix tree is used in order to index macro-nodes that pack linearly tens
-of stream entries. Normally what happens when you delete an entry from a stream
-is that the entry is not *really* evicted, it just gets marked as deleted.
+If you delete one entry:
 
-Eventually if all the entries in a macro-node are marked as deleted, the whole
-node is destroyed and the memory reclaimed. This means that if you delete
-a large amount of entries from a stream, for instance more than 50% of the
-entries appended to the stream, the memory usage per entry may increment, since
-what happens is that the stream will become fragmented. However the stream
-performance will remain the same.
+```cli
+(integer) 1
+```
 
-In future versions of Redis it is possible that we'll trigger a node garbage
-collection in case a given macro-node reaches a given amount of deleted
-entries. Currently with the usage we anticipate for this data structure, it is
-not a good idea to add such complexity.
+If none of the specified entries exist:
 
-## Return
+```cli
+(integer) 0
+```
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of entries actually deleted.
+## Code Examples
 
-## Examples
-
-```shell
-dragonfly> XADD mystream * a 1
-1538561698944-0
-dragonfly> XADD mystream * b 2
-1538561700640-0
-dragonfly> XADD mystream * c 3
-1538561701744-0
-dragonfly> XDEL mystream 1538561700640-0
+```cli
+dragonfly> XADD mystream * field1 value1
+"1627812000000-0"
+dragonfly> XADD mystream * field2 value2
+"1627812001000-0"
+dragonfly> XLEN mystream
+(integer) 2
+dragonfly> XDEL mystream 1627812000000-0
+(integer) 1
+dragonfly> XLEN mystream
 (integer) 1
 dragonfly> XRANGE mystream - +
-1) 1) 1538561698944-0
-   2) 1) "a"
-      2) "1"
-2) 1) 1538561701744-0
-   2) 1) "c"
-      2) "3"
+1) "1627812001000-0"
+   1) "field2"
+   2) "value2"
 ```
+
+## Best Practices
+
+- Ensure the entry ID exists before attempting to delete it.
+- Use `XLEN` to check the number of entries before and after deletion to confirm the operation's success.
+
+## Common Mistakes
+
+- Trying to delete non-existent entry IDs will result in a return value of 0.
+- Deleting all entries this way doesn't delete the stream itself; use `DEL` for that purpose.
+
+## FAQs
+
+### Does `XDEL` remove the stream if all entries are deleted?
+
+No, `XDEL` only removes the specified entries. To remove the stream, use the `DEL` command.
+
+### Can I delete multiple entries at once with `XDEL`?
+
+Yes, you can specify multiple entry IDs in a single `XDEL` command to delete multiple entries simultaneously.

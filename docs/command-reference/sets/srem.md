@@ -1,47 +1,67 @@
 ---
-description:  Learn how to use Redis SREM command to remove specified members from a set.
+description: Learn how to use Redis SREM command to remove specified members from a set.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # SREM
 
-<PageTitle title="Redis SREM Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis SREM Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `SREM` command in Redis is used to remove one or more specified members from a set. It is particularly useful for maintaining dynamic sets, such as removing users from groups or tags from resources.
 
 ## Syntax
 
-    SREM key member [member ...]
+```plaintext
+SREM key member [member ...]
+```
 
-**Time complexity:** O(N) where N is the number of members to be removed.
+## Parameter Explanations
 
-**ACL categories:** @write, @set, @fast
+- `key`: The key of the set from which you want to remove members.
+- `member`: One or more members that you wish to remove from the set.
 
-Remove the specified members from the set stored at `key`.
-Specified members that are not a member of this set are ignored.
-If `key` does not exist, it is treated as an empty set and this command returns
-`0`.
+## Return Values
 
-An error is returned when the value stored at `key` is not a set.
+`SREM` returns an integer which represents the number of members that were removed from the set. If the specified members are not part of the set, it returns 0.
 
-## Return
+Example outputs:
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of members that were removed from the set, not
-including non existing members.
+- `(integer) 1`: If one member was successfully removed.
+- `(integer) 0`: If none of the specified members were found in the set.
 
-## Examples
+## Code Examples
 
-```shell
-dragonfly> SADD myset "one"
-(integer) 1
-dragonfly> SADD myset "two"
-(integer) 1
-dragonfly> SADD myset "three"
-(integer) 1
-dragonfly> SREM myset "one"
+```cli
+dragonfly> SADD myset "one" "two" "three"
+(integer) 3
+dragonfly> SREM myset "two"
 (integer) 1
 dragonfly> SREM myset "four"
 (integer) 0
 dragonfly> SMEMBERS myset
-1) "three"
-2) "two"
+1) "one"
+2) "three"
 ```
+
+## Best Practices
+
+- Ensure the key exists and is of type set before using `SREM`.
+- Use `SISMEMBER` to check if a member exists before attempting to remove it, especially in performance-sensitive applications.
+
+## Common Mistakes
+
+- Using `SREM` on keys that are not sets will result in an error.
+- Misunderstanding the return value; `0` means no members were removed, not necessarily an error.
+
+## FAQs
+
+### What happens if I try to remove a member that doesn't exist in the set?
+
+If a member does not exist in the set, `SREM` simply returns `0` indicating no members were removed.
+
+### Can I use `SREM` with multiple members at once?
+
+Yes, you can specify multiple members in the `SREM` command to remove them in a single operation.

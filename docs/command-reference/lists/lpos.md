@@ -1,92 +1,81 @@
 ---
-description:  Understand using Redis LPOS for finding the index of a value in a list.
+description: Understand using Redis LPOS for finding the index of a value in a list.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # LPOS
 
-<PageTitle title="Redis LPOS Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis LPOS Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `LPOS` command in Redis is used to find the first occurrence of a specified element in a list. This command is particularly useful when you need to locate an item within a large list without iterating through it manually. Typical scenarios include finding the position of a specific item for further operations or checks.
 
 ## Syntax
 
-    LPOS key element [RANK rank] [COUNT num-matches] [MAXLEN len]
-
-**Time complexity:** O(N) where N is the number of elements in the list, for the average case. When searching for elements near the head or the tail of the list, or when the MAXLEN option is provided, the command may run in constant time.
-
-**ACL categories:** @read, @list, @slow
-
-The command returns the index of matching elements inside a list.
-By default, when no options are given, it will scan the list from head to tail,
-looking for the first match of "element". If the element is found, its index (the zero-based position in the list) is returned. Otherwise, if no match is found, `nil` is returned.
-
 ```
-> RPUSH mylist a b c 1 2 3 c c
-> LPOS mylist c
-2
+LPOS key element [RANK rank] [COUNT num-matches] [MAXLEN len]
 ```
 
-The optional arguments and options can modify the command's behavior.
-The `RANK` option specifies the "rank" of the first element to return, in case there are multiple matches. A rank of 1 means to return the first match, 2 to return the second match, and so forth.
+## Parameter Explanations
 
-For instance, in the above example the element "c" is present multiple times, if I want the index of the second match, I'll write:
+- **key**: The name of the list.
+- **element**: The value to search for within the list.
+- **RANK rank**: Optional. Specifies which occurrence of the element you are looking for (1-based index). By default, it is 1.
+- **COUNT num-matches**: Optional. The number of matches to return. Default is 1.
+- **MAXLEN len**: Optional. Limits the search to the first `len` elements of the list.
 
-```
-> LPOS mylist c RANK 2
-6
-```
+## Return Values
 
-That is, the second occurrence of "c" is at position 6.
-A negative "rank" as the `RANK` argument tells `LPOS` to invert the search direction, starting from the tail to the head.
+The `LPOS` command returns:
 
-So, we want to say, give me the first element starting from the tail of the list:
+- An integer if only one match is requested (default behavior).
+- An array of integers if multiple matches are requested using the `COUNT` option.
+- `nil` if the element is not found.
 
-```
-> LPOS mylist c RANK -1
-7
-```
+### Examples:
 
-Note that the indexes are still reported in the "natural" way, that is, considering the first element starting from the head of the list at index 0, the next element at index 1, and so forth. This basically means that the returned indexes are stable whatever the rank is positive or negative.
+- Single match (default): `3`
+- Multiple matches: `[3, 7, 10]`
+- Not found: `(nil)`
 
-Sometimes we want to return not just the Nth matching element, but the position of all the first N matching elements. This can be achieved using the `COUNT` option.
+## Code Examples
 
-```
-> LPOS mylist c COUNT 2
-[2,6]
-```
-
-We can combine `COUNT` and `RANK`, so that `COUNT` will try to return up to the specified number of matches, but starting from the Nth match, as specified by the `RANK` option.
-
-```
-> LPOS mylist c RANK -1 COUNT 2
-[7,6]
-```
-
-When `COUNT` is used, it is possible to specify 0 as the number of matches, as a way to tell the command we want all the matches found returned as an array of indexes. This is better than giving a very large `COUNT` option because it is more general.
-
-```
-> LPOS mylist c COUNT 0
-[2,6,7]
-```
-
-When `COUNT` is used and no match is found, an empty array is returned. However when `COUNT` is not used and there are no matches, the command returns `nil`.
-
-Finally, the `MAXLEN` option tells the command to compare the provided element only with a given maximum number of list items. So for instance specifying `MAXLEN 1000` will make sure that the command performs only 1000 comparisons, effectively running the algorithm on a subset of the list (the first part or the last part depending on the fact we use a positive or negative rank). This is useful to limit the maximum complexity of the command. It is also useful when we expect the match to be found very early, but want to be sure that in case this is not true, the command does not take too much time to run.
-
-When `MAXLEN` is used, it is possible to specify 0 as the maximum number of comparisons, as a way to tell the command we want unlimited comparisons. This is better than giving a very large `MAXLEN` option because it is more general.
-
-## Return
-
-The command returns the integer representing the matching element, or `nil` if there is no match. However, if the `COUNT` option is given the command returns an array (empty if there are no matches).
-
-## Examples
-
-```shell
-dragonfly> RPUSH mylist a b c d 1 2 3 4 3 3 3
-(integer) 11
-dragonfly> LPOS mylist 3
+```cli
+dragonfly> RPUSH mylist "a" "b" "c" "d" "b" "e"
 (integer) 6
-dragonfly> LPOS mylist 3 COUNT 0 RANK 2
-1) (integer) 8
-2) (integer) 9
-3) (integer) 10
+dragonfly> LPOS mylist "b"
+(integer) 1
+dragonfly> LPOS mylist "b" RANK 2
+(integer) 4
+dragonfly> LPOS mylist "b" COUNT 2
+1) (integer) 1
+2) (integer) 4
+dragonfly> LPOS mylist "b" MAXLEN 3
+(integer) 1
 ```
+
+## Best Practices
+
+- Use the `MAXLEN` option to limit search scope in very large lists to improve performance.
+- When expecting multiple occurrences, use the `COUNT` option to get all necessary positions in one go.
+
+## Common Mistakes
+
+- Forgetting that the `RANK` parameter is 1-based, which can lead to off-by-one errors.
+- Not specifying `COUNT` when expecting multiple results, leading to only the first occurrence being returned.
+
+## FAQs
+
+### How do I find the second occurrence of an element in a list?
+
+Use the `RANK` parameter set to 2:
+
+```cli
+dragonfly> LPOS mylist "b" RANK 2
+```
+
+### What happens if the element is not found?
+
+The command returns `nil`.

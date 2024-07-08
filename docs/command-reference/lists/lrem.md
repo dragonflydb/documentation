@@ -1,52 +1,76 @@
 ---
-description:  Learn how to use Redis LREM command to remove matching elements from a list.
+description: Learn how to use Redis LREM command to remove matching elements from a list.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # LREM
 
-<PageTitle title="Redis LREM Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis LREM Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `LREM` command in Redis is used to remove elements from a list based on their value. This command is particularly useful for scenarios where you need to clean up or modify a list by removing specific occurrences of a given element.
 
 ## Syntax
 
-    LREM key count element
-
-**Time complexity:** O(N+M) where N is the length of the list and M is the number of elements removed.
-
-**ACL categories:** @write, @list, @slow
-
-Removes the first `count` occurrences of elements equal to `element` from the list
-stored at `key`.
-The `count` argument influences the operation in the following ways:
-
-* `count > 0`: Remove elements equal to `element` moving from head to tail.
-* `count < 0`: Remove elements equal to `element` moving from tail to head.
-* `count = 0`: Remove all elements equal to `element`.
-
-For example, `LREM list -2 "hello"` will remove the last two occurrences of
-`"hello"` in the list stored at `list`.
-
-Note that non-existing keys are treated like empty lists, so when `key` does not
-exist, the command will always return `0`.
-
-## Return
-
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of removed elements.
-
-## Examples
-
-```shell
-dragonfly> RPUSH mylist "hello"
-(integer) 1
-dragonfly> RPUSH mylist "hello"
-(integer) 2
-dragonfly> RPUSH mylist "foo"
-(integer) 3
-dragonfly> RPUSH mylist "hello"
-(integer) 4
-dragonfly> LREM mylist -2 "hello"
-(integer) 2
-dragonfly> LRANGE mylist 0 -1
-1) "hello"
-2) "foo"
+```plaintext
+LREM key count element
 ```
+
+## Parameter Explanations
+
+- `key`: The name of the list from which to remove elements.
+- `count`: An integer that determines how many occurrences of the element to remove:
+  - If `count` is positive, it removes elements equal to `element` moving from head to tail.
+  - If `count` is negative, it removes elements equal to `element` moving from tail to head.
+  - If `count` is zero, all occurrences of `element` are removed.
+- `element`: The value to be removed from the list.
+
+## Return Values
+
+The command returns an integer representing the number of removed elements.
+
+## Code Examples
+
+```cli
+dragonfly> RPUSH mylist "one"
+(integer) 1
+dragonfly> RPUSH mylist "two"
+(integer) 2
+dragonfly> RPUSH mylist "three"
+(integer) 3
+dragonfly> RPUSH mylist "two"
+(integer) 4
+dragonfly> LREM mylist 1 "two"
+(integer) 1
+dragonfly> LRANGE mylist 0 -1
+1) "one"
+2) "three"
+3) "two"
+dragonfly> LREM mylist 0 "two"
+(integer) 1
+dragonfly> LRANGE mylist 0 -1
+1) "one"
+2) "three"
+```
+
+## Best Practices
+
+- When using `LREM`, always ensure that the list exists to avoid unnecessary errors.
+- Be cautious with the `count` parameter, especially when set to zero, as it will remove all instances of the specified element, which might not always be desirable.
+
+## Common Mistakes
+
+- Using a non-existent key: This results in no action but can lead to confusion if not checked beforehand.
+- Incorrect use of the `count` parameter: Misunderstanding its purpose could lead to unexpected deletions from your list.
+
+## FAQs
+
+### How does `LREM` handle non-existent elements?
+
+If the specified element does not exist in the list, `LREM` simply returns `0` indicating no elements were removed.
+
+### Can I use `LREM` on non-list data types?
+
+No, `LREM` is designed to work only with lists. Applying it to other data types will result in an error.

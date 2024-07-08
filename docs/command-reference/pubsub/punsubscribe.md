@@ -1,44 +1,68 @@
 ---
-description:  Learn using Redis PUNSUBSCRIBE to unsubscribe from specific patterns of channels, ideal for dynamic message filtering.
+description: Learn using Redis PUNSUBSCRIBE to unsubscribe from specific patterns of channels, ideal for dynamic message filtering.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # PUNSUBSCRIBE
 
-<PageTitle title="Redis PUNSUBSCRIBE Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis PUNSUBSCRIBE Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `PUNSUBSCRIBE` command is used in Redis to unsubscribe the client from one or more channels that match a given pattern. It's typically employed in scenarios where clients need to stop receiving messages published to specific patterns of channels, often in real-time messaging systems or pub/sub architectures.
 
 ## Syntax
 
-    PUNSUBSCRIBE [pattern [pattern ...]]
-
-**Time complexity:** O(N+M) where N is the number of patterns the client is already subscribed and M is the number of total patterns subscribed in the system (by any client).
-
-**ACL categories:** @pubsub, @slow
-
-Unsubscribes the *client* from the given patterns, or from all of them if none is
-given.
-
-When no patterns are specified, the client is unsubscribed from all the
-previously subscribed patterns.
-In this case, a message for every unsubscribed pattern will be sent to the
-client.
-
-## Examples
-
-```shell
-user:1> PSUBSCRIBE h[ae]llo
----
-dragonfly> PUBLISH hallo message
-dragonfly> PUBLISH hello message
----
-user:1>
-recieved 'message' in hello
-recieved 'message' in hallo
-user:1> PUNSUBSCRIBE hallo
----
-dragonfly> PUBLISH hallo message2
-dragonfly> PUBLISH hello message2
----
-user:1>
-recieved 'message' in hello
+```plaintext
+PUNSUBSCRIBE [pattern [pattern ...]]
 ```
+
+## Parameter Explanations
+
+- `pattern`: The pattern(s) from which the client should unsubscribe. This parameter is optional. If no pattern is given, the client will unsubscribe from all previously subscribed patterns.
+
+## Return Values
+
+The command returns an array of messages. Each message contains three elements:
+
+1. Type of operation (`"punsubscribe"`).
+2. The pattern from which the client is unsubscribed.
+3. The count of total subscriptions (patterns + channels) the client is still subscribed to.
+
+### Example Output
+
+```plaintext
+1) "punsubscribe"
+2) "news.*"
+3) (integer) 0
+```
+
+## Code Examples
+
+```cli
+dragonfly> PSUBSCRIBE news.*
+Reading messages... (press Ctrl-C to quit)
+1) "psubscribe"
+2) "news.*"
+3) (integer) 1
+
+# In another terminal, publish a message
+dragonfly> PUBLISH news.sports "Sports News"
+(integer) 1
+
+# Unsubscribe from the pattern
+dragonfly> PUNSUBSCRIBE news.*
+1) "punsubscribe"
+2) "news.*"
+3) (integer) 0
+```
+
+## Best Practices
+
+- It is good practice to manage your subscriptions effectively to avoid unnecessary processing load on both the server and the client side.
+
+## Common Mistakes
+
+- Forgetting to provide the correct pattern can lead to unsuccessful unsubscriptions.
+- Not accounting for the fact that unsubscribing from all patterns when no patterns are provided might not be the intended behavior.

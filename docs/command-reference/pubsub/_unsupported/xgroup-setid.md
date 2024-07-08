@@ -6,7 +6,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # XGROUP SETID
 
-<PageTitle title="Redis XGROUP SETID Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis XGROUP SETID Explained (Better Than Official Docs)" />
 
 ## Syntax
 

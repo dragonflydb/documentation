@@ -1,28 +1,78 @@
 ---
-description:  Learn how to use Redis PUBSUB NUMSUB to get a count of subscriptions for specific channels in your Pub/Sub system.
+description: Learn how to use Redis PUBSUB NUMSUB to get a count of subscriptions for specific channels in your Pub/Sub system.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # PUBSUB NUMSUB
 
-<PageTitle title="Redis PUBSUB NUMSUB Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis PUBSUB NUMSUB Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `PUBSUB NUMSUB` command in Redis is used to check the number of subscribers for a given set of channels. This can be particularly useful for monitoring purposes, allowing you to gauge the popularity or activity level of various channels within your application.
 
 ## Syntax
 
-    PUBSUB NUMSUB [channel [channel ...]]
+```plaintext
+PUBSUB NUMSUB [channel-1] [channel-2] ... [channel-N]
+```
 
-**Time complexity:** O(N) for the NUMSUB subcommand, where N is the number of requested channels
+## Parameter Explanations
 
-**ACL categories:** @pubsub, @slow
+- `channel-1`, `channel-2`, ..., `channel-N`: One or more channel names for which you want to retrieve the number of subscribers. These are optional, but at least one should be provided to get meaningful results.
 
-Returns the number of subscribers (exclusive of clients subscribed to patterns) for the specified channels.
+## Return Values
 
-Note that it is valid to call this command without channels. In this case it will just return an empty list.
+The command returns an array. Each pair in the array consists of:
 
-Cluster note: in a Redis Cluster clients can subscribe to every node, and can also publish to every other node. The cluster will make sure that published messages are forwarded as needed. That said, `PUBSUB`'s replies in a cluster only report information from the node's Pub/Sub context, rather than the entire cluster.
+1. The channel name.
+2. The number of subscribers currently subscribed to that channel.
 
-## Return
+### Example Output
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of channels and number of subscribers for every channel.
+```plaintext
+1) "channel-1"
+2) (integer) 10
+3) "channel-2"
+4) (integer) 20
+```
 
-The format is channel, count, channel, count, ..., so the list is flat. The order in which the channels are listed is the same as the order of the channels specified in the command call.
+## Code Examples
+
+### Using CLI
+
+```cli
+dragonfly> SUBSCRIBE mychannel
+Reading messages... (press Ctrl-C to quit)
+dragonfly> PUBLISH mychannel "hello"
+(integer) 1
+
+In another terminal:
+
+dragonfly> PUBSUB NUMSUB mychannel otherchannel
+1) "mychannel"
+2) (integer) 1
+3) "otherchannel"
+4) (integer) 0
+```
+
+## Best Practices
+
+- Regularly monitor the subscriber count for critical channels to ensure your messaging infrastructure is functioning correctly.
+- Use this command in combination with other PUBSUB commands like `PUBSUB CHANNELS` and `PUBSUB NUMPAT` to get a comprehensive view of your Pub/Sub system's status.
+
+## Common Mistakes
+
+- Not specifying any channels when using the command will lead to no meaningful information being returned. Always specify at least one channel to get the number of subscribers.
+- Misunderstanding the output structure: Remember that the result pairs each channel name with its subscriber count.
+
+## FAQs
+
+### What happens if I use `PUBSUB NUMSUB` without any channels?
+
+If you don't provide any channels, the command will not return any useful information about subscribers.
+
+### Does `PUBSUB NUMSUB` include pattern subscriptions?
+
+No, `PUBSUB NUMSUB` only includes direct channel subscriptions. For pattern subscription counts, use `PUBSUB NUMPAT`.

@@ -1,11 +1,12 @@
 ---
-description:  Learn how to use Redis XINFO CONSUMERS to fetch information about a stream's consumers.
+description: Learn how to use Redis XINFO CONSUMERS to fetch information about a stream's consumers.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # XINFO CONSUMERS
 
-<PageTitle title="Redis XINFO CONSUMERS Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis XINFO CONSUMERS Explained (Better Than Official Docs)" />
 
 ## Syntax
 
@@ -17,9 +18,9 @@ This command returns the list of consumers that belong to the `<groupname>` cons
 
 The following information is provided for each consumer in the group:
 
-* **name**: the consumer's name
-* **pending**: the number of pending messages for the client, which are messages that were delivered but are yet to be acknowledged
-* **idle**: the number of milliseconds that have passed since the consumer last interacted with the server
+- **name**: the consumer's name
+- **pending**: the number of pending messages for the client, which are messages that were delivered but are yet to be acknowledged
+- **idle**: the number of milliseconds that have passed since the consumer last interacted with the server
 
 @reply
 

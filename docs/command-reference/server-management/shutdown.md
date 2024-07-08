@@ -1,46 +1,60 @@
 ---
-description:  Learn how to use Redis SHUTDOWN command which terminates the server securely.
+description: Learn how to use Redis SHUTDOWN command which terminates the server securely.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # SHUTDOWN
 
-<PageTitle title="Redis SHUTDOWN Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis SHUTDOWN Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `SHUTDOWN` command is used to stop the Redis server. It ensures that all data is saved to disk before shutting down, making it useful for maintenance or when gracefully rebooting the server. Typical scenarios include scheduled maintenance, configuration changes requiring a restart, or controlled server shutdowns.
 
 ## Syntax
 
-    SHUTDOWN [NOSAVE | SAVE]
+```cli
+SHUTDOWN [NOSAVE|SAVE]
+```
 
-**Time complexity:** O(1)
+## Parameter Explanations
 
-**ACL categories:** @admin, @slow, @dangerous
+- **NOSAVE**: Instructs Redis to shut down without saving the current dataset to disk.
+- **SAVE**: Forces Redis to perform a synchronous save operation before shutting down. This is the default behavior if no parameters are provided.
 
-## Options
+## Return Values
 
-The `SHUTDOWN` command supports optional modifiers to alter the behavior of the command:
+This command does not return any values as the server stops processing commands immediately upon execution.
 
-* `SAVE` will force a DB saving operation even if no save points are configured.
-* `NOSAVE` will prevent a DB saving operation even if one or more save points are configured.
+## Code Examples
 
+```cli
+dragonfly> SHUTDOWN
+# No output as the server shuts down
 
-<!-- we dont do any of that useful stuff:
+dragonfly> SHUTDOWN NOSAVE
+# No output as the server shuts down without saving data
 
-* If there are any replicas lagging behind in replication:
-  * Pause clients attempting to write by performing a `CLIENT PAUSE` with the `WRITE` option.
-  * Wait up to the configured `shutdown-timeout` (default 10 seconds) for replicas to catch up the replication offset.
-* Stop all the clients.
-* Perform a blocking SAVE if at least one **save point** is configured.
-* Flush the Append Only File if AOF is enabled.
-* Quit the server.
+dragonfly> SHUTDOWN SAVE
+# No output as the server performs a save then shuts down
+```
 
--->
+## Best Practices
 
-Also note: If Dragonfly receives one of the signals `SIGTERM` and `SIGINT`, the same shutdown sequence is performed.
-See also [Signal Handling](https://redis.io/topics/signals).
+1. **Ensure Data Persistence**: Always use `SHUTDOWN SAVE` unless you are certain that an explicit save is unnecessary.
+2. **Graceful Shutdown**: Prefer the `SHUTDOWN` command over terminating the process forcefully to avoid potential data loss.
 
-## Return
+## Common Mistakes
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if `ABORT` was specified and shutdown was aborted.
-On successful shutdown, nothing is returned since the server quits and the connection is closed.
-On failure, an error is returned.
+- **Forgetting to Save Data**: Using `SHUTDOWN NOSAVE` when data persistence is required can result in data loss. Always assess whether an explicit save is necessary.
+
+## FAQs
+
+### What happens if I run `SHUTDOWN` without any parameters?
+
+By default, running `SHUTDOWN` without parameters will perform a `SAVE` operation before shutting down the server.
+
+### Can `SHUTDOWN` be called from within a script or application?
+
+Yes, but be cautious as it will make Redis unavailable until it is restarted. Ensure this fits within your application's operational requirements.

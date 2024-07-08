@@ -1,44 +1,56 @@
 ---
-description:  Learn how to use Redis PING command to check the server's status.
+description: Learn how to use Redis PING command to check the server's status.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # PING
 
-<PageTitle title="Redis PING Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis PING Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `PING` command in Redis is used to check the connection to the server. It’s a simple way to verify that the server is running and responding. It's commonly used in health checks, monitoring scripts, or client libraries to ensure the connection to the Redis server is alive.
 
 ## Syntax
 
-    PING [message]
+```plaintext
+PING [message]
+```
 
-**Time complexity:** O(1)
+## Parameter Explanations
 
-**ACL categories:** @fast, @connection
+- `message`: An optional parameter. If provided, Redis will return this message instead of the default "PONG".
 
-Returns `PONG` if no argument is provided, otherwise return a copy of the
-argument as a bulk.
-This command is useful for:
-1. Testing whether a connection is still alive.
-1. Verifying the server's ability to serve data - an error is returned when this isn't the case (e.g., during load from persistence or accessing a stale replica).
-1. Measuring latency.
+## Return Values
 
-If the client is subscribed to a channel or a pattern, it will instead return a
-multi-bulk with a "pong" in the first position and an empty bulk in the second
-position, unless an argument is provided in which case it returns a copy
-of the argument.
+- Without the `message` parameter: Returns the string "PONG".
+- With the `message` parameter: Returns the message provided as input.
 
-## Return
+## Code Examples
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings), and specifically `PONG`, when no argument is provided.
-
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings) the argument provided, when applicable.
-
-## Examples
-
-```shell
+```cli
 dragonfly> PING
 "PONG"
-dragonfly> PING "hello world"
-"hello world"
+dragonfly> PING "Hello, Redis!"
+"Hello, Redis!"
 ```
+
+## Best Practices
+
+- Use `PING` periodically in your application to ensure the Redis connection is healthy.
+- Combine `PING` with other monitoring commands to get a comprehensive view of server health.
+
+## Common Mistakes
+
+- Overusing `PING` can add unnecessary load to your Redis server. Use it judiciously within your monitoring or health check routines.
+
+## FAQs
+
+### Is `PING` useful for checking latency?
+
+No, `PING` is primarily for connectivity checks. For latency measurements, consider using the `LATENCY DOCTOR` command.
+
+### Can `PING` be used in Redis Cluster?
+
+Yes, `PING` works the same way in Redis Cluster as it does in a standalone Redis instance.

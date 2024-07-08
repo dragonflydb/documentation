@@ -1,47 +1,74 @@
 ---
-description:  Learn how to use Redis SINTERSTORE command to find the intersection of sets and store the result.
+description: Learn how to use Redis SINTERSTORE command to find the intersection of sets and store the result.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # SINTERSTORE
 
-<PageTitle title="Redis SINTERSTORE Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis SINTERSTORE Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`SINTERSTORE` is a Redis command used to compute the intersection of multiple sets and store the resulting set in a new key. This is particularly useful when you need to find common elements across several datasets and want to store the result for future use, saving computational overhead.
 
 ## Syntax
 
-    SINTERSTORE destination key [key ...]
+```plaintext
+SINTERSTORE destination key [key ...]
+```
 
-**Time complexity:** O(N*M) worst case where N is the cardinality of the smallest set and M is the number of sets.
+## Parameter Explanations
 
-**ACL categories:** @write, @set, @slow
+- **destination**: The key where the result of the set intersection will be stored.
+- **key [key ...]**: One or more keys of the sets to intersect.
 
-This command is equal to `SINTER`, but instead of returning the resulting set,
-it is stored in `destination`.
+## Return Values
 
-If `destination` already exists, it is overwritten.
+`SINTERSTORE` returns the number of elements in the resulting set.
 
-## Return
+### Example Outputs:
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of elements in the resulting set.
+- When there are common elements:
+  ```plaintext
+  (integer) 2
+  ```
+- When there are no common elements:
+  ```plaintext
+  (integer) 0
+  ```
 
-## Examples
+## Code Examples
 
-```shell
-dragonfly> SADD key1 "a"
+```cli
+dragonfly> SADD set1 "a" "b" "c"
+(integer) 3
+dragonfly> SADD set2 "b" "c" "d"
+(integer) 3
+dragonfly> SADD set3 "c" "e" "f"
+(integer) 3
+dragonfly> SINTERSTORE result set1 set2 set3
 (integer) 1
-dragonfly> SADD key1 "b"
-(integer) 1
-dragonfly> SADD key1 "c"
-(integer) 1
-dragonfly> SADD key2 "c"
-(integer) 1
-dragonfly> SADD key2 "d"
-(integer) 1
-dragonfly> SADD key2 "e"
-(integer) 1
-dragonfly> SINTERSTORE key key1 key2
-(integer) 1
-dragonfly> SMEMBERS key
+dragonfly> SMEMBERS result
 1) "c"
 ```
+
+## Best Practices
+
+- Ensure the keys being intersected exist and are of type set to avoid unexpected behavior.
+- Use `EXISTS` command to check if the destination key already exists, as `SINTERSTORE` will overwrite any existing key with the same name.
+
+## Common Mistakes
+
+- Using non-set keys with `SINTERSTORE` will result in an error.
+- Not handling empty intersections can lead to confusion; always check the result count.
+
+## FAQs
+
+### What happens if one of the keys does not exist?
+
+If one or more keys do not exist, Redis treats them as empty sets, which might affect the intersection result.
+
+### Can `SINTERSTORE` be used with only one set?
+
+Yes, but it is essentially equivalent to copying the set to the destination key.

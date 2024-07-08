@@ -1,76 +1,75 @@
 ---
-description:  Learn how to use Redis MONITOR command to inspect the operations.
+description: Learn how to use Redis MONITOR command to inspect the operations.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # MONITOR
 
-<PageTitle title="Redis MONITOR Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis MONITOR Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `MONITOR` command in Redis is used to stream back every command processed by the Redis server. This command is primarily used for debugging purposes, allowing developers to see real-time interactions between clients and the Redis instance. Typical use cases include tracking down bugs, understanding traffic patterns, and analyzing command usage for optimization.
 
 ## Syntax
 
-    MONITOR 
-
-**Time complexity:** undefined
-
-**ACL categories:** @admin, @slow, @dangerous
-
-`MONITOR` is a debugging command that streams back every command processed by
-the Dragonfly server.
-It can help in understanding what is happening to the database.
-This command can both be used via `redis-cli` and via `telnet`.
-
-The ability to see all the requests processed by the server is useful in order
-to spot bugs in an application both when using Dragonfly as a database and as a
-distributed caching system.
-
 ```
-$ redis-cli monitor
-1339518083.107412 [0 127.0.0.1:60866] "keys" "*"
-1339518087.877697 [0 127.0.0.1:60866] "dbsize"
-1339518090.420270 [0 127.0.0.1:60866] "set" "x" "6"
-1339518096.506257 [0 127.0.0.1:60866] "get" "x"
-1339518099.363765 [0 127.0.0.1:60866] "eval" "return redis.call('set','x','7')" "0"
-1339518100.363799 [0 lua] "set" "x" "7"
-1339518100.544926 [0 127.0.0.1:60866] "del" "x"
-```
-
-Use `SIGINT` (Ctrl-C) to stop a `MONITOR` stream running via `redis-cli`.
-
-```
-$ telnet localhost 6379
-Trying 127.0.0.1...
-Connected to localhost.
-Escape character is '^]'.
 MONITOR
-+OK
-+1339518083.107412 [0 127.0.0.1:60866] "keys" "*"
-+1339518087.877697 [0 127.0.0.1:60866] "dbsize"
-+1339518090.420270 [0 127.0.0.1:60866] "set" "x" "6"
-+1339518096.506257 [0 127.0.0.1:60866] "get" "x"
-+1339518099.363765 [0 127.0.0.1:60866] "del" "x"
-+1339518100.544926 [0 127.0.0.1:60866] "get" "x"
-QUIT
-+OK
-Connection closed by foreign host.
 ```
 
-Manually issue the `QUIT` or `RESET` commands to stop a `MONITOR` stream running
-via `telnet`.
+## Parameter Explanations
 
-## Commands not logged by MONITOR
+The `MONITOR` command does not take any parameters. Once issued, it starts streaming all commands received by the Redis server to the client that executed the `MONITOR` command.
 
-Because of security concerns, no administrative commands are logged
-by `MONITOR`'s output and sensitive data is redacted in the command `AUTH`.
+## Return Values
 
-Furthermore, the command `QUIT` is also not logged.
+The `MONITOR` command returns a continuous stream of commands executed by the Redis server. Each command is output as soon as it is received and processed. The return value consists of the exact representation of the command as it was sent to the server.
 
-## Cost of running MONITOR
+Examples of possible outputs:
 
-Because `MONITOR` streams back **all** commands, its use comes at a cost.
+```
+1488966955.123456 [0 127.0.0.1:6379] "SET" "key" "value"
+1488966955.123789 [0 127.0.0.1:6379] "GET" "key"
+```
 
-## Return
+## Code Examples
 
-**Non standard return value**, just dumps the received commands in an infinite
-flow.
+```cli
+dragonfly> MONITOR
+OK
+1488966955.123456 [0 127.0.0.1:6379] "SET" "mykey" "hello"
+1488966955.123789 [0 127.0.0.1:6379] "GET" "mykey"
+1488966955.124000 [0 127.0.0.1:6379] "DEL" "mykey"
+```
+
+In another terminal:
+
+```cli
+dragonfly> SET mykey "hello"
+OK
+dragonfly> GET mykey
+"hello"
+dragonfly> DEL mykey
+(integer) 1
+```
+
+## Best Practices
+
+- Use the `MONITOR` command sparingly in production environments as it can significantly affect performance due to the high I/O it generates.
+- It is advisable to use `MONITOR` only during debugging sessions and turn it off immediately after debugging is completed.
+
+## Common Mistakes
+
+- Executing `MONITOR` in a production environment without understanding the potential performance impact.
+- Forgetting to stop the `MONITOR` command, leading to unnecessary resource consumption.
+
+## FAQs
+
+### How do I stop the `MONITOR` command?
+
+Simply close the connection (e.g., exit the CLI session) that is currently running the `MONITOR` command. There is no specific command to stop `MONITOR`; terminating the session will suffice.
+
+### Can multiple clients run `MONITOR` simultaneously?
+
+Yes, multiple clients can run the `MONITOR` command simultaneously. Each client will receive its own stream of commands being processed by the Redis server.

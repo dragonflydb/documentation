@@ -1,48 +1,65 @@
 ---
-description:  Learn how to use Redis CLIENT LIST command to fetch details about all client connections.
+description: Learn how to use Redis CLIENT LIST command to fetch details about all client connections.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # CLIENT LIST
 
-<PageTitle title="Redis CLIENT LIST Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis CLIENT LIST Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`CLIENT LIST` is a Redis command used to obtain information about all connected clients. This includes details like the client's ID, IP address, port, state, and other attributes. It's typically used for monitoring, debugging, and managing client connections.
 
 ## Syntax
 
-    CLIENT LIST
+```plaintext
+CLIENT LIST
+```
 
-**Time complexity:** O(N) where N is the number of client connections
+## Parameter Explanations
 
-**ACL categories:** @admin, @slow, @dangerous, @connection
+`CLIENT LIST` does not require any parameters. When executed, it returns a list of connected clients with detailed information.
 
-The `CLIENT LIST` command returns information and statistics about the client
-connections server in a mostly human readable format.
+## Return Values
 
+The command returns a single string with each line representing a connected client and its attributes. Each attribute is separated by a space. For example:
 
-## Return
+```plaintext
+id=3 addr=127.0.0.1:6379 fd=7 name= age=144 idle=0 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=0 qbuf-free=32768 obl=0 oll=0 omem=0 events=r cmd=client
+id=4 addr=192.168.1.2:6379 fd=8 name=myapp age=742 idle=10 flags=N db=1 sub=1 psub=0 multi=-1 qbuf=26 qbuf-free=32742 obl=0 oll=0 omem=0 events=r cmd=subscribe
+```
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): a unique string, formatted as follows:
+## Code Examples
 
-* One client connection per line (separated by LF)
-* Each line is composed of a succession of `property=value` fields separated
-  by a space character.
+```cli
+dragonfly> CLIENT LIST
+"id=3 addr=127.0.0.1:6379 fd=7 name= age=144 idle=0 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=0 qbuf-free=32768 obl=0 oll=0 omem=0 events=r cmd=client
+id=4 addr=192.168.1.2:6379 fd=8 name=myapp age=742 idle=10 flags=N db=1 sub=1 psub=0 multi=-1 qbuf=26 qbuf-free=32742 obl=0 oll=0 omem=0 events=r cmd=subscribe"
+```
 
-Here is the meaning of the fields:
+## Best Practices
 
-* `id`: a unique 64-bit client ID
-* `addr`: address/port of the client
-* `laddr`: address/port of local address client connected to (bind address)
-* `fd`: file descriptor corresponding to the socket
-* `name`: the name set by the client with `CLIENT SETNAME`
-* `age`: total duration of the connection in seconds
-* `idle`: idle time of the connection in seconds
-* `phase`: connection state as captured by the "client list" command
+- Regularly monitor the output of `CLIENT LIST` to understand the state of your clients and troubleshoot issues.
+- Parse the output programmatically if you need to automate monitoring or logging.
 
+## Common Mistakes
 
-## Notes
+### Assuming the Command Requires Parameters
 
-New fields are regularly added for debugging purpose. Some could be removed
-in the future. A version safe client using this command should parse
-the output accordingly (i.e. handling gracefully missing fields, skipping
-unknown fields).
+`CLIENT LIST` does not take any parameters, so avoid trying to provide arguments.
+
+### Misinterpreting Output
+
+The output is a single string with multiple lines, each representing a different client. Ensure you correctly parse each line and its properties.
+
+## FAQs
+
+### How can I filter specific clients using `CLIENT LIST`?
+
+`CLIENT LIST` itself does not support filtering. You'll need to parse the output and apply your own filtering logic based on the client attributes.
+
+### Can I get real-time updates from `CLIENT LIST`?
+
+No, `CLIENT LIST` provides a snapshot at the moment it is called. For real-time monitoring, consider using `MONITOR` or integrating with Redis' Pub/Sub features.

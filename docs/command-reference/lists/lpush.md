@@ -1,44 +1,80 @@
 ---
-description:  Learn how to use Redis LPUSH command to insert an element at the start of a list.
+description: Learn how to use Redis LPUSH command to insert an element at the start of a list.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # LPUSH
 
-<PageTitle title="Redis LPUSH Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis LPUSH Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `LPUSH` command in Redis is used to insert one or more elements at the head of a list. This can be useful for queue implementations, task scheduling, or simply maintaining a list where new entries should appear first.
 
 ## Syntax
 
-    LPUSH key element [element ...]
+```plaintext
+LPUSH key element [element ...]
+```
 
-**Time complexity:** O(1) for each element added, so O(N) to add N elements when the command is called with multiple arguments.
+## Parameter Explanations
 
-**ACL categories:** @write, @list, @fast
+- **key**: The name of the list.
+- **element**: One or more elements to insert at the head of the list.
 
-Insert all the specified values at the head of the list stored at `key`.
-If `key` does not exist, it is created as empty list before performing the push
-operations.
-When `key` holds a value that is not a list, an error is returned.
+## Return Values
 
-It is possible to push multiple elements using a single command call just
-specifying multiple arguments at the end of the command.
-Elements are inserted one after the other to the head of the list, from the
-leftmost element to the rightmost element.
-So for instance the command `LPUSH mylist a b c` will result into a list
-containing `c` as first element, `b` as second element and `a` as third element.
+`LPUSH` returns an integer representing the length of the list after the push operation.
 
-## Return
+Example:
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the length of the list after the push operations.
+```plaintext
+(integer) 3
+```
 
-## Examples
+## Code Examples
 
-```shell
+```cli
 dragonfly> LPUSH mylist "world"
 (integer) 1
 dragonfly> LPUSH mylist "hello"
 (integer) 2
+dragonfly> LPUSH mylist "!"
+(integer) 3
 dragonfly> LRANGE mylist 0 -1
-1) "hello"
-2) "world"
+1) "!"
+2) "hello"
+3) "world"
+```
+
+## Best Practices
+
+- Pre-check if the list exists to avoid unintended behavior when working with non-list data types.
+- Use `LPUSH` in combination with `LTRIM` to maintain a fixed list size, helpful for queue management.
+
+## Common Mistakes
+
+- **Incorrect Data Type**: Using `LPUSH` on a key that holds a non-list value will result in an error. Always ensure the key corresponds to a list.
+- **Order Confusion**: Remember that `LPUSH` adds elements to the head (left end), not the tail (right end) of the list.
+
+## FAQs
+
+### What happens if the list does not exist?
+
+If the list does not exist, `LPUSH` creates it before inserting elements.
+
+### Can I insert multiple elements at once?
+
+Yes, you can specify multiple elements, and they will be inserted in the same order as provided from left to right.
+
+### How can I ensure that the list does not grow indefinitely?
+
+Use `LTRIM` in combination with `LPUSH` to keep the list length within a certain limit.
+
+```cli
+dragonfly> LPUSH mylist "new_element"
+(integer) 4
+dragonfly> LTRIM mylist 0 2
+OK
 ```

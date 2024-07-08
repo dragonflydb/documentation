@@ -6,7 +6,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # XGROUP DESTROY
 
-<PageTitle title="Redis XGROUP DESTROY Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis XGROUP DESTROY Explained (Better Than Official Docs)" />
 
 ## Syntax
 

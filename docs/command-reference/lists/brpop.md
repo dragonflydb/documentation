@@ -1,49 +1,87 @@
 ---
-description:  Learn how to use the Redis BRPOP command to remove and fetch the last element from list.
+description: Learn how to use the Redis BRPOP command to remove and fetch the last element from list.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # BRPOP
 
-<PageTitle title="Redis BRPOP Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis BRPOP Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`BRPOP` is a blocking list pop primitive in Redis. It is used to remove and return the last element of one or more lists, blocking until an element becomes available if none are currently present. This command is particularly useful for implementing queues or task processing systems where consumers wait for tasks to be enqueued.
 
 ## Syntax
 
-    BRPOP key [key ...] timeout
-
-**Time complexity:** O(N) where N is the number of provided keys.
-
-**ACL categories:** @write, @list, @slow, @blocking
-
-`BRPOP` is a blocking list pop primitive.
-It is the blocking version of `RPOP` because it blocks the connection when there
-are no elements to pop from any of the given lists.
-An element is popped from the tail of the first list that is non-empty, with the
-given keys being checked in the order that they are given.
-
-See the [BLPOP documentation][cb] for the exact semantics, since `BRPOP` is
-identical to `BLPOP` with the only difference being that it pops elements from
-the tail of a list instead of popping from the head.
-
-[cb]: ./blpop.md
-
-## Return
-
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): specifically:
-
-* A `nil` multi-bulk when no element could be popped and the timeout expired.
-* A two-element multi-bulk with the first element being the name of the key
-  where an element was popped and the second element being the value of the
-  popped element.
-
-## Examples
-
-```bash
-dragonfly> DEL list1 list2
-(integer) 0
-dragonfly> RPUSH list1 a b c
-(integer) 3
-dragonfly> BRPOP list1 list2 0
-1) "list1"
-2) "c"
+```plaintext
+BRPOP key [key ...] timeout
 ```
+
+## Parameter Explanations
+
+- **key [key ...]**: One or more keys identifying the lists to be popped from.
+- **timeout**: The maximum number of seconds to block. A timeout of 0 can be used to block indefinitely.
+
+## Return Values
+
+- If an element is available, it returns an array with two elements:
+  - The first element is the name of the key from which the value was popped.
+  - The second element is the value of the popped element.
+- If the timeout is reached without a value becoming available, it returns `nil`.
+
+Example outputs:
+
+1. When an element is available:
+
+   ```plaintext
+   1) "mylist"
+   2) "last_element"
+   ```
+
+2. When the timeout is reached:
+   ```plaintext
+   (nil)
+   ```
+
+## Code Examples
+
+```cli
+dragonfly> RPUSH mylist "one"
+(integer) 1
+dragonfly> RPUSH mylist "two"
+(integer) 2
+dragonfly> RPUSH mylist "three"
+(integer) 3
+dragonfly> BRPOP mylist 0
+1) "mylist"
+2) "three"
+dragonfly> BRPOP mylist 5
+1) "mylist"
+2) "two"
+dragonfly> BRPOP mylist 1
+1) "mylist"
+2) "one"
+dragonfly> BRPOP mylist 1
+(nil)
+```
+
+## Best Practices
+
+- Use `BRPOP` when implementing consumer-producer models in which consumers need to wait for new items.
+- Ensure you handle nil responses appropriately to avoid infinite waiting loops in your application logic.
+
+## Common Mistakes
+
+- Not considering the impact of setting an indefinite timeout (0) on resource utilization.
+- Forgetting that `BRPOP` removes the element from the list; if you need to preview without removal, use other commands like `LRANGE`.
+
+## FAQs
+
+### What happens if multiple clients are blocked on a BRPOP and an element becomes available?
+
+The first client that was blocked will receive the element and continue execution. Other clients remain blocked until another element becomes available.
+
+### Can BRPOP be used with multiple lists?
+
+Yes, `BRPOP` can be applied to multiple lists. It will check each list in the order they are given and return as soon as an element is available from any of them.
