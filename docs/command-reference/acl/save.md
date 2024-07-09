@@ -2,7 +2,11 @@
 description: Persist currently defined ACL's to file
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ACL SAVE
+
+<PageTitle title="Redis ACL SAVE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

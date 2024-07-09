@@ -2,7 +2,11 @@
 description: Print ACL's of a user
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ACL GETUSER
+
+<PageTitle title="Redis ACL GETUSER Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -20,7 +24,7 @@ The command returns all the rules defined for an existing ACL user.
 ## Examples
 
 ```shell
-dragonfly> ACL GETUSER default 
+dragonfly> ACL GETUSER default
 1) flags
 2) 1) on
    2) nopass

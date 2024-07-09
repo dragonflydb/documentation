@@ -2,7 +2,11 @@
 description: Simulate execution of a command from a user
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ACL DRYRUN
+
+<PageTitle title="Redis ACL DRYRUN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

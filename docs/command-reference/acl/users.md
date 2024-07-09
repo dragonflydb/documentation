@@ -2,7 +2,11 @@
 description: Print the usernames of all users
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ACL USERS
+
+<PageTitle title="Redis ACL USERS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

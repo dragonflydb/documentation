@@ -2,7 +2,11 @@
 description: Print ACL categories and per-group commands
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ACL CAT
+
+<PageTitle title="Redis ACL CAT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

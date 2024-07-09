@@ -2,7 +2,11 @@
 description: Load all ACL configuration from a file
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ACL LOAD
+
+<PageTitle title="Redis ACL LOAD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

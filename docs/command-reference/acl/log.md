@@ -2,7 +2,11 @@
 description: Print the ACL logs
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # ACL LOG
+
+<PageTitle title="Redis ACL LOG Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
