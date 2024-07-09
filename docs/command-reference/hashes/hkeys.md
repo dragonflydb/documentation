@@ -6,31 +6,65 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # HKEYS
 
-<PageTitle title="Redis HKEYS Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis HKEYS Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `HKEYS` command in Redis is used to retrieve all the keys (fields) in a hash stored at a specified key. This command is particularly useful when you need to inspect the structure of a hash or iterate over its fields for further processing.
 
 ## Syntax
 
-    HKEYS key
+```plaintext
+HKEYS key
+```
 
-**Time complexity:** O(N) where N is the size of the hash.
+## Parameter Explanations
 
-**ACL categories:** @read, @hash, @slow
+- `key`: The name of the hash from which to retrieve the fields. If the hash does not exist, an empty list is returned.
 
-Returns all field names in the hash stored at `key`.
+## Return Values
 
-## Return
+The `HKEYS` command returns a list of strings, each representing a field in the hash.
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of fields in the hash, or an empty list when `key` does
-not exist.
+### Example Outputs
 
-## Examples
+- If the hash contains fields: `["field1", "field2", "field3"]`
+- If the hash is empty or does not exist: `[]`
 
-```shell
-dragonfly> HSET myhash field1 "Hello"
-(integer) 1
-dragonfly> HSET myhash field2 "World"
-(integer) 1
+## Code Examples
+
+```cli
+dragonfly> HSET myhash field1 "value1" field2 "value2"
+(integer) 2
 dragonfly> HKEYS myhash
 1) "field1"
 2) "field2"
+dragonfly> HDEL myhash field1
+(integer) 1
+dragonfly> HKEYS myhash
+1) "field2"
+dragonfly> DEL myhash
+(integer) 1
+dragonfly> HKEYS myhash
+(empty array)
 ```
+
+## Best Practices
+
+- Ensure that the key exists and is of type hash before calling `HKEYS` to avoid unnecessary operations.
+- Combine `HKEYS` with other hash commands like `HGETALL` or `HVALS` for more comprehensive data manipulations.
+
+## Common Mistakes
+
+- Attempting to use `HKEYS` on a key that is not a hash will result in an error. Always verify the data type if unsure.
+- Forgetting to check if the hash is empty can lead to assumptions that the key doesn't exist.
+
+## FAQs
+
+### What happens if the key does not exist?
+
+If the specified key does not exist, `HKEYS` returns an empty list.
+
+### Can I use `HKEYS` on non-hash data types?
+
+No, using `HKEYS` on a key that holds a non-hash value results in an error.

@@ -1,54 +1,66 @@
 ---
 description: Learn how to use Redis JSON.STRLEN to measure the length of a string in a JSON document.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.STRLEN
 
-<PageTitle title="Redis JSON.STRLEN Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis JSON.STRLEN Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`JSON.STRLEN` is a Redis command used with the RedisJSON module to determine the length of a JSON string at a specified path within a JSON document. This can be particularly useful for validating data sizes, enforcing length constraints, or optimizing storage by understanding the size of JSON values.
 
 ## Syntax
 
-    JSON.STRLEN key [path]
-
-**Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
-
-**ACL categories:** @json
-
-Report the length of the JSON String at `path` in `key`
-
-[Examples](#examples)
-
-## Required arguments
-
-<details open><summary><code>key</code></summary> 
-
-is key to parse.
-</details>
-
-## Optional arguments
-
-<details open><summary><code>path</code></summary> 
-
-is JSONPath to specify. Default is root `$`, if not provided. Returns null if the `key` or `path` do not exist.
-</details>
-
-## Return
-
-JSON.STRLEN returns by recursive descent an array of integer replies for each path, the array's length, or `nil`, if the matching JSON value is not a string.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec). 
-
-## Examples
-
-``` bash
-dragonfly> JSON.SET doc $ '{"a":"foo", "nested": {"a": "hello"}, "nested2": {"a": 31}}'
-OK
-dragonfly> JSON.STRLEN doc $..a
-1) (integer) 3
-2) (integer) 5
-3) (nil)
+```plaintext
+JSON.STRLEN <key> <path>
 ```
 
-## See also
+## Parameter Explanations
 
-`JSON.ARRLEN` | `JSON.ARRINSERT` 
+- `<key>`: The key in Redis that holds the JSON document.
+- `<path>`: The JSONPath expression indicating the location of the string within the JSON document. This should point directly to a string value.
+
+## Return Values
+
+The command returns an integer representing the length of the JSON string at the specified path.
+
+### Examples:
+
+- If the string's length is 10, it returns `(integer) 10`.
+- If the path does not exist or does not point to a string, it returns `nil`.
+
+## Code Examples
+
+```cli
+dragonfly> JSON.SET mydoc $ '{"name": "John", "age": 30, "city": "New York"}'
+OK
+dragonfly> JSON.STRLEN mydoc $.name
+(integer) 4
+dragonfly> JSON.STRLEN mydoc $.city
+(integer) 8
+dragonfly> JSON.STRLEN mydoc $.age
+(nil)
+```
+
+## Best Practices
+
+- Ensure the path points directly to a string; otherwise, the command will return `nil`.
+- Use this command to validate input lengths when dealing with user-generated content to enforce maximum allowed sizes.
+
+## Common Mistakes
+
+- Providing a path that leads to a non-string element such as an object, array, or number will result in a `nil` return value.
+- Using incorrect JSONPath syntax might lead to unexpected results or errors.
+
+## FAQs
+
+### What happens if the provided path does not exist?
+
+If the path does not exist or does not point to a valid string, `JSON.STRLEN` returns `nil`.
+
+### Can I use JSON.STRLEN on nested JSON strings?
+
+Yes, you can use JSON.STRLEN on nested JSON strings by providing the correct JSONPath to the string.

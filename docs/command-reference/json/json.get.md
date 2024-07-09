@@ -1,115 +1,64 @@
 ---
 description: Learn using Redis JSON.GET command to retrieve a value from a JSON document.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.GET
 
-<PageTitle title="Redis JSON.GET Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis JSON.GET Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`JSON.GET` is a command in Redis used to retrieve JSON values stored at a specific key. This command is especially useful in scenarios where you need to work with JSON data structures, enabling efficient storage and retrieval of complex data.
 
 ## Syntax
 
-    JSON.GET key [INDENT indent] [NEWLINE newline] [SPACE space] [paths [paths ...]]
-
-**Time complexity:** O(N) when path is evaluated to a single value where N is the size of the value, O(N) when path is evaluated to multiple values, where N is the size of the key
-
-**ACL categories:** @json
-
-Return the value at `path` in JSON serialized form
-
-[Examples](#examples)
-
-## Required arguments
-
-<details open><summary><code>key</code></summary> 
-
-is key to parse.
-</details>
-
-## Optional arguments
-
-<details open><summary><code>path</code></summary> 
-
-is JSONPath to specify. Default is root `$`. JSON.GET accepts multiple `path` arguments.
-
-:::note Note
-
-
-When using a single JSONPath, the root of the matching values is a JSON string with a top-level **array** of serialized JSON value. 
-In contrast, a legacy path returns a single value.
-
-When using multiple JSONPath arguments, the root of the matching values is a JSON string with a top-level **object**, with each object value being a top-level array of serialized JSON value.
-In contrast, if all paths are legacy paths, each object value is a single serialized JSON value.
-If there are multiple paths that include both legacy path and JSONPath, the returned value conforms to the JSONPath version (an array of values).
-
-
-:::
-
-</details>
-
-<details open><summary><code>INDENT</code></summary> 
-
-sets the indentation string for nested levels.
-</details>
-
-<details open><summary><code>NEWLINE</code></summary> 
-
-sets the string that's printed at the end of each line.
-</details>
-
-<details open><summary><code>SPACE</code></summary> 
-
-sets the string that's put between a key and a value.
-</details>
-
-:::note Note
-
- 
-Produce pretty-formatted JSON with `redis-cli` by following this example:
-
-``` bash
-~/$ redis-cli --raw
-dragonfly> JSON.GET myjsonkey INDENT "\t" NEWLINE "\n" SPACE " " path.to.value[1]
+```
+JSON.GET <key> [path]
 ```
 
+## Parameter Explanations
 
-:::
+- `<key>`: The key under which the JSON value is stored.
+- `[path]`: (Optional) A JSONPath expression to specify which part of the JSON data should be retrieved. Defaults to the root if not provided.
 
-## Return
+## Return Values
 
-JSON.GET returns a bulk string representing a JSON array of string replies. 
-Each string is the JSON serialization of each JSON value that matches a path. 
-Using multiple paths, JSON.GET returns a bulk string representing a JSON object with string values. 
-Each string value is an array of the JSON serialization of each JSON value that matches a path.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
+The command returns the JSON value stored at the specified key or path. If the key does not exist, it returns `nil`.
 
-## Examples
+Examples:
 
-<details open>
-<summary><b>Return the value at <code>path</code> in JSON serialized form</b></summary>
+- Full JSON object: `{"name":"John", "age":30}`
+- Specific field: `"John"`
 
-Create a JSON document.
+## Code Examples
 
-``` bash
-dragonfly> JSON.SET doc $ '{"a":2, "b": 3, "nested": {"a": 4, "b": null}}'
+```cli
+dragonfly> JSON.SET myjson . '{"name": "John", "age": 30}'
 OK
+dragonfly> JSON.GET myjson
+"{\"name\":\"John\",\"age\":30}"
+dragonfly> JSON.GET myjson $.name
+"\"John\""
 ```
 
-With a single JSONPath (JSON array bulk string):
+## Best Practices
 
-``` bash
-dragonfly> JSON.GET doc $..b
-"[3,null]"
-```
+- Use paths to retrieve only the necessary parts of your JSON document, improving performance and reducing bandwidth usage.
+- Ensure correct JSONPath syntax to avoid unexpected results.
 
-Using multiple paths with at least one JSONPath returns a JSON string with a top-level object with an array of JSON values per path:
+## Common Mistakes
 
-``` bash
-dragonfly> JSON.GET doc ..a $..b
-"{\"$..b\":[3,null],\"..a\":[2,4]}"
-```
-</details>
+- Forgetting to include the path parameter when needed can result in retrieving the entire JSON object instead of a specific part.
+- Using incorrect JSONPath syntax can lead to errors or unexpected outputs.
 
-## See also
+## FAQs
 
-`JSON.SET` | `JSON.MGET` 
+### What happens if the key does not exist?
+
+If the specified key does not exist, `JSON.GET` will return `nil`.
+
+### Can I use JSON.GET with nested JSON objects?
+
+Yes, you can use JSONPath syntax to target specific fields within nested JSON objects.

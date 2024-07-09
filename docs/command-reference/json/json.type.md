@@ -1,61 +1,78 @@
 ---
 description: Grasp how to use Redis JSON.TYPE command to get the type of data present in a JSON document.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.TYPE
 
-<PageTitle title="Redis JSON.TYPE Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis JSON.TYPE Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `JSON.TYPE` command in Redis is part of the ReJSON module, which allows manipulation and querying of JSON values in Redis. This command returns the type of a specified key or path within a JSON document. Typical use cases include validation of data structures before performing operations on them and debugging to ensure correct data types.
 
 ## Syntax
 
-    JSON.TYPE key [path]
+```plaintext
+JSON.TYPE <key> [path]
+```
 
-**Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
+## Parameter Explanations
 
-**ACL categories:** @json
+- **key**: The key that holds the JSON document.
+- **path**: (Optional) A JSONPath expression specifying the location within the JSON document. If not provided, defaults to the root (`$`).
 
-Report the type of JSON value at `path`
+## Return Values
 
-[Examples](#examples)
+The command returns the type of the value at the specified path as a string. Possible return types are:
 
-## Required arguments
+- `"null"`
+- `"boolean"`
+- `"number"`
+- `"string"`
+- `"object"`
+- `"array"`
 
-<details open><summary><code>key</code></summary> 
+Example outputs:
 
-is key to parse.
-</details>
+- `"string"` if the value at the specified path is a string.
+- `"array"` if the value is an array.
+- `nil` if the path does not exist.
 
-## Optional arguments
+## Code Examples
 
-<details open><summary><code>path</code></summary> 
-
-is JSONPath to specify. Default is root `$`. Returns null if the `key` or `path` do not exist.
-
-</details>
-
-## Return
-
-JSON.TYPE returns an array of string replies for each path, specified as the value's type.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
-
-## Examples
-
-``` bash
-dragonfly> JSON.SET doc $ '{"a":2, "nested": {"a": true}, "foo": "bar"}'
+```cli
+dragonfly> JSON.SET myjson $ '{"name": "John", "age": 30, "isActive": true}'
 OK
-dragonfly> JSON.TYPE doc $..foo
-1) "string"
-dragonfly> JSON.TYPE doc $..a
-1) "integer"
-2) "boolean"
-dragonfly> JSON.TYPE doc $..dummy
+dragonfly> JSON.TYPE myjson $
+"object"
+dragonfly> JSON.TYPE myjson $.name
+"string"
+dragonfly> JSON.TYPE myjson $.age
+"number"
+dragonfly> JSON.TYPE myjson $.isActive
+"boolean"
+dragonfly> JSON.TYPE myjson $.nonexistent
 (nil)
 ```
 
-## See also
+## Best Practices
 
-`JSON.SET` | `JSON.ARRLEN` 
+- Validate the presence and type of JSON elements before performing operations to avoid errors.
+- Use precise JSONPath expressions to target specific elements within complex JSON documents.
 
+## Common Mistakes
 
+- Omitting the path when the intent is to check a nested element, leading to unexpected results.
+- Misunderstanding JSONPath syntax, which may result in errors or incorrect path targeting.
 
+## FAQs
+
+### Does `JSON.TYPE` support all JSON data types?
+
+Yes, it supports `null`, `boolean`, `number`, `string`, `object`, and `array`.
+
+### What happens if the path does not exist?
+
+If the specified path does not exist, the command returns `nil`.

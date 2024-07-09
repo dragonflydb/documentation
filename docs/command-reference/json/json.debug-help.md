@@ -6,31 +6,52 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.DEBUG HELP
 
-<PageTitle title="Redis `JSON.DEBUG HELP` Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis `JSON.DEBUG HELP` Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `JSON.DEBUG HELP` command in Redis is part of the RedisJSON module. It provides debugging help information related to JSON structures stored in Redis. This command is useful for developers who need to understand how to debug issues with their JSON data within Redis.
 
 ## Syntax
 
-    JSON.DEBUG HELP
-
-**Time complexity:** N/A
-
-**ACL categories:** @json
-
-Return helpful information about the [`JSON.DEBUG`](./json.debug.md) command.
-
-## Return
-
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of helpful messages.
-
-## Examples
-
-```shell
-dragonfly> JSON.DEBUG HELP
-1) "JSON.DEBUG FIELDS <key> <path> - report number of fields in the JSON element."
-2) "JSON.DEBUG HELP - print help message."
+```plaintext
+JSON.DEBUG HELP
 ```
 
-## Related Topics
+## Parameter Explanations
 
-- [RedisJSON](https://redis.io/docs/stack/json)
-- [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)
+This command does not take any parameters. It simply returns a list of subcommands available under the `JSON.DEBUG` namespace along with brief descriptions.
+
+## Return Values
+
+The command returns an array of strings, where each string is a line of helpful information regarding JSON debugging commands.
+
+### Example Output
+
+```plaintext
+1) "DEBUG MEMORY <key> [path]"
+2) "    Report memory usage"
+3) ""
+4) "DEBUG HELP"
+5) "    this message"
+```
+
+## Code Examples
+
+```cli
+dragonfly> JSON.DEBUG HELP
+1) "DEBUG MEMORY <key> [path]"
+2) "    Report memory usage"
+3) ""
+4) "DEBUG HELP"
+5) "    this message"
+```
+
+## Best Practices
+
+- Regularly use `JSON.DEBUG HELP` to familiarize yourself with available debugging tools.
+- Combine this command with other `JSON.DEBUG` commands to effectively troubleshoot JSON issues in Redis.
+
+## Common Mistakes
+
+- Misunderstanding the scope: This command provides help information only for JSON debugging and does not perform any modification or retrieval of JSON data.

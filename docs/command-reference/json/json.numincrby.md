@@ -1,76 +1,96 @@
 ---
 description: Learn how to use Redis JSON.NUMINCRBY command to increment a number inside a JSON document.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.NUMINCRBY
 
-<PageTitle title="Redis JSON.NUMINCRBY Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis JSON.NUMINCRBY Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`JSON.NUMINCRBY` is a command in the Redis module `RedisJSON`, which allows for the manipulation of numeric values within a JSON document. It is used to increment a numerical value at a specified path within a JSON structure. Typical scenarios include incrementing counters, updating scores, or modifying numerical fields within complex JSON documents.
 
 ## Syntax
 
-    JSON.NUMINCRBY key path value
+```plaintext
+JSON.NUMINCRBY key path increment
+```
 
-**Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
+## Parameter Explanations
 
-**ACL categories:** @json
+- **key**: The key under which the JSON document is stored.
+- **path**: The JSONPath expression specifying the location of the number within the JSON document to be incremented.
+- **increment**: The numeric value by which to increment the target value. Can be an integer or floating-point number.
 
-Increment the number value stored at `path` by `number`
+## Return Values
 
-[Examples](#examples)
+The command returns the new value after the increment operation. If the specified path does not contain a number, an error is returned.
 
-## Required arguments
+### Example Outputs
 
-<details open><summary><code>key</code></summary> 
+1. Incrementing a number:
 
-is key to modify.
-</details>
+   ```cli
+   dragonfly> JSON.SET mydoc $ '{"counter": 5}'
+   OK
+   dragonfly> JSON.NUMINCRBY mydoc $.counter 3
+   (integer) 8
+   ```
 
-<details open><summary><code>value</code></summary> 
+2. Incrementing a floating-point number:
+   ```cli
+   dragonfly> JSON.SET mydoc $ '{"score": 12.5}'
+   OK
+   dragonfly> JSON.NUMINCRBY mydoc $.score 2.5
+   "15"
+   ```
 
-is number value to increment. 
-</details>
+## Code Examples
 
-## Optional arguments
+Incrementing an integer field within a JSON document:
 
-<details open><summary><code>path</code></summary> 
-
-is JSONPath to specify. Default is root `$`.
-</details>
-
-## Return 
-
-JSON.NUMINCRBY returns a bulk string reply specified as a stringified new value for each path, or `nil`, if the matching JSON value is not a number. 
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec). 
-
-## Examples
-
-<details open>
-<summary><b>Increment number values</b></summary>
-
-Create a document.
-
-``` bash
-dragonfly> JSON.SET doc . '{"a":"b","b":[{"a":2}, {"a":5}, {"a":"c"}]}'
+```cli
+dragonfly> JSON.SET mydoc $ '{"views": 100}'
 OK
+dragonfly> JSON.NUMINCRBY mydoc $.views 10
+(integer) 110
 ```
 
-Increment a value of `a` object by 2. The command fails to find a number and returns `null`.
+Incrementing a floating-point field within a JSON document:
 
-``` bash
-dragonfly> JSON.NUMINCRBY doc $.a 2
-"[null]"
+```cli
+dragonfly> JSON.SET mydoc $ '{"rating": 4.5}'
+OK
+dragonfly> JSON.NUMINCRBY mydoc $.rating 0.5
+"5"
 ```
 
-Recursively find and increment a value of all `a` objects. The command increments numbers it finds and returns `null` for nonnumber values.
+## Best Practices
 
-``` bash
-dragonfly> JSON.NUMINCRBY doc $..a 2
-"[null,4,7,null]"
-```
+- Ensure that the path specified points to a numerical value; otherwise, the command will return an error.
+- Use this command when you need atomic increments within a JSON document, avoiding the need to fetch-modify-store.
 
-</details>
+## Common Mistakes
 
-## See also
+- **Non-numeric Paths**: Attempting to increment a non-numeric value will result in an error.
 
-`JSON.ARRINDEX` | `JSON.ARRINSERT` 
+  ```cli
+  dragonfly> JSON.SET mydoc $ '{"name": "John"}'
+  OK
+  dragonfly> JSON.NUMINCRBY mydoc $.name 1
+  (error) ERR wrong type of path value - expected a number but found string
+  ```
+
+- **Incorrect Path Specification**: Ensure the JSONPath accurately points to the intended numerical value.
+
+## FAQs
+
+### What happens if the path does not exist?
+
+If the specified path does not exist within the JSON document, the command will return an error indicating that no matching path was found.
+
+### Can I use JSON.NUMINCRBY on nested JSON structures?
+
+Yes, you can use JSONPath to target deeply nested numerical values within a complex JSON structure.

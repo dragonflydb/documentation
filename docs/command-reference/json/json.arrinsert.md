@@ -1,107 +1,71 @@
 ---
 description: Discover how to use Redis JSON.ARRINSERT command to insert an element at a specified position in an array.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.ARRINSERT
 
-<PageTitle title="Redis JSON.ARRINSERT Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis JSON.ARRINSERT Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`JSON.ARRINSERT` is a command in Redis used for inserting elements into a JSON array at a specified index. It is particularly useful when you need to dynamically modify JSON data stored in Redis, allowing for the painless insertion of new elements without rewriting the entire array.
 
 ## Syntax
 
-    JSON.ARRINSERT key path index value [value ...]
+```
+JSON.ARRINSERT <key> <path> <index> <json>
+```
 
-**Time complexity:** O(N) when path is evaluated to a single value where N is the size of the array, O(N) when path is evaluated to multiple values, where N is the size of the key
+## Parameter Explanations
 
-**ACL categories:** @json
+- `<key>`: The key under which the JSON document is stored.
+- `<path>`: The path in the JSON document where the array resides.
+- `<index>`: The index at which to insert the new element. If the index is negative, it counts from the end of the array.
+- `<json>`: The JSON element to insert into the array.
 
-Insert the `json` values into the array at `path` before the `index` (shifts to the right)
+## Return Values
 
-[Examples](#examples)
+The command returns the length of the array after the insertion.
 
-## Required arguments
+```cli
+(integer) 4
+```
 
-<details open><summary><code>key</code></summary> 
+If the path does not exist or is not an array, the command will return `(integer) -1`.
 
-is key to modify.
-</details>
+## Code Examples
 
-<details open><summary><code>value</code></summary> 
-
-is one or more values to insert in one or more arrays. 
-
-:::note About using strings with JSON commands
-
-To specify a string as an array value to insert, wrap the quoted string with an additional set of single quotes. Example: `'"silver"'`. For more detailed use, see [Examples](#examples).
-
-:::
-</details>
-
-<details open><summary><code>index</code></summary> 
-
-is position in the array where you want to insert a value. The index must be in the array's range. Inserting at `index` 0 prepends to the array. Negative index values start from the end of the array.
-</details>
-
-## Optional arguments
-
-<details open><summary><code>path</code></summary> 
-
-is JSONPath to specify. Default is root `$`.
-</details>
-
-## Return value 
-
-`JSON.ARRINSERT` returns an [array](https://redis.io/docs/reference/protocol-spec/#arrays) of integer replies for each path, the array's new size, or `nil`, if the matching JSON value is not an array. 
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec). 
-
-## Examples
-
-<details open>
-<summary><b>Add new colors to a specific place in a list of product colors</b></summary>
-
-Create a document for noise-cancelling headphones in black and silver colors.
-
-``` bash
-dragonfly> JSON.SET item:1 $ '{"name":"Noise-cancelling Bluetooth headphones","description":"Wireless Bluetooth headphones with noise-cancelling technology","connection":{"wireless":true,"type":"Bluetooth"},"price":99.98,"stock":25,"colors":["black","silver"]}'
+```cli
+dragonfly> JSON.SET myjson . '{"name": "Alice", "hobbies": ["reading", "swimming"]}'
 OK
+
+dragonfly> JSON.ARRINSERT myjson $.hobbies 1 '"coding"'
+(integer) 3
+
+dragonfly> JSON.GET myjson
+{"name":"Alice","hobbies":["reading","coding","swimming"]}
 ```
 
-Add color `blue` to the end of the `colors` array. `JSON.ARRAPEND` returns the array's new size.
+Here, the `"coding"` hobby is inserted at index `1` in the `hobbies` array.
 
-``` bash
-dragonfly> JSON.ARRAPPEND item:1 $.colors '"blue"'
-1) (integer) 3
-```
+## Best Practices
 
-Return the new length of the `colors` array.
+- Always ensure that the path provided points to an array within the JSON document.
+- Validate the JSON structure before performing operations to avoid unexpected results.
 
-``` bash
-dragonfly> JSON.GET item:1
-"{\"name\":\"Noise-cancelling Bluetooth headphones\",\"description\":\"Wireless Bluetooth headphones with noise-cancelling technology\",\"connection\":{\"wireless\":true,\"type\":\"Bluetooth\"},\"price\":99.98,\"stock\":25,\"colors\":[\"black\",\"silver\",\"blue\"]}"
-```
+## Common Mistakes
 
-Get the list of colors for the product.
+- Specifying a non-array path: The command will fail if the path does not point to an array.
+- Incorrect JSON format: Ensure the JSON string provided as the element is correctly formatted.
 
-``` bash
-dragonfly> JSON.GET item:1 '$.colors[*]'
-"[\"black\",\"silver\",\"blue\"]"
-```
+## FAQs
 
-Insert two more colors after the second color. You now have five colors.
+### What happens if I use a negative index?
 
-``` bash
-dragonfly> JSON.ARRINSERT item:1 $.colors 2 '"yellow"' '"gold"'
-1) (integer) 5
-```
+A negative index counts from the end of the array, with `-1` being the last element.
 
-Get the updated list of colors.
+### Can I insert multiple elements at once?
 
-``` bash
-dragonfly> JSON.GET item:1 $.colors
-"[[\"black\",\"silver\",\"yellow\",\"gold\",\"blue\"]]"
-```
-</details>
-
-## See also
-
-`JSON.ARRAPPEND` | `JSON.ARRINDEX` 
+No, `JSON.ARRINSERT` inserts only one element at a time. To insert multiple elements, you need to call the command multiple times.

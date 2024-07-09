@@ -1,108 +1,95 @@
 ---
 description: Learn how to use Redis PFCOUNT command to get an estimated count of unique elements.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # PFCOUNT
 
-<PageTitle title="Redis PFCOUNT Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis PFCOUNT Explained (Better Than Official Docs)" />
+
+"## Introduction and Use Case(s)
+
+PFCOUNT is a Redis command used to count the unique elements in a HyperLogLog data structure. This command is particularly useful for large-scale counting scenarios where an approximate result is acceptable, such as tracking unique visitors to a website, counting distinct items in a large dataset, or estimating the cardinality of big data streams.
 
 ## Syntax
 
-    PFCOUNT key [key ...]
-
-**Time complexity:** O(1) with a very small average constant time when called with a single key.
-O(N) with N being the number of keys, and much bigger constant times, when called with multiple
-keys.
-
-**ACL categories:** @read, @hyperloglog, @slow
-
-When called with a single key, returns the approximated cardinality computed by the HyperLogLog data
-structure stored at the specified variable, which is 0 if the variable does not exist.
-
-When called with multiple keys, returns the approximated cardinality of the union of the
-HyperLogLogs passed, by internally merging the HyperLogLogs stored at the provided keys into a
-temporary HyperLogLog.
-
-The HyperLogLog data structure can be used in order to count unique elements in a set using just a
-small constant amount of memory, specifically 12k bytes for every HyperLogLog (plus a few bytes for
-the key itself).
-
-The returned cardinality of the observed set is not exact, but approximated with a standard error of
-0.81%.
-
-For example in order to take the count of all the unique search queries performed in a day, a
-program needs to call `PFADD` every time a query is processed. The estimated number of unique
-queries can be retrieved with `PFCOUNT` at any time.
-
-Note: as a side effect of calling this function, it is possible that the HyperLogLog is modified,
-since the last 8 bytes encode the latest computed cardinality for caching purposes. So `PFCOUNT` is
-technically a write command.
-
-
-## Return
-
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
-*  The approximated number of unique elements observed via PFADD.
-
-## Examples
-
-```shell
-dragonfly> PFADD hll foo bar zap
-(integer) 1
-dragonfly> PFADD hll zap zap zap
-(integer) 0
-dragonfly> PFADD hll foo bar
-(integer) 0
-dragonfly> PFCOUNT hll
-(integer) 3
-dragonfly> PFADD some-other-hll 1 2 3
-(integer) 1
-dragonfly> PFCOUNT hll some-other-hll
-(integer) 6
+```plaintext
+PFCOUNT key [key ...]
 ```
 
-## Performance
+## Parameter Explanations
 
-When `PFCOUNT` is called with a single key, performances are excellent even if in theory constant
-times to process a dense HyperLogLog are high. This is possible because the `PFCOUNT` uses caching
-in order to remember the cardinality previously computed, that rarely changes because most `PFADD`
-operations will not update any register. Hundreds of operations per second are possible.
+- `key`: The name of the HyperLogLog data structure from which the unique count is requested. Multiple keys can be provided, in which case the estimated cardinality is calculated for the merged HyperLogLog structures.
 
-When `PFCOUNT` is called with multiple keys, an on-the-fly merge of the HyperLogLogs is performed,
-which is slow, moreover the cardinality of the union can't be cached, so when used with multiple
-keys `PFCOUNT` may take a time in the order of magnitude of the millisecond, and should be not
-abused.
+## Return Values
 
-The user should take in mind that single-key and multiple-keys executions of this command are
-semantically different and have different performances.
+The PFCOUNT command returns an integer that represents the approximate number of distinct elements observed via the specified HyperLogLog structures.
 
-## HyperLogLog representation
+### Examples:
 
-Dragonfly HyperLogLogs are represented using a double representation: the sparse representation
-suitable for HLLs counting a small number of elements (resulting in a small number of registers set
-to non-zero value), and a dense representation suitable for higher cardinalities. Dragonfly
-automatically switches from the sparse to the dense representation when needed.
+1. When querying a single key:
 
-The sparse representation uses a run-length encoding optimized to store efficiently a big number of
-registers set to zero. The dense representation is a string of 12288 bytes in order to store 16384
-6-bit counters. The need for the double representation comes from the fact that using 12k (which is
-the dense representation memory requirement) to encode just a few registers for smaller
-cardinalities is extremely suboptimal.
+   ```cli
+   dragonfly> PFADD hll myelement
+   (integer) 1
+   dragonfly> PFCOUNT hll
+   (integer) 1
+   ```
 
-Both representations are prefixed with a 16 bytes header, that includes a magic, an encoding /
-version field, and the cached cardinality estimation computed, stored in little endian format (the
-most significant bit is 1 if the estimation is invalid since the HyperLogLog was updated since the
-cardinality was computed).
+2. When querying multiple keys:
+   ```cli
+   dragonfly> PFADD hll1 element1
+   (integer) 1
+   dragonfly> PFADD hll2 element2
+   (integer) 1
+   dragonfly> PFCOUNT hll1 hll2
+   (integer) 2
+   ```
 
-The HyperLogLog, being a string, can be retrieved with GET and restored with SET. Calling
-`PFADD`, `PFCOUNT` or `PFMERGE` commands with a corrupted HyperLogLog is never a problem, it may
-return random values but does not affect the stability of the server. Most of the times when
-corrupting a sparse representation, the server recognizes the corruption and returns an error.
+## Code Examples
 
-The representation is neutral from the point of view of the processor word size and endianness, so
-the same representation is used by 32 bit and 64 bit processor, big endian or little endian.
+### Example 1: Basic Usage with One Key
 
-More details about the HyperLogLog implementation can be found in this blog post. The source
-code of the implementation in the hyperloglog.c file is also easy to read and understand, and
-includes a full specification for the exact encoding used for the sparse and dense representations.
+```cli
+dragonfly> PFADD users user1 user2 user3
+(integer) 1
+dragonfly> PFCOUNT users
+(integer) 3
+```
+
+### Example 2: Merging Multiple HyperLogLogs
+
+```cli
+dragonfly> PFADD page_views_1 visitor1 visitor2
+(integer) 1
+dragonfly> PFADD page_views_2 visitor2 visitor3
+(integer) 1
+dragonfly> PFCOUNT page_views_1 page_views_2
+(integer) 3
+```
+
+## Best Practices
+
+- Use PFCOUNT when you need to manage large volumes of data with the requirement of approximate distinct counts rather than exact values.
+- Suitable scenarios include web analytics, IoT data aggregation, and event logging where counting individual occurrences would be computationally expensive.
+
+## Common Mistakes
+
+### Misunderstanding Precision
+
+HyperLogLog provides an estimate, not an exact count. Relying on it for applications needing precise counts may lead to inaccuracies.
+
+### Incorrect Key Usage
+
+Using non-HyperLogLog keys with PFCOUNT will result in errors. Ensure the keys provided have been initialized with HyperLogLog commands like PFADD.
+
+## FAQs
+
+### Why should I use PFCOUNT instead of a simple SET to count unique elements?
+
+PFCOUNT uses significantly less memory compared to a SET for counting unique elements, especially when dealing with millions of entries. This trade-off comes at the cost of slight precision loss.
+
+### Can PFCOUNT return incorrect results?
+
+While PFCOUNT is designed to provide approximate counts with high accuracy, it is not exact. The margin of error is typically low but present.

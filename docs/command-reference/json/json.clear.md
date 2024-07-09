@@ -1,79 +1,75 @@
 ---
 description: Learn how to use Redis JSON.CLEAR command to delete all the keys from a JSON object.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.CLEAR
 
-<PageTitle title="Redis JSON.CLEAR Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis JSON.CLEAR Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `JSON.CLEAR` command in Redis is used to clear the contents of an existing JSON value. This command is particularly useful when you want to reset a JSON object or array without removing the key itself. Typical scenarios include resetting the state of complex data structures or preparing a JSON object for new data while preserving its schema.
 
 ## Syntax
 
-    JSON.CLEAR key [path]
+```cli
+JSON.CLEAR <key> [path]
+```
 
-**Time complexity:** O(N) when path is evaluated to a single value where N is the size of the values, O(N) when path is evaluated to multiple values, where N is the size of the key
+## Parameter Explanations
 
-**ACL categories:** @json
+- **key**: The key holding the JSON value to be cleared.
+- **path**: (Optional) A JSONPath expression specifying the part of the JSON value to clear. If omitted, the entire JSON value is cleared.
 
-Clear container values (arrays/objects) and set numeric values to `0`
+## Return Values
 
-[Examples](#examples)
+- **(Integer)**: Returns the number of paths that were cleared.
 
-## Required arguments
+Example:
 
-<details open><summary><code>key</code></summary> 
+```cli
+(integer) 1
+```
 
-is key to parse.
-</details>
+## Code Examples
 
-## Optional arguments
-
-<details open><summary><code>path</code></summary> 
-
-is JSONPath to specify. Default is root `$`. Nonexisting paths are ignored.
-</details>
-
-## Return
-
-JSON.CLEAR returns an integer reply specified as the number of values cleared. 
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
-
-:::note Note
-
- 
-Already cleared values are ignored for empty containers and zero numbers.
-
-
-:::
-
-## Examples
-
-<details open>
-<summary><b>Clear container values and set numeric values to <code>0</code></b></summary>
-
-Create a JSON document.
-
-``` bash
-dragonfly> JSON.SET doc $ '{"obj":{"a":1, "b":2}, "arr":[1,2,3], "str": "foo", "bool": true, "int": 42, "float": 3.14}'
+```cli
+dragonfly> JSON.SET myjson . '{"name":"John", "age":30, "cars":["Ford", "BMW", "Fiat"]}'
 OK
+dragonfly> JSON.GET myjson
+"{\"name\":\"John\",\"age\":30,\"cars\":[\"Ford\",\"BMW\",\"Fiat\"]}"
+dragonfly> JSON.CLEAR myjson .cars
+(integer) 1
+dragonfly> JSON.GET myjson
+"{\"name\":\"John\",\"age\":30,\"cars\":[]}"
+dragonfly> JSON.CLEAR myjson .
+(integer) 1
+dragonfly> JSON.GET myjson
+"{}"
 ```
 
-Clear all container values. This returns the number of objects with cleared values.
+## Best Practices
 
-``` bash
-dragonfly> JSON.CLEAR doc $.*
-(integer) 4
-```
+- Use specific JSONPath expressions to clear only the necessary parts of your JSON data, thus avoiding unintended data loss.
+- Ensure you understand the structure of your JSON before using the `JSON.CLEAR` command to prevent clearing crucial data inadvertently.
 
-Get the updated document. Note that numeric values have been set to `0`.
+## Common Mistakes
 
-``` bash
-dragonfly> JSON.GET doc $
-"[{\"obj\":{},\"arr\":[],\"str\":\"foo\",\"bool\":true,\"int\":0,\"float\":0}]"
-```
-</details>
+- Omitting the path when it's needed: Without specifying the correct path, you might unintentionally clear the entire JSON content.
+- Using incorrect or unsupported JSONPath expressions can result in errors or no action at all.
 
-## See also
+## FAQs
 
-`JSON.ARRINDEX` | `JSON.ARRINSERT` 
+### What happens if I clear a non-existent path?
 
+If you attempt to clear a path that does not exist, the command will return `(integer) 0`, indicating no paths were cleared.
+
+### Does clearing a JSON value delete the key?
+
+No, `JSON.CLEAR` only resets the JSON value or specified path within the JSON structure. The key itself remains in the database.
+
+### Can I undo a JSON.CLEAR operation?
+
+No, once the data is cleared, it cannot be retrieved unless you have a prior backup or log of the data.

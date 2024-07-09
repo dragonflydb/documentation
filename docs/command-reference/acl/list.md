@@ -6,28 +6,62 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # ACL LIST
 
-<PageTitle title="Redis ACL LIST Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ACL LIST Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `ACL LIST` command in Redis is used to retrieve the currently active Access Control List (ACL) rules. These rules define the permissions for different users and their ability to execute commands within the Redis instance. Typical use cases include auditing current ACL configurations, troubleshooting user permission issues, and verifying the correct implementation of security policies.
 
 ## Syntax
 
-    ACL LIST
-
-**ACL categories:** @admin, @slow, @dangerous
-
-This command returns an array of the different users and their respective ACL rules.
-Each line consists of the username, followed by their status (ON/OFF), a 15-character preview of the hashed password or `nopass`, and their rules.
-
-## Return
-
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): An array of strings. This command **does not explicitly report the removed ACL categories**.
-For example, if a user was created in Redis with `-@fast`, `ACL LIST` would print `-@fast` for that given user.
-We found that this redundancy is confusing to the user, and therefore we decided not to include it in the result string
-because if for a given user a command category is missing, it's a clear indicator that this user does not have that rule in their ACL list.
-
-## Examples
-
-```shell
-dragonfly> ACL LIST
-1) "user george on #9f86d081884c7d +@admin +@fast"
-2) "user default on nopass +@all"
 ```
+ACL LIST
+```
+
+## Parameter Explanations
+
+The `ACL LIST` command does not take any parameters.
+
+## Return Values
+
+The `ACL LIST` command returns an array of strings, where each string represents a single ACL rule. Each rule includes details such as user names, allowed commands, denied commands, and key patterns they can access.
+
+### Example Output
+
+```plaintext
+1) "user default on nopass ~* +@all"
+2) "user alice on >password ~* +@read -@write"
+3) "user bob off"
+```
+
+## Code Examples
+
+```cli
+dragonfly> ACL LIST
+1) "user default on nopass ~* +@all"
+2) "user alice on >password ~* +@read -@write"
+3) "user bob off"
+```
+
+## Best Practices
+
+- Regularly audit your ACL configurations using `ACL LIST` to ensure that only necessary permissions are granted.
+- Combine this command with other ACL commands like `ACL SETUSER` and `ACL GETUSER` to manage and verify user permissions effectively.
+
+## Common Mistakes
+
+- Forgetting that the `ACL LIST` output may change if the ACL configuration is modified by another administrator concurrently.
+- Misinterpreting the output format, especially when dealing with complex permissions or multiple users.
+
+## FAQs
+
+### What do the symbols in the ACL LIST output mean?
+
+- The plus (`+`) indicates allowed commands or command categories.
+- The minus (`-`) indicates denied commands or command categories.
+- The tilde (`~`) specifies key patterns the user can access.
+- The greater-than sign (`>`) before a password signifies the hashed password.
+
+### How can I use the information from ACL LIST?
+
+Use the data to verify user permissions, identify potential security risks, and ensure compliance with security policies by comparing actual configurations against expected ones.

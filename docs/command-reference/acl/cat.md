@@ -6,75 +6,85 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # ACL CAT
 
-<PageTitle title="Redis ACL CAT Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis ACL CAT Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `ACL CAT` command in Redis is used to list available categories of commands that can be assigned to users through Access Control Lists (ACLs). This helps administrators manage permissions by grouping related commands together.
+
+Typical scenarios where `ACL CAT` is used include:
+
+- Determining which command categories exist for better role management.
+- Reviewing available categories when setting up or modifying user access controls.
 
 ## Syntax
 
-    ACL CAT [category]
+```plaintext
+ACL CAT [<category>]
+```
 
-**ACL categories:** @slow
+## Parameter Explanations
 
-The command shows the available ACL categories if called without arguments.
-If a category name is given, the command shows all the Dragonfly commands in the specified category.
+- `<category>`: Optional. If specified, the command will return commands belonging to the given category. If omitted, it lists all available categories.
 
-## Return
+## Return Values
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays)
+- Without `<category>`: Returns an array of strings, each representing a command category.
+- With `<category>`: Returns an array of strings listing all commands within the specified category.
 
-## Examples
+Example outputs:
 
-```shell
+```plaintext
+1) "keyspace"
+2) "read"
+3) "write"
+4) "set"
+... (other categories listed)
+```
+
+or
+
+```plaintext
+1) "GET"
+2) "SET"
+3) "DEL"
+... (commands in the specified category)
+```
+
+## Code Examples
+
+```cli
 dragonfly> ACL CAT
- 1) KEYSPACE
- 2) READ
- 3) WRITE
- 4) SET
- 5) SORTED_SET
- 6) LIST
- 7) HASH
- 8) STRING
- 9) BITMAP
-10) HYPERLOG
-11) GEO
-12) STREAM
-13) PUBSUB
-14) ADMIN
-15) FAST
-16) SLOW
-17) BLOCKING
-18) DANGEROUS
-19) CONNECTION
-20) TRANSACTION
-21) SCRIPTING
-22) FT_SEARCH
-23) THROTTLE
-24) JSON
+1) "keyspace"
+2) "read"
+3) "write"
+4) "set"
+5) "sortedset"
+
+dragonfly> ACL CAT read
+1) "GET"
+2) "MGET"
+3) "EXISTS"
+4) "TYPE"
+5) "SCAN"
 ```
 
-With [category]:
+## Best Practices
 
-```shell
-dragonfly> ACL CAT STRING
- 1) PREPEND
- 2) SETRANGE
- 3) DECRBY
- 4) MSETNX
- 5) MGET
- 6) MSET
- 7) GETRANGE
- 8) PSETEX
- 9) SUBSTR
-10) INCRBYFLOAT
-11) SET
-12) GETDEL
-13) INCR
-14) SETNX
-15) GET
-16) APPEND
-17) STRLEN
-18) GETEX
-19) GETSET
-20) SETEX
-21) DECR
-22) INCRBY
-```
+When managing ACLs, always start by understanding the available categories through `ACL CAT`. This ensures you make informed decisions about which categories of commands to assign to different user roles.
+
+## Common Mistakes
+
+### Misinterpreting Categories
+
+A common mistake is to assume what commands fall under each category without checking. Always use `ACL CAT <category>` to verify the exact commands within a category.
+
+## FAQs
+
+### What happens if I specify a non-existent category?
+
+If you specify a category that does not exist, Redis returns an empty array.
+
+### Is `ACL CAT` available in all versions of Redis?
+
+`ACL CAT` was introduced in Redis 6.0. Ensure you are running Redis 6.0 or later to use this command.

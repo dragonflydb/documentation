@@ -6,40 +6,62 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # GEOHASH
 
-<PageTitle title="Redis GEOHASH Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis GEOHASH Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `GEOHASH` command in Redis is used to retrieve the Geohash strings representing the position of specified members of a geospatial index (a sorted set). Geohashes are short, alphanumeric strings that encode geographic locations into a compact format. This command is typically used in applications needing efficient storage and retrieval of geographic data, such as location-based services, mapping applications, and real-time tracking systems.
 
 ## Syntax
 
-    GEOHASH key [member [member ...]]
+```cli
+GEOHASH key member [member ...]
+```
 
-**Time complexity:** O(log(N)) for each member requested, where N is the number of elements in the geospatial index represented by the sorted set.
+## Parameter Explanations
 
-**ACL categories:** @read, @geo, @slow
+- `key`: The name of the sorted set that acts as a geospatial index.
+- `member`: One or more members within the geospatial index whose Geohash strings you want to retrieve.
 
-Return valid [Geohash](https://en.wikipedia.org/wiki/Geohash) strings representing the position of one or more elements
-in a sorted set value representing a geospatial index (where elements were added using [`GEOADD`](./geoadd.md)).
+## Return Values
 
-## Geohash string properties
+The `GEOHASH` command returns an array where each element is the Geohash string of the corresponding specified member. If a member does not exist, a `nil` value is returned for that member.
 
-The command returns 11 characters Geohash strings, so no precision is lost compared to the Dragonfly internal 52 bit representation.
-The returned Geohashes have the following properties:
+Example output:
 
-- They can be shortened removing characters from the right. It will lose precision but will still point to the same area.
-- It is possible to use them in `geohash.org` URLs such as `http://geohash.org/<geohash-string>`.
-- Strings with a similar prefix are nearby, but the contrary is not true, it is possible that strings with different prefixes are nearby too.
+```
+1) "s0d7n2zw"
+2) "s0d7n2zx"
+3) (nil)
+```
 
-## Return
+## Code Examples
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays), specifically:
-
-The command returns an array where each element is the Geohash corresponding to each member name passed as argument to the command.
-
-## Examples
-
-```shell
-dragonfly> GEOADD Sicily 13.361389 38.115556 "Palermo" 15.087269 37.502669 "Catania"
-(integer) 2
-dragonfly> GEOHASH Sicily Palermo Catania
+```cli
+dragonfly> GEOADD mygeoset 13.361389 38.115556 "Palermo"
+(integer) 1
+dragonfly> GEOADD mygeoset 15.087269 37.502669 "Catania"
+(integer) 1
+dragonfly> GEOHASH mygeoset "Palermo" "Catania" "NonExistent"
 1) "sqc8b49rny0"
 2) "sqdtr74hyu0"
+3) (nil)
 ```
+
+## Best Practices
+
+- Ensure that your geospatial index contains unique member names to avoid ambiguity.
+- Regularly update the geospatial index to reflect any changes in geographic data accurately.
+
+## Common Mistakes
+
+- Attempting to retrieve a Geohash for a member that does not exist in the specified key will return `nil`. Always check if the member exists before using the result.
+- Using non-geospatial keys with `GEOHASH` will lead to errors. Make sure the key is a valid geospatial index created with `GEOADD`.
+
+### Can I use `GEOHASH` with non-geospatial data?
+
+No, the `GEOHASH` command is specifically designed for use with geospatial indexes. Using it with non-geospatial data will result in errors.
+
+### What happens if I request a Geohash for a member not present in the set?
+
+If a requested member does not exist in the specified geospatial index, the command will return `nil` for that member.

@@ -6,33 +6,53 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # HDEL
 
-<PageTitle title="Redis HDEL Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis HDEL Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`HDEL` is a command used to delete one or more fields from a hash stored at a specified key. It is commonly used in scenarios where you need to remove specific elements from a hash, for instance, when managing user session data or updating configurations that don't require certain parameters anymore.
 
 ## Syntax
 
-    HDEL key field [field ...]
+```cli
+HDEL key field [field ...]
+```
 
-**Time complexity:** O(N) where N is the number of fields to be removed.
+## Parameter Explanations
 
-**ACL categories:** @write, @hash, @fast
+- **key**: The name of the hash from which the fields are to be removed.
+- **field [field ...]**: One or more fields to be deleted from the hash. Multiple fields can be specified, separated by spaces.
 
-Removes the specified fields from the hash stored at `key`.
-Specified fields that do not exist within this hash are ignored.
-If `key` does not exist, it is treated as an empty hash and this command returns
-`0`.
+## Return Values
 
-## Return
+- **(integer)**: The number of fields that were removed from the hash, not including specified but non-existent fields.
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of fields that were removed from the hash, not
-including specified but non existing fields.
+## Code Examples
 
-## Examples
-
-```shell
-dragonfly> HSET myhash field1 "foo"
-(integer) 1
+```cli
+dragonfly> HSET myhash field1 "value1" field2 "value2" field3 "value3"
+(integer) 3
 dragonfly> HDEL myhash field1
 (integer) 1
-dragonfly> HDEL myhash field2
-(integer) 0
+dragonfly> HDEL myhash field2 field4
+(integer) 1
+dragonfly> HGETALL myhash
+1) "field3"
+2) "value3"
 ```
+
+## Best Practices
+
+- Ensure that the hash key exists before attempting to delete fields to avoid unnecessary operations.
+- When deleting multiple fields, group them in a single `HDEL` command to reduce the number of operations and improve performance.
+
+## Common Mistakes
+
+- Trying to delete a field from a non-hash key will result in an error. Always verify that the target key is indeed a hash.
+- Deleting non-existent fields does not produce an error but returns zero as the count of deleted fields.
+
+## FAQs
+
+### What happens if I try to delete a field that doesn't exist?
+
+The command will simply return `(integer) 0`, indicating that no fields were removed since the specified field did not exist.

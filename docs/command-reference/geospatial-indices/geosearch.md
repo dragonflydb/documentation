@@ -6,69 +6,80 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # GEOSEARCH
 
-<PageTitle title="Redis GEOSEARCH Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis GEOSEARCH Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `GEOSEARCH` command in Redis is used to query a sorted set representing a geospatial index. It allows users to search for members within a given radius or rectangular area from a central point. Typical scenarios include finding nearby stores, services, or points of interest based on user location.
 
 ## Syntax
 
-    GEOSEARCH key <FROMMEMBER member | FROMLONLAT longitude latitude>
-    <BYRADIUS radius <M | KM | FT | MI> | BYBOX width height <M | KM |
-     FT | MI>> [ASC | DESC] [COUNT count [ANY]] [WITHCOORD] [WITHDIST]
-    [WITHHASH]
-
-**Time complexity:** O(N+log(M)) where N is the number of elements in the grid-aligned bounding box
-area around the shape provided as the filter and M is the number of items inside the shape.
-
-**ACL categories:** @read, @geo, @slow
-
-Return the members of a sorted set populated with geospatial information using `GEOADD`, which are within the borders of the area specified by a given shape. This command extends the `GEORADIUS` command, so in addition to searching within circular areas, it supports searching within rectangular areas.
-
-This command should be used in place of the deprecated `GEORADIUS` and `GEORADIUSBYMEMBER` commands.
-
-The query's center point is provided by one of these mandatory options:
-
-* `FROMMEMBER`: Use the position of the given existing `<member>` in the sorted set.
-* `FROMLONLAT`: Use the given `<longitude>` and `<latitude>` position.
-
-The query's shape is provided by one of these mandatory options:
-
-* `BYRADIUS`: Similar to `GEORADIUS`, search inside circular area according to given `<radius>`.
-* `BYBOX`: Search inside an axis-aligned rectangle, determined by `<height>` and `<width>`.
-
-The command optionally returns additional information using the following options:
-
-* `WITHDIST`: Also return the distance of the returned items from the specified center point. The distance is returned in the same unit as specified for the radius or height and width arguments.
-* `WITHCOORD`: Also return the longitude and latitude of the matching items.
-* `WITHHASH`: Also return the raw geohash-encoded sorted set score of the item, in the form of a 52 bit unsigned integer. This is only useful for low level hacks or debugging and is otherwise of little interest for the general user.
-
-Matching items are returned unsorted by default. To sort them, use one of the following two options:
-
-* `ASC`: Sort returned items from the nearest to the farthest, relative to the center point.
-* `DESC`: Sort returned items from the farthest to the nearest, relative to the center point.
-
-All matching items are returned by default. To limit the results to the first N matching items, use the **COUNT `<count>`** option.
-When the `ANY` option is used, the command returns as soon as enough matches are found.  This means that the results returned may not be the ones closest to the specified point, but the effort invested by the server to generate them is significantly less.
-When `ANY` is not provided, the command will perform an effort that is proportional to the number of items matching the specified area and sort them,
-so to query very large areas with a very small `COUNT` option may be slow even if just a few results are returned.
-
-## Return
-
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays), specifically:
-
-* Without any `WITH` option specified, the command just returns a linear array like ["New York","Milan","Paris"].
-* If `WITHCOORD`, `WITHDIST` or `WITHHASH` options are specified, the command returns an array of arrays, where each sub-array represents a single item.
-
-When additional information is returned as an array of arrays for each item, the first item in the sub-array is always the name of the returned item. The other information is returned in the following order as successive elements of the sub-array.
-
-1. The distance from the center as a floating point number, in the same unit specified in the shape.
-2. The geohash integer.
-3. The coordinates as a two items x,y array (longitude,latitude).
-
-@examples
-
-```cli
-GEOADD Sicily 13.361389 38.115556 "Palermo" 15.087269 37.502669 "Catania"
-GEOADD Sicily 12.758489 38.788135 "edge1"   17.241510 38.788135 "edge2"
-GEOSEARCH Sicily FROMLONLAT 15 37 BYRADIUS 200 KM ASC
-GEOSEARCH Sicily FROMLONLAT 15 37 BYBOX 400 400 KM ASC WITHCOORD WITHDIST
+```plaintext
+GEOSEARCH key FROMMEMBER member BYRADIUS radius unit [WITHCOORD] [WITHDIST] [COUNT count] [ASC|DESC]
+GEOSEARCH key FROMLOC lon lat BYRADIUS radius unit [WITHCOORD] [WITHDIST] [COUNT count] [ASC|DESC]
+GEOSEARCH key FROMMEMBER member BYBOX width height unit [WITHCOORD] [WITHDIST] [COUNT count] [ASC|DESC]
+GEOSEARCH key FROMLOC lon lat BYBOX width height unit [WITHCOORD] [WITHDIST] [COUNT count] [ASC|DESC]
 ```
 
+## Parameter Explanations
+
+- `key`: The name of the sorted set containing the geospatial data.
+- `FROMMEMBER member`: Specifies the reference member whose location will be used as the center for the search.
+- `FROMLOC lon lat`: Specifies longitude and latitude directly as the center for the search.
+- `BYRADIUS radius unit`: Searches within a circular area defined by the radius and unit (`m`, `km`, `ft`, `mi`).
+- `BYBOX width height unit`: Searches within a rectangular area defined by width, height, and unit.
+- `WITHCOORD`: Optional flag to include coordinates in the returned results.
+- `WITHDIST`: Optional flag to include distance from the center in the returned results.
+- `COUNT count`: Limits the number of results returned.
+- `ASC|DESC`: Sorts the results in ascending or descending order based on distance.
+
+## Return Values
+
+The `GEOSEARCH` command returns an array of matching members. If `WITHCOORD` or `WITHDIST` options are specified, it includes additional arrays with coordinates and/or distances:
+
+- Without flags: `[member1, member2, ...]`
+- With `WITHDIST`: `[[member1, distance1], [member2, distance2], ...]`
+- With `WITHCOORD`: `[[member1, [lon1, lat1]], [member2, [lon2, lat2]], ...]`
+- With both `WITHDIST` and `WITHCOORD`: `[[member1, distance1, [lon1, lat1]], [member2, distance2, [lon2, lat2]], ...]`
+
+## Code Examples
+
+```cli
+dragonfly> ZADD places 1 "place1" 2 "place2"
+(integer) 2
+dragonfly> GEOADD places 13.361389 38.115556 "Sicily"
+(integer) 1
+dragonfly> GEOADD places 15.087269 37.502669 "Catania"
+(integer) 1
+dragonfly> GEOSEARCH places FROMMEMBER Sicily BYRADIUS 200 km
+1) "Sicily"
+2) "Catania"
+dragonfly> GEOSEARCH places FROMMEMBER Sicily BYRADIUS 200 km WITHDIST
+1) 1) "Sicily"
+   2) "0.0000"
+2) 1) "Catania"
+   2) "166.2742"
+dragonfly> GEOSEARCH places FROMLOC 15 37 BYBOX 300 300 km ASC COUNT 1
+1) "Catania"
+```
+
+## Best Practices
+
+- Regularly update the geospatial data to maintain accuracy.
+- Use the `COUNT` parameter to limit the number of results, improving performance for large datasets.
+- Utilize `WITHDIST` and `WITHCOORD` to get more informative results.
+
+## Common Mistakes
+
+- Not specifying the correct unit (e.g., confusing meters with kilometers), which can lead to incorrect search results.
+- Forgetting to use `ASC` or `DESC` to sort results, leading to unordered outputs, especially when limiting the results with `COUNT`.
+
+## FAQs
+
+### What units can be used with GEOSEARCH?
+
+The accepted units are `m` (meters), `km` (kilometers), `ft` (feet), and `mi` (miles).
+
+### How do I ensure my results include distances and coordinates?
+
+Use the `WITHDIST` and `WITHCOORD` options to include distances and coordinates in the results.

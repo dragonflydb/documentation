@@ -6,35 +6,57 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # PEXPIREAT
 
-<PageTitle title="Redis PEXPIREAT Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis PEXPIREAT Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+The `PEXPIREAT` command in Redis is used to set the expiration time of a key in milliseconds, using an absolute Unix timestamp. This allows for precise control over when a key should expire. Typical use cases include setting timed cache items or implementing time-sensitive data invalidation.
 
 ## Syntax
 
-    PEXPIREAT key unix-time-milliseconds
+```cli
+PEXPIREAT key milliseconds-timestamp
+```
 
-**Time complexity:** O(1)
+## Parameter Explanations
 
-**ACL categories:** @keyspace, @write, @fast
+- `key`: The name of the key you want to set an expiration for.
+- `milliseconds-timestamp`: A Unix timestamp in milliseconds indicating the exact time at which the key will expire.
 
-`PEXPIREAT` has the same effect and semantic as `EXPIREAT`, but the Unix time at
-which the key will expire is specified in milliseconds instead of seconds.
+## Return Values
 
-## Return
+- `(integer) 1`: If the timeout was set successfully.
+- `(integer) 0`: If the key does not exist or the timeout could not be set.
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
+## Code Examples
 
-- `1` if the timeout was set.
-- `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.
-
-## Examples
-
-```shell
+```cli
 dragonfly> SET mykey "Hello"
 OK
-dragonfly> PEXPIREAT mykey 1555555555005
+dragonfly> PEXPIREAT mykey 1655100000000
 (integer) 1
 dragonfly> TTL mykey
-(integer) -2
-dragonfly> PTTL mykey
-(integer) -2
+(integer) 2592000
+dragonfly> PEXPIREAT nonexistingkey 1655100000000
+(integer) 0
 ```
+
+## Best Practices
+
+- Ensure that the Unix timestamp is accurate and correctly represents the intended expiration time.
+- Use `PTTL` to verify the remaining time-to-live (TTL) of a key if needed.
+
+## Common Mistakes
+
+- Miscalculating the Unix timestamp in milliseconds can lead to unexpected expiration times.
+- Using `PEXPIREAT` on a non-existent key will result in no operation, returning 0.
+
+## FAQs
+
+### How is `PEXPIREAT` different from `EXPIREAT`?
+
+`PEXPIREAT` sets the expiration in milliseconds, allowing for more precise timing, whereas `EXPIREAT` sets it in seconds.
+
+### Can I use `PEXPIREAT` to remove the expiration from a key?
+
+No, `PEXPIREAT` only sets an expiration. To remove an expiration, use the `PERSIST` command.

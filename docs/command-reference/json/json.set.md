@@ -1,106 +1,66 @@
 ---
 description: Find how to use Redis JSON.SET command to set a JSON document in a database.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.SET
 
-<PageTitle title="Redis JSON.SET Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis JSON.SET Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`JSON.SET` is a command in Redis used with the RedisJSON module for setting JSON values at a specified key. It allows you to store, update, and manipulate JSON data structures in Redis. Common use cases involve storing complex data structures like user profiles, configuration settings, or any other hierarchical data that benefits from being stored as JSON.
 
 ## Syntax
 
-    JSON.SET key path value [NX | XX]
-
-**Time complexity:** O(M+N) when path is evaluated to a single value where M is the size of the original value (if it exists) and N is the size of the new value, O(M+N) when path is evaluated to multiple values where M is the size of the key and N is the size of the new value
-
-**ACL categories:** @json
-
-Set the JSON value at `path` in `key`
-
-[Examples](#examples)
-
-## Required arguments
-
-<details open><summary><code>key</code></summary> 
-
-is key to modify.
-</details>
-
-<details open><summary><code>value</code></summary> 
-
-is value to set at the specified path
-</details>
-
-## Optional arguments
-
-<details open><summary><code>path</code></summary> 
-
-is JSONPath to specify. Default is root `$`. For new Redis keys the `path` must be the root. For existing keys, when the entire `path` exists, the value that it contains is replaced with the `json` value. For existing keys, when the `path` exists, except for the last element, a new child is added with the `json` value. 
-
-Adds a key (with its respective value) to a JSON Object (in a RedisJSON data type key) only if it is the last child in the `path`, or it is the parent of a new child being added in the `path`. Optional arguments `NX` and `XX` modify this behavior for both new RedisJSON data type keys as well as the JSON Object keys in them.
-</details>
-
-<details open><summary><code>NX</code></summary> 
-
-sets the key only if it does not already exist.
-</details>
-
-<details open><summary><code>XX</code></summary> 
-
-sets the key only if it already exists.
-</details>
-
-## Return value 
-
-JSET.SET returns a simple string reply: `OK` if executed correctly or `nil` if the specified `NX` or `XX` conditions were not met.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
-
-## Examples
-
-<details open>
-<summary><b>Replace an existing value</b></summary>
-
-``` bash
-dragonfly> JSON.SET doc $ '{"a":2}'
-OK
-dragonfly> JSON.SET doc $.a '3'
-OK
-dragonfly> JSON.GET doc $
-"[{\"a\":3}]"
+```plaintext
+JSON.SET <key> <path> <json>
 ```
-</details>
 
-<details open>
-<summary><b>Add a new value</b></summary>
+## Parameter Explanations
 
-``` bash
-dragonfly> JSON.SET doc $ '{"a":2}'
-OK
-dragonfly> JSON.SET doc $.b '8'
-OK
-dragonfly> JSON.GET doc $
-"[{\"a\":2,\"b\":8}]"
+- `<key>`: The key under which the JSON value is stored. This should be a string.
+- `<path>`: A JSONPath expression indicating where in the JSON structure the value should be set. Use `$` to refer to the root.
+- `<json>`: The JSON data to set at the specified path. This can be any valid JSON value (object, array, number, string, `true`, `false`, or `null`).
+
+## Return Values
+
+The `JSON.SET` command returns `OK` if the operation was successful. If there is an error, such as invalid JSON syntax or an invalid path, an error message is returned.
+
+## Code Examples
+
+```cli
+dragonfly> JSON.SET user1 $ '{"name": "Alice", "age": 30}'
+"OK"
+dragonfly> JSON.SET user1 $.address '{"city": "Wonderland"}'
+"OK"
+dragonfly> JSON.SET user1 $.age 31
+"OK"
+dragonfly> JSON.GET user1 $
+"{\"name\":\"Alice\",\"age\":31,\"address\":{\"city\":\"Wonderland\"}}"
 ```
-</details>
 
-<details open>
-<summary><b>Update multi-paths</b></summary>
+## Best Practices
 
-``` bash
-dragonfly> JSON.SET doc $ '{"f1": {"a":1}, "f2":{"a":2}}'
-OK
-dragonfly> JSON.SET doc $..a 3
-OK
-dragonfly> JSON.GET doc
-"{\"f1\":{\"a\":3},\"f2\":{\"a\":3}}"
-```
-</details>
+- Always ensure that the JSON data is well-formed before setting it in Redis to avoid syntax errors.
+- Use specific paths to update parts of a JSON document without overwriting the entire structure, which can help maintain data integrity and reduce bandwidth usage.
 
-## See also
+## Common Mistakes
 
-`JSON.GET` | `JSON.MGET` 
+- Using incorrect JSONPath expressions can lead to errors or unexpected behavior. Verify your JSONPath before using it with `JSON.SET`.
+- Overwriting JSON data unintentionally by not specifying the correct path.
 
-## Related topics
+## FAQs
 
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)
+### What happens if I set a JSON value at a non-existent key?
+
+If the specified key does not exist, `JSON.SET` will create it and store the provided JSON data.
+
+### Can I use JSON.SET to update nested fields?
+
+Yes, you can specify a path to a nested field to update only that part of the JSON document.
+
+### Does JSON.SET validate the JSON data before storing it?
+
+Yes, `JSON.SET` performs validation to ensure that the JSON data is well-formed. If the data is invalid, an error message will be returned.

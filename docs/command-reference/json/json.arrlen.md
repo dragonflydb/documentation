@@ -6,82 +6,62 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.ARRLEN
 
-<PageTitle title="Redis JSON.ARRLEN Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis JSON.ARRLEN Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`JSON.ARRLEN` is a command provided by Redis modules like RedisJSON, used to get the length of a JSON array at a specific path in a JSON document. This is particularly useful when working with data structures that require frequent inspection or processing of JSON arrays within Redis.
 
 ## Syntax
 
-    JSON.ARRLEN key [path]
+```plaintext
+JSON.ARRLEN <key> [path]
+```
 
-**Time complexity:** O(1) where path is evaluated to a single value, O(N) where path is evaluated to multiple values, where N is the size of the key
+## Parameter Explanations
 
-**ACL categories:** @json
+- **`key`**: The key under which the JSON document is stored.
+- **`path`**: (Optional) The JSONPath to the array within the JSON document. If no path is provided, the root path (`"."`) is assumed.
 
-Report the length of the JSON array at `path` in `key`
+## Return Values
 
-[Examples](#examples)
+Returns the length of the JSON array at the specified path. If the path does not exist or if it doesn't point to an array, the command will return `null`.
 
-## Required arguments
+Example outputs:
 
-<details open><summary><code>key</code></summary>
+- If the array length is 3: `(integer) 3`
+- If the path does not exist: `null`
 
-is key to parse.
+## Code Examples
 
-</details>
-
-## Optional arguments
-
-<details open><summary><code>path</code></summary>
-
-is JSONPath to specify. Default is root `$`, if not provided. Returns null if the `key` or `path` do not exist.
-
-</details>
-
-## Return
-
-`JSON.ARRLEN` returns an [array](https://redis.io/docs/reference/protocol-spec/#arrays) of integer replies, an integer for each matching value, each is the array's length, or `nil`, if the matching value is not an array.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
-
-## Examples
-
-<details open>
-<summary><b>Get lengths of JSON arrays in a document</b></summary>
-
-Create a document for wireless earbuds.
-
-```bash
-dragonfly> JSON.SET item:2 $ '{"name":"Wireless earbuds","description":"Wireless Bluetooth in-ear headphones","connection":{"wireless":true,"type":"Bluetooth"},"price":64.99,"stock":17,"colors":["black","white"], "max_level":[80, 100, 120]}'
+```cli
+dragonfly> JSON.SET mydoc . '{"numbers": [1, 2, 3]}'
 OK
+dragonfly> JSON.ARRLEN mydoc .numbers
+(integer) 3
+dragonfly> JSON.SET mydoc . '{"nested": {"array": [10, 20]}}'
+OK
+dragonfly> JSON.ARRLEN mydoc .nested.array
+(integer) 2
+dragonfly> JSON.ARRLEN mydoc .nonexistent.path
+(nil)
 ```
 
-Find lengths of arrays in all objects of the document.
+## Best Practices
 
-```bash
-dragonfly> JSON.ARRLEN item:2 '$.*'
-1) (nil)
-2) (nil)
-3) (nil)
-4) (nil)
-5) (nil)
-6) (integer) 2
-7) (integer) 3
-```
+When using `JSON.ARRLEN`, ensure that the path provided accurately refers to an array. Misidentifying the path can lead to unexpected `null` results.
 
-Return the length of the `max_level` array.
+## Common Mistakes
 
-```bash
-dragonfly> JSON.ARRLEN item:2 '$..max_level'
-1) (integer) 3
-```
+- **Incorrect Path**: Providing an incorrect or non-existent path will result in `null`.
+- **Non-array Data Type**: Attempting to use `JSON.ARRLEN` on a path that doesn't contain an array will also result in `null`.
 
-Get all the maximum level values.
+## FAQs
 
-```bash
-dragonfly> JSON.GET item:2 '$..max_level'
-"[[80,100,120]]"
-```
+### What happens if the path points to a non-array element?
 
-</details>
+The command will return `null`.
 
-## See also
+### Can I use JSON.ARRLEN on multiple paths in one command?
 
-`JSON.ARRINDEX` | `JSON.ARRINSERT`
+No, `JSON.ARRLEN` operates on a single path per command. You need to issue separate commands for each path.

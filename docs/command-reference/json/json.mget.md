@@ -1,67 +1,69 @@
 ---
 description: Discover using Redis JSON.MGET command to retrieve multiple JSON documents from a database.
 ---
+
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.MGET
 
-<PageTitle title="Redis JSON.MGET Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis JSON.MGET Explained (Better Than Official Docs)" />
+
+## Introduction and Use Case(s)
+
+`JSON.MGET` is a command in Redis that retrieves the values at specified paths from multiple JSON keys. It is used when you need to extract specific parts of JSON documents stored under various keys in Redis. This command is essential for applications requiring efficient bulk retrieval of JSON data.
 
 ## Syntax
 
-    JSON.MGET key [key ...] path
-
-**Time complexity:** O(M*N) when path is evaluated to a single value where M is the number of keys and N is the size of the value, O(N1+N2+...+Nm) when path is evaluated to multiple values where m is the number of keys and Ni is the size of the i-th key
-
-**ACL categories:** @json
-
-Return the values at `path` from multiple `key` arguments
-
-[Examples](#examples)
-
-## Required arguments
-
-<details open><summary><code>key</code></summary> 
-
-is key to parse. Returns `null` for nonexistent keys.
-</details>
-
-## Optional arguments
-
-<details open><summary><code>path</code></summary> 
-
-is JSONPath to specify. Default is root `$`. Returns `null` for nonexistent paths.
-
-</details>
-
-## Return
-
-JSON.MGET returns an array of bulk string replies specified as the JSON serialization of the value at each key's path.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
-
-## Examples
-
-<details open>
-<summary><b>Return the values at <code>path</code> from multiple <code>key</code> arguments</b></summary>
-
-Create two JSON documents.
-
-``` bash
-dragonfly> JSON.SET doc1 $ '{"a":1, "b": 2, "nested": {"a": 3}, "c": null}'
-OK
-dragonfly> JSON.SET doc2 $ '{"a":4, "b": 5, "nested": {"a": 6}, "c": null}'
-OK
+```
+JSON.MGET key [key ...] path
 ```
 
-Get values from all arguments in the documents.
+## Parameter Explanations
 
-``` bash
-dragonfly> JSON.MGET doc1 doc2 $..a
-1) "[1,3]"
-2) "[4,6]"
+- `key [key ...]`: One or more keys from which to retrieve JSON values.
+- `path`: A JSONPath expression indicating the part of the JSON documents to fetch.
+
+## Return Values
+
+The command returns an array containing the values at the specified path for each provided key. If a key does not exist, it returns `null` for that key's position in the array.
+
+Example:
+
+- Keys exist: `[value1, value2, value3]`
+- Some keys do not exist: `[value1, null, value3]`
+
+## Code Examples
+
+```cli
+dragonfly> JSON.SET doc1 $ '{"name":"John", "age":30}'
+OK
+dragonfly> JSON.SET doc2 $ '{"name":"Jane", "age":25}'
+OK
+dragonfly> JSON.MGET doc1 doc2 $.name
+1) "John"
+2) "Jane"
+dragonfly> JSON.MGET doc1 doc2 doc3 $.age
+1) 30
+2) 25
+3) (nil)
 ```
-</details>
 
-## See also
+## Best Practices
 
-`JSON.SET` | `JSON.GET` 
+- Ensure paths are correctly specified using JSONPath syntax to avoid unexpected results.
+- Validate the existence of keys before performing operations that depend on their presence to manage nil values gracefully.
+
+## Common Mistakes
+
+- Using incorrect JSONPath expressions can lead to undesired outputs. Always test your paths with known data structures first.
+- Requesting paths from empty or non-existent keys will return `null`, which might need handling in application logic.
+
+## FAQs
+
+### Can I use `JSON.MGET` with non-JSON keys?
+
+No, `JSON.MGET` works only with keys containing JSON documents. Using it with non-JSON keys will result in an error.
+
+### What happens if one of the keys does not exist?
+
+If one of the keys does not exist, `JSON.MGET` will return `null` for that key's position in the resulting array.
