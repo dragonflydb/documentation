@@ -8,62 +8,33 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis ZDIFF Explained (Better Than Official Docs)" />
 
-## Introduction and Use Case(s)
-
-The `ZDIFF` command in Redis is used to compute the difference between sorted sets. This command is particularly useful when you need to identify members that are present in one sorted set but not in others, making it ideal for scenarios like filtering out exclusions from a primary dataset.
-
 ## Syntax
 
-```plaintext
-ZDIFF numkeys key [key ...] [WITHSCORES]
-```
+    ZDIFF numkeys key [key ...] [WITHSCORES]
 
-## Parameter Explanations
+**Time complexity:** : O(L + K log K) worst case where L is the total number of elements in all the sets, and K is the size of the result set.
 
-- **numkeys**: The number of keys (sorted sets) to be compared.
-- **key**: The names of the sorted sets involved in the operation.
-- **WITHSCORES**: Optional. When provided, the command will include the scores of the resulting elements.
+**ACL categories:** @read, @sortedset, @slow
 
-## Return Values
+This command is similar to ZDIFFSTORE, but instead of storing the resulting sorted set, it is returned to the client
 
-- Without `WITHSCORES`: An array of strings representing the members that are present in the first sorted set but not in the subsequent ones.
-- With `WITHSCORES`: An array where each element is followed by its score.
+## Return
 
-Example outputs:
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): the result of the difference (optionally with their scores, in case the WITHSCORES option is given).
 
-- Without `WITHSCORES`: `["member1", "member2"]`
-- With `WITHSCORES`: `["member1", "score1", "member2", "score2"]`
+## Examples
 
-## Code Examples
-
-```cli
-dragonfly> ZADD zset1 1 "one" 2 "two" 3 "three"
-(integer) 3
-dragonfly> ZADD zset2 2 "two" 3 "three" 4 "four"
-(integer) 3
+```shell
+dragonfly> ZADD zset1 1 "one"
+(integer) 1
+dragonfly> ZADD zset1 2 "two"
+(integer) 1
+dragonfly> ZADD zset1 3 "three"
+(integer) 1
+dragonfly> ZADD zset2 1 "one"
+(integer) 1
+dragonfly> ZADD zset2 2 "two"
+(integer) 1
 dragonfly> ZDIFF 2 zset1 zset2
-1) "one"
-dragonfly> ZDIFF 2 zset1 zset2 WITHSCORES
-1) "one"
-2) "1"
+1) "three"
 ```
-
-## Best Practices
-
-- Use `WITHSCORES` only when you need the scores of the resulting elements, as it adds additional processing.
-- Ensure that the sorted sets involved are not too large, as computing differences can be resource-intensive.
-
-## Common Mistakes
-
-- Not specifying the correct number of keys (`numkeys`). This must match the actual number of sets provided.
-- Using non-sorted set data types. `ZDIFF` is specifically designed for sorted sets and will not work with other data types.
-
-## FAQs
-
-### What happens if one of the keys doesn't exist?
-
-If a key does not exist, it is treated as an empty sorted set.
-
-### Can I use `ZDIFF` with more than two sets?
-
-Yes, `ZDIFF` can compare multiple sets. The result will be the members present in the first set but absent in all subsequent sets.

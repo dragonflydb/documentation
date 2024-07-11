@@ -8,58 +8,28 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis ZREVRANGE Explained (Better Than Official Docs)" />
 
-## Introduction and Use Case(s)
-
-`ZREVRANGE` is a Redis command used to return a range of members in a sorted set, ordered from the highest to the lowest score. It is particularly useful for scenarios where you need to retrieve top-ranking items or reverse-order lists, such as leaderboards, ranking systems, or any application requiring sorted data retrieval in descending order.
-
 ## Syntax
 
-```plaintext
-ZREVRANGE key start stop [WITHSCORES]
-```
+    ZREVRANGE key start stop [WITHSCORES]
 
-## Parameter Explanations
+**Time complexity:** O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements returned.
 
-- **key**: The name of the sorted set.
-- **start**: The starting rank position (0-based index) from which to begin retrieving elements.
-- **stop**: The ending rank position up to which to retrieve elements. A negative index can be used to count from the end of the sorted set (-1 being the last element).
-- **WITHSCORES**: Optional. When provided, it includes the scores of the returned elements.
+**ACL categories:** @read, @sortedset, @slow
 
-## Return Values
+Returns the specified range of elements in the sorted set stored at `key`.
+The elements are considered to be ordered from the highest to the lowest score.
+Descending lexicographical order is used for elements with equal score.
 
-- Without `WITHSCORES`: Returns a list of elements in the specified range, ordered from the highest to the lowest score.
-- With `WITHSCORES`: Returns a list of elements with their scores in the specified range, ordered from the highest to the lowest score.
+Apart from the reversed ordering, `ZREVRANGE` is similar to `ZRANGE`.
 
-### Examples:
+## Return
 
-Without `WITHSCORES`:
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of elements in the specified range (optionally with
+their scores).
 
-```cli
-dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three"
-(integer) 3
-dragonfly> ZREVRANGE myzset 0 -1
-1) "three"
-2) "two"
-3) "one"
-```
+## Examples
 
-With `WITHSCORES`:
-
-```cli
-dragonfly> ZREVRANGE myzset 0 -1 WITHSCORES
-1) "three"
-2) "3"
-3) "two"
-4) "2"
-5) "one"
-6) "1"
-```
-
-## Code Examples
-
-Using CLI:
-
-```cli
+```shell
 dragonfly> ZADD myzset 1 "one"
 (integer) 1
 dragonfly> ZADD myzset 2 "two"
@@ -70,31 +40,9 @@ dragonfly> ZREVRANGE myzset 0 -1
 1) "three"
 2) "two"
 3) "one"
-dragonfly> ZREVRANGE myzset 1 2 WITHSCORES
+dragonfly> ZREVRANGE myzset 2 3
+1) "one"
+dragonfly> ZREVRANGE myzset -2 -1
 1) "two"
-2) "2"
-3) "one"
-4) "1"
-dragonfly> ZREVRANGE myzset 0 0
-1) "three"
+2) "one"
 ```
-
-## Best Practices
-
-- Consider using pagination by adjusting the `start` and `stop` parameters to manage large sets.
-- Use `WITHSCORES` only when necessary to minimize data transfer and improve performance.
-
-## Common Mistakes
-
-- Not accounting for zero-based indexing while specifying `start` and `stop`.
-- Using very large ranges without considering performance impacts on large sets.
-
-## FAQs
-
-### How does ZREVRANGE differ from ZRANGE?
-
-While `ZRANGE` returns elements in ascending order of scores, `ZREVRANGE` returns them in descending order.
-
-### Can I use negative indices with ZREVRANGE?
-
-Yes, negative indices can be used to specify ranges relative to the end of the sorted set.
