@@ -6,65 +6,30 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # HGET
 
-<PageTitle title="Redis HGET Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `HGET` command in Redis is used to retrieve the value associated with a given field in a hash stored at a specific key. It's commonly used when working with hash data structures to fetch individual field values efficiently.
+<PageTitle title="Redis HGET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```
-HGET key field
-```
+    HGET key field
 
-## Parameter Explanations
+**Time complexity:** O(1)
 
-- **key**: The name of the hash from which you want to retrieve the value.
-- **field**: The specific field whose value you want to fetch within the hash.
+**ACL categories:** @read, @hash, @fast
 
-## Return Values
+Returns the value associated with `field` in the hash stored at `key`.
 
-- The command returns the value associated with the specified field in the hash, or `nil` if the field does not exist.
+## Return
 
-Example:
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the value associated with `field`, or `nil` when `field` is not
+present in the hash or `key` does not exist.
 
-```
-"someValue"
-(nil)
-```
+## Examples
 
-## Code Examples
-
-```cli
-dragonfly> HSET myhash field1 "Hello"
-(integer) 1
-dragonfly> HSET myhash field2 "World"
+```shell
+dragonfly> HSET myhash field1 "foo"
 (integer) 1
 dragonfly> HGET myhash field1
-"Hello"
+"foo"
 dragonfly> HGET myhash field2
-"World"
-dragonfly> HGET myhash field3
 (nil)
 ```
-
-## Best Practices
-
-- Ensure that the key exists and is of type hash before using `HGET`.
-- Consider using `HEXISTS` to check if a field exists before attempting to get its value.
-
-## Common Mistakes
-
-- Using `HGET` on a key that does not hold a hash value results in an error.
-- Trying to fetch a value from a non-existent field will return `nil`.
-
-## FAQs
-
-### What happens if I use HGET on a non-hash key?
-
-You will receive an error indicating that the operation against a key holding the wrong kind of value.
-
-### Can I use HGET to fetch multiple fields at once?
-
-No, `HGET` retrieves the value for a single field. To fetch multiple fields, consider using `HMGET`.

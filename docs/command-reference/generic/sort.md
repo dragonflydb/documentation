@@ -6,94 +6,67 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # SORT
 
-<PageTitle title="Redis SORT Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `SORT` command in Redis is used for sorting the elements in a list, set, or sorted set. This command is particularly useful for organizing and retrieving data in a specific order. Typical scenarios include sorting user scores, timestamps, or any dataset that requires ordered results.
+<PageTitle title="Redis SORT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
+    SORT key [LIMIT offset count] [ASC | DESC] [ALPHA]
+
+**Time complexity:** O(N+M\*log(M)) where N is the number of elements in the list or set to sort, and M the number of returned elements. When the elements are not sorted, complexity is O(N).
+
+**ACL categories:** @write, @set, @sortedset, @list, @slow, @dangerous
+
+Returns or stores the elements contained in the [list][tdtl], [set][tdts] or
+[sorted set][tdtss] at `key`.
+
+By default, sorting is numeric and elements are compared by their value
+interpreted as double precision floating point number.
+This is `SORT` in its simplest form:
+
+[tdtl]: https://redis.io/topics/data-types#lists
+[tdts]: https://redis.io/topics/data-types#set
+[tdtss]: https://redis.io/topics/data-types#sorted-sets
+
 ```
-SORT key [BY pattern] [LIMIT offset count] [GET pattern [GET pattern ...]] [ASC|DESC] [ALPHA] [STORE destination]
-```
-
-## Parameter Explanations
-
-- `key`: The key of the list, set, or sorted set to be sorted.
-- `BY pattern`: An optional parameter specifying an external key pattern to sort by.
-- `LIMIT offset count`: Optional parameters to limit the number of results returned.
-- `GET pattern`: Optional parameter(s) to return additional properties specified by key patterns.
-- `ASC|DESC`: Optional parameters to sort in ascending (default) or descending order.
-- `ALPHA`: Optional flag to indicate sorting lexicographically rather than numerically.
-- `STORE destination`: Optional parameter to store the result in another key instead of returning it.
-
-## Return Values
-
-The return value of the `SORT` command depends on whether the `STORE` option is provided:
-
-- Without `STORE`: Returns a list of sorted elements.
-- With `STORE`: Returns the number of elements stored in the destination key.
-
-Example outputs:
-
-- Without `STORE`: `1) "one" 2) "two" 3) "three"`
-- With `STORE`: `(integer) 3`
-
-## Code Examples
-
-```cli
-dragonfly> RPUSH mylist 3 1 2
-(integer) 3
-dragonfly> SORT mylist
-1) "1"
-2) "2"
-3) "3"
-dragonfly> SORT mylist DESC
-1) "3"
-2) "2"
-3) "1"
-dragonfly> SET user:1:name "Alice"
-OK
-dragonfly> SET user:2:name "Bob"
-OK
-dragonfly> SET user:3:name "Carol"
-OK
-dragonfly> SORT mylist BY user:*:name GET user:*:name
-1) "Alice"
-2) "Bob"
-3) "Carol"
-dragonfly> SORT mylist LIMIT 0 2
-1) "1"
-2) "2"
-dragonfly> SORT mylist STORE sorted_list
-(integer) 3
-dragonfly> LRANGE sorted_list 0 -1
-1) "1"
-2) "2"
-3) "3"
+SORT mylist
 ```
 
-## Best Practices
+Assuming `mylist` is a list of numbers, this command will return the same list
+with the elements sorted from small to large.
+In order to sort the numbers from large to small, use the `!DESC` modifier:
 
-- Use the `LIMIT` option to paginate large datasets efficiently.
-- When sorting strings, use the `ALPHA` option to ensure correct lexical ordering.
+```
+SORT mylist DESC
+```
 
-## Common Mistakes
+When `mylist` contains string values and you want to sort them
+lexicographically, use the `!ALPHA` modifier:
 
-- Sorting a set or sorted set without providing the correct pattern for external keys can lead to unexpected results.
-- Omitting the `ALPHA` option when sorting non-numeric strings can cause incorrect ordering.
+```
+SORT mylist ALPHA
+```
 
-## FAQs
+Dragonfly is UTF-8 aware.
 
-### How does `BY` work with hash fields?
+The number of returned elements can be limited using the `!LIMIT` modifier.
+This modifier takes the `offset` argument, specifying the number of elements to
+skip and the `count` argument, specifying the number of elements to return from
+starting at `offset`.
+The following example will return 10 elements of the sorted version of `mylist`,
+starting at element 0 (`offset` is zero-based):
 
-The `BY` option allows you to sort based on values retrieved from hash fields. For example, if you have hashes representing users, you can sort by a user's age stored in a hash field.
+```
+SORT mylist LIMIT 0 10
+```
 
-### Can I sort multiple fields at once?
+Almost all modifiers can be used together.
+The following example will return the first 5 elements, lexicographically sorted
+in descending order:
 
-Yes, by using multiple `GET` options, you can retrieve multiple fields, but the sorting itself is based on the primary pattern provided in the `BY` option.
+```
+SORT mylist LIMIT 0 5 ALPHA DESC
+```
 
-### Is the `SORT` command efficient for large datasets?
+## Return
 
-The `SORT` command can be computationally expensive for large datasets. It's important to use options like `LIMIT` and consider storing pre-sorted data if performance becomes an issue.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of sorted elements.

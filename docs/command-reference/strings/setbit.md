@@ -6,7 +6,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # SETBIT
 
-<PageTitle title="Redis SETBIT Explained (Better Than Official Docs)" />
+<PageTitle title="Redis SETBIT Command (Documentation) | Dragonfly" />
 
 ## Introduction and Use Case(s)
 

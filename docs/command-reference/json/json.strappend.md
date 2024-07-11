@@ -1,67 +1,73 @@
 ---
 description: Discover the Redis JSON.STRAPPEND command for appending strings in a JSON document.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.STRAPPEND
 
-<PageTitle title="Redis JSON.STRAPPEND Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `JSON.STRAPPEND` command in Redis is used to append a string value to an existing string stored within a JSON document. This is particularly useful for modifying JSON structures without the need to retrieve, modify, and set the entire document, thereby improving performance and reducing complexity.
-
-Typical scenarios include updating logs, concatenating strings, or gradually building up a string value within a JSON object.
+<PageTitle title="Redis JSON.STRAPPEND Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-JSON.STRAPPEND <key> <path> <json-string>
-```
+    JSON.STRAPPEND key [path] value
 
-## Parameter Explanations
+**Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
-- **`<key>`**: The key under which the JSON document is stored.
-- **`<path>`**: The JSON path to the string value that you want to append to. This follows the JSONPath syntax.
-- **`<json-string>`**: The string value to be appended to the existing string at the specified path. It must be a valid JSON string.
+**ACL categories:** @json
 
-## Return Values
+Append the `json-string` values to the string at `path`
 
-The command returns the length of the new string after the append operation.
+[Examples](#examples)
 
-### Examples of possible outputs:
+## Required arguments
 
-- If the original string was `"foo"` and you append `"bar"`, the return value will be the length of `"foobar"`, which is `6`.
-- An error if the path does not exist or the value at the path is not a string.
+<details open><summary><code>key</code></summary> 
 
-## Code Examples
+is key to modify.
+</details>
 
-```cli
-dragonfly> JSON.SET mydoc . '{"greeting": "Hello"}'
+<details open><summary><code>value</code></summary> 
+
+is value to append to one or more strings. 
+
+:::note About using strings with JSON commands
+
+To specify a string as an array value to append, wrap the quoted string with an additional set of single quotes. Example: `'"silver"'`. For more detailed use, see [Examples](#examples).
+
+:::
+</details>
+
+## Optional arguments
+
+<details open><summary><code>path</code></summary> 
+
+is JSONPath to specify. Default is root `$`.
+</details>
+
+## Return value 
+
+JSON.STRAPPEND returns an array of integer replies for each path, the string's new length, or `nil`, if the matching JSON value is not a string.
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec). 
+
+## Examples
+
+``` bash
+dragonfly> JSON.SET doc $ '{"a":"foo", "nested": {"a": "hello"}, "nested2": {"a": 31}}'
 OK
-dragonfly> JSON.STRAPPEND mydoc .greeting '" World!"'
-(integer) 12
-dragonfly> JSON.GET mydoc .greeting
-"Hello World!"
+dragonfly> JSON.STRAPPEND doc $..a '"baz"'
+1) (integer) 6
+2) (integer) 8
+3) (nil)
+dragonfly> JSON.GET doc $
+"[{\"a\":\"foobaz\",\"nested\":{\"a\":\"hellobaz\"},\"nested2\":{\"a\":31}}]"
 ```
 
-## Best Practices
+## See also
 
-- Ensure that the path points to a string value; otherwise, the command will result in an error.
-- Always validate the JSON structure before performing operations to avoid unexpected behaviors.
+`JSON.ARRAPEND` | `JSON.ARRINSERT` 
 
-## Common Mistakes
+## Related topics
 
-- **Appending to Non-String Values**: Attempting to append to a non-string type will cause an error. Ensure the target path holds a string.
-- **Incorrect JSON Path**: Using an incorrect path format can lead to command failure. Double-check the JSONPath syntax.
+* [RedisJSON](https://redis.io/docs/stack/json)
+* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)
 
-## FAQs
-
-### What happens if the path does not exist?
-
-If the specified path does not exist or points to a non-string value, the command will result in an error.
-
-### Can I append multiple strings in one command?
-
-No, `JSON.STRAPPEND` only allows appending a single string at a time. For multiple appends, multiple commands are required.

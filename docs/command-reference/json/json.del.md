@@ -1,66 +1,87 @@
 ---
 description: Learn how to use Redis JSON.DEL command to delete a key from a JSON document.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.DEL
 
-<PageTitle title="Redis JSON.DEL Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-`JSON.DEL` is a Redis command provided by the RedisJSON module to delete a key or a specific path in a JSON document. It is useful for managing parts of complex JSON objects stored in Redis, allowing you to remove unnecessary or outdated information without affecting other data.
+<PageTitle title="Redis JSON.DEL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```cli
-JSON.DEL <key> [path]
+    JSON.DEL key [path]
+
+**Time complexity:** O(N) when path is evaluated to a single value where N is the size of the deleted value, O(N) when path is evaluated to multiple values, where N is the size of the key
+
+
+**ACL categories:** @json
+
+Delete a value
+
+[Examples](#examples)
+
+## Required arguments
+
+<details open><summary><code>key</code></summary> 
+
+is key to modify.
+</details>
+
+## Optional arguments
+
+<details open><summary><code>path</code></summary> 
+
+is JSONPath to specify. Default is root `$`. Nonexisting paths are ignored.
+
+:::note Note
+
+ 
+Deleting an object's root is equivalent to deleting the key from Redis.
+
+
+:::
+</details>
+
+## Return
+
+JSON.DEL returns an integer reply specified as the number of paths deleted (0 or more).
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
+
+## Examples
+
+<details open>
+<summary><b>Delete a value</b></summary>
+
+Create a JSON document.
+
+``` bash
+dragonfly> JSON.SET doc $ '{"a": 1, "nested": {"a": 2, "b": 3}}'
+OK
 ```
 
-## Parameter Explanations
+Delete specified values.
 
-- `key`: The key where the JSON document is stored.
-- `path`: (Optional) A JSONPath expression that specifies the part of the JSON document to delete. If omitted, the entire JSON document will be deleted.
-
-## Return Values
-
-- `(integer)`: The number of paths deleted (0 if the key does not exist or the path does not match).
-
-## Code Examples
-
-```cli
-dragonfly> JSON.SET mydoc $ '{"name": "John", "age": 30, "city": "New York"}'
-OK
-dragonfly> JSON.DEL mydoc $..age
-(integer) 1
-dragonfly> JSON.GET mydoc
-"{\"name\":\"John\",\"city\":\"New York\"}"
-
-dragonfly> JSON.SET mydoc $ '{"name": "John", "age": 30, "city": "New York"}'
-OK
-dragonfly> JSON.DEL mydoc
-(integer) 1
-dragonfly> JSON.GET mydoc
-(nil)
+``` bash
+dragonfly> JSON.DEL doc $..a
+(integer) 2
 ```
 
-## Best Practices
+Get the updated document.
 
-- Always ensure the path exists before attempting to delete it to avoid unexpected behavior.
-- Use `JSON.TYPE` to verify the structure of the JSON document if uncertain about the path.
+``` bash
+dragonfly> JSON.GET doc $
+"[{\"nested\":{\"b\":3}}]"
+```
+</details>
 
-## Common Mistakes
+## See also
 
-- Providing an incorrect path which results in a zero deletion count.
-- Assuming the entire document is deleted when specifying a path; only the specified part is removed.
+`JSON.SET` | `JSON.ARRLEN` 
 
-## FAQs
+## Related topics
 
-### Can I use wildcards in the path for `JSON.DEL`?
+* [RedisJSON](https://redis.io/docs/stack/json)
+* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)
 
-Yes, you can use JSONPath expressions with wildcards to target multiple elements for deletion.
 
-### What happens if the key does not exist?
 
-The command returns `(integer) 0`, indicating no paths were deleted.

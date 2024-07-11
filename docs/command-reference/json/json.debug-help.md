@@ -6,52 +6,31 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.DEBUG HELP
 
-<PageTitle title="Redis `JSON.DEBUG HELP` Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `JSON.DEBUG HELP` command in Redis is part of the RedisJSON module. It provides debugging help information related to JSON structures stored in Redis. This command is useful for developers who need to understand how to debug issues with their JSON data within Redis.
+<PageTitle title="Redis `JSON.DEBUG HELP` Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-JSON.DEBUG HELP
-```
+    JSON.DEBUG HELP
 
-## Parameter Explanations
+**Time complexity:** N/A
 
-This command does not take any parameters. It simply returns a list of subcommands available under the `JSON.DEBUG` namespace along with brief descriptions.
+**ACL categories:** @json
 
-## Return Values
+Return helpful information about the [`JSON.DEBUG`](./json.debug.md) command.
 
-The command returns an array of strings, where each string is a line of helpful information regarding JSON debugging commands.
+## Return
 
-### Example Output
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of helpful messages.
 
-```plaintext
-1) "DEBUG MEMORY <key> [path]"
-2) "    Report memory usage"
-3) ""
-4) "DEBUG HELP"
-5) "    this message"
-```
+## Examples
 
-## Code Examples
-
-```cli
+```shell
 dragonfly> JSON.DEBUG HELP
-1) "DEBUG MEMORY <key> [path]"
-2) "    Report memory usage"
-3) ""
-4) "DEBUG HELP"
-5) "    this message"
+1) "JSON.DEBUG FIELDS <key> <path> - report number of fields in the JSON element."
+2) "JSON.DEBUG HELP - print help message."
 ```
 
-## Best Practices
+## Related Topics
 
-- Regularly use `JSON.DEBUG HELP` to familiarize yourself with available debugging tools.
-- Combine this command with other `JSON.DEBUG` commands to effectively troubleshoot JSON issues in Redis.
-
-## Common Mistakes
-
-- Misunderstanding the scope: This command provides help information only for JSON debugging and does not perform any modification or retrieval of JSON data.
+- [RedisJSON](https://redis.io/docs/stack/json)
+- [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)

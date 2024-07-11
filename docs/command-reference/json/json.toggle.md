@@ -1,68 +1,85 @@
 ---
 description: Learn how to use the Redis JSON.TOGGLE command to invert a boolean value in a JSON document.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.TOGGLE
 
-<PageTitle title="Redis JSON.TOGGLE Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-`JSON.TOGGLE` is a Redis command used to toggle the boolean value at a specified path in a JSON document stored within a Redis key. This command is particularly useful in scenarios where JSON structures are frequently updated, such as real-time applications that require quick modifications of feature flags or other boolean settings.
+<PageTitle title="Redis JSON.TOGGLE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-JSON.TOGGLE <key> <path>
-```
+    JSON.TOGGLE key path
 
-## Parameter Explanations
+**Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
-- **`<key>`**: The Redis key where the JSON document is stored.
-- **`<path>`**: The JSON path specifying the location of the boolean value to be toggled.
+**ACL categories:** @json
 
-## Return Values
+Toggle a Boolean value stored at `path`
 
-The `JSON.TOGGLE` command returns the new boolean value after the toggle operation.
+[Examples](#examples)
 
-Example return values:
+## Required arguments
 
-- `(integer) 1` if the previous value was `false` and has been changed to `true`.
-- `(integer) 0` if the previous value was `true` and has been changed to `false`.
+<details open><summary><code>key</code></summary> 
 
-## Code Examples
+is key to modify.
+</details>
 
-```cli
-dragonfly> JSON.SET myjson . '{"active":true,"count":5}'
+## Optional arguments
+
+<details open><summary><code>path</code></summary> 
+
+is JSONPath to specify. Default is root `$`. 
+
+</details>
+
+## Return
+
+JSON.TOGGLE returns an array of integer replies for each path, the new value (`0` if `false` or `1` if `true`), or `nil` for JSON values matching the path that are not Boolean.
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
+
+## Examples
+
+<details open>
+<summary><b>Toogle a Boolean value stored at <code>path</code></b></summary>
+
+Create a JSON document.
+
+``` bash
+dragonfly> JSON.SET doc $ '{"bool": true}'
 OK
-dragonfly> JSON.TOGGLE myjson .active
-(integer) 0
-dragonfly> JSON.GET myjson
-"{\"active\":false,\"count\":5}"
-dragonfly> JSON.TOGGLE myjson .active
-(integer) 1
-dragonfly> JSON.GET myjson
-"{\"active\":true,\"count\":5}"
 ```
 
-## Best Practices
+Toggle the Boolean value.
 
-- Ensure that the path points to a valid boolean value; otherwise, the command will not execute as expected.
-- Regularly validate your JSON structure to avoid errors due to incorrect paths or data types.
+``` bash
+dragonfly> JSON.TOGGLE doc $.bool
+1) (integer) 0
+```
 
-## Common Mistakes
+Get the updated document.
 
-- **Incorrect Path**: Using a path that does not exist or does not point to a boolean value. This will result in an error.
-- **Data Type Mismatch**: Attempting to toggle a non-boolean value will lead to failed operations.
+``` bash
+dragonfly> JSON.GET doc $
+"[{\"bool\":false}]"
+```
 
-## FAQs
+Toggle the Boolean value.
 
-### What happens if the path does not exist?
+``` bash
+dragonfly> JSON.TOGGLE doc $.bool
+1) (integer) 1
+```
 
-If the specified path does not exist in the JSON document, the command will result in an error.
+Get the updated document.
 
-### Can I use `JSON.TOGGLE` on non-boolean values?
+``` bash
+dragonfly> JSON.GET doc $
+"[{\"bool\":true}]"
+```
+</details>
 
-No, `JSON.TOGGLE` only works with boolean values. Attempting to use it on non-boolean values will result in an error.
+## See also
+
+`JSON.SET` | `JSON.GET` 

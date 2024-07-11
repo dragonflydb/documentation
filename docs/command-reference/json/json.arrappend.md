@@ -1,67 +1,82 @@
 ---
 description: Understand how to use Redis JSON.ARRAPPEND command to append an element into a JSON array.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.ARRAPPEND
 
-<PageTitle title="Redis JSON.ARRAPPEND Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-`JSON.ARRAPPEND` is used in Redis to append elements to a JSON array stored at a specified key. It is particularly useful in scenarios where you need to dynamically grow a JSON array with new data elements, such as logging events, aggregating data, or maintaining ordered lists within a JSON document.
+<PageTitle title="Redis JSON.ARRAPPEND Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```cli
-JSON.ARRAPPEND <key> <path> <element> [<element> ...]
-```
+    JSON.ARRAPPEND key [path] value [value ...]
 
-## Parameter Explanations
+**Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
-- **key**: The key of the JSON document.
-- **path**: The JSON path to the array within the document where elements will be appended. Typically starts with `.`.
-- **element**: One or more elements to append to the array. These can be any valid JSON types (e.g., strings, numbers, objects).
+**ACL categories:** @json
 
-## Return Values
+Append the `json` values into the array at `path` after the last element in it
 
-Returns an integer representing the new length of the array after the elements have been appended.
+[Examples](#examples)
 
-### Example Outputs:
+## Required arguments
 
-- `(integer) 2`: Indicates that two elements are now in the array.
-- `(integer) 5`: Indicates that five elements are now in the array.
+<details open><summary><code>key</code></summary> 
 
-## Code Examples
+is key to modify.
+</details>
 
-```cli
-dragonfly> JSON.SET mydoc . '{"numbers":[1, 2, 3]}'
+<details open><summary><code>value</code></summary> 
+
+is one or more values to append to one or more arrays. 
+
+:::note About using strings with JSON commands
+
+To specify a string as an array value to append, wrap the quoted string with an additional set of single quotes. Example: `'"silver"'`. For more detailed use, see [Examples](#examples).
+
+:::
+</details>
+
+## Optional arguments
+
+<details open><summary><code>path</code></summary> 
+
+is JSONPath to specify. Default is root `$`.
+</details>
+
+## Return value 
+
+`JSON.ARRAPEND` returns an [array](https://redis.io/docs/reference/protocol-spec/#arrays) of integer replies for each path, the array's new size, or `nil`, if the matching JSON value is not an array. 
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec). 
+
+## Examples
+
+<details open>
+<summary><b>Add a new color to a list of product colors</b></summary>
+
+Create a document for noise-cancelling headphones in black and silver colors.
+
+``` bash
+dragonfly> JSON.SET item:1 $ '{"name":"Noise-cancelling Bluetooth headphones","description":"Wireless Bluetooth headphones with noise-cancelling technology","connection":{"wireless":true,"type":"Bluetooth"},"price":99.98,"stock":25,"colors":["black","silver"]}'
 OK
-dragonfly> JSON.ARRAPPEND mydoc .numbers 4
-(integer) 4
-dragonfly> JSON.ARRAPPEND mydoc .numbers 5 6
-(integer) 6
-dragonfly> JSON.GET mydoc
-"{\"numbers\":[1,2,3,4,5,6]}"
 ```
 
-## Best Practices
+Add color `blue` to the end of the `colors` array. `JSON.ARRAPEND` returns the array's new size.
 
-- Ensure that the path points to a valid JSON array; otherwise, an error will occur.
-- Consider using indexed paths to manage large arrays efficiently.
+``` bash
+dragonfly> JSON.ARRAPPEND item:1 $.colors '"blue"'
+1) (integer) 3
+```
 
-## Common Mistakes
+Return the new length of the `colors` array.
 
-- Appending to a non-array path will result in an error.
-- Providing invalid JSON elements can cause command failure.
+``` bash
+dragonfly> JSON.GET item:1
+"{\"name\":\"Noise-cancelling Bluetooth headphones\",\"description\":\"Wireless Bluetooth headphones with noise-cancelling technology\",\"connection\":{\"wireless\":true,\"type\":\"Bluetooth\"},\"price\":99.98,\"stock\":25,\"colors\":[\"black\",\"silver\",\"blue\"]}"
+```
 
-## FAQs
+</details>
 
-### What happens if the path does not exist?
+## See also
 
-If the specified path does not exist and cannot be created, the command will return an error.
-
-### Can I append multiple elements at once?
-
-Yes, you can append multiple elements by listing them after the path parameter.
+`JSON.ARRINDEX` | `JSON.ARRINSERT` 

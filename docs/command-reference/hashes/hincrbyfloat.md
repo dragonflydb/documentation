@@ -6,61 +6,51 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # HINCRBYFLOAT
 
-<PageTitle title="Redis HINCRBYFLOAT Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-`HINCRBYFLOAT` is a Redis command used to increment the value of a specified field in a hash by a floating-point number. This command is particularly useful in scenarios where you need to track and update numeric values that require decimal precision, such as accounting balances, scientific measurements, or any other metrics stored in hashes.
+<PageTitle title="Redis HINCRBYFLOAT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-HINCRBYFLOAT key field increment
-```
+    HINCRBYFLOAT key field increment
 
-## Parameter Explanations
+**Time complexity:** O(1)
 
-- `key`: The name of the hash.
-- `field`: The field within the hash whose value should be incremented.
-- `increment`: The floating-point number by which to increment the field's value. This can be positive or negative.
+**ACL categories:** @write, @hash, @fast
 
-## Return Values
+Increment the specified `field` of a hash stored at `key`, and representing a
+floating point number, by the specified `increment`. If the increment value
+is negative, the result is to have the hash field value **decremented** instead of incremented.
+If the field does not exist, it is set to `0` before performing the operation.
+An error is returned if one of the following conditions occur:
 
-The command returns the new value of the field after the increment operation, represented as a string.
+- The field contains a value of the wrong type (not a string).
+- The current field content or the specified increment are not parsable as a
+  double precision floating point number.
 
-### Example Outputs
+The exact behavior of this command is identical to the one of the `INCRBYFLOAT`
+command, please refer to the documentation of `INCRBYFLOAT` for further
+information.
 
-- If the initial value is `1.5` and the increment is `0.5`, the return value would be `"2.0"`.
-- If the initial value is `1.0` and the increment is `-1.1`, the return value would be `"-0.1"`.
+## Return
 
-## Code Examples
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the value of `field` after the increment.
 
-```cli
-dragonfly> HSET myhash field1 "10.5"
+## Examples
+
+```shell
+dragonfly> HSET mykey field 10.50
 (integer) 1
-dragonfly> HINCRBYFLOAT myhash field1 0.5
-"11.0"
-dragonfly> HINCRBYFLOAT myhash field1 -2.3
-"8.7"
-dragonfly> HGET myhash field1
-"8.7"
+dragonfly> HINCRBYFLOAT mykey field 0.1
+"10.6"
+dragonfly> HINCRBYFLOAT mykey field -5
+"5.6"
+dragonfly> HSET mykey field 5.0e3
+(integer) 0
+dragonfly> HINCRBYFLOAT mykey field 2.0e2
+"5200"
 ```
 
-## Best Practices
+## Implementation details
 
-When using `HINCRBYFLOAT`, ensure that the field contains a valid float representation. If the field does not exist, Redis initializes it to `0` before performing the increment.
-
-## Common Mistakes
-
-- **Non-numeric Fields**: Attempting to use `HINCRBYFLOAT` on a field that does not contain a numeric value will result in an error.
-- **Data Type Misuse**: Using `HINCRBYFLOAT` on keys that are not hashes (e.g., strings, lists) will result in an error.
-
-## FAQs
-
-### What happens if the field does not exist?
-
-If the field does not exist, `HINCRBYFLOAT` initializes the field to `0` and then performs the increment.
-
-### Can the increment be a negative number?
-
-Yes, the increment provided can be a negative floating-point number, effectively decrementing the field’s value.
+The command is always propagated in the replication link and the Append Only
+File as a `HSET` operation, so that differences in the underlying floating point
+math implementation will not be sources of inconsistency.

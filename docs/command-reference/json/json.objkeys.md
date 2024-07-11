@@ -1,71 +1,55 @@
 ---
 description: Discover Redis JSON.OBJKEYS command to fetch keys from a JSON object.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.OBJKEYS
 
-<PageTitle title="Redis JSON.OBJKEYS Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `JSON.OBJKEYS` command is used to retrieve the keys of a JSON object stored in Redis. This command is part of the RedisJSON module, which allows for manipulation and querying of JSON documents stored as Redis keys. Typical use cases include examining the structure of a JSON object, validating the existence of specific keys, and iterating over the key names for further processing.
+<PageTitle title="Redis JSON.OBJKEYS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-JSON.OBJKEYS <key> [path]
-```
+    JSON.OBJKEYS key [path]
 
-## Parameter Explanations
+**Time complexity:** O(N) when path is evaluated to a single value, where N is the number of keys in the object, O(N) when path is evaluated to multiple values, where N is the size of the key
 
-- `<key>`: The Redis key where the JSON object is stored.
-- `[path]`: An optional JSONPath expression to specify the location within the JSON document. If omitted, defaults to the root (`$`).
+**ACL categories:** @json
 
-## Return Values
+Return the keys in the object that's referenced by `path`
 
-- **Array**: Returns an array of strings representing the keys at the provided JSON path.
-- **Null**: Returns `null` if the path does not exist or is not a valid JSON object path.
+[Examples](#examples)
 
-### Example Output
+## Required arguments
 
-```plaintext
-1) "name"
-2) "age"
-3) "address"
-```
+<details open><summary><code>key</code></summary> 
 
-## Code Examples
+is key to parse. Returns `null` for nonexistent keys.
+</details>
 
-```cli
-dragonfly> JSON.SET mydoc $ '{"name":"John", "age":30, "address":{"city":"New York","zip":"10001"}}'
+## Optional arguments
+
+<details open><summary><code>path</code></summary> 
+
+is JSONPath to specify. Default is root `$`. Returns `null` for nonexistant path.
+
+</details>
+
+## Return
+
+JSON.OBJKEYS returns an array of array replies for each path, an array of the key names in the object as a bulk string reply, or `nil` if the matching JSON value is not an object. 
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
+
+## Examples
+
+``` bash
+dragonfly> JSON.SET doc $ '{"a":[3], "nested": {"a": {"b":2, "c": 1}}}'
 OK
-dragonfly> JSON.OBJKEYS mydoc $
-1) "name"
-2) "age"
-3) "address"
-dragonfly> JSON.OBJKEYS mydoc $.address
-1) "city"
-2) "zip"
+dragonfly> JSON.OBJKEYS doc $..a
+1) (nil)
+2) 1) "b"
+   2) "c"
 ```
 
-## Best Practices
+## See also
 
-- Ensure that the paths provided are accurate to avoid unexpected null returns.
-- Use JSON.OBJKEYS to validate the structure of your JSON objects before performing operations that depend on specific keys.
-
-## Common Mistakes
-
-- **Invalid Path**: Providing an incorrect JSONPath, resulting in a null return.
-- **Non-Object Paths**: Using JSON.OBJKEYS on a path that does not resolve to a JSON object; it only works with objects, not arrays or primitive values.
-
-## FAQs
-
-### What happens if I provide a path that does not exist?
-
-If the specified path does not exist or does not lead to a JSON object, the command will return `null`.
-
-### Can I use JSON.OBJKEYS on arrays?
-
-No, `JSON.OBJKEYS` is specifically designed for JSON objects. Using it on arrays will result in a null return.
+`JSON.ARRINDEX` | `JSON.ARRINSERT` 

@@ -6,75 +6,51 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # KEYS
 
-<PageTitle title="Redis KEYS Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `KEYS` command in Redis is used to find all keys matching a given pattern. It is particularly useful for debugging or discovering key names within your database, especially in development environments. However, it should be used sparingly in production due to its potential impact on performance.
+<PageTitle title="Redis KEYS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-KEYS pattern
-```
+    KEYS pattern
 
-## Parameter Explanations
+**Time complexity:** O(N) with N being the number of keys in the database, under the assumption that the key names in the database and the given pattern have limited length.
 
-- `pattern`: A glob-style pattern to match keys against. Patterns can include special characters:
-  - `*` matches zero or more characters.
-  - `?` matches exactly one character.
-  - `[abc]` matches any one of the characters inside the brackets.
-  - `[a-z]` matches any character in the range.
+**ACL categories:** @keyspace, @read, @slow, @dangerous
 
-## Return Values
+Returns all keys matching `pattern`.
 
-The `KEYS` command returns an array of keys that match the specified pattern.
+While the time complexity for this operation is O(N), the constant times are
+fairly low.
 
-Example:
+Supported glob-style patterns:
 
-```plaintext
-1) "key1"
-2) "key2"
-3) "anotherkey"
-```
+- `h?llo` matches `hello`, `hallo` and `hxllo`
+- `h*llo` matches `hllo` and `heeeello`
+- `h[ae]llo` matches `hello` and `hallo,` but not `hillo`
+- `h[^e]llo` matches `hallo`, `hbllo`, ... but not `hello`
+- `h[a-b]llo` matches `hallo` and `hbllo`
 
-If no keys match, it returns an empty list.
+Use `\` to escape special characters if you want to match them verbatim.
 
-## Code Examples
+## Return
 
-```cli
-dragonfly> SET key1 "value1"
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of keys matching `pattern`.
+
+**Number of elements returned:**
+
+Dragonfly protects itself from an overwhelming number of returned keys by imposing a limit on the quantity. To modify this limit, update the value of the "keys_output_limit" flag. Please refer to [Dragonfly configuration](https://github.com/dragonflydb/dragonfly#configuration) for more information how to change dragonfly flag values.
+
+## Examples
+
+```shell
+dragonfly> MSET firstname Jack lastname Stuntman age 35
 OK
-dragonfly> SET key2 "value2"
-OK
-dragonfly> SET anotherkey "value3"
-OK
-dragonfly> KEYS key*
-1) "key1"
-2) "key2"
-dragonfly> KEYS *key
-1) "anotherkey"
-dragonfly> KEYS k?y1
-1) "key1"
+dragonfly> KEYS *name*
+1) "lastname"
+2) "firstname"
+dragonfly> KEYS a??
+1) "age"
+dragonfly> KEYS *
+1) "lastname"
+2) "age"
+3) "firstname"
 ```
-
-## Best Practices
-
-- **Use in Development:** The `KEYS` command is best used in development or debugging scenarios due to its potential to cause high latency by scanning the entire keyspace.
-- **Alternative Commands:** In production, prefer using `SCAN` as it performs incremental iterations over the keyspace, being more memory and CPU efficient.
-- **Pattern Specificity:** Be specific with the patterns to minimize the number of keys returned and reduce overhead.
-
-## Common Mistakes
-
-- **Large Databases:** Running `KEYS` on a large dataset can block the server and degrade performance. Use it cautiously.
-- **Misunderstanding Patterns:** Ensure the correct use of wildcard characters in patterns to avoid unexpected results.
-
-## FAQs
-
-### How does `KEYS` impact Redis performance?
-
-Using `KEYS` on a large dataset can block the Redis server, leading to increased latency and potential downtime for other operations. It scans the entire keyspace, which can be resource-intensive.
-
-### What are the alternatives to `KEYS` for safer production use?
-
-The `SCAN` command is recommended for iterating through large datasets incrementally. It allows you to process keys in batches without blocking the server.

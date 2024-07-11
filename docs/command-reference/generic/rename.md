@@ -6,59 +6,31 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # RENAME
 
-<PageTitle title="Redis RENAME Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `RENAME` command in Redis is used to change the name of an existing key to a new name. This is particularly useful for refactoring data models, renaming keys based on changing business logic, or simply reorganizing your data structure without losing any data.
+<PageTitle title="Redis RENAME Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```cli
-RENAME oldkey newkey
-```
+    RENAME key newkey
 
-## Parameter Explanations
+**Time complexity:** O(1)
 
-- **oldkey**: The current name of the key you want to rename.
-- **newkey**: The new name for the key. If `newkey` already exists, it will be overwritten.
+**ACL categories:** @keyspace, @write, @slow
 
-## Return Values
+Renames `key` to `newkey`.
+It returns an error when `key` does not exist.
+If `newkey` already exists it is overwritten, when this happens `RENAME` executes an implicit `DEL` operation, so if the deleted key contains a very big value it may cause high latency even if `RENAME` itself is usually a constant-time operation.
 
-- **OK**: The command returns "OK" if the key was renamed successfully.
-- **Error**: An error is returned if:
-  - `oldkey` does not exist.
-  - `oldkey` and `newkey` are the same.
+## Return
 
-## Code Examples
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings)
 
-```cli
-dragonfly> SET mykey "value"
+## Examples
+
+```shell
+dragonfly> SET mykey "Hello"
 OK
-dragonfly> RENAME mykey newkey
+dragonfly> RENAME mykey myotherkey
 OK
-dragonfly> GET newkey
-"value"
-dragonfly> GET mykey
-(nil)
+dragonfly> GET myotherkey
+"Hello"
 ```
-
-## Best Practices
-
-- Ensure that `newkey` is not inadvertently overwriting critical data. This can be managed by using the `RENAMENX` command which only renames if the new key does not exist.
-- Use descriptive and meaningful key names to avoid unnecessary renaming operations.
-
-## Common Mistakes
-
-- Attempting to rename a key that does not exist will result in an error.
-- Renaming a key to the same name (i.e., `RENAME oldkey oldkey`) will result in an error.
-
-## FAQs
-
-### What happens if the `newkey` already exists?
-
-If `newkey` already exists, it will be overwritten with the value of `oldkey`.
-
-### Can I rename a key to itself?
-
-No, Redis will return an error if you try to rename a key to itself.

@@ -6,55 +6,35 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # HSETNX
 
-<PageTitle title="Redis HSETNX Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-`HSETNX` is a Redis command used to set the value of a field in a hash only if the field does not already exist. This is useful for ensuring that certain fields are set only once, preventing accidental overwrites.
+<PageTitle title="Redis HSETNX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```cli
-HSETNX key field value
-```
+    HSETNX key field value
 
-## Parameter Explanations
+**Time complexity:** O(1)
 
-- **key**: The name of the hash.
-- **field**: The specific field in the hash.
-- **value**: The value to set if the field does not already exist.
+**ACL categories:** @read, @hash, @fast
 
-## Return Values
+Sets `field` in the hash stored at `key` to `value`, only if `field` does not
+yet exist.
+If `key` does not exist, a new key holding a hash is created.
+If `field` already exists, this operation has no effect.
 
-- `(integer) 1`: Indicates that the field was set successfully because it did not previously exist.
-- `(integer) 0`: Indicates that the field was not set because it already exists.
+## Return
 
-## Code Examples
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
 
-```cli
-dragonfly> HSETNX myhash field1 "value1"
+- `1` if `field` is a new field in the hash and `value` was set.
+- `0` if `field` already exists in the hash and no operation was performed.
+
+## Examples
+
+```shell
+dragonfly> HSETNX myhash field "Hello"
 (integer) 1
-dragonfly> HSETNX myhash field1 "value2"
+dragonfly> HSETNX myhash field "World"
 (integer) 0
-dragonfly> HGET myhash field1
-"value1"
+dragonfly> HGET myhash field
+"Hello"
 ```
-
-## Best Practices
-
-- Ensure that `HSETNX` is used when setting initial values that should not be overwritten.
-- Combine with other commands like `HEXISTS` to check if a field exists before attempting further operations.
-
-## Common Mistakes
-
-- Using `HSETNX` without understanding that it will not overwrite existing fields. This can lead to unexpected behavior if you assume the field will always be updated.
-
-## FAQs
-
-### What happens if the key does not exist?
-
-If the key does not exist, `HSETNX` will create a new hash with the specified field and value.
-
-### Can `HSETNX` be used to update an existing field?
-
-No, `HSETNX` will not update an existing field; it only sets the field if it does not already exist.

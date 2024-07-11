@@ -6,71 +6,40 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # HINCRBY
 
-<PageTitle title="Redis HINCRBY Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `HINCRBY` command in Redis is used to increment the integer value of a field in a hash by a specified amount. This command is useful in scenarios where you need to perform atomic increments on counters stored within hashes, such as tracking user scores, inventory counts, or any other numeric data that requires incremental updates.
+<PageTitle title="Redis HINCRBY Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```
-HINCRBY key field increment
-```
+    HINCRBY key field increment
 
-## Parameter Explanations
+**Time complexity:** O(1)
 
-- **key**: The name of the hash.
-- **field**: The field within the hash whose value you want to increment.
-- **increment**: The amount by which to increment the field's value. This can be a positive or negative integer.
+**ACL categories:** @write, @hash, @fast
 
-## Return Values
+Increments the number stored at `field` in the hash stored at `key` by
+`increment`.
+If `key` does not exist, a new key holding a hash is created.
+If `field` does not exist the value is set to `0` before the operation is
+performed.
 
-The `HINCRBY` command returns the value of the field after the increment operation is applied.
+The range of values supported by `HINCRBY` is limited to 64 bit signed integers.
 
-### Example Outputs
+## Return
 
-- If the field does not exist before the operation:
-  ```cli
-  (integer) 10
-  ```
-- If the field exists and its value is incremented:
-  ```cli
-  (integer) 20
-  ```
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the value at `field` after the increment operation.
 
-## Code Examples
+## Examples
 
-```cli
-dragonfly> HSET myhash field1 5
+Since the `increment` argument is signed, both increment and decrement
+operations can be performed:
+
+```shell
+dragonfly> HSET myhash field 5
 (integer) 1
-dragonfly> HINCRBY myhash field1 10
-(integer) 15
-dragonfly> HINCRBY myhash field2 -5
+dragonfly> HINCRBY myhash field 1
+(integer) 6
+dragonfly> HINCRBY myhash field -1
+(integer) 5
+dragonfly> HINCRBY myhash field -10
 (integer) -5
-dragonfly> HGETALL myhash
-1) "field1"
-2) "15"
-3) "field2"
-4) "-5"
 ```
-
-## Best Practices
-
-- Ensure that the fields you intend to increment are initialized appropriately.
-- Use `HINCRBY` for atomic operations to avoid race conditions in concurrent environments.
-
-## Common Mistakes
-
-- Using non-integer values for increments can lead to errors. Always ensure the increment value is an integer.
-- Attempting to increment a field containing non-numeric data will result in an error.
-
-## FAQs
-
-### What happens if the field does not exist before invoking `HINCRBY`?
-
-If the field does not exist, `HINCRBY` initializes it to 0 before applying the increment.
-
-### Can I use `HINCRBY` with floating-point numbers?
-
-No, `HINCRBY` only supports integer increments. For floating-point number increments, use the `HINCRBYFLOAT` command.

@@ -6,81 +6,71 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.DEBUG FIELDS
 
-<PageTitle title="Redis `JSON.DEBUG FIELDS` Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-`JSON.DEBUG FIELDS` is a command in Redis designed to provide debugging information about the structure of JSON documents stored in Redis. It gives insights into the fields present within a JSON document, which can be particularly useful during development or troubleshooting.
-
-Typical scenarios include:
-
-- Understanding the structure of complex JSON documents.
-- Debugging issues related to missing or unexpected fields in JSON objects.
-- Verifying the integrity and completeness of JSON data stored in Redis.
+<PageTitle title="Redis `JSON.DEBUG FIELDS` Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```cli
-JSON.DEBUG FIELDS key
+    JSON.DEBUG fields key path
+
+**Time complexity:** N/A
+
+**ACL categories:** @json
+
+Report the number of fields in the JSON element.
+
+## Return
+
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list that represents the number of fields of JSON value at each path.
+
+## Examples
+
+Check the number of fields in a JSON object.
+Note that the command reports the total number of fields at a path, including those from child objects.
+
+```shell
+dragonfly> JSON.SET obj_doc $ '{"a":1, "b":2, "c":{"k1":1,"k2":2}}'
+OK
+
+dragonfly> JSON.DEBUG fields obj_doc '$.a'
+1) (integer) 1
+
+dragonfly> JSON.DEBUG fields obj_doc '$.b'
+1) (integer) 1
+
+dragonfly> JSON.DEBUG fields obj_doc '$.c'
+1) (integer) 2
+
+dragonfly> JSON.DEBUG fields obj_doc '$'
+1) (integer) 5
 ```
 
-## Parameter Explanations
+Check the number of fields in a JSON array.
+Note that the array itself has 9 elements.
+Among these 9 elements, there is one object `{"a":1,"b":2}` with 2 fields, and one array `[1,2,3,4]` with 4 fields.
+So in total, there are 9 + 2 + 4 = 15 fields.
 
-- `key`: The key associated with the JSON document for which you want to retrieve field information. It must be a valid string corresponding to an existing key in the database.
-
-## Return Values
-
-The command returns an array of strings, each representing a field name within the specified JSON document.
-
-### Example outputs:
-
-- If the JSON document has fields "name", "age", and "address", the output might be:
-
-  ```cli
-  1) "name"
-  2) "age"
-  3) "address"
-  ```
-
-- For an empty or non-existent JSON document, it will return an empty array.
-
-## Code Examples
-
-```cli
-dragonfly> JSON.SET myjson . '{"name":"John", "age":30, "city":"New York"}'
+```shell
+dragonfly> JSON.SET arr_doc . '[1, 2.3, "foo", true, null, {}, [], {"a":1,"b":2}, [1,2,3,4]]'
 OK
-dragonfly> JSON.DEBUG FIELDS myjson
-1) "name"
-2) "age"
-3) "city"
 
-dragonfly> JSON.SET anotherjson . '{"product":"Book", "price":15}'
-OK
-dragonfly> JSON.DEBUG FIELDS anotherjson
-1) "product"
-2) "price"
+dragonfly> JSON.GET arr_doc '$[*]'
+"[1,2.3,\"foo\",true,null,{},[],{\"a\":1,\"b\":2},[1,2,3,4]]"
 
-dragonfly> JSON.SET emptyjson . '{}'
-OK
-dragonfly> JSON.DEBUG FIELDS emptyjson
-(empty array)
+dragonfly> JSON.DEBUG fields arr_doc '$[*]'
+1) (integer) 1  # 1
+2) (integer) 1  # 2.3
+3) (integer) 1  # "foo"
+4) (integer) 1  # true
+5) (integer) 1  # null
+6) (integer) 0  # {}
+7) (integer) 0  # []
+8) (integer) 2  # {"a":1,"b":2}
+9) (integer) 4  # [1,2,3,4]
+
+dragonfly> JSON.DEBUG fields arr_doc '$[7,8]'
+1) (integer) 2  # {"a":1,"b":2}
+2) (integer) 4  # [1,2,3,4]
+
+dragonfly> JSON.DEBUG fields arr_doc '$'
+1) (integer) 15
 ```
-
-## Best Practices
-
-- Use `JSON.DEBUG FIELDS` during development to verify that your JSON documents contain all expected fields before proceeding with application logic.
-- Combine `JSON.DEBUG FIELDS` with other JSON commands like `JSON.GET` to dynamically adjust your application behavior based on the existence of certain fields.
-
-## Common Mistakes
-
-- Attempting to use `JSON.DEBUG FIELDS` on keys that do not store JSON documents will result in an error. Ensure that the key indeed contains a JSON value before using this command.
-
-## FAQs
-
-### What happens if I use `JSON.DEBUG FIELDS` on a non-JSON key?
-
-Using `JSON.DEBUG FIELDS` on a key that does not store a JSON document will result in a type error. Always ensure the key refers to a JSON structure.
-
-### Can `JSON.DEBUG FIELDS` handle deeply nested JSON structures?
-
-`JSON.DEBUG FIELDS` only provides the top-level fields of the JSON document. For deeper insights, you will need to access nested objects individually.

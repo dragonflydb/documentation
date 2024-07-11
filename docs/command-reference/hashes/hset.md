@@ -6,69 +6,43 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # HSET
 
-<PageTitle title="Redis HSET Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `HSET` command in Redis is used to set the value of a field in a hash. If the hash does not exist, it is created. This command is typically used for storing objects or records where each field represents an attribute of the object.
+<PageTitle title="Redis HSET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-HSET key field value [field value ...]
-```
+    HSET key field value [field value ...]
 
-## Parameter Explanations
+**Time complexity:** O(1) for each field/value pair added, so O(N) to add N field/value pairs when the command is called with multiple field/value pairs.
 
-- `key`: The name of the hash.
-- `field`: The field within the hash whose value you want to set.
-- `value`: The value to assign to the field.
+**ACL categories:** @write, @hash, @fast
 
-Multiple field-value pairs can be specified in a single `HSET` command.
+Sets the specified fields to their respective values in the hash stored at `key`.
 
-## Return Values
+This command overwrites the values of specified fields that exist in the hash.
+If `key` doesn't exist, a new key holding a hash is created.
 
-The command returns an integer representing the number of fields that were added to the hash, not including fields that already existed.
+## Return
 
-- If a new field is added: `(integer) 1`
-- If an existing field's value is updated: `(integer) 0`
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): The number of fields that were added.
 
-## Code Examples
+## Examples
 
-```cli
-dragonfly> HSET myhash field1 "value1"
+```shell
+dragonfly> HSET myhash field1 "Hello"
 (integer) 1
-dragonfly> HSET myhash field2 "value2"
-(integer) 1
-dragonfly> HSET myhash field2 "new_value2"
-(integer) 0
+dragonfly> HGET myhash field1
+"Hello"
+dragonfly> HSET myhash field2 "Hi" field3 "World"
+(integer) 2
+dragonfly> HGET myhash field2
+"Hi"
+dragonfly> HGET myhash field3
+"World"
 dragonfly> HGETALL myhash
 1) "field1"
-2) "value1"
+2) "Hello"
 3) "field2"
-4) "new_value2"
+4) "Hi"
+5) "field3"
+6) "World"
 ```
-
-## Best Practices
-
-- Use meaningful and consistent naming conventions for keys and fields to keep data organized and understandable.
-- Consider using TTL (`EXPIRE`) for hashes if the data should only persist for a specific period.
-
-## Common Mistakes
-
-- Not checking if a field already exists before setting a value might lead to unintended data overwrites.
-- Passing incorrect types for field or value can cause unexpected behavior.
-
-## FAQs
-
-### What happens if I `HSET` a value to a non-existing hash?
-
-A new hash will be created automatically with the specified field-value pair.
-
-### Can `HSET` handle multiple fields at once?
-
-Yes, you can set multiple field-value pairs by chaining them in the command.
-
-### Will `HSET` overwrite existing fields?
-
-Yes, if the field already exists, its value will be overwritten.

@@ -1,74 +1,54 @@
 ---
 description: Learn using Redis JSON.OBJLEN command to get the length of a JSON object.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # JSON.OBJLEN
 
-<PageTitle title="Redis JSON.OBJLEN Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `JSON.OBJLEN` command in Redis is used to get the number of keys in a JSON object stored at a specified path. It is part of the RedisJSON module, which allows you to manipulate JSON data directly within Redis. This command is particularly useful for quickly retrieving the size of a JSON object without needing to fetch and parse the entire object.
+<PageTitle title="Redis JSON.OBJLEN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-JSON.OBJLEN <key> [path]
+    JSON.OBJLEN key [path]
+
+**Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
+
+**ACL categories:** @json
+
+Report the number of keys in the JSON object at `path` in `key`
+
+[Examples](#examples)
+
+## Required arguments
+
+<details open><summary><code>key</code></summary> 
+
+is key to parse. Returns `null` for nonexistent keys.
+</details>
+
+## Optional arguments
+
+<details open><summary><code>path</code></summary> 
+
+is JSONPath to specify. Default is root `$`. Returns `null` for nonexistant path.
+
+</details>
+
+## Return
+
+JSON.OBJLEN returns an array of integer replies for each path specified as the number of keys in the object or `nil`, if the matching JSON value is not an object.
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
+
+## Examples
+
+``` bash
+dragonfly> JSON.SET doc $ '{"a":[3], "nested": {"a": {"b":2, "c": 1}}}'
+OK
+dragonfly> JSON.OBJLEN doc $..a
+1) (nil)
+2) (integer) 2
 ```
 
-## Parameter Explanations
+## See also
 
-- `<key>`: The key under which the JSON document is stored.
-- `[path]`: (Optional) The path to the JSON object whose length is to be retrieved. Defaults to the root if not specified.
-
-## Return Values
-
-The command returns an integer representing the number of keys in the specified JSON object.
-
-### Example Outputs
-
-- If the JSON object has 3 keys, the output will be:
-  ```plaintext
-  (integer) 3
-  ```
-- If the specified path does not point to a JSON object, the output will be:
-  ```plaintext
-  (nil)
-  ```
-
-## Code Examples
-
-```cli
-dragonfly> JSON.SET myjson $ '{"name":"John","age":30,"city":"New York"}'
-OK
-dragonfly> JSON.OBJLEN myjson $
-(integer) 3
-dragonfly> JSON.SET myjson $ '{"person":{"name":"John","age":30},"city":"New York"}'
-OK
-dragonfly> JSON.OBJLEN myjson $.person
-(integer) 2
-dragonfly> JSON.OBJLEN myjson $.city
-(nil)
-```
-
-## Best Practices
-
-- Always ensure that the path provided points to a valid JSON object. Using a path that points to a non-object type (e.g., string, array) will result in a nil response.
-- Combine `JSON.OBJLEN` with other JSON commands to efficiently manage and query your JSON data within Redis.
-
-## Common Mistakes
-
-- Providing an incorrect path that does not lead to a JSON object can cause confusion. Double-check paths to ensure they are correct.
-- Assuming that the command will work on non-object types like arrays or strings. The `JSON.OBJLEN` command is specifically designed for objects.
-
-## FAQs
-
-### What happens if I provide a non-existent key?
-
-If you provide a key that does not exist, the result will be `(nil)`.
-
-### Can I use JSON.OBJLEN on JSON arrays or strings?
-
-No, `JSON.OBJLEN` is specifically for counting the keys in a JSON object. It will return `(nil)` if used on other types like arrays or strings.
+`JSON.ARRINDEX` | `JSON.ARRINSERT` 
