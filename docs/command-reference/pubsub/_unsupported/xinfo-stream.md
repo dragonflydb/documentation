@@ -1,12 +1,11 @@
 ---
-description: Learn how to use Redis XINFO STREAM command to get information about a stream.
+description:  Learn how to use Redis XINFO STREAM command to get information about a stream.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # XINFO STREAM
 
-<PageTitle title="Redis XINFO STREAM Explained (Better Than Official Docs)" />
+<PageTitle title="Redis XINFO STREAM Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -18,15 +17,15 @@ This command returns information about the stream stored at `<key>`.
 
 The informative details provided by this command are:
 
-- **length**: the number of entries in the stream (see `XLEN`)
-- **radix-tree-keys**: the number of keys in the underlying radix data structure
-- **radix-tree-nodes**: the number of nodes in the underlying radix data structure
-- **groups**: the number of consumer groups defined for the stream
-- **last-generated-id**: the ID of the least-recently entry that was added to the stream
-- **max-deleted-entry-id**: the maximal entry ID that was deleted from the stream
-- **entries-added**: the count of all entries added to the stream during its lifetime
-- **first-entry**: the ID and field-value tuples of the first entry in the stream
-- **last-entry**: the ID and field-value tuples of the last entry in the stream
+* **length**: the number of entries in the stream (see `XLEN`)
+* **radix-tree-keys**: the number of keys in the underlying radix data structure
+* **radix-tree-nodes**: the number of nodes in the underlying radix data structure
+* **groups**: the number of consumer groups defined for the stream
+* **last-generated-id**: the ID of the least-recently entry that was added to the stream
+* **max-deleted-entry-id**: the maximal entry ID that was deleted from the stream
+* **entries-added**: the count of all entries added to the stream during its lifetime
+* **first-entry**: the ID and field-value tuples of the first entry in the stream
+* **last-entry**: the ID and field-value tuples of the last entry in the stream
 
 The optional `FULL` modifier provides a more verbose reply.
 When provided, the `FULL` reply includes an **entries** array that consists of the stream entries (ID and field-value tuples) in ascending order.

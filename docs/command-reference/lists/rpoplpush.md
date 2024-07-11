@@ -1,80 +1,99 @@
 ---
-description: Learn to use Redis RPOPLPUSH to shift elements between two lists and provide basic queueing.
+description:  Learn to use Redis RPOPLPUSH to shift elements between two lists and provide basic queueing.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # RPOPLPUSH
 
-<PageTitle title="Redis RPOPLPUSH Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-`RPOPLPUSH` is a Redis command that atomically removes the last element (tail) from one list and inserts it at the beginning (head) of another list. This operation is useful for implementing circular lists or rotating tasks in task queues.
+<PageTitle title="Redis RPOPLPUSH Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-RPOPLPUSH source destination
-```
+    RPOPLPUSH source destination
 
-## Parameter Explanations
+**Time complexity:** O(1)
 
-- `source`: The name of the list from which to pop the element. This parameter must be an existing list.
-- `destination`: The name of the list to push the popped element onto. This can be the same as the source list, effectively rotating the list.
+**ACL categories:** @write, @list, @slow
 
-## Return Values
+Atomically returns and removes the last element (tail) of the list stored at
+`source`, and pushes the element at the first element (head) of the list stored
+at `destination`.
 
-- Returns the element being popped and pushed.
-- If the `source` list is empty, a nil value is returned.
+For example: consider `source` holding the list `a,b,c`, and `destination`
+holding the list `x,y,z`.
+Executing `RPOPLPUSH` results in `source` holding `a,b` and `destination`
+holding `c,x,y,z`.
 
-## Code Examples
+If `source` does not exist, the value `nil` is returned and no operation is
+performed.
+If `source` and `destination` are the same, the operation is equivalent to
+removing the last element from the list and pushing it as first element of the
+list, so it can be considered as a list rotation command.
 
-```cli
-dragonfly> LPUSH mylist "one"
+## Return
+
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the element being popped and pushed.
+
+## Examples
+
+```shell
+dragonfly> RPUSH mylist "one"
 (integer) 1
-dragonfly> LPUSH mylist "two"
+dragonfly> RPUSH mylist "two"
 (integer) 2
-dragonfly> LPUSH mylist "three"
+dragonfly> RPUSH mylist "three"
 (integer) 3
-dragonfly> LRANGE mylist 0 -1
-1) "three"
-2) "two"
-3) "one"
 dragonfly> RPOPLPUSH mylist myotherlist
-"one"
+"three"
 dragonfly> LRANGE mylist 0 -1
-1) "three"
+1) "one"
 2) "two"
 dragonfly> LRANGE myotherlist 0 -1
-1) "one"
-dragonfly> RPOPLPUSH mylist mylist
-"two"
-dragonfly> LRANGE mylist 0 -1
-1) "two"
-2) "three"
+1) "three"
 ```
 
-## Best Practices
+## Pattern: Reliable queue
 
-Using `RPOPLPUSH` can help maintain the order of tasks when working with task queues. It ensures atomic operations, preventing race conditions in concurrent environments.
+Dragonfly can be used as a messaging server to implement processing of background
+jobs or other kinds of messaging tasks.
+A simple form of queue is often obtained pushing values into a list in the
+producer side, and waiting for this values in the consumer side using `RPOP`
+(using polling), or `BRPOP` if the client is better served by a blocking
+operation.
 
-## Common Mistakes
+However in this context the obtained queue is not _reliable_ as messages can
+be lost, for example in the case there is a network problem or if the consumer
+crashes just after the message is received but before it can be processed.
 
-### Using Non-List Data Types
+`RPOPLPUSH` (or `BRPOPLPUSH` for the blocking variant) offers a way to avoid
+this problem: the consumer fetches the message and at the same time pushes it
+into a _processing_ list.
+It will use the `LREM` command in order to remove the message from the
+_processing_ list once the message has been processed.
 
-Trying to use `RPOPLPUSH` on keys that are not lists will result in an error. Ensure both `source` and `destination` are lists.
+An additional client may monitor the _processing_ list for items that remain
+there for too much time, pushing timed out items into the queue
+again if needed.
 
-### Popping from Empty Lists
+## Pattern: Circular list
 
-If the `source` list is empty, `RPOPLPUSH` will return a nil value. Handle this scenario to avoid unexpected behaviors in your application logic.
+Using `RPOPLPUSH` with the same source and destination key, a client can visit
+all the elements of an N-elements list, one after the other, in O(N) without
+transferring the full list from the server to the client using a single `LRANGE`
+operation.
 
-## FAQs
+The above pattern works even if one or both of the following conditions occur:
 
-### Can `RPOPLPUSH` Be Used on the Same List?
+* There are multiple clients rotating the list: they'll fetch different
+  elements, until all the elements of the list are visited, and the process
+  restarts.
+* Other clients are actively pushing new items at the end of the list.
 
-Yes, `RPOPLPUSH` can be used on the same list to rotate its elements.
+The above makes it very simple to implement a system where a set of items must
+be processed by N workers continuously as fast as possible.
+An example is a monitoring system that must check that a set of web sites are
+reachable, with the smallest delay possible, using a number of parallel workers.
 
-### What Happens if the Source List is Empty?
-
-If the source list is empty, `RPOPLPUSH` returns nil and no operation is performed on the destination list.
+Note that this implementation of workers is trivially scalable and reliable,
+because even if a message is lost the item is still in the queue and will be
+processed at the next iteration.

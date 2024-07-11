@@ -1,58 +1,23 @@
 ---
-description: Discover how to use Redis SLOWLOG LEN command to retrieve the current number of entries in the slow log.
+description:  Discover how to use Redis SLOWLOG LEN command to retrieve the current number of entries in the slow log.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # SLOWLOG LEN
 
-<PageTitle title="Redis SLOWLOG LEN Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `SLOWLOG LEN` command is part of the Redis Slow Log feature, used to inspect the length of the slow query log. This log records queries that exceed a certain execution time threshold, allowing administrators to identify and optimize inefficient commands. Typical scenarios include performance monitoring and debugging.
+<PageTitle title="Redis SLOWLOG LEN Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```cli
-SLOWLOG LEN
-```
+    SLOWLOG LEN
 
-## Parameter Explanations
+The `SLOWLOG LEN` returns the current number of entries in the slow log.
+A new entry is added to the slow log whenever a command exceeds the execution time threshold defined by the `slowlog_log_slower_than` configuration directive.
+The maximum number of entries in the slow log is governed by the `slowlog_max_len` configuration directive.
+Once the slog log reaches its maximal size, the oldest entry is removed whenever a new entry is created.
+The slow log can be cleared with the `SLOWLOG RESET` command.
 
-This command does not take any parameters.
+## Return
 
-## Return Values
-
-The `SLOWLOG LEN` command returns an integer representing the number of entries in the slow log.
-
-### Example Outputs
-
-- `(integer) 0`: No slow queries have been logged.
-- `(integer) 5`: There are five entries in the slow log.
-
-## Code Examples
-
-```cli
-dragonfly> SLOWLOG LEN
-(integer) 3
-```
-
-## Best Practices
-
-- Regularly monitor the slow log length to maintain optimal performance.
-- Adjust the `slowlog-log-slower-than` configuration to define what qualifies as a slow query based on your specific needs.
-
-## Common Mistakes
-
-- Ignoring a high number of entries in the slow log, which may indicate underlying performance issues.
-
-## FAQs
-
-### How can I clear the slow log?
-
-Use the `SLOWLOG RESET` command to clear the slow log.
-
-### What defines a slow query in Redis?
-
-A slow query exceeds the execution time threshold set by the `slowlog-log-slower-than` configuration parameter.
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): The number of entries in the slow log.

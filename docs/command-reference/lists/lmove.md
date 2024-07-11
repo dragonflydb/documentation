@@ -1,79 +1,106 @@
 ---
-description: Learn using Redis LMOVE to shift an element from source list to destination list.
+description:  Learn using Redis LMOVE to shift an element from source list to destination list.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # LMOVE
 
-<PageTitle title="Redis LMOVE Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `LMOVE` command in Redis atomically moves an element from one list to another, supporting both left and right directions. It's particularly useful for implementing queues or stacks where elements need to be transferred across different lists without race conditions.
+<PageTitle title="Redis LMOVE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```cli
-LMOVE source destination LEFT|RIGHT LEFT|RIGHT
-```
+    LMOVE source destination <LEFT | RIGHT> <LEFT | RIGHT>
 
-## Parameter Explanations
+**Time complexity:** O(1)
 
-- **source**: The key of the list from which the element will be moved.
-- **destination**: The key of the list to which the element will be moved.
-- **LEFT|RIGHT**: Direction to pop from the source list. `LEFT` pops the first element (head), while `RIGHT` pops the last element (tail).
-- **LEFT|RIGHT**: Direction to push to the destination list. `LEFT` pushes the element to the front (head), while `RIGHT` pushes it to the back (tail).
+**ACL categories:** @write, @list, @slow
 
-## Return Values
+Atomically returns and removes the first/last element (head/tail depending on
+the `wherefrom` argument) of the list stored at `source`, and pushes the
+element at the first/last element (head/tail depending on the `whereto`
+argument) of the list stored at `destination`.
 
-If successful, `LMOVE` returns the element that was moved. If either the source list is empty or does not exist, it returns `nil`.
+For example: consider `source` holding the list `a,b,c`, and `destination`
+holding the list `x,y,z`.
+Executing `LMOVE source destination RIGHT LEFT` results in `source` holding
+`a,b` and `destination` holding `c,x,y,z`.
 
-### Examples of Possible Outputs
+If `source` does not exist, the value `nil` is returned and no operation is
+performed.
+If `source` and `destination` are the same, the operation is equivalent to
+removing the first/last element from the list and pushing it as first/last
+element of the list, so it can be considered as a list rotation command (or a
+no-op if `wherefrom` is the same as `whereto`).
 
-1. Element successfully moved:
-   ```cli
-   "element_value"
-   ```
-2. Source list is empty/non-existent:
-   ```cli
-   (nil)
-   ```
+This command comes in place of the now deprecated `RPOPLPUSH`. Doing
+`LMOVE RIGHT LEFT` is equivalent.
 
-## Code Examples
+## Return
 
-```cli
-dragonfly> RPUSH mylist "one" "two" "three"
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the element being popped and pushed.
+
+## Examples
+
+```shell
+dragonfly> RPUSH mylist "one"
+(integer) 1
+dragonfly> RPUSH mylist "two"
+(integer) 2
+dragonfly> RPUSH mylist "three"
 (integer) 3
-dragonfly> LRANGE mylist 0 -1
-1) "one"
-2) "two"
-3) "three"
 dragonfly> LMOVE mylist myotherlist RIGHT LEFT
 "three"
+dragonfly> LMOVE mylist myotherlist LEFT RIGHT
+"one"
 dragonfly> LRANGE mylist 0 -1
-1) "one"
-2) "two"
+1) "two"
 dragonfly> LRANGE myotherlist 0 -1
 1) "three"
+2) "one"
 ```
 
-## Best Practices
+## Pattern: Reliable queue
 
-- When using `LMOVE` to implement a task queue, ensure that both the source and destination keys are properly managed to avoid accidental data loss.
-- Consider using `BLMOVE` if you need blocking behavior when the source list is empty.
+Dragonfly can be used as a messaging server to implement processing of background
+jobs or other kinds of messaging tasks.
+A simple form of queue is often obtained pushing values into a list in the
+producer side, and waiting for this values in the consumer side using `RPOP`
+(using polling), or `BRPOP` if the client is better served by a blocking
+operation.
 
-## Common Mistakes
+However in this context the obtained queue is not _reliable_ as messages can
+be lost, for example in the case there is a network problem or if the consumer
+crashes just after the message is received but it is still to process.
 
-- Forgetting to specify both directions (LEFT|RIGHT) for popping and pushing can lead to syntax errors.
-- Using non-list types as source or destination can result in unexpected errors.
+`LMOVE` (or `BLMOVE` for the blocking variant) offers a way to avoid
+this problem: the consumer fetches the message and at the same time pushes it
+into a _processing_ list.
+It will use the `LREM` command in order to remove the message from the
+_processing_ list once the message has been processed.
 
-## FAQs
+An additional client may monitor the _processing_ list for items that remain
+there for too much time, and will push those timed out items into the queue
+again if needed.
 
-### What happens if the source list is empty?
+## Pattern: Circular list
 
-`LMOVE` returns `nil` and no element is moved.
+Using `LMOVE` with the same source and destination key, a client can visit
+all the elements of an N-elements list, one after the other, in O(N) without
+transferring the full list from the server to the client using a single `LRANGE`
+operation.
 
-### Can `LMOVE` be used with non-list data types?
+The above pattern works even if the following two conditions:
 
-No, both the source and destination must be lists.
+* There are multiple clients rotating the list: they'll fetch different
+  elements, until all the elements of the list are visited, and the process
+  restarts.
+* Even if other clients are actively pushing new items at the end of the list.
+
+The above makes it very simple to implement a system where a set of items must
+be processed by N workers continuously as fast as possible.
+An example is a monitoring system that must check that a set of web sites are
+reachable, with the smallest delay possible, using a number of parallel workers.
+
+Note that this implementation of workers is trivially scalable and reliable,
+because even if a message is lost the item is still in the queue and will be
+processed at the next iteration.

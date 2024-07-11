@@ -1,69 +1,26 @@
 ---
-description: Learn how to use Redis FLUSHALL command to delete all keys in every database.
+description:  Learn how to use Redis FLUSHALL command to delete all keys in every database.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # FLUSHALL
 
-<PageTitle title="Redis FLUSHALL Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `FLUSHALL` command in Redis is used to remove all keys from all databases. It is particularly useful during development or testing when you need to quickly reset the state of your Redis server. This command is also helpful for clearing caches or when decommissioning a Redis instance.
+<PageTitle title="Redis FLUSHALL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```cli
-FLUSHALL [ASYNC]
-```
+    FLUSHALL
 
-## Parameter Explanations
+**Time complexity:** O(N) where N is the total number of keys in all databases
 
-- `ASYNC`: Optional parameter that, if specified, will perform the flush operation asynchronously. This means the command will return immediately, and the actual deletion of keys will happen in the background.
+**ACL categories:** @keyspace, @write, @slow, @dangerous
 
-## Return Values
+Delete all the keys of all the existing databases, not just the currently selected one.
+This command never fails.
 
-The `FLUSHALL` command returns a simple string reply:
+Note: an asynchronous `FLUSHALL` command only deletes keys that were present at the time the command was invoked. Keys created during an asynchronous flush will be unaffected.
 
-- `"OK"`: If the operation was successful.
+## Return
 
-## Code Examples
-
-```cli
-dragonfly> SET key1 "value1"
-OK
-dragonfly> SET key2 "value2"
-OK
-dragonfly> DBSIZE
-(integer) 2
-dragonfly> FLUSHALL
-OK
-dragonfly> DBSIZE
-(integer) 0
-dragonfly> SET key3 "value3"
-OK
-dragonfly> SET key4 "value4"
-OK
-dragonfly> FLUSHALL ASYNC
-OK
-```
-
-## Best Practices
-
-While using `FLUSHALL`, especially in production environments, ensure that it won't disrupt your application's operations. Consider using it during maintenance windows or with the `ASYNC` option to minimize impact.
-
-## Common Mistakes
-
-- **Accidental Execution**: Using `FLUSHALL` on a live environment can lead to complete data loss. Always double-check the command before executing.
-- **Not Using ASYNC Properly**: Without `ASYNC`, large datasets might cause significant delays and block Redis operations until completion.
-
-## FAQs
-
-### Does `FLUSHALL` delete keys from all databases?
-
-Yes, `FLUSHALL` removes all keys from all databases in the Redis instance.
-
-### How does `FLUSHALL ASYNC` improve performance?
-
-The `ASYNC` option allows the server to handle the flush command in the background, letting your application continue its operations without waiting for the command to complete.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings)

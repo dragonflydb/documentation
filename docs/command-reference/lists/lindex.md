@@ -1,72 +1,44 @@
 ---
-description: Learn to use Redis LINDEX to retrieve an element from a specified position in a list.
+description:  Learn to use Redis LINDEX to retrieve an element from a specified position in a list.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # LINDEX
 
-<PageTitle title="Redis LINDEX Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-`LINDEX` is a Redis command used to retrieve an element from a list by its index. This is especially useful in scenarios where you need to access specific elements within lists stored in Redis, such as retrieving user information or configuration settings at a particular position.
+<PageTitle title="Redis LINDEX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-LINDEX key index
-```
+    LINDEX key index
 
-## Parameter Explanations
+**Time complexity:** O(N) where N is the number of elements to traverse to get to the element at index. This makes asking for the first or the last element of the list O(1).
 
-- `key`: The name of the list from which to retrieve the element.
-- `index`: The zero-based position in the list of the desired element. Negative indices can be used to count from the end of the list, with `-1` being the last element, `-2` being the second-last, and so on.
+**ACL categories:** @read, @list, @slow
 
-## Return Values
+Returns the element at index `index` in the list stored at `key`.
+The index is zero-based, so `0` means the first element, `1` the second element
+and so on.
+Negative indices can be used to designate elements starting at the tail of the
+list.
+Here, `-1` means the last element, `-2` means the penultimate and so forth.
 
-The command returns the element at the specified index in the list. If the index is out of range, it returns `nil`.
+When the value at `key` is not a list, an error is returned.
 
-### Examples:
+## Return
 
-- An existing element: `"element"`
-- Out of range: `(nil)`
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the requested element, or `nil` when `index` is out of range.
 
-## Code Examples
+## Examples
 
-```cli
-dragonfly> RPUSH mylist "one"
+```shell
+dragonfly> LPUSH mylist "World"
 (integer) 1
-dragonfly> RPUSH mylist "two"
+dragonfly> LPUSH mylist "Hello"
 (integer) 2
-dragonfly> RPUSH mylist "three"
-(integer) 3
 dragonfly> LINDEX mylist 0
-"one"
-dragonfly> LINDEX mylist 1
-"two"
+"Hello"
 dragonfly> LINDEX mylist -1
-"three"
-dragonfly> LINDEX mylist 5
+"World"
+dragonfly> LINDEX mylist 3
 (nil)
 ```
-
-## Best Practices
-
-- Ensure the list exists and contains sufficient elements before using `LINDEX` to avoid unexpected `nil` results.
-- Use negative indexing to simplify retrieval of items from the end of the list without knowing the exact length.
-
-## Common Mistakes
-
-- Using an invalid key type: `LINDEX` should only be used with Redis lists. Using it with other data types like strings or sets will result in errors.
-- Misinterpreting negative indices: Negative indices are relative to the end of the list, not absolute positions from the start.
-
-## FAQs
-
-### What happens if the index is out of range?
-
-If the specified index is out of the range of the list, `LINDEX` returns `nil`.
-
-### Can I use `LINDEX` with non-list data types?
-
-No, `LINDEX` is specific to lists in Redis. Using it with other data types (strings, sets, hashes, etc.) will cause an error.

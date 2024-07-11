@@ -1,83 +1,47 @@
 ---
-description: Discover how to use Redis RPOP command to remove and fetch the last element of a list.
+description:  Discover how to use Redis RPOP command to remove and fetch the last element of a list.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # RPOP
 
-<PageTitle title="Redis RPOP Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `RPOP` command in Redis is used to remove and return the last element of a list. This is particularly useful in scenarios where you need to process items in a Last-In-First-Out (LIFO) order, such as stack operations or task processing queues.
+<PageTitle title="Redis RPOP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-RPOP key
-```
+    RPOP key [count]
 
-## Parameter Explanations
+**Time complexity:** O(N) where N is the number of elements returned
 
-- **key**: The name of the list from which the last element will be removed and returned. If the key does not exist or the list is empty, `RPOP` returns `nil`.
+**ACL categories:** @write, @list, @fast
 
-## Return Values
+Removes and returns the last elements of the list stored at `key`.
 
-- **String**: The value of the last element that was removed from the list.
-- **nil**: Returned when the key does not exist or the list is empty.
+By default, the command pops a single element from the end of the list.
+When provided with the optional `count` argument, the reply will consist of up
+to `count` elements, depending on the list's length.
 
-Example:
+## Return
 
-```cli
-dragonfly> RPUSH mylist "a" "b" "c"
-(integer) 3
+When called without the `count` argument:
+
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the value of the last element, or `nil` when `key` does not exist.
+
+When called with the `count` argument:
+
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of popped elements, or `nil` when `key` does not exist.
+
+## Examples
+
+```shell
+dragonfly> RPUSH mylist "one" "two" "three" "four" "five"
+(integer) 5
 dragonfly> RPOP mylist
-"c"
-dragonfly> RPOP mylist
-"b"
-dragonfly> RPOP mylist
-"a"
-dragonfly> RPOP mylist
-(nil)
-```
-
-## Code Examples
-
-```cli
-dragonfly> RPUSH mylist "apple" "banana" "cherry"
-(integer) 3
-dragonfly> RPOP mylist
-"cherry"
+"five"
+dragonfly> RPOP mylist 2
+1) "four"
+2) "three"
 dragonfly> LRANGE mylist 0 -1
-1) "apple"
-2) "banana"
-dragonfly> RPOP mylist
-"banana"
-dragonfly> LRANGE mylist 0 -1
-1) "apple"
-dragonfly> RPOP mylist
-"apple"
-dragonfly> RPOP mylist
-(nil)
+1) "one"
+2) "two"
 ```
-
-## Best Practices
-
-- Ensure that the list exists and has elements before calling `RPOP` to avoid unexpected `nil` responses.
-- Consider using `BRPOP` for blocking pops if you need to wait for an item to be available in the list.
-
-## Common Mistakes
-
-- Popping from an empty list or a non-list key, resulting in `nil`.
-- Not accounting for `nil` return values in application logic, potentially leading to errors.
-
-## FAQs
-
-### What happens if I use RPOP on a non-list data type?
-
-Using `RPOP` on a non-list data type will result in a type error. Always ensure the key corresponds to a list.
-
-### Can RPOP handle multiple elements at once?
-
-No, `RPOP` removes and returns only one element at a time from the end of the list.

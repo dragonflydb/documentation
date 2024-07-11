@@ -2,96 +2,87 @@
 description: Returns information and statistics on the index
 ---
 
-import PageTitle from '@site/src/components/PageTitle';
-
 # FT.INFO
-
-<PageTitle title="Redis FT.INFO Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-`FT.INFO` is a Redis command used with the RediSearch module. It provides detailed information about an index, which includes its configuration, internal data structures, and memory usage. This command is typically used for monitoring and debugging purposes to gain insights into the performance and efficiency of the search indexes.
 
 ## Syntax
 
-```plaintext
-FT.INFO <index>
-```
+    FT.INFO index
 
-## Parameter Explanations
+**Time complexity:** O(1)
 
-- `<index>`: The name of the index for which information is requested. This parameter is required and must be a valid index created in RediSearch.
+**Important**: New in Dragonfly v1.13. Currently, Dragonfly Search is in **Beta**.
 
-## Return Values
+## Description
 
-The command returns a bulk string reply that contains various fields with details about the specified index. Each field provides specific metrics or configuration settings such as document count, term count, memory usage, and more. The output is presented in a key-value format.
+Return information and statistics on the index.
 
-Example possible outputs:
+## Required arguments
 
-- `index_name`: Name of the index.
-- `index_options`: Options set while creating the index.
-- `fields`: List of fields indexed.
-- `num_docs`: Number of documents indexed.
-- `max_doc_id`: Maximum document ID.
-- `num_terms`: Number of terms.
-- `num_records`: Number of records.
-- `inverted_sz_mb`: Size of inverted index in megabytes.
-- `bytes_per_term_avg`: Average bytes per term.
-- `indexing`: Status of indexing.
+<details open>
+<summary><code>index</code></summary>
 
-## Code Examples
+is index name. You must first create the index using [`FT.CREATE`](./ft.create.md).
+</details>
 
-```cli
-dragonfly> FT.CREATE myIndex SCHEMA title TEXT WEIGHT 5.0 body TEXT URL TEXT
+## Return
+
+`FT.INFO` returns an array reply with pairs of keys and values.
+
+Returned values include:
+
+- `index_name`: name of the index upon creation by using [`FT.CREATE`](./ft.create.md).
+- `fields`: index schema - field names, types, and attributes.
+- `num_docs`: Number of documents in the index.
+
+## Examples
+
+<details open>
+<summary><b>Return statistics about an index</b></summary>
+
+```bash
+dragonfly> HSET blog:post:1 title "blog post 1" published_at 1701210030 category "default" description "this is a blog"
+(integer) 4
+
+dragonfly> FT.CREATE idx ON HASH PREFIX 1 blog:post: SCHEMA title TEXT SORTABLE published_at NUMERIC SORTABLE category TAG SORTABLE description TEXT NOINDEX
 OK
-dragonfly> FT.INFO myIndex
-1) "index_name"
-2) "myIndex"
-3) "index_options"
-4) (empty array)
-5) "fields"
-6) 1) 1) "title"
-      2) "type"
-      3) "TEXT"
-      4) "WEIGHT"
-      5) "5.0"
-   2) 1) "body"
-      2) "type"
-      3) "TEXT"
-   3) 1) "URL"
-      2) "type"
-      3) "TEXT"
-7) "num_docs"
-8) "0"
-9) "max_doc_id"
-10) "0"
-11) "num_terms"
-12) "0"
-13) "num_records"
-14) "0"
-15) "inverted_sz_mb"
-16) "0.000000"
-17) "bytes_per_term_avg"
-18) "0.000000"
-19) "indexing"
-20) "Idle"
+
+dragonfly> FT.INFO idx
+1) index_name
+2) idx
+3) fields
+4) 1) 1) identifier
+      2) published_at
+      3) attribute
+      4) published_at
+      5) type
+      6) NUMERIC
+   2) 1) identifier
+      2) title
+      3) attribute
+      4) title
+      5) type
+      6) TEXT
+   3) 1) identifier
+      2) category
+      3) attribute
+      4) category
+      5) type
+      6) TAG
+   4) 1) identifier
+      2) description
+      3) attribute
+      4) description
+      5) type
+      6) TEXT
+5) num_docs
+6) (integer) 1
 ```
+</details>
 
-## Best Practices
+## See also
 
-- Use `FT.INFO` periodically to monitor the health and performance of your indexes.
-- Analyze the memory usage fields to optimize and potentially reconfigure your indexes for better performance.
+[`FT.CREATE`](./ft.create.md) | [`FT.SEARCH`](./ft.search.md)
 
-## Common Mistakes
+## Related topics
 
-- Not specifying a valid index name will result in an error. Ensure the index exists before querying it with `FT.INFO`.
-
-## FAQs
-
-### What kind of data can I see using FT.INFO?
-
-You can see a variety of data such as the number of documents, memory usage, configuration options, and detailed statistics about the index structure.
-
-### Can I use FT.INFO on any Redis database?
-
-No, `FT.INFO` is specific to the RediSearch module and only applies to indexes managed by this module.
+- [RediSearch](https://redis.io/docs/stack/search)

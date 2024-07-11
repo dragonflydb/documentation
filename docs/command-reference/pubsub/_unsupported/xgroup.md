@@ -6,7 +6,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # XGROUP
 
-<PageTitle title="Redis XGROUP Explained (Better Than Official Docs)" />
+<PageTitle title="Redis XGROUP Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

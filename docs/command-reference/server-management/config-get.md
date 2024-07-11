@@ -1,80 +1,60 @@
 ---
-description: Learn how to use Redis CONFIG GET command to retrieve configuration parameters.
+description:  Learn how to use Redis CONFIG GET command to retrieve configuration parameters.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # CONFIG GET
 
-<PageTitle title="Redis CONFIG GET Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `CONFIG GET` command in Redis is used to retrieve the current configuration parameters of the Redis server. This can be useful for monitoring, debugging, or auditing the server settings. Typical scenarios include checking the values of configurations like `maxmemory`, `timeout`, and `loglevel`.
+<PageTitle title="Redis CONFIG GET Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-CONFIG GET parameter
+    CONFIG GET parameter
+
+**Time complexity:** O(N) when N is the number of configuration parameters provided
+
+**ACL categories:** @admin, @slow, @dangerous
+
+The `CONFIG GET` command is used to read the configuration parameters of a running Dragonfly server.
+
+The symmetric command used to alter the configuration at runtime is [`CONFIG SET`](./config-set.md).
+
+`CONFIG GET` takes a single argument, which uses the glob-style pattern.
+Any configuration parameters matching the pattern are reported as a list of key-value pairs.
+
+## Return
+
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of key-value pairs for configuration parameters.
+
+## Examples
+
+Use the command and glob-style pattern below to read configuration parameters that are prefixed with `max`.
+
+```shell
+dragonfly> CONFIG GET max*
+1) "maxmemory"
+2) "12.11GiB"
+3) "maxclients"
+4) "64000"
 ```
 
-## Parameter Explanations
+You can also read all the supported configuration parameters by using the `*` wildcard.
 
-- **parameter**: The specific configuration setting you want to retrieve. You can use an exact parameter name (e.g., `maxmemory`) or a pattern with wildcards (e.g., `*memory*`).
-
-## Return Values
-
-The command returns an array of key-value pairs representing the current configuration settings that match the given parameter.
-
-Example:
-
-For `CONFIG GET maxmemory`, it might return:
-
-```plaintext
-1) "maxmemory"
-2) "0"
+```shell
+dragonfly> CONFIG GET *
+ 1) "maxmemory"
+ 2) "32.00GiB"
+ 3) "tcp_keepalive"
+ 4) "300"
+ 5) "dbnum"
+ 6) "16"
+ 7) "maxclients"
+ 8) "64000"
+ 9) "dir"
+10) "./data"
+11) "masterauth"
+12) ""
+13) "requirepass"
+14) ""
 ```
-
-For `CONFIG GET *memory*`, it might return:
-
-```plaintext
-1) "maxmemory"
-2) "0"
-3) "maxmemory-samples"
-4) "5"
-```
-
-## Code Examples
-
-```cli
-dragonfly> CONFIG GET maxmemory
-1) "maxmemory"
-2) "0"
-dragonfly> CONFIG GET *memory*
-1) "maxmemory"
-2) "0"
-3) "maxmemory-policy"
-4) "noeviction"
-5) "maxmemory-samples"
-6) "5"
-```
-
-## Best Practices
-
-- Use specific parameters rather than patterns when possible to reduce the overhead on the server.
-- Regularly monitor critical configurations like `maxmemory` to ensure they align with your performance and storage requirements.
-
-## Common Mistakes
-
-- Using overly broad patterns might retrieve more data than necessary, causing unnecessary load on the server.
-- Forgetting that some configuration changes might require a server restart to take effect.
-
-## FAQs
-
-### What happens if I use a non-existent parameter?
-
-The command will return an empty array if no matching configuration settings are found.
-
-### Can I use CONFIG GET to monitor runtime changes?
-
-Yes, `CONFIG GET` can be run at any time to check the current values of the configuration parameters, making it useful for monitoring changes in real-time.

@@ -6,7 +6,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # XGROUP CREATECONSUMER
 
-<PageTitle title="Redis XGROUP CREATECONSUMER Explained (Better Than Official Docs)" />
+<PageTitle title="Redis XGROUP CREATECONSUMER Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

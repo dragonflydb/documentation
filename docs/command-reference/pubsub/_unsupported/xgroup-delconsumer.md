@@ -6,7 +6,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # XGROUP DELCONSUMER
 
-<PageTitle title="Redis XGROUP DELCONSUMER Explained (Better Than Official Docs)" />
+<PageTitle title="Redis XGROUP DELCONSUMER Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

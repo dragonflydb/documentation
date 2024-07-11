@@ -1,71 +1,51 @@
 ---
-description: Learn how to use Redis SUNIONSTORE command to combine multiple sets and store the result in a new set.
+description:  Learn how to use Redis SUNIONSTORE command to combine multiple sets and store the result in a new set.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # SUNIONSTORE
 
-<PageTitle title="Redis SUNIONSTORE Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `SUNIONSTORE` command in Redis is used to perform a union of multiple sets and store the result in a new set. This is particularly useful when you need to combine different groups of elements into a single collection without duplicates and reuse it later.
+<PageTitle title="Redis SUNIONSTORE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-SUNIONSTORE destination key [key ...]
-```
+    SUNIONSTORE destination key [key ...]
 
-## Parameter Explanations
+**Time complexity:** O(N) where N is the total number of elements in all given sets.
 
-- `destination`: The key where the resulting set will be stored.
-- `key`: One or more keys representing the sets to be unioned.
+**ACL categories:** @write, @set, @slow
 
-## Return Values
+This command is equal to `SUNION`, but instead of returning the resulting set,
+it is stored in `destination`.
 
-- (Integer): The number of elements in the resulting set.
+If `destination` already exists, it is overwritten.
 
-Example:
+## Return
 
-```plaintext
-(integer) 3
-```
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of elements in the resulting set.
 
-## Code Examples
+## Examples
 
-```cli
-dragonfly> SADD set1 "a" "b" "c"
-(integer) 3
-dragonfly> SADD set2 "c" "d" "e"
-(integer) 3
-dragonfly> SUNIONSTORE resultset set1 set2
+```shell
+dragonfly> SADD key1 "a"
+(integer) 1
+dragonfly> SADD key1 "b"
+(integer) 1
+dragonfly> SADD key1 "c"
+(integer) 1
+dragonfly> SADD key2 "c"
+(integer) 1
+dragonfly> SADD key2 "d"
+(integer) 1
+dragonfly> SADD key2 "e"
+(integer) 1
+dragonfly> SUNIONSTORE key key1 key2
 (integer) 5
-dragonfly> SMEMBERS resultset
+dragonfly> SMEMBERS key
 1) "a"
-2) "b"
-3) "c"
+2) "c"
+3) "b"
 4) "d"
 5) "e"
 ```
-
-## Best Practices
-
-- Ensure that the `destination` key is different from the input keys to avoid overwriting data unintentionally.
-
-## Common Mistakes
-
-- Trying to use `SUNIONSTORE` with non-set keys will result in an error. Make sure all specified keys point to sets.
-
----
-
-## FAQs
-
-### What happens if one or more of the input keys do not exist?
-
-If any of the input keys do not exist, they are treated as empty sets and the union operation proceeds with the existing sets.
-
-### Can I use `SUNIONSTORE` with only one set?
-
-Yes, but it's redundant. Using `SUNIONSTORE` with a single set simply copies the set to the destination.

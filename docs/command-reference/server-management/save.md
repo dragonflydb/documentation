@@ -1,55 +1,38 @@
 ---
-description: Learn how to use Redis SAVE command to create a backup of the current database.
+description:  Learn how to use Redis SAVE command to create a backup of the current database.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # SAVE
 
-<PageTitle title="Redis SAVE Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `SAVE` command in Redis is used to synchronously save the dataset to disk. This command is particularly useful in scenarios where you need to ensure that all changes to your dataset are persisted immediately, such as before a planned maintenance window or shutdown.
+<PageTitle title="Redis SAVE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-SAVE
-```
+    SAVE [RDB|DF]
 
-## Parameter Explanations
+**Time complexity:** O(N) where N is the total number of keys in all databases
 
-The `SAVE` command does not take any parameters. It simply forces a synchronous save of the dataset.
+**ACL categories:** @admin, @slow, @dangerous
 
-## Return Values
+The `SAVE` commands performs a save of the dataset producing a
+_point in time_ snapshot of all the data inside the Dragonfly instance, in the form
+of a set of [DFS files](../../managing-dragonfly/snapshotting).
 
-- **OK**: If the save operation was successful.
-- **Error**: If the save operation failed for some reason (e.g., during an ongoing save).
+Use `SAVE RDB` to save the snapshot in form of an RDB file instead.
+Please refer to the [persistence documentation][tp] for detailed information about RDB files.
 
-## Code Examples
+## Flags
 
-```cli
-dragonfly> SAVE
-OK
-```
+- **`df_snapshot_format`** - Set true to save dump in Dragonfly file format (true by default).
+- **`dbfilename`** - The file name to save and load the database. To generate a file with a timestamp, set the macro `{timestamp}` in the filename, e.g. `dump-{timestamp}`.
+  The macro will be replaced with a timestamp of the local time in a lexicographically sorted format.
+  The default filename is `dump-{timestamp}`.
+- **`snapshot_cron`** - Generate snapshots periodically. The argument is a cron format (e.g. `0 0 * * *`, `*/5 * * * *`)
 
-## Best Practices
+[tp]: https://redis.io/topics/persistence
 
-- Use `SAVE` sparingly in production environments because it blocks the server until the save operation completes, which can affect performance and availability.
-- For regular backups, consider using `BGSAVE`, which performs the save operation in the background without blocking.
+## Return
 
-## Common Mistakes
-
-- Using `SAVE` in a high-load production environment can lead to significant latency due to its blocking nature. Always prefer `BGSAVE` unless absolutely necessary.
-- Assuming `SAVE` guarantees no data loss; while it does persist data immediately, unexpected failures right after the save could still pose risks.
-
-## FAQs
-
-### What is the difference between SAVE and BGSAVE?
-
-`SAVE` performs a synchronous save and blocks the Redis server until the operation completes. `BGSAVE` performs the save in the background, allowing the server to continue processing other commands.
-
-### Can I use SAVE in a script?
-
-Yes, but be aware that it will block the entire Redis server during the execution, potentially causing high latency for other operations.
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): The commands returns OK on success.

@@ -1,68 +1,56 @@
 ---
-description: Learn how to use Redis SMOVE command to shift a member from a source set to a target set.
+description:  Learn how to use Redis SMOVE command to shift a member from a source set to a target set.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # SMOVE
 
-<PageTitle title="Redis SMOVE Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `SMOVE` command in Redis is used to move a member from one set to another. This is particularly useful when you need to atomically transfer an item between two sets, ensuring data consistency without having to remove from one set and add to another in separate operations.
+<PageTitle title="Redis SMOVE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```
-SMOVE source destination member
-```
+    SMOVE source destination member
 
-## Parameter Explanations
+**Time complexity:** O(1)
 
-- `source`: The key of the set where the member currently exists.
-- `destination`: The key of the set to which the member will be moved.
-- `member`: The specific element that needs to be transferred from the source set to the destination set.
+**ACL categories:** @write, @set, @fast
 
-## Return Values
+Move `member` from the set at `source` to the set at `destination`.
+This operation is atomic.
+In every given moment the element will appear to be a member of `source` **or**
+`destination` for other clients.
 
-- `(integer) 1` if the member was successfully moved.
-- `(integer) 0` if the member was not present in the source set and no operation was performed.
+If the source set does not exist or does not contain the specified element, no
+operation is performed and `0` is returned.
+Otherwise, the element is removed from the source set and added to the
+destination set.
+When the specified element already exists in the destination set, it is only
+removed from the source set.
 
-## Code Examples
+An error is returned if `source` or `destination` does not hold a set value.
 
-```cli
-dragonfly> SADD set1 "one"
+## Return
+
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
+
+* `1` if the element is moved.
+* `0` if the element is not a member of `source` and no operation was performed.
+
+## Examples
+
+```shell
+dragonfly> SADD myset "one"
 (integer) 1
-dragonfly> SADD set1 "two"
+dragonfly> SADD myset "two"
 (integer) 1
-dragonfly> SADD set2 "three"
+dragonfly> SADD myotherset "three"
 (integer) 1
-dragonfly> SMOVE set1 set2 "one"
+dragonfly> SMOVE myset myotherset "two"
 (integer) 1
-dragonfly> SMOVE set1 set2 "one"
-(integer) 0
-dragonfly> SMEMBERS set1
+dragonfly> SMEMBERS myset
+1) "one"
+dragonfly> SMEMBERS myotherset
 1) "two"
-dragonfly> SMEMBERS set2
-1) "three"
-2) "one"
+2) "three"
 ```
-
-## Best Practices
-
-- Ensure that both source and destination keys exist and are of type set to prevent unexpected errors.
-
-## Common Mistakes
-
-- Attempting to move a member that does not exist in the source set will return 0 but will not throw an error. Always check the existence of the member in the source set if necessary.
-
-## FAQs
-
-### What happens if the source or destination keys don't exist?
-
-If the `source` key does not exist, `SMOVE` returns 0 and no operation is performed. If the `destination` key does not exist, it is created automatically if the member is successfully moved.
-
-### Can `SMOVE` be used with non-set keys?
-
-No, both `source` and `destination` must be keys of type set. Using `SMOVE` with other data types will result in an error.

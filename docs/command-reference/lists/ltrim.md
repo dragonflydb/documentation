@@ -1,79 +1,67 @@
 ---
-description: Learn using Redis LTRIM to precisely control the size of your lists by trimming elements.
+description:  Learn using Redis LTRIM to precisely control the size of your lists by trimming elements.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # LTRIM
 
-<PageTitle title="Redis LTRIM Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-`LTRIM` is a Redis command used to trim a list to the specified range of elements. This command is essential for managing the size of lists, especially in scenarios where lists grow dynamically, such as logging systems or task queues, ensuring that memory usage remains within bounds.
+<PageTitle title="Redis LTRIM Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-LTRIM key start stop
+    LTRIM key start stop
+
+**Time complexity:** O(N) where N is the number of elements to be removed by the operation.
+
+**ACL categories:** @write, @list, @slow
+
+Trim an existing list so that it will contain only the specified range of
+elements specified.
+Both `start` and `stop` are zero-based indexes, where `0` is the first element
+of the list (the head), `1` the next element and so on.
+
+For example: `LTRIM foobar 0 2` will modify the list stored at `foobar` so that
+only the first three elements of the list will remain.
+
+`start` and `end` can also be negative numbers indicating offsets from the end
+of the list, where `-1` is the last element of the list, `-2` the penultimate
+element and so on.
+
+Out of range indexes will not produce an error: if `start` is larger than the
+end of the list, or `start > end`, the result will be an empty list (which
+causes `key` to be removed).
+If `end` is larger than the end of the list, Dragonfly will treat it like the last
+element of the list.
+
+A common use of `LTRIM` is together with `LPUSH` / `RPUSH`.
+For example:
+
+```
+LPUSH mylist someelement
+LTRIM mylist 0 99
 ```
 
-## Parameter Explanations
+This pair of commands will push a new element on the list, while making sure
+that the list will not grow larger than 100 elements. It is important to note that when
+used in this way `LTRIM` is an O(1) operation, because in the average case just one element
+is removed from the tail of the list.
 
-- `key`: The name of the list you want to trim.
-- `start`: The starting index of the range (0-based). Negative values indicate offsets from the end of the list (-1 being the last element).
-- `stop`: The ending index of the range (inclusive). Negative values are processed similarly to the `start` parameter.
+## Return
 
-## Return Values
+[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings)
 
-`LTRIM` returns a simple string reply:
+## Examples
 
-- "OK" if the trimming operation was successful.
-
-Example outputs:
-
-```plaintext
-OK
-```
-
-## Code Examples
-
-```cli
+```shell
 dragonfly> RPUSH mylist "one"
 (integer) 1
 dragonfly> RPUSH mylist "two"
 (integer) 2
 dragonfly> RPUSH mylist "three"
 (integer) 3
-dragonfly> RPUSH mylist "four"
-(integer) 4
-dragonfly> LRANGE mylist 0 -1
-1) "one"
-2) "two"
-3) "three"
-4) "four"
-dragonfly> LTRIM mylist 1 2
+dragonfly> LTRIM mylist 1 -1
 OK
 dragonfly> LRANGE mylist 0 -1
 1) "two"
 2) "three"
 ```
-
-## Best Practices
-
-- Use `LTRIM` in conjunction with other list operations to manage list sizes efficiently, particularly in applications where lists are used for logs or queues.
-- Regularly trim large lists to prevent excessive memory usage.
-
-## Common Mistakes
-
-- Using indices out of the actual list's range will not cause an error but may lead to unexpected results where the list becomes empty.
-
-## FAQs
-
-### What happens if the `start` and `stop` indices are out of bounds?
-
-If the `start` or `stop` indices are outside the actual list's range, Redis will handle it gracefully by trimming the list to an empty state if necessary or adjusting the indices to fit the existing list's boundaries.
-
-### Is `LTRIM` a blocking command?
-
-No, `LTRIM` is not a blocking command and will perform the operation quickly, making it suitable for use in real-time applications.
