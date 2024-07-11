@@ -1,72 +1,61 @@
 ---
-description: Learn how to use Redis SETRANGE to overwrite part of a string at the specified key.
+description:  Learn how to use Redis SETRANGE to overwrite part of a string at the specified key.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # SETRANGE
 
-<PageTitle title="Redis SETRANGE Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `SETRANGE` command in Redis is used to overwrite part of a string at a specified range. This command is useful for modifying parts of an existing string without replacing the entire value, which can be beneficial when working with large strings or binary data. Typical use cases include updating specific fields within a structured string or modifying sections of a binary blob.
+<PageTitle title="Redis SETRANGE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-SETRANGE key offset value
-```
+    SETRANGE key offset value
 
-## Parameter Explanations
+**Time complexity:** O(1), not counting the time taken to copy the new string in place. Usually, this string is very small so the amortized complexity is O(1). Otherwise, complexity is O(M) with M being the length of the value argument.
 
-- `key`: The name of the key that holds the string value.
-- `offset`: The zero-based byte offset where the modification should begin.
-- `value`: The string to be inserted starting at the specified offset.
+**ACL categories:** @write, @string, @slow
 
-## Return Values
+Overwrites part of the string stored at _key_, starting at the specified offset,
+for the entire length of _value_.
+If the offset is larger than the current length of the string at _key_, the
+string is padded with zero-bytes to make _offset_ fit.
+Non-existing keys are considered as empty strings, so this command will make
+sure it holds a string large enough to be able to set _value_ at _offset_.
 
-The `SETRANGE` command returns the length of the string after the modification.
+**Warning**: When setting the last possible byte (with large _offset_), and the string value stored at _key_ does not holds a value (or holds a small string), the operation will take some time, as Dragonfly is required to allocate all memory leading to that bit. Subsequent calls will not have the performance penalty.
 
-Example:
+## Return
 
-```cli
-(integer) 13
-```
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the length of the string after it was modified by the command.
 
-## Code Examples
+## Patterns
 
-```cli
-dragonfly> SET mykey "Hello World"
+Thanks to `SETRANGE` and the analogous `GETRANGE` commands, you can use Redis
+strings as a linear array with O(1) random access.
+This is a very fast and efficient storage in many real world use cases.
+
+
+## Examples
+
+Basic usage:
+
+```shell
+dragonfly> SET key1 "Hello World"
 OK
-dragonfly> SETRANGE mykey 6 "Redis"
-(integer) 11
-dragonfly> GET mykey
-"Hello Redis"
+dragonfly> SETRANGE key1 6 "Dragonfly"
+(integer) 15
+dragonfly> GET key1
+"Hello Dragonfly"
 ```
 
-In this example:
+Example of zero padding:
 
-1. The initial value of `mykey` is set to "Hello World".
-2. The `SETRANGE` command modifies the string starting at offset 6, changing "World" to "Redis".
-3. The final string is "Hello Redis".
+```shell
+dragonfly> SETRANGE key2 6 "Dragonfly"
+(integer) 15
+dragonfly> GET key2
+"\x00\x00\x00\x00\x00\x00Dragonfly
+```
 
-## Best Practices
-
-- Ensure that the `offset` provided does not cause unintentional padding with null bytes, especially if the string length extends significantly.
-- Use `SETRANGE` for modifying existing parts of a string rather than constructing new complex strings from scratch.
-
-## Common Mistakes
-
-- Using `SETRANGE` on non-string keys will result in an error.
-- Specifying an `offset` beyond the current string length may lead to unexpected results due to implicit padding with null bytes.
-
-## FAQs
-
-### What happens if the offset is larger than the current string length?
-
-If the `offset` is beyond the current length of the string, Redis pads the string with null bytes up to the specified offset before adding the new value.
-
-### Can I use `SETRANGE` on keys holding types other than strings?
-
-No, `SETRANGE` only works with keys that hold string values. Applying it to a non-string key will result in an error.
+where `\x00`  stands for the NUL character, inserted by the zero padding.

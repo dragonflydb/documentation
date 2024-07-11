@@ -1,71 +1,99 @@
 ---
-description: Learn how to use Redis BITCOUNT to get the count of set bits in a string.
+description:  Learn how to use Redis BITCOUNT to get the count of set bits in a string.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # BITCOUNT
 
-<PageTitle title="Redis BITCOUNT Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `BITCOUNT` command in Redis is used to count the number of set bits (i.e., bits with value 1) in a string. This command is particularly useful in scenarios where you need to keep track of boolean states or binary data, such as feature flags, activity tracking, or compact storage of boolean arrays.
+<PageTitle title="Redis BITCOUNT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```
-BITCOUNT key [start end]
-```
+    BITCOUNT key [start end [BYTE | BIT]]
 
-## Parameter Explanations
+**Time complexity:** O(N)
 
-- **key**: The key of the string for which you want to count the set bits.
-- **start**: Optional. The starting byte position (inclusive). If not specified, it defaults to the beginning of the string.
-- **end**: Optional. The ending byte position (inclusive). If not specified, it defaults to the end of the string.
+**ACL categories:** @read, @bitmap, @slow
 
-## Return Values
+Count the number of set bits (population counting) in a string.
 
-The `BITCOUNT` command returns an integer representing the number of bits set to 1 in the specified range of the string.
+By default all the bytes contained in the string are examined.
+It is possible to specify the counting operation only in an interval passing the
+additional arguments _start_ and _end_.
 
-### Example Outputs
+Like for the `GETRANGE` command start and end can contain negative values in
+order to index bytes starting from the end of the string, where -1 is the last
+byte, -2 is the penultimate, and so forth.
 
-- `(integer) 0`: No bits are set to 1.
-- `(integer) 5`: Five bits are set to 1 within the specified range.
+Non-existent keys are treated as empty strings, so the command will return zero.
 
-## Code Examples
+By default, the additional arguments _start_ and _end_ specify a byte index.
+We can use an additional argument `BIT` to specify a bit index.
+So 0 is the first bit, 1 is the second bit, and so forth.
+For negative values, -1 is the last bit, -2 is the penultimate, and so forth.
 
-```cli
-dragonfly> SET mykey "\x01"  # Binary representation: 00000001
-OK
-dragonfly> BITCOUNT mykey
-(integer) 1
-dragonfly> SET mykey "\xFF"  # Binary representation: 11111111
-OK
-dragonfly> BITCOUNT mykey
-(integer) 8
+## Return
+
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers)
+
+The number of bits set to 1.
+
+## Examples
+
+```shell
 dragonfly> SET mykey "foobar"
 OK
-dragonfly> BITCOUNT mykey 0 3
-(integer) 10
+dragonfly> BITCOUNT mykey
+(integer) 26
+dragonfly> BITCOUNT mykey 0 0
+(integer) 4
+dragonfly> BITCOUNT mykey 1 1
+(integer) 6
+dragonfly> BITCOUNT mykey 1 1 BYTE
+(integer) 6
+dragonfly> BITCOUNT mykey 5 30 BIT
+(integer) 17
 ```
 
-## Best Practices
+## Pattern: real-time metrics using bitmaps
 
-- Use `BITCOUNT` for efficient bitwise operations, especially when dealing with large datasets that can be represented as binary strings.
-- Combine `BITCOUNT` with other bitwise commands like `SETBIT`, `GETBIT`, and `BITOP` for comprehensive binary data manipulation.
+Bitmaps are a very space-efficient representation of certain kinds of
+information.
+One example is a Web application that needs the history of user visits, so that
+for instance it is possible to determine what users are good targets of beta
+features.
 
-## Common Mistakes
+Using the `SETBIT` command this is trivial to accomplish, identifying every day
+with a small progressive integer.
+For instance day 0 is the first day the application was put online, day 1 the
+next day, and so forth.
 
-- Not considering the byte positions correctly when specifying the `start` and `end` parameters. This might lead to unexpected counts.
-- Using `BITCOUNT` on non-string data types, which will result in an error.
+Every time a user performs a page view, the application can register that in
+the current day the user visited the web site using the `SETBIT` command setting
+the bit corresponding to the current day.
 
-## FAQs
+Later it will be trivial to know the number of single days the user visited the
+web site simply calling the `BITCOUNT` command against the bitmap.
 
-### What happens if the specified key does not exist?
+A similar pattern where user IDs are used instead of days is described
+in the article called "[Fast easy realtime metrics using Redis
+bitmaps][hbgc212fermurb]".
 
-If the specified key does not exist, `BITCOUNT` will return 0 because there are no bits set in a nonexistent key.
+[hbgc212fermurb]: http://blog.getspool.com/2011/11/29/fast-easy-realtime-metrics-using-redis-bitmaps
 
-### How does `BITCOUNT` handle negative indexes for `start` and `end`?
+## Performance considerations
 
-Negative indexes work similarly to Python slicing, where `-1` represents the last byte, `-2` the second-to-last, and so on.
+In the above example of counting days, even after 10 years the application is
+online we still have just `365*10` bits of data per user, that is just 456 bytes
+per user.
+With this amount of data `BITCOUNT` is still as fast as any other O(1) Redis
+command like `GET` or `INCR`.
+
+When the bitmap is big, there are two alternatives:
+
+* Taking a separated key that is incremented every time the bitmap is modified.
+  This can be very efficient and atomic using a small Redis Lua script.
+* Running the bitmap incrementally using the `BITCOUNT` _start_ and _end_
+  optional parameters, accumulating the results client-side, and optionally
+  caching the result into a key.

@@ -1,80 +1,184 @@
 ---
-description: Learn how to use Redis INCR command for incrementing the integer value of a key.
+description:  Learn how to use Redis INCR command for incrementing the integer value of a key.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # INCR
 
-<PageTitle title="Redis INCR Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `INCR` command in Redis is used to increment the integer value of a key by one. If the key does not exist, it is set to 0 before performing the operation. This command is useful in scenarios where you need to keep track of counts, such as page hits, number of user logins, or any other sequentially increasing metric.
+<PageTitle title="Redis INCR Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```
-INCR key
-```
+    INCR key
 
-## Parameter Explanations
+**Time complexity:** O(1)
 
-- **key**: The key whose value you want to increment. This should be a string representing an integer. If the key does not exist, it will be created with a value of 0 before being incremented.
+**ACL categories:** @write, @string, @fast
 
-## Return Values
+Increments the number stored at `key` by one.
+If the key does not exist, it is set to `0` before performing the operation.
+An error is returned if the key contains a value of the wrong type or contains a
+string that can not be represented as integer.
+This operation is limited to 64 bit signed integers.
 
-The `INCR` command returns the value of the key after the increment.
+**Note:** this is a string operation because Dragonfly does not have a dedicated
+integer type.
+The string stored at the key is interpreted as a base-10 **64 bit signed
+integer** to execute the operation.
 
-Example outputs:
+Dragonfly stores integers in their integer representation, so for string values
+that actually hold an integer, there is no overhead for storing the string
+representation of the integer.
 
-- If the initial value of `mycounter` is 10:
-  ```cli
-  dragonfly> INCR mycounter
-  (integer) 11
-  ```
-- If the key `mycounter` does not exist:
-  ```cli
-  dragonfly> INCR mycounter
-  (integer) 1
-  ```
+## Return
 
-## Code Examples
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the value of `key` after the increment
 
-```cli
-dragonfly> SET mycounter 10
+## Examples
+
+```shell
+dragonfly> SET mykey "10"
 OK
-dragonfly> INCR mycounter
+dragonfly> INCR mykey
 (integer) 11
-dragonfly> INCR mycounter
-(integer) 12
-dragonfly> DEL mycounter
-(integer) 1
-dragonfly> INCR mycounter
-(integer) 1
+dragonfly> GET mykey
+"11"
 ```
 
-## Best Practices
+## Pattern: Counter
 
-- Ensure that the key's value is always an integer. Using `INCR` on a key containing non-integer values will result in an error.
-- Use `INCR` for thread-safe atomic increments. This avoids race conditions in distributed environments.
+The counter pattern is the most obvious thing you can do with atomic
+increment operations.
+The idea is simply send an `INCR` command to Dragonfly every time an operation
+occurs.
+For instance in a web application we may want to know how many page views this
+user did every day of the year.
 
-## Common Mistakes
+To do so the web application may simply increment a key every time the user
+performs a page view, creating the key name concatenating the User ID and a
+string representing the current date.
 
-- **Using `INCR` on non-integer keys**: If you try to increment a key that holds a string or another data type, an error will occur.
-  ```cli
-  dragonfly> SET mykey "hello"
-  OK
-  dragonfly> INCR mykey
-  (error) ERR value is not an integer or out of range
-  ```
+This simple pattern can be extended in many ways:
 
-## FAQs
+* It is possible to use `INCR` and `EXPIRE` together at every page view to have
+  a counter counting only the latest `N` page views separated by less than the
+  specified amount of seconds.
+* A client may use `GETSET` in order to atomically get the current counter value
+  and reset it to zero.
+* By using other atomic increment/decrement commands like `DECR` or `INCRBY`, it
+  is possible to handle values that may get bigger or smaller depending on the
+  operations performed by the user.
+  Imagine for instance the score of different users in an online game.
 
-### What happens if I use `INCR` on a non-existent key?
+## Pattern: Rate limiter
 
-If the key does not exist, Redis treats it as if it were set to 0 and then performs the increment operation, resulting in a value of 1.
+The rate limiter pattern is a special counter that is used to limit the rate at
+which an operation can be performed.
+The classical materialization of this pattern involves limiting the number of
+requests that can be performed against a public API.
 
-### Can I decrement a key using the `INCR` command?
+We provide two implementations of this pattern using `INCR`, where we assume
+that the problem to solve is limiting the number of API calls to a maximum of
+_ten requests per second per IP address_.
 
-No, to decrement a key, you would use the `DECR` command.
+## Pattern: Rate limiter 1
+
+The more simple and direct implementation of this pattern is the following:
+
+```
+FUNCTION LIMIT_API_CALL(ip)
+ts = CURRENT_UNIX_TIME()
+keyname = ip+":"+ts
+MULTI
+    INCR(keyname)
+    EXPIRE(keyname,10)
+EXEC
+current = RESPONSE_OF_INCR_WITHIN_MULTI
+IF current > 10 THEN
+    ERROR "too many requests per second"
+ELSE
+    PERFORM_API_CALL()
+END
+```
+
+Basically we have a counter for every IP, for every different second.
+But this counters are always incremented setting an expire of 10 seconds so that
+they'll be removed by Redis automatically when the current second is a different
+one.
+
+Note the used of `MULTI` and `EXEC` in order to make sure that we'll both
+increment and set the expire at every API call.
+
+## Pattern: Rate limiter 2
+
+An alternative implementation uses a single counter, but is a bit more complex
+to get it right without race conditions.
+We'll examine different variants.
+
+```
+FUNCTION LIMIT_API_CALL(ip):
+current = GET(ip)
+IF current != NULL AND current > 10 THEN
+    ERROR "too many requests per second"
+ELSE
+    value = INCR(ip)
+    IF value == 1 THEN
+        EXPIRE(ip,1)
+    END
+    PERFORM_API_CALL()
+END
+```
+
+The counter is created in a way that it only will survive one second, starting
+from the first request performed in the current second.
+If there are more than 10 requests in the same second the counter will reach a
+value greater than 10, otherwise it will expire and start again from 0.
+
+**In the above code there is a race condition**.
+If for some reason the client performs the `INCR` command but does not perform
+the `EXPIRE` the key will be leaked until we'll see the same IP address again.
+
+This can be fixed easily turning the `INCR` with optional `EXPIRE` into a Lua
+script that is send using the `EVAL` command (only available since Redis version
+2.6).
+
+```
+local current
+current = redis.call("incr",KEYS[1])
+if current == 1 then
+    redis.call("expire",KEYS[1],1)
+end
+```
+
+There is a different way to fix this issue without using scripting, by using
+Redis lists instead of counters.
+The implementation is more complex and uses more advanced features but has the
+advantage of remembering the IP addresses of the clients currently performing an
+API call, that may be useful or not depending on the application.
+
+```
+FUNCTION LIMIT_API_CALL(ip)
+current = LLEN(ip)
+IF current > 10 THEN
+    ERROR "too many requests per second"
+ELSE
+    IF EXISTS(ip) == FALSE
+        MULTI
+            RPUSH(ip,ip)
+            EXPIRE(ip,1)
+        EXEC
+    ELSE
+        RPUSHX(ip,ip)
+    END
+    PERFORM_API_CALL()
+END
+```
+
+The `RPUSHX` command only pushes the element if the key already exists.
+
+Note that we have a race here, but it is not a problem: `EXISTS` may return
+false but the key may be created by another client before we create it inside
+the `MULTI` / `EXEC` block.
+However this race will just miss an API call under rare conditions, so the rate
+limiting will still work correctly.

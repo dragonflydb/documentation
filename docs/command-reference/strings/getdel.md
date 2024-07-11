@@ -1,76 +1,35 @@
 ---
-description: Learn how to use Redis GETDEL to retrieve and delete a key’s value.
+description:  Learn how to use Redis GETDEL to retrieve and delete a key’s value.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # GETDEL
 
-<PageTitle title="Redis GETDEL Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-`GETDEL` is a Redis command that retrieves the value of a key and deletes the key in one atomic operation. This command is useful in scenarios where you need to fetch a key's value and ensure that it no longer exists afterward, such as processing a task stored in Redis and guaranteeing it won't be processed again.
+<PageTitle title="Redis GETDEL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```cli
-GETDEL key
-```
+    GETDEL key
 
-## Parameter Explanations
+**Time complexity:** O(1)
 
-- `key`: The key whose value you want to get and delete. It must be a string type.
+**ACL categories:** @write, @string, @fast
 
-## Return Values
+Get the value of `key` and delete the key.
+This command is similar to `GET`, except for the fact that it also deletes the key on success (if and only if the key's value type is a string).
 
-- If the key exists, it returns the value stored at the key.
-- If the key does not exist, it returns `nil`.
+## Return
 
-### Examples:
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the value of `key`, `nil` when `key` does not exist, or an error if the key's value type isn't a string.
 
-- Key exists:
+## Examples
 
-  ```cli
-  dragonfly> SET mykey "Hello"
-  OK
-  dragonfly> GETDEL mykey
-  "Hello"
-  ```
-
-- Key does not exist:
-  ```cli
-  dragonfly> GETDEL nonexistkey
-  (nil)
-  ```
-
-## Code Examples
-
-```cli
-dragonfly> SET task:123 "process this task"
+```shell
+dragonfly> SET mykey "Hello"
 OK
-dragonfly> GETDEL task:123
-"process this task"
-dragonfly> GETDEL task:123
+dragonfly> GETDEL mykey
+"Hello"
+dragonfly> GET mykey
 (nil)
 ```
-
-## Best Practices
-
-- Use `GETDEL` for tasks or data that should be accessed and removed atomically to avoid race conditions.
-- Ensure that the application logic accounts for the possibility of the key being absent (`nil` response).
-
-## Common Mistakes
-
-- Using `GETDEL` on a key that might be needed later can lead to data loss since it deletes the key after retrieval.
-- Not handling the potential `nil` return value can cause null reference errors in some applications.
-
-## FAQs
-
-### What happens if I use `GETDEL` on a non-existent key?
-
-You'll receive a `nil` response, indicating that the key did not exist.
-
-### Can I use `GETDEL` with keys of types other than strings?
-
-No, `GETDEL` is designed to work with string keys only.

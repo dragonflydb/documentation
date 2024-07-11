@@ -1,63 +1,49 @@
 ---
-description: Understand how to use Redis MSETNX to set multiple keys only if they don't exist.
+description:  Understand how to use Redis MSETNX to set multiple keys only if they don't exist. 
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # MSETNX
 
-<PageTitle title="Redis MSETNX Explained (Better Than Official Docs)" />
-
-## Introduction and Use Case(s)
-
-The `MSETNX` command in Redis sets multiple key-value pairs at once, but only if none of the specified keys already exist. It's useful for ensuring atomicity when initializing values that shouldn't overwrite existing data.
+<PageTitle title="Redis MSETNX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-```plaintext
-MSETNX key1 value1 [key2 value2 ...]
-```
+    MSETNX key value [key value ...]
 
-## Parameter Explanations
+**Time complexity:** O(N) where N is the number of keys to set.
 
-- **key1, value1, key2, value2, ...**: Pairs of keys and values to set. All provided keys will be set to their respective values, but only if none of them already exist in the database.
+**ACL categories:** @write, @string, @slow
 
-## Return Values
+Sets the given keys to their respective values.
+`MSETNX` will not perform any operation at all even if just a single key already
+exists.
 
-- **(integer) 1**: If the keys were set successfully because none of them existed.
-- **(integer) 0**: If no keys were set because at least one of the specified keys already exists.
+Because of this semantic `MSETNX` can be used in order to set different keys
+representing different fields of a unique logic object in a way that ensures
+that either all the fields or none at all are set.
 
-## Code Examples
+`MSETNX` is atomic, so all given keys are set at once.
+It is not possible for clients to see that some of the keys were updated while
+others are unchanged.
 
-```cli
-dragonfly> MSETNX key1 "value1" key2 "value2"
+## Return
+
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
+
+* `1` if the all the keys were set.
+* `0` if no key was set (at least one key already existed).
+
+## Examples
+
+```shell
+dragonfly> MSETNX key1 "Hello" key2 "there"
 (integer) 1
-dragonfly> MSETNX key1 "newvalue1" key3 "value3"
+dragonfly> MSETNX key2 "new" key3 "world"
 (integer) 0
-dragonfly> GET key1
-"value1"
-dragonfly> GET key2
-"value2"
-dragonfly> GET key3
-(nil)
+dragonfly> MGET key1 key2 key3
+1) "Hello"
+2) "there"
+3) (nil)
 ```
-
-## Best Practices
-
-- Use `MSETNX` when you need to ensure that a batch of keys is set atomically without overwriting existing data.
-- Combine `MSETNX` with other commands like `EXISTS` if more complex conditional logic is needed before setting values.
-
-## Common Mistakes
-
-- Assuming `MSETNX` will partially apply values if some keys don't already exist. The command is atomic; it either sets all keys or none.
-- Forgetting that `MSETNX` only works if none of the specified keys exist—meaning even one existing key will cause the entire operation to fail.
-
-## FAQs
-
-### How does `MSETNX` differ from `MSET`?
-
-While `MSET` sets multiple keys regardless of whether they already exist, `MSETNX` ensures none of the specified keys exist before setting any values.
-
-### Can `MSETNX` set a single key-value pair?
-
-Yes, but it's typically used for multiple key-value pairs. For single key-value operations, using `SETNX` is more straightforward.
