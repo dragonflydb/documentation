@@ -25,14 +25,14 @@ Dragonfly ACL rules are split into two categories:
 
 - `+@<category>`: Grants all the commands in the specified category to the list of commands the user is able to execute. For example, `+@string` adds all the string commands.
 - `-@<category>`: Like `+@<category>` but removes all the commands in the category instead of adding them.
-- `+ALL`: Grants all the available groups to the user.
-- `-ALL`: Revokes all the available groups from the user.
+- `+@ALL`: Grants all the available groups to the user.
+- `-@ALL`: Revokes all the available groups from the user.
 
 ### User Management Rules
 
 - `ON`: Set the user as active, it will be possible to authenticate as this user using `AUTH <username> <password>`.
 - `OFF`: Set user as not active, it will be impossible to authenticate as this user.
-- `>password`: Set or update the password of this user.
+- `>password`: Set or update the list of passwords for this user.
 - `nopass`: Allow the user to authenticate with `any` password.
 
 ## Return
@@ -42,6 +42,6 @@ Dragonfly ACL rules are split into two categories:
 ## Examples
 
 ```shell
-dragonfly> ACL SETUSER myuser ON >mypass +@string +@fast -@slow ~*
+dragonfly> ACL SETUSER myuser ON >mypass >mysecondpass +@string +@fast -@slow ~*
 OK
 ```

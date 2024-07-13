@@ -19,10 +19,7 @@ Each line consists of the username, followed by their status (ON/OFF), a 15-char
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): An array of strings. This command **does not explicitly report the removed ACL categories**.
-For example, if a user was created in Redis with `-@fast`, `ACL LIST` would print `-@fast` for that given user.
-We found that this redundancy is confusing to the user, and therefore we decided not to include it in the result string
-because if for a given user a command category is missing, it's a clear indicator that this user does not have that rule in their ACL list.
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): An array of strings. 
 
 ## Examples
 
