@@ -5,7 +5,7 @@ sidebar_position: 0
 # Dragonfly API Compatibility
 
 | Command Family                               | Command                                                    | Dragonfly Support                                        |
-| :------------------------------------------- | :--------------------------------------------------------- | :------------------------------------------------------- |
+|:---------------------------------------------|:-----------------------------------------------------------|:---------------------------------------------------------|
 | <span class="family">Bitmap</span>           | <span class="command">BITCOUNT</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BITFIELD</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BITFIELD_RO</span>                   | <span class="support supported">Fully supported</span>   |
