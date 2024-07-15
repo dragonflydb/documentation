@@ -31,7 +31,7 @@ dragonfly> ACL GETUSER default
 3) passwords
 4) (empty array)
 5) commands
-6) +@ALL +ALL
+6) +@all
 
 dragonfly> ACL GETUSER non_existent_user
 (nil)
