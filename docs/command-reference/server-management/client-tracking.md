@@ -6,11 +6,11 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # CLIENT TRACKING
 
-<PageTitle title="Redis CLIENT TRACKING Command (Documentation) | Dragonfly" />
+<PageTitle title="CLIENT TRACKING Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-    CLIENT TRACKING <ON | OFF>
+    CLIENT TRACKING <ON | OFF> [OPTIN] [OPTOUT] [NOLOOP]
 
 **Time complexity:** O(1). Some options may introduce additional complexity.
 
@@ -33,6 +33,14 @@ and Dragonfly stops tracking the keys for the connection, and no invalidation me
 
 [Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if the connection was
 successfully put in tracking mode or if the tracking mode was successfully disabled. Otherwise, an error is returned.
+
+## Options
+
+`OPTIN`: Do not track keys for read only commands unless they are called immediately after a `CLIENT CACHING YES` command.
+
+`OPTOUT`: Track keys in read only commands unless they are called immediately after a `CLIENT CACHING NO` command.
+
+`NOLOOP`: Do not send notifications for keys modified by the current connection itself.
 
 ## Examples
 
