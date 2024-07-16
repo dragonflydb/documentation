@@ -15,6 +15,24 @@ const config = {
   favicon: "website/favicon.ico",
   trailingSlash: false,
 
+  scripts: [
+    {
+      id: "runllm-widget-script",
+      type: "module",
+      src: "https://widget.runllm.com",
+      "runllm-server-address": "https://api.runllm.com",
+      "runllm-assistant-id": "87",
+      "runllm-position": "BOTTOM_RIGHT",
+      "runllm-keyboard-shortcut": "Mod+j",
+      "runllm-preset": "docusaurus",
+      "runllm-name": "Dragonfly",
+      "runllm-theme-color": "#c53ee0",
+      "runllm-brand-logo":
+        "https://www.dragonflydb.io/assets/dragonfly-mark-squircle-black.svg",
+      async: true,
+    },
+  ],
+
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
