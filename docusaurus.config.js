@@ -29,6 +29,9 @@ const config = {
       "runllm-theme-color": "#c53ee0",
       "runllm-brand-logo":
         "https://www.dragonflydb.io/assets/dragonfly-mark-squircle-black.svg",
+
+      "runllm-community-url": "https://dragonflydb.io/community",
+      "runllm-community-type": "discourse",
       async: true,
     },
   ],
