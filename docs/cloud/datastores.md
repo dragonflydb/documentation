@@ -10,6 +10,11 @@ To create a data store, on the *Data Stores* tab, click [+Data Store](https://dr
 
 The minimum configuration consists of *name*, *cloud provider*, *cloud region* and *plan*.
 
+The following cloud providers are supported:
+- AWS
+- GCP
+- Azure (Private beta, please [schedule a meeting with a product expert](https://calendly.com/d/ymz-yhv-q8f/dragonfly-cloud?month=2024-07) to get access.)
+
 Note that the *cloud provider* and *region* can not be modified once the data store is created.
 
 The *plan* specifies the provisioned memory and memory to CPU ratio of the data store.  
@@ -23,6 +28,7 @@ By default the data store will be configured with a *public endpoint*, *TLS* and
 To create a data store with a *private endpoint*, see [Security](#security), [Networks](./networks.md) and [Peering Connections](./connections.md).
 
 By default the data store will consist of a single Dragonfly server, to create a highly available data store see [High Availability](#high-availability).
+For cluster mode please see [Cluster Mode](#cluster-mode).
 
 Once the data store is created, clicking the data store row will open a drawer with the data store configuration, including the auto generated passkey and a redis compatible *connection string*. 
 
@@ -73,6 +79,13 @@ To avoid data transfer costs incurred by the cloud provider, select the primary 
 **BullMQ** - Enable this for running BullMQ workloads, this requires you to apply Redis Cluster curly braces syntax for the queue names as described [here](/docs/integrations/bullmq.md).
 
 If that is not possible please contact support.
+
+## Cluster Mode
+
+By default a dragonfly cloud data store support redis cluster protocol and clients so you can seamlessly migrate from redis cluster. 
+
+Multi node cluster is in private beta, please [schedule a meeting with a product expert](https://calendly.com/d/ymz-yhv-q8f/dragonfly-cloud?month=2024-07) to get access. 
+
 
 ## Support
 
