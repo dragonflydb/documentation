@@ -31,7 +31,7 @@ const config = {
         "https://www.dragonflydb.io/assets/dragonfly-mark-squircle-black.svg",
 
       "runllm-community-url": "https://dragonflydb.io/community",
-      "runllm-community-type": "discourse",
+      "runllm-community-type": "brand",
       async: true,
     },
   ],
