@@ -1,184 +1,107 @@
 ---
-description:  Learn how to use Redis INCR command for incrementing the integer value of a key.
+description: Learn how to use Redis INCR command for incrementing the integer value of a key.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # INCR
 
-<PageTitle title="Redis INCR Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis INCR Explained (Better Than Official Docs)" />
+
+## Introduction
+
+The `INCR` command in Redis is used to increment the integer value of a key by one. If the key does not exist, it is created with the value 0 before performing the increment operation. This command is essential for counters, rate limiting, and managing sequences in Redis.
 
 ## Syntax
 
-    INCR key
+```plaintext
+INCR key
+```
 
-**Time complexity:** O(1)
+## Parameter Explanations
 
-**ACL categories:** @write, @string, @fast
+- `key`: The key whose value you want to increment. It must hold an integer value or be non-existent (in which case it will be initialized to 0).
 
-Increments the number stored at `key` by one.
-If the key does not exist, it is set to `0` before performing the operation.
-An error is returned if the key contains a value of the wrong type or contains a
-string that can not be represented as integer.
-This operation is limited to 64 bit signed integers.
+## Return Values
 
-**Note:** this is a string operation because Dragonfly does not have a dedicated
-integer type.
-The string stored at the key is interpreted as a base-10 **64 bit signed
-integer** to execute the operation.
+`INCR` returns the new value of the key after the increment operation.
 
-Dragonfly stores integers in their integer representation, so for string values
-that actually hold an integer, there is no overhead for storing the string
-representation of the integer.
+Example outputs:
 
-## Return
+- If `mykey` holds the value 10 before the increment: `(integer) 11`
+- If `mykey` does not exist before the increment: `(integer) 1`
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the value of `key` after the increment
+## Code Examples
 
-## Examples
+### Basic Example
 
-```shell
-dragonfly> SET mykey "10"
+Incrementing a non-existent key:
+
+```cli
+dragonfly> INCR mycounter
+(integer) 1
+```
+
+Incrementing an existing key:
+
+```cli
+dragonfly> SET mycounter 5
 OK
-dragonfly> INCR mykey
-(integer) 11
-dragonfly> GET mykey
-"11"
+dragonfly> INCR mycounter
+(integer) 6
 ```
 
-## Pattern: Counter
+### Page View Counter
 
-The counter pattern is the most obvious thing you can do with atomic
-increment operations.
-The idea is simply send an `INCR` command to Dragonfly every time an operation
-occurs.
-For instance in a web application we may want to know how many page views this
-user did every day of the year.
+Using `INCR` to track page views:
 
-To do so the web application may simply increment a key every time the user
-performs a page view, creating the key name concatenating the User ID and a
-string representing the current date.
-
-This simple pattern can be extended in many ways:
-
-* It is possible to use `INCR` and `EXPIRE` together at every page view to have
-  a counter counting only the latest `N` page views separated by less than the
-  specified amount of seconds.
-* A client may use `GETSET` in order to atomically get the current counter value
-  and reset it to zero.
-* By using other atomic increment/decrement commands like `DECR` or `INCRBY`, it
-  is possible to handle values that may get bigger or smaller depending on the
-  operations performed by the user.
-  Imagine for instance the score of different users in an online game.
-
-## Pattern: Rate limiter
-
-The rate limiter pattern is a special counter that is used to limit the rate at
-which an operation can be performed.
-The classical materialization of this pattern involves limiting the number of
-requests that can be performed against a public API.
-
-We provide two implementations of this pattern using `INCR`, where we assume
-that the problem to solve is limiting the number of API calls to a maximum of
-_ten requests per second per IP address_.
-
-## Pattern: Rate limiter 1
-
-The more simple and direct implementation of this pattern is the following:
-
-```
-FUNCTION LIMIT_API_CALL(ip)
-ts = CURRENT_UNIX_TIME()
-keyname = ip+":"+ts
-MULTI
-    INCR(keyname)
-    EXPIRE(keyname,10)
-EXEC
-current = RESPONSE_OF_INCR_WITHIN_MULTI
-IF current > 10 THEN
-    ERROR "too many requests per second"
-ELSE
-    PERFORM_API_CALL()
-END
+```cli
+dragonfly> INCR page:view:homepage
+(integer) 1
+dragonfly> INCR page:view:homepage
+(integer) 2
 ```
 
-Basically we have a counter for every IP, for every different second.
-But this counters are always incremented setting an expire of 10 seconds so that
-they'll be removed by Redis automatically when the current second is a different
-one.
+### Rate Limiting
 
-Note the used of `MULTI` and `EXEC` in order to make sure that we'll both
-increment and set the expire at every API call.
+Implement a simple rate limiter that increments a counter every time an action is performed:
 
-## Pattern: Rate limiter 2
-
-An alternative implementation uses a single counter, but is a bit more complex
-to get it right without race conditions.
-We'll examine different variants.
-
-```
-FUNCTION LIMIT_API_CALL(ip):
-current = GET(ip)
-IF current != NULL AND current > 10 THEN
-    ERROR "too many requests per second"
-ELSE
-    value = INCR(ip)
-    IF value == 1 THEN
-        EXPIRE(ip,1)
-    END
-    PERFORM_API_CALL()
-END
+```cli
+dragonfly> INCR user:1234:action_count
+(integer) 1
 ```
 
-The counter is created in a way that it only will survive one second, starting
-from the first request performed in the current second.
-If there are more than 10 requests in the same second the counter will reach a
-value greater than 10, otherwise it will expire and start again from 0.
+### Generating Unique IDs
 
-**In the above code there is a race condition**.
-If for some reason the client performs the `INCR` command but does not perform
-the `EXPIRE` the key will be leaked until we'll see the same IP address again.
+Create unique user IDs using `INCR`:
 
-This can be fixed easily turning the `INCR` with optional `EXPIRE` into a Lua
-script that is send using the `EVAL` command (only available since Redis version
-2.6).
-
-```
-local current
-current = redis.call("incr",KEYS[1])
-if current == 1 then
-    redis.call("expire",KEYS[1],1)
-end
+```cli
+dragonfly> INCR user:id
+(integer) 1
+dragonfly> INCR user:id
+(integer) 2
 ```
 
-There is a different way to fix this issue without using scripting, by using
-Redis lists instead of counters.
-The implementation is more complex and uses more advanced features but has the
-advantage of remembering the IP addresses of the clients currently performing an
-API call, that may be useful or not depending on the application.
+## Best Practices
 
-```
-FUNCTION LIMIT_API_CALL(ip)
-current = LLEN(ip)
-IF current > 10 THEN
-    ERROR "too many requests per second"
-ELSE
-    IF EXISTS(ip) == FALSE
-        MULTI
-            RPUSH(ip,ip)
-            EXPIRE(ip,1)
-        EXEC
-    ELSE
-        RPUSHX(ip,ip)
-    END
-    PERFORM_API_CALL()
-END
-```
+- Ensure keys used with `INCR` are either non-existent or store integer values to avoid errors.
+- Combine `INCR` with expiration commands like `EXPIRE` to auto-reset counters where necessary.
 
-The `RPUSHX` command only pushes the element if the key already exists.
+## Common Mistakes
 
-Note that we have a race here, but it is not a problem: `EXISTS` may return
-false but the key may be created by another client before we create it inside
-the `MULTI` / `EXEC` block.
-However this race will just miss an API call under rare conditions, so the rate
-limiting will still work correctly.
+- Using `INCR` on non-integer keys will result in an error:
+
+  ```cli
+  dragonfly> SET mystring "hello"
+  OK
+  dragonfly> INCR mystring
+  (error) ERR value is not an integer or out of range
+  ```
+
+### What happens if the key already contains a non-integer value?
+
+Attempting to increment a key holding a non-integer value will result in an error.
+
+### Can I use `INCR` with floating-point numbers?
+
+No, `INCR` only works with integers. Use `INCRBYFLOAT` for floating-point increments.

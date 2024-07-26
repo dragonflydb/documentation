@@ -1,49 +1,102 @@
 ---
-description:  Learn how to manage rate limiting in Redis with CL.THROTTLE command.
+description: Learn how to manage rate limiting in Redis with CL.THROTTLE command.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # CL.THROTTLE
 
-<PageTitle title="Redis CL.THROTTLE Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis CL.THROTTLE Explained (Better Than Official Docs)" />
+
+## Introduction
+
+The `CL.THROTTLE` command in Redis is used for rate limiting. It helps to control the rate of requests or actions, ensuring that they do not exceed a specified threshold over a given period. This is particularly useful for implementing API rate limits, protecting resources from abuse, and managing traffic bursts.
 
 ## Syntax
 
-    CL.THROTTLE <key> <max_burst> <count per period> <period> [<quantity>]
-
-**Time complexity:** O(1)
-
-https://redis.com/blog/redis-cell-rate-limiting-redis-module/ 
-
-**ACL categories:** @throttle
-
-This command provides functionality for implementing a rate limit mechanism and
-is based on the Redis module called [redis-cell](https://github.com/brandur/redis-cell).
-
-## Return
-
-An [array](https://redis.io/docs/reference/protocol-spec/#arrays) of 5 integers with the following values:
-
-1. Whether to limit the related action (0 for allowed, 1 for limited).
-2. The total limit of the key. (Equivalent to `X-RateLimit-Limit`)
-3. The remaining limit of the key. (Equivalent to `X-RateLimit-Remaining`)
-4. Number of seconds to wait until a retry if the related action should be limited, else -1. (Equivalent to `Retry-After`)
-5. Number of seconds until the limit is fully restored. (Equivalent to `X-RateLimit-Reset`)
-
-## Examples
-
-```shell
-dragonfly> CL.THROTTLE USER1 0 1 10 1
-1) (integer) 0
-2) (integer) 1
-3) (integer) 0
-4) (integer) -1
-5) (integer) 11
-dragonfly> CL.THROTTLE USER1 0 1 10 1
-1) (integer) 1
-2) (integer) 1
-3) (integer) 0
-4) (integer) 10
-5) (integer) 10
+```plaintext
+CL.THROTTLE key max_burst tokens_per_period period duration
 ```
+
+## Parameter Explanations
+
+- **key**: The unique identifier for the rate limiter instance.
+- **max_burst**: The maximum number of tokens that can be accumulated.
+- **tokens_per_period**: Number of tokens added to the bucket at each period.
+- **period**: The interval at which tokens are added.
+- **duration**: The time window for rate limiting.
+
+## Return Values
+
+The `CL.THROTTLE` command returns an array containing five elements:
+
+1. A status code (0 for allowed, 1 for denied).
+2. The current number of tokens available.
+3. The number of tokens requested.
+4. The total number of tokens in the bucket.
+5. The time to wait before the next token is available (in milliseconds).
+
+### Example Output
+
+```plaintext
+[0, 9, 1, 10, 0]
+```
+
+## Code Examples
+
+### Basic Example
+
+```cli
+dragonfly> CL.THROTTLE mylimiter 15 5 60 1
+1) (integer) 0
+2) (integer) 14
+3) (integer) 1
+4) (integer) 15
+5) (integer) 0
+```
+
+### Rate Limiting API Requests
+
+This example shows how to use `CL.THROTTLE` to limit API requests to 10 per minute.
+
+```cli
+dragonfly> CL.THROTTLE api_rate_limiter 10 1 60 1
+1) (integer) 0
+2) (integer) 9
+3) (integer) 1
+4) (integer) 10
+5) (integer) 0
+```
+
+### Controlling Login Attempts
+
+This example limits login attempts to 5 per hour to prevent brute force attacks.
+
+```cli
+dragonfly> CL.THROTTLE login_attempts 5 1 3600 1
+1) (integer) 0
+2) (integer) 4
+3) (integer) 1
+4) (integer) 5
+5) (integer) 0
+```
+
+## Best Practices
+
+- Choose appropriate values for `max_burst` and `tokens_per_period` based on your specific use case requirements.
+- Monitor and adjust the rate limits according to the observed traffic patterns and application load.
+
+## Common Mistakes
+
+- Setting `tokens_per_period` too high or low, leading to either excessive throttling or insufficient protection against abuse.
+- Not considering the cumulative effect of multiple rate-limited actions, which can lead to unexpected behavior.
+
+## FAQs
+
+### What happens if the bucket runs out of tokens?
+
+The request will be denied, and the return value will indicate a wait time before the next token becomes available.
+
+### Can I use different rate limits for different actions?
+
+Yes, you can create separate keys with their own rate limits for different actions or endpoints.

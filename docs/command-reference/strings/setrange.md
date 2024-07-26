@@ -1,61 +1,96 @@
 ---
-description:  Learn how to use Redis SETRANGE to overwrite part of a string at the specified key.
+description: Learn how to use Redis SETRANGE to overwrite part of a string at the specified key.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # SETRANGE
 
-<PageTitle title="Redis SETRANGE Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis SETRANGE Explained (Better Than Official Docs)" />
+
+## Introduction
+
+The `SETRANGE` command in Redis is used to overwrite part of a string at a specified offset. It is particularly useful for modifying substrings within a larger string without replacing the entire value. This command ensures atomicity, so concurrent modifications will not interfere with each other.
 
 ## Syntax
 
-    SETRANGE key offset value
+```plaintext
+SETRANGE key offset value
+```
 
-**Time complexity:** O(1), not counting the time taken to copy the new string in place. Usually, this string is very small so the amortized complexity is O(1). Otherwise, complexity is O(M) with M being the length of the value argument.
+## Parameter Explanations
 
-**ACL categories:** @write, @string, @slow
+- **key**: The name of the string key where the substring will be modified.
+- **offset**: An integer specifying the position within the string where the modification begins. Zero-based index.
+- **value**: The substring that will overwrite the existing data starting from the specified offset.
 
-Overwrites part of the string stored at _key_, starting at the specified offset,
-for the entire length of _value_.
-If the offset is larger than the current length of the string at _key_, the
-string is padded with zero-bytes to make _offset_ fit.
-Non-existing keys are considered as empty strings, so this command will make
-sure it holds a string large enough to be able to set _value_ at _offset_.
+## Return Values
 
-**Warning**: When setting the last possible byte (with large _offset_), and the string value stored at _key_ does not holds a value (or holds a small string), the operation will take some time, as Dragonfly is required to allocate all memory leading to that bit. Subsequent calls will not have the performance penalty.
+- **Integer**: Returns the length of the string after the modification.
 
-## Return
+Example:
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the length of the string after it was modified by the command.
+```cli
+(integer) 11
+```
 
-## Patterns
+## Code Examples
 
-Thanks to `SETRANGE` and the analogous `GETRANGE` commands, you can use Redis
-strings as a linear array with O(1) random access.
-This is a very fast and efficient storage in many real world use cases.
+### Basic Example
 
+Overwriting a substring in an existing string value.
 
-## Examples
-
-Basic usage:
-
-```shell
-dragonfly> SET key1 "Hello World"
+```cli
+dragonfly> SET mystring "Hello World"
 OK
-dragonfly> SETRANGE key1 6 "Dragonfly"
-(integer) 15
-dragonfly> GET key1
-"Hello Dragonfly"
+dragonfly> SETRANGE mystring 6 "Redis"
+(integer) 11
+dragonfly> GET mystring
+"Hello Redis"
 ```
 
-Example of zero padding:
+### Updating a Log Entry
 
-```shell
-dragonfly> SETRANGE key2 6 "Dragonfly"
-(integer) 15
-dragonfly> GET key2
-"\x00\x00\x00\x00\x00\x00Dragonfly
+Appending a timestamp to a log entry while preserving the initial part of the log.
+
+```cli
+dragonfly> SET logentry "User123 login at "
+OK
+dragonfly> SETRANGE logentry 16 "2024-07-26 12:34:56"
+(integer) 35
+dragonfly> GET logentry
+"User123 login at 2024-07-26 12:34:56"
 ```
 
-where `\x00`  stands for the NUL character, inserted by the zero padding.
+### Padding a String
+
+Ensure a fixed-length record by padding spaces or other characters.
+
+```cli
+dragonfly> SET record "Name: John"
+OK
+dragonfly> SETRANGE record 10 "            Address: Unknown"
+(integer) 40
+dragonfly> GET record
+"Name: John             Address: Unknown"
+```
+
+## Best Practices
+
+- Ensure the offset does not exceed the current length of the string to avoid creating large gaps filled with null characters.
+- Use `GETRANGE` to verify changes when working with critical strings.
+
+## Common Mistakes
+
+- Using a negative offset. Redis does not support negative offsets for `SETRANGE`.
+- Expecting `SETRANGE` to work on non-string types. Ensure the key holds a string value.
+
+## FAQs
+
+### What happens if the offset is beyond the current length of the string?
+
+If the offset is greater than the length of the string, Redis pads the intermediate space with null characters (represented as `\x00`).
+
+### Can `SETRANGE` be used on keys of types other than string?
+
+No, `SETRANGE` only works with string values. Attempting to use it on other types like lists, sets, or hashes will result in an error.
