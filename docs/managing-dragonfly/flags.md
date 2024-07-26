@@ -456,7 +456,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--serialization_max_chunk_size`
   Total bytes before flushing big entries)
   
-  `default: 0`
+  `default: 10_MB`
 
 ### `--enable_top_keys_tracking`
   Enables / disables tracking of hot keys debugging feature. 
