@@ -28,7 +28,7 @@ BITOP operation destkey key [key ...]
 
 Returns the size of the string stored in the destination key, measured in bytes.
 
-Examples:
+#### Example Outputs
 
 - `(integer) 3`
 - `(integer) 1`

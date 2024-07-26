@@ -27,7 +27,7 @@ GETSET key value
 
 The `GETSET` command returns the old value stored at the key. If the key did not exist, it returns `nil`.
 
-### Example Outputs
+#### Example Outputs
 
 - If the key exists:
   ```cli

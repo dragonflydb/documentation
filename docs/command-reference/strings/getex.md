@@ -32,7 +32,7 @@ GETEX key [EX seconds|PX milliseconds|EXAT unix-time-seconds|PXAT unix-time-mill
 - **String**: The value of the key if it exists.
 - **nil**: If the key does not exist.
 
-### Examples:
+#### Example Outputs
 
 - If the key exists:
   ```cli

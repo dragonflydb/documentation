@@ -27,7 +27,7 @@ APPEND key value
 
 - An integer indicating the length of the string after the append operation.
 
-### Example Outputs
+#### Example Outputs
 
 - `(integer) 11` when the resulting string length is 11.
 

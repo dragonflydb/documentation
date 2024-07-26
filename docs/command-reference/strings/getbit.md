@@ -28,7 +28,7 @@ GETBIT key offset
 - Returns the bit value (0 or 1) stored at the specified offset.
 - If the offset is beyond the string length, it returns 0.
 
-Example outputs:
+#### Example Outputs
 
 - `(integer) 0`
 - `(integer) 1`

@@ -26,7 +26,7 @@ DECR key
 
 The `DECR` command returns the value of the key after the decrement operation is performed.
 
-### Example Output
+#### Example Outputs
 
 - If the key exists:
   ```plaintext

@@ -26,7 +26,7 @@ MGET key [key ...]
 
 The command returns an array of values corresponding to the specified keys.
 
-Example outputs:
+#### Example Outputs
 
 - If all keys exist: An array of values.
 - If some keys do not exist: An array containing `nil` at the positions of the nonexistent keys.

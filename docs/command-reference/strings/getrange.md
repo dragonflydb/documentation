@@ -28,7 +28,7 @@ GETRANGE key start end
 
 Returns the substring extracted from the value stored at the given key, corresponding to the specified range.
 
-### Examples
+#### Example Outputs
 
 - Extracting a substring from a string value:
 

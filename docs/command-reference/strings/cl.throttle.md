@@ -36,7 +36,7 @@ The `CL.THROTTLE` command returns an array containing five elements:
 4. The total number of tokens in the bucket.
 5. The time to wait before the next token is available (in milliseconds).
 
-### Example Output
+#### Example output
 
 ```plaintext
 [0, 9, 1, 10, 0]

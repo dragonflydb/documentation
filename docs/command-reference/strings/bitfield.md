@@ -41,7 +41,7 @@ BITFIELD key [GET type offset] [SET type offset value] [INCRBY type offset incre
 - For **INCRBY**: Returns the new value of the bit field after incrementing.
 - For **OVERFLOW**: Does not return a value directly but affects subsequent `INCRBY` operations.
 
-### Example outputs:
+#### Example Outputs
 
 ```cli
 dragonfly> BITFIELD mykey GET u8 0

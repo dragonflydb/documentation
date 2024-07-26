@@ -28,7 +28,7 @@ SETBIT key offset value
 
 The `SETBIT` command returns the original bit value located at the specified offset before it was modified.
 
-### Examples of Possible Outputs
+#### Example Outputs
 
 ```cli
 (integer) 0  // The previous bit value was 0

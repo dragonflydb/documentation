@@ -28,7 +28,7 @@ SETEX key seconds value
 
 - **OK**: If the operation is successful.
 
-Example:
+#### Example Output
 
 ```cli
 dragonfly> SETEX mykey 10 "myvalue"

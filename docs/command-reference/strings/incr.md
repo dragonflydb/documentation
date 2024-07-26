@@ -26,7 +26,7 @@ INCR key
 
 `INCR` returns the new value of the key after the increment operation.
 
-Example outputs:
+#### Example Outputs
 
 - If `mykey` holds the value 10 before the increment: `(integer) 11`
 - If `mykey` does not exist before the increment: `(integer) 1`

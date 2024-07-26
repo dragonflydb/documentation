@@ -27,7 +27,7 @@ GET key
 - If the key exists: Returns the value associated with the key.
 - If the key does not exist: Returns `nil`.
 
-### Examples of Possible Outputs
+#### Example Outputs
 
 ```plaintext
 "some_value"

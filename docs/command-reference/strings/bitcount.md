@@ -28,7 +28,7 @@ BITCOUNT key [start end]
 
 The command returns an integer representing the number of bits set to 1 within the specified range.
 
-### Examples
+#### Example Outputs
 
 ```cli
 dragonfly> SET mykey "foobar"

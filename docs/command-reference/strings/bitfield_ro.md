@@ -29,7 +29,7 @@ BITFIELD_RO key [GET encoding offset] ...
 
 The command returns an array of integers, where each integer corresponds to the value of the retrieved bitfield according to the specified encoding.
 
-Example:
+#### Example Outputs
 
 ```cli
 dragonfly> SET mystring "\x01\x02"

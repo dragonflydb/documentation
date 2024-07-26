@@ -30,7 +30,7 @@ BITPOS key bit [start] [end] [BYTE|BIT]
 
 Returns the position of the first bit set to the specified value (0 or 1). If no match is found, it returns -1.
 
-### Examples:
+#### Example Outputs
 
 - When searching for the first `1` bit:
 

@@ -36,7 +36,7 @@ SET key value [NX|XX] [EX seconds|PX milliseconds|EXAT timestamp|PXAT timestampm
 - **OK**: Returns "OK" if `SET` was successful.
 - **nil**: Returns nil if the operation was not performed due to NX/XX conditions.
 
-### Examples:
+#### Example Outputs
 
 - Successful `SET`:
 

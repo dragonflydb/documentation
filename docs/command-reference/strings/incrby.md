@@ -31,7 +31,7 @@ The command returns the value of the key after the increment operation.
 (integer) new_value
 ```
 
-### Example Outputs:
+#### Example Outputs
 
 - If the original value is 5 and the increment is 3, the new value will be 8.
 - If the key does not exist, it is set to `0` before performing the operation, and then incremented.

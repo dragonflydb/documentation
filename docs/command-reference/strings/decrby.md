@@ -27,7 +27,7 @@ DECRBY key decrement
 
 The `DECRBY` command returns the new value of the key after the decrement operation.
 
-### Example:
+#### Example Output
 
 If `mycounter` holds the value `10` and you run `DECRBY mycounter 3`, the return value will be `7`.
 

@@ -27,7 +27,7 @@ INCRBYFLOAT key increment
 
 The command returns the new value of the key after the increment operation, formatted as a string.
 
-### Examples:
+#### Example Outputs
 
 ```cli
 dragonfly> SET mykey "10.50"
