@@ -1,77 +1,116 @@
 ---
-description:  Learn how to conduct bitwise operations on strings using Redis BITOP.
+description: Learn how to conduct bitwise operations on strings using Redis BITOP.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # BITOP
 
-<PageTitle title="Redis BITOP Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis BITOP Explained (Better Than Official Docs)" />
+
+## Introduction
+
+`BITOP` is a Redis command used to perform bitwise operations between multiple keys and store the result in a destination key. It supports operations like AND, OR, XOR, and NOT. This command is crucial for handling binary data and performing efficient bulk bitwise operations.
 
 ## Syntax
 
-    BITOP <AND | OR | XOR | NOT> destkey key [key ...]
+```cli
+BITOP operation destkey key [key ...]
+```
 
-**Time complexity:** O(N)
+## Parameter Explanations
 
-**ACL categories:** @write, @bitmap, @slow
+- **operation**: The bitwise operation to be performed. It can be `AND`, `OR`, `XOR`, or `NOT`.
+- **destkey**: The key where the result of the bitwise operation will be stored.
+- **key [key ...]**: One or more keys containing string values on which the bitwise operation will be applied.
 
-Perform a bitwise operation between multiple keys (containing string values) and
-store the result in the destination key.
+## Return Values
 
-The `BITOP` command supports four bitwise operations: **AND**, **OR**, **XOR**
-and **NOT**, thus the valid forms to call the command are:
+Returns the size of the string stored in the destination key, measured in bytes.
 
+#### Example Outputs
 
-* `BITOP AND destkey srckey1 srckey2 srckey3 ... srckeyN`
-* `BITOP OR  destkey srckey1 srckey2 srckey3 ... srckeyN`
-* `BITOP XOR destkey srckey1 srckey2 srckey3 ... srckeyN`
-* `BITOP NOT destkey srckey`
+- `(integer) 3`
+- `(integer) 1`
 
-As you can see **NOT** is special as it only takes an input key, because it
-performs inversion of bits so it only makes sense as a unary operator.
+## Code Examples
 
-The result of the operation is always stored at `destkey`.
+### Basic Example
 
-## Handling of strings with different lengths
+Performing a basic bitwise AND operation between two keys:
 
-When an operation is performed between strings having different lengths, all the
-strings shorter than the longest string in the set are treated as if they were
-zero-padded up to the length of the longest string.
-
-The same holds true for non-existent keys, that are considered as a stream of
-zero bytes up to the length of the longest string.
-
-## Return
-
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the size of the string stored in the destination key, which is equal to the
-size of the longest input string.
-
-## Examples
-
-```shell
+```cli
 dragonfly> SET key1 "foobar"
 OK
 dragonfly> SET key2 "abcdef"
 OK
-dragonfly> BITOP AND dest key1 key2
+dragonfly> BITOP AND result key1 key2
 (integer) 6
-dragonfly> GET dest
-"`bc`ab"
+dragonfly> GET result
+"\x60\x60\x04\x00\x00\x00"
 ```
 
-## Pattern: real time metrics using bitmaps
+### Combining Multiple Keys with OR Operation
 
-`BITOP` is a good complement to the pattern documented in the `BITCOUNT` command
-documentation.
-Different bitmaps can be combined in order to obtain a target bitmap where
-the population counting operation is performed.
+Combining three keys using the OR operation:
 
-## Performance considerations
+```cli
+dragonfly> SET key1 "\x01"
+OK
+dragonfly> SET key2 "\x02"
+OK
+dragonfly> SET key3 "\x03"
+OK
+dragonfly> BITOP OR result key1 key2 key3
+(integer) 1
+dragonfly> GET result
+"\x03"
+```
 
-`BITOP` is a potentially slow command as it runs in O(N) time.
-Care should be taken when running it against long input strings.
+### Using XOR Operation
 
-For real-time metrics and statistics involving large inputs a good approach is
-to use a replica (with replica-read-only option enabled) where the bit-wise
-operations are performed to avoid blocking the master instance.
+Using the XOR operation to combine two keys:
+
+```cli
+dragonfly> SET key1 "\x0F"
+OK
+dragonfly> SET key2 "\xF0"
+OK
+dragonfly> BITOP XOR result key1 key2
+(integer) 1
+dragonfly> GET result
+"\xFF"
+```
+
+### NOT Operation Example
+
+Performing the NOT operation on a single key:
+
+```cli
+dragonfly> SET key1 "\xAA"  # 10101010 in binary
+OK
+dragonfly> BITOP NOT result key1
+(integer) 1
+dragonfly> GET result
+"\x55"  # 01010101 in binary (inverted bits)
+```
+
+## Best Practices
+
+- Ensure the keys involved in the BITOP operation have values of the same length for predictable results.
+- Use the NOT operation with only one key, as this is the only unary operation in BITOP.
+
+## Common Mistakes
+
+- Using the NOT operation with more than one key will result in an error.
+- Performing operations on non-string data types can lead to unexpected results or errors.
+
+## FAQs
+
+### What happens if the keys have different lengths?
+
+Redis pads the shorter strings with zero bytes to match the length of the longest string before performing the bitwise operation.
+
+### Can I use BITOP with empty keys?
+
+Yes, but if all keys are empty, the result stored in the destination key will also be an empty string.

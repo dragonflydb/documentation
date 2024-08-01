@@ -1,138 +1,118 @@
 ---
-description:  Discover how to handle string values as an array of bits with Redis BITFIELD.
+description: Discover how to handle string values as an array of bits with Redis BITFIELD.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # BITFIELD
 
-<PageTitle title="Redis BITFIELD Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis BITFIELD Explained (Better Than Official Docs)" />
+
+## Introduction
+
+The `BITFIELD` command in Redis is a versatile tool for manipulating string values at the bit level. It allows users to set, get, and perform arithmetic operations on specific bits within a string. This command is essential for tasks that require efficient storage and retrieval of binary data, such as implementing counters, flags, or compact data structures.
 
 ## Syntax
 
-    BITFIELD key [GET encoding offset | [OVERFLOW <WRAP | SAT | FAIL>] <SET encoding offset value | INCRBY encoding offset increment> [GET encoding offset | [OVERFLOW <WRAP | SAT | FAIL>] <SET encoding offset value | INCRBY encoding offset increment> ...]]
-
-**Time complexity:** O(1) for each subcommand specified
-
-**ACL categories:** @write, @bitmap, @slow
-
-The command treats a string as an array of bits, and is capable of addressing specific integer fields of varying bit widths and arbitrary non (necessary) aligned offset. In practical terms, using this command you can set, for example, a signed 5 bits integer at bit offset 1234 to a specific value, retrieve a 31 bit unsigned integer from offset 4567. Similarly, the command handles increments and decrements of the specified integers, providing guaranteed and well specified overflow and underflow behavior that the user can configure.
-
-`BITFIELD` is able to operate with multiple bit fields in the same command call. It takes a list of operations to perform, and returns an array of replies, where each array matches the corresponding operation in the list of arguments.
-
-For example the following command increments a 5 bit signed integer at bit offset 100, and gets the value of the 4 bit unsigned integer at bit offset 0:
-
-```shell
-dragonfly> BITFIELD mykey INCRBY i5 100 1 GET u4 0
-1) (integer) 1
-2) (integer) 0
+```plaintext
+BITFIELD key [GET type offset] [SET type offset value] [INCRBY type offset increment] [OVERFLOW WRAP|SAT|FAIL]
 ```
 
-Note that:
+## Parameter Explanations
 
-1. Addressing with `GET` bits outside the current string length (including the case the key does not exist at all), results in the operation to be performed like the missing part all consists of bits set to 0.
-2. Addressing with `SET` or `INCRBY` bits outside the current string length will enlarge the string, zero-padding it, as needed, for the minimal length needed, according to the most far bit touched.
+- **key**: The name of the Redis key.
+- **GET**: Retrieves a specific bit field.
+  - **type**: The type (e.g., `i8`, `u16`) specifying the bit width and signed/unsigned nature of the field.
+  - **offset**: The zero-based bit position to start reading from.
+- **SET**: Sets a specific bit field to a value.
+  - **type**: The type specifying the bit width and signed/unsigned nature of the field.
+  - **offset**: The zero-based bit position to start writing to.
+  - **value**: The value to set in the specified bit field.
+- **INCRBY**: Increments a specific bit field by a given amount.
+  - **type**: The type specifying the bit width and signed/unsigned nature of the field.
+  - **offset**: The zero-based bit position to start incrementing from.
+  - **increment**: The amount to increment the bit field by.
+- **OVERFLOW**: Specifies the overflow behavior for arithmetic operations. Can be `WRAP` (default), `SAT`, or `FAIL`.
 
-## Supported subcommands and integer encoding
+## Return Values
 
-The following is the list of supported commands.
+- For **GET**: Returns the value of the requested bit field.
+- For **SET**: Returns the previous value of the bit field.
+- For **INCRBY**: Returns the new value of the bit field after incrementing.
+- For **OVERFLOW**: Does not return a value directly but affects subsequent `INCRBY` operations.
 
-* **GET** `<encoding>` `<offset>` -- Returns the specified bit field.
-* **SET** `<encoding>` `<offset>` `<value>` -- Set the specified bit field and returns its old value.
-* **INCRBY** `<encoding>` `<offset>` `<increment>` -- Increments or decrements (if a negative increment is given) the specified bit field and returns the new value.
+#### Example Outputs
 
-There is another subcommand that only changes the behavior of successive
-`INCRBY` and `SET` subcommands calls by setting the overflow behavior:
-
-* **OVERFLOW** `[WRAP|SAT|FAIL]`
-
-Where an integer encoding is expected, it can be composed by prefixing with `i` for signed integers and `u` for unsigned integers with the number of bits of our integer encoding. So for example `u8` is an unsigned integer of 8 bits and `i16` is a
-signed integer of 16 bits.
-
-The supported encodings are up to 64 bits for signed integers, and up to 63 bits for
-unsigned integers. 
-
-## Bits and positional offsets
-
-There are two ways in order to specify offsets in the bitfield command.
-If a number without any prefix is specified, it is used just as a zero based
-bit offset inside the string.
-
-However if the offset is prefixed with a `#` character, the specified offset
-is multiplied by the integer encoding's width, so for example:
-
-```shell
-BITFIELD mystring SET i8 #0 100 SET i8 #1 200
+```cli
+dragonfly> BITFIELD mykey GET u8 0
+1) (integer) 5
 ```
 
-Will set the first 8-bit integer at offset 0 and the second at offset 8.
-This way you don't have to do the math yourself inside your client if what
-you want is a plain array of integers of a given size.
-
-## Overflow control
-
-Using the `OVERFLOW` command the user is able to fine-tune the behavior of
-the increment or decrement overflow (or underflow) by specifying one of
-the following behaviors:
-
-* **WRAP**: wrap around, both with signed and unsigned integers. In the case of unsigned integers, wrapping is like performing the operation modulo the maximum value the integer can contain (the C standard behavior). With signed integers instead wrapping means that overflows restart towards the most negative value and underflows towards the most positive ones, so for example if an `i8` integer is set to the value 127, incrementing it by 1 will yield `-128`.
-* **SAT**: uses saturation arithmetic, that is, on underflows the value is set to the minimum integer value, and on overflows to the maximum integer value. For example incrementing an `i8` integer starting from value 120 with an increment of 10, will result into the value 127, and further increments will always keep the value at 127. The same happens on underflows, but towards the value is blocked at the most negative value.
-* **FAIL**: in this mode no operation is performed on overflows or underflows detected. The corresponding return value is set to NULL to signal the condition to the caller.
-
-Note that each `OVERFLOW` statement only affects the `INCRBY` and `SET`
-commands that follow it in the list of subcommands, up to the next `OVERFLOW`
-statement.
-
-By default, **WRAP** is used if not otherwise specified.
-
-```shell
-dragonfly> BITFIELD mykey incrby u2 100 1 OVERFLOW SAT incrby u2 102 1
-1) (integer) 1
-2) (integer) 1
-dragonfly> BITFIELD mykey incrby u2 100 1 OVERFLOW SAT incrby u2 102 1
-1) (integer) 2
-2) (integer) 2
-dragonfly> BITFIELD mykey incrby u2 100 1 OVERFLOW SAT incrby u2 102 1
-1) (integer) 3
-2) (integer) 3
-dragonfly> BITFIELD mykey incrby u2 100 1 OVERFLOW SAT incrby u2 102 1
+```cli
+dragonfly> BITFIELD mykey SET i8 1 127
 1) (integer) 0
-2) (integer) 3
 ```
 
-## Return value
-
-The command returns an array with each entry being the corresponding result of
-the sub command given at the same position. `OVERFLOW` subcommands don't count
-as generating a reply.
-
-The following is an example of `OVERFLOW FAIL` returning NULL.
-
-```shell
-dragonfly> BITFIELD mykey OVERFLOW FAIL incrby u2 102 1
-1) (nil)
+```cli
+dragonfly> BITFIELD mykey INCRBY u16 0 5
+1) (integer) 10
 ```
 
-## Motivations
+## Code Examples
 
-The motivation for this command is that the ability to store many small integers
-as a single large bitmap (or segmented over a few keys to avoid having huge keys) is extremely memory efficient, and opens new use cases for Dragonfly to be applied, especially in the field of real time analytics. This use cases are supported by the ability to specify the overflow in a controlled way.
+### Basic Example
 
-## Performance considerations
+```cli
+dragonfly> BITFIELD mykey SET u8 0 100
+1) (integer) 0
+dragonfly> BITFIELD mykey GET u8 0
+1) (integer) 100
+```
 
-Usually `BITFIELD` is a fast command, however note that addressing far bits of currently short strings will trigger an allocation that may be more costly than executing the command on bits already existing.
+### Counter Implementation
 
-## Orders of bits
+Using `BITFIELD` to implement an 8-bit counter:
 
-The representation used by `BITFIELD` considers the bitmap as having the
-bit number 0 to be the most significant bit of the first byte, and so forth, so
-for example setting a 5 bits unsigned integer to value 23 at offset 7 into a
-bitmap previously set to all zeroes, will produce the following representation:
+```cli
+dragonfly> BITFIELD mycounter INCRBY u8 0 1
+1) (integer) 1
+dragonfly> BITFIELD mycounter INCRBY u8 0 1
+1) (integer) 2
+dragonfly> BITFIELD mycounter INCRBY u8 0 253
+1) (integer) 255
+dragonfly> BITFIELD mycounter INCRBY u8 0 1
+1) (integer) 0  # Overflow occurs as it wraps around
+```
 
-    +--------+--------+
-    |00000001|01110000|
-    +--------+--------+
+### Flag Management
 
-When offsets and integer sizes are aligned to bytes boundaries, this is the
-same as big endian, however when such alignment does not exist, its important
-to also understand how the bits inside a byte are ordered.
+Using `BITFIELD` to manage multiple flags within a single key:
+
+```cli
+dragonfly> BITFIELD user_flags SET u1 0 1
+1) (integer) 0
+dragonfly> BITFIELD user_flags SET u1 1 1
+1) (integer) 0
+dragonfly> BITFIELD user_flags GET u1 0
+1) (integer) 1
+dragonfly> BITFIELD user_flags GET u1 1
+1) (integer) 1
+```
+
+## Best Practices
+
+- Use appropriate bit field types to save space and ensure correct arithmetic operations.
+- Combine multiple operations in one `BITFIELD` command to improve performance.
+- Be cautious with the `OVERFLOW` setting when performing arithmetic operations to avoid unexpected results.
+
+## Common Mistakes
+
+- Misalignment of bit offsets can lead to incorrect data manipulation.
+- Forgetting to specify the correct type can cause unexpected behaviors, especially with signed vs. unsigned types.
+- Not handling potential overflows properly when using `INCRBY`.
+
+## FAQs
+
+### What happens if I increment a bit field beyond its maximum value?
+
+By default, the `INCRBY` operation will wrap around. You can change this behavior using the `OVERFLOW` sub

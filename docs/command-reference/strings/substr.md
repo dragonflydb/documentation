@@ -1,45 +1,90 @@
 ---
-description:  Learn how to use Redis SUBSTR to return a substring from a string value.
+description: Learn how to use Redis SUBSTR to return a substring from a string value.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # SUBSTR
 
-<PageTitle title="Redis SUBSTR Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis SUBSTR Explained (Better Than Official Docs)" />
+
+## Introduction
+
+The `SUBSTR` command in Redis is used to extract a substring from a given string stored at a specified key. It's useful for retrieving parts of a string without fetching the entire value, which can save bandwidth and improve performance for large strings.
 
 ## Syntax
 
-    SUBSTR key start end
-
-**Time complexity:** O(N) where N is the length of the returned string. The complexity is ultimately determined by the returned length, but because creating a substring from an existing string is very cheap, it can be considered O(1) for small strings.
-
-**ACL categories:** @read, @string, @slow
-
-Returns the substring of the string value stored at `key`, determined by the
-offsets `start` and `end` (both are inclusive).
-Negative offsets can be used in order to provide an offset starting from the end
-of the string.
-So -1 means the last character, -2 the penultimate and so forth.
-
-The function handles out of range requests by limiting the resulting range to
-the actual length of the string.
-
-## Return
-
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the substring indicated by `start`, `end` of the string stored at key `key`.
-
-## Examples
-
-```shell
-dragonfly> SET mykey "This is a string"
-OK
-dragonfly> GETRANGE mykey 0 3
-"This"
-dragonfly> GETRANGE mykey -3 -1
-"ing"
-dragonfly> GETRANGE mykey 0 -1
-"This is a string"
-dragonfly> GETRANGE mykey 10 100
-"string"
+```plaintext
+SUBSTR key start end
 ```
+
+## Parameter Explanations
+
+- **key**: The key holding the string value.
+- **start**: The starting index of the substring (0-based). Negative values indicate offsets from the end of the string.
+- **end**: The ending index of the substring. Negative values are supported.
+
+## Return Values
+
+The command returns the substring from the start to end indexes inclusive. If the key does not exist or if the specified range is out of bounds, an empty string is returned.
+
+## Code Examples
+
+### Basic Example
+
+Extracting a basic substring from a string stored in Redis.
+
+```cli
+dragonfly> SET mystring "Hello, World!"
+OK
+dragonfly> SUBSTR mystring 0 4
+"Hello"
+dragonfly> SUBSTR mystring 7 11
+"World"
+```
+
+### Extracting the Last Characters
+
+Fetching the last few characters using negative indexing.
+
+```cli
+dragonfly> SET mystring "Hello, World!"
+OK
+dragonfly> SUBSTR mystring -6 -1
+"World!"
+```
+
+### Using SUBSTR for Pagination
+
+Simulate basic pagination by extracting substrings of fixed length.
+
+```cli
+dragonfly> SET longstring "This is a very long string used for testing."
+OK
+dragonfly> SUBSTR longstring 0 9
+"This is a "
+dragonfly> SUBSTR longstring 10 19
+"very long "
+dragonfly> SUBSTR longstring 20 29
+"string use"
+```
+
+## Best Practices
+
+- Use negative indices to simplify extraction from the end of strings.
+- Ensure the start and end indices are within the valid range of the string length.
+
+## Common Mistakes
+
+- Misinterpreting 0-based indexing leading to off-by-one errors.
+- Forgetting that negative indices count from the end of the string.
+
+## FAQs
+
+### What happens if the key doesn't exist?
+
+The command will return an empty string if the key does not exist.
+
+### How does SUBSTR handle out-of-range indices?
+
+Out-of-range indices are trimmed to fit within the actual string length, and no error is thrown; an appropriate substring (or empty string) is returned.
