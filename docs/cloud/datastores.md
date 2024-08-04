@@ -30,9 +30,9 @@ To create a data store with a *private endpoint*, see [Security](#security), [Ne
 By default the data store will consist of a single Dragonfly server, to create a highly available data store see [High Availability](#high-availability).
 For cluster mode please see [Cluster Mode](#cluster-mode).
 
-Once the data store is created, clicking the data store row will open a drawer with the data store configuration, including the auto generated passkey and a redis compatible *connection string*. 
+Once the data store is created, clicking the data store row will open a drawer with the data store configuration, including the auto generated passkey and a redis compatible *connection URI*. 
 
-Once the data store *Status* becomes *Active* you can try access it with e.g. `redis-cli -u <connection string> PING`
+Once the data store *Status* becomes *Active* you can try access it with e.g. `redis-cli -u <connection URI> PING`
 For more information on how to connect to the data store see [Connecting to Data Store](#connecting-to-data-store).
 
 To update the data store configuration click the pencil edit button in the top right of the drawer.  
@@ -89,19 +89,19 @@ Multi node cluster is in private beta, please [schedule a meeting with a product
 
 ## Connecting to Data Store
 
-Once a data store *Status* is *Active* you can connect to it with any redis client using the *connection string* provided in the data store drawer. 
+Once a data store *Status* is *Active* you can connect to it with any Redis client using the *Connection URI* provided in the data store drawer (e.g. rediss://default:h6blm92XXXsa@52tyg3xkp.dragonflydb.cloud:6385). 
 Here are a few popular examples:
 
 ### Redis CLI
 1. Install redis-cli, `sudo apt install redis-tools`
-2. With the *connection string* from the data store drawer execute redis-cli in the terminal e.g. `redis-cli -u <connection string> PING`
+2. With the *Connection URI* from the data store drawer execute redis-cli in the terminal e.g. `redis-cli -u <connection URI> PING`
 
 ### Node.js
 1. Install the redis npm package, `npm install redis`
 2. Use the following code snippet to connect to the data store
 ```javascript
 import { createClient } from 'redis';
-const client = createClient({url: '<connection string>'});
+const client = createClient({url: '<connection URI>'});
 client.on('connect', () => {
   console.log('Connected to Redis');
 });
@@ -123,7 +123,7 @@ client.ping((err, res) => {
 2. Use the following code snippet to connect to the data store
 ```python
 import redis
-client = redis.Redis.from_url('<connection string>')
+client = redis.Redis.from_url('<connection URI>')
 client.ping()
 ```
 
@@ -139,9 +139,9 @@ import (
 )
 
 func main() {
-    // Replace "<connection string>" with the actual connection string,  
+    // Replace "<connection URI>" with the actual connection URI,  
     // <db> is the database number, default is 0
-    opt, err := redis.ParseURL("<connection string>/<db>")
+    opt, err := redis.ParseURL("<connection URI>/<db>")
     if err != nil {
 	    panic(err)
     }
