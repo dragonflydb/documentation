@@ -33,6 +33,7 @@ For cluster mode please see [Cluster Mode](#cluster-mode).
 Once the data store is created, clicking the data store row will open a drawer with the data store configuration, including the auto generated passkey and a redis compatible *connection string*. 
 
 Once the data store *Status* becomes *Active* you can try access it with e.g. `redis-cli -u <connection string> PING`
+For more information on how to connect to the data store see [Connecting to Data Store](#connecting-to-data-store).
 
 To update the data store configuration click the pencil edit button in the top right of the drawer.  
 Dragonfly cloud performs data store updates with zero downtime.    
@@ -85,6 +86,79 @@ If that is not possible please contact support.
 By default a dragonfly cloud data store support redis cluster protocol and clients so you can seamlessly migrate from redis cluster. 
 
 Multi node cluster is in private beta, please [schedule a meeting with a product expert](https://calendly.com/d/ymz-yhv-q8f/dragonfly-cloud?month=2024-07) to get access. 
+
+## Connecting to Data Store
+
+Once a data store *Status* is *Active* you can connect to it with any redis client using the *connection string* provided in the data store drawer. 
+Here are a few popular examples:
+
+### Redis CLI
+1. Install redis-cli, `sudo apt install redis-tools`
+2. With the *connection string* from the data store drawer execute redis-cli in the terminal e.g. `redis-cli -u <connection string> PING`
+
+### Node.js
+1. Install the redis npm package, `npm install redis`
+2. Use the following code snippet to connect to the data store
+```javascript
+import { createClient } from 'redis';
+const client = createClient({url: '<connection string>'});
+client.on('connect', () => {
+  console.log('Connected to Redis');
+});
+client.on('error', (err) => {
+  console.error('Redis error', err);
+});
+client.ping((err, res) => {
+  if (err) {
+    console.error('Error:', err);
+    return;
+  }
+  console.log('Redis PING:', res);
+});
+
+```
+
+### Python
+1. Install the redis-py package, `pip install redis`
+2. Use the following code snippet to connect to the data store
+```python
+import redis
+client = redis.Redis.from_url('<connection string>')
+client.ping()
+```
+
+### Go
+1. Install the go-redis package, `go get github.com/go-redis/redis/v8`
+2. Use the following code snippet to connect to the data store
+```go
+package main
+
+import (
+    "fmt"
+	"github.com/go-redis/redis/v8"
+)
+
+func main() {
+    // Replace "<connection string>" with the actual connection string,  
+    // <db> is the database number, default is 0
+    opt, err := redis.ParseURL("<connection string>/<db>")
+    if err != nil {
+	    panic(err)
+    }
+
+    client := redis.NewClient(opt)
+
+    pong, err := client.Ping(client.Context()).Result()
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
+
+    fmt.Println("Connected to Redis:", pong)
+}
+```
+
+
 
 
 ## Support
