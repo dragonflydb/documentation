@@ -454,9 +454,11 @@ flags which include specified substring in either in the name, description or pa
   `default: 10`
 
 ### `--serialization_max_chunk_size`
-  Total bytes before flushing big entries)
+  Maximum size of a value that may be serialized at once during snapshotting or full sync.
+  Values bigger than this threshold will be serialized using streaming serialization. 
+  0 - to disable streaming mode.
   
-  `default: 10_MB`
+  `default: 0`
 
 ### `--enable_top_keys_tracking`
   Enables / disables tracking of hot keys debugging feature. 
