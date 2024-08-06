@@ -12,7 +12,7 @@ controller and the dragonfly pods. Below is the table of Dragonfly CRD fields.
 | ------ | ---- | ----------- |
 | `affinity` | [Affinity](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#affinity-v1-core) | Dragonfly pod affinity (Optional)<br/><pre>spec:<br/>  affinity: <br/>    nodeaffinity:<br/>      ...</pre> You can learn more about affinity [here](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity).|
 | `replicas` | int | The total number of Dragonfly instances including the master. |
-| `image` | string | The dragonfly image to use. Default is `docker.dragonflydb.io/dragonflydb/dragonfly:v1.19.0` |
+| `image` | string | The dragonfly image (i.e. release version) to use. Default is `docker.dragonflydb.io/dragonflydb/dragonfly:v1.19.0` |
 | `args` | []string | (Optional) Dragonfly container args to pass to the container. Refer to the Dragonfly documentation for the list of supported args. Example - <br/><pre>spec:<br/>  args:<br/>   - "--cluster_mode=emulated"</pre> |
 | `annotations` | object | (Optional) Annotations to add to the Dragonfly pods. See [Annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/) to know more about annotations. |
 | `aclFromSecret` (since v1.1.1) | [SecretKeySelector](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#secretkeyselector-v1-core) | (Optional) Acl file Secret to pass to the container |
