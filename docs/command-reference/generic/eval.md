@@ -28,7 +28,7 @@ Any additional input arguments **should not** represent names of keys.
 **Important:**
 to ensure the correct execution of scripts, all names of keys that a script accesses must be explicitly provided as input key arguments.
 The script **should only** access keys whose names are given as input arguments.
-Scripts **should never** access keys with programmatically-generated names or based on the contents of data structures stored in the database.
+Scripts **should never** access keys with programmatically-generated names or based on the contents of data structures stored in the datastore.
 
 Please refer to the [Redis Programmability](https://redis.io/topics/programmability) and [Introduction to Eval Scripts](https://redis.io/topics/eval-intro) for more information about Lua scripts.
 

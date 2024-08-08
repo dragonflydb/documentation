@@ -1,5 +1,5 @@
 ---
-description: "Learn how to use Redis ACL DELUSER to remove specified users from the Access Control List and enhance database security."
+description: "Learn how to use Redis ACL DELUSER to remove specified users from the Access Control List and enhance datastore security."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

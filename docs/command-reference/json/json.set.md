@@ -1,5 +1,5 @@
 ---
-description: Find how to use Redis JSON.SET command to set a JSON document in a database.
+description: Find how to use Redis JSON.SET command to set a JSON document in a datastore.
 ---
 import PageTitle from '@site/src/components/PageTitle';
 
@@ -21,36 +21,36 @@ Set the JSON value at `path` in `key`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to modify.
 </details>
 
-<details open><summary><code>value</code></summary> 
+<details open><summary><code>value</code></summary>
 
 is value to set at the specified path
 </details>
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
-is JSONPath to specify. Default is root `$`. For new Redis keys the `path` must be the root. For existing keys, when the entire `path` exists, the value that it contains is replaced with the `json` value. For existing keys, when the `path` exists, except for the last element, a new child is added with the `json` value. 
+is JSONPath to specify. Default is root `$`. For new Redis keys the `path` must be the root. For existing keys, when the entire `path` exists, the value that it contains is replaced with the `json` value. For existing keys, when the `path` exists, except for the last element, a new child is added with the `json` value.
 
 Adds a key (with its respective value) to a JSON Object (in a RedisJSON data type key) only if it is the last child in the `path`, or it is the parent of a new child being added in the `path`. Optional arguments `NX` and `XX` modify this behavior for both new RedisJSON data type keys as well as the JSON Object keys in them.
 </details>
 
-<details open><summary><code>NX</code></summary> 
+<details open><summary><code>NX</code></summary>
 
 sets the key only if it does not already exist.
 </details>
 
-<details open><summary><code>XX</code></summary> 
+<details open><summary><code>XX</code></summary>
 
 sets the key only if it already exists.
 </details>
 
-## Return value 
+## Return value
 
 JSET.SET returns a simple string reply: `OK` if executed correctly or `nil` if the specified `NX` or `XX` conditions were not met.
 For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
@@ -98,7 +98,7 @@ dragonfly> JSON.GET doc
 
 ## See also
 
-`JSON.GET` | `JSON.MGET` 
+`JSON.GET` | `JSON.MGET`
 
 ## Related topics
 
