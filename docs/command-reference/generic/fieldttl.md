@@ -6,7 +6,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # FIELDTTL
 
-<PageTitle title="Redis TTL Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis FIELDTTL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -15,6 +15,8 @@ import PageTitle from '@site/src/components/PageTitle';
 **Time complexity:** O(1)
 
 **ACL categories:** @keyspace, @read, @fast
+
+**Warning:** Experimental! Dragonfly-specific.
 
 Returns the remaining time to live of a field that has a timeout (either hash or set).
 This introspection capability allows a Dragonfly client to check how many seconds a given field will continue to be part of the dataset.
