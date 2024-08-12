@@ -4,24 +4,23 @@ sidebar_position: 5
 
 # SSD Data Tiering in Dragonfly
 
-Dragonfly v1.21.0 introduces a powerful feature: SSD data tiering. This innovative approach optimizes
-storage utilization by leveraging SSD/NVMe disks as a secondary storage tier that complements
-your existing RAM. By intelligently offloading specific data to faster disk storage,
-Dragonfly can significantly reduce physical memory usage, potentially achieving a 2-5x improvement.
+Dragonfly v1.21.0 introduces a powerful new feature: SSD data tiering. With it, Dragonfly can leverage SSD/NVMe devices as a secondary storage tier that complements
+RAM. By intelligently offloading specific data to fast disk storage,
+Dragonfly can significantly reduce physical memory usage, potentially achieving a 2x-5x improvement while maintaining sub-millisecond latency.
 
 ## How It Works
 
-Dragonfly's data tiering focuses on string values exceeding 64 characters in length.
+Dragonfly's data tiering focuses on string values exceeding 64 characters in size.
 When enabled, these longer strings are intelligently offloaded to the SSD tier,
 while shorter strings and other data types remain in memory. The main hashtable index is also kept
-in memory, which ensures high performant lookup operations.
+in memory, which ensures high performance lookup operations.
 The offloaded data is still accessible and seamlessly loaded back into RAM when needed for reads.
 
 
 ## Enabling Data tiering
 The feature can be enable by passing `--tiered_prefix <nvme_path>/<basename>` flag.
 Dragonfly will automatically check the free disk space on the partition hosting `<nvme_path>` and
-will deduce the maximum disk space it can use. In order to manually set the maximum
+will deduce the maximum capacity it can use. In order to explicitly set the maximum
 disk space capacity, for data tiering you can use `--tiered_max_file_size=<size>`. For example,
 `--tiered_max_file_size=96G`.
 
@@ -49,14 +48,14 @@ the server is bottlenecked on disk write i/o.
 
 
 ## System requirements
-Dragonfly Data Tiering requires linux kernel version 5.19 or higher with io_uring API enabled.
-**io_uring API is a critical requirement** for SSD Data tiering. Additionally, it demands
-that `<nvme_path>` points to a relatively fast SDD disk. For cloud workloads, using instances
+Dragonfly Data Tiering requires Linux kernel version 5.19 or higher with io_uring API enabled.
+**io_uring API is a critical requirement** for SSD Data tiering. Additionally, it requires
+that `<nvme_path>` points to a relatively fast SSD disk. For cloud workloads, using instances
 with locally attached SSDs is recommended. See below for specific cloud provider suggestions.
 
 ### GCP
-GCP has excellent local ssd hardware that has great performance characteristics.
-Any instance with local ssd storage will suffice.
+GCP has excellent local SSD hardware that has great performance characteristics.
+Any instance with local SSD storage will suffice.
 
 ### AWS
 AWS provides a variety of instance families with local SSD disks attached.
@@ -68,5 +67,5 @@ We recommend choosing an instance type from the r6gd or m6gd families.
 ## Notes
 Data tiering is currently in alpha, which means it's under development and may have
 limited functionality or stability. If you encounter any issues while using data tiering,
-please report them by [filing an issue](https://github.com/dragonflydb/dragonfly/issues/)
+please report them by [filing an issue](https://github.com/dragonflydb/dragonfly/issues/).
 **Limitation:** Data tiering is not currently supported by BITOP operations.
