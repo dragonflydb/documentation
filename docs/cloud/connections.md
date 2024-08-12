@@ -22,6 +22,8 @@ Following, you should accept the peering connection in your AWS account console 
 Create a route in your AWS VPC, set the destination to the CIDR of the Dragonfly Cloud private network, set the target to the AWS peering connection ID.
 More information about AWS peering connection [here](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html).
 
+Modify your relevant security groups to allow traffic from the Dragonfly cloud Private Network CIDR.
+
 At this point you should see the connection in state *Active* in the Dragonfly Cloud console.
 
 If you haven’t done so already, create a data store with a private endpoint. See [Data Stores](./datastores#private-endpoint) for more information.
@@ -31,5 +33,7 @@ If you haven’t done so already, create a data store with a private endpoint. S
 Specify the *CIDR*, GCP *project ID* and *VPC ID* of your GCP VPC from where you want to connect and click Create.
 
 The connection will be created in an inactive state. Follow the Google Cloud guide <a href="https://cloud.google.com/sdk/gcloud/reference/compute/networks/peerings/create">here</a> , specify `--peer-network` and `--peer-project` with the account ID and VPC ID values from the Dragonfly Cloud private network you wish to connect. Observe the connection becomes active after a few moments.      
+
+Don't forget to modify your firewall to allow traffic from the Dragonfly cloud Private Network CIDR.
 
 If you haven’t done so already, create a data store with a private endpoint.
