@@ -141,14 +141,21 @@ const config = {
                 href: "https://www.dragonflydb.io/blog",
                 label: "Blog",
               },
-
               {
                 href: "https://discord.gg/HsPjXGVH85",
                 label: "Discord",
               },
               {
+                href: "https://dragonfly.discourse.group/",
+                label: "Forum",
+              },
+              {
                 href: "https://www.dragonflydb.io/events",
                 label: "Events",
+              },
+              {
+                href: "https://www.dragonflydb.io/community",
+                label: "Community",
               },
             ],
           },
