@@ -2,19 +2,23 @@
 sidebar_position: 5
 ---
 
-# SSD Data Tiering in Dragonfly
+# SSD Data Tiering
 
-Dragonfly v1.21.0 introduces a powerful new feature: SSD data tiering. With it, Dragonfly can leverage SSD/NVMe devices as a secondary storage tier that complements
+Dragonfly v1.21.0 introduces a powerful new feature: SSD data tiering. With it, Dragonfly
+can leverage SSD/NVMe devices as a secondary storage tier that complements
 RAM. By intelligently offloading specific data to fast disk storage,
-Dragonfly can significantly reduce physical memory usage, potentially achieving a 2x-5x improvement while maintaining sub-millisecond latency.
+Dragonfly can significantly reduce physical memory usage, potentially
+achieving a 2x-5x improvement while maintaining sub-millisecond average latency.
 
 ## How It Works
 
 Dragonfly's data tiering focuses on string values exceeding 64 characters in size.
-When enabled, these longer strings are intelligently offloaded to the SSD tier,
-while shorter strings and other data types remain in memory. The main hashtable index is also kept
-in memory, which ensures high performance lookup operations.
-The offloaded data is still accessible and seamlessly loaded back into RAM when needed for reads.
+When enabled, these longer strings are offloaded to the SSD tier.
+Shorter strings and other data types, along with the primary hashtable index,
+remain in high-speed memory for rapid lookup. This tiered approach maintains high performance
+while reducing memory consumption. When accessed, offloaded data is seamlessly retrieved from
+SSD and integrated back into memory. Write, delete, and expire operations are managed
+entirely in-memory, leveraging disk-based keys for efficient operation.
 
 
 ## Enabling Data tiering
@@ -46,6 +50,23 @@ the server is bottlenecked on disk write i/o.
 * **tiered_ram_misses:**         - how many times an entry lookup resulted in a disk read
 * **tiered_ram_cool_hits:**      - how many times an entry lookup resulted in cooling buffer hit.
 
+## Performance
+Performance benchmarks against Elasticache instances and Memcached,
+conducted on AWS instances, demonstrate Dragonfly's superior performance.
+We've conducted loadtests using `r6gd.xlarge` instance on AWS and compared Dragonfly against
+datastore with similar features, namely Elasticache Data tiering `cache.r6gd.xlarge` instance and
+self-hosted Memcached/ExtStore server also running on `r6gd.xlarge`. The test consisted of
+writing a 90GB dataset into all stores and then reading them randomly with uniform distribution.
+
+During the write phase with 200K rps, Memcached had to drop 20% of the workload in order
+to cope with memory pressure, while Elasticache throttled down the traffic to 66.5K rps.
+Dragonfly handled 200K qps with 7ms P99 latency and with enough RAM reserves to digest even more
+data.
+
+During the read phase Dragonfly was the only datastore that could actually
+saturate local SSD IOPS and reached 60K rps for reads. Elasticache could reach 23.5K rps
+and Memcached reached only 16K rps for reads. With 60K rps throughput,
+Dragonfly inhibited 5ms P99 latency, while both Memcached and Elasticache reached 190ms P99 latency.
 
 ## System requirements
 Dragonfly Data Tiering requires Linux kernel version 5.19 or higher with io_uring API enabled.
@@ -68,4 +89,6 @@ We recommend choosing an instance type from the r6gd or m6gd families.
 Data tiering is currently in alpha, which means it's under development and may have
 limited functionality or stability. If you encounter any issues while using data tiering,
 please report them by [filing an issue](https://github.com/dragonflydb/dragonfly/issues/).
-**Limitation:** Data tiering is not currently supported by BITOP operations.
+
+**Limitations:**
+* Data tiering is not currently supported by BITOP operations.
