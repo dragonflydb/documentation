@@ -58,14 +58,14 @@ datastore with similar features, namely Elasticache Data tiering `cache.r6gd.xla
 self-hosted Memcached/ExtStore server also running on `r6gd.xlarge`. The test consisted of
 writing a 90GB dataset into all stores and then reading them randomly with uniform distribution.
 
-During the write phase with 200K rps, Memcached had to drop 20% of the workload in order
-to cope with memory pressure, while Elasticache throttled down the traffic to 66.5K rps.
-Dragonfly handled 200K qps with 7ms P99 latency and with enough RAM reserves to digest even more
+During the write phase with 200K RPS, Memcached had to drop ~18% of the workload in order
+to cope with memory pressure. Elasticache, on the other hand, throttled down the traffic to 66.5K RPS.
+Dragonfly handled 200K RPS with 8ms P99 latency and with enough RAM reserves to digest even more
 data.
 
 During the read phase Dragonfly was the only datastore that could actually
-saturate local SSD IOPS and reached 60K rps for reads. Elasticache could reach 23.5K rps
-and Memcached reached only 16K rps for reads. With 60K rps throughput,
+saturate local SSD IOPS and reached 60K RPS for reads. Elasticache could reach 23.5K RPS
+and Memcached reached only 16K RPS for reads. With 60K RPS throughput,
 Dragonfly inhibited 5ms P99 latency, while both Memcached and Elasticache reached 190ms P99 latency.
 
 ## System requirements
@@ -91,4 +91,4 @@ limited functionality or stability. If you encounter any issues while using data
 please report them by [filing an issue](https://github.com/dragonflydb/dragonfly/issues/).
 
 **Limitations:**
-* Data tiering is not currently supported by BITOP operations.
+* Data tiering is not currently supported by BITOP and HLL operations.
