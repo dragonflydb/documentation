@@ -30,7 +30,7 @@ PodMonitor config file or use our sample [podMonitor.yaml](https://github.com/dr
 file to create a PodMonitor object.
 
 ```
-kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/podMonitor.yaml
+kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/monitoring/podMonitor.yaml
 ```
 
 Note you must use `app: <dragonfly-name>` as a selector label in the PodMonitor to
@@ -47,22 +47,22 @@ Now you have installed the operator and PodMonitor, it is time to create the
 `serviceaccount`, `clusterrole` and `clusterrolebinding` resources first.
 
 ```
-$ kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/promServiceAccount.yaml
-$ kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/promClusterRole.yaml
-$ kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/promClusterBinding.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/monitoring/promServiceAccount.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/monitoring/promClusterRole.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/monitoring/promClusterBinding.yaml
 ```
 
 This will allow Prometheus to scrape data from Dragonfly resources. Run the below
 command to create the Prometheus object. It will create a pod named `prometheus-prometheus-0`.
 
 ```
-$ kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/prometheus-config.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/monitoring/prometheus-config.yaml
 ```
 
 You can also create a service that points to the Prometheus pod.
 
 ```
-$ kubectl apply -f https://github.com/dragonflydb/dragonfly-operator/blob/main/monitoring/prometheus-service.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/monitoring/prometheus-service.yaml
 ```
 
 Run `kubectl get all` to check if all the resources have successfully been created.
