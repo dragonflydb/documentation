@@ -32,25 +32,28 @@ Dragonfly ACL rules are split into four categories:
 
 ### Keys
 
-  Glob style pattern that controls access to keys.
+Glob-style pattern that controls access to keys.
 
-- `~<pattern>`: Allow user to access the keys specified in the `<pattern>`. For example `~foo` or `~f*o`.
-- `%R~<pattern>`: Allow user to only `read` the keys specified in the `<pattern>`. Commands that update keys specified will fail.
-- `%W~<pattern>`: Allow user to only `write` the keys specified in the `<pattern>`. Commands that read the keys specified will fail.
+- `~<pattern>`: Allows the user to access the keys specified by the `<pattern>`. For example, `~foo` or `~f*o`.
+- `%R~<pattern>`: Allows the user to only **read** the keys specified by the `<pattern>`.
+- `%W~<pattern>`: Allows the user to only **write** the keys specified by the `<pattern>`.
 - `%RW~<pattern>`: Alias for `~<pattern>`.
 - `allkeys`: Alias for `~*`.
-- `resetkeys`: Revoke access to all keys. User can't access any key.
+- `resetkeys`: Revokes access to all keys. The user can't access any key.
 
 ### Pub/Sub
 
-  Glob style pattern that controls access to channels.
+Glob-style pattern that controls access to pub/sub channels.
 
 - `&*`: Grants access to all pub/sub channels.
-- `&<pattern>`: Grants access to channels named `<pattern>`
-- `resetchannels`: Revoke access to all channels. User can't access publish or subscribe to any channel.
-- `allchannels`: Alias for `&*`
+- `&<pattern>`: Grants access to channels with names specified by the `<pattern>`.
+- `resetchannels`: Revokes access to all channels. The user can't access, publish, or subscribe to any channel.
+- `allchannels`: Alias for `&*`.
 
-  Note that for all command variants that start with `P` (like `PSUBSCRIBE`) the match must be a literall match. For example, if a user's ACL's contain the pattern `&fo&` tries to `PPSUBSRIBE foo` it will fail. However, had they have `&foo` instead it would pass. This restriction does not exist on the rest of the family of pub/sub commands.
+**Note:** For all command variants that start with `P` (like `PSUBSCRIBE`), the match must be a literal match.
+For example, if a user's ACL contains the pattern `&fo&` and the user tries to `PPSUBSRIBE foo`, it would fail.
+However, if the user's ACL contains the pattern `&foo` instead, it would pass.
+This restriction does not exist on the rest of the family of pub/sub commands.
 
 ### User Management Rules
 

@@ -26,6 +26,7 @@ A user can be `ON` or `OFF`. By default, all users (except `default`) are `OFF` 
 `ON`/`OFF` mechanism grants or revokes the user the ability to `authenticate` in the system using the `AUTH` command.
 
 ## Passwords
+
 A password can be set using the `>` character followed by the password. For example: `ACL SETUSER Mike >mypassword`, creates the user `Mike` with
 pass `mypassword`. Currently, each user can have only one password.
 
@@ -48,6 +49,7 @@ Also note that the flag `--requirepass` also changes the `default` user password
 then the `default` user's password will be the one specified in that flag.
 
 ## ACL Groups
+
 Each command belongs to a set of ACL groups. The syntax for specifying a group is:
 
 ```
@@ -117,19 +119,22 @@ and contain a key pattern that matches the keys of the command. Key patterns are
 
 ## Pub/Sub
 
-  Pub/Sub commands are a seperate category and it's possible to restrict operations on specific channels. Just like `Keys`, `Pub/Sub` commands use a glob style pattern to control access to channels.
+Pub/Sub commands are a separate category, and it's possible to restrict operations on specific channels.
+Just like `Keys`, `Pub/Sub` commands use a glob-style pattern to control access to channels.
 
 - `&*`: Grants access to all pub/sub channels.
-- `&<pattern>`: Grants access to channels named `<pattern>`
-- `resetchannels`: Revoke access to all channels. User can't access publish or subscribe to any channel.
-- `allchannels`: Alias for `&*`
+- `&<pattern>`: Grants access to channels with names specified by the `<pattern>`.
+- `resetchannels`: Revokes access to all channels. The user can't access, publish, or subscribe to any channel.
+- `allchannels`: Alias for `&*`.
 
-  Note that for all command variants that start with `P` (like `PSUBSCRIBE`) the match must be a literall match. For example, if a user's ACL's contain the pattern `&fo&` tries to `PPSUBSRIBE foo` it will fail. However, had they have `&foo` instead it would pass. This restriction does not exist on the rest of the family of pub/sub commands.
-
+**Note:** For all command variants that start with `P` (like `PSUBSCRIBE`), the match must be a literal match.
+For example, if a user's ACL contains the pattern `&fo&` and the user tries to `PPSUBSRIBE foo`, it would fail.
+However, if the user's ACL contains the pattern `&foo` instead, it would pass.
+This restriction does not exist on the rest of the family of pub/sub commands.
 
 ## Persistence
 
-The state of all of the users and their permissions can be captured and placed in a file. As with redis,
+The state of all the users and their permissions can be captured and placed in a file. As with redis,
 the `--aclfile` option is used to specify the file from which Dragonfly will load the ACL state from.
 
 Afterwards, any change done at runtime, can be persisted at anytime via the command `ACL SAVE` which
@@ -146,8 +151,8 @@ For convenience, we suggest to place acl files in `/var/lib/dragonfly/`.
 
 ## Logs
 
-All connections that fail to authenticate and all of the authenticated users who fail to run a command (because 
-of their permissions) are stored in a log. The size of the log can be configured by the option `--acllog_max_len`.
+All connections that fail to authenticate and all the authenticated users who fail to run a command (because of their permissions) are stored in a log.
+The size of the log can be configured by the option `--acllog_max_len`.
 This flag, operates a little bit differently from Redis. Specifically, because Dragonfly uses a shared nothing thread per core architecture,
 each thread of execution has its own log. Therefore, the total size of the log entries, is the flag number multiplied
 by the available number of Dragonfly threads. So for example, if you are running Dragonfly with 4 threads with `--acllog_max_len=8`
