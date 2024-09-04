@@ -11,7 +11,7 @@ Permissions for a given user are controlled via a domain-specific language (DSL)
 1. ACL groups
 2. Commands
 3. Keys
-4. Pub/Sub messages (not implemented yet)
+4. Pub/Sub messages
 
 Granting or revoking permissions for a user is as easy as calling the `ACL SETUSER` command. For example:
 
@@ -114,6 +114,18 @@ and contain a key pattern that matches the keys of the command. Key patterns are
 `allkeys`: Alias for `~*`.
 
 `resetkeys`: Flush the list of allowed keys patterns. For instance the `ACL ~foo* resetkeys ~bar*`, will only allow the client to access keys that match the pattern `~bar*`.
+
+## Pub/Sub
+
+  Pub/Sub commands are a seperate category and it's possible to restrict operations on specific channels. Just like `Keys`, `Pub/Sub` commands use a glob style pattern to control access to channels.
+
+- `&*`: Grants access to all pub/sub channels.
+- `&<pattern>`: Grants access to channels named `<pattern>`
+- `resetchannels`: Revoke access to all channels. User can't access publish or subscribe to any channel.
+- `allchannels`: Alias for `&*`
+
+  Note that for all command variants that start with `P` (like `PSUBSCRIBE`) the match must be a literall match. For example, if a user's ACL's contain the pattern `&fo&` tries to `PPSUBSRIBE foo` it will fail. However, had they have `&foo` instead it would pass. This restriction does not exist on the rest of the family of pub/sub commands.
+
 
 ## Persistence
 

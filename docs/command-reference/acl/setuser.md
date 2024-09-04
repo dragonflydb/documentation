@@ -16,17 +16,41 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## ACL Rules
 
-Dragonfly ACL rules are split into two categories:
+Dragonfly ACL rules are split into four categories:
 
-- [Command Rules](#command-rules) that define command permissions.
+- [Command](#command-rules) that define command permissions.
+- [Keys](#keyspace-rules) that define keyspace permissions.
+- [Pub/Sub](#Pub/Sub-rules) that define pub/sub permissions.
 - [User Management Rules](#user-management-rules) that define the user state.
 
-### Command Rules
+### Command
 
 - `+@<category>`: Grants all the commands in the specified category to the list of commands the user is able to execute. For example, `+@string` adds all the string commands.
 - `-@<category>`: Like `+@<category>` but removes all the commands in the category instead of adding them.
 - `+@ALL`: Grants all the available groups to the user.
 - `-@ALL`: Revokes all the available groups from the user.
+
+### Keys
+
+  Glob style pattern that controls access to keys.
+
+- `~<pattern>`: Allow user to access the keys specified in the `<pattern>`. For example `~foo` or `~f*o`.
+- `%R~<pattern>`: Allow user to only `read` the keys specified in the `<pattern>`. Commands that update keys specified will fail.
+- `%W~<pattern>`: Allow user to only `write` the keys specified in the `<pattern>`. Commands that read the keys specified will fail.
+- `%RW~<pattern>`: Alias for `~<pattern>`.
+- `allkeys`: Alias for `~*`.
+- `resetkeys`: Revoke access to all keys. User can't access any key.
+
+### Pub/Sub
+
+  Glob style pattern that controls access to channels.
+
+- `&*`: Grants access to all pub/sub channels.
+- `&<pattern>`: Grants access to channels named `<pattern>`
+- `resetchannels`: Revoke access to all channels. User can't access publish or subscribe to any channel.
+- `allchannels`: Alias for `&*`
+
+  Note that for all command variants that start with `P` (like `PSUBSCRIBE`) the match must be a literall match. For example, if a user's ACL's contain the pattern `&fo&` tries to `PPSUBSRIBE foo` it will fail. However, had they have `&foo` instead it would pass. This restriction does not exist on the rest of the family of pub/sub commands.
 
 ### User Management Rules
 
@@ -42,6 +66,6 @@ Dragonfly ACL rules are split into two categories:
 ## Examples
 
 ```shell
-dragonfly> ACL SETUSER myuser ON >mypass >mysecondpass +@string +@fast -@slow ~*
+dragonfly> ACL SETUSER myuser ON >mypass >mysecondpass ~my*key &chan*el +@string +@fast -@slow ~*
 OK
 ```

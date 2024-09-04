@@ -138,15 +138,15 @@ sidebar_position: 0
 |                                              | <span class="command">SCRIPT DEBUG</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">SCRIPT KILL</span>                   | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Server</span>           | <span class="command">ACL CAT</span>                       | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ACL DELUSER</span>                   | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">ACL DELUSER</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ACL DRYRUN</span>                    | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">ACL GENPASS</span>                   | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">ACL GETUSER</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ACL LIST</span>                      | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ACL LOAD</span>                      | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">ACL LOAD</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ACL LOG</span>                       | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ACL SAVE</span>                      | <span class="support partial">Partially supported</span> |
-|                                              | <span class="command">ACL SETUSER</span>                   | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">ACL SAVE</span>                      | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">ACL SETUSER</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ACL USERS</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ACL WHOAMI</span>                    | <span class="support supported">Fully Supported</span>   |
 |                                              | <span class="command">BGREWRITEAOF</span>                  | <span class="support unsupported">Unsupported</span>     |

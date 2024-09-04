@@ -25,6 +25,6 @@ Each line consists of the username, followed by their status (ON/OFF), a 15-char
 
 ```shell
 dragonfly> ACL LIST
-1) "user george on #9f86d081884c7d +@admin +@fast"
-2) "user default on nopass +@all"
+1) "user george on #9f86d081884c7d resetchannels +@admin +@fast"
+2) "user default on nopass ~* &* +@all"
 ```

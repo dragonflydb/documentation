@@ -32,6 +32,10 @@ dragonfly> ACL GETUSER default
 4) (empty array)
 5) commands
 6) +@all
+7) keys
+8) ~*
+9) channels
+10) &*
 
 dragonfly> ACL GETUSER non_existent_user
 (nil)
