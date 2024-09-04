@@ -6,12 +6,12 @@ Since Dragonfly is designed as a drop-in replacement for Redis, you can expect t
 All connections in Dragonfly default to the user `default` (unless that user is disabled). By default, user `default` can `AUTH` in Dragonfly using any password, 
 and is allowed to execute any command and is part of all the available ACL groups.
 
-Permissions for a given user are controlled via a domain-specific language (DSL) and are divided into 4 categories:
+Permissions for a given user are controlled via a domain-specific language (DSL) and are divided into four categories:
 
-1. ACL groups
-2. Commands
-3. Keys
-4. Pub/Sub messages (not implemented yet)
+1. [ACL Groups](#acl-groups)
+2. [Command Rules](#command-rules)
+3. [Key Permissions](#key-permissions)
+4. [Pub/Sub Permissions](#pubsub-permissions)
 
 Granting or revoking permissions for a user is as easy as calling the `ACL SETUSER` command. For example:
 
@@ -26,6 +26,7 @@ A user can be `ON` or `OFF`. By default, all users (except `default`) are `OFF` 
 `ON`/`OFF` mechanism grants or revokes the user the ability to `authenticate` in the system using the `AUTH` command.
 
 ## Passwords
+
 A password can be set using the `>` character followed by the password. For example: `ACL SETUSER Mike >mypassword`, creates the user `Mike` with
 pass `mypassword`. Currently, each user can have only one password.
 
@@ -48,6 +49,7 @@ Also note that the flag `--requirepass` also changes the `default` user password
 then the `default` user's password will be the one specified in that flag.
 
 ## ACL Groups
+
 Each command belongs to a set of ACL groups. The syntax for specifying a group is:
 
 ```
@@ -62,8 +64,8 @@ the `GROUP_NAME` is the name of the group. For example:
 ACL SETUSER John ON +@FAST
 ```
 
-Updates the permissions of user `John` and grants him the ability to run any command in the group `FAST`. Revoking this,
-is straighforward:
+Updates the permissions of user `John` and grants him the ability to run any command in the group `FAST`.
+Revoking this, is straightforward:
 
 ```
 ACL SETUSER John -@FAST
@@ -81,9 +83,9 @@ Which basically grants all but the `@ADMIN` and `@FAST` groups to the user. That
 the user should not be a part of. The list of all categories is accessible with the command `ACL CAT` and user specific information 
 is accessible with the command `ACL GETUSER <username>`.
 
-## Commands
+## Command Rules
 
-Dividing the commands into groups offers a great flexibility of quickly granting/revoking permissions but it's somehow limited because
+Dividing the commands into groups offers a great flexibility of quickly granting/revoking permissions, but it's somehow limited because
 these groups are not user defined. Therefore, for finer control, the user can specify a list of commands that is explicitly allowed to execute.
 For example:
 
@@ -91,33 +93,43 @@ For example:
 ACL SETUSER John +GET +SET +@FAST
 ```
 
-This allows the user `John` to execute only the `SET` and `GET` commands and all of the commands associated with the group `FAST`.
+This allows the user `John` to execute only the `SET` and `GET` commands and all the commands associated with the group `FAST`.
 Any attempt of user `John` to issue a command other than the above will be rejected by the system.
 
 Note that the syntax is similar to the ACL groups, but without the prefix `@`.
 
-The special `+ALL` (note without the `@`) is used to denote all of the currently implemented commands.
+The special `+ALL` (note without the `@`) is used to denote all the currently implemented commands.
 
-## Keys
+## Key Permissions
 
 It's also possible to restrict operations on given keys. Note, users are permitted to execute a command only when their ACL's both include that command (or group)
 and contain a key pattern that matches the keys of the command. Key patterns are:
 
-`~<pattern>`: Add a pattern of keys that can be mentioned as part of commands. For instance `~*` allows all the keys. The pattern is a glob-style pattern and it is possible to specify multiple patterns.
+- `~<pattern>`: Add a pattern of keys that can be mentioned as part of commands. For instance `~*` allows all the keys. The pattern is a glob-style pattern, and it is possible to specify multiple patterns.
+- `%R~<pattern>`: Add the specified **read** key pattern. This behaves similar to the regular key pattern but only grants permission to read from keys that match the given pattern.
+- `%W~<pattern>`: Add the specified **write** key pattern. This behaves similar to the regular key pattern but only grants permission to write to keys that match the given pattern.
+- `%RW~<pattern>`: Alias for `~<pattern>`.
+- `allkeys`: Alias for `~*`.
+- `resetkeys`: Removes all the key patterns from the list of key patterns the user can access.
 
-`%R~<pattern>`: Add the specified read key pattern. This behaves similar to the regular key pattern but only grants permission to read from keys that match the given pattern.
+## Pub/Sub Permissions
 
-`%W~<pattern>`: Add the specified write key pattern. This behaves similar to the regular key pattern but only grants permission to write to keys that match the given pattern.
+Pub/Sub commands are a separate category, and it's possible to restrict operations on specific channels.
+Just like `Keys`, `Pub/Sub` commands use a glob-style pattern to control access to channels.
 
-`%RW~<pattern>`: Alias for `~<pattern>`.
+- `&*`: Grants access to all pub/sub channels.
+- `&<pattern>`: Grants access to channels with names specified by the `<pattern>`.
+- `resetchannels`: Revokes access to all channels. The user can't access, publish, or subscribe to any channel.
+- `allchannels`: Alias for `&*`.
 
-`allkeys`: Alias for `~*`.
-
-`resetkeys`: Flush the list of allowed keys patterns. For instance the `ACL ~foo* resetkeys ~bar*`, will only allow the client to access keys that match the pattern `~bar*`.
+**Note:** For all command variants that start with `P` (like `PSUBSCRIBE`), the match must be a literal match.
+For example, if a user's ACL contains the pattern `&fo&` and the user tries to `PPSUBSRIBE foo`, it would fail.
+However, if the user's ACL contains the pattern `&foo` instead, it would pass.
+This restriction does not exist on the rest of the family of pub/sub commands.
 
 ## Persistence
 
-The state of all of the users and their permissions can be captured and placed in a file. As with redis,
+The state of all the users and their permissions can be captured and placed in a file. As with redis,
 the `--aclfile` option is used to specify the file from which Dragonfly will load the ACL state from.
 
 Afterwards, any change done at runtime, can be persisted at anytime via the command `ACL SAVE` which
@@ -134,8 +146,8 @@ For convenience, we suggest to place acl files in `/var/lib/dragonfly/`.
 
 ## Logs
 
-All connections that fail to authenticate and all of the authenticated users who fail to run a command (because 
-of their permissions) are stored in a log. The size of the log can be configured by the option `--acllog_max_len`.
+All connections that fail to authenticate and all the authenticated users who fail to run a command (because of their permissions) are stored in a log.
+The size of the log can be configured by the option `--acllog_max_len`.
 This flag, operates a little bit differently from Redis. Specifically, because Dragonfly uses a shared nothing thread per core architecture,
 each thread of execution has its own log. Therefore, the total size of the log entries, is the flag number multiplied
 by the available number of Dragonfly threads. So for example, if you are running Dragonfly with 4 threads with `--acllog_max_len=8`
