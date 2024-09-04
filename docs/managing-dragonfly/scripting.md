@@ -17,7 +17,7 @@ Flags can be configured in multiple ways:
 #### 1. Inside the script source code
 
 ```lua
-#!lua flags=allow-undeclared-keys,disable-atomicity
+--!df flags=allow-undeclared-keys,disable-atomicity
 -- script body below
 ```
 
