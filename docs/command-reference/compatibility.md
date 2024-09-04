@@ -318,9 +318,9 @@ sidebar_position: 0
 |                                              | <span class="command">DEL</span>                           | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">FORGET</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GET</span>                           | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">MERGE</span>                         | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">MERGE</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">MGET</span>                          | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">MSET</span>                          | <span class="support supported">Fully supported</span>     |
+|                                              | <span class="command">MSET</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">NUMINCRBY</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">NUMMULTBY</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">OBJKEYS</span>                       | <span class="support supported">Fully supported</span>   |
