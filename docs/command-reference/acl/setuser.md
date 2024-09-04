@@ -18,19 +18,19 @@ import PageTitle from '@site/src/components/PageTitle';
 
 Dragonfly ACL rules are split into four categories:
 
-- [Command](#command-rules) that define command permissions.
-- [Keys](#keyspace-rules) that define keyspace permissions.
-- [Pub/Sub](#Pub/Sub-rules) that define pub/sub permissions.
+- [Command Rules](#command-rules) that define command permissions.
+- [Key Permissions](#key-permissions) that define keyspace permissions.
+- [Pub/Sub Permissions](#pubsub-permissions) that define pub/sub permissions.
 - [User Management Rules](#user-management-rules) that define the user state.
 
-### Command
+### Command Rules
 
 - `+@<category>`: Grants all the commands in the specified category to the list of commands the user is able to execute. For example, `+@string` adds all the string commands.
 - `-@<category>`: Like `+@<category>` but removes all the commands in the category instead of adding them.
 - `+@ALL`: Grants all the available groups to the user.
 - `-@ALL`: Revokes all the available groups from the user.
 
-### Keys
+### Key Permissions
 
 Glob-style pattern that controls access to keys.
 
@@ -41,7 +41,7 @@ Glob-style pattern that controls access to keys.
 - `allkeys`: Alias for `~*`.
 - `resetkeys`: Revokes access to all keys. The user can't access any key.
 
-### Pub/Sub
+### Pub/Sub Permissions
 
 Glob-style pattern that controls access to pub/sub channels.
 

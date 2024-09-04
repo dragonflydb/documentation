@@ -6,12 +6,12 @@ Since Dragonfly is designed as a drop-in replacement for Redis, you can expect t
 All connections in Dragonfly default to the user `default` (unless that user is disabled). By default, user `default` can `AUTH` in Dragonfly using any password, 
 and is allowed to execute any command and is part of all the available ACL groups.
 
-Permissions for a given user are controlled via a domain-specific language (DSL) and are divided into 4 categories:
+Permissions for a given user are controlled via a domain-specific language (DSL) and are divided into four categories:
 
-1. ACL groups
-2. Commands
-3. Keys
-4. Pub/Sub messages
+1. [ACL Groups](#acl-groups)
+2. [Command Rules](#command-rules)
+3. [Key Permissions](#key-permissions)
+4. [Pub/Sub Permissions](#pubsub-permissions)
 
 Granting or revoking permissions for a user is as easy as calling the `ACL SETUSER` command. For example:
 
@@ -64,8 +64,8 @@ the `GROUP_NAME` is the name of the group. For example:
 ACL SETUSER John ON +@FAST
 ```
 
-Updates the permissions of user `John` and grants him the ability to run any command in the group `FAST`. Revoking this,
-is straighforward:
+Updates the permissions of user `John` and grants him the ability to run any command in the group `FAST`.
+Revoking this, is straightforward:
 
 ```
 ACL SETUSER John -@FAST
@@ -83,9 +83,9 @@ Which basically grants all but the `@ADMIN` and `@FAST` groups to the user. That
 the user should not be a part of. The list of all categories is accessible with the command `ACL CAT` and user specific information 
 is accessible with the command `ACL GETUSER <username>`.
 
-## Commands
+## Command Rules
 
-Dividing the commands into groups offers a great flexibility of quickly granting/revoking permissions but it's somehow limited because
+Dividing the commands into groups offers a great flexibility of quickly granting/revoking permissions, but it's somehow limited because
 these groups are not user defined. Therefore, for finer control, the user can specify a list of commands that is explicitly allowed to execute.
 For example:
 
@@ -93,31 +93,26 @@ For example:
 ACL SETUSER John +GET +SET +@FAST
 ```
 
-This allows the user `John` to execute only the `SET` and `GET` commands and all of the commands associated with the group `FAST`.
+This allows the user `John` to execute only the `SET` and `GET` commands and all the commands associated with the group `FAST`.
 Any attempt of user `John` to issue a command other than the above will be rejected by the system.
 
 Note that the syntax is similar to the ACL groups, but without the prefix `@`.
 
-The special `+ALL` (note without the `@`) is used to denote all of the currently implemented commands.
+The special `+ALL` (note without the `@`) is used to denote all the currently implemented commands.
 
-## Keys
+## Key Permissions
 
 It's also possible to restrict operations on given keys. Note, users are permitted to execute a command only when their ACL's both include that command (or group)
 and contain a key pattern that matches the keys of the command. Key patterns are:
 
-`~<pattern>`: Add a pattern of keys that can be mentioned as part of commands. For instance `~*` allows all the keys. The pattern is a glob-style pattern and it is possible to specify multiple patterns.
+- `~<pattern>`: Add a pattern of keys that can be mentioned as part of commands. For instance `~*` allows all the keys. The pattern is a glob-style pattern, and it is possible to specify multiple patterns.
+- `%R~<pattern>`: Add the specified **read** key pattern. This behaves similar to the regular key pattern but only grants permission to read from keys that match the given pattern.
+- `%W~<pattern>`: Add the specified **write** key pattern. This behaves similar to the regular key pattern but only grants permission to write to keys that match the given pattern.
+- `%RW~<pattern>`: Alias for `~<pattern>`.
+- `allkeys`: Alias for `~*`.
+- `resetkeys`: Removes all the key patterns from the list of key patterns the user can access.
 
-`%R~<pattern>`: Add the specified read key pattern. This behaves similar to the regular key pattern but only grants permission to read from keys that match the given pattern.
-
-`%W~<pattern>`: Add the specified write key pattern. This behaves similar to the regular key pattern but only grants permission to write to keys that match the given pattern.
-
-`%RW~<pattern>`: Alias for `~<pattern>`.
-
-`allkeys`: Alias for `~*`.
-
-`resetkeys`: Flush the list of allowed keys patterns. For instance the `ACL ~foo* resetkeys ~bar*`, will only allow the client to access keys that match the pattern `~bar*`.
-
-## Pub/Sub
+## Pub/Sub Permissions
 
 Pub/Sub commands are a separate category, and it's possible to restrict operations on specific channels.
 Just like `Keys`, `Pub/Sub` commands use a glob-style pattern to control access to channels.
