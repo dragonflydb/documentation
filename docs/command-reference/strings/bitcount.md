@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-`BITCOUNT` is a Redis command used to count the number of set bits (i.e., bits with value 1) in a string. It is particularly useful for efficiently performing bitwise operations and can be used in scenarios like tracking user activity, feature flags, or implementing bloom filters.
+`BITCOUNT` is a Redis/Dragonfly command used to count the number of set bits (i.e., bits with value 1) in a string. It is particularly useful for efficiently performing bitwise operations and can be used in scenarios like tracking user activity, feature flags, or implementing bloom filters.
 
 ## Syntax
 
@@ -28,7 +28,7 @@ BITCOUNT key [start end]
 
 The command returns an integer representing the number of bits set to 1 within the specified range.
 
-#### Example Outputs
+**Example Outputs**
 
 ```cli
 dragonfly> SET mykey "foobar"

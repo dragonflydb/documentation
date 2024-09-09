@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-`BITOP` is a Redis command used to perform bitwise operations between multiple keys and store the result in a destination key. It supports operations like AND, OR, XOR, and NOT. This command is crucial for handling binary data and performing efficient bulk bitwise operations.
+`BITOP` is a Redis/Dragonfly command used to perform bitwise operations between multiple keys and store the result in a destination key. It supports operations like AND, OR, XOR, and NOT. This command is crucial for handling binary data and performing efficient bulk bitwise operations.
 
 ## Syntax
 
@@ -28,7 +28,7 @@ BITOP operation destkey key [key ...]
 
 Returns the size of the string stored in the destination key, measured in bytes.
 
-#### Example Outputs
+**Example Outputs**
 
 - `(integer) 3`
 - `(integer) 1`

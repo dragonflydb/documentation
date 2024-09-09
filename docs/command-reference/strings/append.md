@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-The `APPEND` command in Redis is used to add a specified value to the end of a string stored at a given key. If the key doesn't exist, it creates it and initializes it with an empty string before appending. This command is particularly useful for accumulating logs or constructing strings incrementally.
+The `APPEND` command in Redis/Dragonfly is used to add a specified value to the end of a string stored at a given key. If the key doesn't exist, it creates it and initializes it with an empty string before appending. This command is particularly useful for accumulating logs or constructing strings incrementally.
 
 ## Syntax
 
@@ -27,7 +27,7 @@ APPEND key value
 
 - An integer indicating the length of the string after the append operation.
 
-#### Example Outputs
+**Example Outputs**
 
 - `(integer) 11` when the resulting string length is 11.
 

@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-The `BITFIELD_RO` command in Redis is a read-only variant of the `BITFIELD` command. It allows you to query and retrieve specific bits or bitfields from a string without modifying the underlying string. This command is useful for applications that need to interpret data stored as bitfields, such as compact representations of statuses or settings.
+The `BITFIELD_RO` command in Redis/Dragonfly is a read-only variant of the `BITFIELD` command. It allows you to query and retrieve specific bits or bitfields from a string without modifying the underlying string. This command is useful for applications that need to interpret data stored as bitfields, such as compact representations of statuses or settings.
 
 ## Syntax
 
@@ -29,7 +29,7 @@ BITFIELD_RO key [GET encoding offset] ...
 
 The command returns an array of integers, where each integer corresponds to the value of the retrieved bitfield according to the specified encoding.
 
-#### Example Outputs
+**Example Outputs**
 
 ```cli
 dragonfly> SET mystring "\x01\x02"

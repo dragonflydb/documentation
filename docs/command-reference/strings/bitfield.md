@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-The `BITFIELD` command in Redis is a versatile tool for manipulating string values at the bit level. It allows users to set, get, and perform arithmetic operations on specific bits within a string. This command is essential for tasks that require efficient storage and retrieval of binary data, such as implementing counters, flags, or compact data structures.
+The `BITFIELD` command in Redis/Dragonfly is a versatile tool for manipulating string values at the bit level. It allows users to set, get, and perform arithmetic operations on specific bits within a string. This command is essential for tasks that require efficient storage and retrieval of binary data, such as implementing counters, flags, or compact data structures.
 
 ## Syntax
 
@@ -41,7 +41,7 @@ BITFIELD key [GET type offset] [SET type offset value] [INCRBY type offset incre
 - For **INCRBY**: Returns the new value of the bit field after incrementing.
 - For **OVERFLOW**: Does not return a value directly but affects subsequent `INCRBY` operations.
 
-#### Example Outputs
+**Example Outputs**
 
 ```cli
 dragonfly> BITFIELD mykey GET u8 0
