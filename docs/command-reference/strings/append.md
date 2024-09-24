@@ -10,26 +10,25 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-The `APPEND` command in Redis/Dragonfly is used to add a specified value to the end of a string stored at a given key. If the key doesn't exist, it creates it and initializes it with an empty string before appending. This command is particularly useful for accumulating logs or constructing strings incrementally.
+In Dragonfly, as well as in Redis and Valkey, the `APPEND` command is used to add a specified value to the end of a string stored at a given key.
+If the key doesn't exist, the command creates a new key and initializes it with an empty string before appending.
+This command is particularly useful for accumulating logs or constructing strings incrementally.
 
 ## Syntax
 
-```cli
+```shell
 APPEND key value
 ```
 
 ## Parameter Explanations
 
-- `key`: The key of the string you wish to append to. It should already exist as a string type, or it will be created as a new string.
-- `value`: The string value to append to the existing string at the key.
+- `key`: The key of the string you want to append data to.
+  If the key already exists, it must be of type string; otherwise, a new string will be created.
+- `value`: The string value to be appended to the existing string associated with the key.
 
 ## Return Values
 
-- An integer indicating the length of the string after the append operation.
-
-**Example Outputs**
-
-- `(integer) 11` when the resulting string length is 11.
+- An integer indicating the length of the string **after** the append operation.
 
 ## Code Examples
 
@@ -37,7 +36,7 @@ APPEND key value
 
 Appending a value to an existing key:
 
-```cli
+```shell
 dragonfly> SET mystring "Hello"
 OK
 dragonfly> APPEND mystring " World"
@@ -50,7 +49,7 @@ dragonfly> GET mystring
 
 Accumulating log entries for a simple logging mechanism:
 
-```cli
+```shell
 dragonfly> APPEND log "2023-07-26 10:00:00 - User login\n"
 (integer) 33
 dragonfly> APPEND log "2023-07-26 10:05:00 - User logout\n"
@@ -63,7 +62,7 @@ dragonfly> GET log
 
 Building a configuration file or script incrementally:
 
-```cli
+```shell
 dragonfly> APPEND config "server {\n"
 (integer) 9
 dragonfly> APPEND config "  listen 80;\n"
@@ -82,7 +81,8 @@ dragonfly> GET config
 ## Common Mistakes
 
 - Appending to a key that holds a non-string value can result in an error. Always ensure the data type compatibility.
-  ```cli
+
+  ```shell
   dragonfly> LPUSH mylist "item"
   (integer) 1
   dragonfly> APPEND mylist "string"

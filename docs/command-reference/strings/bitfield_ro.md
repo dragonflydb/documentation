@@ -10,7 +10,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-The `BITFIELD_RO` command in Redis/Dragonfly is a read-only variant of the `BITFIELD` command. It allows you to query and retrieve specific bits or bitfields from a string without modifying the underlying string. This command is useful for applications that need to interpret data stored as bitfields, such as compact representations of statuses or settings.
+In Dragonfly, as well as in Redis and Valkey, the `BITFIELD_RO` command is a read-only variant of the `BITFIELD` command.
+It allows you to query and retrieve specific bits or bitfields from a string without modifying the underlying string.
+This command is useful for applications that need to interpret data stored as bitfields, such as compact representations of statuses or settings.
 
 ## Syntax
 
@@ -20,32 +22,22 @@ BITFIELD_RO key [GET encoding offset] ...
 
 ## Parameter Explanations
 
-- `key`: The key of the string where the bitfield is stored.
+- `key`: The key of the string which is treated as a bitmap for read operations.
 - `GET`: Subcommand used to specify the retrieval operation.
-- `encoding`: Specifies the format (bit width and signedness) of the bitfield to be retrieved, e.g., `i8`, `u16`.
-- `offset`: The bit position within the string from which to start reading.
+  - `encoding`: Specifies the format (bit width and signedness) of the bitfield to be retrieved, such as `i8`, `u16`, etc.
+  - `offset`: The bit position within the string from which to start reading.
 
 ## Return Values
 
 The command returns an array of integers, where each integer corresponds to the value of the retrieved bitfield according to the specified encoding.
 
-**Example Outputs**
-
-```cli
-dragonfly> SET mystring "\x01\x02"
-OK
-dragonfly> BITFIELD_RO mystring GET u8 0 GET i16 8
-1) (integer) 1
-2) (integer) 2
-```
-
 ## Code Examples
 
 ### Basic Example
 
-Retrieve an unsigned 8-bit integer (starting at offset 0) and a signed 16-bit integer (starting at offset 8).
+Retrieve an unsigned 8-bit integer (starting at offset `0`) and a signed 16-bit integer (starting at offset `8`).
 
-```cli
+```shell
 dragonfly> SET mystring "\x01\x02\x03"
 OK
 dragonfly> BITFIELD_RO mystring GET u8 0 GET i16 8
@@ -55,9 +47,10 @@ dragonfly> BITFIELD_RO mystring GET u8 0 GET i16 8
 
 ### Retrieving Multiple Bitfields
 
-In this example, we extract multiple bitfields from a single string. This demonstrates how to handle different offsets and encodings.
+In this example, we extract multiple bitfields from a single string.
+This demonstrates how to handle different offsets and encodings.
 
-```cli
+```shell
 dragonfly> SET mystring "\xFF\xFE\xFD"
 OK
 dragonfly> BITFIELD_RO mystring GET u8 0 GET u8 8 GET i16 16
@@ -70,7 +63,7 @@ dragonfly> BITFIELD_RO mystring GET u8 0 GET u8 8 GET i16 16
 
 Extracting larger bitfields, such as 32-bit integers, to demonstrate handling of wider data.
 
-```cli
+```shell
 dragonfly> SET mystring "\x00\x00\x00\x01\x00\x00\x00\x02"
 OK
 dragonfly> BITFIELD_RO mystring GET u32 0 GET u32 32

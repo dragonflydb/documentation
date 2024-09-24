@@ -10,36 +10,33 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-`BITOP` is a Redis/Dragonfly command used to perform bitwise operations between multiple keys and store the result in a destination key. It supports operations like AND, OR, XOR, and NOT. This command is crucial for handling binary data and performing efficient bulk bitwise operations.
+In Dragonfly, as well as in Redis and Valkey, the `BITOP` command is used to perform bitwise operations between multiple keys and store the result in a destination key.
+It supports operations like `AND`, `OR`, `XOR`, and `NOT`.
+This command is crucial for handling binary data and performing efficient bulk bitwise operations.
 
 ## Syntax
 
-```cli
+```shell
 BITOP operation destkey key [key ...]
 ```
 
 ## Parameter Explanations
 
-- **operation**: The bitwise operation to be performed. It can be `AND`, `OR`, `XOR`, or `NOT`.
-- **destkey**: The key where the result of the bitwise operation will be stored.
-- **key [key ...]**: One or more keys containing string values on which the bitwise operation will be applied.
+- `operation`: The bitwise operation to be performed. It can be `AND`, `OR`, `XOR`, or `NOT`.
+- `destkey`: The key where the result of the bitwise operation will be stored.
+- `key [key ...]`: One or more keys containing string values on which the bitwise operation will be applied.
 
 ## Return Values
 
 Returns the size of the string stored in the destination key, measured in bytes.
 
-**Example Outputs**
-
-- `(integer) 3`
-- `(integer) 1`
-
 ## Code Examples
 
 ### Basic Example
 
-Performing a basic bitwise AND operation between two keys:
+Performing a basic bitwise `AND` operation between two keys:
 
-```cli
+```shell
 dragonfly> SET key1 "foobar"
 OK
 dragonfly> SET key2 "abcdef"
@@ -50,11 +47,11 @@ dragonfly> GET result
 "\x60\x60\x04\x00\x00\x00"
 ```
 
-### Combining Multiple Keys with OR Operation
+### Combining Multiple Keys with the `OR` Operation
 
-Combining three keys using the OR operation:
+Combining three keys using the `OR` operation:
 
-```cli
+```shell
 dragonfly> SET key1 "\x01"
 OK
 dragonfly> SET key2 "\x02"
@@ -67,11 +64,11 @@ dragonfly> GET result
 "\x03"
 ```
 
-### Using XOR Operation
+### Using the `XOR` Operation
 
-Using the XOR operation to combine two keys:
+Using the `XOR` operation to combine two keys:
 
-```cli
+```shell
 dragonfly> SET key1 "\x0F"
 OK
 dragonfly> SET key2 "\xF0"
@@ -82,11 +79,11 @@ dragonfly> GET result
 "\xFF"
 ```
 
-### NOT Operation Example
+### Using the `NOT` Operation
 
-Performing the NOT operation on a single key:
+Performing the `NOT` operation on a single key:
 
-```cli
+```shell
 dragonfly> SET key1 "\xAA"  # 10101010 in binary
 OK
 dragonfly> BITOP NOT result key1
@@ -97,12 +94,12 @@ dragonfly> GET result
 
 ## Best Practices
 
-- Ensure the keys involved in the BITOP operation have values of the same length for predictable results.
-- Use the NOT operation with only one key, as this is the only unary operation in BITOP.
+- Ensure the keys involved in the `BITOP` operation have values of the same length for predictable results.
+- Use the `NOT` operation with only one key, as this is the only unary operation in `BITOP`.
 
 ## Common Mistakes
 
-- Using the NOT operation with more than one key will result in an error.
+- Using the `NOT` operation with more than one key will result in an error.
 - Performing operations on non-string data types can lead to unexpected results or errors.
 
 ## FAQs
@@ -111,6 +108,6 @@ dragonfly> GET result
 
 Redis pads the shorter strings with zero bytes to match the length of the longest string before performing the bitwise operation.
 
-### Can I use BITOP with empty keys?
+### Can I use `BITOP` with empty keys?
 
 Yes, but if all keys are empty, the result stored in the destination key will also be an empty string.
