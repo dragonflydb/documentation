@@ -81,6 +81,12 @@ To avoid data transfer costs incurred by the cloud provider, select the primary 
 
 If that is not possible please contact support.
 
+
+**Memcached** - Enable this for running Memcached workloads, memcached protocol will be enabled on port 6371.  
+*Note*: The memcached protocol does not support authentication, so can be enabled only for [private endpoint](#private-endpoint) data stores.
+
+**Sidekiq** - Enable this for running Sidekiq workloads, [read more](/docs/integrations/sidekiq.md).
+
 ## Cluster Mode
 
 By default a dragonfly cloud data store support redis cluster protocol and clients so you can seamlessly migrate from redis cluster. 
