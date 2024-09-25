@@ -80,3 +80,23 @@ pod "redis-cli" deleted
 ```
 
 You should see the value `bar` for the key `foo`. This means that the data was restored from the snapshot that was stored in the PVC.
+
+### NOTE: 
+snapshots are not pruned and may fill up your disk. If you do not specify a snapshot name, pruning is something you need to manage yourself. 
+Specifying a snapshot name would avoid this problem by only ever having one snapshot.
+```
+```bash
+kubectl apply -f - <<EOF
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  name: dragonfly-pvc
+spec:
+  replicas: 1
+  args: ["--dbfilename=mySnapshotName"]
+  snapshot:
+    ...
+    ...
+EOF
+```
+```
