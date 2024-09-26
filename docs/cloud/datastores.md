@@ -176,6 +176,13 @@ An ACL Rules editor drawer will open where you can add, modify or delete ACL rul
 
 ***Caution:*** Altering ACL rules can potentially disrupt access for current users. It is always recommended to test ACL rules on a test data store before applying them to a production data store.
 
+### How to rotate data store passkey
+1. Modify the default ACL rule to e.g. `USER default ON >pmn4p0ssrbbl >mynewpass ~* +@ALL`
+2. Verify you can now authenticate with both pmn4p0ssrbbl (old passkey) and mynewpass (new passkey)
+3. Migrate all consumers to authenticate with the new passkey 
+4. Modify the default ACL rule to only include the new passkey e.g. `USER default ON >mynewpass ~* +@ALL`
+5. Verify you can no longer authenticate with the old passkey.
+6. ***Caution:*** It is always recommended to test ACL rules on a test data store before applying them to a production data store.
 
 ## Support
 
