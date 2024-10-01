@@ -83,7 +83,7 @@ You should see the value `bar` for the key `foo`. This means that the data was r
 
 ## Managing Disk Space for Continuous Snapshots
 
-snapshots are not pruned and may fill up your disk. If you do not specify a snapshot name, pruning is something you need to manage yourself. 
+Snapshots are not automatically pruned by Dragonfly, and they may fill up your disk. If you do not specify a snapshot name, pruning is something you need to manage yourself.
 Specifying a snapshot name would avoid this problem by only ever having one snapshot.
 ```
 ```bash
