@@ -85,5 +85,14 @@ redis-cli --tls -h dfly.scalable-meteorite-collections.com \
   --cert /etc/mycerts/client_cert.pem
 ```
 
-In this case, `client_cert.pem` will need to be signed by the root that is trusted by the server,
-`clients_root_ca.pem`.
+## Certificate Rotation without downtime
+
+To rotate certificate of existing dragonfly server configured with tls you need:
+
+1. Update provided files `tls_key_file`, `tls_cert_file`, `tls_ca_cert_file` according to your TLS configuration.
+2. Trigger `CONFIG SET tls true` to reload dragonfly TLS configuration without downtime:
+
+```bash
+redis-cli --tls -h dfly.scalable-meteorite-collections.com -a ${DFLY_PASSWORD} CONFIG SET tls true
+```
+
