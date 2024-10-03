@@ -87,12 +87,12 @@ redis-cli --tls -h dfly.scalable-meteorite-collections.com \
 
 ## Certificate Rotation without downtime
 
-To rotate certificate of existing dragonfly server configured with tls you need:
+To rotate certificate of existing dragonfly server configured with TLS you need:
 
-1. Update provided files `tls_key_file`, `tls_cert_file`, `tls_ca_cert_file` according to your TLS configuration.
+1. Update provided with `tls_key_file`, `tls_cert_file`, `tls_ca_cert_file` flags files according to your new TLS configuration.
 2. Trigger `CONFIG SET tls true` to reload dragonfly TLS configuration without downtime:
-
-```bash
-redis-cli --tls -h dfly.scalable-meteorite-collections.com -a ${DFLY_PASSWORD} CONFIG SET tls true
-```
+  ```bash
+  redis-cli --tls -h dfly.scalable-meteorite-collections.com -a ${DFLY_PASSWORD} \
+    CONFIG SET tls true
+  ```
 
