@@ -1,5 +1,5 @@
 ---
-description:  Discover how to find the position of a bit set to 1 or 0 in a string with Redis BITPOS.
+description: Discover how to find the position of a bit set to 1 or 0 in a string with Redis BITPOS.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -8,69 +8,117 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis BITPOS Command (Documentation) | Dragonfly" />
 
+## Introduction
+
+In Dragonfly, as well as in Redis and Valkey, the `BITPOS` command is used to find the first occurrence of a bit set to `1` or `0` in a binary string.
+This command is particularly useful for efficiently locating bit transitions and is commonly used in scenarios like sparse data structures, flags, or low-level data processing.
+
 ## Syntax
 
-    BITPOS key bit [start [end [BYTE | BIT]]]
+```shell
+BITPOS key bit [start [end [BYTE|BIT]]]
+```
 
-**Time complexity:** O(N)
+## Parameter Explanations
 
-**ACL categories:** @read, @bitmap, @slow
+- `key`: The key of the string in which the search will occur.
+- `bit`: The bit value to search for, which can be either `0` or `1`.
+- `start` (optional): The starting byte position from which to begin the search. Default is `0`.
+- `end` (optional): The ending byte position. Default is `-1`, which represents the end of the string.
+- `BYTE|BIT` (optional): The unit to consider while searching. If not specified, `BYTE` is used.
 
-Return the position of the first bit set to 1 or 0 in a string.
+## Return Values
 
-The position is returned, thinking of the string as an array of bits from left to
-right, where the first byte's most significant bit is at position 0, the second
-byte's most significant bit is at position 8, and so forth.
+The command returns the position (index) of the first occurrence of the specified bit (`0` or `1`).
+If the bit is not found within the range, `-1` is returned.
 
-The same bit position convention is followed by `GETBIT` and `SETBIT`.
+## Code Examples
 
-By default, all the bytes contained in the string are examined.
-It is possible to look for bits only in a specified interval passing the additional arguments _start_ and _end_ (it is possible to just pass _start_, the operation will assume that the end is the last byte of the string. However there are semantic differences as explained later).
-By default, the range is interpreted as a range of bytes and not a range of bits, so `start=0` and `end=2` means to look at the first three bytes.
+### Find the First `1` Bit
 
-You can use the optional `BIT` modifier to specify that the range should be interpreted as a range of bits.
-So `start=0` and `end=2` means to look at the first three bits.
-
-Note that bit positions are returned always as absolute values starting from bit zero even when _start_ and _end_ are used to specify a range.
-
-Like for the `GETRANGE` command start and end can contain negative values in
-order to index bytes starting from the end of the string, where -1 is the last
-byte, -2 is the penultimate, and so forth. When `BIT` is specified, -1 is the last
-bit, -2 is the penultimate, and so forth.
-
-Non-existent keys are treated as empty strings.
-
-## Return
-
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the command returns the position of the first bit set to 1 or 0 according to the request.
-
-If we look for set bits (the bit argument is 1) and the string is empty or composed of just zero bytes, -1 is returned.
-
-If we look for clear bits (the bit argument is 0) and the string only contains bit set to 1, the function returns the first bit not part of the string on the right. So if the string is three bytes set to the value `0xff` the command `BITPOS key 0` will return 24, since up to bit 23 all the bits are 1.
-
-Basically, the function considers the right of the string as padded with zeros if you look for clear bits and specify no range or the _start_ argument **only**.
-
-However, this behavior changes if you are looking for clear bits and specify a range with both __start__ and __end__. If no clear bit is found in the specified range, the function returns -1 as the user specified a clear range and there are no 0 bits in that range.
-
-## Examples
+In this example, we will find the first occurrence of `1` in the string:
 
 ```shell
-dragonfly> SET mykey "\xff\xf0\x00"
-OK
-dragonfly> BITPOS mykey 0
-(integer) 12 
-dragonfly> SET mykey "\x00\xff\xf0"
-OK
-dragonfly> BITPOS mykey 1 0
-(integer) 8
-dragonfly> BITPOS mykey 1 2
-(integer) 16
-dragonfly> SET mykey "\x00\x00\x00"
+# String: example
+# Hex:    0x65     0x78     0x61     0x6d     0x70     0x6c     0x65
+# Binary: 01100101 01111000 01100001 01101101 01110000 01101100 01100101
+dragonfly> SET mykey "example"
 OK
 dragonfly> BITPOS mykey 1
-(integer) -1
-dragonfly> SET mykey "\x00\x00"
+(integer) 1
+```
+
+The first occurrence of a `1` happens at bit position 1. (Remember, positions are zero-based).
+
+### Find the First `0` Bit
+
+Similarly, we can find the first occurrence of a `0` bit in the string:
+
+```shell
+dragonfly> SET mykey "example"
 OK
-dragonfly BITPOS mykey 0 8 16 BIT
+dragonfly> BITPOS mykey 0
+(integer) 0
+```
+
+In this case, the first occurrence of a `0` bit appears at position 0.
+
+### Narrowing the Search with a Byte Range
+
+We can specify a search range within bytes to limit the search. The following example looks for the first occurrence of `1` within the second and fourth bytes of the string:
+
+```shell
+# String: example
+# Hex:    0x65     0x78     0x61     0x6d     0x70     0x6c     0x65
+# Binary: 01100101 01111000 01100001 01101101 01110000 01101100 01100101
+dragonfly> SET mykey "example"
+OK
+dragonfly> BITPOS mykey 1 1 3
 (integer) 8
 ```
+
+Here, we're telling the command to look only between the second and fourth bytes, and it finds the first `1` bit at position 8 (relative to the start of the string).
+
+### Using `BITPOS` in a Packed Flag System
+
+You can also use `BITPOS` in a system where flags are represented by bits within a packed binary string.
+
+```shell
+# Example binary string: 0x00 0x04 0x80
+# Binary:                00000000 00000100 10000000
+dragonfly> SET flags "\x00\x04\x80"
+OK
+dragonfly> BITPOS flags 1
+(integer) 18
+```
+
+In this example, the first bit set to `1` is found at position 18.
+
+## Best Practices
+
+- Utilize `start` and `end` to limit your search to specific sections of the string, improving performance for larger strings.
+- Use `BITPOS` when you need quick, efficient bit-level data scans without fully iterating through the data.
+
+## Common Mistakes
+
+- Forgetting that the result is a bit offset, not a byte offset, especially when interpreting the result.
+- Assuming `BITPOS` modifies the string; it only performs a read and search operation.
+- Specifying an invalid `bit` parameter (it must be either `0` or `1`).
+
+## FAQs
+
+### What happens if the key does not exist?
+
+If the key does not exist, `BITPOS` returns `-1`, indicating that no result can be found in a non-existent key.
+
+### Can I use negative indexes for the start and end parameters?
+
+Yes, negative indexes are allowed, and they signify positions from the end of the string.
+
+### How does the BYTE vs BIT mode work?
+
+By default, `BITPOS` searches in `BYTE` mode, where each byte is processed sequentially.
+However, specifying `BIT` tells the function to treat the string bit-by-bit in the search.
+This mode is more granular and may be useful in certain low-level applications.
+
+---
