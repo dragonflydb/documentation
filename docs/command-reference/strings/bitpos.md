@@ -74,10 +74,10 @@ We can specify a search range within bytes to limit the search. The following ex
 dragonfly> SET mykey "example"
 OK
 dragonfly> BITPOS mykey 1 1 3
-(integer) 8
+(integer) 9
 ```
 
-Here, we're telling the command to look only between the second and fourth bytes, and it finds the first `1` bit at position 8 (relative to the start of the string).
+Here, we're telling the command to look only between the second and fourth bytes, and it finds the first `1` bit at position 9 (relative to the start of the string).
 
 ### Using `BITPOS` in a Packed Flag System
 
@@ -89,10 +89,10 @@ You can also use `BITPOS` in a system where flags are represented by bits within
 dragonfly> SET flags "\x00\x04\x80"
 OK
 dragonfly> BITPOS flags 1
-(integer) 18
+(integer) 13
 ```
 
-In this example, the first bit set to `1` is found at position 18.
+In this example, the first bit set to `1` is found at position 13.
 
 ## Best Practices
 
@@ -107,10 +107,6 @@ In this example, the first bit set to `1` is found at position 18.
 
 ## FAQs
 
-### What happens if the key does not exist?
-
-If the key does not exist, `BITPOS` returns `-1`, indicating that no result can be found in a non-existent key.
-
 ### Can I use negative indexes for the start and end parameters?
 
 Yes, negative indexes are allowed, and they signify positions from the end of the string.
@@ -120,5 +116,3 @@ Yes, negative indexes are allowed, and they signify positions from the end of th
 By default, `BITPOS` searches in `BYTE` mode, where each byte is processed sequentially.
 However, specifying `BIT` tells the function to treat the string bit-by-bit in the search.
 This mode is more granular and may be useful in certain low-level applications.
-
----
