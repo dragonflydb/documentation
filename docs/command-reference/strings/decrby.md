@@ -41,7 +41,7 @@ dragonfly> DECRBY mycounter 3
 (integer) 7
 ```
 
-### Using Non-existent Keys
+### Using Non-Existent Keys
 
 If the key does not exist, `DECRBY` assumes the initial value to be `0`:
 
