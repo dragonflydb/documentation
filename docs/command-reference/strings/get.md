@@ -68,7 +68,9 @@ dragonfly> GET counter
 
 ### Storing JSON-like Data
 
-Since Dragonfly, Redis, and Valkey store data as strings, you can store JSON-encoded values to model more complex data:
+In Dragonfly, Redis, or Valkey, the string data type is binary-safe.
+This means that you can store ASCII strings, unicode strings, or even binary data like an image using the string data type.
+For instance, you can store JSON-encoded values to model more complex and structured data:
 
 ```shell
 dragonfly> SET user:1001 '{"name": "Alice", "age": 30, "country": "Wonderland"}'
