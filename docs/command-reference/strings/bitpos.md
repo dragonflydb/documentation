@@ -115,7 +115,7 @@ If the key does not exist, `BITPOS` returns `-1`, indicating that no result can 
 
 Yes, negative indexes are allowed, and they signify positions from the end of the string.
 
-### How does the BYTE vs BIT mode work?
+### How does the `BYTE` vs `BIT` modifier work?
 
 By default, `BITPOS` searches in `BYTE` mode, where each byte is processed sequentially.
 However, specifying `BIT` tells the function to treat the string bit-by-bit in the search.
