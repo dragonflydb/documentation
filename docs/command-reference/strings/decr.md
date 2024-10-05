@@ -42,7 +42,7 @@ dragonfly> DECR mycounter
 
 In this example, the value of `mycounter` is decremented from `5` to `4`.
 
-### Decrement Non-existing Key
+### Decrement Non-Existent Key
 
 If the key does not exist, `DECR` initializes the value to `0` before performing the decrement:
 
