@@ -102,4 +102,4 @@ No, `DECR` will fail if the key already holds a value that is not parsable as an
 
 ### Can I use `DECR` to decrement a very large number?
 
-Yes, `DECR` can handle very large integers, but keep in mind there is a limit imposed by Redis’s storage of integers. The maximum and minimum values typically correspond to the range of signed 64-bit integers.
+Yes, `DECR` can handle very large integers, but keep in mind there is a limit imposed by Redis's storage of integers. The maximum and minimum values typically correspond to the range of signed 64-bit integers.
