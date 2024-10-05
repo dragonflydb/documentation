@@ -74,7 +74,7 @@ Since Dragonfly, Redis, and Valkey store data as strings, you can store JSON-enc
 dragonfly> SET user:1001 '{"name": "Alice", "age": 30, "country": "Wonderland"}'
 OK
 dragonfly> GET user:1001
-'{"name": "Alice", "age": 30, "country": "Wonderland"}'
+"{\"name\": \"Alice\", \"age\": 30, \"country\": \"Wonderland\"}"
 ```
 
 You can decode this string in your application using your favorite JSON library.
