@@ -1,5 +1,5 @@
 ---
-description:  Learn how to manage rate limiting in Redis with CL.THROTTLE command.
+description: Learn how to manage rate limiting in Redis with CL.THROTTLE command.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-https://redis.com/blog/redis-cell-rate-limiting-redis-module/ 
+https://redis.com/blog/redis-cell-rate-limiting-redis-module/
 
 **ACL categories:** @throttle
 
