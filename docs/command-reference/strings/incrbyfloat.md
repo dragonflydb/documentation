@@ -8,60 +8,109 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis INCRBYFLOAT Command (Documentation) | Dragonfly" />
 
+## Introduction
+
+In Dragonfly, as well as in Redis and Valkey, the `INCRBYFLOAT` command is used to increment the value of a key by a specified floating-point number.
+This command is particularly useful when you need to store numerical data and perform frequent updates with floating-point precision, such as tracking scores, balances, or statistics.
+
+If the key does not exist, `INCRBYFLOAT` will initialize it to `0` before executing the operation.
+
 ## Syntax
 
-    INCRBYFLOAT key increment
-
-**Time complexity:** O(1)
-
-**ACL categories:** @write, @string, @fast
-
-Increment the string representing a floating point number stored at `key` by the
-specified `increment`. By using a negative `increment` value, the result is
-that the value stored at the key is decremented (by the obvious properties
-of addition).
-If the key does not exist, it is set to `0` before performing the operation.
-An error is returned if one of the following conditions occur:
-
-* The key contains a value of the wrong type (not a string).
-* The current key content or the specified increment are not parsable as a
-  double precision floating point number.
-
-If the command is successful the new incremented value is stored as the new
-value of the key (replacing the old one), and returned to the caller as a
-string.
-
-Both the value already contained in the string key and the increment argument
-can be optionally provided in exponential notation, however the value computed
-after the increment is stored consistently in the same format, that is, an
-integer number followed (if needed) by a dot, and a variable number of digits
-representing the decimal part of the number.
-Trailing zeroes are always removed.
-
-The precision of the output is fixed at 17 digits after the decimal point
-regardless of the actual internal precision of the computation.
-
-## Return
-
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the value of `key` after the increment.
-
-## Examples
-
 ```shell
-dragonfly> SET mykey 10.50
-OK
-dragonfly> INCRBYFLOAT mykey 0.1
-"10.6"
-dragonfly> INCRBYFLOAT mykey -5
-"5.6"
-dragonfly> SET mykey 5.0e3
-OK
-dragonfly> INCRBYFLOAT mykey 2.0e2
-"5200"
+INCRBYFLOAT key increment
 ```
 
-## Implementation details
+## Parameter Explanations
 
-The command is always propagated in the replication link and the Append Only
-File as a `SET` operation, so that differences in the underlying floating point
-math implementation will not be sources of inconsistency.
+- `key`: The key where the number is stored.
+- `increment`: The floating-point number by which to increment the value.
+
+## Return Values
+
+- The command returns the new floating-point value after the increment.
+
+## Code Examples
+
+### Basic Example
+
+Increment the float value of a key:
+
+```shell
+dragonfly> SET counter 10.5
+OK
+dragonfly> INCRBYFLOAT counter 1.5
+"12"
+```
+
+Here, the value stored at `counter` is updated from `10.5` to `12` after adding `1.5`.
+
+### Initializing and Incrementing Non-Existent Keys
+
+If the key does not exist, it is initialized to `0` before incrementing by the specified amount.
+
+```shell
+
+dragonfly> INCRBYFLOAT new_counter 2.5
+"2.5"
+```
+
+### Negative Floating-Point Increments
+
+You can also use negative numbers to decrement the value:
+
+```shell
+dragonfly> SET score 20.0
+OK
+dragonfly> INCRBYFLOAT score -5.5
+"14.5"
+```
+
+### Handling High Precision Increments
+
+`INCRBYFLOAT` maintains float precision, allowing fine-grained changes, such as adding a small decimal value:
+
+```shell
+dragonfly> SET balance 150.0
+OK
+dragonfly> INCRBYFLOAT balance 0.03
+"150.03"
+```
+
+### Multiple Increments on the Same Key
+
+You can repeatedly increment the same key for cumulative updates:
+
+```shell
+dragonfly> SET total 100.0
+OK
+dragonfly> INCRBYFLOAT total 10.7
+"110.7"
+dragonfly> INCRBYFLOAT total 2.3
+"113"
+```
+
+## Best Practices
+
+- Use `INCRBYFLOAT` when you need arithmetic operations that require floating-point precision.
+- Be cautious when performing many small floating-point increments, as precision drift might occur over time.
+- Consider using this command for tracking metrics or scores where floating-point precision is essential.
+
+## Common Mistakes
+
+- Incrementing non-numeric values can throw an error, so always ensure the stored value is a valid number (or numeric string).
+- Be aware that rounding errors are inherent to floating-point arithmetic, so the result might not have perfect precision for certain values.
+
+## FAQs
+
+### What happens if the key stores a non-numeric value?
+
+If the key holds a non-numeric value, `INCRBYFLOAT` returns an error indicating that the value cannot be incremented.
+
+### Can I decrement a number using `INCRBYFLOAT`?
+
+Yes, providing a negative increment will effectively decrement the current value.
+
+### Does `INCRBYFLOAT` work with integers?
+
+While `INCRBYFLOAT` is designed for floating-point numbers, it can increment integer values as well. However, the result will always be returned as a floating-point number.
