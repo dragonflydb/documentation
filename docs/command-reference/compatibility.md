@@ -85,6 +85,7 @@ sidebar_position: 0
 |                                              | <span class="command">HSETNX</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HSTRLEN</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HVALS</span>                         | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">HEXPIRE</span>                       | <span class="support partial">Partially supported</span> |
 | <span class="family">HyperLogLog</span>      | <span class="command">PFADD</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PFMERGE</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PFCOUNT</span>                       | <span class="support supported">Fully supported</span>   |
