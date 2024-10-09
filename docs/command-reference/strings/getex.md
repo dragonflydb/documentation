@@ -16,7 +16,7 @@ This can be useful when you want to access the current value of a key but also u
 ## Syntax
 
 ```shell
-GETEX key [EX seconds|PX milliseconds|EXAT timestamp|PXAT milliseconds-timestamp|PERSIST]
+GETEX key [EX seconds | PX milliseconds | EXAT timestamp |PXAT milliseconds-timestamp | PERSIST]
 ```
 
 ## Parameter Explanations
@@ -47,7 +47,7 @@ dragonfly> GETEX mykey EX 1200
 "hello"
 ```
 
-In this example, we first set the value (`"hello"`) to the key `mykey` with a TTL of one hour (3600 seconds).
+In this example, we first set the value (`"hello"`) to the key `mykey` with a TTL of 3600 seconds (one hour).
 Then, we retrieve the value with `GETEX` and update the TTL to 1200 seconds (20 minutes).
 
 ### Using Milliseconds for Expiration
@@ -92,7 +92,7 @@ Here, the key `session` had an expiration of 30 minutes, but with `GETEX ... PER
 ## Best Practices
 
 - Use `GETEX` when you need to read a key's value and update its expiration simultaneously.
-- To optimize storage cleanup, prefer the use of UNIX timestamp options (`EXAT` or `PXAT`) for setting expiration when a precise expiration is required.
+- Choose the options (`EX/PX`, or `EXAT/PXAT`) wisely based on your use case. For instance, in a user authentication system utilizing access tokens and refresh tokens, access tokens typically have a fixed, short-lived expiration time. Whereas for refresh tokens utilizing the sliding expiration strategy, we may extend the expiration each time it's used.
 
 ## Common Mistakes
 
