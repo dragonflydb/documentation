@@ -30,7 +30,7 @@ GETEX key [EX seconds | PX milliseconds | EXAT timestamp |PXAT milliseconds-time
 
 ## Return Values
 
-The command returns the current value of the key being requested before the expiration is updated.
+The command returns the value of the key before the expiration is updated. Since the command is atomic, the value retrieved is unaffected by the expiration update and reflects the value of the key at the time of the `GETEX` operation.
 
 If the key does not exist, `GETEX` returns `nil`.
 
