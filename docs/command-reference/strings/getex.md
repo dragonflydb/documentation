@@ -16,7 +16,7 @@ This can be useful when you want to access the current value of a key but also u
 ## Syntax
 
 ```shell
-GETEX key [EX seconds|PX milliseconds|EXAT timestamp|PXAT milliseconds-timestamp|PERSIST]
+GETEX key [EX seconds | PX milliseconds | EXAT timestamp |PXAT milliseconds-timestamp | PERSIST]
 ```
 
 ## Parameter Explanations
