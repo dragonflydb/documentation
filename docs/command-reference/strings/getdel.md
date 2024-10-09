@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Redis GETDEL to retrieve and delete a key’s value.
+description: Learn how to use Redis GETDEL to retrieve and delete a key’s value.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -58,23 +58,6 @@ dragonfly> GETDEL nonexistent_key
 ```
 
 Since `nonexistent_key` does not exist, the return is `nil`, and no other action is taken.
-
-### Multiple Operations in Parallel
-
-If you operate on the same key with `GETDEL` and try to access it in parallel, the following result can occur:
-
-```shell
-dragonfly> SET anotherkey "Goodbye"
-OK
-
-dragonfly> GETDEL anotherkey
-"Goodbye"
-
-dragonfly> GET anotherkey
-(nil)
-```
-
-This ensures that both the retrieval and deletion occur atomically, confirming the key is no longer in the database afterward.
 
 ## Best Practices
 
