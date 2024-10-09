@@ -109,3 +109,7 @@ If the key does not exist, `GETEX` will return `nil` and no expiration will be s
 
 No, `GETEX` only retrieves the value and optionally changes the TTL.
 The value stored in the key remains unchanged unless modified by other commands.
+
+### Is `GETEX` equivalent to `GET` when no options are supplied?
+
+Yes, when `GETEX` is used without any expiration options, it functions the same as a `GET` command, retrieving the current value without modifying the expiration time.
