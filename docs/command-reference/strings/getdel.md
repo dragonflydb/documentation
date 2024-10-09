@@ -86,7 +86,7 @@ This ensures that both the retrieval and deletion occur atomically, confirming t
 - Forgetting that after calling `GETDEL`, the key will no longer exist.
   If subsequent operations depend on the key being available, you might need to handle it differently.
 - Assuming `GETDEL` will work on non-string data types like hashes, lists, or sets.
-  `GETDEL` only works on keys storing simple string values.
+  `GETDEL` only works on keys storing string values.
 
 ## FAQs
 
