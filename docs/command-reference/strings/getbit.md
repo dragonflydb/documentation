@@ -65,7 +65,7 @@ In many use cases, each bit can signify a flag that is either enabled (`1`) or d
 dragonfly> SET flags "\x0F"  # Binary: 00001111 (four flags enabled)
 OK
 dragonfly> GETBIT flags 0
-(integer) 0  # First feature is disabled.
+(integer) 0  # The first feature is disabled.
 dragonfly> GETBIT flags 3
 (integer) 1  # Fourth feature is enabled.
 ```
