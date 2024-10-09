@@ -1,5 +1,5 @@
 ---
-description:  Discover how to use Redis GETEX for fetching a key's value and setting its expiration.
+description: Discover how to use Redis GETEX for fetching a key's value and setting its expiration.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -41,7 +41,6 @@ If the key does not exist, `GETEX` returns `nil`.
 Get the current value of a key and set a new TTL (in seconds):
 
 ```shell
-
 dragonfly> SET mykey "hello" EX 3600
 OK
 dragonfly> GETEX mykey EX 1200
@@ -56,7 +55,6 @@ Then, we retrieve the value with `GETEX` and update the TTL to 1200 seconds (20 
 Set the expiration time in milliseconds:
 
 ```shell
-
 dragonfly> SET mykey "data"
 OK
 dragonfly> GETEX mykey PX 15000
@@ -70,7 +68,6 @@ Here, the key `mykey` has its value retrieved (`"data"`) while the expiration ti
 Set an expiration using a UNIX timestamp in seconds:
 
 ```shell
-
 dragonfly> SET report "yearly"
 OK
 dragonfly> GETEX report EXAT 1699999999
@@ -84,7 +81,6 @@ In this case, the key `report` is set to expire at the specified UNIX timestamp 
 Remove the key's expiration:
 
 ```shell
-
 dragonfly> SET session "active" EX 1800
 OK
 dragonfly> GETEX session PERSIST
@@ -97,11 +93,11 @@ Here, the key `session` had an expiration of 30 minutes, but with `GETEX ... PER
 
 - Use `GETEX` when you need to read a key's value and update its expiration simultaneously.
 - To optimize storage cleanup, prefer the use of UNIX timestamp options (`EXAT` or `PXAT`) for setting expiration when a precise expiration is required.
-  
+
 ## Common Mistakes
 
 - Using `GETEX` on non-existent keys will return `nil`, potentially causing confusion if you're not accounting for the absence of the key.
-- Misunderstanding expiration is set *before* the value is returned; the expiration might cause a race condition if another command modifies the key before the TTL updates.
+- Misunderstanding expiration is set _before_ the value is returned; the expiration might cause a race condition if another command modifies the key before the TTL updates.
 
 ## FAQs
 
