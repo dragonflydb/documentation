@@ -61,8 +61,8 @@ Since `nonexistent_key` does not exist, the return is `nil`, and no other action
 
 ## Best Practices
 
-- Use `GETDEL` when you want to both retrieve a value and delete the key in a single atomic operation, especially in scenarios where performing these two actions separately may introduce race conditions.
-- This operation is particularly helpful in cases like caching systems where you want to retrieve and invalidate cached values instantly.
+- Use `GETDEL` when you need to retrieve and simultaneously delete a key in a single atomic operation. This can prevent race conditions that might occur if retrieving and deleting are done separately.
+- Ideal for scenarios such as caching systems, where fetching and invalidating cache must happen instantly or something like a OTP (one-time password) feature which allows a user to verify only once. If they fail, another OTP must be resent to their email/phone after a period of time.
 
 ## Common Mistakes
 
