@@ -11,7 +11,7 @@ import PageTitle from '@site/src/components/PageTitle';
 ## Introduction
 
 In Dragonfly, as well as in Redis and Valkey, the `GETDEL` command is used to retrieve the value of a key and simultaneously delete that key from the database.
-This atomically combines two operations — one to get the value of the key, and another to remove the key — making it more efficient than running the individual `GET` and `DEL` commands in sequence.
+This atomically combines two operations — one to get the value of the key, and another to remove the key—making it more efficient than running the individual `GET` and `DEL` commands in sequence.
 
 ## Syntax
 

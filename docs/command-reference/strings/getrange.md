@@ -43,7 +43,7 @@ dragonfly> GETRANGE mykey 0 2
 "exa"
 ```
 
-In the above example, the substring "exa" is returned as it starts from index `0` and ends at index `2`.
+In the above example, the substring `exa` is returned as it starts from index `0` and ends at index `2`.
 
 ### Extract Substring Using Negative Index
 
@@ -69,7 +69,7 @@ dragonfly> GETRANGE mykey 5 50
 "le"
 ```
 
-Here, although the ending index is beyond the actual string length, Dragonfly returns up to the last available characters, which is the "le" substring.
+Here, although the ending index is beyond the actual string length, Dragonfly returns up to the last available characters, which is the `le` substring.
 
 ### Use Case for Handling Large Strings
 
