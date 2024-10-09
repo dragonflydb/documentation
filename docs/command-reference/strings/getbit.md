@@ -66,7 +66,7 @@ dragonfly> SET flags "\x0F"  # Binary: 00001111 (four flags enabled)
 OK
 dragonfly> GETBIT flags 0
 (integer) 0  # The first feature is disabled.
-dragonfly> GETBIT flags 3
+dragonfly> GETBIT flags 4
 (integer) 1  # The fifth feature is enabled.
 ```
 
