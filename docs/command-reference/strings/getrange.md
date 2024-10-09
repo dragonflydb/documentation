@@ -69,7 +69,7 @@ dragonfly> GETRANGE mykey 5 50
 "le"
 ```
 
-Here, although the ending index is beyond the actual string length, Dragonfly returns up to the last available characters, which is "ple."
+Here, although the ending index is beyond the actual string length, Dragonfly returns up to the last available characters, which is the "le" substring.
 
 ### Use Case for Handling Large Strings
 
