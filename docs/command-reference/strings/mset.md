@@ -101,4 +101,4 @@ No, you must provide at least one key-value pair. If the total number of argumen
 
 ### How does `MSET` differ from `SET`?
 
-While `SET` sets a single key-value pair, `MSET` allows you to set multiple key-value pairs in one atomic operation, which can be more efficient in batch updates.
+While `SET` sets a single key-value pair, `MSET` allows you to set multiple key-value pairs in one atomic operation, which can be more efficient in batch updates. On the other hand, `SET` provides more options, such as `NX`, `EX`, and so forth, for more versatile operations on that single key.
