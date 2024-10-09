@@ -96,8 +96,8 @@ Here, the key `session` had an expiration of 30 minutes, but with `GETEX ... PER
 
 ## Common Mistakes
 
-- Using `GETEX` on non-existent keys will return `nil`, potentially causing confusion if you're not accounting for the absence of the key.
-- Misunderstanding expiration is set _before_ the value is returned; the expiration might cause a race condition if another command modifies the key before the TTL updates.
+- Using `GETEX` on non-existent keys will return `nil`, which could lead to confusion if your code doesn't handle missing keys appropriately.
+- Misinterpreting the atomic nature of `GETEX`—the expiration is set at the same time as retrieving the value, so no race condition occurs.
 
 ## FAQs
 
