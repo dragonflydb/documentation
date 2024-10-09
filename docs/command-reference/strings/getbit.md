@@ -67,7 +67,7 @@ OK
 dragonfly> GETBIT flags 0
 (integer) 0  # The first feature is disabled.
 dragonfly> GETBIT flags 3
-(integer) 1  # Fourth feature is enabled.
+(integer) 1  # The fifth feature is enabled.
 ```
 
 ## Best Practices
