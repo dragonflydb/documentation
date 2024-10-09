@@ -91,7 +91,7 @@ dragonfly> INCR request_count
   dragonfly> LPUSH mylist 1
   (integer) 1
   dragonfly> INCR mylist
-  (error) ERR value is not an integer or out of range
+  (error) WRONGTYPE Operation against a key holding the wrong kind of value
   ```
   
 - Not realizing that `INCR` only creates keys as integer strings when they don't exist. 

@@ -72,7 +72,7 @@ The atomic nature of the `MSET` command ensures that all keys are set together, 
 dragonfly> MSET key1 "first_value" key2 "second_value" key3 "third_value"
 OK
 
-# Elsewhere (in another connection or thread), the atomicity ensures these values are set together.
+# Atomicity ensures these values are set together.
 dragonfly> MGET key1 key2 key3
 1) "first_value"
 2) "second_value"
