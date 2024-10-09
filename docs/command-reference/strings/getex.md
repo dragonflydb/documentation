@@ -48,7 +48,7 @@ dragonfly> GETEX mykey EX 1200
 "hello"
 ```
 
-In this example, we first set the value (`"hello"`) to the key `mykey` with a TTL of one hour (3600 seconds).
+In this example, we first set the value (`"hello"`) to the key `mykey` with a TTL of 3600 seconds (one hour).
 Then, we retrieve the value with `GETEX` and update the TTL to 1200 seconds (20 minutes).
 
 ### Using Milliseconds for Expiration
