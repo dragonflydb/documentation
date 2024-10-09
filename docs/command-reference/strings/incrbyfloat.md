@@ -28,7 +28,7 @@ INCRBYFLOAT key increment
 
 ## Return Values
 
-- The command returns the new floating-point value after the increment.
+The command returns the new floating-point value after the increment.
 
 ## Code Examples
 
