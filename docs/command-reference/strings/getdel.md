@@ -82,8 +82,3 @@ If the key does not exist, `GETDEL` returns `nil`, and no other action is perfor
 No, `GETDEL` is intended for string keys only.
 If you attempt to use it on a non-string type, an error will be generated.
 For retrieving and deleting non-string data types, you will need to use other Redis commands.
-
-## Conclusion
-
-`GETDEL` offers an efficient and atomic approach when retrieving and deleting a key simultaneously.
-It simplifies your operations when you need to get a key's value and immediately remove it from the database.
