@@ -1,5 +1,5 @@
 ---
-description:  Learn to use Redis INCRBY to increase the integer value of a key by a given amount.
+description: Learn to use Redis INCRBY to increase the integer value of a key by a given amount.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -54,7 +54,7 @@ dragonfly> INCRBY newcounter 4
 (integer) 4
 ```
 
-Here, `newcounter` did not exist initially. 
+Here, `newcounter` did not exist initially.
 `INCRBY` creates the key and sets its value to `4` as there was no existing value to increment.
 
 ### Using Negative Increments
@@ -88,22 +88,21 @@ Here, the value of `visits` is incremented twice, first by `10` and then by `15`
 ## Best Practices
 
 - Use `INCRBY` for maintaining counters or other numeric accumulations that need to be updated atomically.
-- Keep in mind that if you are dealing with non-integer values, this command does not support floating-point numbers. 
+- Keep in mind that if you are dealing with non-integer values, this command does not support floating-point numbers.
   For floats, use `INCRBYFLOAT` instead.
 
 ## Common Mistakes
 
 - Applying `INCRBY` to a key that holds a non-integer value will result in an error.
   Ensure that the key either contains an integer or does not exist when using this command.
-  
 - Using `INCRBY` with a key that stores a non-numeric value will cause an error and fail:
-  
-```shell
-dragonfly> SET mystring "hello"
-OK
-dragonfly> INCRBY mystring 2
-(error) ERR value is not an integer or out of range
-```
+
+  ```shell
+  dragonfly> SET mystring "hello"
+  OK
+  dragonfly> INCRBY mystring 2
+  (error) ERR value is not an integer or out of range
+  ```
 
 - Trying to increment large numerical values that exceed the 64-bit signed integer limit may result in an overflow error.
 
@@ -111,15 +110,15 @@ dragonfly> INCRBY mystring 2
 
 ### What happens if the key holds a string value instead of an integer?
 
-If the key holds a string, list, or another non-integer value, `INCRBY` will return an error. 
+If the key holds a string, list, or another non-integer value, `INCRBY` will return an error.
 The key must either be unset or holding an integer value to execute successfully.
 
 ### Can I use `INCRBY` with floating-point numbers?
 
-No, `INCRBY` only works with integers. 
+No, `INCRBY` only works with integers.
 If you need to increment by a floating-point number, you should use the `INCRBYFLOAT` command.
 
 ### What’s the maximum increment value I can use?
 
-`INCRBY` supports 64-bit signed integers. 
+`INCRBY` supports 64-bit signed integers.
 As such, the maximum allowable increment would be `9,223,372,036,854,775,807`, and the minimum would be `-9,223,372,036,854,775,808`.
