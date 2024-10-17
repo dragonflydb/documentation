@@ -20,6 +20,9 @@ This command is particularly useful for accumulating logs or constructing string
 APPEND key value
 ```
 
+- **Time complexity:** O(1), assuming the appended value is small and the already present value is of any size.
+- **ACL categories:** @write, @string, @fast
+
 ## Parameter Explanations
 
 - `key`: The key of the string you want to append data to.
