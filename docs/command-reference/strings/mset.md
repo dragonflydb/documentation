@@ -1,5 +1,5 @@
 ---
-description:  Learn the proper use of Redis MSET to set multiple keys to multiple values simultaneously.
+description: Learn the proper use of Redis MSET to set multiple keys to multiple values simultaneously.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -20,6 +20,9 @@ The `MSET` command is a more efficient way to set multiple keys when compared to
 ```shell
 MSET key value [key value ...]
 ```
+
+- **Time complexity:** O(N) where N is the number of keys.
+- **ACL categories:** @write, @string, @fast
 
 ## Parameter Explanations
 

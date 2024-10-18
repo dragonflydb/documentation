@@ -1,5 +1,5 @@
 ---
-description:  Discover how to use Redis INCRBYFLOAT to increment a key's float value. 
+description: Discover how to use Redis INCRBYFLOAT to increment a key's float value.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -20,6 +20,9 @@ If the key does not exist, `INCRBYFLOAT` will initialize it to `0` before execut
 ```shell
 INCRBYFLOAT key increment
 ```
+
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @string, @fast
 
 ## Parameter Explanations
 
