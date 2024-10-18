@@ -20,6 +20,9 @@ This command is crucial for handling binary data and performing efficient bulk b
 BITOP operation destkey key [key ...]
 ```
 
+- **Time complexity:** O(N) where N is the size of the string inputs.
+- **ACL categories:** @write, @bitmap, @slow
+
 ## Parameter Explanations
 
 - `operation`: The bitwise operation to be performed. It can be `AND`, `OR`, `XOR`, or `NOT`.

@@ -20,6 +20,9 @@ If the key does not exist, `INCRBY` will create the key with an initial value of
 INCRBY key increment
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @string, @fast
+
 ## Parameter Explanations
 
 - `key`: The name of the key whose value you want to increment.

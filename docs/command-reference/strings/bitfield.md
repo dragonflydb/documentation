@@ -23,6 +23,9 @@ BITFIELD key [GET type offset]
     [OVERFLOW WRAP|SAT|FAIL]
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @bitmap, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the string which is manipulated as a bitmap.

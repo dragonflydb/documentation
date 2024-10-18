@@ -1,5 +1,5 @@
 ---
-description:  Understand how Redis GETBIT retrieves a specific bit from a string value.
+description: Understand how Redis GETBIT retrieves a specific bit from a string value.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -18,6 +18,9 @@ The command allows you to efficiently access individual bits stored in a string,
 ```shell
 GETBIT key offset
 ```
+
+- **Time complexity:** O(1)
+- **ACL categories:** @read, @bitmap, @fast
 
 ## Parameter Explanations
 

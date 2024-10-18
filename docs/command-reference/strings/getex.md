@@ -19,6 +19,9 @@ This can be useful when you want to access the current value of a key but also u
 GETEX key [EX seconds | PX milliseconds | EXAT timestamp |PXAT milliseconds-timestamp | PERSIST]
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @string, @fast
+
 ## Parameter Explanations
 
 - `key`: The key for which the value is to be retrieved and an expiration set.

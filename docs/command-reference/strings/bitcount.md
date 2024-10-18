@@ -19,6 +19,9 @@ It is particularly useful for efficiently performing bitwise operations and can 
 BITCOUNT key [start end]
 ```
 
+- **Time complexity:** O(N)
+- **ACL categories:** @read, @bitmap, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the string where bits are counted.

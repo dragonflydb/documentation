@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Redis DECRBY to decrease the integer value of a key.
+description: Learn how to use Redis DECRBY to decrease the integer value of a key.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -18,6 +18,9 @@ This command is particularly useful for counters, resource quotas, or rate-limit
 ```shell
 DECRBY key decrement
 ```
+
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @string, @fast
 
 ## Parameter Explanations
 

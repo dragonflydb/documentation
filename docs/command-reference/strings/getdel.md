@@ -19,6 +19,9 @@ This atomically combines two operations — one to get the value of the key, and
 GETDEL key
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @string, @fast
+
 ## Parameter Explanations
 
 - `key`: The key of the value you want to retrieve and delete.

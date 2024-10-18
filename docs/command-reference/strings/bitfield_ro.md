@@ -20,6 +20,9 @@ This command is useful for applications that need to interpret data stored as bi
 BITFIELD_RO key [GET encoding offset] ...
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @read, @bitmap, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the string which is treated as a bitmap for read operations.
