@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Redis MGET to retrieve the values of all specified keys.
+description: Learn how to use Redis MGET to retrieve the values of all specified keys.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -19,6 +19,9 @@ If a key does not exist, `MGET` returns `nil` for that key instead of an error.
 ```shell
 MGET key [key ...]
 ```
+
+- **Time complexity:** O(N) where N is the number of keys.
+- **ACL categories:** @read, @string, @fast
 
 ## Parameter Explanations
 
