@@ -1,5 +1,5 @@
 ---
-description:  Discover the use of Redis DECR for decrementing the integer value of a key.
+description: Discover the use of Redis DECR for decrementing the integer value of a key.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -18,6 +18,9 @@ This is especially useful when implementing counters, rate-limiters, or managing
 ```shell
 DECR key
 ```
+
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @string, @fast
 
 ## Parameter Explanations
 
@@ -80,7 +83,7 @@ Each `DECR` call reduces the value by `1`, simulating a countdown from `10` to `
 ## Common Mistakes
 
 - Using `DECR` on a key that holds a non-integer, such as a string that cannot be parsed as a number. This will result in an error.
-  
+
 ```shell
 dragonfly> SET mykey "abc"
 OK

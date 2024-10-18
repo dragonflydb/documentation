@@ -1,5 +1,5 @@
 ---
-description:  Discover how to use Redis GET for fetching the value of a defined key.
+description: Discover how to use Redis GET for fetching the value of a defined key.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -19,6 +19,9 @@ It is widely used in caching layers, configuration storage, and other situations
 ```shell
 GET key
 ```
+
+- **Time complexity:** O(1)
+- **ACL categories:** @read, @string, @fast
 
 ## Parameter Explanations
 
