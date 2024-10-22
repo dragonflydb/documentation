@@ -21,7 +21,7 @@ BITFIELD_RO key [GET encoding offset] ...
 ```
 
 - **Time complexity:** O(1)
-- **ACL categories:** @read, @bitmap, @slow
+- **ACL categories:** @read, @bitmap, @fast
 
 ## Parameter Explanations
 

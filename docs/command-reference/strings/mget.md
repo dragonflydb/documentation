@@ -20,7 +20,7 @@ If a key does not exist, `MGET` returns `nil` for that key instead of an error.
 MGET key [key ...]
 ```
 
-- **Time complexity:** O(N) where N is the number of keys.
+- **Time complexity:** O(N) where N is the number of keys to retrieve.
 - **ACL categories:** @read, @string, @fast
 
 ## Parameter Explanations

@@ -21,8 +21,8 @@ The `MSET` command is a more efficient way to set multiple keys when compared to
 MSET key value [key value ...]
 ```
 
-- **Time complexity:** O(N) where N is the number of keys.
-- **ACL categories:** @write, @string, @fast
+- **Time complexity:** O(N) where N is the number of keys to set.
+- **ACL categories:** @write, @string, @slow
 
 ## Parameter Explanations
 

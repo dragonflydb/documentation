@@ -20,7 +20,7 @@ BITPOS key bit [start [end [BYTE|BIT]]]
 ```
 
 - **Time complexity:** O(N)
-- **ACL categories:** @read, @bitmap
+- **ACL categories:** @read, @bitmap, @slow
 
 ## Parameter Explanations
 
