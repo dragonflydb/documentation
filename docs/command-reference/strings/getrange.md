@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Redis GETRANGE to get substrings from a string value.
+description: Learn how to use Redis GETRANGE to get substrings from a string value.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -19,6 +19,9 @@ This is a useful tool when you want portions of a string without fetching the en
 ```shell
 GETRANGE key start end
 ```
+
+- **Time complexity:** O(N) where N is the length of the returned string.
+- **ACL categories:** @read, @string, @slow
 
 ## Parameter Explanations
 

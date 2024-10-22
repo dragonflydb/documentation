@@ -19,6 +19,9 @@ This command is particularly useful for efficiently locating bit transitions and
 BITPOS key bit [start [end [BYTE|BIT]]]
 ```
 
+- **Time complexity:** O(N)
+- **ACL categories:** @read, @bitmap, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the string in which the search will occur.

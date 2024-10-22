@@ -1,5 +1,5 @@
 ---
-description:  Learn how Redis GETSET sets a new value for a key & returns the old value.
+description: Learn how Redis GETSET sets a new value for a key & returns the old value.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -18,6 +18,9 @@ This command is useful when you need to replace a value but also want to keep tr
 ```shell
 GETSET key value
 ```
+
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @string, @fast
 
 ## Parameter Explanations
 
