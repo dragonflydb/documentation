@@ -1,5 +1,5 @@
 ---
-description:  Discover how to use Redis SET command to attach a value to a specific key in the database.
+description: Discover how to use Redis SET command to attach a value to a specific key in the database.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -8,82 +8,165 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis SET Command (Documentation) | Dragonfly" />
 
+## Introduction
+
+In Dragonfly, as well as in Redis and Valkey, the `SET` command is used to set the value of a string key.
+This command may also accept several options for controlling its behavior, such as setting an expiration time or only setting the value if the key doesn't already exist.
+It is one of the most fundamental and frequently used commands when storing string data in key-value pairs.
+
 ## Syntax
 
-    SET key value [NX | XX] [GET] [EX seconds | PX milliseconds | EXAT unix-time-seconds | PXAT unix-time-milliseconds | KEEPTTL]
-
-**Time complexity:** O(1)
-
-**ACL categories:** @write, @string, @slow
-
-Set `key` to hold the string `value`.
-If `key` already holds a value, it is overwritten, regardless of its type.
-Any previous time to live associated with the key is discarded on successful `SET` operation.
-
-## Options
-
-The `SET` command supports a set of options that modify its behavior:
-
-* `EX` *seconds* -- Set the specified expire time, in seconds.
-* `PX` *milliseconds* -- Set the specified expire time, in milliseconds.
-* `EXAT` *timestamp-seconds* -- Set the specified Unix time at which the key will expire, in seconds.
-* `PXAT` *timestamp-milliseconds* -- Set the specified Unix time at which the key will expire, in milliseconds.
-* `NX` -- Only set the key if it does not already exist.
-* `XX` -- Only set the key if it already exist.
-* `KEEPTTL` -- Retain the time to live associated with the key.
-* `GET` -- Return the old string stored at key, or nil if key did not exist. An error is returned and `SET` aborted if the value stored at key is not a string.
-
-Note: Since the `SET` command options can replace `SETNX`, `SETEX`, `PSETEX`, `GETSET`, it is possible that in future versions these commands will be deprecated and finally removed.
-
-## Return
-
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if `SET` was executed correctly.
-
-[Null reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): `(nil)` if the `SET` operation was not performed because the user specified the `NX` or `XX` option but the condition was not met.
-
-If the command is issued with the `GET` option, the above does not apply. It will instead reply as follows, regardless if the `SET` was actually performed:
-
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the old string value stored at key.
-
-[Null reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): `(nil)` if the key did not exist.
-
-## Examples
-
 ```shell
-dragonfly> SET mykey "Hello"
-OK
-dragonfly> GET mykey
-"Hello"
-dragonfly> SET anotherkey "will expire in a minute" EX 60
-OK
-dragonfly> SET mykey "World" GET
-"Hello"
+SET key value [NX|XX] [GET] [EX seconds|PX milliseconds|EXAT timestamp|PXAT milliseconds-timestamp|KEEPTTL]
 ```
 
-## Patterns
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @string, @slow
 
-**Note:** The following pattern is discouraged in favor of [the Redlock algorithm](https://redis.io/topics/distlock) which is only a bit more complex to implement, but offers better guarantees and is fault tolerant.
+## Parameter Explanations
 
-The command `SET resource-name anystring NX EX max-lock-time` is a simple way to implement a locking system with Redis.
+- `key`: The key where the value will be stored.
+- `value`: The value to be set for the given key.
+- `NX` (optional): Only set the key if it does not already exist.
+- `XX` (optional): Only set the key if it already exists.
+- `GET` (optional): Return the old value stored at key before setting to the new value.
+- `EX seconds` | `PX milliseconds` (optional): Set the expiration time for the key in seconds or milliseconds, respectively.
+- `EXAT timestamp` | `PXAT milliseconds-timestamp` (optional): Set the expiration for the key based on absolute Unix timestamps (seconds or milliseconds).
+- `KEEPTTL` (optional): Retain the existing time-to-live (TTL) of the key, resetting only its value.
 
-A client can acquire the lock if the above command returns `OK` (or retry after some time if the command returns Nil), and remove the lock just using `DEL`.
+## Return Values
 
-The lock will be auto-released after the expire time is reached.
+The command returns `OK` if the operation was successful.
 
-It is possible to make this system more robust modifying the unlock schema as follows:
+If a conditional option was used (e.g., `NX` or `XX`), and the condition wasn't met, the return value will be `(nil)`.
 
-* Instead of setting a fixed string, set a non-guessable large random string, called token.
-* Instead of releasing the lock with `DEL`, send a script that only removes the key if the value matches.
+When using `GET`, the return value will be the old string stored at the key, or `nil` if no previous value existed.
 
-This avoids that a client will try to release the lock after the expire time deleting the key created by another client that acquired the lock later.
+## Code Examples
 
-An example of unlock script would be similar to the following:
+### Simple `SET` Example
 
-    if redis.call("get",KEYS[1]) == ARGV[1]
-    then
-        return redis.call("del",KEYS[1])
-    else
-        return 0
-    end
+In its simplest form, the `SET` command assigns a string value to a given key:
 
-The script should be called with `EVAL ...script... 1 resource-name token-value`
+```shell
+dragonfly> SET mykey "hello"
+OK
+dragonfly> GET mykey
+"hello"
+```
+
+### Use with `NX` (Set if Not Exists)
+
+This will only set the value if the key does not already exist:
+
+```shell
+dragonfly> SET mykey "hello" NX
+OK
+dragonfly> SET mykey "world" NX
+(nil)  # The key already exists, so the second operation doesn't change the value.
+dragonfly> GET mykey
+"hello"
+```
+
+### Use with `XX` (Set if Exists)
+
+Use `SET` with the `XX` option to only set the value if the key already exists:
+
+```shell
+dragonfly> SET mykey "initial"
+OK
+dragonfly> SET mykey "update" XX
+OK
+dragonfly> GET mykey
+"update"
+dragonfly> SET nonexistentKey "value" XX
+(nil)  # Key doesn't exist, so the value is not set.
+```
+
+### Set TTL with `EX` or `PX`
+
+This sets a value with an expiration time in seconds or milliseconds:
+
+```shell
+dragonfly> SET mykey "temporary" EX 10
+OK
+dragonfly> TTL mykey
+(integer) 10  # Time to live in seconds
+```
+
+You can alternatively use `PX` for a more granular setting in milliseconds:
+
+```shell
+dragonfly> SET mykey "infleeting" PX 5000
+OK
+dragonfly> TTL mykey
+(integer) 5  # Time remaining in seconds
+```
+
+### Use with `GET` (Return Previous Value)
+
+The command returns the previous value stored at the key before updating it:
+
+```shell
+dragonfly> SET mykey "initial"
+OK
+dragonfly> SET mykey "updated" GET
+"initial"
+```
+
+### Absolute Expiration with `EXAT` or `PXAT`
+
+Set an expiration as a specific Unix timestamp, instead of after a relative period:
+
+```shell
+dragonfly> SET mykey "expiring_soon" EXAT 1700000000
+OK
+dragonfly> TTL mykey
+(integer) 123456789  # TTL is based on the current time and the specified timestamp.
+```
+
+For even more precise control, you can specify the expiration in milliseconds using `PXAT`.
+
+### Using `KEEPTTL` to Preserve Existing TTL
+
+This will change the value of the key but retain its original expiration time:
+
+```shell
+dragonfly> SET mykey "initial" EX 10
+OK
+dragonfly> SET mykey "new_value" KEEPTTL
+OK
+dragonfly> TTL mykey
+(integer) 8  # TTL remains unchanged.
+```
+
+## Best Practices
+
+- Use `NX` or `XX` when you want to conditionally set values, such as when implementing locking or caching mechanisms.
+- When setting expirations, consider if you need relative (`EX`, `PX`) or absolute (`EXAT`, `PXAT`) expiration times, based on your application's needs.
+- `SET` with `GET` can be instrumental for atomic get-and-set operations without requiring an additional `GET` command.
+
+## Common Mistakes
+
+- Combining incompatible options, such as using both `NX` and `XX`. These conflict as they apply opposite conditions and cannot be used together.
+- Assuming `GET` will return the current value of the key after the new value is set. It returns the old value, _not_ the current one.
+
+## FAQs
+
+### What happens if the key already exists and no options like `NX` or `XX` are used?
+
+If `NX` or `XX` options are not provided, the `SET` command will overwrite the existing value unconditionally.
+
+### Can I set a TTL for an existing key without changing its value?
+
+No, the `SET` command updates both the value and TTL of the key.
+To update the TTL only, you should use the `EXPIRE` command.
+
+### What happens to keys with `NX` or `XX` if the condition isn't met?
+
+If `NX` is used and the key exists, or if `XX` is used and the key does not exist, the `SET` command will do nothing and return `(nil)`.
+
+### Can I set both a TTL and use `KEEPTTL` together?
+
+No, `KEEPTTL` retains the current TTL of a key.
+It is incompatible with other TTL-related options like `EX`, `PX`, `EXAT`, and `PXAT`.
