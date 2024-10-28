@@ -13,6 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 In Dragonfly, as well as in Redis and Valkey, the `SETEX` command is used to set the value for a key and specify an expiration time in seconds.
 It is a convenient way to atomically set the value and ensure that the key expires after a fixed duration.
 This can be particularly useful for use cases like caching, session management, or any temporary data storage where a key needs to automatically expire after a specific duration.
+Note that both [`SETEX`](setex.md) and [`PSETEX`](psetex.md) commands can be replaced by the [`SET`](set.md) command with the `EX` or `PX` options, respectively.
 
 ## Syntax
 
@@ -106,7 +107,7 @@ dragonfly> GET cached_query_result
 ## Common Mistakes
 
 - Overlooking that the expiration time is in seconds, not milliseconds.
-- Using a very low expiration time (like 1 or 2 seconds) for critical data might result in expired keys before they are accessed.
+- Using a very low expiration time for critical data might result in expired keys before they are accessed.
 - Accidentally setting the wrong expiration time can cause unexpected data availability or unintentional early expiration.
 
 ## FAQs
@@ -118,9 +119,10 @@ If the key already exists, `SETEX` will overwrite the existing value and reset t
 ### Can I use milliseconds as the expiration time?
 
 No, `SETEX` only accepts expiration time in seconds.
-For millisecond precision, use the `PSETEX` command.
+For millisecond precision, use the [`PSETEX`](psetex.md) command.
 
 ### Will the value set with `SETEX` persist if the server restarts?
 
-If persistence is configured correctly (using RDB or AOF), the value and its expiration time will be saved on disk.
-However, the expiration timer resumes counting from the time of server restarts, not from the time of setting the key.
+If persistence is configured correctly, the value and its expiration time will be saved on disk on a best-effort basis as Dragonfly is mainly an in-memory data store.
+You can read more on [Dragonfly persistence](../../managing-dragonfly/backups.md).
+The expiration timer resumes counting from the time of server restarts, not from the time of setting the key.

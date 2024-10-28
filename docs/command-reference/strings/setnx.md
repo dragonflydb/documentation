@@ -12,8 +12,8 @@ import PageTitle from '@site/src/components/PageTitle';
 
 In Dragonfly, as well as in Redis and Valkey, the `SETNX` command is used to set a key to a specific value only if the key does not already exist.
 It is primarily useful in scenarios involving distributed locking, or to ensure certain operations occur exactly once by multiple clients.
-
-The combination of the atomic nature of the command ensures that race conditions are prevented when multiple clients attempt to create the same key at the same time.
+The combination of the **atomic nature of the command ensures that race conditions are prevented when multiple clients attempt to create the same key at the same time**.
+Also note that the `SETNX` command can be replaced by the [`SET`](set.md) command with its `NX` option.
 
 ## Syntax
 
@@ -80,12 +80,12 @@ dragonfly> SETNX lock:resource "lock_token_2"
 - Use `SETNX` when you want to ensure that an operation is executed only once.
   For example, you could use it to ensure an initialization routine runs only once even if multiple clients are attempting it.
 - As part of distributed locking mechanisms, combine `SETNX` with `EXPIRE` to avoid deadlocks by ensuring timeouts on locks.
+  However, it is recommended to use the [`SET`](set.md) command with its `NX` and `EX` options to perform both operations atomically.
+  Moreover, consider using a library that implements [Redlock](../../integrations/redlock.md) or similar algorithms for distributed locking.
 
 ## Common Mistakes
 
 - Forgetting that `SETNX` does **not** modify the value if the key exists.
-  It only checks for existence and conditionally sets a new value.
-
 - Relying on `SETNX` alone for locking mechanisms without a timeout can lead to deadlocks if a client holding a lock crashes or loses connection without releasing it.
 
 ## FAQs
@@ -98,7 +98,7 @@ If the key already exists, `SETNX` simply returns `0` and does not modify the ke
 
 Yes, while `SETNX` itself does not provide an expiration feature,
 you can execute a combination of `SETNX` and `EXPIRE` to ensure the key is set with a timeout, which is particularly useful for locking mechanisms.
-For example:
+However, prefer using the [`SET`](set.md) command with its `NX` and `EX` options or a library that implements distributed locking mechanisms.
 
 ```shell
 dragonfly> SETNX mylock "locked"
@@ -110,8 +110,4 @@ dragonfly> EXPIRE mylock 10  # Lock expires after 10 seconds
 ### Can `SETNX` be used to check if a key exists without modifying it?
 
 No, `SETNX` will attempt to set the key if it doesn't exist.
-If you need to check if a key exists without setting it, use the `EXISTS` command instead.
-
-```
-
-```
+If you need to check if a key exists without setting it, use the [`EXISTS`](../generic/exists.md) command instead.

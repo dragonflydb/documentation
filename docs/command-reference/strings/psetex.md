@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 In Dragonfly, as well as in Redis and Valkey, the `PSETEX` command is used to set a value in a key and simultaneously set an expiration time for that key in milliseconds.
 This command is similar to the [`SETEX`](setex.md) command, with the key difference being that the expiration time is specified in milliseconds instead of seconds.
 Use cases include situations where precise control over key expiration is required, such as fine-grained cache management or coordination between nodes in a distributed system.
-Note that both [`SETEX`](setex.md) and `PSETEX` commands can be replaced by the [`SET`](set.md) command with the `EX` or `PX` options, respectively.
+Note that both [`SETEX`](setex.md) and [`PSETEX`](psetex.md) commands can be replaced by the [`SET`](set.md) command with the `EX` or `PX` options, respectively.
 
 ## Syntax
 
@@ -32,7 +32,7 @@ PSETEX key milliseconds value
 
 ## Return Values
 
-The command always returns `OK` since it either sets the key with the specified value and expiration time or overwrites an existing key with the new value and expiration time.
+The command returns `OK` if the operation was successful.
 
 ## Code Examples
 
