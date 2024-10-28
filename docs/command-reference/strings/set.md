@@ -17,7 +17,8 @@ It is one of the most fundamental and frequently used commands when storing stri
 ## Syntax
 
 ```shell
-SET key value [NX|XX] [GET] [EX seconds|PX milliseconds|EXAT timestamp|PXAT milliseconds-timestamp|KEEPTTL]
+SET key value [NX | XX] [GET] [EX seconds | PX milliseconds |
+  EXAT unix-time-seconds | PXAT unix-time-milliseconds | KEEPTTL]
 ```
 
 - **Time complexity:** O(1)
@@ -36,11 +37,9 @@ SET key value [NX|XX] [GET] [EX seconds|PX milliseconds|EXAT timestamp|PXAT mill
 
 ## Return Values
 
-The command returns `OK` if the operation was successful.
-
-If a conditional option was used (e.g., `NX` or `XX`), and the condition wasn't met, the return value will be `(nil)`.
-
-When using `GET`, the return value will be the old string stored at the key, or `nil` if no previous value existed.
+- The command returns `OK` if the operation was successful. 
+- If a conditional option was used (e.g., `NX` or `XX`), and the condition wasn't met, the return value will be `(nil)`. 
+- When the `GET` option is used, the return value will be the old string stored at the key, or `nil` if no previous value existed.
 
 ## Code Examples
 
@@ -79,28 +78,29 @@ dragonfly> SET mykey "update" XX
 OK
 dragonfly> GET mykey
 "update"
-dragonfly> SET nonexistentKey "value" XX
+dragonfly> SET non_existent_key "value" XX
 (nil)  # Key doesn't exist, so the value is not set.
 ```
 
 ### Set TTL with `EX` or `PX`
 
-This sets a value with an expiration time in seconds or milliseconds:
+The `EX` option sets the expiration time in seconds.
+It is notable that since this is a single command, the expiration time is set **atomically** with the value:
 
 ```shell
-dragonfly> SET mykey "temporary" EX 10
+dragonfly> SET mykey "temporary-ex" EX 10
 OK
 dragonfly> TTL mykey
-(integer) 10  # Time to live in seconds
+(integer) 10  # Remaining time-to-live in seconds.
 ```
 
-You can alternatively use `PX` for a more granular setting in milliseconds:
+You can alternatively use `PX` for a more granular TTL setting in milliseconds:
 
 ```shell
-dragonfly> SET mykey "infleeting" PX 5000
+dragonfly> SET mykey "temporary-px" PX 5000
 OK
 dragonfly> TTL mykey
-(integer) 5  # Time remaining in seconds
+(integer) 5  # Remaining time-to-live in seconds.
 ```
 
 ### Use with `GET` (Return Previous Value)
@@ -137,19 +137,21 @@ OK
 dragonfly> SET mykey "new_value" KEEPTTL
 OK
 dragonfly> TTL mykey
-(integer) 8  # TTL remains unchanged.
+(integer) 8  # Previous TTL remains unchanged.
 ```
 
 ## Best Practices
 
 - Use `NX` or `XX` when you want to conditionally set values, such as when implementing locking or caching mechanisms.
 - When setting expirations, consider if you need relative (`EX`, `PX`) or absolute (`EXAT`, `PXAT`) expiration times, based on your application's needs.
-- `SET` with `GET` can be instrumental for atomic get-and-set operations without requiring an additional `GET` command.
+- The `GET` **option** can be instrumental for atomic get-and-set operations without requiring an additional `GET` **command**.
 
 ## Common Mistakes
 
-- Combining incompatible options, such as using both `NX` and `XX`. These conflict as they apply opposite conditions and cannot be used together.
-- Assuming `GET` will return the current value of the key after the new value is set. It returns the old value, _not_ the current one.
+- Combining incompatible options, such as using both `NX` and `XX`.
+  These conflict with each other as they apply opposite conditions and cannot be used together.
+- Assuming the `GET` option will return the current value of the key after the new value is set.
+  **It returns the old value, not the current one.**
 
 ## FAQs
 
@@ -159,8 +161,8 @@ If `NX` or `XX` options are not provided, the `SET` command will overwrite the e
 
 ### Can I set a TTL for an existing key without changing its value?
 
-No, the `SET` command updates both the value and TTL of the key.
-To update the TTL only, you should use the `EXPIRE` command.
+No, the `SET` command updates both the value and TTL of the key, even if the new value is the same as the old one.
+To update the TTL only, you should consider using the [`EXPIRE`](../generic/expire.md) command or the [`PEXPIRE`](../generic/pexpire.md) command.
 
 ### What happens to keys with `NX` or `XX` if the condition isn't met?
 
