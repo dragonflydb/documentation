@@ -38,7 +38,7 @@ The command returns an integer representing the length of the string, in bytes.
 Get the length of a string:
 
 ```shell
-dragonfly> SET mykey "dragonfly"
+dragonfly> SET mykey "Dragonfly"
 OK
 dragonfly> STRLEN mykey
 (integer) 9
@@ -73,7 +73,7 @@ For example, a string with multibyte characters will have a byte length that may
 dragonfly> SET mykey "你好"
 OK
 dragonfly> STRLEN mykey
-(integer) 6  # Each Chinese character takes 3 bytes.
+(integer) 6  # Most Chinese characters require 3 bytes each in UTF-8 encoding.
 ```
 
 ## Best Practices
