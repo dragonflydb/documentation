@@ -26,7 +26,7 @@ MGET key [key ...]
 ## Parameter Explanations
 
 - `key`: The key(s) whose values you want to retrieve.
-  You can specify multiple keys, and their values will be retrieved in the order they were provided.
+- You can specify multiple keys, and their values will be retrieved in the order they were provided.
 
 ## Return Values
 

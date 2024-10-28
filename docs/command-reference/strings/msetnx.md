@@ -26,15 +26,16 @@ MSETNX key1 value1 [key2 value2 ...]
 
 ## Parameter Explanations
 
-- `key1`, `key2`, ...: The names of the keys whose values you are setting.
-- `value1`, `value2`, ...: The values you want to associate with the respective keys.
+- `key`: The key to be set.
+- `value`: The value to associate with the key.
+- You can input multiple key-value pairs by repeating this `[key value]` pattern.
 
 ## Return Values
 
 The command returns:
 
 - `(integer) 1`: if all keys were successfully set.
-- `(integer) 0`: if no keys were set because at least one key already exists.
+- `(integer) 0`: if no keys were set because **at least one key already exists**.
 
 ## Code Examples
 
@@ -69,23 +70,24 @@ dragonfly> MGET user:1000 user:1002
 `MSETNX` can be used to implement simple resource locking, ensuring nobody else can claim the resource while it's in use:
 
 ```shell
-# Acquiring a distributed lock for resource:lock
-dragonfly> MSETNX resource:lock "locked"
+# Acquiring a distributed lock for a shared resource as well as for the specific user.
+# The same user also cannot acquire the lock twice.
+dragonfly> MSETNX shared:resource:lock "locked" user:1000 "locked"
 (integer) 1  # Lock acquired.
 
-# Another process trying to acquire the same lock
-dragonfly> MSETNX resource:lock "locked"
-(integer) 0  # Lock was not acquired since it's already held.
+# Another process trying to acquire the same shared resource for a different user.
+dragonfly> MSETNX shared:resource:lock "locked" user:1001 "locked"
+(integer) 0  # Lock NOT acquired.
 
-# Releasing the lock (using DEL)
-dragonfly> DEL resource:lock
-(integer) 1  # Lock released.
+# Original process releasing the lock for the user who acquired it.
+dragonfly> DEL shared:resource:lock user:1000
+(integer) 2  # Lock released.
 ```
 
 ## Best Practices
 
-- `MSETNX` ensures atomicity, so leverage it when you need to change or initialize several keys at once without risk of partial updates.
-- Use it for tasks like session management, distributed locking, or maintaining idempotency where creation should only occur if all related data is absent.
+- `MSETNX` ensures atomicity, so leverage it when you need to initialize several keys at once without risk of partial writes.
+- Use it for tasks like session management, distributed locking, or maintaining idempotency where creation should only occur if all related keys are absent.
 
 ## Common Mistakes
 
@@ -98,7 +100,7 @@ dragonfly> DEL resource:lock
 
 ### What happens if none of the keys exist?
 
-If none of the keys exist, `MSETNX` will successfully set all keys and return `(integer) 1`.
+If none of the keys exist, `MSETNX` will successfully set all keys and return `1`.
 
 ### Will `MSETNX` overwrite an existing key?
 
@@ -107,5 +109,5 @@ If any key already exists, the command does **nothing**, and none of the keys ar
 
 ### Can I use `MSETNX` with multiple databases?
 
-`MSETNX`, like other commands, operates within the context of the currently selected database.
-To use it across multiple databases, you'd need to switch between databases and apply the command separately.
+`MSETNX`, like other commands, operates within the context of the currently [selected logical database](../server-management/select).
+This command sets multiple keys in the same database.
