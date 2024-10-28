@@ -43,14 +43,14 @@ Overwrite part of a string at a specific offset:
 dragonfly> SET mykey "Hello World"
 OK
 dragonfly> SETRANGE mykey 6 "Dragonfly"
-(integer) 14
+(integer) 15
 
 # Updated string: "Hello Dragonfly"
 dragonfly> GET mykey
 "Hello Dragonfly"
 ```
 
-In this example, we replaced "World" starting at offset 6 with "Dragonfly," and the new length of the string is 14.
+In this example, we replaced `"World"` starting at offset 6 with `"Dragonfly"`, and the new length of the string is 15.
 
 ### Expanding the String
 
@@ -67,7 +67,7 @@ dragonfly> GET mykey
 "Hello\x00\x00\x00\x00Redis"
 ```
 
-Here, the string is expanded with null bytes to accommodate the value "Redis" starting at offset 10, making the final string length 15.
+Note that the string is expanded with null bytes to accommodate the value `"Redis"` starting at offset 10, making the final string length 15.
 
 ### Overwriting Only Part of a String
 
@@ -84,7 +84,7 @@ dragonfly> GET mykey
 "Flygonfly"
 ```
 
-In this case, the first three characters ("Dra") are replaced by "Fly," leaving the rest of the string intact.
+In this case, the first three characters `"Dra"` are replaced by `"Fly"`, leaving the rest of the string intact.
 
 ## Best Practices
 
@@ -105,7 +105,3 @@ If the key does not exist, `SETRANGE` creates a new string filled with null char
 ### Can the `offset` parameter be negative?
 
 No, the `offset` parameter must be a non-negative integer. If a negative value is provided, an error will result.
-
-### Is `SETRANGE` atomic?
-
-Yes, like most string commands in Dragonfly and Redis, `SETRANGE` is atomic, ensuring that concurrent operations on the same string yield consistent results.
