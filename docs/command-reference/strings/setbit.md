@@ -25,7 +25,7 @@ SETBIT key offset value
 ## Parameter Explanations
 
 - `key`: The key of the string where the bit will be set or cleared.
-- `offset`: The position of the bit to modify, where `0` is the first bit. This is based on the _bit index_, not byte index.
+- `offset`: The position of the bit to modify, where `0` is the first bit. This is based on the **bit index**, not byte index.
 - `value`: The value to set the bit to. This can be either `0` (clear the bit) or `1` (set the bit).
 
 ## Return Values
@@ -52,14 +52,15 @@ dragonfly> GETBIT mykey 7
 Example of switching bits on and off at different positions:
 
 ```shell
+# Initial value: 01000001
 dragonfly> SET mykey "A"
 OK
-dragonfly> SETBIT mykey 1 1
-(integer) 0  # The bit at position 1 was originally 0.
 dragonfly> SETBIT mykey 1 0
-(integer) 1  # The bit was previously set to 1, now cleared to 0.
+(integer) 1  # The bit at position 1 was originally 1.
+dragonfly> SETBIT mykey 1 1
+(integer) 0  # The bit was previously cleared, now set to 1.
 dragonfly> GET mykey
-"\x21"  # ASCII representation of the byte that includes bit modification.
+"A"
 ```
 
 ### Using `SETBIT` for Feature Flags
@@ -70,28 +71,29 @@ Suppose you have a system where each bit in a string represents whether a featur
 # Initial value: 00000000 (all features disabled)
 dragonfly> SET mykey "\x00"
 OK
-dragonfly> SETBIT mykey 0 1  # Enable feature 1
+dragonfly> SETBIT mykey 0 1  # Enable feature at position 0
 (integer) 0
-dragonfly> SETBIT mykey 4 1  # Enable feature 5
+dragonfly> SETBIT mykey 4 1  # Enable feature at position 4
 (integer) 0
 dragonfly> GETBIT mykey 0
 (integer) 1
 dragonfly> GETBIT mykey 4
 (integer) 1
+dragonfly> getbit mykey 5
+(integer) 0
 dragonfly> GET mykey
-"\x11"  # Binary: 00010001 (features 1 and 5 enabled)
+"\x88"  # Binary: 10001000
 ```
 
 ## Best Practices
 
-- Use the `SETBIT` command when you need to store binary data efficiently without the overhead of larger data structures like lists.
+- Use `SETBIT` and other bitmap-related commands when you need to store and manipulate binary data efficiently without the overhead of larger data structures like lists.
 - When working with large binary datasets, combine `GETBIT` and `BITCOUNT` to efficiently track the state of multiple items.
 
 ## Common Mistakes
 
 - Confusing the `offset` as a byte index instead of a bit index.
 - Setting a bit at an offset that is beyond the length of the string can automatically expand the string, filling the unspecified bits in between with `0`.
-- Forgetting that setting or clearing a bit may modify the string value, which can affect retrieval.
 
 ## FAQs
 
@@ -105,4 +107,4 @@ Yes, specifying an `offset` beyond the current string length results in the expa
 
 ### What happens if the `value` is neither `0` nor `1`?
 
-Attempting to set a bit with a `value` other than `0` or `1` returns an error. The 'value' must always be binary (either 0 or 1).
+Attempting to set a bit with a `value` other than `0` or `1` returns an error.
