@@ -11,7 +11,7 @@ import PageTitle from '@site/src/components/PageTitle';
 ## Introduction
 
 In Dragonfly, as well as in Redis and Valkey, the `GETRANGE` command is used to retrieve a substring from a string stored at a specific key.
-It allows you to extract characters from the stored string by specifying the starting and ending offsets (inclusive).
+It allows you to extract characters from the stored string by specifying the starting and ending offsets (**both inclusive**), based on **byte positions**.
 This is a useful tool when you want portions of a string without fetching the entire value.
 
 ## Syntax
@@ -21,13 +21,14 @@ GETRANGE key start end
 ```
 
 - **Time complexity:** O(N) where N is the length of the returned string.
+  The complexity is ultimately determined by the returned length, but because creating a substring from an existing string is very cheap, it can be considered O(1) for small strings.
 - **ACL categories:** @read, @string, @slow
 
 ## Parameter Explanations
 
 - `key`: The key that holds the string from which you want to extract a substring.
 - `start`: The starting character position (zero-based index) in the string.
-- `end`: The ending character position (inclusive) for the substring, or `-1` to refer to the last character.
+- `end`: The ending character position (**inclusive**) for the substring, or `-1` to refer to the last character.
 
 ## Return Values
 
@@ -103,9 +104,14 @@ This allows you to fetch specific parts of user data efficiently.
 
 If the key does not exist, `GETRANGE` will return an empty string.
 
+### How does `GETRANGE` handle out-of-bound indices?
+
+If the provided `start` or `end` indices are out-of-bound (e.g., larger than the string length), the command simply returns as much of the string as falls within the valid range.
+It does not raise an error for out-of-bound indices.
+
 ### How does `GETRANGE` handle encoding?
 
-`GETRANGE` operates at the character level for ASCII-compatible encoding, but with multibyte encodings (like UTF-8), ranges refer to byte positions rather than actual characters.
+`GETRANGE` operates at the character level for ASCII-compatible encoding, but with multibyte encodings (like UTF-8), ranges refer to **byte positions** rather than actual characters.
 
 ### Can I use `GETRANGE` on binary data?
 
