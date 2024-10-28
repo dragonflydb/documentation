@@ -92,7 +92,7 @@ dragonfly> DEL shared:resource:lock user:1000
 ## Common Mistakes
 
 - Using `MSETNX` when you need to overwrite existing values.
-  If you intend to overwrite, you should use `MSET` instead.
+  If you intend to overwrite, you should use [`MSET`](mset.md) instead.
 - Expecting the command to set only non-existent keys, even if some already exist.
   `MSETNX` sets no keys if even **one existing key** is detected.
 

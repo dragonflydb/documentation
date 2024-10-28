@@ -11,8 +11,9 @@ import PageTitle from '@site/src/components/PageTitle';
 ## Introduction
 
 In Dragonfly, as well as in Redis and Valkey, the `PSETEX` command is used to set a value in a key and simultaneously set an expiration time for that key in milliseconds.
-This command is similar to the `SETEX` command, with the key difference being that the expiration time is specified in milliseconds instead of seconds.
+This command is similar to the [`SETEX`](setex.md) command, with the key difference being that the expiration time is specified in milliseconds instead of seconds.
 Use cases include situations where precise control over key expiration is required, such as fine-grained cache management or coordination between nodes in a distributed system.
+Note that both [`SETEX`](setex.md) and `PSETEX` commands can be replaced by the [`SET`](set.md) command with the `EX` or `PX` options, respectively.
 
 ## Syntax
 
@@ -31,11 +32,11 @@ PSETEX key milliseconds value
 
 ## Return Values
 
-The command returns `OK` if the operation is successful.
+The command always returns `OK` since it either sets the key with the specified value and expiration time or overwrites an existing key with the new value and expiration time.
 
 ## Code Examples
 
-### Basic Example: Set a Key with Expiration in Milliseconds
+### Basic Example
 
 In this example, we set the key `mykey` with the value `"hello"` and an expiration time of 2000 milliseconds (2 seconds):
 
@@ -54,40 +55,22 @@ dragonfly> GET mykey
 (nil)
 ```
 
-### Example with Dynamic Expiration
-
-Setting a key with a dynamically computed expiration time (e.g., 1 minute or 60000 milliseconds):
-
-```shell
-# Set with a value and expiration time of 60,000 ms (1 minute)
-dragonfly> PSETEX session:1234 60000 "session_data"
-OK
-
-# Check if the key exists immediately
-dragonfly> GET session:1234
-"session_data"
-
-# After a minute, the session data will disappear
-# Upon waiting, it will eventually return nil:
-dragonfly> GET session:1234
-(nil)
-```
-
-### Using `PSETEX` in an E-Commerce Cart System
+### Expire for Inactivity
 
 Imagine an e-commerce system where carts expire after 10 minutes of inactivity.
-You can set each user's cart data with a precise expiration time like so:
+You can set each user's cart data with a precise expiration time using the `PSETEX` command.
+In the meantime, if the user interacts with the cart, you can update the expiration time to prevent it from expiring.
+As you can see in the example below, `PSETEX` can be replaced by the [`SET`](set.md) command with the `PX` option.
 
 ```shell
-# Set cart data to expire after 10 minutes (600,000 milliseconds)
+# Set cart data to expire after 10 minutes (600,000 milliseconds).
 dragonfly> PSETEX cart:user123 600000 "cart_payload"
 OK
 
-# Fetching it immediately before expiration
-dragonfly> GET cart:user123
-"cart_payload"
+# Adding an item to the cart updates the expiration time to 10 minutes from now.
+dragonfly> SET cart:user123 "updated_cart_payload" PX 600000
 
-# After 10 minutes, the cart data is automatically removed
+# After 10 minutes, the cart data is automatically removed.
 dragonfly> GET cart:user123
 (nil)
 ```
@@ -96,7 +79,8 @@ dragonfly> GET cart:user123
 
 - Use `PSETEX` when you need millisecond precision to expire temporary data.
   It is especially useful in distributed environments where low latency network communication requires precise control over key expiration times.
-- For keys that need expiration times above a second but for which millisecond precision is not strictly necessary, consider using the `SETEX` command to keep your code simpler.
+- For keys that need expiration times above a second but for which millisecond precision is not strictly necessary, consider using the [`SETEX`](setex.md) command to keep your code simpler.
+- Consider using the [`SET`](set.md) command with `PX` option to replace `PSETEX`.
 
 ## Common Mistakes
 
@@ -109,8 +93,8 @@ dragonfly> GET cart:user123
 
 ### Can I modify the expiration time of an existing key?
 
-No, `PSETEX` will overwrite any existing key and its expiration.
-If you want to change the expiration time without modifying the value itself, consider using the `PEXPIRE` or `EXPIRE` commands.
+Yes, `PSETEX` will overwrite the existing key's value and expiration time with the new value and expiration time.
+If you want to change the expiration time only, without modifying the value, consider using the [`PEXPIRE`](../generic/pexpire.md) or [`EXPIRE`](../generic/expire.md) commands.
 
 ### What happens if the key already exists?
 
