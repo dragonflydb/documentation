@@ -191,7 +191,6 @@ An ACL Rules editor drawer will open where you can add, modify or delete ACL rul
 
 ## Support
 
-At any time click the chat icon in the bottom right corner to ask anything, really, anything! 
-
+See [Support](./support.md) for information on support plans.
 
 
