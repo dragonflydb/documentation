@@ -8,86 +8,126 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis ZRANGE Explained (Better Than Official Docs)" />
 
-## Introduction and Use Case(s)
+## Introduction
 
-The `ZRANGE` command in Redis is used to return a specified range of elements in a sorted set, sorted by their score. This command is commonly used when you need to retrieve data in a specific order, such as leaderboard rankings, paginated data views, or any scenario where ordered data retrieval is necessary.
+In Dragonfly, as well as in Redis and Valkey, the `ZRANGE` command is used to retrieve a range of elements from a sorted set, sorted by their score in ascending order (lowest to highest).
+The `ZRANGE` command is highly useful when you are dealing with ordered data and need to fetch items within specific ranges of ranks or support paginated retrieval.
 
 ## Syntax
 
-```cli
+```shell
 ZRANGE key start stop [WITHSCORES]
 ```
 
+- **Time complexity:** O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements returned.
+- **ACL categories:** @read, @sortedset, @slow
+
 ## Parameter Explanations
 
-- **key**: The name of the sorted set.
-- **start**: The starting index (0-based). Negative indices can be used to start from the end of the sorted set.
-- **stop**: The stopping index (inclusive). Negative indices can be used to indicate positions from the end of the sorted set.
-- **[WITHSCORES]**: An optional parameter that, if provided, will include scores along with the returned elements.
+- `key`: The key of the sorted set.
+- `start`: The starting index to retrieve elements.
+  Indexes can be either positive (from the beginning) or negative (from the end of the set).
+- `stop`: The ending index to retrieve elements.
+  Similar to `start`, this can be negative to reference from the end of the set.
+- `WITHSCORES` (optional): If specified, the command returns the score of each element along with the element itself.
 
 ## Return Values
 
-- Without `WITHSCORES`: A list of elements in the specified range.
-- With `WITHSCORES`: A list containing elements and their scores, alternating between element and score.
-
-### Examples:
-
-- Without `WITHSCORES`:
-
-  ```cli
-  dragonfly> ZRANGE myset 0 -1
-  1) "member1"
-  2) "member2"
-  3) "member3"
-  ```
-
-- With `WITHSCORES`:
-  ```cli
-  dragonfly> ZRANGE myset 0 -1 WITHSCORES
-  1) "member1"
-  2) "1.0"
-  3) "member2"
-  4) "2.0"
-  5) "member3"
-  6) "3.0"
-  ```
+The command returns an array of the elements in the specified sorted set range.
+If `WITHSCORES` is provided, the array contains each element followed by its score.
 
 ## Code Examples
 
-```cli
-dragonfly> ZADD myset 1 "one" 2 "two" 3 "three"
+### Basic Example
+
+Retrieve a range of elements from a sorted set:
+
+```shell
+dragonfly> ZADD myzset 1 "apple" 2 "banana" 3 "cherry"
 (integer) 3
+dragonfly> ZRANGE myzset 0 -1
+1) "apple"
+2) "banana"
+3) "cherry"
+```
 
-dragonfly> ZRANGE myset 0 -1
-1) "one"
-2) "two"
-3) "three"
+### Retrieve a Range with `WITHSCORES`
 
-dragonfly> ZRANGE myset 0 -1 WITHSCORES
-1) "one"
+Get the elements and their associated scores from the sorted set `myzset`.
+
+```shell
+dragonfly> ZRANGE myzset 0 -1 WITHSCORES
+1) "apple"
 2) "1"
-3) "two"
+3) "banana"
 4) "2"
-5) "three"
+5) "cherry"
 6) "3"
 ```
 
+### Limiting the Results to a Specific Range
+
+Get only the elements between the 1st and 2nd positions (indices 0-based):
+
+```shell
+dragonfly> ZRANGE myzset 1 2
+1) "banana"
+2) "cherry"
+```
+
+### Using Negative Indexes
+
+Retrieve the last two elements from the sorted set:
+
+```shell
+dragonfly> ZRANGE myzset -2 -1
+1) "banana"
+2) "cherry"
+```
+
+### Using `ZRANGE` for Leaderboards
+
+Assume you maintain a video game leaderboard sorted by player scores.
+Players on this leaderboard are stored in a sorted set, where the score is their points:
+
+```shell
+dragonfly> ZADD leaderboard 3500 "player1" 4200 "player2" 4800 "player3"
+(integer) 3
+dragonfly> ZRANGE leaderboard 0 -1 WITHSCORES
+1) "player1"
+2) "3500"
+3) "player2"
+4) "4200"
+5) "player3"
+6) "4800"
+```
+
+Here, `ZRANGE` helps you show players sorted by their rank, with an option to include or omit their scores.
+
 ## Best Practices
 
-- Use negative indices for flexible range queries. For example, `ZRANGE myset -3 -1` retrieves the last three elements.
-- When using `WITHSCORES`, ensure your application logic correctly handles the alternating element-score pairs.
+- If you want an efficient paginated ranked list, use `ZRANGE` with start/stop parameters to move across the sorted set.
+- For reverse order (high-to-low scores), use `ZREVRANGE` instead.
+- Use `WITHSCORES` judiciously when scores matter to save bandwidth and processing time if scores are unnecessary.
 
 ## Common Mistakes
 
-- Forgetting that the `stop` index is inclusive, which might lead to off-by-one errors.
-- Misinterpreting negative indices and inadvertently retrieving the wrong range of elements.
+- Confusing positive and negative indexes — positive starts from `0` (beginning), while negative starts from `-1` (end).
+- Expecting `ZRANGE` to return ranks; it only returns the elements and optionally the scores.
+- Using invalid ranges (`start` > `stop`) will return an empty array.
 
 ## FAQs
 
-**Q: Can `ZRANGE` be used to paginate through a large sorted set?**
+### What happens if the given range is out of bounds?
 
-A: Yes, by specifying appropriate `start` and `stop` indices, `ZRANGE` can be used to implement pagination efficiently.
+`ZRANGE` will return the elements that are within the range.
+If `start` is greater than `stop` or out of bounds, it will return an empty array.
 
-**Q: What happens if the `start` or `stop` indices are out of the range of the sorted set?**
+### Can I fetch elements sorted by their score in descending order?
 
-A: Redis will automatically adjust out-of-range indices to fit within the boundaries of the sorted set, ensuring the command does not fail but returns an empty list if the range is invalid.
+No, `ZRANGE` provides elements sorted by ascending score.
+To retrieve items in descending order, use `ZREVRANGE`.
+
+### What if the sorted set is empty?
+
+If the sorted set is empty (or does not exist), `ZRANGE` will return an empty array.
