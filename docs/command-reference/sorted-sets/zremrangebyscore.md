@@ -8,80 +8,114 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis ZREMRANGEBYSCORE Explained (Better Than Official Docs)" />
 
-## Introduction and Use Case(s)
+## Introduction
 
-The `ZREMRANGEBYSCORE` command is used in Redis to remove all members in a sorted set that have a score within a specified range. Typical use cases include cleaning up expired data, implementing leaderboards where only scores within a certain range are relevant, or managing time-based series data.
+In Dragonfly, as well as in Redis and Valkey, the `ZREMRANGEBYSCORE` command is used to remove all members from a sorted set that have a score within a given range.
+This command is often used in scenarios where you need to efficiently prune entries in a sorted set based on their scores, such as removing expired sessions or data points from a leaderboard.
 
 ## Syntax
 
-```
+```shell
 ZREMRANGEBYSCORE key min max
 ```
 
+- **Time complexity:** O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements removed by the operation.
+- **ACL categories:** @write, @sortedset, @slow
+
 ## Parameter Explanations
 
-- **key**: The name of the sorted set.
-- **min**: The minimum score (inclusive) of the range. This can be a number or one of the special values `-inf` (negative infinity) to represent the lowest possible score.
-- **max**: The maximum score (inclusive) of the range. This can be a number or one of the special values `+inf` (positive infinity) to represent the highest possible score.
-
-Special modifiers for `min` and `max`:
-
-- Use `(` before a number to make the range exclusive. For example, `(1` means greater than 1 but not equal to 1.
+- `key`: The name of the sorted set.
+- `min`: The minimum score (inclusive) for the range. This can be a specific score or special values like `-inf` to denote negative infinity.
+- `max`: The maximum score (inclusive) for the range. You can use values like `+inf` to include everything up to positive infinity.
 
 ## Return Values
 
 The command returns the number of elements removed from the sorted set.
 
-### Example Output
-
-```cli
-(integer) 3
-```
-
 ## Code Examples
 
-Remove members with scores between 1 and 2 (inclusive):
+### Basic Example
 
-```cli
-dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three"
+Remove members with scores between `1` and `3`:
+
+```shell
+dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
+(integer) 4
+dragonfly> ZREMRANGEBYSCORE myzset 1 3
 (integer) 3
-dragonfly> ZREMRANGEBYSCORE myzset 1 2
-(integer) 2
 dragonfly> ZRANGE myzset 0 -1 WITHSCORES
-1) "three"
-2) "3"
+1) "four"
+2) "4"
 ```
 
-Remove members with scores greater than 1 but less than 3:
+### Removing Members with Scores Below a Certain Value
 
-```cli
-dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three"
-(integer) 3
-dragonfly> ZREMRANGEBYSCORE myzset (1 (3
+Remove all members with scores less than `2`:
+
+```shell
+dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
+(integer) 4
+dragonfly> ZREMRANGEBYSCORE myzset -inf 1
 (integer) 1
 dragonfly> ZRANGE myzset 0 -1 WITHSCORES
-1) "one"
-2) "1"
+1) "two"
+2) "2"
 3) "three"
 4) "3"
+5) "four"
+6) "4"
+```
+
+### Removing Members with Scores in a Floating-point Range
+
+Use floating-point numbers to target a specific score range. In this case, remove members with scores between `2.5` and `4.5`:
+
+```shell
+dragonfly> ZADD myzset 2.5 "apple" 3.5 "banana" 1.5 "cherry"
+(integer) 3
+dragonfly> ZREMRANGEBYSCORE myzset 2.5 4.5
+(integer) 2
+dragonfly> ZRANGE myzset 0 -1 WITHSCORES
+1) "cherry"
+2) "1.5"
+```
+
+### Removing All Members Above a Certain Score
+
+To remove all members with scores greater than `3.5`, use `+inf`:
+
+```shell
+dragonfly> ZADD myzset 2.5 "cat" 4 "dog" 6 "elephant"
+(integer) 3
+dragonfly> ZREMRANGEBYSCORE myzset 3.5 +inf
+(integer) 2
+dragonfly> ZRANGE myzset 0 -1 WITHSCORES
+1) "cat"
+2) "2.5"
 ```
 
 ## Best Practices
 
-- When working with large data sets, ensure your `min` and `max` ranges are correctly defined to avoid unintentional removal of important data.
-- Consider using `ZRANGEBYSCORE` to preview the elements that will be deleted before executing `ZREMRANGEBYSCORE`.
+- Use `-inf` and `+inf` strategically to clear lower or upper bounds of the sorted set without hardcoding exact score ranges.
+- If you need to maintain a capped sorted set based on scores (e.g., expiring items after a threshold), periodically use `ZREMRANGEBYSCORE`.
 
 ## Common Mistakes
 
-- Confusing inclusive and exclusive boundaries. Always double-check whether you intend to include or exclude the boundary values using parentheses.
-- Not specifying the correct range, which might lead to either no deletions or deletion of more elements than intended.
+- Forgetting that the score range is **inclusive**. If you mean to exclude the boundary value, you must use the special syntax of `(min` or `(max` to make the range exclusive.
+- Trying to use non-numeric values for the `min` and `max` parameters; only valid floats, integers, and the special values `-inf` and `+inf` are allowed.
 
 ## FAQs
 
-**Q: Can I use floating-point numbers for the score range?**
+### Can I use exclusive ranges?
 
-A: Yes, `ZREMRANGEBYSCORE` supports floating-point numbers for both `min` and `max`.
+Yes, you can use parentheses to exclude a boundary from the range.
+For example, `ZREMRANGEBYSCORE myzset (2 5` will remove all elements with scores greater than `2` but less than or equal to `5`.
 
-**Q: What happens if the specified range does not match any elements?**
+### What happens if no elements fall within the score range?
 
-A: If no elements fall within the specified range, the return value will be `(integer) 0`, indicating no elements were removed.
+If no elements in the sorted set fall within the provided score range, `ZREMRANGEBYSCORE` simply returns `0`, indicating that no elements were removed.
+
+### Can the score range include negative values?
+
+Yes, negative scores are allowed.
+You can use negative values as both the `min` and `max` to define a valid range in the sorted set.
