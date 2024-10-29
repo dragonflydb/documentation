@@ -22,7 +22,7 @@ The *Enhanced* plan has more CPU for the same amount of provisioned memory and a
 
 
 
-You can modify the data store *plan* later with zero down time to scale it up or down.
+You can modify the data store *plan* later with zero downtime to scale it up or down.
 
 By default the data store will be configured with a *public endpoint*, *TLS* and an auto generated *passkey*, meaning you can securely connect to it from anywhere over the public internet.  
 To create a data store with a *private endpoint*, see [Security](#security), [Networks](./networks.md) and [Peering Connections](./connections.md).
@@ -71,9 +71,14 @@ By default the data store will consist of a single Dragonfly server, this means 
 
 To increase availability of your data store you can configure it to be deployed in up to three different zones, one primary zone for the master and up to two replica zones.
 Dragonfly Cloud automatically detects failures and performs failover to an available replica.
-Select up to three zones in the *High Availability* dropdown box.  The data store master node will be placed in the primary availability zone selected first.  
-To avoid data transfer costs incurred by the cloud provider, select the primary availability zone to match the availability zone of your application. 
 
+To add a replica, expand the *Durability & High Availability* section and click the *Add Replica* button and select the zone for the replica.
+You can select the same zone as the master or a different zone.
+When selecting a different zone, inter zone data transfer costs may apply.
+
+***Tip:*** You can also select a zone for the data store master, select the same zone as your application to avoid data transfer costs.
+
+You can update the data store replica and zones anytime with zero downtime.
 
 ## Specializations
 
