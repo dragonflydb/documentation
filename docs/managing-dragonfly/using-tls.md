@@ -46,7 +46,7 @@ If all went well, the private key and the certificate are now located in `/etc/l
 Choose a password for authenticating users to the data store:
 
 ```bash
-$> export DFLY_PASSWORD=<your_password>
+$> export DFLY_PASS_TOKEN=<your_password>
 ```
 
 We can now start Dragonfly on our server with TLS enabled:
@@ -55,13 +55,13 @@ We can now start Dragonfly on our server with TLS enabled:
 $> sudo ./dragonfly --tls \
         --tls_key_file=/etc/letsencrypt/live/dfly.scalable-meteorite-collections.com/privkey.pem \
         --tls_cert_file=/etc/letsencrypt/live/dfly.scalable-meteorite-collections.com/fullchain.pem \
-        --requirepass=${DFLY_PASSWORD}
+        --requirepass=${DFLY_PASS_TOKEN}
 ```
 
 And connect to see that the data store is working properly:
 
 ```bash
-$> redis-cli --tls -h dfly.scalable-meteorite-collections.com -a ${DFLY_PASSWORD}
+$> redis-cli --tls -h dfly.scalable-meteorite-collections.com -a ${DFLY_PASS_TOKEN}
 ```
 
 ```bash
@@ -102,6 +102,6 @@ To rotate the certificate of an existing Dragonfly server configured with TLS, y
 2. Use the `CONFIG SET tls true` command to reload Dragonfly TLS configuration without downtime:
 
   ```bash
-  $> redis-cli --tls -h dfly.scalable-meteorite-collections.com -a ${DFLY_PASSWORD} \
+  $> redis-cli --tls -h dfly.scalable-meteorite-collections.com -a ${DFLY_PASS_TOKEN} \
     CONFIG SET tls true
   ```
