@@ -30,7 +30,7 @@ storage:
   requests: 128Mi # Set as desired
 
 extraArgs:
-  - --dbfilename=dump.rdb
+  - --dbfilename=my-dump-{timestamp} # should only contain the filename without any file extensions
   - --snapshot_cron=* * * * * # cron format
 
 podSecurityContext:
