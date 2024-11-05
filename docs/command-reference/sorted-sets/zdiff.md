@@ -40,11 +40,11 @@ ZDIFF numkeys key [key ...] [WITHSCORES]
 Return the members found in the first sorted set but not in the second:
 
 ```shell
-dragonfly> ZADD myset1 1 "one" 2 "two" 3 "three"
+dragonfly$> ZADD myset1 1 "one" 2 "two" 3 "three"
 (integer) 3
-dragonfly> ZADD myset2 2 "two" 4 "four"
+dragonfly$> ZADD myset2 2 "two" 4 "four"
 (integer) 2
-dragonfly> ZDIFF 2 myset1 myset2
+dragonfly$> ZDIFF 2 myset1 myset2
 1) "one"
 2) "three"
 ```
@@ -56,11 +56,11 @@ In this example, "one" and "three" are present in `myset1` but not present in `m
 Return both the members and their scores for the difference between two sets:
 
 ```shell
-dragonfly> ZADD myset1 1 "one" 2 "two" 3 "three"
+dragonfly$> ZADD myset1 1 "one" 2 "two" 3 "three"
 (integer) 3
-dragonfly> ZADD myset2 2 "two" 4 "four"
+dragonfly$> ZADD myset2 2 "two" 4 "four"
 (integer) 2
-dragonfly> ZDIFF 2 myset1 myset2 WITHSCORES
+dragonfly$> ZDIFF 2 myset1 myset2 WITHSCORES
 1) "one"
 2) "1"
 3) "three"
@@ -74,13 +74,13 @@ Here, "one" has a score of 1, and "three" has a score of 3.
 Find elements present in the first sorted set but missing in the other two sorted sets:
 
 ```shell
-dragonfly> ZADD myset1 1 "one" 2 "two" 3 "three" 4 "four"
+dragonfly$> ZADD myset1 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
-dragonfly> ZADD myset2 3 "three" 4 "four"
+dragonfly$> ZADD myset2 3 "three" 4 "four"
 (integer) 2
-dragonfly> ZADD myset3 1 "one" 5 "five"
+dragonfly$> ZADD myset3 1 "one" 5 "five"
 (integer) 2
-dragonfly> ZDIFF 3 myset1 myset2 myset3
+dragonfly$> ZDIFF 3 myset1 myset2 myset3
 1) "two"
 ```
 

@@ -31,15 +31,15 @@ An error is returned when `key` exists and does not hold a sorted set.
 ## Examples
 
 ```shell
-dragonfly> ZADD myzset 1 "one"
+dragonfly$> ZADD myzset 1 "one"
 (integer) 1
-dragonfly> ZADD myzset 2 "two"
+dragonfly$> ZADD myzset 2 "two"
 (integer) 1
-dragonfly> ZADD myzset 3 "three"
+dragonfly$> ZADD myzset 3 "three"
 (integer) 1
-dragonfly> ZREM myzset "two"
+dragonfly$> ZREM myzset "two"
 (integer) 1
-dragonfly> ZRANGE myzset 0 -1 WITHSCORES
+dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 1) "one"
 2) "1"
 3) "three"

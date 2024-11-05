@@ -45,7 +45,7 @@ ZADD key [NX|XX] [CH] [INCR] score member [score member ...]
 Adding scores for members in a sorted set:
 
 ```shell
-dragonfly> ZADD myzset 10 "player1" 20 "player2" 15 "player3"
+dragonfly$> ZADD myzset 10 "player1" 20 "player2" 15 "player3"
 (integer) 3
 ```
 
@@ -56,7 +56,7 @@ In this example, three members (`"player1"`, `"player2"`, and `"player3"`) are a
 Updating the score of an already existing member:
 
 ```shell
-dragonfly> ZADD myzset 25 "player1"
+dragonfly$> ZADD myzset 25 "player1"
 (integer) 0  # No new members added, only score updated.
 ```
 
@@ -67,10 +67,10 @@ The member `"player1"` already exists, so `ZADD` only updates its score to 25, a
 Using the `NX` and `XX` flags to conditionally add or update members:
 
 ```shell
-dragonfly> ZADD myzset NX 30 "player4"
+dragonfly$> ZADD myzset NX 30 "player4"
 (integer) 1  # Added because "player4" did not previously exist.
 
-dragonfly> ZADD myzset XX 40 "player1"
+dragonfly$> ZADD myzset XX 40 "player1"
 (integer) 0  # Updated the score of "player1", no new members were added.
 ```
 
@@ -82,7 +82,7 @@ dragonfly> ZADD myzset XX 40 "player1"
 Incrementing a score instead of setting it to a new value:
 
 ```shell
-dragonfly> ZADD myzset INCR 5 "player1"
+dragonfly$> ZADD myzset INCR 5 "player1"
 "30"  # The score of "player1" was incremented by 5, resulting in a new score of 30.
 ```
 
@@ -93,7 +93,7 @@ In this example, the `INCR` option increments the existing score of `"player1"` 
 Using the `CH` flag to report changes:
 
 ```shell
-dragonfly> ZADD myzset CH 50 "player5" 30 "player3"
+dragonfly$> ZADD myzset CH 50 "player5" 30 "player3"
 (integer) 2  # Two elements were affected: "player5" was added, and "player3"'s score was updated.
 ```
 

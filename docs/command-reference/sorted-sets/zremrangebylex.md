@@ -27,11 +27,11 @@ The meaning of `min` and `max` are the same of the `ZRANGEBYLEX` command. Simila
 ## Examples
 
 ```shell
-dragonfly> ZADD myzset 0 aaaa 0 b 0 c 0 d 0 e
+dragonfly$> ZADD myzset 0 aaaa 0 b 0 c 0 d 0 e
 (integer) 5
-dragonfly> ZADD myzset 0 foo 0 zap 0 zip 0 ALPHA 0 alpha
+dragonfly$> ZADD myzset 0 foo 0 zap 0 zip 0 ALPHA 0 alpha
 (integer) 5
-dragonfly> ZRANGE myzset 0 -1
+dragonfly$> ZRANGE myzset 0 -1
 1) "ALPHA"
 2) "aaaa"
 3) "alpha"
@@ -42,9 +42,9 @@ dragonfly> ZRANGE myzset 0 -1
 8) "foo"
 9) "zap"
 10) "zip"
-dragonfly> ZREMRANGEBYLEX myzset [alpha [omega
+dragonfly$> ZREMRANGEBYLEX myzset [alpha [omega
 (integer) 6
-dragonfly> ZRANGE myzset 0 -1
+dragonfly$> ZRANGE myzset 0 -1
 1) "ALPHA"
 2) "aaaa"
 3) "zap"

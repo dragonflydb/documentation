@@ -29,21 +29,21 @@ the `WITHSCORES` option is given).
 ## Examples
 
 ```shell
-dragonfly> ZADD zset1 1 "one"
+dragonfly$> ZADD zset1 1 "one"
 (integer) 1
-dragonfly> ZADD zset1 2 "two"
+dragonfly$> ZADD zset1 2 "two"
 (integer) 1
-dragonfly> ZADD zset2 1 "one"
+dragonfly$> ZADD zset2 1 "one"
 (integer) 1
-dragonfly> ZADD zset2 2 "two"
+dragonfly$> ZADD zset2 2 "two"
 (integer) 1
-dragonfly> ZADD zset2 3 "three"
+dragonfly$> ZADD zset2 3 "three"
 (integer) 1
-dragonfly> ZUNION 2 zset1 zset2
+dragonfly$> ZUNION 2 zset1 zset2
 1) "one"
 2) "three"
 3) "two"
-dragonfly> ZUNION 2 zset1 zset2 WITHSCORES
+dragonfly$> ZUNION 2 zset1 zset2 WITHSCORES
 1) "one"
 2) "2"
 3) "three"

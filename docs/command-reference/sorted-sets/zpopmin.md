@@ -40,9 +40,9 @@ ZPOPMIN key [count]
 In this example, we will insert a few members into a sorted set, and then we will use `ZPOPMIN` to remove and return the member with the smallest score.
 
 ```shell
-dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three"
+dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three"
 (integer) 3
-dragonfly> ZPOPMIN myzset
+dragonfly$> ZPOPMIN myzset
 1) "one"
 2) "1"
 ```
@@ -55,9 +55,9 @@ You can also specify a `count` to remove and return multiple members with the sm
 This can be useful in scenarios where you need to process more than one item at a time.
 
 ```shell
-dragonfly> ZADD myzset 4 "four" 5 "five" 6 "six"
+dragonfly$> ZADD myzset 4 "four" 5 "five" 6 "six"
 (integer) 3
-dragonfly> ZPOPMIN myzset 2
+dragonfly$> ZPOPMIN myzset 2
 1) "two"
 2) "2"
 3) "three"
@@ -71,9 +71,9 @@ The members `"two"` and `"three"` are both returned, as they had the two smalles
 Imagine you are implementing a ranking system for a game, and you frequently need to pop the lowest-ranked player for removal or recalculations.
 
 ```shell
-dragonfly> ZADD leaderboard 1000 "playerA" 1200 "playerB" 1500 "playerC"
+dragonfly$> ZADD leaderboard 1000 "playerA" 1200 "playerB" 1500 "playerC"
 (integer) 3
-dragonfly> ZPOPMIN leaderboard
+dragonfly$> ZPOPMIN leaderboard
 1) "playerA"
 2) "1000"
 ```
@@ -85,7 +85,7 @@ In this case, `"playerA"` with the score of 1000 is returned and removed, as the
 If the sorted set is empty, `ZPOPMIN` returns `nil`:
 
 ```shell
-dragonfly> ZPOPMIN emptyset
+dragonfly$> ZPOPMIN emptyset
 (nil)
 ```
 

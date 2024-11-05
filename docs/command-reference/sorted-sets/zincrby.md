@@ -43,10 +43,10 @@ Increment the score of a member and return the updated score:
 
 ```shell
 # Initially, user123 has a score of 10 in the leaderboard.
-dragonfly> ZADD leaderboard 10 user123
+dragonfly$> ZADD leaderboard 10 user123
 (integer) 1
 # Increment user123's score by 5.
-dragonfly> ZINCRBY leaderboard 5 user123
+dragonfly$> ZINCRBY leaderboard 5 user123
 "15"
 ```
 
@@ -56,7 +56,7 @@ If the member doesn't exist, `ZINCRBY` adds it with the increment as its initial
 
 ```shell
 # user999 doesn't exist in the sorted set yet.
-dragonfly> ZINCRBY leaderboard 8 user999
+dragonfly$> ZINCRBY leaderboard 8 user999
 "8"
 # Now user999 has a score of 8.
 ```
@@ -67,7 +67,7 @@ Use a negative increment to reduce the member's score:
 
 ```shell
 # user123 currently has a score of 15 in the leaderboard.
-dragonfly> ZINCRBY leaderboard -3 user123
+dragonfly$> ZINCRBY leaderboard -3 user123
 "12"  # The score is now 12 after applying the negative increment.
 ```
 
@@ -77,10 +77,10 @@ You can use floating-point values for finer score adjustments:
 
 ```shell
 # user456 has no score yet and will be created with a floating-point score.
-dragonfly> ZINCRBY leaderboard 2.5 user456
+dragonfly$> ZINCRBY leaderboard 2.5 user456
 "2.5"
 # Further increment using a floating-point value.
-dragonfly> ZINCRBY leaderboard 0.1 user456
+dragonfly$> ZINCRBY leaderboard 0.1 user456
 "2.6"
 ```
 

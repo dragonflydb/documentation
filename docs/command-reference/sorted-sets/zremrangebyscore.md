@@ -43,11 +43,11 @@ The command returns the number of elements removed from the sorted set.
 Remove members with scores between 1 and 2 (inclusive):
 
 ```cli
-dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three"
+dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three"
 (integer) 3
-dragonfly> ZREMRANGEBYSCORE myzset 1 2
+dragonfly$> ZREMRANGEBYSCORE myzset 1 2
 (integer) 2
-dragonfly> ZRANGE myzset 0 -1 WITHSCORES
+dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 1) "three"
 2) "3"
 ```
@@ -55,11 +55,11 @@ dragonfly> ZRANGE myzset 0 -1 WITHSCORES
 Remove members with scores greater than 1 but less than 3:
 
 ```cli
-dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three"
+dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three"
 (integer) 3
-dragonfly> ZREMRANGEBYSCORE myzset (1 (3
+dragonfly$> ZREMRANGEBYSCORE myzset (1 (3
 (integer) 1
-dragonfly> ZRANGE myzset 0 -1 WITHSCORES
+dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 1) "one"
 2) "1"
 3) "three"

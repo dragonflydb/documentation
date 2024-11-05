@@ -41,9 +41,9 @@ A list of members in the sorted set that fall within the specified lexicographic
 Let's create a sorted set of words and retrieve words that fall between `apple` and `banana` inclusively:
 
 ```shell
-dragonfly> ZADD fruits 0 apple 0 apricot 0 avocado 0 banana 0 berry
+dragonfly$> ZADD fruits 0 apple 0 apricot 0 avocado 0 banana 0 berry
 (integer) 5
-dragonfly> ZRANGEBYLEX fruits [apple [banana
+dragonfly$> ZRANGEBYLEX fruits [apple [banana
 1) "apple"
 2) "apricot"
 3) "avocado"
@@ -55,7 +55,7 @@ dragonfly> ZRANGEBYLEX fruits [apple [banana
 You can exclude the start or end of the range by using parentheses `(` instead of square brackets `[`:
 
 ```shell
-dragonfly> ZRANGEBYLEX fruits (apple [banana
+dragonfly$> ZRANGEBYLEX fruits (apple [banana
 1) "apricot"
 2) "avocado"
 3) "banana"
@@ -66,7 +66,7 @@ dragonfly> ZRANGEBYLEX fruits (apple [banana
 You can limit the number of results by specifying an `offset` and `count`:
 
 ```shell
-dragonfly> ZRANGEBYLEX fruits [a [z LIMIT 1 2
+dragonfly$> ZRANGEBYLEX fruits [a [z LIMIT 1 2
 1) "apricot"
 2) "avocado"
 ```
@@ -78,7 +78,7 @@ In this example, the query starts from the second lexicographically-smallest mem
 If no elements fall within the specified range, the command will return an empty list:
 
 ```shell
-dragonfly> ZRANGEBYLEX fruits [zzz [zzzz
+dragonfly$> ZRANGEBYLEX fruits [zzz [zzzz
 (empty array)
 ```
 

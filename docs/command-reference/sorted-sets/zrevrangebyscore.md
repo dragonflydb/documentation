@@ -35,21 +35,21 @@ with their scores).
 ## Examples
 
 ```shell
-dragonfly> ZADD myzset 1 "one"
+dragonfly$> ZADD myzset 1 "one"
 (integer) 1
-dragonfly> ZADD myzset 2 "two"
+dragonfly$> ZADD myzset 2 "two"
 (integer) 1
-dragonfly> ZADD myzset 3 "three"
+dragonfly$> ZADD myzset 3 "three"
 (integer) 1
-dragonfly> ZREVRANGEBYSCORE myzset +inf -inf
+dragonfly$> ZREVRANGEBYSCORE myzset +inf -inf
 1) "three"
 2) "two"
 3) "one"
-dragonfly> ZREVRANGEBYSCORE myzset 2 1
+dragonfly$> ZREVRANGEBYSCORE myzset 2 1
 1) "two"
 2) "one"
-dragonfly> ZREVRANGEBYSCORE myzset 2 (1
+dragonfly$> ZREVRANGEBYSCORE myzset 2 (1
 1) "two"
-dragonfly> ZREVRANGEBYSCORE myzset (2 (1
+dragonfly$> ZREVRANGEBYSCORE myzset (2 (1
 (empty array)
 ```

@@ -40,9 +40,9 @@ ZPOPMAX key [count]
 Remove and return the member with the highest score from a sorted set:
 
 ```shell
-dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three"
+dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three"
 (integer) 3
-dragonfly> ZPOPMAX myzset
+dragonfly$> ZPOPMAX myzset
 1) "three"
 2) "3"
 ```
@@ -52,9 +52,9 @@ dragonfly> ZPOPMAX myzset
 Remove and return the top 2 members with the highest scores:
 
 ```shell
-dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
+dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
-dragonfly> ZPOPMAX myzset 2
+dragonfly$> ZPOPMAX myzset 2
 1) "four"
 2) "4"
 3) "three"
@@ -66,7 +66,7 @@ dragonfly> ZPOPMAX myzset 2
 If the sorted set doesn't exist, `ZPOPMAX` will return `nil`.
 
 ```shell
-dragonfly> ZPOPMAX emptyset
+dragonfly$> ZPOPMAX emptyset
 (nil)
 ```
 

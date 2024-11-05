@@ -38,17 +38,17 @@ These parameters are essential for identifying which sorted set and member you a
 ## Code Examples
 
 ```cli
-dragonfly> ZADD myzset 1 "one"
+dragonfly$> ZADD myzset 1 "one"
 (integer) 1
-dragonfly> ZADD myzset 2 "two"
+dragonfly$> ZADD myzset 2 "two"
 (integer) 1
-dragonfly> ZADD myzset 3 "three"
+dragonfly$> ZADD myzset 3 "three"
 (integer) 1
-dragonfly> ZREVRANK myzset "one"
+dragonfly$> ZREVRANK myzset "one"
 (integer) 2
-dragonfly> ZREVRANK myzset "three"
+dragonfly$> ZREVRANK myzset "three"
 (integer) 0
-dragonfly> ZREVRANK myzset "four"
+dragonfly$> ZREVRANK myzset "four"
 (nil)
 ```
 

@@ -42,9 +42,9 @@ If `WITHSCORES` is provided, members and their scores are returned as alternatin
 Return members with scores between `10` and `30` from a sorted set:
 
 ```shell
-dragonfly> ZADD myzset 10 "a" 20 "b" 30 "c" 40 "d"
+dragonfly$> ZADD myzset 10 "a" 20 "b" 30 "c" 40 "d"
 (integer) 4
-dragonfly> ZRANGEBYSCORE myzset 10 30
+dragonfly$> ZRANGEBYSCORE myzset 10 30
 1) "a"
 2) "b"
 3) "c"
@@ -55,7 +55,7 @@ dragonfly> ZRANGEBYSCORE myzset 10 30
 Retrieve members with scores between `10` and `30`, including the scores:
 
 ```shell
-dragonfly> ZRANGEBYSCORE myzset 10 30 WITHSCORES
+dragonfly$> ZRANGEBYSCORE myzset 10 30 WITHSCORES
 1) "a"
 2) "10"
 3) "b"
@@ -69,7 +69,7 @@ dragonfly> ZRANGEBYSCORE myzset 10 30 WITHSCORES
 Limit the result to 2 members, starting from the second one (`offset` = 1):
 
 ```shell
-dragonfly> ZRANGEBYSCORE myzset 10 40 LIMIT 1 2
+dragonfly$> ZRANGEBYSCORE myzset 10 40 LIMIT 1 2
 1) "b"
 2) "c"
 ```
@@ -80,7 +80,7 @@ You can use `(` to denote an open (exclusive) bound for the score range.
 For example, only return members with scores greater than `10` but less than or equal to `30`:
 
 ```shell
-dragonfly> ZRANGEBYSCORE myzset (10 30
+dragonfly$> ZRANGEBYSCORE myzset (10 30
 1) "b"
 2) "c"
 ```
@@ -111,7 +111,7 @@ Yes, `-inf` and `+inf` can be used as `min` and `max` respectively, allowing you
 For example:
 
 ```shell
-dragonfly> ZRANGEBYSCORE myzset -inf 20
+dragonfly$> ZRANGEBYSCORE myzset -inf 20
 1) "a"
 2) "b"
 ```

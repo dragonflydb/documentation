@@ -39,9 +39,9 @@ The command returns an integer indicating the number of members in the sorted se
 Count the number of elements in a lexicographical range in a sorted set:
 
 ```shell
-dragonfly> ZADD myset 0 a 0 b 0 c 0 d 0 e
+dragonfly$> ZADD myset 0 a 0 b 0 c 0 d 0 e
 (integer) 5
-dragonfly> ZLEXCOUNT myset [b [d
+dragonfly$> ZLEXCOUNT myset [b [d
 (integer) 3
 ```
 
@@ -52,9 +52,9 @@ In this example, the elements `b`, `c`, and `d` fall within the lexicographical 
 Specify an exclusive upper range limit in a lexicographical query:
 
 ```shell
-dragonfly> ZADD myset 0 a 0 b 0 c 0 d 0 e
+dragonfly$> ZADD myset 0 a 0 b 0 c 0 d 0 e
 (integer) 5
-dragonfly> ZLEXCOUNT myset [b (d
+dragonfly$> ZLEXCOUNT myset [b (d
 (integer) 2
 ```
 
@@ -65,9 +65,9 @@ Here, only `b` and `c` fall within the range `[b, d)`, as `d` is excluded due to
 To count all elements in the sorted set, use `-` and `+` as argument values denoting the lowest and highest possible strings:
 
 ```shell
-dragonfly> ZADD myset 0 a 0 b 0 c 0 d 0 e
+dragonfly$> ZADD myset 0 a 0 b 0 c 0 d 0 e
 (integer) 5
-dragonfly> ZLEXCOUNT myset - +
+dragonfly$> ZLEXCOUNT myset - +
 (integer) 5
 ```
 
@@ -78,9 +78,9 @@ In this case, all members from `a` to `e` are counted.
 You can also query for a very specific range by using single-character bounds:
 
 ```shell
-dragonfly> ZADD myset 0 a 0 b 0 c 0 d 0 e
+dragonfly$> ZADD myset 0 a 0 b 0 c 0 d 0 e
 (integer) 5
-dragonfly> ZLEXCOUNT myset [c [c
+dragonfly$> ZLEXCOUNT myset [c [c
 (integer) 1
 ```
 

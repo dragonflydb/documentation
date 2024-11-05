@@ -43,9 +43,9 @@ If `WITHSCORES` is provided, the array contains each element followed by its sco
 Retrieve a range of elements from a sorted set:
 
 ```shell
-dragonfly> ZADD myzset 1 "apple" 2 "banana" 3 "cherry"
+dragonfly$> ZADD myzset 1 "apple" 2 "banana" 3 "cherry"
 (integer) 3
-dragonfly> ZRANGE myzset 0 -1
+dragonfly$> ZRANGE myzset 0 -1
 1) "apple"
 2) "banana"
 3) "cherry"
@@ -56,7 +56,7 @@ dragonfly> ZRANGE myzset 0 -1
 Get the elements and their associated scores from the sorted set `myzset`.
 
 ```shell
-dragonfly> ZRANGE myzset 0 -1 WITHSCORES
+dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 1) "apple"
 2) "1"
 3) "banana"
@@ -70,7 +70,7 @@ dragonfly> ZRANGE myzset 0 -1 WITHSCORES
 Get only the elements between the 1st and 2nd positions (indices 0-based):
 
 ```shell
-dragonfly> ZRANGE myzset 1 2
+dragonfly$> ZRANGE myzset 1 2
 1) "banana"
 2) "cherry"
 ```
@@ -80,7 +80,7 @@ dragonfly> ZRANGE myzset 1 2
 Retrieve the last two elements from the sorted set:
 
 ```shell
-dragonfly> ZRANGE myzset -2 -1
+dragonfly$> ZRANGE myzset -2 -1
 1) "banana"
 2) "cherry"
 ```
@@ -91,9 +91,9 @@ Assume you maintain a video game leaderboard sorted by player scores.
 Players on this leaderboard are stored in a sorted set, where the score is their points:
 
 ```shell
-dragonfly> ZADD leaderboard 3500 "player1" 4200 "player2" 4800 "player3"
+dragonfly$> ZADD leaderboard 3500 "player1" 4200 "player2" 4800 "player3"
 (integer) 3
-dragonfly> ZRANGE leaderboard 0 -1 WITHSCORES
+dragonfly$> ZRANGE leaderboard 0 -1 WITHSCORES
 1) "player1"
 2) "3500"
 3) "player2"

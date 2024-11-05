@@ -36,15 +36,15 @@ Example Outputs:
 ## Code Examples
 
 ```cli
-dragonfly> ZADD myzset 1 "a"
+dragonfly$> ZADD myzset 1 "a"
 (integer) 1
-dragonfly> ZADD myzset 2 "b"
+dragonfly$> ZADD myzset 2 "b"
 (integer) 1
-dragonfly> ZADD myzset 3 "c"
+dragonfly$> ZADD myzset 3 "c"
 (integer) 1
-dragonfly> ZSCORE myzset "b"
+dragonfly$> ZSCORE myzset "b"
 "2"
-dragonfly> ZSCORE myzset "d"
+dragonfly$> ZSCORE myzset "d"
 (nil)
 ```
 

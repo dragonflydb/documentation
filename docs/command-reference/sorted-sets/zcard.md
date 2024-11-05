@@ -38,9 +38,9 @@ If the key does not exist or is not a sorted set, `0` is returned.
 To get the number of members in a sorted set:
 
 ```shell
-dragonfly> ZADD myzset 1 "member1" 2 "member2" 3 "member3"
+dragonfly$> ZADD myzset 1 "member1" 2 "member2" 3 "member3"
 (integer) 3
-dragonfly> ZCARD myzset
+dragonfly$> ZCARD myzset
 (integer) 3
 ```
 
@@ -49,9 +49,9 @@ dragonfly> ZCARD myzset
 If the sorted set is empty, the `ZCARD` command returns `0`.
 
 ```shell
-dragonfly> ZADD emptyset
+dragonfly$> ZADD emptyset
 (integer) 0
-dragonfly> ZCARD emptyset
+dragonfly$> ZCARD emptyset
 (integer) 0
 ```
 
@@ -60,9 +60,9 @@ dragonfly> ZCARD emptyset
 Suppose you are building a leaderboard and need to know how many total players are ranked to help with pagination:
 
 ```shell
-dragonfly> ZADD leaderboard 100 "player1" 150 "player2" 200 "player3"
+dragonfly$> ZADD leaderboard 100 "player1" 150 "player2" 200 "player3"
 (integer) 3
-dragonfly> ZCARD leaderboard
+dragonfly$> ZCARD leaderboard
 (integer) 3
 ```
 
