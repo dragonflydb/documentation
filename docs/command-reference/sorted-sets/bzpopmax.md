@@ -11,8 +11,9 @@ import PageTitle from '@site/src/components/PageTitle';
 ## Introduction
 
 In Dragonfly, as well as in Redis and Valkey, the `BZPOPMAX` command is used to remove and return the member with the highest score in a sorted set.
-If the sorted set is empty, the command will block the connection for a specified timeout until a member is available to pop.
+If the sorted set is empty, the command will **block the connection for a specified timeout** until a member is available to pop.
 This makes it particularly useful for creating delayed or sorted workflows such as job queues where items with the highest priority need to be processed first.
+If multiple sorted sets are provided, `BZPOPMAX` will **pop from the first non-empty sorted set encountered in the order that the keys are given**.
 
 ## Syntax
 
@@ -26,14 +27,14 @@ BZPOPMAX key [key ...] timeout
 ## Parameter Explanations
 
 - `key`: One or more keys, each representing a sorted set.
-- `timeout`: The maximum number of seconds to wait if all the provided sorted sets are empty. A `0` timeout means no block, and negative timeouts will cause indefinite blocking.
+- `timeout`: The maximum number of seconds to wait if all the provided sorted sets are empty. A `0` timeout means to block indefinitely until an element is available to pop.
 
 ## Return Values
 
 The command returns a three-element array containing:
 
 - The name of the sorted set that the element was popped from.
-- The highest score element.
+- The element with the highest score.
 - The score itself.
 
 If the timeout expires without any elements to pop, `nil` is returned.
@@ -45,9 +46,9 @@ If the timeout expires without any elements to pop, `nil` is returned.
 Pop the highest score element from a sorted set:
 
 ```shell
-dragonfly> ZADD myzset 1 "item1" 2 "item2" 3 "item3"
+dragonfly$> ZADD myzset 1 "item1" 2 "item2" 3 "item3"
 (integer) 3
-dragonfly> BZPOPMAX myzset 0
+dragonfly$> BZPOPMAX myzset 0
 1) "myzset"
 2) "item3"
 3) "3"
@@ -58,15 +59,15 @@ dragonfly> BZPOPMAX myzset 0
 If the sorted set is empty, `BZPOPMAX` will wait for new elements or until the timeout:
 
 ```shell
-dragonfly> ZADD myzset 1 "item1" 2 "item2"
+dragonfly$> ZADD myzset 1 "item1" 2 "item2"
 (integer) 2
-dragonfly> ZPOPMAX myzset
+dragonfly$> ZPOPMAX myzset
 1) "item2"
 2) "2"
-dragonfly> ZPOPMAX myzset
+dragonfly$> ZPOPMAX myzset
 1) "item1"
 2) "1"
-dragonfly> BZPOPMAX myzset 5
+dragonfly$> BZPOPMAX myzset 5
 (nil)  # No elements in the sorted set, waited for 5 seconds and then returned nil.
 ```
 
@@ -76,22 +77,22 @@ You can specify multiple sorted sets.
 The command will act on the first non-empty set encountered:
 
 ```shell
-dragonfly> ZADD zset1 1 "a" 2 "b"
+dragonfly$> ZADD zset1 1 "a" 2 "b"
 (integer) 2
-dragonfly> ZADD zset2 1 "x" 3 "y"
+dragonfly$> ZADD zset2 1 "x" 3 "y"
 (integer) 2
-dragonfly> BZPOPMAX zset1 zset2 0
-1) "zset2"
-2) "y"
-3) "3"
+dragonfly$> BZPOPMAX zset1 zset2 0
+1) "zset1"  # Even though 'zset2' has a higher score, 'zset1' is popped first because it was specified first.
+2) "b"
+3) "2"
 ```
 
 ### Indefinite Blocking
 
-By setting the `timeout` value to a negative number, the connection will block indefinitely until a new element can be popped:
+By setting the `timeout` value to `0`, the connection will block indefinitely until a new element can be popped:
 
 ```shell
-dragonfly> BZPOPMAX somezset -1
+dragonfly$> BZPOPMAX somezset 0
 # The connection will block until a new element is added to 'somezset'.
 ```
 
@@ -110,11 +111,11 @@ dragonfly> BZPOPMAX somezset -1
 
 ### What happens if the timeout is set to zero?
 
-If the timeout is set to `0`, the command will not block. Instead, it will return immediately with either a popped element or `nil` if the sorted sets are empty.
+If the timeout is set to `0`, the connection will block indefinitely until a new element can be popped from the sorted set(s).
 
 ### Can I block on multiple sorted sets?
 
-Yes, `BZPOPMAX` accepts multiple sorted set keys and will pop from the first non-empty sorted set, going through the list of keys from left to right.
+Yes, `BZPOPMAX` accepts multiple sorted set keys and will pop from the first non-empty sorted set, going through the list of keys from left to right, in the order they are provided.
 
 ### What is the typical use case for `BZPOPMAX`?
 
