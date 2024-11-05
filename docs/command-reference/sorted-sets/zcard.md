@@ -46,11 +46,9 @@ dragonfly$> ZCARD myzset
 
 ### When the Sorted Set is Empty
 
-If the sorted set is empty, the `ZCARD` command returns `0`.
+If the sorted set is empty or non-existent, the `ZCARD` command returns `0`.
 
 ```shell
-dragonfly$> ZADD emptyset
-(integer) 0
 dragonfly$> ZCARD emptyset
 (integer) 0
 ```
@@ -69,12 +67,10 @@ dragonfly$> ZCARD leaderboard
 ## Best Practices
 
 - Since `ZCARD` only fetches the number of elements, it is safe to use even with large sets without performance concerns.
-- Ideal for checking if a sorted set is non-empty before executing more complex operations on large sets.
+- Ideal for checking the size of sorted sets before executing more complex operations on large sets.
 
 ## Common Mistakes
 
-- Using `ZCARD` on non-sorted set data types leads to incorrect results.
-  For example, using it on a regular set or a list will not return the right cardinality since these are different data types.
 - Assuming `ZCARD` can return detailed information about members; it only returns the count of elements.
 
 ## FAQs
