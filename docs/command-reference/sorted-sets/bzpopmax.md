@@ -11,7 +11,7 @@ import PageTitle from '@site/src/components/PageTitle';
 ## Introduction
 
 In Dragonfly, as well as in Redis and Valkey, the `BZPOPMAX` command is used to remove and return the member with the highest score in a sorted set.
-If the sorted set is empty, the command will **block the connection for a specified timeout** until a member is available to pop.
+This command is a blocking variant of `ZPOPMAX`, meaning it will **block the connection for a specified timeout until a member is available to pop**.
 This makes it particularly useful for creating delayed or sorted workflows such as job queues where items with the highest priority need to be processed first.
 If multiple sorted sets are provided, `BZPOPMAX` will **pop from the first non-empty sorted set encountered in the order that the keys are given**.
 
@@ -103,9 +103,10 @@ dragonfly$> BZPOPMAX somezset 0
 
 ## Common Mistakes
 
-- Using `BZPOPMAX` on non-sorted set types can result in an error. Ensure that you only use this command on sorted sets.
-- Assuming this command will pop values from other types like lists; use other blocking list commands such as `BLPOP` or `BRPOP` in those cases.
-- It's easy to confuse the timeout parameter with key names if you're not careful with the syntax.
+- It can be easy to confuse the `timeout` parameter with `key` names if you're not careful with the syntax.
+- Using the command without setting an appropriate `timeout`, such as setting it too high when the operation can affect client responsiveness.
+- Confusing the key with the element of the sorted set in response.
+  `BZPOPMAX` returns the key from which the member was popped as well, not just the member itself.
 
 ## FAQs
 
@@ -117,6 +118,10 @@ If the timeout is set to `0`, the connection will block indefinitely until a new
 
 Yes, `BZPOPMAX` accepts multiple sorted set keys and will pop from the first non-empty sorted set, going through the list of keys from left to right, in the order they are provided.
 
-### What is the typical use case for `BZPOPMAX`?
+### What happens if all keys are empty?
 
-`BZPOPMAX` is often used in priority queues, where jobs with higher priority (indicated by score) need to be processed as soon as they are available. If no jobs exist, the command waits for new ones.
+If all the provided sorted sets are empty or don't exist, `BZPOPMAX` returns `nil` after the timeout elapses.
+
+### Does the command work with negative timeouts?
+
+No, the `timeout` parameter must be a non-negative integer or floating point value specifying the maximum time in seconds to wait for an element to pop.
