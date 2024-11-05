@@ -11,7 +11,7 @@ import PageTitle from '@site/src/components/PageTitle';
 ## Introduction
 
 In Dragonfly, as well as in Redis and Valkey, the `BZPOPMAX` command is used to remove and return the member with the highest score in a sorted set.
-This command is a blocking variant of `ZPOPMAX`, meaning it will **block the connection for a specified timeout until a member is available to pop**.
+This command is a blocking variant of [`ZPOPMAX`](zpopmax.md), meaning it will **block the connection for a specified timeout until a member is available to pop**.
 This makes it particularly useful for creating delayed or sorted workflows such as job queues where items with the highest priority need to be processed first.
 If multiple sorted sets are provided, `BZPOPMAX` will **pop from the first non-empty sorted set encountered in the order that the keys are given**.
 

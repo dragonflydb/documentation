@@ -11,7 +11,7 @@ import PageTitle from '@site/src/components/PageTitle';
 ## Introduction
 
 In Dragonfly, as well as in Redis and Valkey, the `BZPOPMIN` command is used to remove and return the member with the lowest score from one or more sorted sets.
-This command is a blocking variant of `ZPOPMIN`, meaning it will **block the connection for a specified timeout until a member is available to pop**.
+This command is a blocking variant of [`ZPOPMIN`](zpopmin.md), meaning it will **block the connection for a specified timeout until a member is available to pop**.
 It is commonly used in scenarios like task queues, where elements need to be processed in the order of priority (with the lowest score having the highest priority).
 If multiple sorted sets are provided, `BZPOPMIN` will **pop from the first non-empty sorted set encountered in the order that the keys are given**.
 

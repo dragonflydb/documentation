@@ -28,8 +28,8 @@ ZCARD key
 
 ## Return Values
 
-The command returns an integer representing the number of members in the sorted set.
-If the key does not exist or is not a sorted set, `0` is returned.
+- The command returns an integer representing the number of members in the sorted set.
+- If the key does not exist, `0` is returned.
 
 ## Code Examples
 

@@ -36,17 +36,19 @@ Both `min` and `max` can be:
 
 ## Return Values
 
-The command returns an integer, representing the number of members in the sorted set that have scores within the specified range.
+- An integer representing the number of members in the sorted set that have scores within the specified range.
+- If the key does not exist, `0` is returned.
 
 ## Code Examples
 
 ### Basic Example
 
-Count all members with a score between 1 and 4:
+Count all members with a score between `1` and `4`:
 
 ```shell
 dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
+
 dragonfly$> ZCOUNT myzset 1 4
 (integer) 4
 ```
@@ -56,8 +58,26 @@ dragonfly$> ZCOUNT myzset 1 4
 Count members where the score is between `1` (exclusive) and `4` (inclusive):
 
 ```shell
+dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
+(integer) 4
+
 dragonfly$> ZCOUNT myzset (1 4
 (integer) 3
+```
+
+Count members where the score is between `1` (inclusive) and `4` (exclusive):
+
+```shell
+dragonfly$> ZCOUNT myzset 1 (4
+(integer) 3
+```
+
+
+Count members where the score is between `1` and `4`, both exclusive:
+
+```shell
+dragonfly$> ZCOUNT myzset (1 (4
+(integer) 2
 ```
 
 ### Using Negative and Positive Infinity
@@ -65,29 +85,23 @@ dragonfly$> ZCOUNT myzset (1 4
 Count members without specifying an upper or lower bound using `-inf` and `+inf`:
 
 ```shell
+dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
+(integer) 4
+
 dragonfly$> ZCOUNT myzset -inf +inf
 (integer) 4
-```
-
-### Counting with Exclusive Upper Bound
-
-Count members where the score is between `1` and `4`, but exclude `4`:
-
-```shell
-dragonfly$> ZCOUNT myzset 1 (4
-(integer) 3
 ```
 
 ## Best Practices
 
 - When unsure of the score range, use `-inf` and `+inf` to include all members.
 - Combine inclusive and exclusive bounds for precise member selection based on scores.
-- Consider caching common range queries if you frequently need to count elements in specific ranges.
 
 ## Common Mistakes
 
 - Using parentheses `(` incorrectly when specifying exclusive ranges. Always prepend `(` to the number for exclusivity.
 - Forgetting that `min` and `max` refer to sorted set scores, not values.
+- Reversing the order of `min` and `max` when specifying the range. If `min` is greater than `max`, the count will always be `0`.
 - Assuming that `ZCOUNT` returns the elements themselves; it only returns the count.
 
 ## FAQs
@@ -96,11 +110,7 @@ dragonfly$> ZCOUNT myzset 1 (4
 
 If the key does not exist, `ZCOUNT` will return `0`, meaning there are no members to count.
 
-### Can I count a range where `min` is greater than `max`?
-
-If `min` is greater than `max`, `ZCOUNT` will return `0` since no members can satisfy that condition.
-
 ### What’s the difference between `ZCOUNT` and `ZRANGE`?
 
-While `ZCOUNT` returns the number of elements in a score range, `ZRANGE` returns the elements themselves.
+While `ZCOUNT` returns the number of elements in a score range, [`ZRANGE`](zrange.md) returns the elements themselves.
 If you only need the count, `ZCOUNT` is more efficient.
