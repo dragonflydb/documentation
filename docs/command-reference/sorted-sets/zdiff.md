@@ -30,7 +30,7 @@ ZDIFF numkeys key [key ...] [WITHSCORES]
 
 ## Return Values
 
-- Without `WITHSCORES`: The command returns an array of members that are in the first sorted set but not in any of the other given sets.
+- Without `WITHSCORES`: The command returns an array of members that are in the first sorted set but not in any of the other given sorted sets.
 - With `WITHSCORES`: The command returns an array where each member is followed by its score.
 
 ## Code Examples
@@ -40,62 +40,60 @@ ZDIFF numkeys key [key ...] [WITHSCORES]
 Return the members found in the first sorted set but not in the second:
 
 ```shell
-dragonfly$> ZADD myset1 1 "one" 2 "two" 3 "three"
+dragonfly$> ZADD myzset1 1 "one" 2 "two" 3 "three"
 (integer) 3
-dragonfly$> ZADD myset2 2 "two" 4 "four"
+dragonfly$> ZADD myzset2 2 "two" 4 "four"
 (integer) 2
-dragonfly$> ZDIFF 2 myset1 myset2
+dragonfly$> ZDIFF 2 myzset1 myzset2
 1) "one"
 2) "three"
 ```
 
-In this example, "one" and "three" are present in `myset1` but not present in `myset2`.
+In this example, `"one"` and `"three"` are present in `myzset1` but not present in `myzset2`.
 
 ### Example with `WITHSCORES`
 
 Return both the members and their scores for the difference between two sets:
 
 ```shell
-dragonfly$> ZADD myset1 1 "one" 2 "two" 3 "three"
+dragonfly$> ZADD myzset1 1 "one" 2 "two" 3 "three"
 (integer) 3
-dragonfly$> ZADD myset2 2 "two" 4 "four"
+dragonfly$> ZADD myzset2 2 "two" 4 "four"
 (integer) 2
-dragonfly$> ZDIFF 2 myset1 myset2 WITHSCORES
+dragonfly$> ZDIFF 2 myzset1 myzset2 WITHSCORES
 1) "one"
 2) "1"
 3) "three"
 4) "3"
 ```
 
-Here, "one" has a score of 1, and "three" has a score of 3.
-
 ### Multiple Sets Difference Example
 
 Find elements present in the first sorted set but missing in the other two sorted sets:
 
 ```shell
-dragonfly$> ZADD myset1 1 "one" 2 "two" 3 "three" 4 "four"
+dragonfly$> ZADD myzset1 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
-dragonfly$> ZADD myset2 3 "three" 4 "four"
+dragonfly$> ZADD myzset2 3 "three" 4 "four"
 (integer) 2
-dragonfly$> ZADD myset3 1 "one" 5 "five"
+dragonfly$> ZADD myzset3 1 "one" 5 "five"
 (integer) 2
-dragonfly$> ZDIFF 3 myset1 myset2 myset3
+dragonfly$> ZDIFF 3 myzset1 myzset2 myzset3
 1) "two"
 ```
 
-In this case, only "two" is present in `myset1` but not in `myset2` or `myset3`.
+In this case, only `"two"` is present in `myzset1` but not in `myzset2` or `myzset3`.
 
 ## Best Practices
 
 - Use `ZDIFF` when you need to isolate unique elements in one sorted set compared to others.
 - Always ensure that the correct number of `numkeys` is provided to avoid errors or unwanted results.
-- If you're working with large sets, consider if you need `WITHSCORES`, as fetching scores increases the size of the returned data.
+- If you're working with large sets, consider the time complexity and whether you need `WITHSCORES`, as fetching scores increases the size of the returned data.
 
 ## Common Mistakes
 
 - Forgetting to specify the correct number of sorted sets in `numkeys`. The first argument should match the number of subsequent sorted set keys passed to the command.
-- Misunderstanding that `ZDIFF` by default only returns members and not their scores. Use `WITHSCORES` if the scores are required as part of the result.
+- Misunderstanding that `ZDIFF` only returns members and not their scores. Use `WITHSCORES` if the scores are required as part of the result.
 
 ## FAQs
 
