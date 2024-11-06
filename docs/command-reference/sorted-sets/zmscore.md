@@ -41,43 +41,27 @@ Retrieve scores for multiple members in a sorted set:
 ```shell
 dragonfly$> ZADD myzset 1 "Alice" 2 "Bob" 3 "Charlie"
 (integer) 3
-dragonfly$> ZMSCORE myzset "Alice" "Charlie" "Eve"
+
+dragonfly$> ZMSCORE myzset "Alice" "Charlie"
 1) "1"
 2) "3"
-3) (nil)
 ```
-
-In this example, "Alice" has a score of `1`, "Charlie" has a score of `3`, but "Eve" is not a member of the sorted set, so her score is returned as `nil`.
 
 ### Example with Mixed Member Existence
 
 Query the sorted set for both existing and non-existing members:
 
 ```shell
-dragonfly$> ZADD myzset 5 "Dan" 8 "Erika"
-(integer) 2
-dragonfly$> ZMSCORE myzset "Erika" "Alice" "Unknown"
-1) "8"
-2) "1"
-3) (nil)
-```
-
-"Dan" and "Erika" are found with their respective scores, but "Unknown" does not exist.
-
-### Example Using with Numeric Sorting Logic
-
-Check how the scores are fetched for members with different numeric values:
-
-```shell
-dragonfly$> ZADD rankset 100 "UserA" 150 "UserB" 200 "UserC"
+dragonfly$> ZADD myzset 1 "Alice" 2 "Bob" 3 "Charlie"
 (integer) 3
-dragonfly$> ZMSCORE rankset "UserA" "UserC" "UserD"
-1) "100"
-2) "200"
+
+dragonfly$> ZMSCORE myzset "Alice" "Bob" "Unknown"
+1) "1"
+2) "2"
 3) (nil)
 ```
 
-Here `UserA` has a score of `100`, `UserC` a score of `200`, and `UserD` is not present, so `nil` is returned for `UserD`.
+`"Alice"` and `"Bob"` are found with their respective scores, but "Unknown" does not exist.
 
 ## Best Practices
 
@@ -99,7 +83,3 @@ If the key does not exist, the command returns nil for each member.
 ### How does `ZMSCORE` handle multiple members?
 
 It returns an array where each element corresponds to the score of a requested `member`. Non-existing members return `nil` in the respective position within the array.
-
-### Is `ZMSCORE` atomic?
-
-Yes, like most Redis commands, `ZMSCORE` is atomic.

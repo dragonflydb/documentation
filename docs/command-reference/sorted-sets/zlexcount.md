@@ -10,8 +10,10 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-In Dragonfly, as well as in Redis and Valkey, the `ZLEXCOUNT` command is used to count the number of elements in a sorted set that fall between a given lexicographical range (i.e., the dictionary order of the string values within the set).
-It is useful in a wide range of scenarios, particularly when dealing with ordered or alphabetical sorting, range-based queries, or when managing complex datasets that require retrieval of elements within specific textual limits.
+In Dragonfly, as well as in Redis and Valkey, the `ZLEXCOUNT` command is used to count the number of elements in
+a sorted set that fall between a given **lexicographical range** (i.e., the dictionary order of the string values within the set).
+It is useful in a wide range of scenarios, particularly when dealing with ordered or alphabetical sorting, range-based queries,
+or when managing complex datasets that require retrieval of elements within specific textual limits.
 
 ## Syntax
 
@@ -25,12 +27,14 @@ ZLEXCOUNT key min max
 ## Parameter Explanations
 
 - `key`: The key for the sorted set where the lexicographical counting occurs.
-- `min`: The minimum lexicographical string value for the range query (inclusive or exclusive). Use `[` to include and `(` to exclude.
-- `max`: The maximum lexicographical string value for the range query (inclusive or exclusive). Use `[` to include and `(` to exclude.
+- `min`: The minimum lexicographical string value for the range query (inclusive or exclusive).
+- `max`: The maximum lexicographical string value for the range query (inclusive or exclusive).
+- For the `min` and `max` parameters, use `[` for inclusive and `(` for exclusive boundaries.
+- For the `min` and `max` parameters, `-` and `+` represent the lowest and highest possible strings in the sorted set, respectively.
 
 ## Return Values
 
-The command returns an integer indicating the number of members in the sorted set within the provided lexicographical range.
+- An integer indicating the number of members in the sorted set within the provided lexicographical range.
 
 ## Code Examples
 
@@ -45,7 +49,7 @@ dragonfly$> ZLEXCOUNT myset [b [d
 (integer) 3
 ```
 
-In this example, the elements `b`, `c`, and `d` fall within the lexicographical range `[b, d]`, returning a count of `(3)`.
+In this example, the elements `b`, `c`, and `d` fall within the lexicographical range `[b, d]`, returning a count of `3`.
 
 ### Range with Exclusive Boundaries
 
@@ -58,7 +62,7 @@ dragonfly$> ZLEXCOUNT myset [b (d
 (integer) 2
 ```
 
-Here, only `b` and `c` fall within the range `[b, d)`, as `d` is excluded due to the `(`.
+Here, only `b` and `c` fall within the range `[b, d)`, as `d` is excluded due to the exclusive boundary.
 
 ### Counting All Elements with a Lexicographical Range Across All Members
 
@@ -73,19 +77,6 @@ dragonfly$> ZLEXCOUNT myset - +
 
 In this case, all members from `a` to `e` are counted.
 
-### Limiting the Range to a Single Character
-
-You can also query for a very specific range by using single-character bounds:
-
-```shell
-dragonfly$> ZADD myset 0 a 0 b 0 c 0 d 0 e
-(integer) 5
-dragonfly$> ZLEXCOUNT myset [c [c
-(integer) 1
-```
-
-This example counts only the element `c`, as the range is constrained to `[c, c]`.
-
 ## Best Practices
 
 - When using large sorted sets, lexicographical queries can be quite efficient for text-based range retrievals.
@@ -96,7 +87,6 @@ This example counts only the element `c`, as the range is constrained to `[c, c]
 
 - Assuming `ZLEXCOUNT` operates on numeric values—this command only works on lexicographical (text) comparisons.
 - Misunderstanding the boundary markers `[`, `(`—inclusive and exclusive boundaries can lead to incorrect or unintended results if not used properly.
-- Attempting to use the command on a key that does not map to a sorted set. This will result in an error.
 
 ## FAQs
 
@@ -106,7 +96,8 @@ If the key does not exist, `ZLEXCOUNT` will return `0`.
 
 ### Can I use `ZLEXCOUNT` with integer values?
 
-While `ZLEXCOUNT` can technically handle integer-like strings, the values are still compared lexicographically, not numerically. This means `'100'` will come before `'20'` when sorted lexicographically.
+While `ZLEXCOUNT` can technically handle integer-like strings, the values are still compared lexicographically, not numerically.
+This means `"100"` will come before `"20"` when sorted lexicographically.
 
 ### What does `-` and `+` mean in `ZLEXCOUNT` ranges?
 

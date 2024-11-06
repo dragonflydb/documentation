@@ -29,9 +29,8 @@ ZPOPMAX key [count]
 
 ## Return Values
 
-- If `count` is not provided, the command returns a two-element array: the member with the highest score and its corresponding score.
-- If `count` is provided, the command returns an array of arrays, where each array consists of a member and its score, up to the specified count.
-- If the sorted set is empty or doesn't exist, the command returns `nil`.
+- The command returns an array containing the popped elements and their scores.
+- If the sorted set is empty or doesn't exist, the command returns an empty array.
 
 ## Code Examples
 
@@ -42,6 +41,7 @@ Remove and return the member with the highest score from a sorted set:
 ```shell
 dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three"
 (integer) 3
+
 dragonfly$> ZPOPMAX myzset
 1) "three"
 2) "3"
@@ -54,6 +54,7 @@ Remove and return the top 2 members with the highest scores:
 ```shell
 dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
+
 dragonfly$> ZPOPMAX myzset 2
 1) "four"
 2) "4"
@@ -63,11 +64,11 @@ dragonfly$> ZPOPMAX myzset 2
 
 ### Handling an Empty or Non-Existent Sorted Set
 
-If the sorted set doesn't exist, `ZPOPMAX` will return `nil`.
+If the sorted set doesn't exist, `ZPOPMAX` will return an empty array:
 
 ```shell
 dragonfly$> ZPOPMAX emptyset
-(nil)
+(empty array)
 ```
 
 ## Best Practices
@@ -78,17 +79,30 @@ dragonfly$> ZPOPMAX emptyset
 ## Common Mistakes
 
 - Using the command on a non-sorted set data structure will result in an error.
-- Not considering the impact of popping multiple elements when performance is a concern. If your goal is to improve throughput, process smaller batches.
+- Forgetting that when using `ZPOPMAX`, the members will be removed from the sorted set.
+- Not considering the impact of popping multiple elements when performance is a concern.
+  If your goal is to improve throughput, process smaller batches.
 
 ## FAQs
 
+### What happens if the key does not exist?
+
+If the key does not exist, `ZPOPMAX` returns an empty array.
+
 ### What happens if the sorted set has fewer elements than `count`?
 
-If the sorted set has fewer elements than the provided `count`, `ZPOPMAX` will return all the available elements and remove them from the set.
+If the sorted set has fewer elements than the provided `count`,
+`ZPOPMAX` will return all the available elements and remove them from the set.
+
+### Can I use `ZPOPMAX` to atomically pop and process multiple items?
+
+Yes, you can pass a `count` argument to pop multiple members atomically in a single call.
+Keep in mind that members are returned in descending order of their scores.
 
 ### Can I use negative values for the `count` parameter?
 
-No, `count` must always be a non-negative integer. A negative value will result in an error.
+No, `count` must always be a non-negative integer.
+A negative value will result in an error.
 
 ### Does `ZPOPMAX` modify the sorted set?
 
