@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-In Dragonfly, as well as in Redis and Valkey, the `ZINCRBY` command is used to increment the score of a member in a sorted set (zset).
+In Dragonfly, as well as in Redis and Valkey, the `ZINCRBY` command is used to increment the score of a member in a sorted set.
 If the member doesn't exist, it is added with the incremented score as its initial value.
 This command is often used in leaderboard systems, statistical counters, and ranking applications where member scores need to be dynamically updated.
 
@@ -27,7 +27,7 @@ ZINCRBY key increment member
 
 - `key`: The key of the sorted set whose member's score is to be incremented.
 - `increment`: The value by which to increment the member's score.
-  The increment can be an integer or a floating-point number.
+  The increment can be an integer or a floating-point number, and it can be positive or negative.
 - `member`: The member whose score will be incremented.
   If the member does not exist, it is added to the sorted set.
 
@@ -45,6 +45,7 @@ Increment the score of a member and return the updated score:
 # Initially, user123 has a score of 10 in the leaderboard.
 dragonfly$> ZADD leaderboard 10 user123
 (integer) 1
+
 # Increment user123's score by 5.
 dragonfly$> ZINCRBY leaderboard 5 user123
 "15"
@@ -57,8 +58,7 @@ If the member doesn't exist, `ZINCRBY` adds it with the increment as its initial
 ```shell
 # user999 doesn't exist in the sorted set yet.
 dragonfly$> ZINCRBY leaderboard 8 user999
-"8"
-# Now user999 has a score of 8.
+"8"  # Now user999 has a score of 8.
 ```
 
 ### Increment a Member Score with a Negative Value
@@ -66,9 +66,12 @@ dragonfly$> ZINCRBY leaderboard 8 user999
 Use a negative increment to reduce the member's score:
 
 ```shell
-# user123 currently has a score of 15 in the leaderboard.
+# Initially, user123 has a score of 10 in the leaderboard.
+dragonfly$> ZADD leaderboard 10 user123
+(integer) 1
+
 dragonfly$> ZINCRBY leaderboard -3 user123
-"12"  # The score is now 12 after applying the negative increment.
+"7"  # The score is now 7 after applying the negative increment.
 ```
 
 ### Floating-Point Increments
@@ -79,6 +82,7 @@ You can use floating-point values for finer score adjustments:
 # user456 has no score yet and will be created with a floating-point score.
 dragonfly$> ZINCRBY leaderboard 2.5 user456
 "2.5"
+
 # Further increment using a floating-point value.
 dragonfly$> ZINCRBY leaderboard 0.1 user456
 "2.6"

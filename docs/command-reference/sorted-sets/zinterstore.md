@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-In Dragonfly, as well as in Redis and Valkey, the `ZINTERSTORE` command performs an intersection of multiple sorted sets.
+In Dragonfly, as well as in Redis and Valkey, the `ZINTERSTORE` command performs an **intersection** of multiple sorted sets.
 It calculates the common members across the sets and stores the result in a new sorted set, where the score of each member in the result is computed based on the specified aggregation.
 
 This command is particularly useful when you want to get the common elements of multiple user activity logs, product tags, or any system that relies on sorted sets, while also applying optional weights and custom aggregation to the scores.
@@ -18,7 +18,8 @@ This command is particularly useful when you want to get the common elements of 
 ## Syntax
 
 ```shell
-ZINTERSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MAX]
+ZINTERSTORE destination numkeys key [key ...]
+  [WEIGHTS weight [weight ...]] [AGGREGATE <SUM | MIN | MAX>]
 ```
 
 - **Time complexity:** O(N*K)+O(M*log(M)) worst case with N being the smallest input sorted set, K being the number of input sorted sets and M being the number of elements in the resulting sorted set.
@@ -30,14 +31,14 @@ ZINTERSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGG
 - `numkeys`: The number of sorted sets to be intersected.
 - `key [key ...]`: The list of sorted sets to intersect.
 - `WEIGHTS weight [weight ...]` (optional): Assigns weights to each sorted set for score multiplication.
-- `AGGREGATE SUM|MIN|MAX` (optional): Determines how to aggregate the scores of members existing in multiple sets:
+- `AGGREGATE SUM | MIN | MAX` (optional): Determines how to aggregate the scores of members existing in multiple sets:
   - `SUM`: Adds the scores (this is the default behavior).
   - `MIN`: Takes the minimum score across the sets.
   - `MAX`: Takes the maximum score across the sets.
 
 ## Return Values
 
-The command returns the number of elements in the resulting sorted set, stored in `destination`.
+- The command returns the number of elements in the resulting sorted set, stored in `destination`.
 
 ## Code Examples
 
@@ -113,8 +114,8 @@ dragonfly$> ZRANGE out 0 -1 WITHSCORES
 
 ## Common Mistakes
 
-- Using `SUM` aggregation without realizing it's the default; ensure it's the intended behavior before omitting the `AGGREGATE` parameter.
-- Not accounting for the fact that `ZINTERSTORE` overwrites the destination key if it exists.
+- Using `SUM` aggregation without realizing it's the default; ensure it's the intended behavior before omitting the `AGGREGATE SUM` options.
+- Not accounting for the fact that `ZINTERSTORE` overwrites the destination key if it exists, even if the existing key is not a sorted set.
 - Forgetting that weights are applied in order to the corresponding sorted sets, meaning you'll need to provide as many weights as there are sets.
 
 ## FAQs
