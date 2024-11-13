@@ -11,4 +11,5 @@ Customers can specify retention period for backups.
 All data is deleted when the retention period expires.
 
 In case Dragonfly Cloud operations team takes a backup of the data store, it is deleted as soon as possible and is not retained for more than 90 in any case.
- 
+
+For information regarding processing of Dragonfly Cloud users data, please refer to the [Privacy Policy](https://www.dragonflydb.io/privacy).
