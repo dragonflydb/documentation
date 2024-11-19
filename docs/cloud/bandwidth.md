@@ -47,8 +47,8 @@ AWS provides burstable network bandwidth for some data store sizes which can be 
 | Standard     | 200       | 32.0              |
 | Standard     | 400       | 32.0              |
 | Enhanced     | 6.5       | 10.0              |
-| Enhanced     | 12.5      | 16.0              |
-| Enhanced     | 25        | 32.0              |
+| Enhanced     | 12.5      | 10.0              |
+| Enhanced     | 25        | 16.0              |
 | Enhanced     | 50        | 32.0              |
 | Enhanced     | 100       | 32.0              |
 | Enhanced     | 200       | 32.0              |
