@@ -42,7 +42,7 @@ and returns the range of elements from the sorted set having scores **equal or b
 
 - When `BYSCORE` is used, the `start` and `stop` parameters are **treated as scores instead of indexes**.
 - **By default, they are inclusive**. To make them exclusive, use the `(` character before the score.
-- The `+inf` and `-inf` values can be used to specify positive and negative infinity scores, respectively.
+- The `+inf` and `-inf` special values can be used to specify positive and negative infinity scores, respectively.
 
 ### Lexicographical Ranges with `BYLEX`
 
@@ -51,7 +51,7 @@ and returns the range of elements from the sorted set within the **lexicographic
 
 - When `BYLEX` is used, the `start` and `stop` parameters are **treated as lexicographical strings**.
 - Valid `start` and `stop` must start with `(` or `[` to indicate exclusive or inclusive bounds respectively.
-- The `+` and `-` characters can be used to specify positive and negative infinity strings, respectively.
+- The `+` and `-` special values can be used to specify positive and negative infinity strings, respectively.
 
 ## Return Values
 
