@@ -38,11 +38,11 @@ The command returns an integer representing the number of members that were remo
 Remove a single member from a sorted set:
 
 ```shell
-dragonfly> ZADD myzset 1 "alpha" 2 "beta" 3 "gamma"
+dragonfly$> ZADD myzset 1 "alpha" 2 "beta" 3 "gamma"
 (integer) 3
-dragonfly> ZREM myzset "alpha"
+dragonfly$> ZREM myzset "alpha"
 (integer) 1
-dragonfly> ZRANGE myzset 0 -1
+dragonfly$> ZRANGE myzset 0 -1
 1) "beta"
 2) "gamma"
 ```
@@ -52,11 +52,11 @@ dragonfly> ZRANGE myzset 0 -1
 You can also remove multiple members in one command:
 
 ```shell
-dragonfly> ZADD myzset 1 "alpha" 2 "beta" 3 "gamma"
+dragonfly$> ZADD myzset 1 "alpha" 2 "beta" 3 "gamma"
 (integer) 3
-dragonfly> ZREM myzset "alpha" "gamma"
+dragonfly$> ZREM myzset "alpha" "gamma"
 (integer) 2
-dragonfly> ZRANGE myzset 0 -1
+dragonfly$> ZRANGE myzset 0 -1
 1) "beta"
 ```
 
@@ -65,9 +65,9 @@ dragonfly> ZRANGE myzset 0 -1
 If you attempt to remove members that do not exist in the sorted set, they are simply ignored:
 
 ```shell
-dragonfly> ZADD myzset 1 "alpha" 2 "beta"
+dragonfly$> ZADD myzset 1 "alpha" 2 "beta"
 (integer) 2
-dragonfly> ZREM myzset "gamma" "delta"
+dragonfly$> ZREM myzset "gamma" "delta"
 (integer) 0  # No members were removed because "gamma" and "delta" don't exist.
 ```
 

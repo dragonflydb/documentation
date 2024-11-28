@@ -40,9 +40,9 @@ If the `member` does not exist in the set, `ZRANK` returns `nil`.
 Rank a player in a game's leaderboard:
 
 ```shell
-dragonfly> ZADD leaderboard 5000 "Player1" 6000 "Player2" 7000 "Player3"
+dragonfly$> ZADD leaderboard 5000 "Player1" 6000 "Player2" 7000 "Player3"
 (integer) 3
-dragonfly> ZRANK leaderboard "Player2"
+dragonfly$> ZRANK leaderboard "Player2"
 (integer) 1
 ```
 
@@ -53,7 +53,7 @@ In the above example, `Player2` has a score of `6000` and ranks at index `1` in 
 Attempt to retrieve the rank of a member that doesn't exist:
 
 ```shell
-dragonfly> ZRANK leaderboard "Player4"
+dragonfly$> ZRANK leaderboard "Player4"
 (nil)
 ```
 
@@ -64,9 +64,9 @@ Since `Player4` is not in the leaderboard, the command returns `nil`.
 When a player's score changes, the rank will dynamically adjust:
 
 ```shell
-dragonfly> ZADD leaderboard 8000 "Player2"
+dragonfly$> ZADD leaderboard 8000 "Player2"
 (integer) 0
-dragonfly> ZRANK leaderboard "Player2"
+dragonfly$> ZRANK leaderboard "Player2"
 (integer) 2
 ```
 
@@ -77,9 +77,9 @@ Here, `Player2`'s score was updated to `8000` and now ranks at index `2`.
 For larger sets, `ZRANK` remains efficient and operates in logarithmic time complexity (`O(log(N))`):
 
 ```shell
-dragonfly> ZADD large_set 1 "A" 2 "B" 3 "C" 4 "D" 5 "E"
+dragonfly$> ZADD large_set 1 "A" 2 "B" 3 "C" 4 "D" 5 "E"
 (integer) 5
-dragonfly> ZRANK large_set "D"
+dragonfly$> ZRANK large_set "D"
 (integer) 3
 ```
 

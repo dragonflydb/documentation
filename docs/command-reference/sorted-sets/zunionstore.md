@@ -45,13 +45,13 @@ The command returns an integer indicating the number of elements in the resultin
 Union two sorted sets and store the result in a new key:
 
 ```shell
-dragonfly> ZADD zset1 1 "apple" 2 "banana" 3 "cherry"
+dragonfly$> ZADD zset1 1 "apple" 2 "banana" 3 "cherry"
 (integer) 3
-dragonfly> ZADD zset2 1 "banana" 4 "date" 5 "elderberry"
+dragonfly$> ZADD zset2 1 "banana" 4 "date" 5 "elderberry"
 (integer) 3
-dragonfly> ZUNIONSTORE result 2 zset1 zset2
+dragonfly$> ZUNIONSTORE result 2 zset1 zset2
 (integer) 5
-dragonfly> ZRANGE result 0 -1 WITHSCORES
+dragonfly$> ZRANGE result 0 -1 WITHSCORES
 1) "apple"
 2) "1"
 3) "cherry"
@@ -69,13 +69,13 @@ dragonfly> ZRANGE result 0 -1 WITHSCORES
 Use the `WEIGHTS` option to multiply scores before performing the union:
 
 ```shell
-dragonfly> ZADD zset1 1 "apple" 2 "banana" 3 "cherry"
+dragonfly$> ZADD zset1 1 "apple" 2 "banana" 3 "cherry"
 (integer) 3
-dragonfly> ZADD zset2 1 "banana" 4 "date" 5 "elderberry"
+dragonfly$> ZADD zset2 1 "banana" 4 "date" 5 "elderberry"
 (integer) 3
-dragonfly> ZUNIONSTORE result 2 zset1 zset2 WEIGHTS 2 3
+dragonfly$> ZUNIONSTORE result 2 zset1 zset2 WEIGHTS 2 3
 (integer) 5
-dragonfly> ZRANGE result 0 -1 WITHSCORES
+dragonfly$> ZRANGE result 0 -1 WITHSCORES
 1) "apple"
 2) "2"    # (1 from zset1 * 2)
 3) "cherry"
@@ -94,9 +94,9 @@ Use the `AGGREGATE` option to specify how to compute the final scores when an el
 
 ```shell
 # Using MIN aggregation
-dragonfly> ZUNIONSTORE result 2 zset1 zset2 AGGREGATE MIN
+dragonfly$> ZUNIONSTORE result 2 zset1 zset2 AGGREGATE MIN
 (integer) 5
-dragonfly> ZRANGE result 0 -1 WITHSCORES
+dragonfly$> ZRANGE result 0 -1 WITHSCORES
 1) "apple"
 2) "1"    # From zset1
 3) "cherry"
@@ -109,9 +109,9 @@ dragonfly> ZRANGE result 0 -1 WITHSCORES
 10) "5"   # From zset2
 
 # Using MAX aggregation
-dragonfly> ZUNIONSTORE result 2 zset1 zset2 AGGREGATE MAX
+dragonfly$> ZUNIONSTORE result 2 zset1 zset2 AGGREGATE MAX
 (integer) 5
-dragonfly> ZRANGE result 0 -1 WITHSCORES
+dragonfly$> ZRANGE result 0 -1 WITHSCORES
 1) "apple"
 2) "1"    # From zset1
 3) "cherry"

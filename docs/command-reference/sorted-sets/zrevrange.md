@@ -42,9 +42,9 @@ ZREVRANGE key start stop [WITHSCORES]
 Retrieve the top 3 members of a leaderboard:
 
 ```shell
-dragonfly> ZADD leaderboard 100 "PlayerA" 90 "PlayerB" 85 "PlayerC" 75 "PlayerD"
+dragonfly$> ZADD leaderboard 100 "PlayerA" 90 "PlayerB" 85 "PlayerC" 75 "PlayerD"
 (integer) 4
-dragonfly> ZREVRANGE leaderboard 0 2
+dragonfly$> ZREVRANGE leaderboard 0 2
 1) "PlayerA"
 2) "PlayerB"
 3) "PlayerC"
@@ -55,9 +55,9 @@ dragonfly> ZREVRANGE leaderboard 0 2
 Fetch the top 3 members along with their scores:
 
 ```shell
-dragonfly> ZADD leaderboard 100 "PlayerA" 90 "PlayerB" 85 "PlayerC" 75 "PlayerD"
+dragonfly$> ZADD leaderboard 100 "PlayerA" 90 "PlayerB" 85 "PlayerC" 75 "PlayerD"
 (integer) 4
-dragonfly> ZREVRANGE leaderboard 0 2 WITHSCORES
+dragonfly$> ZREVRANGE leaderboard 0 2 WITHSCORES
 1) "PlayerA"
 2) "100"
 3) "PlayerB"
@@ -72,7 +72,7 @@ You can use negative indexes to fetch members starting from the end of the sorte
 For example, to retrieve the last 2 members:
 
 ```shell
-dragonfly> ZREVRANGE leaderboard -2 -1
+dragonfly$> ZREVRANGE leaderboard -2 -1
 1) "PlayerC"
 2) "PlayerD"
 ```
@@ -82,9 +82,9 @@ dragonfly> ZREVRANGE leaderboard -2 -1
 Visualize an entire leaderboard for a game:
 
 ```shell
-dragonfly> ZADD leaderboard 100 "PlayerA" 90 "PlayerB" 85 "PlayerC" 75 "PlayerD" 60 "PlayerE"
+dragonfly$> ZADD leaderboard 100 "PlayerA" 90 "PlayerB" 85 "PlayerC" 75 "PlayerD" 60 "PlayerE"
 (integer) 5
-dragonfly> ZREVRANGE leaderboard 0 -1
+dragonfly$> ZREVRANGE leaderboard 0 -1
 1) "PlayerA"
 2) "PlayerB"
 3) "PlayerC"

@@ -44,11 +44,11 @@ The command returns the union of the sorted set members from the input `key`s, a
 Perform a union of two `zsets` and aggregate their scores by default (i.e., using `SUM`).
 
 ```shell
-dragonfly> ZADD zset1 1 "apple" 2 "banana"
+dragonfly$> ZADD zset1 1 "apple" 2 "banana"
 (integer) 2
-dragonfly> ZADD zset2 3 "apple" 4 "cherry"
+dragonfly$> ZADD zset2 3 "apple" 4 "cherry"
 (integer) 2
-dragonfly> ZUNION 2 zset1 zset2
+dragonfly$> ZUNION 2 zset1 zset2
 1) "apple"
 2) (double) 4
 3) "cherry"
@@ -64,11 +64,11 @@ In this example, `"apple"` appears in both sorted sets, and its scores (`1` from
 Assign different weights to the scores of different `zsets` before performing the union.
 
 ```shell
-dragonfly> ZADD zset1 1 "apple" 2 "banana"
+dragonfly$> ZADD zset1 1 "apple" 2 "banana"
 (integer) 2
-dragonfly> ZADD zset2 3 "apple" 4 "cherry"
+dragonfly$> ZADD zset2 3 "apple" 4 "cherry"
 (integer) 2
-dragonfly> ZUNION 2 zset1 zset2 WEIGHTS 2 1
+dragonfly$> ZUNION 2 zset1 zset2 WEIGHTS 2 1
 1) "apple"
 2) (double) 5  # 1*2 + 3*1 = 5
 3) "banana"
@@ -84,11 +84,11 @@ In this example, the score of `zset1` is multiplied by `2`, and the score of `zs
 Take the minimum score for members that exist in multiple sets, instead of summing them.
 
 ```shell
-dragonfly> ZADD zset1 1 "apple" 6 "banana"
+dragonfly$> ZADD zset1 1 "apple" 6 "banana"
 (integer) 2
-dragonfly> ZADD zset2 3 "apple" 4 "cherry"
+dragonfly$> ZADD zset2 3 "apple" 4 "cherry"
 (integer) 2
-dragonfly> ZUNION 2 zset1 zset2 AGGREGATE MIN
+dragonfly$> ZUNION 2 zset1 zset2 AGGREGATE MIN
 1) "apple"
 2) (double) 1  # min(1,3) = 1
 3) "cherry"
@@ -104,11 +104,11 @@ In this example, for `"apple"`, the lower score between the two sets was `1`, so
 Use both `WEIGHTS` and `AGGREGATE` to calculate the weighted `MAX` score for each member.
 
 ```shell
-dragonfly> ZADD zset1 1 "apple" 6 "banana"
+dragonfly$> ZADD zset1 1 "apple" 6 "banana"
 (integer) 2
-dragonfly> ZADD zset2 3 "apple" 4 "cherry"
+dragonfly$> ZADD zset2 3 "apple" 4 "cherry"
 (integer) 2
-dragonfly> ZUNION 2 zset1 zset2 WEIGHTS 2 3 AGGREGATE MAX
+dragonfly$> ZUNION 2 zset1 zset2 WEIGHTS 2 3 AGGREGATE MAX
 1) "apple"
 2) (double) 9  # max(1*2, 3*3) = 9
 3) "cherry"

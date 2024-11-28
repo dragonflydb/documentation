@@ -45,9 +45,9 @@ The command returns an array of two elements:
 Scan members from a sorted set using the cursor, starting from `0`:
 
 ```shell
-dragonfly> ZADD myzset 10 "a" 20 "b" 30 "c"
+dragonfly$> ZADD myzset 10 "a" 20 "b" 30 "c"
 (integer) 3
-dragonfly> ZSCAN myzset 0
+dragonfly$> ZSCAN myzset 0
 1) "0"                   # New cursor (0 means full iteration has completed)
 2) 1) "a"                # Member
    2) "10"               # Score
@@ -62,9 +62,9 @@ dragonfly> ZSCAN myzset 0
 Only scan for members whose names match a certain pattern:
 
 ```shell
-dragonfly> ZADD myzset 10 "alpha" 20 "beta" 30 "gamma"
+dragonfly$> ZADD myzset 10 "alpha" 20 "beta" 30 "gamma"
 (integer) 3
-dragonfly> ZSCAN myzset 0 MATCH a*
+dragonfly$> ZSCAN myzset 0 MATCH a*
 1) "0"
 2) 1) "alpha"
    2) "10"
@@ -77,9 +77,9 @@ dragonfly> ZSCAN myzset 0 MATCH a*
 Use the `COUNT` option to limit the number of elements returned in each iteration:
 
 ```shell
-dragonfly> ZADD myzset 10 "a" 20 "b" 30 "c" 40 "d" 50 "e"
+dragonfly$> ZADD myzset 10 "a" 20 "b" 30 "c" 40 "d" 50 "e"
 (integer) 5
-dragonfly> ZSCAN myzset 0 COUNT 2
+dragonfly$> ZSCAN myzset 0 COUNT 2
 1) "2"         # Cursor, indicating more elements remain
 2) 1) "a"
    2) "10"
@@ -90,7 +90,7 @@ dragonfly> ZSCAN myzset 0 COUNT 2
 In the next call, use the returned cursor (`2`) to continue scanning:
 
 ```shell
-dragonfly> ZSCAN myzset 2 COUNT 2
+dragonfly$> ZSCAN myzset 2 COUNT 2
 1) "4"         # Cursor, indicating more elements remain
 2) 1) "c"
    2) "30"

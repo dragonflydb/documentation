@@ -39,9 +39,9 @@ If the `member` does not exist within the sorted set, `nil` is returned.
 Retrieve the score of a specific member from the sorted set:
 
 ```shell
-dragonfly> ZADD myzset 1 "member1" 2 "member2" 3 "member3"
+dragonfly$> ZADD myzset 1 "member1" 2 "member2" 3 "member3"
 (integer) 3
-dragonfly> ZSCORE myzset "member2"
+dragonfly$> ZSCORE myzset "member2"
 "2"
 ```
 
@@ -50,7 +50,7 @@ dragonfly> ZSCORE myzset "member2"
 If a `member` is not present in a sorted set, `ZSCORE` will return `nil`:
 
 ```shell
-dragonfly> ZSCORE myzset "non_existent_member"
+dragonfly$> ZSCORE myzset "non_existent_member"
 (nil)
 ```
 
@@ -59,9 +59,9 @@ dragonfly> ZSCORE myzset "non_existent_member"
 Sorted sets can store floating-point scores. The `ZSCORE` command will return such values as strings:
 
 ```shell
-dragonfly> ZADD myzset 1.5 "memberA" 3.7 "memberB"
+dragonfly$> ZADD myzset 1.5 "memberA" 3.7 "memberB"
 (integer) 2
-dragonfly> ZSCORE myzset "memberB"
+dragonfly$> ZSCORE myzset "memberB"
 "3.7"
 ```
 

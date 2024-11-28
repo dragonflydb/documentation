@@ -40,9 +40,9 @@ If the member does not exist, the command returns `nil`.
 Getting the reverse rank of a member in a sorted set:
 
 ```shell
-dragonfly> ZADD leaderboard 100 "playerA" 200 "playerB" 150 "playerC"
+dragonfly$> ZADD leaderboard 100 "playerA" 200 "playerB" 150 "playerC"
 (integer) 3
-dragonfly> ZREVRANK leaderboard "playerB"
+dragonfly$> ZREVRANK leaderboard "playerB"
 (integer) 0  # "playerB" has the highest score (200), so its rank is 0.
 ```
 
@@ -51,7 +51,7 @@ dragonfly> ZREVRANK leaderboard "playerB"
 When the specified member is not in the sorted set, `ZREVRANK` will return `nil`:
 
 ```shell
-dragonfly> ZREVRANK leaderboard "playerD"
+dragonfly$> ZREVRANK leaderboard "playerD"
 (nil)  # "playerD" does not exist in the set.
 ```
 
@@ -60,11 +60,11 @@ dragonfly> ZREVRANK leaderboard "playerD"
 In case of identical scores, the order in which members were added is preserved:
 
 ```shell
-dragonfly> ZADD leaderboard 100 "playerX" 100 "playerY"
+dragonfly$> ZADD leaderboard 100 "playerX" 100 "playerY"
 (integer) 2
-dragonfly> ZREVRANK leaderboard "playerX"
+dragonfly$> ZREVRANK leaderboard "playerX"
 (integer) 2  # "playerX" was added before "playerY", so it has a higher rank.
-dragonfly> ZREVRANK leaderboard "playerY"
+dragonfly$> ZREVRANK leaderboard "playerY"
 (integer) 3  # "playerY" was added after "playerX", so it has a lower rank.
 ```
 

@@ -47,11 +47,11 @@ The command returns an integer indicating the number of members removed from the
 Remove members between "alpha" and "delta" inclusively:
 
 ```shell
-dragonfly> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
+dragonfly$> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
 (integer) 5
-dragonfly> ZREMRANGEBYLEX myzset [alpha] [delta]
+dragonfly$> ZREMRANGEBYLEX myzset [alpha] [delta]
 (integer) 4
-dragonfly> ZRANGE myzset 0 -1
+dragonfly$> ZRANGE myzset 0 -1
 1) "echo"
 ```
 
@@ -60,11 +60,11 @@ dragonfly> ZRANGE myzset 0 -1
 Remove an inclusive-to-exclusive range, excluding "bravo":
 
 ```shell
-dragonfly> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
+dragonfly$> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
 (integer) 5
-dragonfly> ZREMRANGEBYLEX myzset [alpha] (charlie
+dragonfly$> ZREMRANGEBYLEX myzset [alpha] (charlie
 (integer) 2
-dragonfly> ZRANGE myzset 0 -1
+dragonfly$> ZRANGE myzset 0 -1
 1) "charlie"
 2) "delta"
 3) "echo"
@@ -75,11 +75,11 @@ dragonfly> ZRANGE myzset 0 -1
 Remove everything up to "delta" inclusively:
 
 ```shell
-dragonfly> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
+dragonfly$> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
 (integer) 5
-dragonfly> ZREMRANGEBYLEX myzset - [delta]
+dragonfly$> ZREMRANGEBYLEX myzset - [delta]
 (integer) 4
-dragonfly> ZRANGE myzset 0 -1
+dragonfly$> ZRANGE myzset 0 -1
 1) "echo"
 ```
 
@@ -88,11 +88,11 @@ dragonfly> ZRANGE myzset 0 -1
 Use `ZREMRANGEBYLEX` to remove all members of a sorted set easily:
 
 ```shell
-dragonfly> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
+dragonfly$> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
 (integer) 5
-dragonfly> ZREMRANGEBYLEX myzset - +
+dragonfly$> ZREMRANGEBYLEX myzset - +
 (integer) 5
-dragonfly> ZRANGE myzset 0 -1
+dragonfly$> ZRANGE myzset 0 -1
 (empty array)
 ```
 
