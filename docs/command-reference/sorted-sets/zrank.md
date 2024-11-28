@@ -48,17 +48,17 @@ ZRANK key member
 ## Code Examples
 
 ```cli
-dragonfly$> ZADD mySortedSet 10 "Alice"
+dragonfly> ZADD mySortedSet 10 "Alice"
 (integer) 1
-dragonfly$> ZADD mySortedSet 20 "Bob"
+dragonfly> ZADD mySortedSet 20 "Bob"
 (integer) 1
-dragonfly$> ZADD mySortedSet 15 "Charlie"
+dragonfly> ZADD mySortedSet 15 "Charlie"
 (integer) 1
-dragonfly$> ZRANK mySortedSet "Charlie"
+dragonfly> ZRANK mySortedSet "Charlie"
 (integer) 1
-dragonfly$> ZRANK mySortedSet "Bob"
+dragonfly> ZRANK mySortedSet "Bob"
 (integer) 2
-dragonfly$> ZRANK mySortedSet "Dave"
+dragonfly> ZRANK mySortedSet "Dave"
 (nil)
 ```
 

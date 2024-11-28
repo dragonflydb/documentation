@@ -30,19 +30,19 @@ their scores).
 ## Examples
 
 ```shell
-dragonfly$> ZADD myzset 1 "one"
+dragonfly> ZADD myzset 1 "one"
 (integer) 1
-dragonfly$> ZADD myzset 2 "two"
+dragonfly> ZADD myzset 2 "two"
 (integer) 1
-dragonfly$> ZADD myzset 3 "three"
+dragonfly> ZADD myzset 3 "three"
 (integer) 1
-dragonfly$> ZREVRANGE myzset 0 -1
+dragonfly> ZREVRANGE myzset 0 -1
 1) "three"
 2) "two"
 3) "one"
-dragonfly$> ZREVRANGE myzset 2 3
+dragonfly> ZREVRANGE myzset 2 3
 1) "one"
-dragonfly$> ZREVRANGE myzset -2 -1
+dragonfly> ZREVRANGE myzset -2 -1
 1) "two"
 2) "one"
 ```

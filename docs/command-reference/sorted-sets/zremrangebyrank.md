@@ -36,11 +36,11 @@ The command returns an integer indicating the number of members removed.
 ## Code Examples
 
 ```cli
-dragonfly$> ZADD myset 1 "one" 2 "two" 3 "three"
+dragonfly> ZADD myset 1 "one" 2 "two" 3 "three"
 (integer) 3
-dragonfly$> ZREMRANGEBYRANK myset 0 1
+dragonfly> ZREMRANGEBYRANK myset 0 1
 (integer) 2
-dragonfly$> ZRANGE myset 0 -1 WITHSCORES
+dragonfly> ZRANGE myset 0 -1 WITHSCORES
 1) "three"
 2) "3"
 ```
