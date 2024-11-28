@@ -28,12 +28,12 @@ ZRANGEBYLEX key min max [LIMIT offset count]
 
 - `key`: The key of the sorted set where the range query is performed.
 - `min` and `max`:
-  - The minimum and maximum lexicographical values.
-  - Valid `min` and `max` must start with `(` or `[` to indicate exclusive or inclusive bounds respectively.
+  - The minimum and maximum lexicographical values to filter the members.
+  - Valid `start` and `stop` values must start with `(` or `[` to indicate exclusive or inclusive bounds respectively.
   - The `+` and `-` special values can be used to specify positive and negative infinity strings, respectively.
 - `LIMIT offset count` (optional): If specified, the command returns a subset of the elements within the specified range.
-    - `offset`: The starting index of the subset (zero-based).
-    - `count`: The number of elements to return. A negative `count` returns all elements from `offset` to the end.
+  - `offset`: The starting index of the subset (zero-based).
+  - `count`: The number of elements to return. A negative `count` returns all elements from the `offset`.
 
 ## Return Values
 
@@ -128,8 +128,10 @@ dragonfly$> ZRANGEBYLEX fruits - +
 
 ## Common Mistakes
 
-- Forgetting to use the correct boundary markers (`[` for inclusive, `(` for exclusive) in `min` and `max` parameters.
 - Forgetting that `ZRANGEBYLEX` operates on lexicographical ordering, not numeric scores.
+- Forgetting to use the correct boundary markers (`[` for inclusive, `(` for exclusive) in `min` and `max` parameters.
+- Using invalid ranges (`min` > `max`) will always return an empty array.
+- Misunderstanding that the `LIMIT` clause is applied after filtering, meaning it limits how many results are returned but does not affect the lexicographical range.
 
 ## FAQs
 

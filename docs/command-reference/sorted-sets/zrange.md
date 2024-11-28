@@ -32,7 +32,7 @@ ZRANGE key start stop [BYSCORE | BYLEX] [REV] [LIMIT offset count] [WITHSCORES]
 - `REV` (optional): If specified, the sorted set is traversed in reverse order (high-to-low scores).
 - `LIMIT offset count` (optional): If specified, the command returns a subset of the elements within the specified range.
   - `offset`: The starting index of the subset (zero-based).
-  - `count`: The number of elements to return. A negative `count` returns all elements from `offset` to the end.
+  - `count`: The number of elements to return. A negative `count` returns all elements from the `offset`.
 - `WITHSCORES` (optional): If specified, the command returns the score of each element along with the element itself.
 
 ### Score Ranges with `BYSCORE`
@@ -50,7 +50,7 @@ When the `BYLEX` option is provided, the command behaves like [`ZRANGEBYLEX`](zr
 and returns the range of elements from the sorted set within the **lexicographical closed range intervals**.
 
 - When `BYLEX` is used, the `start` and `stop` parameters are **treated as lexicographical strings**.
-- Valid `start` and `stop` must start with `(` or `[` to indicate exclusive or inclusive bounds respectively.
+- Valid `start` and `stop` values must start with `(` or `[` to indicate exclusive or inclusive bounds respectively.
 - The `+` and `-` special values can be used to specify positive and negative infinity strings, respectively.
 
 ## Return Values
@@ -158,7 +158,8 @@ dragonfly$> ZRANGE leaderboard +inf 4200 BYSCORE WITHSCORES REV
 ## Common Mistakes
 
 - Confusing positive and negative indexes—positive starts from `0` (beginning), while negative starts from `-1` (end).
-- Using invalid ranges (`start` > `stop`) will return an empty array.
+- Using invalid ranges (`start` > `stop`) will always return an empty array.
+- Misunderstanding that the `LIMIT` clause is applied after filtering, meaning it limits how many results are returned but does not affect the range.
 
 ## FAQs
 
