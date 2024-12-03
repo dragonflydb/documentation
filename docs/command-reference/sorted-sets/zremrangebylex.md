@@ -26,72 +26,74 @@ ZREMRANGEBYLEX key min max
 ## Parameter Explanations
 
 - `key`: The key of the sorted set to modify.
-- `min`: The minimum lexicographical boundary (inclusive or exclusive) for member removal.
-- `max`: The maximum lexicographical boundary (inclusive or exclusive) for member removal.
-
-### Lexicographical Range Specification:
-
-- By default, both `min` and `max` are inclusive.
-- Use `(` to specify that the range is **exclusive**. For example, `(a` is exclusive of the member with value `a`.
-- `-` represents the smallest possible member (i.e., less than any valid string).
-- `+` represents the largest possible member (i.e., greater than any valid string).
+- `min` and `max`:
+  - The minimum and maximum lexicographical values to filter the members.
+  - Valid `start` and `stop` values must start with `(` or `[` to indicate exclusive or inclusive bounds respectively.
+  - The `+` and `-` special values can be used to specify positive and negative infinity strings, respectively.
 
 ## Return Values
 
-The command returns an integer indicating the number of members removed from the sorted set.
+- The command returns an integer indicating the number of members removed from the sorted set.
 
 ## Code Examples
 
 ### Basic Example
 
-Remove members between "alpha" and "delta" inclusively:
+Remove members between `alpha` and `delta` inclusively:
 
 ```shell
-dragonfly$> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
+dragonfly$> ZADD myzset 0 "alpha" 0 "bravo" 0 "charlie" 0 "delta" 0 "echo"
 (integer) 5
-dragonfly$> ZREMRANGEBYLEX myzset [alpha] [delta]
+
+dragonfly$> ZREMRANGEBYLEX myzset [alpha [delta
 (integer) 4
+
 dragonfly$> ZRANGE myzset 0 -1
 1) "echo"
 ```
 
 ### Exclusive Range Removal
 
-Remove an inclusive-to-exclusive range, excluding "bravo":
+Remove an inclusive-to-exclusive range, excluding `alpha` but including `delta`:
 
 ```shell
-dragonfly$> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
+dragonfly$> ZADD myzset 0 "alpha" 0 "bravo" 0 "charlie" 0 "delta" 0 "echo"
 (integer) 5
-dragonfly$> ZREMRANGEBYLEX myzset [alpha] (charlie
-(integer) 2
+
+dragonfly$> ZREMRANGEBYLEX myzset (alpha [delta
+(integer) 3
+
 dragonfly$> ZRANGE myzset 0 -1
-1) "charlie"
-2) "delta"
-3) "echo"
+1) "alpha"
+2) "echo"
 ```
 
 ### Removing All Members in a Lexicographical Range
 
-Remove everything up to "delta" inclusively:
+Remove everything up to `delta` inclusively:
 
 ```shell
-dragonfly$> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
+dragonfly$> ZADD myzset 0 "alpha" 0 "bravo" 0 "charlie" 0 "delta" 0 "echo"
 (integer) 5
-dragonfly$> ZREMRANGEBYLEX myzset - [delta]
+
+dragonfly$> ZREMRANGEBYLEX myzset - [delta
 (integer) 4
+
 dragonfly$> ZRANGE myzset 0 -1
 1) "echo"
 ```
 
 ### Completely Clearing a Set With a Large Lexicographical Range
 
-Use `ZREMRANGEBYLEX` to remove all members of a sorted set easily:
+Use `ZREMRANGEBYLEX` and the `-` and `+` special values to remove all members in a sorted set:
 
 ```shell
 dragonfly$> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
 (integer) 5
+
 dragonfly$> ZREMRANGEBYLEX myzset - +
 (integer) 5
+
 dragonfly$> ZRANGE myzset 0 -1
 (empty array)
 ```
@@ -100,14 +102,12 @@ dragonfly$> ZRANGE myzset 0 -1
 
 - For optimal performance, ensure your use case logically fits lexicographical ordering.
   `ZREMRANGEBYLEX` works best when you're filtering or trimming sets based on string ranges.
-- If you're unsure about the lexicographical boundaries, use combinations of `"[", "("`, and the inclusive/exclusive markers to adjust the range.
-- To clear specific portions of a set, particularly members that belong lexicographically to name clusters, use a smart combination of `ZREMRANGEBYLEX` with inclusive/exclusive ranges to target and remove only desired members.
+- If you're unsure about the lexicographical boundaries, use combinations of `[` and `(` as the inclusive/exclusive markers to adjust the range.
 
 ## Common Mistakes
 
-- Confusing inclusive and exclusive boundaries: Make sure you're clear whether you're including or excluding specific values when using `"("` and `"[ "` to define the range.
+- Confusing inclusive and exclusive boundaries: Make sure you're clear whether you're including or excluding specific values when using `[` and `(` to define the range.
 - Using `ZREMRANGEBYLEX` on non-sorted set types will result in an error.
-- Misunderstanding that lexicographical order operates on a binary level and that it may behave differently compared to alphabetical or natural sorting.
 
 ## FAQs
 
