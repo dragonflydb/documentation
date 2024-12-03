@@ -40,6 +40,7 @@ To get the number of members in a sorted set:
 ```shell
 dragonfly$> ZADD myzset 1 "member1" 2 "member2" 3 "member3"
 (integer) 3
+
 dragonfly$> ZCARD myzset
 (integer) 3
 ```
@@ -60,6 +61,7 @@ Suppose you are building a leaderboard and need to know how many total players a
 ```shell
 dragonfly$> ZADD leaderboard 100 "player1" 150 "player2" 200 "player3"
 (integer) 3
+
 dragonfly$> ZCARD leaderboard
 (integer) 3
 ```

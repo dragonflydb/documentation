@@ -67,6 +67,7 @@ Retrieve a range of elements from a sorted set:
 ```shell
 dragonfly$> ZADD myzset 1 "apple" 2 "banana" 3 "cherry"
 (integer) 3
+
 dragonfly$> ZRANGE myzset 0 -1
 1) "apple"
 2) "banana"
@@ -78,6 +79,9 @@ dragonfly$> ZRANGE myzset 0 -1
 Get the elements and their associated scores from the sorted set `myzset`.
 
 ```shell
+dragonfly$> ZADD myzset 1 "apple" 2 "banana" 3 "cherry"
+(integer) 3
+
 dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 1) "apple"
 2) "1"
@@ -92,6 +96,9 @@ dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 Get only the elements between the 1st and 2nd positions (indices 0-based):
 
 ```shell
+dragonfly$> ZADD myzset 1 "apple" 2 "banana" 3 "cherry"
+(integer) 3
+
 dragonfly$> ZRANGE myzset 1 2
 1) "banana"
 2) "cherry"
@@ -102,6 +109,9 @@ dragonfly$> ZRANGE myzset 1 2
 Retrieve the last two elements from the sorted set:
 
 ```shell
+dragonfly$> ZADD myzset 1 "apple" 2 "banana" 3 "cherry"
+(integer) 3
+
 dragonfly$> ZRANGE myzset -2 -1
 1) "banana"
 2) "cherry"

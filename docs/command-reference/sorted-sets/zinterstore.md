@@ -49,10 +49,13 @@ Intersect two sorted sets and store the result in a new set:
 ```shell
 dragonfly$> ZADD zset1 1 a 2 b 3 c
 (integer) 3
+
 dragonfly$> ZADD zset2 2 a 3 b 1 d
 (integer) 3
+
 dragonfly$> ZINTERSTORE out 2 zset1 zset2
 (integer) 2
+
 dragonfly$> ZRANGE out 0 -1 WITHSCORES
 1) "a"
 2) "3"  # Score is 1 + 2 = 3
@@ -67,10 +70,13 @@ Apply weights to each sorted set before calculating the intersection:
 ```shell
 dragonfly$> ZADD zset1 1 a 2 b
 (integer) 2
+
 dragonfly$> ZADD zset2 2 a 3 b
 (integer) 2
+
 dragonfly$> ZINTERSTORE out 2 zset1 zset2 WEIGHTS 2 3
 (integer) 2
+
 dragonfly$> ZRANGE out 0 -1 WITHSCORES
 1) "a"
 2) "8"  # Score: (1 * 2) + (2 * 3) = 8
@@ -86,10 +92,13 @@ Change the default aggregation method to `MIN` or `MAX`:
 # Using MIN aggregation
 dragonfly$> ZADD zset1 1 a 5 b
 (integer) 2
+
 dragonfly$> ZADD zset2 3 a 2 b
 (integer) 2
+
 dragonfly$> ZINTERSTORE out 2 zset1 zset2 AGGREGATE MIN
 (integer) 2
+
 dragonfly$> ZRANGE out 0 -1 WITHSCORES
 1) "a"
 2) "1"  # Minimum score of 'a'
@@ -99,6 +108,7 @@ dragonfly$> ZRANGE out 0 -1 WITHSCORES
 # Using MAX aggregation
 dragonfly$> ZINTERSTORE out 2 zset1 zset2 AGGREGATE MAX
 (integer) 2
+
 dragonfly$> ZRANGE out 0 -1 WITHSCORES
 1) "a"
 2) "3"  # Maximum score of 'a'

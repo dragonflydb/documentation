@@ -45,6 +45,7 @@ Count the number of elements in a lexicographical range in a sorted set:
 ```shell
 dragonfly$> ZADD myset 0 a 0 b 0 c 0 d 0 e
 (integer) 5
+
 dragonfly$> ZLEXCOUNT myset [b [d
 (integer) 3
 ```
@@ -58,6 +59,7 @@ Specify an exclusive upper range limit in a lexicographical query:
 ```shell
 dragonfly$> ZADD myset 0 a 0 b 0 c 0 d 0 e
 (integer) 5
+
 dragonfly$> ZLEXCOUNT myset [b (d
 (integer) 2
 ```
@@ -71,6 +73,7 @@ To count all elements in the sorted set, use `-` and `+` as argument values deno
 ```shell
 dragonfly$> ZADD myset 0 a 0 b 0 c 0 d 0 e
 (integer) 5
+
 dragonfly$> ZLEXCOUNT myset - +
 (integer) 5
 ```

@@ -29,7 +29,7 @@ ZREM key member [member ...]
 
 ## Return Values
 
-The command returns an integer representing the number of members that were removed from the sorted set.
+- The command returns an integer representing the number of members that were removed from the sorted set.
 
 ## Code Examples
 
@@ -40,8 +40,10 @@ Remove a single member from a sorted set:
 ```shell
 dragonfly$> ZADD myzset 1 "alpha" 2 "beta" 3 "gamma"
 (integer) 3
+
 dragonfly$> ZREM myzset "alpha"
 (integer) 1
+
 dragonfly$> ZRANGE myzset 0 -1
 1) "beta"
 2) "gamma"
@@ -54,8 +56,10 @@ You can also remove multiple members in one command:
 ```shell
 dragonfly$> ZADD myzset 1 "alpha" 2 "beta" 3 "gamma"
 (integer) 3
+
 dragonfly$> ZREM myzset "alpha" "gamma"
 (integer) 2
+
 dragonfly$> ZRANGE myzset 0 -1
 1) "beta"
 ```
@@ -67,13 +71,14 @@ If you attempt to remove members that do not exist in the sorted set, they are s
 ```shell
 dragonfly$> ZADD myzset 1 "alpha" 2 "beta"
 (integer) 2
+
 dragonfly$> ZREM myzset "gamma" "delta"
 (integer) 0  # No members were removed because "gamma" and "delta" don't exist.
 ```
 
 ## Best Practices
 
-- Use `ZREM` in conjunction with other sorted set commands like `ZRANGE` and `ZADD` to maintain leaderboards, priority queues, or other ranked data structures.
+- Use `ZREM` in conjunction with other sorted set commands like [`ZRANGE`](zrange.md) and [`ZADD`](zadd.md) to maintain leaderboards, priority queues, or other ranked data structures.
 - When removing members, consider batching multiple deletions in a single `ZREM` command to minimize round-trip time and improve performance.
 
 ## Common Mistakes
