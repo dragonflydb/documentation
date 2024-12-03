@@ -29,43 +29,53 @@ ZRANK key member
 
 ## Return Values
 
-The command returns the rank (index) of the specified `member`.
-The rank is a zero-based integer (starting from `0` for the member with the lowest score).
-If the `member` does not exist in the set, `ZRANK` returns `nil`.
+- The command returns the rank (index) of the specified `member`.
+- The rank is a zero-based integer (starting from `0` for the member with the lowest score).
+- If the `member` does not exist in the set, `ZRANK` returns `nil`.
 
 ## Code Examples
 
-### Basic Example: Determining Rank
+### Basic Example
 
-Rank a player in a game's leaderboard:
+Rank players in a leaderboard by their scores:
 
 ```shell
 dragonfly$> ZADD leaderboard 5000 "Player1" 6000 "Player2" 7000 "Player3"
 (integer) 3
+
+dragonfly$> ZRANK leaderboard "Player1"
+(integer) 0
+
 dragonfly$> ZRANK leaderboard "Player2"
 (integer) 1
+
+dragonfly$> ZRANK leaderboard "Player3"
+(integer) 2
 ```
 
-In the above example, `Player2` has a score of `6000` and ranks at index `1` in the sorted set.
+### Non-Existing Member
 
-### Non-existing Member
-
-Attempt to retrieve the rank of a member that doesn't exist:
+Attempt to retrieve the rank of a member that doesn't exist returns `nil`:
 
 ```shell
+dragonfly$> ZADD leaderboard 5000 "Player1" 6000 "Player2" 7000 "Player3"
+(integer) 3
+
 dragonfly$> ZRANK leaderboard "Player4"
 (nil)
 ```
-
-Since `Player4` is not in the leaderboard, the command returns `nil`.
 
 ### Using `ZRANK` After Updating Scores
 
 When a player's score changes, the rank will dynamically adjust:
 
 ```shell
+dragonfly$> ZADD leaderboard 5000 "Player1" 6000 "Player2" 7000 "Player3"
+(integer) 3
+
 dragonfly$> ZADD leaderboard 8000 "Player2"
 (integer) 0
+
 dragonfly$> ZRANK leaderboard "Player2"
 (integer) 2
 ```
@@ -79,6 +89,7 @@ For larger sets, `ZRANK` remains efficient and operates in logarithmic time comp
 ```shell
 dragonfly$> ZADD large_set 1 "A" 2 "B" 3 "C" 4 "D" 5 "E"
 (integer) 5
+
 dragonfly$> ZRANK large_set "D"
 (integer) 3
 ```
@@ -100,11 +111,11 @@ Even with larger sets, you can quickly determine the rank of any member.
 ### Can I use `ZRANK` with descending order?
 
 No, `ZRANK` only returns the rank in ascending order of scores.
-To get the rank in descending order, use the related `ZREVRANK` command.
+To get the rank in descending order, use the related [`ZREVRANK`](zrevrank.md) command.
 
 ### What type is returned if the key does not represent a sorted set?
 
-If the key exists but it does not hold a sorted set, `ZRANK` will return an error.
+If the key exists, but it does not hold a sorted set, `ZRANK` will return an error.
 
 ### What happens if the key does not exist?
 
