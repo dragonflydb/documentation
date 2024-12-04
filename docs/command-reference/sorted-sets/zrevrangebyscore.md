@@ -25,25 +25,28 @@ ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]
 ## Parameter Explanations
 
 - `key`: The key identifying the sorted set.
-- `max`: The maximum score used in the range (inclusive by default).
-- `min`: The minimum score used in the range (inclusive by default).
+- `max` and `min`:
+    - The maximum and minimum score values to filter the members to be removed.
+    - **By default, they are inclusive**. To make them exclusive, use the `(` character before the score.
+    - The `+inf` and `-inf` special values can be used to specify positive and negative infinity scores, respectively.
 - `WITHSCORES` (optional): If provided, the command includes the scores of the returned members.
-- `LIMIT offset count` (optional): Limits the results to a specific range (offset and number of members), useful for pagination.
+- `LIMIT offset count` (optional): Limits the number of elements returned. `offset` specifies how many elements to skip, and `count` specifies the maximum number of elements to return.
 
 ## Return Values
 
-The command returns an array of members within the score range, ordered from the highest to the lowest score.
-If `WITHSCORES` is used, the returned array includes both members and their scores as alternating elements.
+- The command returns an array of members within the score range, ordered from the highest to the lowest score.
+- If `WITHSCORES` is used, the returned array includes both members and their scores as alternating elements.
 
 ## Code Examples
 
 ### Basic Example
 
-Retrieve the members in a sorted set with scores between 50 and 0, ordered from highest to lowest:
+Retrieve the members in a sorted set with scores between `50` and `0` inclusive, ordered from highest to lowest:
 
 ```shell
 dragonfly$> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
 (integer) 4
+
 dragonfly$> ZREVRANGEBYSCORE leaderboard 50 0
 1) "Alice"
 2) "Charlie"
@@ -51,10 +54,59 @@ dragonfly$> ZREVRANGEBYSCORE leaderboard 50 0
 
 ### Using `WITHSCORES`
 
-Retrieve the members and their scores between the range 100 and 25:
+Retrieve the members and their scores between `50` and `0` inclusive:
 
 ```shell
-dragonfly$> ZREVRANGEBYSCORE leaderboard 100 25 WITHSCORES
+dragonfly$> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
+(integer) 4
+
+dragonfly$> ZREVRANGEBYSCORE leaderboard 50 0 WITHSCORES
+1) "Alice"
+2) "50"
+3) "Charlie"
+4) "25"
+```
+
+### Limiting Results with `LIMIT`
+
+Retrieve up to two members from the sorted set with scores between `100` and `0`, skipping the first element (`offset=1`):
+
+```shell
+dragonfly$> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
+(integer) 4
+
+dragonfly$> ZREVRANGEBYSCORE leaderboard 100 0 WITHSCORES LIMIT 1 2
+1) "Dana"
+2) "75"
+3) "Alice"
+4) "50"
+```
+
+### Using Exclusive Ranges
+
+Use parentheses to represent exclusive ranges.
+For example, retrieve members with scores between `100` (exclusive) and `50` (inclusive):
+
+```shell
+dragonfly$> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
+(integer) 4
+
+dragonfly$> ZREVRANGEBYSCORE leaderboard (100 50 WITHSCORES
+1) "Dana"
+2) "75"
+3) "Alice"
+4) "50"
+```
+
+### Using Special Values
+
+Retrieve members with scores between `+inf` and `50`:
+
+```shell
+dragonfly$> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
+(integer) 4
+
+dragonfly$> ZREVRANGEBYSCORE leaderboard +inf 50 WITHSCORES
 1) "Bob"
 2) "100"
 3) "Dana"
@@ -63,37 +115,17 @@ dragonfly$> ZREVRANGEBYSCORE leaderboard 100 25 WITHSCORES
 6) "50"
 ```
 
-### Limiting Results with `LIMIT`
-
-Retrieve up to two members from the sorted set with scores between 100 and 0, starting from the second result:
-
-```shell
-dragonfly$> ZREVRANGEBYSCORE leaderboard 100 0 LIMIT 1 2
-1) "Dana"
-2) "Alice"
-```
-
-### Using Exclusive Ranges
-
-Use parentheses to represent exclusive ranges.
-For example, retrieve members with scores between 100 (exclusive) and 50 (inclusive):
-
-```shell
-dragonfly$> ZREVRANGEBYSCORE leaderboard (100 50
-1) "Dana"
-```
-
 ## Best Practices
 
 - Use `WITHSCORES` when you need not only the members but also their associated scores. This is particularly useful in leaderboard applications.
 - Combine `LIMIT` with score ranges to implement efficient pagination in systems that need ranked results without retrieving the entire set.
-- Consider using exclusive ranges (with parentheses) for more advanced querying when exact scores should be excluded from results.
+- Consider using exclusive ranges with `(` for more advanced querying when exact scores should be excluded from results.
 
 ## Common Mistakes
 
-- Confusing the order in which `ZREVRANGEBYSCORE` returns results. This command returns members from highest to lowest score, opposite of `ZRANGEBYSCORE`.
-- Using `LIMIT` without considering its interaction with the range scope; remember that `LIMIT` works on the result after sorting in score order.
-- Forgetting that both `min` and `max` are inclusive by default unless prefixed with parentheses for exclusive ranges.
+- Confusing the order in which `ZREVRANGEBYSCORE` returns results. This command returns members from highest to lowest score, opposite of [`ZRANGEBYSCORE`](zrangebyscore.md).
+- Using `LIMIT` without considering its interaction with the range scope. Remember that `LIMIT` works on the result after sorting in score order.
+- Forgetting that both `max` and `min` are both inclusive by default unless prefixed with `(` for exclusive ranges.
 
 ## FAQs
 
@@ -103,8 +135,8 @@ If the key does not exist, `ZREVRANGEBYSCORE` returns an empty array.
 
 ### Can I use floating-point numbers for `min` and `max`?
 
-Yes, both integer and floating-point numbers are supported for the score range definition in `ZREVRANGEBYSCORE`.
+Yes, both integer and floating-point numbers are supported for sorted set scores.
 
 ### What is the difference between `ZRANGEBYSCORE` and `ZREVRANGEBYSCORE`?
 
-`ZRANGEBYSCORE` returns members sorted by increasing score (lowest to highest), while `ZREVRANGEBYSCORE` returns them in descending order (highest to lowest).
+[`ZRANGEBYSCORE`](zrangebyscore.md) returns members sorted by increasing score (lowest to highest), while `ZREVRANGEBYSCORE` returns them in descending order (highest to lowest).
