@@ -26,7 +26,7 @@ ZREMRANGEBYRANK key start stop
 ## Parameter Explanations
 
 - `key`: The key of the sorted set where members will be removed.
-- `start`: The starting rank from where removals should begin (inclusive).
+- `start`: The starting rank (0-based index) from where removals should begin (inclusive).
 - `stop`: The ending rank for removals (inclusive).
 
 ## Return Values

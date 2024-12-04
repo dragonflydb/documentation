@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-In Dragonfly, as well as in Redis and Valkey, the `ZRANGE` command is used to retrieve a range of elements from a sorted set, sorted by their score in ascending order (lowest to highest).
+In Dragonfly, as well as in Redis and Valkey, the `ZRANGE` command is used to retrieve a range of elements from a sorted set, **sorted by their score in ascending order (lowest to highest)**.
 The `ZRANGE` command is highly useful when you are dealing with ordered data and need to fetch items within specific ranges of ranks or support paginated retrieval.
 
 ## Syntax

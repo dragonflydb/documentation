@@ -28,7 +28,7 @@ ZREMRANGEBYLEX key min max
 - `key`: The key of the sorted set to modify.
 - `min` and `max`:
   - The minimum and maximum lexicographical values to filter the members to be removed.
-  - Valid `start` and `stop` values must start with `(` or `[` to indicate exclusive or inclusive bounds respectively.
+  - Valid `min` and `max` values must start with `(` or `[` to indicate exclusive or inclusive bounds respectively.
   - The `+` and `-` special values can be used to specify positive and negative infinity strings, respectively.
 
 ## Return Values

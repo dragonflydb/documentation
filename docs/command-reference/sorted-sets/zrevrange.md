@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-In Dragonfly, as well as in Redis and Valkey, the `ZREVRANGE` command is used to return a range of members in a sorted set, ordered from the highest to the lowest score.
+In Dragonfly, as well as in Redis and Valkey, the `ZREVRANGE` command is used to return a range of members in a sorted set, **ordered from the highest to the lowest score**.
 It is the reverse of the `ZRANGE` command, which retrieves members in ascending order of their scores.
 This command is particularly useful for ranking scenarios like leaderboards, where you want to list the top performers.
 
@@ -26,7 +26,7 @@ ZREVRANGE key start stop [WITHSCORES]
 ## Parameter Explanations
 
 - `key`: The key of the sorted set.
-- `start`: The starting rank (0-based index), where `0` represents the highest score in the set.
+- `start`: The starting rank (0-based index) where `0` represents the highest score in the set (inclusive).
 - `stop`: The ending rank (inclusive).
 - `WITHSCORES` (optional): If provided, the command returns both the member and its associated score.
 
@@ -44,6 +44,7 @@ Retrieve the top 3 members of a leaderboard:
 ```shell
 dragonfly$> ZADD leaderboard 100 "PlayerA" 90 "PlayerB" 85 "PlayerC" 75 "PlayerD"
 (integer) 4
+
 dragonfly$> ZREVRANGE leaderboard 0 2
 1) "PlayerA"
 2) "PlayerB"
@@ -57,6 +58,7 @@ Fetch the top 3 members along with their scores:
 ```shell
 dragonfly$> ZADD leaderboard 100 "PlayerA" 90 "PlayerB" 85 "PlayerC" 75 "PlayerD"
 (integer) 4
+
 dragonfly$> ZREVRANGE leaderboard 0 2 WITHSCORES
 1) "PlayerA"
 2) "100"
@@ -72,31 +74,19 @@ You can use negative indexes to fetch members starting from the end of the sorte
 For example, to retrieve the last 2 members:
 
 ```shell
+dragonfly$> ZADD leaderboard 100 "PlayerA" 90 "PlayerB" 85 "PlayerC" 75 "PlayerD"
+(integer) 4
+
 dragonfly$> ZREVRANGE leaderboard -2 -1
 1) "PlayerC"
 2) "PlayerD"
-```
-
-### Example with a Full Leaderboard
-
-Visualize an entire leaderboard for a game:
-
-```shell
-dragonfly$> ZADD leaderboard 100 "PlayerA" 90 "PlayerB" 85 "PlayerC" 75 "PlayerD" 60 "PlayerE"
-(integer) 5
-dragonfly$> ZREVRANGE leaderboard 0 -1
-1) "PlayerA"
-2) "PlayerB"
-3) "PlayerC"
-4) "PlayerD"
-5) "PlayerE"
 ```
 
 ## Best Practices
 
 - Use `ZREVRANGE` with `WITHSCORES` when you need both the members and their associated scores, especially in ranking applications.
 - For leaderboards that might grow large over time, consider paginating results by adjusting the `start` and `stop` parameters dynamically.
-- Whenever only member names are needed (and not scores), exclude the `WITHSCORES` option to optimize performance and reduce response size.
+- Whenever only member values are needed (and not scores), exclude the `WITHSCORES` option to optimize performance and reduce response size.
 
 ## Common Mistakes
 
@@ -117,7 +107,7 @@ Yes.
 However, it’s advised to use ranges (`start` and `stop`) to paginate through large sorted sets.
 Fetching a large number of members at once could result in performance degradation.
 
-### What happens if `start` or `stop` exceeds the set’s bounds?
+### What happens if `start` or `stop` exceeds the set's bounds?
 
 If `start` or `stop` exceeds the sorted set's length, `ZREVRANGE` will return the elements within the valid range.
 If there are no elements in the specified range, an empty list is returned.
