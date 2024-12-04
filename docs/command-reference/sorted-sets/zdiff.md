@@ -42,8 +42,10 @@ Return the members found in the first sorted set but not in the second:
 ```shell
 dragonfly$> ZADD myzset1 1 "one" 2 "two" 3 "three"
 (integer) 3
+
 dragonfly$> ZADD myzset2 2 "two" 4 "four"
 (integer) 2
+
 dragonfly$> ZDIFF 2 myzset1 myzset2
 1) "one"
 2) "three"
@@ -58,8 +60,10 @@ Return both the members and their scores for the difference between two sets:
 ```shell
 dragonfly$> ZADD myzset1 1 "one" 2 "two" 3 "three"
 (integer) 3
+
 dragonfly$> ZADD myzset2 2 "two" 4 "four"
 (integer) 2
+
 dragonfly$> ZDIFF 2 myzset1 myzset2 WITHSCORES
 1) "one"
 2) "1"
@@ -74,10 +78,13 @@ Find elements present in the first sorted set but missing in the other two sorte
 ```shell
 dragonfly$> ZADD myzset1 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
+
 dragonfly$> ZADD myzset2 3 "three" 4 "four"
 (integer) 2
+
 dragonfly$> ZADD myzset3 1 "one" 5 "five"
 (integer) 2
+
 dragonfly$> ZDIFF 3 myzset1 myzset2 myzset3
 1) "two"
 ```

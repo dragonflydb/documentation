@@ -49,6 +49,7 @@ Pop the element with the lowest score from a single sorted set with a 5-second t
 ```shell
 dragonfly$> ZADD myzset 1 "task1" 2 "task2" 3 "task3"
 (integer) 3
+
 dragonfly$> BZPOPMIN myzset 5
 1) "myzset"
 2) "task1"
@@ -63,8 +64,10 @@ The command will act on the first non-empty set encountered:
 ```shell
 dragonfly$> ZADD zset1 1 "a" 2 "b"
 (integer) 2
+
 dragonfly$> ZADD zset2 3 "x" 4 "y"
 (integer) 2
+
 dragonfly$> BZPOPMIN zset1 zset2 0
 1) "zset1"
 2) "a"
@@ -88,6 +91,7 @@ Use `BZPOPMIN` to fetch the highest-priority task (the one with the lowest score
 ```shell
 dragonfly$> ZADD task_queue 10 "low_priority_task" 5 "medium_priority_task" 1 "high_priority_task"
 (integer) 3
+
 dragonfly$> BZPOPMIN task_queue 0
 1) "task_queue"
 2) "high_priority_task"

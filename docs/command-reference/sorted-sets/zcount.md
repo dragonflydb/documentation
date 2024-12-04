@@ -110,7 +110,7 @@ dragonfly$> ZCOUNT myzset -inf +inf
 
 If the key does not exist, `ZCOUNT` will return `0`, meaning there are no members to count.
 
-### What’s the difference between `ZCOUNT` and `ZRANGE`?
+### What's the difference between `ZCOUNT` and `ZRANGE`?
 
 While `ZCOUNT` returns the number of elements in a score range, [`ZRANGE`](zrange.md) returns the elements themselves.
 If you only need the count, `ZCOUNT` is more efficient.

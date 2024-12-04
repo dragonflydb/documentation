@@ -29,7 +29,7 @@ ZRANGEBYLEX key min max [LIMIT offset count]
 - `key`: The key of the sorted set where the range query is performed.
 - `min` and `max`:
   - The minimum and maximum lexicographical values to filter the members.
-  - Valid `start` and `stop` values must start with `(` or `[` to indicate exclusive or inclusive bounds respectively.
+  - Valid `min` and `max` values must start with `(` or `[` to indicate exclusive or inclusive bounds respectively.
   - The `+` and `-` special values can be used to specify positive and negative infinity strings, respectively.
 - `LIMIT offset count` (optional): If specified, the command returns a subset of the elements within the specified range.
   - `offset`: The starting index of the subset (zero-based).
