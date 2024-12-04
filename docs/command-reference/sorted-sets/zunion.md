@@ -12,12 +12,12 @@ import PageTitle from '@site/src/components/PageTitle';
 
 In Dragonfly, as well as in Redis and Valkey, the `ZUNION` command is used to perform a union operation across multiple sorted sets (`zsets`) and return the resulting set.
 The resulting set members are calculated by combining scores across input sorted sets.
-It is particularly beneficial when you want to merge ranking or leaderboard data from multiple different sources or weight specific input sets differently.
+This command can be used when you want to merge ranking or leaderboard data from multiple different sources or weight specific input sets differently.
 
 ## Syntax
 
 ```shell
-ZUNION numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MAX]
+ZUNION numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE <SUM | MIN | MAX>] [WITHSCORES]
 ```
 
 - **Time complexity:** O(N)+O(M\*log(M)) with N being the sum of the sizes of the input sorted sets, and M being the number of elements in the resulting sorted set.
@@ -32,32 +32,35 @@ ZUNION numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MA
   - `SUM` (default): The scores are summed.
   - `MIN`: The minimum score is taken.
   - `MAX`: The maximum score is taken.
+- `WITHSCORES` (optional): If specified, the command returns the scores along with the members.
 
 ## Return Values
 
-The command returns the union of the sorted set members from the input `key`s, along with their aggregated scores based on the specified `AGGREGATE` method.
+- The command returns the result of the union with, optionally, their scores when `WITHSCORES` is used.
 
 ## Code Examples
 
 ### Basic Example: Union of Two Sorted Sets
 
-Perform a union of two `zsets` and aggregate their scores by default (i.e., using `SUM`).
+Perform a union of two sorted sets and aggregate their scores using the default `SUM` method.
 
 ```shell
 dragonfly$> ZADD zset1 1 "apple" 2 "banana"
 (integer) 2
+
 dragonfly$> ZADD zset2 3 "apple" 4 "cherry"
 (integer) 2
-dragonfly$> ZUNION 2 zset1 zset2
-1) "apple"
-2) (double) 4
-3) "cherry"
-4) (double) 4
-5) "banana"
-6) (double) 2
+
+dragonfly$> ZUNION 2 zset1 zset2 WITHSCORES
+1) "banana"
+2) "2"
+3) "apple"
+4) "4"
+5) "cherry"
+6) "4"
 ```
 
-In this example, `"apple"` appears in both sorted sets, and its scores (`1` from `zset1` and `3` from `zset2`) are summed to give a final score of `4`.
+In this example, `apple` appears in both sorted sets, and its scores are summed to give a result of `4`.
 
 ### Using `WEIGHTS` Parameter
 
@@ -66,58 +69,64 @@ Assign different weights to the scores of different `zsets` before performing th
 ```shell
 dragonfly$> ZADD zset1 1 "apple" 2 "banana"
 (integer) 2
+
 dragonfly$> ZADD zset2 3 "apple" 4 "cherry"
 (integer) 2
-dragonfly$> ZUNION 2 zset1 zset2 WEIGHTS 2 1
-1) "apple"
-2) (double) 5  # 1*2 + 3*1 = 5
-3) "banana"
-4) (double) 4  # 2*2 = 4
-5) "cherry"
-6) (double) 4  # 0 + 4*1 = 4
+
+dragonfly$> ZUNION 2 zset1 zset2 WEIGHTS 2 1 WITHSCORES
+1) "banana"
+2) "4"        # 2x2 + 0x1 = 4
+3) "cherry"
+4) "4"        # 0x2 + 4x1 = 4
+5) "apple"
+6) "5"        # 1x2 + 3x1 = 5
 ```
 
-In this example, the score of `zset1` is multiplied by `2`, and the score of `zset2` is multiplied by `1`.
+In this example, scores of `zset1` are multiplied by `2`, and scores of `zset2` are multiplied by `1`.
 
-### Using the `AGGREGATE` Parameter: MIN Aggregation
+### Using the `AGGREGATE` Parameter
 
-Take the minimum score for members that exist in multiple sets, instead of summing them.
+Take the maximum or minimum score for members that exist in multiple sets, instead of summing them.
 
 ```shell
-dragonfly$> ZADD zset1 1 "apple" 6 "banana"
-(integer) 2
-dragonfly$> ZADD zset2 3 "apple" 4 "cherry"
-(integer) 2
-dragonfly$> ZUNION 2 zset1 zset2 AGGREGATE MIN
+dragonfly$> ZADD zset1 1 "apple"
+(integer) 1
+
+dragonfly$> ZADD zset2 100 "apple"
+(integer) 1
+
+dragonfly$> ZUNION 2 zset1 zset2 AGGREGATE MIN WITHSCORES
 1) "apple"
-2) (double) 1  # min(1,3) = 1
-3) "cherry"
-4) (double) 4
-5) "banana"
-6) (double) 6
+2) "1"
+
+dragonfly$> ZUNION 2 zset1 zset2 AGGREGATE MAX WITHSCORES
+1) "apple"
+2) "100"
 ```
 
 In this example, for `"apple"`, the lower score between the two sets was `1`, so it was selected.
 
-### Weighting and Custom Aggregation: MAX Aggregation with Weights
+### Using Both `WEIGHTS` and `AGGREGATE`
 
 Use both `WEIGHTS` and `AGGREGATE` to calculate the weighted `MAX` score for each member.
 
 ```shell
 dragonfly$> ZADD zset1 1 "apple" 6 "banana"
 (integer) 2
+
 dragonfly$> ZADD zset2 3 "apple" 4 "cherry"
 (integer) 2
-dragonfly$> ZUNION 2 zset1 zset2 WEIGHTS 2 3 AGGREGATE MAX
+
+dragonfly$> ZUNION 2 zset1 zset2 WEIGHTS 2 3 AGGREGATE MAX WITHSCORES
 1) "apple"
-2) (double) 9  # max(1*2, 3*3) = 9
-3) "cherry"
-4) (double) 12  # 0 + 4*3 = 12
-5) "banana"
-6) (double) 12  # 6*2 = 12
+2) "9"        # max(1x2, 3x3) = 9
+3) "banana"
+4) "12"       # max(6x2, 0x3) = 12
+5) "cherry"
+6) "12"       # max(0x2, 4x3) = 12
 ```
 
-In this example, weighted scores are calculated (`2x` for `zset1` and `3x` for `zset2`), and the maximum score is taken between sets.
+In this example, weighted scores are calculated (`x2` for `zset1` and `x3` for `zset2`), and the maximum score is taken for each member during the union aggregation.
 
 ## Best Practices
 
@@ -127,9 +136,8 @@ In this example, weighted scores are calculated (`2x` for `zset1` and `3x` for `
 
 ## Common Mistakes
 
-- Forgetting that `ZUNION` can return an empty set if none of the members from the input sets overlap.
-- Assuming the result set will be sorted automatically by member names.
-  The members are returned sorted by their aggregated scores.
+- Assuming the result set will be sorted by member names.
+  The returned members are sorted by their aggregated scores.
 
 ## FAQs
 
@@ -141,10 +149,4 @@ For example, if `zset1` doesn't exist in the above examples, only `zset2`'s memb
 ### Can I use other aggregation methods besides `SUM`, `MIN`, or `MAX`?
 
 No, `SUM`, `MIN`, and `MAX` are the only supported aggregation methods.
-If no method is specified, the default aggregation is `SUM`.
-
-### What if the sets contain members with identical scores?
-
-If the members have identical scores, they are included in the result.
-However, there is no guaranteed order for members with the same score.
-Another Redis command like `ZRANGE` can be used to further control the order.
+`SUM` is default if `AGGREGATE` is not specified.
