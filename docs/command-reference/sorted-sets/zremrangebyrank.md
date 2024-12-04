@@ -31,19 +31,21 @@ ZREMRANGEBYRANK key start stop
 
 ## Return Values
 
-This command returns an integer representing the number of members that were removed from the sorted set.
+- This command returns an integer representing the number of members that were removed from the sorted set.
 
 ## Code Examples
 
 ### Basic Example: Remove by Rank
 
-Remove the members ranked between 0 (the first rank) and 1 (the second rank) in a sorted set:
+Remove the members ranked between `0` (the first rank) and `1` (the second rank) in a sorted set:
 
 ```shell
 dragonfly$> ZADD leaderboard 100 "Alice" 150 "Bob" 200 "Charlie"
 (integer) 3
+
 dragonfly$> ZREMRANGEBYRANK leaderboard 0 1
 (integer) 2
+
 dragonfly$> ZRANGE leaderboard 0 -1
 1) "Charlie"
 ```
@@ -55,8 +57,10 @@ Remove all members from a sorted set by specifying the entire range:
 ```shell
 dragonfly$> ZADD players 120 "Player1" 140 "Player2" 160 "Player3"
 (integer) 3
+
 dragonfly$> ZREMRANGEBYRANK players 0 -1
 (integer) 3
+
 dragonfly$> ZRANGE players 0 -1
 (empty array)
 ```
@@ -68,8 +72,10 @@ Remove the last two members from the sorted set using negative ranks:
 ```shell
 dragonfly$> ZADD scores 300 "u1" 400 "u2" 500 "u3" 600 "u4"
 (integer) 4
+
 dragonfly$> ZREMRANGEBYRANK scores -2 -1
 (integer) 2
+
 dragonfly$> ZRANGE scores 0 -1
 1) "u1"
 2) "u2"
@@ -78,12 +84,12 @@ dragonfly$> ZRANGE scores 0 -1
 ## Best Practices
 
 - `ZREMRANGEBYRANK` efficiently removes elements by rank without having to retrieve them first, making it particularly useful for cleaning up large datasets.
-- If you need to remove based on score instead of rank, consider using `ZREMRANGEBYSCORE`.
+- If you need to remove based on score instead of rank, consider using [`ZREMRANGEBYSCORE`](zremrangebyscore.md).
 
 ## Common Mistakes
 
-- Misunderstanding that the rank is based on the position of the member in the sorted set, not the score. For rank-based removal, always use `ZREMRANGEBYRANK`, not `ZREMRANGEBYSCORE`.
-- Providing a `start` or `stop` rank that is out of bounds. This doesn't cause an error but will result in no elements being removed.
+- Misunderstanding that the rank is based on the position of the member in the sorted set, **not the score**.
+- Providing `start` and `stop` in the wrong order. This doesn't cause an error but will result in no elements being removed.
 
 ## FAQs
 
@@ -95,4 +101,4 @@ If the key does not exist, `ZREMRANGEBYRANK` simply returns `0` because there ar
 
 Yes, negative ranks can be used to refer to elements starting from the end of the sorted set.
 For example, `-1` refers to the last element, `-2` to the second last, and so on.
-This is particularly useful for trimming the sorted set without knowing its exact length.
+This is particularly useful for trimming the sorted set from the end without knowing its exact length.
