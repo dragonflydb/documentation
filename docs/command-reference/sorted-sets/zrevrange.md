@@ -104,7 +104,7 @@ If the key doesn't exist, `ZREVRANGE` returns an empty list.
 ### Can I use `ZREVRANGE` with large datasets?
 
 Yes.
-However, it’s advised to use ranges (`start` and `stop`) to paginate through large sorted sets.
+However, it's advised to use ranges (`start` and `stop`) to paginate through large sorted sets.
 Fetching a large number of members at once could result in performance degradation.
 
 ### What happens if `start` or `stop` exceeds the set's bounds?

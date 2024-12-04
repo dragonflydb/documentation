@@ -68,13 +68,13 @@ dragonfly$> ZSCORE myzset "memberB"
 ## Best Practices
 
 - Use the `ZSCORE` command when you only need to retrieve the score of a single member as it provides a direct and efficient method to perform this query.
-- When working with large sorted sets, ensure that looks up for non-existent members won't clutter your application’s logic; handle the `nil` return value accordingly.
+- When working with large sorted sets, ensure that looks up for non-existent members won't clutter your application's logic; handle the `nil` return value accordingly.
 - To get multiple scores at once, consider pairing `ZSCORE` with other sorted set operations like `ZRANGE` or `ZSCAN` for more complex queries.
 
 ## Common Mistakes
 
 - Expecting `ZSCORE` to return a numeric value. The score is returned as a string, and you'll need to convert it if further numeric operations are necessary.
-- Assuming that a negative score means the member is "lower" in the sorted set. The sorted set will order by score, and not necessarily by logic derived from the score’s value.
+- Assuming that a negative score means the member is "lower" in the sorted set. The sorted set will order by score, and not necessarily by logic derived from the score's value.
 
 ## FAQs
 

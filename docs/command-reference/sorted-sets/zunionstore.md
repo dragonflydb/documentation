@@ -29,7 +29,7 @@ ZUNIONSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGG
 - `destination`: The key where the resulting sorted set will be stored.
 - `numkeys`: The number of input sorted sets to consider for the union.
 - `key`: The key(s) of the sorted sets to union.
-- `WEIGHTS` (optional): A list of weights to multiply each sorted set’s score before performing the union.
+- `WEIGHTS` (optional): A list of weights to multiply each sorted set's score before performing the union.
   If not provided, all weights default to `1`.
 - `AGGREGATE` (optional): This defines how the resulting scores are computed when the same element appears in multiple sets.
   Options are `SUM` (default), `MIN`, or `MAX`.
@@ -128,7 +128,7 @@ dragonfly$> ZRANGE result 0 -1 WITHSCORES
 
 - Use the `WEIGHTS` option to apply different importance levels to each set in the union.
   This can be useful in ranking scenarios where certain sets carry more weight than others.
-- The `AGGREGATE` option is especially helpful when you don’t necessarily want to sum scores but need the minimum or maximum scores for shared elements across sets.
+- The `AGGREGATE` option is especially helpful when you don't necessarily want to sum scores but need the minimum or maximum scores for shared elements across sets.
 
 ## Common Mistakes
 
