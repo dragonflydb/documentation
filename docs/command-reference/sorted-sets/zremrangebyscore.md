@@ -25,12 +25,14 @@ ZREMRANGEBYSCORE key min max
 ## Parameter Explanations
 
 - `key`: The name of the sorted set.
-- `min`: The minimum score (inclusive) for the range. This can be a specific score or special values like `-inf` to denote negative infinity.
-- `max`: The maximum score (inclusive) for the range. You can use values like `+inf` to include everything up to positive infinity.
+- `min` and `max`:
+    - The minimum and maximum score values to filter the members to be removed.
+    - **By default, they are inclusive**. To make them exclusive, use the `(` character before the score.
+    - The `+inf` and `-inf` special values can be used to specify positive and negative infinity scores, respectively.
 
 ## Return Values
 
-The command returns the number of elements removed from the sorted set.
+- The command returns an integer indicating the number of members removed from the sorted set.
 
 ## Code Examples
 
@@ -41,8 +43,10 @@ Remove members with scores between `1` and `3`:
 ```shell
 dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
+
 dragonfly$> ZREMRANGEBYSCORE myzset 1 3
 (integer) 3
+
 dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 1) "four"
 2) "4"
@@ -50,20 +54,20 @@ dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 
 ### Removing Members with Scores Below a Certain Value
 
-Remove all members with scores less than `2`:
+Remove all members with scores less than or equal to `2`:
 
 ```shell
 dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
-dragonfly$> ZREMRANGEBYSCORE myzset -inf 1
-(integer) 1
+
+dragonfly$> ZREMRANGEBYSCORE myzset -inf 2
+(integer) 2
+
 dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
-1) "two"
-2) "2"
-3) "three"
-4) "3"
-5) "four"
-6) "4"
+1) "three"
+2) "3"
+3) "four"
+4) "4"
 ```
 
 ### Removing Members with Scores in a Floating-point Range
@@ -73,8 +77,10 @@ Use floating-point numbers to target a specific score range. In this case, remov
 ```shell
 dragonfly$> ZADD myzset 2.5 "apple" 3.5 "banana" 1.5 "cherry"
 (integer) 3
+
 dragonfly$> ZREMRANGEBYSCORE myzset 2.5 4.5
 (integer) 2
+
 dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 1) "cherry"
 2) "1.5"
@@ -87,8 +93,10 @@ To remove all members with scores greater than `3.5`, use `+inf`:
 ```shell
 dragonfly$> ZADD myzset 2.5 "cat" 4 "dog" 6 "elephant"
 (integer) 3
+
 dragonfly$> ZREMRANGEBYSCORE myzset 3.5 +inf
 (integer) 2
+
 dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 1) "cat"
 2) "2.5"
@@ -117,5 +125,5 @@ If no elements in the sorted set fall within the provided score range, `ZREMRANG
 
 ### Can the score range include negative values?
 
-Yes, negative scores are allowed.
-You can use negative values as both the `min` and `max` to define a valid range in the sorted set.
+Yes, negative scores are allowed in sorted sets.
+You can use negative values in both the `min` and `max` parameters to define a valid range in the sorted set.

@@ -31,7 +31,7 @@ ZREMRANGEBYRANK key start stop
 
 ## Return Values
 
-- This command returns an integer representing the number of members that were removed from the sorted set.
+- The command returns an integer indicating the number of members removed from the sorted set.
 
 ## Code Examples
 
