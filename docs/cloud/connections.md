@@ -26,7 +26,7 @@ Modify your relevant security groups to allow traffic from the Dragonfly cloud P
 
 At this point you should see the connection in state **Active** in the Dragonfly Cloud console.
 
-If you haven’t done so already, create a data store with a private endpoint. See [Data Stores](./datastores#private-endpoint) for more information.
+If you haven't done so already, create a data store with a private endpoint. See [Data Stores](./datastores#private-endpoint) for more information.
 
 
 ##  GCP
@@ -36,4 +36,4 @@ The connection will be created in an **Inactive** state. Follow the Google Cloud
 
 Don't forget to modify your firewall to allow traffic from the Dragonfly cloud Private Network CIDR.
 
-If you haven’t done so already, create a data store with a private endpoint.
+If you haven't done so already, create a data store with a private endpoint.
