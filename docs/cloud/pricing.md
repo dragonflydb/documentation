@@ -42,10 +42,10 @@ To illustrate with an example, let's consider a Dragonfly Cloud data store that 
 
 The cost of this data store can be calculated as follows:
 
-- The cost for 1GB of enhanced performance tier data store in AWS us-east1 is $11.0 per month.
-- The total hours used: 2 days x 24 hours per day + 1 hour + 10 minutes (prorated) = 50 hours.
-- The total hours in a month: 365 days / 12 months x 24 hours per day = 730 hours per month.
-- The total cost: **$11 x 12.5GB x 2 zones x 50 hours / 730 hours per month = $18.84**
+- Cost for 1GB of enhanced performance tier data store in AWS us-east-1: around $11.0 per month.
+- Total hours used: 2 days x 24 hours per day + 1 hour + 10 minutes (rounded up to 1 hour) = 50 hours.
+- Total hours in a month: 365 days / 12 months x 24 hours per day = 730 hours per month.
+- Total cost: **$11 x 12.5GB x 2 zones x 50 hours / 730 hours per month = $18.84**
 
 ## Data Transfer
 
