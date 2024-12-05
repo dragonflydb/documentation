@@ -8,48 +8,77 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis XGROUP CREATE Command (Documentation) | Dragonfly" />
 
+## Introduction
+
+In Dragonfly, as well as in Redis and Valkey, the `XGROUP CREATE` command is used to create a consumer group associated with a stream.
+It sets up a group that can be used to consume messages from the stream with specific guarantees regarding message delivery and processing.
+This command is essential for managing distributed message processing systems where consumer groups must handle the workload.
+
 ## Syntax
 
-    XGROUP CREATE key group <id | $> [MKSTREAM]
-
-**Time complexity:** O(1)
-
-**ACL categories:** @write, @stream, @slow
-
-Create a new consumer group for the specified stream. *group* is
-the name of the consumer group. *key* is the stream name.
-
-A consumer group is a collection of consumers. Group is extreamly
-useful when it is required to distribute incoming stream entries
-to different consumers. Each group has its own *pending entry list*
-(PEL) where it stores the group received entries. Consumers only
-recieves entries that no other consumers already received from the
-group.
-
-If a group already exists by the given name, **XGROUP** throws a
-**-BUSYGROUP** error.
-
-The **XGROUP** command requires an **<id\>** argument. It tells the
-command to set the last delivered entry of the newly created group
-to the specified ID. Entries with lower IDs than the last delivered
-entry do not belong to the group and hence consumers can't receive
-those entries.
-
-If you want to set the last delivered entry to the latest stream
-entry and you don't want to mention the ID explicitly, you can use
-the special "**$**" character. When specified, it sets the last
-delivery entry to the latest entry.
-
-By default, the **XGROUP CREATE** command expects that the target stream
-exists, and returns an error when it doesn't. If a stream does not exist,
-you can create it automatically with length of 0 by using the
-optional **MKSTREAM** subcommand as the last argument after the **<id\>**:
-
 ```shell
-XGROUP CREATE mystream mygroup $ MKSTREAM
+XGROUP CREATE <key> <groupname> <id or $> [MKSTREAM]
 ```
 
-## Return
+## Parameter Explanations
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings):
-**OK** on success.
+- `<key>`: The key name of the stream.
+- `<groupname>`: The name given to the consumer group.
+- `<id or $>`: The ID of the last-delivered message. Use `$` to start from the new messages.
+- `MKSTREAM` (optional): Automatically create the stream if it does not exist.
+
+## Return Values
+
+This command usually returns `OK` if the consumer group was created successfully.
+If the consumer group already exists, it returns an error.
+
+## Code Examples
+
+### Basic Example
+
+Create a consumer group for an existing stream starting with new messages:
+
+```shell
+dragonfly> XGROUP CREATE mystream mygroup $
+OK
+```
+
+### Create a Consumer Group with Specific ID
+
+Create the consumer group starting from a specific message ID:
+
+```shell
+dragonfly> XGROUP CREATE mystream mygroup 1609459200000-0
+OK
+```
+
+### Using `MKSTREAM` to Ensure Stream Creation
+
+Create a consumer group while automatically creating the stream if it does not exist:
+
+```shell
+dragonfly> XGROUP CREATE newstream mygroup $ MKSTREAM
+OK
+```
+
+## Best Practices
+
+- Use `$` for the `<id>` parameter if you want the group to start processing only new messages.
+- The `MKSTREAM` option is useful for ensuring that a consumer group is set up in cases where stream creation may be delayed.
+
+## Common Mistakes
+
+- Attempting to create a consumer group in a non-existent stream without using `MKSTREAM`.
+- Using an incorrect or misspelled stream key or group name when setting up a group.
+
+## FAQs
+
+### What happens if the stream does not exist when I run `XGROUP CREATE`?
+
+If the stream does not exist and you don't use the `MKSTREAM` option, the command will return an error.
+With `MKSTREAM`, the stream is automatically created.
+
+### Can I create a consumer group with the same name twice?
+
+No, attempting to create a consumer group with an existing name returns an error.
+Ensure unique group names for the same stream.
