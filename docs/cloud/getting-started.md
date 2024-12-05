@@ -11,22 +11,22 @@ the [Dragonfly project](https://github.com/dragonflydb/dragonfly), the most perf
 as there are no gated features.
 Dragonfly Cloud drastically simplifies the deployment, management, and operation of your Dragonfly data stores.
 
-## Create an Account
+## Creating an Account
 
 - All you have to do is navigate to [Dragonfly Cloud](https://dragonflydb.cloud) and sign up for an account.
-- To complete the sign-up process, you will be required to pick a name for your **_organization_**.
+- To complete the sign-up process, you will be required to pick a name for your **Organization**.
 - You can later [add more users](./users.md) to your organization and manage their permissions.
 
-## Create Your First Data Store
+## Creating Your First Data Store
 
 - After signing up, you will land on the [Data Stores](https://dragonflydb.cloud/datastores) page.
-- You can create your first **_data store_** by clicking the [+Data Store](https://dragonflydb.cloud/datastores/new) button.  
-- You only need to pick a **_name_**, a **_cloud provider_**, and a **_cloud region_** for your data store.
+- You can create your first data store by clicking the [+Data Store](https://dragonflydb.cloud/datastores/new) button.  
+- You only need to pick a **Name**, a **Cloud Provider**, and a **Cloud Region** for your data store.
 - For more configuration options, see detailed documentation on [data stores](./datastores.md).
 
 ## Payment & Development Instances
 
-- Before creating your first data store, you will be asked to add a **_payment card_**.
+- Before creating your first data store, you will be asked to add a **Payment Credit Card**.
 - You can track usage and costs under the [Account > Usage](https://dragonflydb.cloud/account/usage) tab.
 - You are only charged while the data store is active, prorated to the hour.
 - You can delete a data store at any time to stop incurring charges.
