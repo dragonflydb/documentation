@@ -4,6 +4,8 @@ sidebar_position: 4
 
 # Peering Connections
 
+## Overview
+
 *Peering connections* are used  to connect a Dragonfly Cloud private network with a VPC in your cloud account to establish communication between the two networks over private IP space.
 
 Private IP space communication is more secure, performant and reduces data transfer costs incurred by cloud providers.
@@ -14,6 +16,7 @@ Continue to [AWS](#aws) or [GCP](#gcp) based on your cloud provider.
 
 
 ## AWS
+
 Specify the *region*, *CIDR*, *account ID* (also called owner ID in AWS) and *VPC ID* of your AWS VPC from where you want to connect and click *Create*.
 
 The connection will be created in an **Inactive** state.
@@ -26,10 +29,11 @@ Modify your relevant security groups to allow traffic from the Dragonfly cloud P
 
 At this point you should see the connection in state **Active** in the Dragonfly Cloud console.
 
-If you haven't done so already, create a data store with a private endpoint. See [Data Stores](./datastores#private-endpoint) for more information.
+If you haven't done so already, create a data store with a private endpoint. See [Data Stores](./data-stores#private-endpoint) for more information.
 
 
 ##  GCP
+
 Specify the *CIDR*, GCP *project ID* and *VPC ID* of your GCP VPC from where you want to connect and click Create.
 
 The connection will be created in an **Inactive** state. Follow the Google Cloud guide <a href="https://cloud.google.com/sdk/gcloud/reference/compute/networks/peerings/create">here</a> , specify `--peer-network` and `--peer-project` with the VPC ID and account ID values from the Dragonfly Cloud private network you wish to connect. Observe the connection becomes **Active** after a few moments.      

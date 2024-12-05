@@ -20,12 +20,12 @@ Note that the *cloud provider* and *region* can not be modified once the data st
 The *plan* specifies the provisioned memory and memory to CPU ratio of the data store.  
 The *Enhanced* plan has more CPU for the same amount of provisioned memory and achieves higher throughput compared to the *Standard* plan.
 
-*Note* For network bandwidth limits, please refer to the [Network Bandwidth](./bandwidth.md) section.
+*Note* For network bandwidth limits, please refer to the [Network Bandwidth](./network-bandwidth.md) section.
 
 You can modify the data store *plan* later with zero downtime to scale it up or down.
 
 By default the data store will be configured with a *public endpoint*, *TLS* and an auto generated *passkey*, meaning you can securely connect to it from anywhere over the public internet.  
-To create a data store with a *private endpoint*, see [Security](#security), [Networks](./networks.md) and [Peering Connections](./connections.md).
+To create a data store with a *private endpoint*, see [Security](#security), [Networks](./networks.md) and [Peering Connections](./peering-connections.md).
 
 By default the data store will consist of a single Dragonfly server, to create a highly available data store see [High Availability](#high-availability).
 For cluster mode please see [Cluster Mode](#cluster-mode).

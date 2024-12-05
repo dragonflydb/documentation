@@ -11,4 +11,4 @@ Dragonfly Cloud is an in-memory data store service fully managed by the Dragonfl
 Dragonfly Cloud deploys Dragonfly instances providing full API compatibility with Redis, ValKey and Memcached.  
 Hosted on AWS and GCP, Dragonfly Cloud is designed to be cost efficient, highly available, secure and simple to operate.
 
-To create a Dragonfly Cloud data store visit [Data Stores](/docs/cloud/datastores.md).
+To create a Dragonfly Cloud data store visit [Data Stores](/docs/cloud/data-stores.md).

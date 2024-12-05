@@ -15,14 +15,14 @@ Dragonfly Cloud drastically simplifies the deployment, management, and operation
 
 - All you have to do is navigate to [Dragonfly Cloud](https://dragonflydb.cloud) and sign up for an account.
 - To complete the sign-up process, you will be required to pick a name for your **Organization**.
-- You can later [add more users](./users.md) to your organization and manage their permissions.
+- You can later [add more users](./managing-users.md) to your organization and manage their permissions.
 
 ## Creating Your First Data Store
 
 - After signing up, you will land on the [Data Stores](https://dragonflydb.cloud/datastores) page.
-- You can create your first data store by clicking the [+Data Store](https://dragonflydb.cloud/datastores/new) button.  
+- You can create your first data store by clicking the [+Data Store](https://dragonflydb.cloud/datastores/new) button.
 - You only need to pick a **Name**, a **Cloud Provider**, and a **Cloud Region** for your data store.
-- For more configuration options, see detailed documentation on [data stores](./datastores.md).
+- For more configuration options, see detailed documentation on [data stores](./data-stores.md).
 
 ## Payment & Development Instances
 
