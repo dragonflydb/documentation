@@ -8,98 +8,90 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis XRANGE Command (Documentation) | Dragonfly" />
 
+## Introduction
+
+In Dragonfly, as well as in Redis and Valkey, the `XRANGE` command is used to return a range of elements in a stream.
+Streams are powerful data types for handling ordered logs and time-series data, making `XRANGE` especially useful for retrieving entries within specified time frames or other ranges.
+
 ## Syntax
 
-	XRANGE key start end [COUNT count]
-
-**Time complexity:** O(N) with N being the number of elements
-being returned. If N is constant (e.g. always asking for the
-first 10 elements with COUNT), you can consider it O(1).
-
-**ACL categories:** @read, @stream, @slow
-
-The **XRANGE** command returns stream entries matching the
-given range of IDs. The range is specified by a minimum and
-maximum ID. All the entries having an ID between the two
-specified or exactly one of the two IDs specified (closed
-interval) are returned.
-
-**XRANGE** allows both **<start\>** and **<end\>** IDs to be
-the same. In that case, the command only returns the specified
-entry.
-
 ```shell
-dragonfly> xrange mystream 1687926126874-0 1687926126874-0
-1) 1) "1687926126874-0"
-   2) 1) "k"
-      2) "v"
+XRANGE key start end [COUNT count]
 ```
 
-## Special IDs
+## Parameter Explanations
 
-Sometimes, it is logical to get all the entries of a stream. It
-is tedious to mention the minimum and maximum IDs explicitly.
-To tackle this issue, **XRANGE** accepts two special characters
-to denote the minimum ID and maximum ID of a stream. These are
-"**-**" and "**+**" respectively. The following command returns
-all entries from the stream *mystream*.
+- `key`: The key of the stream from which entries are fetched.
+- `start`: The minimum ID of the range, inclusive.
+- `end`: The maximum ID of the range, inclusive.
+- `COUNT count` (optional): Limits the number of entries returned to 'count'.
 
-```shell
-dragonfly> XRANGE mystream - +
-1) 1) "1687926126874-0"
-   2) 1) "k"
-      2) "v"
-2) 1) "1687926132506-0"
-   2) 1) "l"
-      2) "x"
-3) 1) "1687926136634-0"
-   2) 1) "n"
-      2) "t"
-4) 1) "1687926140032-0"
-   2) 1) "q"
-      2) "r"
-```
+## Return Values
 
-## Incomplete IDs
+The command returns a list of stream entries that correspond to the specified range.
+Each entry is represented by a two-element array with an ID and a subsequent map of field-value pairs.
 
-It is possible to use incomplete IDs in **XRANGE** command. User
-can specify just the first part of ID, the millisecond time:
+## Code Examples
+
+### Basic Example
+
+Retrieve all entries within a specified range:
 
 ```shell
-dragonfly> XRANGE mystream 1687926126874 1687926140032
+# Adding entries to the stream
+dragonfly> XADD mystream * foo "1" bar "data1"
+"1609459200000-0"
+dragonfly> XADD mystream * foo "2" bar "data2"
+"1609459200010-0"
+
+# Retrieving entries from '1609459200000-0' to '1609459200010-0'
+dragonfly> XRANGE mystream 1609459200000-0 1609459200010-0
+1) 1) "1609459200000-0"
+   2) 1) "foo"
+      2) "1"
+      3) "bar"
+      4) "data1"
+2) 1) "1609459200010-0"
+   2) 1) "foo"
+      2) "2"
+      3) "bar"
+      4) "data2"
 ```
 
-In this case, XRANGE will auto-complete the start interval with
-**-0** and end interval with **-18446744073709551615**, in order
-to return all the entries that were generated between a given
-millisecond and the end of the other specified millisecond. This
-also means that repeating the same millisecond two times, will get
-all the entries within such millisecond, because the sequence number
-range will be from zero to the maximum.
+### Using `COUNT` Option
 
-## Exclusive Ranges
-
-By default, the **XRANGE** command returns entries including specified
-IDs. If you want the behaviour to be exclusive, prefix the ID with
-**(** character.
-
-## COUNT option
-
-**XRANGE** accepts a **COUNT** option to limit the number of entries
-returned. It takes integer value.
+Retrieve a limited number of entries starting from a specific ID:
 
 ```shell
-dragonfly> XRANGE mystream - + COUNT 1
-1) 1) "1687926126874-0"
-   2) 1) "k"
-      2) "v"
+# Adding another entry
+dragonfly> XADD mystream * foo "3" bar "data3"
+"1609459200020-0"
+
+# Retrieve only one entry starting from '1609459200000-0'
+dragonfly> XRANGE mystream 1609459200000-0 1609459200020-0 COUNT 1
+1) 1) "1609459200000-0"
+   2) 1) "foo"
+      2) "1"
+      3) "bar"
+      4) "data1"
 ```
 
-## Return
+## Best Practices
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays):
+- When processing large streams, using the `COUNT` parameter can help limit the amount of data transferred and improve performance.
+- Use precise `start` and `end` IDs to avoid retrieving unnecessary entries and to maintain efficient operations.
 
-The returned entries are complete, that means that the ID and all the
-fields they are composed are returned. Moreover, the entries are
-returned with their fields and values in the exact same order as
-XADD added them.
+## Common Mistakes
+
+- Providing `start` or `end` in incorrect formats can lead to errors; ensure the IDs follow the correct stream ID format (e.g., `<timestamp>-<sequence>`).
+- Not specifying an `end` range if the intent is to read bounded data. Omitting this parameter leads to fetching entries up to the maximum sequence for the start's timestamp.
+
+## FAQs
+
+### What happens if the stream key does not exist?
+
+If the stream key does not exist, `XRANGE` returns an empty list.
+
+### How are stream IDs formatted?
+
+Stream IDs are formatted as `<milliseconds-time>-<sequence-number>`, where the sequence number starts at zero and increases with each entry at the same timestamp.
