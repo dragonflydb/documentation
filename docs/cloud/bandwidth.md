@@ -4,12 +4,15 @@ sidebar_position: 9
 
 # Network Bandwidth
 
-For heavy network traffic workloads, please refer to the following tables to understand the network bandwidth available for each data store size.
-For more customized network bandwidth requirements, please contact support.
+## Overview
+
+- For heavy network traffic workloads, please refer to the following tables to understand the network bandwidth available for each data store size and compute tier in various cloud providers.
+- For more customized network bandwidth requirements, please contact support.
 
 ## AWS
 
-AWS provides burstable network bandwidth for some data store sizes which can be used for short periods of time but is not guaranteed.
+- AWS provides burstable network bandwidth for certain data store sizes.
+- Burst bandwidth can be used for short periods of time but is not guaranteed.
 
 | Compute Tier | Size (GB) | Bandwidth (Gbps)    | Burst Bandwidth (Gbps)  |
 |--------------|-----------|---------------------|-------------------------|
