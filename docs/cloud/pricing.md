@@ -14,15 +14,15 @@ Dragonfly Cloud applies a transparent usage-based pricing model with the followi
 
 You can track your usage and costs under the [Account > Usage](https://dragonflydb.cloud/account/usage) tab in Dragonfly Cloud.
 The usage and cost information is updated every few hours.
-However, data transfer and storage costs may take up to 24 hours to reflect.
+However, data transfer and backup storage costs may take up to 24 hours to reflect.
 Read on for more details about each component.
 
 ## Active Data Stores
 
-Data stores incur charges for every hour they are active.
+Data stores incur charges for **every prorated hour they are active**.
 The cost is determined by:
 
-- **Primary Memory Amount**
+- **Provisioned Memory Amount** (All Primary & Replica Instances)
 - **Compute Performance Tier**
 - **Cloud Provider & Region**
 
@@ -30,6 +30,8 @@ Additional notes about data store costs:
 
 - Updating a data store configuration only affects its cost once the update is complete and the new configuration is active.
 - Deleted data stores do not incur any charges.
+
+### Example: Data Store Cost Calculation
 
 To illustrate with an example, let's consider a Dragonfly Cloud data store that is:
 
@@ -41,9 +43,9 @@ To illustrate with an example, let's consider a Dragonfly Cloud data store that 
 The cost of this data store can be calculated as follows:
 
 - The cost for 1GB of enhanced performance tier data store in AWS us-east1 is $11.0 per month.
-- The total hours used is 50 hours.
-- The total hours in a month is 365 days / 12 months x 24 hours per day = 730 hours.
-- The total cost is: **$11 x 12.5GB x 2 Zones x 50 Hours / 730 = $18.84**
+- The total hours used: 2 days x 24 hours per day + 1 hour + 10 minutes (prorated) = 50 hours.
+- The total hours in a month: 365 days / 12 months x 24 hours per day = 730 hours per month.
+- The total cost: **$11 x 12.5GB x 2 zones x 50 hours / 730 hours per month = $18.84**
 
 ## Data Transfer
 
