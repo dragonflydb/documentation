@@ -8,52 +8,102 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis XAUTOCLAIM Command (Documentation) | Dragonfly" />
 
+## Introduction
+
+In Dragonfly, as well as in Redis and Valkey, the `XAUTOCLAIM` command is used within the context of streams for effectively managing pending messages.
+The command transfers ownership of pending stream messages from one consumer to another, which is particularly useful in scenarios where message processing needs to be resilient and messages shouldn't remain stuck with unavailable consumers.
+
 ## Syntax
 
-    XAUTOCLAIM key group consumer min-idle-time start [COUNT count] [JUSTID]
-
-**Time Complexity:** O(1) if COUNT is small.
-
-**ACL categories:** @write, @stream, @fast
-
-This command transfers ownership of pending stream entries that match the specified criteria. Conceptually, `XAUTOCLAIM` is equivalent to calling `XPENDING` and then `XCLAIM`, but provides a more straightforward way to deal with message delivery failures via SCAN-like semantics.
-
-Like `XCLAIM`, the command operates on the stream entries at `<key>` and in the context of the provided `<group>`. It transfers ownership to `<consumer>` of messages pending for more than `<min-idle-time>` milliseconds and having an equal or greater ID than `<start>`.
-
-The optional `<count>` argument, which defaults to 100, is the upper limit of the number of entries that the command attempts to claim. Internally, the command begins scanning the consumer group's Pending Entries List (PEL) from `<start>` and filters out entries having an idle time less than or equal to `<min-idle-time>`. The maximum number of pending entries that the command scans is the product of multiplying `<count>`'s value by 10 (hard-coded). It is possible, therefore, that the number of entries claimed will be less than the specified value.
-
-The optional `JUSTID` argument changes the reply to return just an array of IDs of messages successfully claimed, without returning the actual message. Using this option means the retry counter is not incremented.
-
-The command returns the claimed entries as an array. It also returns a stream ID intended for cursor-like use as the `<start>` argument for its subsequent call. When there are no remaining PEL entries, the command returns the special `0-0` ID to signal completion. However, note that you may want to continue calling `XAUTOCLAIM` even after the scan is complete with the `0-0` as `<start>` ID, because enough time passed, so older pending entries may now be eligible for claiming.
-
-Note that only messages that are idle longer than `<min-idle-time>` are claimed, and claiming a message resets its idle time. This ensures that only a single consumer can successfully claim a given pending message at a specific instant of time and trivially reduces the probability of processing the same message multiple times.
-
-While iterating the PEL, if `XAUTOCLAIM` stumbles upon a message which doesn't exist in the stream anymore (either trimmed or deleted by `XDEL`) it does not claim it, and deletes it from the PEL in which it was found. These message IDs are returned to the caller as a part of `XAUTOCLAIM`'s reply.
-
-Lastly, claiming a message with `XAUTOCLAIM` also increments the attempted deliveries count for that message, unless the `JUSTID` option has been specified (which only delivers the message ID, not the message itself). Messages that cannot be processed for some reason - for example, because consumers systematically crash when processing them - will exhibit high attempted delivery counts that can be detected by monitoring.
-
-
-## Return
-
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays), specifically:
-
-An array with three elements:
-
-1. A stream ID to be used as the `<start>` argument for the next call to `XAUTOCLAIM.
-
-2. An array containing all the successfully claimed messages in the same format as `XRANGE`.
-
-3. An array containing message IDs that no longer exist in the stream, and were deleted from the PEL in which they were found.
-
-## Examples
-
 ```shell
-dragonfly> XAUTOCLAIM mystream mygroup Alice 3600000 0-0 COUNT 25
-1) "0-0"
-2) 1) 1) "1609338752495-0"
-      2) 1) "field"
-         2) "value"
-3) (empty array)
+XAUTOCLAIM key group consumer min-idle-time start [COUNT count] [JUSTID]
 ```
 
-In the above example, we attempt to claim for consumer `Alice` up to 25 entries that are pending and idle (not having been acknowledged or claimed) for at least an hour, starting at the stream's beginning. The consumer `Alice` from the `mygroup` group acquires ownership of these messages. Note that the stream ID returned in the example is `0-0`, indicating that the entire stream was scanned. We can also see that `XAUTOCLAIM did not stumble upon any deleted messages (the third reply element is an empty array).
+## Parameter Explanations
+
+- `key`: The key of the stream.
+- `group`: The consumer group name.
+- `consumer`: The new owner consumer for the pending messages.
+- `min-idle-time`: Minimum idle time (in milliseconds) for a message to be claimed.
+- `start`: The ID from which to start scanning for potential messages to claim.
+- `COUNT count` (optional): Limit the number of messages to claim in a single call.
+- `JUSTID` (optional): If specified, only message IDs are returned, not the messages themselves.
+
+## Return Values
+
+The command returns an array of two elements.
+The first is an array with the message IDs and, optionally, the messages, that have been claimed by the consumer.
+The second is the next ID to attempt claiming from in another `XAUTOCLAIM` call.
+
+## Code Examples
+
+### Basic Example
+
+Claim messages that have been pending for over 5 seconds:
+
+```shell
+dragonfly> XGROUP CREATE mystream mygroup $ MKSTREAM
+OK
+dragonfly> XADD mystream * name Alice
+"1636581234567-0"
+dragonfly> XREADGROUP GROUP mygroup Alice COUNT 1 STREAMS mystream 0
+1) 1) "mystream"
+   2) 1) 1) "1636581234567-0"
+         2) 1) "name"
+            2) "Alice"
+# Assume Alice gets disconnected and Bob takes over
+dragonfly> XAUTOCLAIM mystream mygroup Bob 5000 0
+1) 1) "1636581234567-0"
+   2) 1) "name"
+      2) "Alice"
+2) "1636581234567-1"
+```
+
+### Using `XAUTOCLAIM` with `COUNT` Option
+
+Claim up to 2 messages pending beyond 2 seconds:
+
+```shell
+dragonfly> XADD mystream * name Bob surname Smith
+"1636581236900-0"
+dragonfly> XAUTOCLAIM mystream mygroup Charlie 2000 0 COUNT 2
+1) 1) "1636581236900-0"
+   2) 1) "name"
+      2) "Bob"
+      3) "surname"
+      4) "Smith"
+2) "1636581236910-0"
+```
+
+### Just Retrieving Message IDs
+
+Claim message IDs only, without fetching entire message data:
+
+```shell
+dragonfly> XADD mystream * role admin
+"1636581238910-0"
+dragonfly> XAUTOCLAIM mystream mygroup Dave 1000 0 COUNT 5 JUSTID
+1) 1) "1636581238910-0"
+2) "1636581238950-0"
+```
+
+## Best Practices
+
+- Regularly use `XAUTOCLAIM` to prevent pending messages from being stuck with unavailable consumers.
+- Utilize the `JUSTID` option when only message identifiers are needed, reducing network load.
+- Setting a sensible `COUNT` can optimize performance by not overloading the consumer with too many messages at once.
+
+## Common Mistakes
+
+- Not correctly setting the `min-idle-time`, leading to unclaimed or incorrectly claimed messages.
+- Forgetting to create the consumer group beforehand, as `XAUTOCLAIM` requires an existing consumer group.
+
+## FAQs
+
+### What happens if there are no messages to claim?
+
+If there are no messages pending or meeting the criteria, an empty array is returned.
+
+### Can I claim messages with a `min-idle-time` of zero?
+
+Yes, but an idle time of zero means messages are immediately available for claiming, often unsuitable for normal operations where consumers might be briefly unavailable.
