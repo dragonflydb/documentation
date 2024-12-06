@@ -237,9 +237,9 @@ func main() {
 
 ## ACL Rules
 
-- You can leverage [Dragonfly's built-in support for ACLs](https://www.dragonflydb.io/docs/managing-dragonfly/acl)
-  with Dragonfly Cloud.
-- Each Dragonfly Cloud data store is created with a default ACL rule that allows all commands for the default user:
+You can leverage [Dragonfly's built-in support for ACLs](https://www.dragonflydb.io/docs/category/acl) to control access
+to your data stores within Dragonfly Cloud. Each Dragonfly Cloud data store is created with a default ACL rule
+that allows all commands for the `default` user:
 
 ```text
 USER default ON >pmn4p0ssrbbl ~* +@ALL
@@ -248,11 +248,13 @@ USER default ON >pmn4p0ssrbbl ~* +@ALL
 - To modify the data store ACL rules, click the data store three-dot
   menu (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>)
   and click **ACL Rules**.
-- An ACL Rules editor drawer will open where you can add, modify, or delete ACL rules.
+- An editor drawer for ACL rules will open where you can add, modify, or delete ACL rules.
 - ***CAUTION: Altering ACL rules can potentially disrupt access for current users. It is always recommended to test ACL
   rules on a test data store before applying them to a production data store.***
 
 ### Rotating Data Store Passkey
+
+Here is a recipe to rotate the passkey for a data store, since it is part of the ACL rules:
 
 - Modify the default ACL rule to something like: `USER default ON >myoldpass >mynewpass ~* +@ALL`.
 - Verify you can now authenticate with both the old and new passkeys.
@@ -264,4 +266,4 @@ USER default ON >pmn4p0ssrbbl ~* +@ALL
 
 ## Support Plans
 
-- See more information on Dragonfly Cloud support plans [here](./support.md).
+See more information on Dragonfly Cloud support plans [here](./support.md).
