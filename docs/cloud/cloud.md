@@ -25,16 +25,16 @@ to be cost-efficient, highly available, secure, and simple to operate.
 - [Managing Data Stores](datastores.md)
 - [Managing Private Networks](networks.md)
 - [Managing Peering Connections](connections.md)
+- [Data Store Network Bandwidth Limits](bandwidth.md)
 
 ## Monitoring & Backups
 
 - [Monitoring Data Stores](monitoring.md)
 - [Creating & Managing Backups](backups.md)
 
-## Other Dragonfly Cloud Features
+## Other Dragonfly Cloud Features, Pricing & Support
 
+- [Data Retention Policy](data-retention.md)
 - [Managing Dragonfly Cloud Users](users.md)
 - [Dragonfly Cloud Pricing](pricing.md)
 - [Dragonfly Cloud Support Plans](support.md)
-- [Dragonfly Cloud Data Retention Policy](data-retention.md)
-- [Data Store Network Bandwidth Limits](connections.md)
