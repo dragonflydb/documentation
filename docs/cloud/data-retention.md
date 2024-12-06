@@ -18,4 +18,4 @@ sidebar_position: 9
 ## Dragonfly Cloud Operations
 
 - If the Dragonfly Cloud operations team takes a backup of a data store, the backup is deleted as soon as possible and is never retained for more than 60 days.
-- For details regarding the processing of Dragonfly Cloud users' data, please refer to our [Privacy Policy](https://www.dragonflydb.io/privacy).
+- For details regarding the processing of Dragonfly Cloud users' data, please refer to the [Privacy Policy](https://www.dragonflydb.io/privacy).
