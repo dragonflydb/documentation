@@ -14,7 +14,8 @@ After creating a private network, you can:
   to establish communication between the two networks over private IP space. Read more on [peering connections](./peering-connections.md).
 - Create a data store in the private network with a **private endpoint**. Read more on [data store security](./data-stores#security).
 
-**Note**: By default, each Dragonfly Cloud account has a quota of two private networks. If you need more private networks, please contact support.
+**Note: By default, each Dragonfly Cloud account has a quota of two private networks.**
+If you need more private networks, please contact support.
 
 ## Creating a Private Network
 

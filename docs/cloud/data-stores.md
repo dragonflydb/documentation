@@ -44,7 +44,7 @@ On this page you will find information on how to create, configure, and connect 
   To create a highly available data store, read more about high availability [below](#high-availability).
   For cluster mode, please see [cluster mode](#cluster-mode) below.
 
-### After Creating a Data Store
+### Connection Details & Data Store Status
 
 - Once the data store is created, clicking the data store row will open a drawer with the data store configuration,
   including the auto-generated passkey and a Redis-compatible **Connection URI**.
