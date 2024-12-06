@@ -1,14 +1,40 @@
 ---
 title: Dragonfly Cloud
-description: Dragonfly is a modern in-memory datastore, fully compatible with Redis & Memcached APIs. Learn how to use Dragonfly with our comprehensive documentation.
+description: Dragonfly is a modern in-memory data store, fully compatible with Redis & Memcached APIs. Learn how to use Dragonfly with our comprehensive documentation.
 sidebar_position: 0
 slug: /cloud
 ---
 
 # Dragonfly Cloud
 
-Dragonfly Cloud is an in-memory data store service fully managed by the Dragonfly team.   
-Dragonfly Cloud deploys Dragonfly instances providing full API compatibility with Redis, ValKey and Memcached.  
-Hosted on AWS and GCP, Dragonfly Cloud is designed to be cost efficient, highly available, secure and simple to operate.
+## Overview
 
-To create a Dragonfly Cloud data store visit [Data Stores](/docs/cloud/datastores.md).
+Dragonfly Cloud is an in-memory data store service fully managed by the Dragonfly team.
+
+Dragonfly Cloud deploys [Dragonfly](https://github.com/dragonflydb/dragonfly) instances (the exact same
+technology without gated features), providing full API compatibility
+with [Redis](https://github.com/redis/redis), [Valkey](https://github.com/valkey-io/valkey),
+and [Memcached](https://github.com/memcached/memcached).
+
+Hosted on Amazon Web Services (AWS), Google Cloud Platform (GCP), and other cloud providers, Dragonfly Cloud is designed
+to be cost-efficient, highly available, secure, and simple to operate.
+
+## Managing Data Stores & Networks
+
+- [Getting Started](getting-started.md)
+- [Managing Data Stores](data-stores.md)
+- [Managing Private Networks](networks.md)
+- [Managing Peering Connections](peering-connections.md)
+
+## Monitoring & Backups
+
+- [Monitoring Data Stores](monitoring.md)
+- [Creating & Managing Backups](backups.md)
+
+## Other Dragonfly Cloud Features
+
+- [Managing Dragonfly Cloud Users](managing-users.md)
+- [Dragonfly Cloud Pricing](pricing.md)
+- [Dragonfly Cloud Support Plans](support-plans.md)
+- [Dragonfly Cloud Data Retention Policy](data-retention.md)
+- [Data Store Network Bandwidth Limits](network-bandwidth.md)
