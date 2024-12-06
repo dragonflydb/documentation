@@ -176,7 +176,7 @@ $> redis-cli -u <CONNECTION_URI> PING
 const Client = require("ioredis");
 
 // Using connection URI directly.
-const client = new Client("CONNECTION_URI");
+const client = new Client("<CONNECTION_URI>");
 
 // Using connection options.
 const client2 = new Client({
@@ -198,7 +198,7 @@ client.ping();
 ```python
 import redis
 
-client = redis.Redis.from_url('CONNECTION_URI')
+client = redis.Redis.from_url('<CONNECTION_URI>')
 client.ping()
 ```
 
