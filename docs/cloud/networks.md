@@ -22,7 +22,7 @@ If you need more private networks, please contact support.
 A private endpoint data store in a private network provides better security and performance and reduces data transfer costs.
 To create a private network:
 
-- Navigate to the **Networks** tab and click the [+ Network](https://dragonflydb.cloud/networks/new) button.
+- Navigate to the **Networks** tab and click the [+Network](https://dragonflydb.cloud/networks/new) button.
 - Specify a **Name**, a **Cloud Provider**, and a **Cloud Region** for your network.
 - Specify the **CIDR** block (IP range) for your network.
 - The CIDR of the Dragonfly Cloud network must not overlap with any CIDR of your application VPC from where the requests or commands will be sent to the data store.

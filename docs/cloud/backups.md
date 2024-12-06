@@ -72,7 +72,7 @@ tab and will be available for restoration.
 To import a Redis backup, follow the steps below:
 
 - Navigate to the [Account > Backups](https://dragonflydb.cloud/account/backups) tab.
-- Click on the **+ Import RDB** button.
+- Click on the **+Import RDB** button.
 - Enter a meaningful **Description** that will help you identify the backup later for restoration.
 - Set the **Retention** period to the number of days after which the imported backup will be deleted automatically.
 - Enter the HTTP **Source URL** of the RDB file to import.
