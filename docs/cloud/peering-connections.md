@@ -24,7 +24,7 @@ Continue to the next sections for instructions on how to create a peering connec
 Follow the steps below to create a peering connection within the Dragonfly Cloud console,
 and then accept the peering connection in your AWS account console:
 
-- In the Networks tab of the Dragonfly Cloud console, click the **+ Add Connect** button, and a dialog will appear.
+- In the **Networks** tab of the Dragonfly Cloud console, click the **+ Add Connect** button, and a dialog will appear.
 - Specify a **Name**, the **Acceptor Region**, the **Acceptor Account ID** (also called owner ID in AWS),
   and the **Acceptor VPC ID** of your AWS VPC from where you want to connect, and click **Create**.
 - The connection will be created in the **Inactive** status.
@@ -44,7 +44,7 @@ it. Read more about creating a data store with a private endpoint [here](./data-
 Follow the steps below to create a peering connection within the Dragonfly Cloud console,
 and then accept the peering connection in your GCP account console:
 
-- In the Networks tab of the Dragonfly Cloud console, click the **+ Add Connect** button, and a dialog will appear.
+- In the **Networks** tab of the Dragonfly Cloud console, click the **+ Add Connect** button, and a dialog will appear.
 - Specify a **Name**, the **Acceptor Account ID** (the GCP project ID),
   and the **Acceptor VPC ID** of your GCP VPC from where you want to connect, and click **Create**.
 - The connection will be created in the **Inactive** status.
