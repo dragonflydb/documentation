@@ -7,11 +7,11 @@ sidebar_position: 2
 ## Overview
 
 A [Dragonfly Cloud](https://dragonflydb.cloud/) data store represents an endpoint for storing and retrieving in-memory
-data, which is compatible with the Redis (RESP2 and RESP3) and the Memcached protocols. The endpoint is a fully managed
-service that is backed by one or more Dragonfly server instances. The data store can be accessed from the public
-internet or over a private network.
+data, which is compatible with Redis (RESP2 and RESP3) and Memcached protocols. The endpoint is a fully managed
+service that is backed by one or more [Dragonfly](https://github.com/dragonflydb/dragonfly) server instances.
+The data store can be accessed from the public internet or over a private network.
 
-On this page you will find information on how to create, configure, and connect to a Dragonfly Cloud data store.
+On this page, you will find information on how to create, configure, and connect to a Dragonfly Cloud data store.
 
 ## Creating a Data Store
 
@@ -25,14 +25,15 @@ On this page you will find information on how to create, configure, and connect 
 - Note that the **Cloud Provider** and **Cloud Region** can **NOT** be modified once the data store is created.
 - The **Plan** specifies the provisioned memory size and the CPU-to-memory ratio for the data store.
   Available plans are:
-    - **Standard**: This plan is suitable for moderate workloads. It provides a balanced CPU-to-memory ratio.
-    - **Enhanced**: This plan is suitable for workloads that require more CPU resources.
+    - **Standard**: This plan is suitable for moderate to high workloads.
+      It provides a balanced CPU-to-memory ratio.
+    - **Enhanced**: This plan is suitable for workloads that require more compute resources.
       It provides **2x the CPU** for the same amount of provisioned memory compared to the **Standard** plan.
     - **Extreme**: This plan is suitable for workloads that require extremely high compute resources.
       It provides **4x the CPU** for the same amount of provisioned memory compared to the **Standard** plan.
 - For network bandwidth limits, please refer to the [network bandwidth](./network-bandwidth.md) section.
-- You **can** modify the data store **Plan** (memory size, CPU resources) later
-  with **zero downtime** to easily scale up or down.
+- **You can modify the data store Plan (memory size, CPU resources) later
+  with zero downtime** to easily scale up or down.
 
 ### Advanced Configurations
 
@@ -41,7 +42,7 @@ On this page you will find information on how to create, configure, and connect 
 - To create a data store with a **private endpoint**, see [security](#security), [networks](./networks.md),
   and [peering connections](./peering-connections.md).
 - By default, the data store will consist of a single Dragonfly server instance.
-  To create a highly available data store, read more about high availability [below](#high-availability).
+  To create a highly available data store, read more about [high availability](#high-availability) below.
   For cluster mode, please see [cluster mode](#cluster-mode) below.
 
 ### Connection Details & Data Store Status
@@ -81,59 +82,72 @@ Dragonfly Cloud supports using both public and private endpoints for data access
 - In order to create a data store with a private endpoint, **you must first create a [private network](./networks.md)**.
 - Once you have created a private network, you can select it in the **Endpoint** dropdown
   when creating a new data store.
-- **TLS** and **passkey** are disabled by default for private endpoint data stores but can be enabled.
+- **TLS** and **passkey** are disabled by default for data stores with private endpoints but can be enabled.
 
 **Tip:** In order to completely avoid data transfer charges, place your data store in the same availability zone (AZ)
-as your application. See [high-availability](#high-availability) for specifying the data store availability zone.
+as your application. See [high availability](#high-availability) for specifying the data store availability zone.
 
-## Durability and High Availability
+## Durability & High Availability
 
 ### Eviction Policy
 
-Eviction policy controls the behavior of the datastore when it maxes out its memory.  
-**No Eviction** - Items are never evicted and out of memory errors are returned when the data store is full.  
-**Cache** - The data store behaves as cache and evicts items to free space for new ones when the data store is full.
+Eviction policy controls the behavior of a data store when it reaches its memory limit.
+
+- **No Eviction:** items are never evicted, and out-of-memory errors are returned to the client
+  when the data store is full.
+- **Cache:** The data store behaves as a cache and automatically evicts items to free space for new writes
+  when the data store is full. Dragonfly has only one cache eviction policy, which you can read more about
+  [here](https://www.dragonflydb.io/blog/balanced-vs-unbalanced).
+
+To choose the eviction policy, expand the **Durability & High Availability** section and select the desired policy.
+Make sure to save the changes by creating a new data store or updating an existing one.
 
 ### High Availability
 
-By default the data store will consist of a single Dragonfly server, this means that in case of software failures,
-hardware failures or cloud zone outages data is lost and the data store may be completely unavailable.
+By default, the data store will consist of a single Dragonfly server. This means that in case of software failures,
+hardware failures, or cloud zone outages, the data would be lost, and the data store could be completely unavailable.
 
-To increase availability of your data store you can configure it to be deployed in up to three different zones, one
-primary zone for the master and up to two replica zones.
-Dragonfly Cloud automatically detects failures and performs failover to an available replica.
+To increase the availability of your data store, you can configure it to be deployed in up to three different zones:
+**one primary/master zone and up to two replica zones**. Dragonfly Cloud automatically detects failures
+and performs failover to an available replica when the primary is unavailable.
+To add one or more replicas to your data store:
 
-To add a replica, expand the *Durability & High Availability* section and click the *Add Replica* button and select the
-zone for the replica.
-You can select the same zone as the master or a different zone.
-When selecting a different zone, inter zone data transfer costs may apply.
+- Expand the **Durability & High Availability** section.
+- Click on the **Add Replica** button and select the zone for the replica.
+- You can select the same zone as the primary or a different zone.
+- When selecting a different zone, inter-zone data transfer costs may apply.
+- **You can update the number of replicas of a data store with zero downtime**.
+- **You can update the primary/replica zones of a data store with zero downtime**.
 
-***Tip:*** You can also select a zone for the data store master, select the same zone as your application to avoid data
-transfer costs.
-
-You can update the data store replica and zones anytime with zero downtime.
+**Tip:** You can select a zone for the data store primary instance, and you should
+select the same zone as your application to avoid data transfer costs.
 
 ## Specializations
 
-**BullMQ** - Enable this for running BullMQ workloads, this requires you to apply Redis Cluster curly braces syntax for
-the queue names as described [here](/docs/integrations/bullmq.md).
+Dragonfly is designed from the ground up to provide a seamless, highly efficient, and blazingly fast alternative to
+Redis. Our mission is to enhance the performance of projects that rely on in-memory data stores without having to
+compromise on reliability or ease of use. Being a drop-in replacement for Redis, Dragonfly can be integrated into any
+project that utilizes Redis as its backend in-memory store. Dragonfly Cloud pushes this further by automatically
+providing the most suitable server configuration(s) for your workload when you select a specialization.
 
-If that is not possible please contact support.
-
-**Memcached** - Enable this for running Memcached workloads, memcached protocol will be enabled on port 6371.  
-*Note*: The memcached protocol does not support authentication, so can be enabled only
-for [private endpoint](#private-endpoint) data stores.
-
-**Sidekiq** - Enable this for running Sidekiq workloads, [read more](/docs/integrations/sidekiq.md).
+- **BullMQ:** Enable this for running [BullMQ](https://bullmq.io/) workloads.
+  This requires you to apply the hashtag syntax to the queue names as described [here](/docs/integrations/bullmq.md).
+  If that is not possible for your application, please contact support.
+- **Memcached:** Enable this for running Memcached workloads. Memcached protocol will be enabled on port `6371`.
+  Note that authentication is not supported for Memcached, so it can only be enabled for data stores
+  with a [private endpoint](#private-endpoint).
+- **Sidekiq:** Enable this for running Sidekiq workloads, [read more](/docs/integrations/sidekiq.md).
 
 ## Cluster Mode
 
-By default a dragonfly cloud data store support redis cluster protocol and clients so you can seamlessly migrate from
-redis cluster.
+By default, a Dragonfly Cloud data store supports the Redis Cluster protocol and clients so you can seamlessly
+migrate from Redis Cluster to a single-instance Dragonfly data store.
 
-Multi node cluster is in private beta,
-please [schedule a meeting with a product expert](https://calendly.com/d/ymz-yhv-q8f/dragonfly-cloud?month=2024-07) to
-get access.
+The multi-instance clustering, namely **Dragonfly Cluster**, is in private beta. Please contact support to get access.
+In the meantime, you can read more about Dragonfly
+Cluster ([preview](https://www.dragonflydb.io/blog/a-preview-of-dragonfly-cluster)
+and [horizontal scalability design](https://www.dragonflydb.io/blog/redis-and-dragonfly-cluster-design-comparison))
+in our blog posts.
 
 ---
 
