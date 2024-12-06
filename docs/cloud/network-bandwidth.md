@@ -6,8 +6,8 @@ sidebar_position: 9
 
 ## Overview
 
-- For heavy network traffic workloads, please refer to the following tables to understand the network bandwidth available for each data store size and compute tier in various cloud providers.
-- For more customized network bandwidth requirements, please contact support.
+For heavy network traffic workloads, please refer to the following tables to understand the network bandwidth available for each data store size and compute tier in various cloud providers.
+If you have more customized network bandwidth requirements, please contact support.
 
 ## AWS
 

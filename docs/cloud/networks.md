@@ -25,7 +25,7 @@ To create a private network:
 - Specify a **Name**, a **Cloud Provider**, and a **Cloud Region** for your network.
 - Specify the **CIDR** block (IP range) for your network.
 - The CIDR of the Dragonfly Cloud network must not overlap with any CIDR of your application VPC from where the requests or commands will be sent to the data store.
-- For example the following [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation) pairs are overlapping:
+- For example, the following [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation) pairs are overlapping:
   - **192.168**.0.0/**16**, **192.168**.0.0/**16**
   - **192.168**.0.0/**16**, **192.168.1**.0/**24**
 - While the following CIDR pairs are not overlapping:

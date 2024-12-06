@@ -6,9 +6,10 @@ sidebar_position: 6
 
 ## Overview
 
-- Dragonfly Cloud supports [manual on-demand](#manual-on-demand-backups) and recurring [scheduled backups](#scheduled-backups).
-- Dragonfly Cloud supports [importing Redis backups (RDB files)](#importing-redis-backups-rdb) from a remote storage system.
-- Existing backups can be [restored](#restoring-from-backup) to an existing data store.
+Dragonfly Cloud supports [manual on-demand backups](#manual-on-demand-backups) and recurring [scheduled backups](#scheduled-backups).
+To ease the process of migrating data, [importing Redis backups (RDB files)](#importing-redis-backups-rdb) from a remote storage system is also supported.
+
+Existing backups in your Dragonfly Cloud account can be [restored to an active data store](#restoring-from-backup) at any time.
 
 ## Manual On-Demand Backups
 
@@ -52,7 +53,7 @@ To restore a backup in an existing data store, follow the steps below:
 ## Importing Redis Backups (RDB)
 
 You can import Redis backups (RDB files) to Dragonfly Cloud from a remote storage system.
-Once imported, the backup will be visible under the [Account > Backups](https://dragonflydb.cloud/account/backups) tab and will be available for restoration as described above.
+Once imported, the backup will be visible under the [Account > Backups](https://dragonflydb.cloud/account/backups) tab and will be available for restoration.
 
 To import a Redis backup, follow the steps below:
 
@@ -64,11 +65,11 @@ To import a Redis backup, follow the steps below:
 - Chose the **Target Cloud** to import to, must match the cloud of the data store you want to restore to.
 - Chose the **Target Region** to import to, preferably match the region of the data store you want to restore to.
 - Click **Import**.
-- Once the backup is visible in status **Ready** you can restore it to a data store as described in [Restoring from Backup](#restoring-from-backup). 
+- Once the backup is visible in status **Ready**, you can restore it to a data store as described [above](#restoring-from-backup).
 
 ### RDB File Accessibility
 
 - The imported RDB file URL must be publicly accessible via HTTP(S) over the internet.
 - It is most secure to use a signed URL with a short expiration time to import the RDB file.
-- See [AWS S3 pre-signed URLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html) or [Google Cloud Storage signed URLs](https://cloud.google.com/storage/docs/access-control/signed-urls) for more information.
+- See [AWS S3 presigned URLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html) or [Google Cloud Storage signed URLs](https://cloud.google.com/storage/docs/access-control/signed-urls) for more information.
 - Otherwise, you can generate a long random URL and delete the file after import to ensure security.  
