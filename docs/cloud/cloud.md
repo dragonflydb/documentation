@@ -35,6 +35,6 @@ to be cost-efficient, highly available, secure, and simple to operate.
 
 - [Managing Dragonfly Cloud Users](managing-users.md)
 - [Dragonfly Cloud Pricing](pricing.md)
-- [Dragonfly Cloud Support Plans](support.md)
+- [Dragonfly Cloud Support Plans](support-plans.md)
 - [Dragonfly Cloud Data Retention Policy](data-retention.md)
 - [Data Store Network Bandwidth Limits](network-bandwidth.md)

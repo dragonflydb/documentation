@@ -138,6 +138,8 @@ Multi node cluster is in private beta,
 please [schedule a meeting with a product expert](https://calendly.com/d/ymz-yhv-q8f/dragonfly-cloud?month=2024-07) to
 get access.
 
+---
+
 ## Connecting to Data Store
 
 Once a data store *Status* is *Active* you can connect to it with any Redis client using the *Connection URI* provided
@@ -245,6 +247,6 @@ rules on a test data store before applying them to a production data store.
 6. ***Caution:*** It is always recommended to test ACL rules on a test data store before applying them to a production
    data store.
 
-## Support
+## Support Plans
 
-See [Support](./support.md) for information on support plans.
+See more information on support plans [here](./support-plans.md).
