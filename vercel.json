@@ -1,4 +1,26 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/docs/cloud/datastores",
+      "destination": "/docs/cloud/data-stores",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/users",
+      "destination": "/docs/cloud/managing-users",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/connections",
+      "destination": "/docs/cloud/peering-connections",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/support",
+      "destination": "/docs/cloud/support-plans",
+      "permanent": true
+    }
+  ]
 }
