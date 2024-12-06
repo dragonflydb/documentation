@@ -263,6 +263,32 @@ const config = {
         searchPagePath: "search",
       },
     }),
+
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            from: '/docs/cloud/datastores',
+            to: '/docs/cloud/data-stores',
+          },
+          {
+            from: '/docs/cloud/users',
+            to: '/docs/cloud/managing-users',
+          },
+          {
+            from: '/docs/cloud/connections',
+            to: '/docs/cloud/peering-connections',
+          },
+          {
+            from: '/docs/cloud/support',
+            to: 'docs/cloud/support-plans',
+          },
+        ],
+      },
+    ],
+  ],
 };
 
 module.exports = config;
