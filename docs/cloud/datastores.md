@@ -31,7 +31,7 @@ On this page, you will find information on how to create, configure, and connect
       It provides **2x the CPU** for the same amount of provisioned memory compared to the **Standard** plan.
     - **Extreme**: This plan is suitable for workloads that require extremely high compute resources.
       It provides **4x the CPU** for the same amount of provisioned memory compared to the **Standard** plan.
-- For network bandwidth limits, please refer to the [network bandwidth](./connections.md) section.
+- For network bandwidth limits, please refer to the [network bandwidth](./bandwidth.md) section.
 - **You can modify the data store Plan (memory size, CPU resources) later
   with zero downtime** to easily scale up or down.
 
@@ -136,7 +136,8 @@ providing the most suitable server configuration(s) for your workload when you s
 - **Memcached:** Enable this for running Memcached workloads. Memcached protocol will be enabled on port `6371`.
   Note that authentication is not supported for Memcached, so it can only be enabled for data stores
   with a [private endpoint](#private-endpoint).
-- **Sidekiq:** Enable this for running Sidekiq workloads, [read more](/docs/integrations/sidekiq.md).
+- **Sidekiq:** Enable this for running [Sidekiq](https://sidekiq.org/) workloads,
+  [read more](/docs/integrations/sidekiq.md).
 
 ## Cluster Mode
 
