@@ -54,11 +54,9 @@ On this page you will find information on how to create, configure, and connect 
 
 ### Updating the Data Store Configuration
 
-- To update the data store configuration,
-  click three-dot
+- To update the data store configuration, click the three-dot
   menu (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>)
-  in the data store row
-  and then select **Edit**.
+  in the data store row and then select **Edit**.
 - **Dragonfly Cloud performs data store updates with zero downtime**.
 
 ---
@@ -69,25 +67,24 @@ Dragonfly Cloud supports using both public and private endpoints for data access
 
 ### Public Endpoint
 
-With a public endpoint you can connect to the data store from anywhere over the internet.
-To protect your data store from unauthorized access public endpoints are configured with *passkey* and *TLS* enabled.   
-*TLS* has some performance impact so can be disabled but it is highly recommended to leave it enabled.  
-*Passkey* is mandatory and can not be disabled for public endpoints
+- With a public endpoint, you can connect to the data store from anywhere over the internet.
+- To protect your data store from unauthorized access,
+  public endpoints are default with **TLS** and **passkey** enabled.
+- **TLS** has some performance impact, so it can be disabled. **But it is highly recommended to leave it enabled**.
+- **Passkey** is mandatory and cannot be disabled for public endpoints.
 
 ### Private Endpoint
 
-*Private endpoint* provides better security, performance and lower latency as the data transports to and from the data
-stores over private networks and not via the public internet.  
-Using a private endpoint also reduces data transfer costs applied by the cloud provider.
+- Private endpoints provide **better security**, **better performance**, and **lower latency** as the data transports
+  to and from the data stores over private networks and not via the public internet.
+- Using a private endpoint also **reduces data transfer costs** applied by the cloud provider.
+- In order to create a data store with a private endpoint, **you must first create a [private network](./networks.md)**.
+- Once you have created a private network, you can select it in the **Endpoint** dropdown
+  when creating a new data store.
+- **TLS** and **passkey** are disabled by default for private endpoint data stores but can be enabled.
 
-In order to create a data store with a private endpoint, you must first create a private network,
-see [Networks](./networks) for more information.
-Once you have created a private network, you can select it in the *Endpoint* dropdown box when creating a data store.
-
-> ***Tip:*** In order to completely avoid data transfer charges, place your data store in the same availability zone of
-> your application. See [High Availability](#high-availability) for specifying the data store availability zone.
-
-*TLS* and *passkey* are disabled by default for private endpoint datastores, but can be enabled.
+**Tip:** In order to completely avoid data transfer charges, place your data store in the same availability zone (AZ)
+as your application. See [high-availability](#high-availability) for specifying the data store availability zone.
 
 ## Durability and High Availability
 

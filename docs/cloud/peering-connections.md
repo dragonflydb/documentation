@@ -19,7 +19,7 @@ or simply by clicking the **+Add Connection** button under the network itself.
 
 Continue to the next sections for instructions on how to create a peering connection with your cloud provider.
 
-## AWS
+## Amazon Web Services (AWS)
 
 Follow the steps below to create a peering connection within the Dragonfly Cloud console,
 and then accept the peering connection in your AWS account console:
@@ -40,7 +40,7 @@ and then accept the peering connection in your AWS account console:
 If you haven't done so already, create a data store with a private endpoint and start building your applications with
 it. Read more about creating a data store with a private endpoint [here](./data-stores#private-endpoint).
 
-## GCP
+## Google Cloud Platform (GCP)
 
 Follow the steps below to create a peering connection within the Dragonfly Cloud console,
 and then accept the peering connection in your GCP account console:

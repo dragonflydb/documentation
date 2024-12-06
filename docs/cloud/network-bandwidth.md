@@ -9,7 +9,7 @@ sidebar_position: 9
 For heavy network traffic workloads, please refer to the following tables to understand the network bandwidth available for each data store size and compute tier in various cloud providers.
 If you have more customized network bandwidth requirements, please contact support.
 
-## AWS
+## Amazon Web Services (AWS)
 
 - AWS provides burstable network bandwidth for certain data store sizes.
 - Burst bandwidth can be used for short periods of time but is not guaranteed.
@@ -38,7 +38,7 @@ If you have more customized network bandwidth requirements, please contact suppo
 | Extreme      | 100       | 20                  | -                       |
 | Extreme      | 200       | 25                  | -                       |
 
-## GCP
+## Google Cloud Platform (GCP)
 
 | Compute Tier | Size (GB) | Bandwidth (Gbps)  |
 |--------------|-----------|-------------------|
