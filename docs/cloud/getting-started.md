@@ -35,5 +35,6 @@ Dragonfly Cloud drastically simplifies the deployment, management, and operation
 - We offer unlimited 3GB development instances for around **$36/month (less than $0.05/hour)** in popular regions.
 - Depending on cloud providers and regions, the cost can vary.
   However, a development instance is always the easiest way to get started.
+  Read more about [pricing](./pricing.md).
 
 **Happy building with Dragonfly Cloud!**

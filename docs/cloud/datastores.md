@@ -113,7 +113,7 @@ and performs failover to an available replica when the primary is unavailable.
 To add one or more replicas to your data store:
 
 - Expand the **Durability & High Availability** section.
-- Click on the **Add Replica** button and select the zone for the replica.
+- Click on the **+Add Replica** button and select the zone for the replica.
 - You can select the same zone as the primary or a different zone.
 - When selecting a different zone, inter-zone data transfer costs may apply.
 - **You can update the number of replicas of a data store with zero downtime**.
@@ -264,6 +264,7 @@ Here is a recipe to rotate the passkey for a data store, since it is part of the
 - ***CAUTION: Altering ACL rules can potentially disrupt access for current users. It is always recommended to test ACL
   rules on a test data store before applying them to a production data store.***
 
-## Support Plans
+## Pricing & Support
 
-See more information on Dragonfly Cloud support plans [here](./support.md).
+- See more information about Dragonfly Cloud pricing [here](./pricing.md).
+- See more information about Dragonfly Cloud support plans [here](./support.md).
