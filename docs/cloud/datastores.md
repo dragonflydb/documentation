@@ -50,8 +50,8 @@ On this page, you will find information on how to create, configure, and connect
 - Once the data store is created, clicking the data store row will open a drawer with the data store configuration,
   including the auto-generated passkey and a Redis-compatible **Connection URI**.
 - Once the data store's **Status** becomes **Active**, you can try accessing it with Redis CLI,
-  for instance, `redis-cli -u <Connection_URI> PING`.
-  Read more information on [how to connect to the data store](#connecting-to-data-store) below.
+  for instance, `redis-cli -u <CONNECTION_URI> PING`.
+  Read more information on [how to connect to the data store](#connecting-to-a-data-store) below.
 
 ### Updating the Data Store Configuration
 
@@ -152,113 +152,116 @@ in our blog posts.
 
 ---
 
-## Connecting to Data Store
+## Connecting to a Data Store
 
-Once a data store *Status* is *Active* you can connect to it with any Redis client using the *Connection URI* provided
-in the data store drawer (e.g. rediss://default:h6blm92XXXsa@52tyg3xkp.dragonflydb.cloud:6385).
-Here are a few popular examples:
+Once a data store's **Status** is **Active**, you can connect to it with any Redis client using the **Connection URI**
+provided in the data store drawer (e.g., `rediss://default:XXXXX@abcde.dragonflydb.cloud:6385`).
+Here are a few popular client libraries and code snippets to connect to the data store.
 
 ### Redis CLI
 
-1. Install redis-cli, `sudo apt install redis-tools`
-2. With the *Connection URI* from the data store drawer execute redis-cli in the terminal e.g.
-   `redis-cli -u <connection URI> PING`
+- Install [`redis-cli`](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/).
+- With the **Connection URI** from the data store drawer, execute `redis-cli` in the terminal:
 
-### Node.js
+```shell
+$> redis-cli -u <CONNECTION_URI> PING
+```
 
-1. Install the redis npm package, `npm install redis`
-2. Use the following code snippet to connect to the data store
+### JavaScript | Typescript | Node.js
+
+- Install the [`ioredis`](https://github.com/redis/ioredis) package.
+- Use the following code snippet to connect to the data store:
 
 ```javascript
-import {createClient} from 'redis';
+const Client = require("ioredis");
 
-const client = createClient({url: '<connection URI>'});
-client.on('connect', () => {
-    console.log('Connected to Redis');
-});
-client.on('error', (err) => {
-    console.error('Redis error', err);
-});
-client.ping((err, res) => {
-    if (err) {
-        console.error('Error:', err);
-        return;
-    }
-    console.log('Redis PING:', res);
+// Using connection URI directly.
+const client = new Client("CONNECTION_URI");
+
+// Using connection options.
+const client2 = new Client({
+    port: 6385,
+    host: "abcde.dragonflydb.cloud",
+    username: "default",
+    password: "XXXXX",
+    db: 0,
 });
 
+client.ping();
 ```
 
 ### Python
 
-1. Install the redis-py package, `pip install redis`
-2. Use the following code snippet to connect to the data store
+- Install the [redis-py](https://github.com/redis/redis-py) package.
+- Use the following code snippet to connect to the data store:
 
 ```python
 import redis
-client = redis.Redis.from_url('<connection URI>')
+
+client = redis.Redis.from_url('CONNECTION_URI')
 client.ping()
 ```
 
 ### Go
 
-1. Install the go-redis package, `go get github.com/go-redis/redis/v8`
-2. Use the following code snippet to connect to the data store
+- Install the [go-redis](https://github.com/redis/go-redis) package.
+- Use the following code snippet to connect to the data store:
 
 ```go
 package main
 
 import (
-    "fmt"
+	"fmt"
+
 	"github.com/go-redis/redis/v8"
 )
 
 func main() {
-    // Replace "<connection URI>" with the actual connection URI,  
-    // <db> is the database number, default is 0
-    opt, err := redis.ParseURL("<connection URI>/<db>")
-    if err != nil {
-	    panic(err)
-    }
+	// Replace "<CONNECTION_URI>" with the actual connection URI.
+	// Note that <db> is the database number and its default value is 0.
+	opts, err := redis.ParseURL("<CONNECTION_URI>/<db>")
+	if err != nil {
+		panic(err)
+	}
 
-    client := redis.NewClient(opt)
+	client := redis.NewClient(opts)
 
-    pong, err := client.Ping(client.Context()).Result()
-    if err != nil {
-        fmt.Println("Error:", err)
-        return
-    }
+	pong, err := client.Ping(client.Context()).Result()
+	if err != nil {
+		fmt.Println(err)
+	}
 
-    fmt.Println("Connected to Redis:", pong)
+	fmt.Println(pong)
 }
 ```
 
 ## ACL Rules
 
-You can leverage [Dragonfly's built in support for ACLs](https://www.dragonflydb.io/docs/managing-dragonfly/acl) with
-Dragonfly Cloud.
+- You can leverage [Dragonfly's built-in support for ACLs](https://www.dragonflydb.io/docs/managing-dragonfly/acl)
+  with Dragonfly Cloud.
+- Each Dragonfly Cloud data store is created with a default ACL rule that allows all commands for the default user:
 
-Each Dragonfly Cloud data store is created with a default ACL rule that allows all commands for the default user.  
-`USER default ON >pmn4p0ssrbbl ~* +@ALL`
+```text
+USER default ON >pmn4p0ssrbbl ~* +@ALL
+```
 
-To modify the data store ACL rules, click the data store three-dot
-menu (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>)
-and click *Acl Rules*  
-An ACL Rules editor drawer will open where you can add, modify or delete ACL rules.
+- To modify the data store ACL rules, click the data store three-dot
+  menu (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>)
+  and click **ACL Rules**.
+- An ACL Rules editor drawer will open where you can add, modify, or delete ACL rules.
+- ***CAUTION: Altering ACL rules can potentially disrupt access for current users. It is always recommended to test ACL
+  rules on a test data store before applying them to a production data store.***
 
-***Caution:*** Altering ACL rules can potentially disrupt access for current users. It is always recommended to test ACL
-rules on a test data store before applying them to a production data store.
+### Rotating Data Store Passkey
 
-### How to rotate data store passkey
-
-1. Modify the default ACL rule to e.g. `USER default ON >pmn4p0ssrbbl >mynewpass ~* +@ALL`
-2. Verify you can now authenticate with both pmn4p0ssrbbl (old passkey) and mynewpass (new passkey)
-3. Migrate all consumers to authenticate with the new passkey
-4. Modify the default ACL rule to only include the new passkey e.g. `USER default ON >mynewpass ~* +@ALL`
-5. Verify you can no longer authenticate with the old passkey.
-6. ***Caution:*** It is always recommended to test ACL rules on a test data store before applying them to a production
-   data store.
+- Modify the default ACL rule to something like: `USER default ON >myoldpass >mynewpass ~* +@ALL`.
+- Verify you can now authenticate with both the old and new passkeys.
+- Migrate all consumers to authenticate with the new passkey.
+- Modify the default ACL rule to only include the new passkey: `USER default ON >mynewpass ~* +@ALL`.
+- Verify you can no longer authenticate with the old passkey.
+- ***CAUTION: Altering ACL rules can potentially disrupt access for current users. It is always recommended to test ACL
+  rules on a test data store before applying them to a production data store.***
 
 ## Support Plans
 
-See more information on support plans [here](./support.md).
+- See more information on Dragonfly Cloud support plans [here](./support.md).
