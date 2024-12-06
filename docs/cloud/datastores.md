@@ -31,7 +31,7 @@ On this page, you will find information on how to create, configure, and connect
       It provides **2x the CPU** for the same amount of provisioned memory compared to the **Standard** plan.
     - **Extreme**: This plan is suitable for workloads that require extremely high compute resources.
       It provides **4x the CPU** for the same amount of provisioned memory compared to the **Standard** plan.
-- For network bandwidth limits, please refer to the [network bandwidth](./network-bandwidth.md) section.
+- For network bandwidth limits, please refer to the [network bandwidth](./connections.md) section.
 - **You can modify the data store Plan (memory size, CPU resources) later
   with zero downtime** to easily scale up or down.
 
@@ -40,7 +40,7 @@ On this page, you will find information on how to create, configure, and connect
 - By default, the data store will be configured with a **public endpoint**, **TLS**, and an auto-generated **passkey**,
   meaning you can securely connect to it from anywhere over the public internet.
 - To create a data store with a **private endpoint**, see [security](#security), [networks](./networks.md),
-  and [peering connections](./peering-connections.md).
+  and [peering connections](./connections.md).
 - By default, the data store will consist of a single Dragonfly server instance.
   To create a highly available data store, read more about [high availability](#high-availability) below.
   For cluster mode, please see [cluster mode](#cluster-mode) below.
@@ -260,4 +260,4 @@ rules on a test data store before applying them to a production data store.
 
 ## Support Plans
 
-See more information on support plans [here](./support-plans.md).
+See more information on support plans [here](./support.md).

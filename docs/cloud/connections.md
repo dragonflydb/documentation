@@ -38,7 +38,7 @@ and then accept the peering connection in your AWS account console:
 - Observe the connection becoming **Active** after a few moments in the Dragonfly Cloud console.
 
 If you haven't done so already, create a data store with a private endpoint and start building your applications with
-it. Read more about creating a data store with a private endpoint [here](./data-stores#private-endpoint).
+it. Read more about creating a data store with a private endpoint [here](./datastores#private-endpoint).
 
 ## Google Cloud Platform (GCP)
 
@@ -58,4 +58,4 @@ and then accept the peering connection in your GCP account console:
 - Don't forget to modify your firewall to allow traffic from the Dragonfly Cloud private network CIDR.
 
 If you haven't done so already, create a data store with a private endpoint and start building your applications with
-it. Read more about creating a data store with a private endpoint [here](./data-stores#private-endpoint).
+it. Read more about creating a data store with a private endpoint [here](./datastores#private-endpoint).

@@ -11,8 +11,8 @@ Like data stores, networks are important resources you can manage in your Dragon
 After creating a private network, you can:
 
 - Create a **VPC peering connection** to connect the Dragonfly Cloud private network with a [VPC](https://en.wikipedia.org/wiki/Virtual_private_cloud) in your cloud provider account
-  to establish communication between the two networks over private IP space. Read more on [peering connections](./peering-connections.md).
-- Create a data store in the private network with a **private endpoint**. Read more on [data store security](./data-stores#security).
+  to establish communication between the two networks over private IP space. Read more on [peering connections](./connections.md).
+- Create a data store in the private network with a **private endpoint**. Read more on [data store security](./datastores#security).
 
 **Note: By default, each Dragonfly Cloud account has a quota of two private networks.**
 If you need more private networks, please contact support.
@@ -34,5 +34,5 @@ To create a private network:
   - **192.168**.0.0/**16**, **172.16**.1.0/**24**
 - Once done, click **Create** and observe the network status become **Active**.
 
-See [peering connections](./peering-connections.md) to connect the Dragonfly Cloud network to a VPC in your
+See [peering connections](./connections.md) to connect the Dragonfly Cloud network to a VPC in your
 cloud provider account in order to establish communication between the two networks.

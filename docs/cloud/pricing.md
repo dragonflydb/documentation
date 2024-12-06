@@ -53,7 +53,7 @@ The cost of this data store can be calculated as follows:
   including between clouds, the public internet, different cloud regions, and even between availability zones within the same region.
 - Dragonfly Cloud applies public data transfer fee rates set by cloud vendors for data store traffic.
   For detailed and specific pricing, please refer to the [AWS](https://aws.amazon.com/ec2/pricing/on-demand/) and [GCP](https://cloud.google.com/vpc/network-pricing) pages.
-- **To reduce data transfer expenses, using [data stores with private endpoints](./data-stores.md#private-endpoint) is recommended**.
+- **To reduce data transfer expenses, using [data stores with private endpoints](./datastores.md#private-endpoint) is recommended**.
 - Additionally, data stores with high-availability configured may incur charges for cross-availability zone traffic within the cloud provider's network.
 
 ## Backup Storage
