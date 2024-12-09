@@ -198,7 +198,7 @@ client.ping();
 ```python
 import redis
 
-client = redis.Redis.from_url('<CONNECTION_URI>')
+client = redis.Redis.from_url("<CONNECTION_URI>")
 client.ping()
 ```
 
