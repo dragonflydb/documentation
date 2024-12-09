@@ -211,9 +211,10 @@ client.ping()
 package main
 
 import (
+	"context"
 	"fmt"
 
-	"github.com/go-redis/redis/v8"
+	"github.com/redis/go-redis/v9"
 )
 
 func main() {
@@ -226,7 +227,7 @@ func main() {
 
 	client := redis.NewClient(opts)
 
-	pong, err := client.Ping(client.Context()).Result()
+	pong, err := client.Ping(context.Background()).Result()
 	if err != nil {
 		fmt.Println(err)
 	}
