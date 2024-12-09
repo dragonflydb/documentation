@@ -173,21 +173,11 @@ $> redis-cli -u <CONNECTION_URI> PING
 - Use the following code snippet to connect to the data store:
 
 ```javascript
-const Client = require("ioredis");
+const Redis = require("ioredis");
 
-// Using connection URI directly.
-const client = new Client("<CONNECTION_URI>");
-
-// Using connection options.
-const client2 = new Client({
-    port: 6385,
-    host: "abcde.dragonflydb.cloud",
-    username: "default",
-    password: "XXXXX",
-    db: 0,
-});
-
-client.ping();
+// Replace <CONNECTION_URI> with the actual Dragonfly Cloud connection URI.
+const client = new Redis("<CONNECTION_URI>");
+client.ping().then(resp => console.log(resp));
 ```
 
 ### Python
@@ -198,7 +188,8 @@ client.ping();
 ```python
 import redis
 
-client = redis.Redis.from_url('<CONNECTION_URI>')
+# Replace <CONNECTION_URI> with the actual Dragonfly Cloud connection URI.
+client = redis.Redis.from_url("<CONNECTION_URI>")
 client.ping()
 ```
 
@@ -211,14 +202,15 @@ client.ping()
 package main
 
 import (
+	"context"
 	"fmt"
 
-	"github.com/go-redis/redis/v8"
+	"github.com/redis/go-redis/v9"
 )
 
 func main() {
-	// Replace "<CONNECTION_URI>" with the actual connection URI.
-	// Note that <db> is the database number and its default value is 0.
+	// Replace <CONNECTION_URI> with the actual Dragonfly Cloud connection URI.
+	// Note that <db> is the database number, and its default value is 0.
 	opts, err := redis.ParseURL("<CONNECTION_URI>/<db>")
 	if err != nil {
 		panic(err)
@@ -226,7 +218,7 @@ func main() {
 
 	client := redis.NewClient(opts)
 
-	pong, err := client.Ping(client.Context()).Result()
+	pong, err := client.Ping(context.Background()).Result()
 	if err != nil {
 		fmt.Println(err)
 	}
