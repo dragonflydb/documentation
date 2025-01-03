@@ -16,23 +16,27 @@ Streams are data structures that enable storing and processing ordered logs of e
 ## Syntax
 
 ```shell
-XADD key [MAXLEN [~ | =] threshold] * field value [field value ...]
+XADD key [<MAXLEN | MINID> [~ | =] threshold] <* | id> field value [field value ...]
 ```
 
 ## Parameter Explanations
 
 - `key`: The key of the stream where the entry will be appended.
 - `MAXLEN` (optional): A flag to cap the length of the stream to `threshold` items.
-  - The `~` operator is used to approximate trimming, making it more efficient.
-  - The `=` operator is used to set the exact length of the stream.
-- `*`: Automatically assigns an ID that includes the current milliseconds timestamp and an incrementing sequence number.
+- `MINID` (optional): A flag to trim the stream to keep only entries with IDs greater than `threshold`.
+- For `MAXLEN` or `MINID`, one of the following operators can be used:
+  - The `~` operator is used to trim approximately, which can be more efficient but may not be exact.
+  - The `=` operator is used to trim exactly to the specified threshold.
+- In order to specify a unique ID for the entry in the stream, use one of the following options.
+  - `*`: Automatically generate an ID that includes a timestamp and a sequence number.
+  - `id`: A unique incremental ID for the entry specified by your application.
+  - Either way, the stored ID is a **string representing two 64-bit integers separated by a hyphen (`-`)**.
 - `field value`: Pairs of field names and their corresponding values, forming the data within the entry.
 
 ## Return Values
 
 - The command returns the unique ID of the added stream entry.
-- It is a string representing two 64-bit integers separated by a hyphen (`-`).
-- If the ID is auto-generated, the first part is a Unix timestamp in milliseconds, and the second part is an incrementing sequence number distinguishing entries with the same timestamp.
+- If the ID is automatically generated, the first part is a Unix timestamp in milliseconds, and the second part is an incrementing sequence number distinguishing entries with the same timestamp.
 
 ## Code Examples
 
@@ -41,7 +45,7 @@ XADD key [MAXLEN [~ | =] threshold] * field value [field value ...]
 Add an entry to a stream:
 
 ```shell
-dragonfly$> XADD mystream * sensor-id 1234 temperature 19.8
+dragonfly$> XADD mystream * sensor-id 1234 temperature 20.1
 "1609459200001-0"
 ```
 
@@ -50,7 +54,7 @@ dragonfly$> XADD mystream * sensor-id 1234 temperature 19.8
 Add an entry and trim the stream to keep only the latest 5 entries:
 
 ```shell
-dragonfly$> XADD mystream MAXLEN ~ 5 * sensor-id 1235 temperature 20.1
+dragonfly$> XADD mystream MAXLEN = 5 * sensor-id 1235 temperature 20.1
 "1609459200002-0"
 ```
 
@@ -59,7 +63,7 @@ dragonfly$> XADD mystream MAXLEN ~ 5 * sensor-id 1235 temperature 20.1
 Stream entries can contain multiple field-value pairs:
 
 ```shell
-dragonfly$> XADD mystream * sensor-id 1236 temperature 20.3 humidity 40
+dragonfly$> XADD mystream * sensor-id 1236 temperature 20.1 humidity 40
 "1609459200003-0"
 ```
 
@@ -71,20 +75,20 @@ When using a specific ID, ensure it is unique and greater than the target stream
 
 ```shell
 # Using an auto-generated ID.
-dragonfly$> XADD mystream * sensor-id 1236 temperature 20.1
+dragonfly$> XADD mystream * sensor-id 1237 temperature 20.1
 "1735929311498-0"
 
 # Using a specific ID in full format (timestamp-sequence).
-dragonfly$> XADD mystream 1735929311498-1 sensor-id 1236 temperature 20.2
+dragonfly$> XADD mystream 1735929311498-1 sensor-id 1237 temperature 20.2
 "1735929311498-1"
 
 # Using a specific ID in partial format (timestamp only).
-dragonfly$> XADD mystream 1735929311498-* sensor-id 1236 temperature 20.3
+dragonfly$> XADD mystream 1735929311498-* sensor-id 1237 temperature 20.3
 "1735929311498-2"
 
 # Using an ID that is less than the top item's ID will result in an error.
 # In this case, the partial format ID is less than the top item's ID.
-dragonfly$> XADD mystream 1735929300000-* sensor-id 1236 temperature 20.4
+dragonfly$> XADD mystream 1735929300000-* sensor-id 1237 temperature 20.4
 (error) ERR The ID specified in XADD is equal or smaller than the target stream top item
 ```
 
