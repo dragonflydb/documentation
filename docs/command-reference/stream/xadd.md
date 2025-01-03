@@ -16,19 +16,23 @@ Streams are data structures that enable storing and processing ordered logs of e
 ## Syntax
 
 ```shell
-XADD key [MAXLEN ~ count] * field value [field value ...]
+XADD key [MAXLEN [~ | =] threshold] * field value [field value ...]
 ```
 
 ## Parameter Explanations
 
 - `key`: The key of the stream where the entry will be appended.
-- `MAXLEN ~ count` (optional): A flag to cap the length of the stream to `count` items; `~` is used to approximate trimming, making it more efficient.
+- `MAXLEN` (optional): A flag to cap the length of the stream to `threshold` items.
+  - The `~` operator is used to approximate trimming, making it more efficient.
+  - The `=` operator is used to set the exact length of the stream.
 - `*`: Automatically assigns an ID that includes the current milliseconds timestamp and an incrementing sequence number.
 - `field value`: Pairs of field names and their corresponding values, forming the data within the entry.
 
 ## Return Values
 
-The command returns the unique ID of the added stream entry, a string representing the timestamp and sequence number.
+- The command returns the unique ID of the added stream entry.
+- It is a string representing two 64-bit integers separated by a hyphen (`-`).
+- If the ID is auto-generated, the first part is a Unix timestamp in milliseconds, and the second part is an incrementing sequence number distinguishing entries with the same timestamp.
 
 ## Code Examples
 
@@ -37,7 +41,7 @@ The command returns the unique ID of the added stream entry, a string representi
 Add an entry to a stream:
 
 ```shell
-dragonfly> XADD mystream * sensor-id 1234 temperature 19.8
+dragonfly$> XADD mystream * sensor-id 1234 temperature 19.8
 "1609459200001-0"
 ```
 
@@ -46,7 +50,7 @@ dragonfly> XADD mystream * sensor-id 1234 temperature 19.8
 Add an entry and trim the stream to keep only the latest 5 entries:
 
 ```shell
-dragonfly> XADD mystream MAXLEN ~ 5 * sensor-id 1235 temperature 20.1
+dragonfly$> XADD mystream MAXLEN ~ 5 * sensor-id 1235 temperature 20.1
 "1609459200002-0"
 ```
 
@@ -55,8 +59,33 @@ dragonfly> XADD mystream MAXLEN ~ 5 * sensor-id 1235 temperature 20.1
 Stream entries can contain multiple field-value pairs:
 
 ```shell
-dragonfly> XADD mystream * sensor-id 1236 temperature 20.3 humidity 40
+dragonfly$> XADD mystream * sensor-id 1236 temperature 20.3 humidity 40
 "1609459200003-0"
+```
+
+### Use Specific ID
+
+Specify a unique ID for the stream entry.
+The ID can be in a full format or a partial format as shown below.
+When using a specific ID, ensure it is unique and greater than the target stream top item's ID.
+
+```shell
+# Using an auto-generated ID.
+dragonfly$> XADD mystream * sensor-id 1236 temperature 20.1
+"1735929311498-0"
+
+# Using a specific ID in full format (timestamp-sequence).
+dragonfly$> XADD mystream 1735929311498-1 sensor-id 1236 temperature 20.2
+"1735929311498-1"
+
+# Using a specific ID in partial format (timestamp only).
+dragonfly$> XADD mystream 1735929311498-* sensor-id 1236 temperature 20.3
+"1735929311498-2"
+
+# Using an ID that is less than the top item's ID will result in an error.
+# In this case, the partial format ID is less than the top item's ID.
+dragonfly$> XADD mystream 1735929300000-* sensor-id 1236 temperature 20.4
+(error) ERR The ID specified in XADD is equal or smaller than the target stream top item
 ```
 
 ## Best Practices
@@ -67,15 +96,15 @@ dragonfly> XADD mystream * sensor-id 1236 temperature 20.3 humidity 40
 
 ## Common Mistakes
 
-- Providing an odd number of arguments results in a syntax error, as entries must consist of field-value pairs.
+- Providing an odd number of arguments for the field-value list results in a syntax error.
 - Not using the `*` for the ID will require manually assigning unique IDs, which can be error-prone.
 
 ## FAQs
 
 ### What happens if the key does not exist?
 
-If the key does not exist, `XADD` will automatically create a new stream with the specified entry.
+If the key does not exist, `XADD` will automatically create a new stream with the specified key and append the entry to it.
 
 ### Can I use specific IDs instead of `*`?
 
-Yes, you can specify your own unique ID instead of using `*`, but you must ensure it is unique and greater than the last entry's ID.
+Yes, you can specify your own unique ID instead of using `*`, but you must ensure the new ID is unique and is greater than the target stream top item's ID.
