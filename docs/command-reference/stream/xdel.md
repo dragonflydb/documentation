@@ -26,7 +26,7 @@ XDEL key ID [ID ...]
 
 ## Return Values
 
-The command returns an integer representing the number of entries that were successfully deleted from the stream.
+- The command returns an integer representing the number of entries that were successfully deleted from the stream.
 
 ## Code Examples
 
@@ -35,13 +35,16 @@ The command returns an integer representing the number of entries that were succ
 Delete a single entry from a stream:
 
 ```shell
-dragonfly> XADD mystream * name "Alice" age "30"
+dragonfly$> XADD mystream * name "Alice" age "30"
 "1527845627383-0"
-dragonfly> XADD mystream * name "Bob" age "25"
+
+dragonfly$> XADD mystream * name "Bob" age "25"
 "1527845627383-1"
-dragonfly> XDEL mystream 1527845627383-0
+
+dragonfly$> XDEL mystream 1527845627383-0
 (integer) 1
-dragonfly> XRANGE mystream -
+
+dragonfly$> XRANGE mystream - +
 1) 1527845627383-1
    1) "name"
    2) "Bob"
@@ -54,29 +57,43 @@ dragonfly> XRANGE mystream -
 Delete multiple entries from the stream by specifying multiple IDs:
 
 ```shell
-dragonfly> XADD mystream * name "Charlie" age "22"
+dragonfly$> XADD mystream * name "Alice" age "30"
+"1527845627383-0"
+
+dragonfly$> XADD mystream * name "Bob" age "25"
+"1527845627383-1"
+
+dragonfly$> XADD mystream * name "Charlie" age "22"
 "1527845627383-2"
-dragonfly> XADD mystream * name "Diana" age "28"
+
+dragonfly$> XADD mystream * name "Diana" age "28"
 "1527845627383-3"
-dragonfly> XDEL mystream 1527845627383-1 1527845627383-3
+
+dragonfly$> XDEL mystream 1527845627383-1 1527845627383-3
 (integer) 2
-dragonfly> XRANGE mystream -
-1) 1527845627383-2
-   1) "name"
-   2) "Charlie"
-   3) "age"
-   4) "22"
+
+dragonfly$> XRANGE mystream - +
+1) 1) "1527845627383-0"
+   2) 1) "name"
+      2) "Alice"
+      3) "age"
+      4) "30"
+2) 1) "1527845627383-2"
+   2) 1) "name"
+      2) "Charlie"
+      3) "age"
+      4) "22"
 ```
 
 ## Best Practices
 
 - Make smart use of `XDEL` to keep your streams tidy and free from outdated or unnecessary data.
-- Consider removing processed entries to prevent the stream from growing indefinitely, which could lead to performance degradation.
+- Consider removing processed entries to prevent the stream from growing indefinitely, which could lead to performance degradation and increased memory usage.
 
 ## Common Mistakes
 
 - Attempting to delete an entry using a non-existent ID, which will result in a deletion count of `0`.
-- Assuming `XDEL` modifies the stream's order, while it merely removes specific entries and maintains the order of remaining entries.
+- Assuming `XDEL` modifies the order of entries in a stream, while it merely removes specific entries and maintains the order of remaining entries.
 
 ## FAQs
 
@@ -86,4 +103,4 @@ If the specified IDs do not exist, `XDEL` will return `0` for each non-existent 
 
 ### Can I use `XDEL` on a non-stream data type?
 
-No, using `XDEL` on a non-stream data type will result in an error, as this command is specifically designed for stream entries.
+No, using `XDEL` on a non-stream data type will result in an error.
