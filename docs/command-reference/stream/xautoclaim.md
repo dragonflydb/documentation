@@ -11,7 +11,9 @@ import PageTitle from '@site/src/components/PageTitle';
 ## Introduction
 
 In Dragonfly, as well as in Redis and Valkey, the `XAUTOCLAIM` command is used within the context of streams for effectively managing pending messages.
-The command transfers ownership of pending stream messages from one consumer to another, which is particularly useful in scenarios where message processing needs to be resilient and messages shouldn't remain stuck with unavailable consumers.
+The command transfers ownership of pending stream messages from one consumer to another,
+which is particularly useful in scenarios where message processing needs to be resilient and messages shouldn't remain stuck with unavailable consumers.
+`XAUTOCLAIM` works like using [`XPENDING`](xpending.md) followed by [`XCLAIM`](xclaim.md) but offers a simpler way to handle message delivery failures with [`SCAN`](../generic/scan.md)-like behavior.
 
 ## Syntax
 
@@ -31,9 +33,11 @@ XAUTOCLAIM key group consumer min-idle-time start [COUNT count] [JUSTID]
 
 ## Return Values
 
-The command returns an array of two elements.
-The first is an array with the message IDs and, optionally, the messages, that have been claimed by the consumer.
-The second is the next ID to attempt claiming from in another `XAUTOCLAIM` call.
+The command returns a three-element array:
+
+- A stream entry ID for the next `XAUTOCLAIM` call. Note a returned ID of `0-0` means the entire stream was scanned.
+- An array of successfully claimed messages, formatted the same as the response of [`XRANGE`](xrange.md).
+- An array of message IDs that no longer exist in the stream, and were deleted from the PEL in which they were found.
 
 ## Code Examples
 
@@ -44,19 +48,23 @@ Claim messages that have been pending for over 5 seconds:
 ```shell
 dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
+
 dragonfly$> XADD mystream * name Alice
 "1636581234567-0"
-dragonfly$> XREADGROUP GROUP mygroup Alice COUNT 1 STREAMS mystream 0
+
+dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1636581234567-0"
          2) 1) "name"
             2) "Alice"
-# Assume Alice gets disconnected and Bob takes over
-dragonfly$> XAUTOCLAIM mystream mygroup Bob 5000 0
-1) 1) "1636581234567-0"
-   2) 1) "name"
-      2) "Alice"
-2) "1636581234567-1"
+
+# Assume 'consumer-1' is unavailable and 'consumer-2' takes over.
+dragonfly$> XAUTOCLAIM mystream mygroup consumer-2 5000 0
+1) "0-0" # Next ID to start scanning from. '0-0' means the entire stream was scanned.
+2) 1) 1) "1736363819856-0"
+      2) 1) "name"
+         2) "Alice"
+3) (empty array)
 ```
 
 ### Using `XAUTOCLAIM` with `COUNT` Option
@@ -64,27 +72,33 @@ dragonfly$> XAUTOCLAIM mystream mygroup Bob 5000 0
 Claim up to 2 messages pending beyond 2 seconds:
 
 ```shell
-dragonfly$> XADD mystream * name Bob surname Smith
-"1636581236900-0"
-dragonfly$> XAUTOCLAIM mystream mygroup Charlie 2000 0 COUNT 2
-1) 1) "1636581236900-0"
-   2) 1) "name"
-      2) "Bob"
-      3) "surname"
-      4) "Smith"
-2) "1636581236910-0"
-```
+dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
+OK
 
-### Just Retrieving Message IDs
+dragonfly$> XADD mystream * name Alice
+"1736363098647-0"
 
-Claim message IDs only, without fetching entire message data:
+dragonfly$> XADD mystream * name Bob
+"1736363102426-0"
 
-```shell
-dragonfly$> XADD mystream * role admin
-"1636581238910-0"
-dragonfly$> XAUTOCLAIM mystream mygroup Dave 1000 0 COUNT 5 JUSTID
-1) 1) "1636581238910-0"
-2) "1636581238950-0"
+dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 2 STREAMS mystream >
+1) 1) "mystream"
+   2) 1) 1) "1736363098647-0"
+         2) 1) "name"
+            2) "Alice"
+      2) 1) "1736363102426-0"
+         2) 1) "name"
+            2) "Bob"
+
+dragonfly$> XAUTOCLAIM mystream mygroup consumer-2 2000 0 COUNT 2
+1) "0-0" # Next ID to start scanning from. '0-0' means the entire stream was scanned.
+2) 1) 1) "1736363098647-0"
+      2) 1) "name"
+         2) "Alice"
+   2) 1) "1736363102426-0"
+      2) 1) "name"
+         2) "Bob"
+3) (empty array)
 ```
 
 ## Best Practices
