@@ -26,54 +26,69 @@ XINFO CONSUMERS key groupname
 
 ## Return Values
 
-The command returns an array of information about each consumer in the consumer group.
-Each element in the array is a dictionary with details such as the consumer name, idle time, pending message count, etc.
+- The command returns an array of information about each consumer in the consumer group.
+- Each element in the array is a dictionary with details such as the consumer name, idle time, pending message count, etc.
 
 ## Code Examples
 
-### Retrieve Consumer Information
+### Retrieve Information of Consumers
 
 Get information about consumers in a consumer group:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream mygroup $
+dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
-dragonfly$> XREADGROUP GROUP mygroup Alice COUNT 1 STREAMS mystream >
-(empty list or set)
+
+dragonfly$> XADD mystream * field1 value1
+"1736319841099-0"
+
+dragonfly$> XADD mystream * field2 value2
+"1736319844825-0"
+
+# Read from the stream using consumer-1.
+dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
+1) 1) "mystream"
+   2) 1) 1) "1736319841099-0"
+         2) 1) "field1"
+            2) "value1"
+
+# Get information about consumers in the consumer group.
+# The output shows the consumer name, pending message count, and idle time.
 dragonfly$> XINFO CONSUMERS mystream mygroup
 1) 1) "name"
-   2) "Alice"
+   2) "consumer-1"
    3) "pending"
-   4) (integer) 0
+   4) (integer) 1
    5) "idle"
-   6) (integer) 12345
-```
+   6) (integer) 5000 # Idle time in milliseconds.
 
-### Multiple Consumers
+# Read from the stream using consumer-2.
+dragonfly$> XREADGROUP GROUP mygroup consumer-2 COUNT 1 STREAMS mystream >
+1) 1) "mystream"
+   2) 1) 1) "1736319844825-0"
+         2) 1) "field2"
+            2) "value2"
 
-Suppose multiple consumers are part of the group:
-
-```shell
-dragonfly$> XREADGROUP GROUP mygroup Bob COUNT 1 STREAMS mystream >
-(empty list or set)
+# Get information about consumers in the consumer group.
+# Now there are two consumers in the group, and the output shows details for both.
 dragonfly$> XINFO CONSUMERS mystream mygroup
 1) 1) "name"
-   2) "Alice"
+   2) "consumer-1"
    3) "pending"
-   4) (integer) 0
+   4) (integer) 1
    5) "idle"
-   6) (integer) 12345
+   6) (integer) 50000 # Idle time in milliseconds.
 2) 1) "name"
-   2) "Bob"
+   2) "consumer-2"
    3) "pending"
-   4) (integer) 0
+   4) (integer) 1
    5) "idle"
-   6) (integer) 54321
+   6) (integer) 5000 # Idle time in milliseconds.
 ```
 
 ## Best Practices
 
-- Regularly monitor consumer activity to ensure that your consumer groups are efficiently processing messages.
+- Regularly monitor consumer metrics to ensure that your consumer groups are efficiently processing messages.
 - Use consumer idle time to detect inactive consumers and potentially rebalance workloads.
 
 ## Common Mistakes
@@ -89,4 +104,4 @@ If the stream or consumer group does not exist, the `XINFO CONSUMERS` command wi
 
 ### Can I use `XINFO CONSUMERS` for streams without consumer groups?
 
-No, the `XINFO CONSUMERS` command is specifically for use with streams that have consumer groups defined.
+No, the `XINFO CONSUMERS` command is specifically for use with streams that have consumer group(s) defined.
