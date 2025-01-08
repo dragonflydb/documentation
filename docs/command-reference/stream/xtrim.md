@@ -40,15 +40,15 @@ The command returns the number of entries removed from the stream.
 Trim a stream to a maximum of three entries:
 
 ```shell
-dragonfly> XADD mystream * field1 value1
+dragonfly$> XADD mystream * field1 value1
 "1609459200000-0"
-dragonfly> XADD mystream * field2 value2
+dragonfly$> XADD mystream * field2 value2
 "1609459200001-0"
-dragonfly> XADD mystream * field3 value3
+dragonfly$> XADD mystream * field3 value3
 "1609459200002-0"
-dragonfly> XADD mystream * field4 value4
+dragonfly$> XADD mystream * field4 value4
 "1609459200003-0"
-dragonfly> XTRIM mystream MAXLEN 3
+dragonfly$> XTRIM mystream MAXLEN 3
 (integer) 1
 ```
 
@@ -57,13 +57,13 @@ dragonfly> XTRIM mystream MAXLEN 3
 Remove all entries with IDs less than a specific timestamp:
 
 ```shell
-dragonfly> XADD mystream * field1 value1
+dragonfly$> XADD mystream * field1 value1
 "1609459200000-0"
-dragonfly> XADD mystream * field2 value2
+dragonfly$> XADD mystream * field2 value2
 "1609459200001-0"
-dragonfly> XADD mystream * field3 value3
+dragonfly$> XADD mystream * field3 value3
 "1609459200002-0"
-dragonfly> XTRIM mystream MINID 1609459200001-0
+dragonfly$> XTRIM mystream MINID 1609459200001-0
 (integer) 1
 ```
 
@@ -72,15 +72,15 @@ dragonfly> XTRIM mystream MINID 1609459200001-0
 Improve performance by approximating the trim operation:
 
 ```shell
-dragonfly> XADD mystream * field1 value1
+dragonfly$> XADD mystream * field1 value1
 "1609459200000-0"
-dragonfly> XADD mystream * field2 value2
+dragonfly$> XADD mystream * field2 value2
 "1609459200001-0"
-dragonfly> XADD mystream * field3 value3
+dragonfly$> XADD mystream * field3 value3
 "1609459200002-0"
-dragonfly> XADD mystream * field4 value4
+dragonfly$> XADD mystream * field4 value4
 "1609459200003-0"
-dragonfly> XTRIM mystream MAXLEN ~ 2
+dragonfly$> XTRIM mystream MAXLEN ~ 2
 (integer) 2
 ```
 

@@ -40,16 +40,16 @@ It includes message IDs, consumer IDs, and the time since each message was claim
 Get basic pending message information:
 
 ```shell
-dragonfly> XADD mystream * name John
+dragonfly$> XADD mystream * name John
 "1657659051233-0"
-dragonfly> XGROUP CREATE mystream mygroup 0
+dragonfly$> XGROUP CREATE mystream mygroup 0
 OK
-dragonfly> XREADGROUP GROUP mygroup myconsumer COUNT 1 STREAMS mystream >
+dragonfly$> XREADGROUP GROUP mygroup myconsumer COUNT 1 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1657659051233-0"
          2) 1) "name"
             2) "John"
-dragonfly> XPENDING mystream mygroup
+dragonfly$> XPENDING mystream mygroup
 1) (integer) 1
 2) "1657659051233-0"
 3) "myconsumer"
@@ -61,7 +61,7 @@ dragonfly> XPENDING mystream mygroup
 Retrieve pending messages for a specific consumer:
 
 ```shell
-dragonfly> XPENDING mystream mygroup - + 10 myconsumer
+dragonfly$> XPENDING mystream mygroup - + 10 myconsumer
 1) 1) "1657659051233-0"
    2) "myconsumer"
    3) (integer) 1231
@@ -73,7 +73,7 @@ dragonfly> XPENDING mystream mygroup - + 10 myconsumer
 Get pending messages within a specific ID range:
 
 ```shell
-dragonfly> XPENDING mystream mygroup "1657650000000-0" "1657659999999-0" 10
+dragonfly$> XPENDING mystream mygroup "1657650000000-0" "1657659999999-0" 10
 1) 1) "1657659051233-0"
    2) "myconsumer"
    3) (integer) 1231

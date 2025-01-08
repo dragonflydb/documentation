@@ -39,15 +39,15 @@ Retrieve entries from a stream within a specified ID range in reverse order:
 
 ```shell
 # Adding entries to a stream.
-dragonfly> XADD mystream * field1 value1
+dragonfly$> XADD mystream * field1 value1
 "1617825600000-0"
-dragonfly> XADD mystream * field1 value2
+dragonfly$> XADD mystream * field1 value2
 "1617826800000-0"
-dragonfly> XADD mystream * field1 value3
+dragonfly$> XADD mystream * field1 value3
 "1617828000000-0"
 
 # Retrieve entries in reverse order.
-dragonfly> XREVRANGE mystream 1617828000000-0 1617825600000-0
+dragonfly$> XREVRANGE mystream 1617828000000-0 1617825600000-0
 1) 1) "1617828000000-0"
    2) 1) "field1"
       2) "value3"
@@ -65,11 +65,11 @@ Retrieve a limited number of entries in reverse order using the `COUNT` option:
 
 ```shell
 # Adding more entries to the stream.
-dragonfly> XADD mystream * field1 value4
+dragonfly$> XADD mystream * field1 value4
 "1617829200000-0"
 
 # Retrieve only the two most recent entries.
-dragonfly> XREVRANGE mystream + - COUNT 2
+dragonfly$> XREVRANGE mystream + - COUNT 2
 1) 1) "1617829200000-0"
    2) 1) "field1"
       2) "value4"
@@ -84,13 +84,13 @@ Consider a log stream where you want to fetch the most recent events up to a spe
 
 ```shell
 # Adding log entries.
-dragonfly> XADD logs * event login
+dragonfly$> XADD logs * event login
 "1617830000000-0"
-dragonfly> XADD logs * event logout
+dragonfly$> XADD logs * event logout
 "1617831000000-0"
 
 # Retrieve events in reverse order up to a specific ID.
-dragonfly> XREVRANGE logs 1617831000000-0 1617830000000-0
+dragonfly$> XREVRANGE logs 1617831000000-0 1617830000000-0
 1) 1) "1617831000000-0"
    2) 1) "event"
       2) "logout"

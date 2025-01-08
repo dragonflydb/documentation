@@ -35,13 +35,13 @@ Determine the number of entries in a stream:
 
   
 ```shell
-dragonfly> XADD mystream * sensor-temperature 23.1
+dragonfly$> XADD mystream * sensor-temperature 23.1
 "1678819562090-0"
-dragonfly> XADD mystream * sensor-humidity 60
+dragonfly$> XADD mystream * sensor-humidity 60
 "1678819562091-0"
-dragonfly> XADD mystream * sensor-temperature 22.8
+dragonfly$> XADD mystream * sensor-temperature 22.8
 "1678819562092-0"
-dragonfly> XLEN mystream
+dragonfly$> XLEN mystream
 (integer) 3
 ```
 
@@ -51,7 +51,7 @@ Check the length of a non-existent stream:
 
   
 ```shell
-dragonfly> XLEN nonexistent_stream
+dragonfly$> XLEN nonexistent_stream
 (integer) 0
 ```
 
@@ -61,11 +61,11 @@ Consider using `XLEN` as part of a monitoring solution to track the number of ev
 
   
 ```shell
-dragonfly> XADD events * user-login user123
+dragonfly$> XADD events * user-login user123
 "1678819562093-0"
-dragonfly> XADD events * user-logout user123
+dragonfly$> XADD events * user-logout user123
 "1678819562094-0"
-dragonfly> XLEN events
+dragonfly$> XLEN events
 (integer) 2
 # Use this value to monitor activity levels or detect anomalies in the number of events.
 ```

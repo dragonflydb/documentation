@@ -36,10 +36,10 @@ The command returns `OK` if the ID for the consumer group is successfully set.
 Set the last delivered ID for a consumer group:
 
 ```shell
-dragonfly> XGROUP CREATE mystream mygroup 0
+dragonfly$> XGROUP CREATE mystream mygroup 0
 OK
 # Assuming some entries have been added to the stream...
-dragonfly> XSETID mystream mygroup 1526569495631-0
+dragonfly$> XSETID mystream mygroup 1526569495631-0
 OK
 ```
 
@@ -49,13 +49,13 @@ Imagine you have read up to a certain message ID, and you want to mark this as t
 
 ```shell
 # Add some entries to the stream
-dragonfly> XADD mystream * message "Hello World"
+dragonfly$> XADD mystream * message "Hello World"
 1526569495631-0
-dragonfly> XADD mystream * message "Another Message"
+dragonfly$> XADD mystream * message "Another Message"
 1526569495632-0
 
 # Now change the last delivered ID for `mygroup`
-dragonfly> XSETID mystream mygroup 1526569495632-0
+dragonfly$> XSETID mystream mygroup 1526569495632-0
 OK
 ```
 
@@ -66,7 +66,7 @@ This ensures that the consumer group acknowledges up to the specified message ID
 Attempt to set a last delivered ID that doesn't exist:
 
 ```shell
-dragonfly> XSETID mystream mygroup 9999999999999-0
+dragonfly$> XSETID mystream mygroup 9999999999999-0
 (error) ERR The specified ID is greater than the maximal ID in the stream
 ```
 
