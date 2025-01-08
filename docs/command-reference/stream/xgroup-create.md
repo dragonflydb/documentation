@@ -43,7 +43,7 @@ dragonfly$> XGROUP CREATE mystream mygroup $
 OK
 ```
 
-### Create a Consumer Group with Specific ID
+### Consumer Group with Specific ID
 
 Create the consumer group starting from a specific message ID:
 
@@ -52,7 +52,7 @@ dragonfly$> XGROUP CREATE mystream mygroup 1609459200000-0
 OK
 ```
 
-### Using `MKSTREAM` to Ensure Stream Creation
+### `MKSTREAM` Ensures Stream Creation
 
 Create a consumer group while automatically creating the stream if it does not exist:
 
@@ -64,7 +64,7 @@ OK
 ## Best Practices
 
 - Use `$` for the `<id>` parameter if you want the group to start processing only new messages.
-- The `MKSTREAM` option is useful for ensuring that a consumer group is set up in cases where stream creation may be delayed.
+- The `MKSTREAM` option is useful for ensuring that a consumer group is set up correctly even if the stream does not exist.
 
 ## Common Mistakes
 

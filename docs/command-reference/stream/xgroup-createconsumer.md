@@ -27,8 +27,8 @@ XGROUP CREATECONSUMER key groupname consumername
 
 ## Return Values
 
-The command returns `1` if a new consumer is successfully created.
-If the consumer already exists, it returns `0`.
+- The command returns `1` if a new consumer is successfully created.
+- If the consumer already exists, it returns `0`.
 
 ## Code Examples
 
@@ -38,12 +38,14 @@ Create a new consumer in a consumer group:
 
 ```shell
 # Create a stream with items
-dragonfly> XADD mystream * field1 value1
+dragonfly$> XADD mystream * field1 value1
 "1609471230723-0"
-dragonfly> XGROUP CREATE mystream mygroup 0
+
+dragonfly$> XGROUP CREATE mystream mygroup 0
 OK
-# Create a consumer named 'Alice' in 'mygroup'
-dragonfly> XGROUP CREATECONSUMER mystream mygroup Alice
+
+# Create a consumer named 'consumer-1' in 'mygroup'.
+dragonfly$> XGROUP CREATECONSUMER mystream mygroup consumer-1
 (integer) 1
 ```
 
@@ -52,8 +54,8 @@ dragonfly> XGROUP CREATECONSUMER mystream mygroup Alice
 Recreate the same consumer to demonstrate the return value:
 
 ```shell
-# Attempt to create an existing consumer
-dragonfly> XGROUP CREATECONSUMER mystream mygroup Alice
+# Attempt to create an existing consumer.
+dragonfly$> XGROUP CREATECONSUMER mystream mygroup consumer-1
 (integer) 0 # Consumer already exists.
 ```
 
