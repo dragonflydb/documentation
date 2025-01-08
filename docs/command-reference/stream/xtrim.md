@@ -8,72 +8,98 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis XTRIM Command (Documentation) | Dragonfly" />
 
+## Introduction
+
+In Dragonfly, as well as in Redis and Valkey, the `XTRIM` command is used to manage the length of a stream by trimming entries.
+It helps in controlling memory usage by removing old entries from the stream.
+`XTRIM` can be useful for applications like logging, where recent data is more critical than historical data.
+
 ## Syntax
 
-	XTRIM key <MAXLEN | MINID> [= | ~] threshold [LIMIT count]
-
-**Time Complexity:** O(N), with N being the number of evicted entries.
-Constant times are very small however, since entries are organized in
-macro nodes containing multiple entries that can be released with a
-single deallocation.
-
-**ACL categories:** @write, @stream, @slow
-
-**XTRIM** works same like how trimming works in **XADD** (when option
-specified). But instead of adding a new entry, **XTRIM** focuses
-completely on trimming entries. **<key\>** is the stream name of
-which the entries need to be trimmed.
-
-With **XTRIM**, you can either specify **MAXLEN** or **MINID** to
-control the stratgy to trim.
-
-**MAXLEN** ensures that the number of entries in a stream
-doesn't exceed a certain limit. **MINID** on the other hand
-ensures that entries with IDs less than the specified **MINID**
-get deleted. These two options take a *threshold* denoting the
-length (in case of **MAXLEN**) or ID (in case of **MINID**).
-
-Dragonfly gives two options to control the trimming nature.
-"**=**" argument tells the command to do the exact trimming of
-entries. Whereas **~** argument tells the command to do
-the approximate trimming. That is, it is upto the command to
-decide how many entries need to be deleted. So a stream may
-have **few more** entries than the given *threshold* (due to
-performance reasons). It is more efficient than exact trimming.
-By default, exact trimming is used when no options are specified.
-
 ```shell
-dragonfly> XTRIM mystream MAXLEN ~ 100
-(integer) 98
+XTRIM key [MAXLEN | MINID] [~ | =] threshold
 ```
 
-**LIMIT** is useful when you want to limit the number of delete
-operations used for **MAXLEN** or **MINID** (in case of approximate
-trimming). When **LIMIT** isn't specified, the default value of
-*100 \* the number of entries* in a macro node will be implicitly
-used as the count. Specifying the value 0 as count disables the
-limiting mechanism entirely.
+## Parameter Explanations
+
+- `key`: The key of the stream that you want to trim.
+- `MAXLEN`: Trims the stream to ensure it does not exceed a specified number of entries.
+- `MINID`: Trims entries with IDs less than a specified threshold.
+- `~`: Approximates the trimming operation to improve performance.
+- `=`: Ensures the trimming is precisely executed to the specified threshold.
+- `threshold`: The maximum number of entries or the entry ID threshold.
+
+## Return Values
+
+The command returns the number of entries removed from the stream.
+
+## Code Examples
+
+### Basic MAXLEN Usage
+
+Trim a stream to a maximum of three entries:
 
 ```shell
-dragonfly> XTRIM mystream MAXLEN ~ 100 LIMIT 2
+dragonfly> XADD mystream * field1 value1
+"1609459200000-0"
+dragonfly> XADD mystream * field2 value2
+"1609459200001-0"
+dragonfly> XADD mystream * field3 value3
+"1609459200002-0"
+dragonfly> XADD mystream * field4 value4
+"1609459200003-0"
+dragonfly> XTRIM mystream MAXLEN 3
+(integer) 1
+```
+
+### Using MINID to Trim
+
+Remove all entries with IDs less than a specific timestamp:
+
+```shell
+dragonfly> XADD mystream * field1 value1
+"1609459200000-0"
+dragonfly> XADD mystream * field2 value2
+"1609459200001-0"
+dragonfly> XADD mystream * field3 value3
+"1609459200002-0"
+dragonfly> XTRIM mystream MINID 1609459200001-0
+(integer) 1
+```
+
+### Approximative Trimming with `~`
+
+Improve performance by approximating the trim operation:
+
+```shell
+dragonfly> XADD mystream * field1 value1
+"1609459200000-0"
+dragonfly> XADD mystream * field2 value2
+"1609459200001-0"
+dragonfly> XADD mystream * field3 value3
+"1609459200002-0"
+dragonfly> XADD mystream * field4 value4
+"1609459200003-0"
+dragonfly> XTRIM mystream MAXLEN ~ 2
 (integer) 2
 ```
 
-## Return
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
-The number of entries deleted from the stream.
+## Best Practices
 
-## Example
+- Use approximative trimming with `~` for better performance on large streams, when precision is not critical.
+- Regularly trim streams if your application generates a significant amount of data, to manage memory usage efficiently.
 
-```shell
-dragonfly> XADD mystream * name John
-"1687921762755-0"
-dragonfly> XADD mystream * name Alice
-"1687924580856-0"
-dragonfly> XADD mystream * name Bob
-"1687924609465-0"
-dragonfly> XLEN mystream
-(integer) 3
-dragonfly> XTRIM mystream MAXLEN = 2
-(integer) 2
-```
+## Common Mistakes
+
+- Confusing `MAXLEN` and `MINID` — `MAXLEN` specifies a count of entries, whereas `MINID` specifies an entry ID threshold.
+- Not considering the trade-off between approximation (`~`) and precision (`=`) in terms of performance and accuracy.
+
+## FAQs
+
+### What happens if the stream is empty or the key does not exist?
+
+If the stream is empty or the key does not exist, `XTRIM` returns `0` since no entries are removed.
+
+### Can I use negative indexes for `threshold`?
+
+No, `threshold` values for both `MAXLEN` and `MINID` must be positive integers. Negative values are not applicable.
