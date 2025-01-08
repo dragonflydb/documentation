@@ -16,14 +16,14 @@ This command is part of the streams data type which facilitates managing consume
 ## Syntax
 
 ```shell
-XGROUP CREATECONSUMER key groupname consumername
+XGROUP CREATECONSUMER key group consumer
 ```
 
 ## Parameter Explanations
 
 - `key`: The key of the stream for which the consumer is being created.
-- `groupname`: The name of the consumer group within the stream.
-- `consumername`: The name of the consumer to be added to the specified group.
+- `group`: The name of the consumer group within the stream.
+- `consumer`: The name of the consumer to be added to the specified group.
 
 ## Return Values
 
@@ -67,7 +67,7 @@ dragonfly$> XGROUP CREATECONSUMER mystream mygroup consumer-1
 ## Common Mistakes
 
 - Not creating the consumer group before adding consumers, which will result in an error.
-- Using the wrong `key` or `groupname`, leading to failed consumer creation attempts.
+- Using the wrong `key` or `group`, leading to failed consumer creation attempts.
 
 ## FAQs
 

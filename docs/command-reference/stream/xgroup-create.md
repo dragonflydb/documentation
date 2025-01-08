@@ -17,13 +17,13 @@ This command is essential for managing distributed message processing systems wh
 ## Syntax
 
 ```shell
-XGROUP CREATE <key> <groupname> <id | $> [MKSTREAM]
+XGROUP CREATE key group <id | $> [MKSTREAM]
 ```
 
 ## Parameter Explanations
 
-- `<key>`: The key name of the stream.
-- `<groupname>`: The name given to the consumer group.
+- `key`: The key name of the stream.
+- `group`: The name given to the consumer group.
 - `<id | $>`: The ID of the last-delivered message. Use `$` to start from the new messages.
 - `MKSTREAM` (optional): Automatically create the stream if it does not exist.
 

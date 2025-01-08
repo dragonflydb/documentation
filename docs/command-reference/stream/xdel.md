@@ -45,7 +45,7 @@ dragonfly$> XDEL mystream "1527845627383-0"
 (integer) 1
 
 dragonfly$> XRANGE mystream - +
-1) 1527845627383-1
+1) "1527845627383-1"
    1) "name"
    2) "Bob"
    3) "age"

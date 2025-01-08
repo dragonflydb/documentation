@@ -16,13 +16,13 @@ This command is helpful for monitoring the activity of consumers connected to a 
 ## Syntax
 
 ```shell
-XINFO CONSUMERS key groupname
+XINFO CONSUMERS key group
 ```
 
 ## Parameter Explanations
 
 - `key`: The key of the stream.
-- `groupname`: The name of the consumer group whose consumers' information you want to retrieve.
+- `group`: The name of the consumer group whose consumers' information you want to retrieve.
 
 ## Return Values
 

@@ -18,13 +18,13 @@ Use this command only when absolutely necessary.**
 ## Syntax
 
 ```shell
-XGROUP DESTROY key groupname
+XGROUP DESTROY key group
 ```
 
 ## Parameter Explanations
 
 - `key`: The name of the stream from which the consumer group will be deleted.
-- `groupname`: The name of the consumer group to be deleted.
+- `group`: The name of the consumer group to be deleted.
 
 ## Return Values
 

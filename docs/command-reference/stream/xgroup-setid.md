@@ -16,13 +16,13 @@ This command is beneficial when you need to reprocess messages or adjust a consu
 ## Syntax
 
 ```shell
-XGROUP SETID key groupname <id | $>
+XGROUP SETID key group <id | $>
 ```
 
 ## Parameter Explanations
 
 - `key`: The key of the stream.
-- `groupname`: The name of the consumer group whose last delivered ID is to be set.
+- `group`: The name of the consumer group whose last delivered ID is to be set.
 - `<id | $>`: The ID you want the consumer group to consider as the last delivered ID.
   - Use `$` to set it to the last entry in the stream.
   - Use `0` to set the ID to the very first message in the stream.
@@ -121,7 +121,7 @@ dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 
 ## Common Mistakes
 
-- Not specifying the correct stream `key` or `groupname`, which can result in errors.
+- Not specifying the correct stream `key` or `group`, which can result in errors.
 
 ## FAQs
 

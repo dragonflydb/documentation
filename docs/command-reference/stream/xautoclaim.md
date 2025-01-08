@@ -42,17 +42,17 @@ The second is the next ID to attempt claiming from in another `XAUTOCLAIM` call.
 Claim messages that have been pending for over 5 seconds:
 
 ```shell
-dragonfly> XGROUP CREATE mystream mygroup $ MKSTREAM
+dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
-dragonfly> XADD mystream * name Alice
+dragonfly$> XADD mystream * name Alice
 "1636581234567-0"
-dragonfly> XREADGROUP GROUP mygroup Alice COUNT 1 STREAMS mystream 0
+dragonfly$> XREADGROUP GROUP mygroup Alice COUNT 1 STREAMS mystream 0
 1) 1) "mystream"
    2) 1) 1) "1636581234567-0"
          2) 1) "name"
             2) "Alice"
 # Assume Alice gets disconnected and Bob takes over
-dragonfly> XAUTOCLAIM mystream mygroup Bob 5000 0
+dragonfly$> XAUTOCLAIM mystream mygroup Bob 5000 0
 1) 1) "1636581234567-0"
    2) 1) "name"
       2) "Alice"
@@ -64,9 +64,9 @@ dragonfly> XAUTOCLAIM mystream mygroup Bob 5000 0
 Claim up to 2 messages pending beyond 2 seconds:
 
 ```shell
-dragonfly> XADD mystream * name Bob surname Smith
+dragonfly$> XADD mystream * name Bob surname Smith
 "1636581236900-0"
-dragonfly> XAUTOCLAIM mystream mygroup Charlie 2000 0 COUNT 2
+dragonfly$> XAUTOCLAIM mystream mygroup Charlie 2000 0 COUNT 2
 1) 1) "1636581236900-0"
    2) 1) "name"
       2) "Bob"
@@ -80,9 +80,9 @@ dragonfly> XAUTOCLAIM mystream mygroup Charlie 2000 0 COUNT 2
 Claim message IDs only, without fetching entire message data:
 
 ```shell
-dragonfly> XADD mystream * role admin
+dragonfly$> XADD mystream * role admin
 "1636581238910-0"
-dragonfly> XAUTOCLAIM mystream mygroup Dave 1000 0 COUNT 5 JUSTID
+dragonfly$> XAUTOCLAIM mystream mygroup Dave 1000 0 COUNT 5 JUSTID
 1) 1) "1636581238910-0"
 2) "1636581238950-0"
 ```

@@ -18,14 +18,14 @@ Therefore, be sure to claim or acknowledge any pending messages before removing 
 ## Syntax
 
 ```shell
-XGROUP DELCONSUMER key groupname consumername
+XGROUP DELCONSUMER key group consumer
 ```
 
 ## Parameter Explanations
 
 - `key`: The key of the stream.
-- `groupname`: The name of the consumer group to which the consumer belongs.
-- `consumername`: The name of the consumer to be removed from the group.
+- `group`: The name of the consumer group to which the consumer belongs.
+- `consumer`: The name of the consumer to be removed from the group.
 
 ## Return Values
 
