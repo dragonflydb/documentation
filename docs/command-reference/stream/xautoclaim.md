@@ -35,7 +35,7 @@ XAUTOCLAIM key group consumer min-idle-time start [COUNT count] [JUSTID]
 
 The command returns a three-element array:
 
-- A stream entry ID for the next `XAUTOCLAIM` call. Note a returned ID of `0-0` means the entire stream was scanned.
+- A stream entry ID for the next `XAUTOCLAIM` call. **Note that a returned ID of `0-0` means the entire stream was scanned.**
 - An array of successfully claimed messages, formatted the same as the response of [`XRANGE`](xrange.md).
 - An array of message IDs that no longer exist in the stream, and were deleted from the PEL in which they were found.
 
@@ -60,7 +60,7 @@ dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 
 # Assume 'consumer-1' is unavailable and 'consumer-2' takes over.
 dragonfly$> XAUTOCLAIM mystream mygroup consumer-2 5000 0
-1) "0-0" # Next ID to start scanning from. '0-0' means the entire stream was scanned.
+1) "0-0" # Next ID to scan from. Note that '0-0' means the entire stream was scanned.
 2) 1) 1) "1736363819856-0"
       2) 1) "name"
          2) "Alice"
@@ -91,7 +91,7 @@ dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 2 STREAMS mystream >
             2) "Bob"
 
 dragonfly$> XAUTOCLAIM mystream mygroup consumer-2 2000 0 COUNT 2
-1) "0-0" # Next ID to start scanning from. '0-0' means the entire stream was scanned.
+1) "0-0" # Next ID to scan from. Note that '0-0' means the entire stream was scanned.
 2) 1) 1) "1736363098647-0"
       2) 1) "name"
          2) "Alice"
