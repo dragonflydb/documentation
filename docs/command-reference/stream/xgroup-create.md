@@ -48,7 +48,7 @@ OK
 Create the consumer group starting from a specific message ID:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream mygroup 1609459200000-0
+dragonfly$> XGROUP CREATE mystream mygroup "1609459200000-0"
 OK
 ```
 

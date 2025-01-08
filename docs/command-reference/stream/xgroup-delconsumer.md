@@ -54,7 +54,7 @@ dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
             2) "Alice"
 
 # Acknowledge the message.
-dragonfly$> XACK mystream mygroup 1530105600018-0
+dragonfly$> XACK mystream mygroup "1530105600018-0"
 (integer) 1
 
 # Remove the consumer from the group.
