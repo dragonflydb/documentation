@@ -37,11 +37,11 @@ Change the last delivered ID for a consumer group:
 
 ```shell
 
-dragonfly> XGROUP CREATE mystream mygroup $ MKSTREAM
+dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
-dragonfly> XADD mystream * field1 value1
+dragonfly$> XADD mystream * field1 value1
 "1633022829740-0"
-dragonfly> XGROUP SETID mystream mygroup 1633022829740-0
+dragonfly$> XGROUP SETID mystream mygroup 1633022829740-0
 OK
 ```
 
@@ -51,9 +51,9 @@ Set the last delivered ID for a consumer group to the latest stream entry:
 
 ```shell
 
-dragonfly> XADD mystream * field2 value2
+dragonfly$> XADD mystream * field2 value2
 "1633022830751-0"
-dragonfly> XGROUP SETID mystream mygroup $
+dragonfly$> XGROUP SETID mystream mygroup $
 OK
 ```
 
@@ -63,9 +63,9 @@ Adjust the last delivered ID to an earlier entry to reprocess messages:
 
 ```shell
 
-dragonfly> XADD mystream * field3 value3
+dragonfly$> XADD mystream * field3 value3
 "1633022831762-0"
-dragonfly> XGROUP SETID mystream mygroup 1633022829740-0
+dragonfly$> XGROUP SETID mystream mygroup 1633022829740-0
 OK
 ```
 

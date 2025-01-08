@@ -36,11 +36,11 @@ Each element in the array is a dictionary with details such as the consumer name
 Get information about consumers in a consumer group:
 
 ```shell
-dragonfly> XGROUP CREATE mystream mygroup $
+dragonfly$> XGROUP CREATE mystream mygroup $
 OK
-dragonfly> XREADGROUP GROUP mygroup Alice COUNT 1 STREAMS mystream >
+dragonfly$> XREADGROUP GROUP mygroup Alice COUNT 1 STREAMS mystream >
 (empty list or set)
-dragonfly> XINFO CONSUMERS mystream mygroup
+dragonfly$> XINFO CONSUMERS mystream mygroup
 1) 1) "name"
    2) "Alice"
    3) "pending"
@@ -54,9 +54,9 @@ dragonfly> XINFO CONSUMERS mystream mygroup
 Suppose multiple consumers are part of the group:
 
 ```shell
-dragonfly> XREADGROUP GROUP mygroup Bob COUNT 1 STREAMS mystream >
+dragonfly$> XREADGROUP GROUP mygroup Bob COUNT 1 STREAMS mystream >
 (empty list or set)
-dragonfly> XINFO CONSUMERS mystream mygroup
+dragonfly$> XINFO CONSUMERS mystream mygroup
 1) 1) "name"
    2) "Alice"
    3) "pending"

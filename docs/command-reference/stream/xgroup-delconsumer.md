@@ -82,4 +82,4 @@ If the consumer does not exist, the command returns `0`, indicating no pending m
 
 ### Does this command delete the consumer group itself?
 
-No, `XGROUP DELCONSUMER` only removes an individual consumer. The group remains intact until explicitly deleted with [`XGROUP DESTROY`](xgroup-destroy.md).
+No, `XGROUP DELCONSUMER` only removes an individual consumer. The consumer group remains intact until explicitly deleted with the [`XGROUP DESTROY`](xgroup-destroy.md) command.
