@@ -36,18 +36,18 @@ The command returns an integer indicating the number of messages that were succe
 Acknowledge a single message that has been processed:
 
 ```shell
-dragonfly> XADD mystream * name Alice age 30
+dragonfly$> XADD mystream * name Alice age 30
 "1609097574170-0"
-dragonfly> XGROUP CREATE mystream mygroup $ MKSTREAM
+dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
-dragonfly> XREADGROUP GROUP mygroup Alice COUNT 1 STREAMS mystream >
+dragonfly$> XREADGROUP GROUP mygroup Alice COUNT 1 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1609097574170-0"
          2) 1) "name"
             2) "Alice"
             3) "age"
             4) "30"
-dragonfly> XACK mystream mygroup 1609097574170-0
+dragonfly$> XACK mystream mygroup 1609097574170-0
 (integer) 1
 ```
 
@@ -56,11 +56,11 @@ dragonfly> XACK mystream mygroup 1609097574170-0
 Acknowledge multiple messages after processing:
 
 ```shell
-dragonfly> XADD mystream * name Bob age 25
+dragonfly$> XADD mystream * name Bob age 25
 "1609097574171-0"
-dragonfly> XADD mystream * name Charlie age 40
+dragonfly$> XADD mystream * name Charlie age 40
 "1609097574172-0"
-dragonfly> XACK mystream mygroup 1609097574171-0 1609097574172-0
+dragonfly$> XACK mystream mygroup 1609097574171-0 1609097574172-0
 (integer) 2
 ```
 
@@ -69,7 +69,7 @@ dragonfly> XACK mystream mygroup 1609097574171-0 1609097574172-0
 Acknowledge attempt on a non-existent message ID:
 
 ```shell
-dragonfly> XACK mystream mygroup 1609097574173-0
+dragonfly$> XACK mystream mygroup 1609097574173-0
 (integer) 0  # No acknowledgment since the ID does not exist.
 ```
 

@@ -37,12 +37,12 @@ The command returns a list of streams and the corresponding entries that were re
 Read from a single stream starting from the first message:
 
 ```shell
-dragonfly> XADD mystream * name Alice age 30
+dragonfly$> XADD mystream * name Alice age 30
 "1609945144079-0"
-dragonfly> XADD mystream * name Bob age 25
+dragonfly$> XADD mystream * name Bob age 25
 "1609945144079-1"
 
-dragonfly> XREAD STREAMS mystream 0
+dragonfly$> XREAD STREAMS mystream 0
 1) 1) "mystream"
    2) 1) 1) "1609945144079-0"
          2) 1) "name"
@@ -61,7 +61,7 @@ dragonfly> XREAD STREAMS mystream 0
 Read a limited number of entries from a stream:
 
 ```shell
-dragonfly> XREAD COUNT 1 STREAMS mystream 0
+dragonfly$> XREAD COUNT 1 STREAMS mystream 0
 1) 1) "mystream"
    2) 1) 1) "1609945144079-0"
          2) 1) "name"
@@ -76,11 +76,11 @@ Block the command until new data arrives in the stream:
 
 ```shell
 # Start a new terminal to add data after blocking
-dragonfly> XREAD BLOCK 2000 STREAMS mystream $
+dragonfly$> XREAD BLOCK 2000 STREAMS mystream $
 (null)
 
 # In another terminal, add a new entry
-dragonfly> XADD mystream * name Charlie age 40
+dragonfly$> XADD mystream * name Charlie age 40
 "1609945245092-0"
 
 # Return to previous terminal and observe `XREAD` output

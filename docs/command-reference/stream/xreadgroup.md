@@ -42,11 +42,11 @@ If no entries are available and the `BLOCK` option was not used, it returns an e
 Create a consumer group and read messages:
 
 ```shell
-dragonfly> XADD mystream * field1 value1
+dragonfly$> XADD mystream * field1 value1
 "16082358984-0"
-dragonfly> XGROUP CREATE mystream mygroup 0
+dragonfly$> XGROUP CREATE mystream mygroup 0
 OK
-dragonfly> XREADGROUP GROUP mygroup consumer1 STREAMS mystream >
+dragonfly$> XREADGROUP GROUP mygroup consumer1 STREAMS mystream >
 1) "mystream"
 2) 1) 1) "16082358984-0"
       2) 1) "field1"
@@ -58,11 +58,11 @@ dragonfly> XREADGROUP GROUP mygroup consumer1 STREAMS mystream >
 Read up to two messages from a stream:
 
 ```shell
-dragonfly> XADD mystream * field2 value2
+dragonfly$> XADD mystream * field2 value2
 "16082358985-0"
-dragonfly> XADD mystream * field3 value3
+dragonfly$> XADD mystream * field3 value3
 "16082358986-0"
-dragonfly> XREADGROUP GROUP mygroup consumer1 COUNT 2 STREAMS mystream >
+dragonfly$> XREADGROUP GROUP mygroup consumer1 COUNT 2 STREAMS mystream >
 1) "mystream"
 2) 1) 1) "16082358985-0"
       2) 1) "field2"
@@ -77,7 +77,7 @@ dragonfly> XREADGROUP GROUP mygroup consumer1 COUNT 2 STREAMS mystream >
 Wait for new messages for up to 2000 milliseconds:
 
 ```shell
-dragonfly> XREADGROUP GROUP mygroup consumer2 BLOCK 2000 STREAMS mystream >
+dragonfly$> XREADGROUP GROUP mygroup consumer2 BLOCK 2000 STREAMS mystream >
 ```
 
 ## Best Practices

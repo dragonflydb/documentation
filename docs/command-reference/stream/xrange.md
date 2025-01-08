@@ -39,13 +39,13 @@ Retrieve all entries within a specified range:
 
 ```shell
 # Adding entries to the stream
-dragonfly> XADD mystream * foo "1" bar "data1"
+dragonfly$> XADD mystream * foo "1" bar "data1"
 "1609459200000-0"
-dragonfly> XADD mystream * foo "2" bar "data2"
+dragonfly$> XADD mystream * foo "2" bar "data2"
 "1609459200010-0"
 
 # Retrieving entries from '1609459200000-0' to '1609459200010-0'
-dragonfly> XRANGE mystream 1609459200000-0 1609459200010-0
+dragonfly$> XRANGE mystream 1609459200000-0 1609459200010-0
 1) 1) "1609459200000-0"
    2) 1) "foo"
       2) "1"
@@ -64,11 +64,11 @@ Retrieve a limited number of entries starting from a specific ID:
 
 ```shell
 # Adding another entry
-dragonfly> XADD mystream * foo "3" bar "data3"
+dragonfly$> XADD mystream * foo "3" bar "data3"
 "1609459200020-0"
 
 # Retrieve only one entry starting from '1609459200000-0'
-dragonfly> XRANGE mystream 1609459200000-0 1609459200020-0 COUNT 1
+dragonfly$> XRANGE mystream 1609459200000-0 1609459200020-0 COUNT 1
 1) 1) "1609459200000-0"
    2) 1) "foo"
       2) "1"
