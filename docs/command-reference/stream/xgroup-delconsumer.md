@@ -11,7 +11,9 @@ import PageTitle from '@site/src/components/PageTitle';
 ## Introduction
 
 In Dragonfly, as well as in Redis and Valkey, the `XGROUP DELCONSUMER` command is used to remove a specific consumer from a consumer group in a stream.
-This is crucial for managing stream groups by allowing the removal of consumers that are no longer in use, thus ensuring the efficiency and performance of your stream processing.
+This is crucial for managing stream groups by allowing the removal of consumers that are no longer in use.
+**Note that, deleting a consumer makes its pending messages unclaimable.**
+Therefore, be sure to claim or acknowledge any pending messages before removing the consumer from the group.
 
 ## Syntax
 
@@ -27,7 +29,7 @@ XGROUP DELCONSUMER key groupname consumername
 
 ## Return Values
 
-The command returns an integer representing the number of pending messages that were owned by the consumer and transferred to other consumers.
+- An integer representing the number of pending messages that the consumer had before it was deleted.
 
 ## Code Examples
 
@@ -36,58 +38,48 @@ The command returns an integer representing the number of pending messages that 
 Remove a consumer from a group:
 
 ```shell
-# Create a stream and a consumer group
-dragonfly> XADD mystream * name "Alice"
+# Create a stream.
+dragonfly$> XADD mystream * name "Alice"
 "1530105600018-0"
-dragonfly> XGROUP CREATE mystream mygroup 0
+
+# Create a consumer group.
+dragonfly$> XGROUP CREATE mystream mygroup 0
 OK
 
-# Add a consumer to the group
-dragonfly> XREADGROUP GROUP mygroup consumer1 COUNT 1 STREAMS mystream 0
+# Add a consumer to the group.
+dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1530105600018-0"
          2) 1) "name"
             2) "Alice"
 
-# Remove the consumer from the group
-dragonfly> XGROUP DELCONSUMER mystream mygroup consumer1
+# Acknowledge the message.
+dragonfly$> XACK mystream mygroup 1530105600018-0
 (integer) 1
-```
 
-### Practical Use Case
-
-Use `XGROUP DELCONSUMER` to manage inactive consumers:
-
-```shell
-# Assuming we have multiple consumers and want to cleanup inactive ones
-dragonfly> XADD mystream * event "UserLogin" user "1001"
-"1530105600022-0"
-dragonfly> XGROUP CREATE mystream usergroup 0
-OK
-dragonfly> XREADGROUP GROUP usergroup consumer1 COUNT 1 STREAMS mystream 0
-# Processing is done
-
-# Remove the inactive consumer 'consumer1'
-dragonfly> XGROUP DELCONSUMER mystream usergroup consumer1
-(integer) 1
+# Remove the consumer from the group.
+# Since the consumer has no pending messages (acknowledged), the return value is 0.
+dragonfly$> XGROUP DELCONSUMER mystream mygroup consumer-1
+(integer) 0
 ```
 
 ## Best Practices
 
-- Regularly monitor and clean up consumers that are no longer active to keep the stream group healthy.
-- Before removing a consumer, make sure to process or transfer any pending messages it might own.
+- Regularly monitor and clean up consumers that are no longer active to keep the consumer group healthy.
+- Before removing a consumer, make sure to process and acknowledge all its pending messages,
+  or have another consumer claim its pending messages.
 
 ## Common Mistakes
 
 - Attempting to delete a non-existent consumer, which will result in no effect but can be part of error checks.
-- Removing consumers without checking or reassigning their pending messages, leading to possible message loss or processing delay.
+- Removing consumers without acknowledging or reassigning their pending messages, leading to possible message loss.
 
 ## FAQs
 
 ### What happens if the consumer does not exist?
 
-If the consumer does not exist, the command returns `0`, indicating no pending messages were transferred.
+If the consumer does not exist, the command returns `0`, indicating no pending messages were associated with the consumer.
 
 ### Does this command delete the consumer group itself?
 
-No, `XGROUP DELCONSUMER` only removes an individual consumer. The group remains intact until explicitly deleted with another command.
+No, `XGROUP DELCONSUMER` only removes an individual consumer. The group remains intact until explicitly deleted with [`XGROUP DESTROY`](xgroup-destroy.md).
