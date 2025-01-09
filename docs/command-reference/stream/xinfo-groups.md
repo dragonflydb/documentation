@@ -25,8 +25,14 @@ XINFO GROUPS key
 
 ## Return Values
 
-The command returns a list of dictionaries, each dictionary representing a consumer group and its details.
-The details include fields such as `name`, `consumers`, `pending`, `last-delivered-id`, etc.
+- The command returns a list of dictionaries, each dictionary representing a consumer group and its details.
+- The details include fields such as `name`, `consumers`, `pending`, `last-delivered-id`, etc.
+  - `name`: the consumer group's name.
+  - `consumers`: the number of consumers within the group.
+  - `pending`: the length of the group's pending entries list (PEL), which are messages that were delivered but not yet acknowledged.
+  - `last-delivered-id`: the ID of the last entry delivered to the group's consumer(s).
+  - `entries-read`: number of entries read by the group's consumers.
+  - `lag`: the number of entries that are yet to be delivered to the group's consumers.
 
 ## Code Examples
 
@@ -35,17 +41,22 @@ The details include fields such as `name`, `consumers`, `pending`, `last-deliver
 Get information about consumer groups for a stream:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream mygroup $
+dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
+
 dragonfly$> XINFO GROUPS mystream
-1) 1) "name"
-   2) "mygroup"
-   3) "consumers"
-   4) (integer) 0
-   5) "pending"
-   6) (integer) 0
-   7) "last-delivered-id"
-   8) "0-0"
+1)  1) "name"
+    2) "mygroup"
+    3) "consumers"
+    4) (integer) 0
+    5) "pending"
+    6) (integer) 0
+    7) "last-delivered-id"
+    8) "0-0"
+    9) "entries-read"
+   10) (nil)
+   11) "lag"
+   12) (integer) 0
 ```
 
 ### Monitor Multiple Consumer Groups
@@ -53,44 +64,53 @@ dragonfly$> XINFO GROUPS mystream
 Creating and monitoring multiple consumer groups:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream group1 $
+dragonfly$> XGROUP CREATE mystream group1 $ MKSTREAM
 OK
+
 dragonfly$> XGROUP CREATE mystream group2 $
 OK
+
 dragonfly$> XINFO GROUPS mystream
-1) 1) "name"
-   2) "group1"
-   3) "consumers"
-   4) (integer) 0
-   5) "pending"
-   6) (integer) 0
-   7) "last-delivered-id"
-   8) "0-0"
-2) 1) "name"
-   2) "group2"
-   3) "consumers"
-   4) (integer) 0
-   5) "pending"
-   6) (integer) 0
-   7) "last-delivered-id"
-   8) "0-0"
+1)  1) "name"
+    2) "group1"
+    3) "consumers"
+    4) (integer) 0
+    5) "pending"
+    6) (integer) 0
+    7) "last-delivered-id"
+    8) "0-0"
+    9) "entries-read"
+   10) (nil)
+   11) "lag"
+   12) (integer) 0
+2)  1) "name"
+    2) "group2"
+    3) "consumers"
+    4) (integer) 0
+    5) "pending"
+    6) (integer) 0
+    7) "last-delivered-id"
+    8) "0-0"
+    9) "entries-read"
+   10) (nil)
+   11) "lag"
+   12) (integer) 0
 ```
 
 ## Best Practices
 
-- Regularly use `XINFO GROUPS` to check on the health and status of consumer groups in your stream processing architecture.
-- Ensure consumer groups are correctly created with unique and descriptive names to avoid confusion and manage them effectively.
+- Regularly use `XINFO GROUPS` to check on the health and status of consumer groups in your stream processing system.
+- Ensure consumer groups are correctly created with unique and descriptive names to avoid confusion and ease monitoring and management.
 
 ## Common Mistakes
 
-- Omitting the `key` parameter, which is necessary to identify the stream for which group information is needed.
 - Assuming that `XINFO GROUPS` modifies consumer groups; it only retrieves information.
 
 ## FAQs
 
 ### What happens if the stream key does not exist?
 
-If the stream key does not exist, `XINFO GROUPS` returns an empty list as there are no consumer groups associated with a nonexistent stream.
+If the stream key does not exist, `XINFO GROUPS` returns an error.
 
 ### Can `XINFO GROUPS` be used on keys that are not streams?
 
