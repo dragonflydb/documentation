@@ -29,8 +29,8 @@ XACK key group id [id ...]
 ## Return Values
 
 - The command returns an integer indicating the number of messages that were successfully acknowledged.
-- Message IDs that are no longer be part of the PEL (i.e., already been acknowledged) will not be considered successful acknowledgments.
-- If the stream or the consumer group does not exist, the command is a no-op and returns `0`.
+- Message IDs that are not part of the PEL (i.e., already been acknowledged) will not be considered successful acknowledgments.
+- If the stream or the consumer group does not exist, the command simply returns `0`.
 
 ## Code Examples
 
