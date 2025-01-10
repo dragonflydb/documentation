@@ -11,7 +11,7 @@ import PageTitle from '@site/src/components/PageTitle';
 ## Introduction
 
 In Dragonfly, as well as in Redis and Valkey, the `XLEN` command is used to determine the number of entries in a stream.
-It is particularly useful for monitoring and managing data streams, providing quick insights into the size and health of your data pipeline.
+The command is useful for monitoring and managing data streams, providing quick insights into the size and health of your data pipeline.
 
 ## Syntax
 
@@ -25,7 +25,7 @@ XLEN key
 
 ## Return Values
 
-The command returns the number of entries (as an integer) currently present in the specified stream.
+- The command returns the number of entries in the specified stream as an integer.
 
 ## Code Examples
 
@@ -33,47 +33,33 @@ The command returns the number of entries (as an integer) currently present in t
 
 Determine the number of entries in a stream:
 
-  
 ```shell
-dragonfly$> XADD mystream * sensor-temperature 23.1
+dragonfly$> XADD mystream * sensor-1-temperature 23.1
 "1678819562090-0"
-dragonfly$> XADD mystream * sensor-humidity 60
+
+dragonfly$> XADD mystream * sensor-2-temperature 23.2
 "1678819562091-0"
-dragonfly$> XADD mystream * sensor-temperature 22.8
+
+dragonfly$> XADD mystream * sensor-3-temperature 23.3
 "1678819562092-0"
+
 dragonfly$> XLEN mystream
 (integer) 3
 ```
 
-### Handling a Non-existent Stream
+### Non-Existent Stream
 
 Check the length of a non-existent stream:
 
-  
 ```shell
-dragonfly$> XLEN nonexistent_stream
+dragonfly$> XLEN non-existent-stream
 (integer) 0
-```
-
-### Using `XLEN` in Monitoring
-
-Consider using `XLEN` as part of a monitoring solution to track the number of events in a stream at any point in time:
-
-  
-```shell
-dragonfly$> XADD events * user-login user123
-"1678819562093-0"
-dragonfly$> XADD events * user-logout user123
-"1678819562094-0"
-dragonfly$> XLEN events
-(integer) 2
-# Use this value to monitor activity levels or detect anomalies in the number of events.
 ```
 
 ## Best Practices
 
-- Integrate `XLEN` into your monitoring dashboards to provide real-time feedback on stream sizes and help detect bottlenecks or unusual activity patterns.
 - Regularly check stream lengths as part of a comprehensive data management strategy.
+- Integrate `XLEN` into your monitoring dashboards to provide real-time feedback on stream sizes and help detect bottlenecks or unusual activity patterns.
 
 ## Common Mistakes
 
@@ -82,9 +68,9 @@ dragonfly$> XLEN events
 
 ## FAQs
 
-### What happens if the key does not exist?
+### What happens if the stream key does not exist?
 
-If the key does not exist or is not of stream type, `XLEN` returns `0`.
+If the stream key does not exist, `XLEN` returns `0`.
 
 ### Can `XLEN` be used to determine entries in other data types like lists or sets?
 
