@@ -11,21 +11,24 @@ import PageTitle from '@site/src/components/PageTitle';
 ## Introduction
 
 In Dragonfly, as well as in Redis and Valkey, the `XINFO STREAM` command provides information about a specific stream.
-This is particularly useful for monitoring and debugging streams, as it helps you understand the structure and state of a stream.
+This command can be used to monitor and debug streams, as it helps you understand the structure and state of a stream.
 
 ## Syntax
 
 ```shell
-XINFO STREAM key
+XINFO STREAM key [FULL [COUNT count]]
 ```
 
 ## Parameter Explanations
 
 - `key`: The key of the stream for which information is to be retrieved.
+- `FULL` (optional): If specified, the command returns additional details about the stream.
+- `COUNT count` (optional): If `FULL` is specified, this parameter limits the number of returned stream and PEL entries returned.
+  `COUNT` is default to `10`. Setting `COUNT` to `0` returns all entries, which should be used with caution as it increases execution time for large streams.
 
 ## Return Values
 
-The command returns a list of key-value pairs providing information about the specified stream's state and elements.
+- The command returns a list of information about the specified stream's state and entries.
 
 ## Code Examples
 
@@ -36,6 +39,7 @@ Get information about a stream:
 ```shell
 dragonfly$> XADD mystream * sensor-id 1234 temperature 19.8
 "1632494980015-0"
+
 dragonfly$> XINFO STREAM mystream
  1) "length"
  2) (integer) 1
@@ -68,15 +72,15 @@ dragonfly$> XINFO STREAM mystream
 
 ## Common Mistakes
 
-- Not grasping the meaning of each output field; ensure you understand terms like "radix-tree-keys" and "last-generated-id".
 - Forgetting that `XINFO STREAM` only queries data and does not modify the stream content.
+- Not grasping the meaning of each output field; ensure you understand terms like `radix-tree-keys` and `last-generated-id` in the context of streams.
 
 ## FAQs
 
-### What does "radix-tree-keys" signify?
+### What does `radix-tree-keys` signify?
 
-"radix-tree-keys" indicates the number of entries in the underlying radix tree data structure, which can help assess memory use.
+`radix-tree-keys` indicates the number of entries in the underlying radix tree data structure for streams.
 
-### How do I interpret "first-entry" and "last-entry"?
+### How do I interpret `first-entry` and `last-entry?
 
-"first-entry" and "last-entry" give you the stream's start and end records, which are important for identifying the current pattern of data.
+`first-entry` and `last-entry` give you the stream's start and end records, which helps to identify the pattern of data.
