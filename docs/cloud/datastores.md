@@ -4,193 +4,259 @@ sidebar_position: 2
 
 # Data Stores
 
-A Dragonfly Cloud data store represents a Redis Protocol (RESP) endpoint.
+## Overview
 
-To create a data store, on the *Data Stores* tab, click [+Data Store](https://dragonflydb.cloud/datastores/new)
+A [Dragonfly Cloud](https://dragonflydb.cloud/) data store represents an endpoint for storing and retrieving in-memory
+data, which is compatible with Redis (RESP2 and RESP3) and Memcached protocols. The endpoint is a fully managed
+service that is backed by one or more [Dragonfly](https://github.com/dragonflydb/dragonfly) server instances.
+The data store can be accessed from the public internet or over a private network.
 
-The minimum configuration consists of *name*, *cloud provider*, *cloud region* and *plan*.
+On this page, you will find information on how to create, configure, and connect to a Dragonfly Cloud data store.
 
-The following cloud providers are supported:
-- AWS
-- GCP
-- Azure (Private beta, please [schedule a meeting with a product expert](https://calendly.com/d/ymz-yhv-q8f/dragonfly-cloud?month=2024-07) to get access.)
+## Creating a Data Store
 
-Note that the *cloud provider* and *region* can not be modified once the data store is created.
+- To create a data store, on the **Data Stores** tab,
+  click the [+Data Store](https://dragonflydb.cloud/datastores/new) button.
+- The minimum configuration consists of a **Name**, a **Cloud Provider**, a **Cloud Region**, and a **Plan**.
+- The following cloud providers are supported:
+    - Amazon Web Services (AWS)
+    - Google Cloud Platform (GCP)
+    - Microsoft Azure (private beta, please contact support if you would like to run Dragonfly on Azure)
+- Note that the **Cloud Provider** and **Cloud Region** can **NOT** be modified once the data store is created.
+- The **Plan** specifies the provisioned memory size and the CPU-to-memory ratio for the data store.
+  Available plans are:
+    - **Standard**: This plan is suitable for moderate to high workloads.
+      It provides a balanced CPU-to-memory ratio.
+    - **Enhanced**: This plan is suitable for workloads that require more compute resources.
+      It provides **2x the CPU** for the same amount of provisioned memory compared to the **Standard** plan.
+    - **Extreme**: This plan is suitable for workloads that require extremely high compute resources.
+      It provides **4x the CPU** for the same amount of provisioned memory compared to the **Standard** plan.
+- For network bandwidth limits, please refer to the [network bandwidth](./bandwidth.md) section.
+- **You can modify the data store Plan (memory size, CPU resources) later
+  with zero downtime** to easily scale up or down.
 
-The *plan* specifies the provisioned memory and memory to CPU ratio of the data store.  
-The *Enhanced* plan has more CPU for the same amount of provisioned memory and achieves higher throughput compared to the *Standard* plan.
+### Advanced Configurations
 
-*Note* For network bandwidth limits, please refer to the [Network Bandwidth](./bandwidth.md) section.
+- By default, the data store will be configured with a **public endpoint**, **TLS**, and an auto-generated **passkey**,
+  meaning you can securely connect to it from anywhere over the public internet.
+- To create a data store with a **private endpoint**, see [security](#security), [networks](./networks.md),
+  and [peering connections](./connections.md).
+- By default, the data store will consist of a single Dragonfly server instance.
+  To create a highly available data store, read more about [high availability](#high-availability) below.
+  For cluster mode, please see [cluster mode](#cluster-mode) below.
 
-You can modify the data store *plan* later with zero downtime to scale it up or down.
+### Connection Details & Data Store Status
 
-By default the data store will be configured with a *public endpoint*, *TLS* and an auto generated *passkey*, meaning you can securely connect to it from anywhere over the public internet.  
-To create a data store with a *private endpoint*, see [Security](#security), [Networks](./networks.md) and [Peering Connections](./connections.md).
+- Once the data store is created, clicking the data store row will open a drawer with the data store configuration,
+  including the auto-generated passkey and a Redis-compatible **Connection URI**.
+- Once the data store's **Status** becomes **Active**, you can try accessing it with Redis CLI,
+  for instance, `redis-cli -u <CONNECTION_URI> PING`.
+  Read more information on [how to connect to the data store](#connecting-to-a-data-store) below.
 
-By default the data store will consist of a single Dragonfly server, to create a highly available data store see [High Availability](#high-availability).
-For cluster mode please see [Cluster Mode](#cluster-mode).
+### Updating the Data Store Configuration
 
-Once the data store is created, clicking the data store row will open a drawer with the data store configuration, including the auto generated passkey and a redis compatible *connection URI*. 
+- To update the data store configuration, click the three-dot
+  menu (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>)
+  in the data store row and then select **Edit**.
+- **Dragonfly Cloud performs data store updates with zero downtime**.
 
-Once the data store *Status* becomes *Active* you can try access it with e.g. `redis-cli -u <connection URI> PING`
-For more information on how to connect to the data store see [Connecting to Data Store](#connecting-to-data-store).
+---
 
-To update the data store configuration click the pencil edit button in the top right of the drawer.  
-Dragonfly cloud performs data store updates with zero downtime.    
+## Security
 
-## Security 
-Dragonfly Cloud supports public and private endpoints
+Dragonfly Cloud supports using both public and private endpoints for data access.
 
-### Public Endpoint 
-With a public endpoint you can connect to the data store from anywhere over the internet. 
-To protect your data store from unauthorized access public endpoints are configured with *passkey* and *TLS* enabled.   
-*TLS* has some performance impact so can be disabled but it is highly recommended to leave it enabled.  
-*Passkey* is mandatory and can not be disabled for public endpoints 
+### Public Endpoint
 
-### Private Endpoint 
-*Private endpoint* provides better security, performance and lower latency as the data transports to and from the data stores over private networks and not via the public internet.  
-Using a private endpoint also reduces data transfer costs applied by the cloud provider.
+- With a public endpoint, you can connect to the data store from anywhere over the internet.
+- To protect your data store from unauthorized access,
+  public endpoints are default with **TLS** and **passkey** enabled.
+- **TLS** has some performance impact, so it can be disabled. **But it is highly recommended to leave it enabled**.
+- **Passkey** is mandatory and cannot be disabled for public endpoints.
 
-In order to create a data store with a private endpoint, you must first create a private network, see [Networks](./networks) for more information.
-Once you have created a private network, you can select it in the *Endpoint* dropdown box when creating a data store.
+### Private Endpoint
 
-> ***Tip:*** In order to completely avoid data transfer charges, place your data store in the same availability zone of your application. See [High Availability](#high-availability) for specifying the data store availability zone.
+- Private endpoints provide **better security**, **better performance**, and **lower latency** as the data transports
+  to and from the data stores over private networks and not via the public internet.
+- Using a private endpoint also **reduces data transfer costs** applied by the cloud provider.
+- In order to create a data store with a private endpoint, **you must first create a [private network](./networks.md)**.
+- Once you have created a private network, you can select it in the **Endpoint** dropdown
+  when creating a new data store.
+- **TLS** and **passkey** are disabled by default for data stores with private endpoints but can be enabled.
 
-*TLS* and *passkey* are disabled by default for private endpoint datastores, but can be enabled.
+**Tip:** In order to completely avoid data transfer charges, place your data store in the same availability zone (AZ)
+as your application. See [high availability](#high-availability) for specifying the data store availability zone.
 
-   
-## Durability and High Availability  
-### Eviction Policy 
-Eviction policy controls the behavior of the datastore when it maxes out its memory.  
-**No Eviction** - Items are never evicted and out of memory errors are returned when the data store is full.  
-**Cache** - The data store behaves as cache and evicts items to free space for new ones when the data store is full.
+## Durability & High Availability
+
+### Eviction Policy
+
+Eviction policy controls the behavior of a data store when it reaches its memory limit.
+
+- **No Eviction:** items are never evicted, and out-of-memory errors are returned to the client
+  when the data store is full.
+- **Cache:** The data store behaves as a cache and automatically evicts items to free space for new writes
+  when the data store is full. Dragonfly has only one cache eviction policy, which you can read more about
+  [here](https://www.dragonflydb.io/blog/balanced-vs-unbalanced).
+
+To choose the eviction policy, expand the **Durability & High Availability** section and select the desired policy.
+Make sure to save the changes by creating a new data store or updating an existing one.
 
 ### High Availability
 
-By default the data store will consist of a single Dragonfly server, this means that in case of software failures, hardware failures or cloud zone outages data is lost and the data store may be completely unavailable.
+By default, the data store will consist of a single Dragonfly server. This means that in case of software failures,
+hardware failures, or cloud zone outages, the data would be lost, and the data store could be completely unavailable.
 
-To increase availability of your data store you can configure it to be deployed in up to three different zones, one primary zone for the master and up to two replica zones.
-Dragonfly Cloud automatically detects failures and performs failover to an available replica.
+To increase the availability of your data store, you can configure it to be deployed in up to three different zones:
+**one primary/master zone and up to two replica zones**. Dragonfly Cloud automatically detects failures
+and performs failover to an available replica when the primary is unavailable.
+To add one or more replicas to your data store:
 
-To add a replica, expand the *Durability & High Availability* section and click the *Add Replica* button and select the zone for the replica.
-You can select the same zone as the master or a different zone.
-When selecting a different zone, inter zone data transfer costs may apply.
+- Expand the **Durability & High Availability** section.
+- Click on the **+Add Replica** button and select the zone for the replica.
+- You can select the same zone as the primary or a different zone.
+- When selecting a different zone, inter-zone data transfer costs may apply.
+- **You can update the number of replicas of a data store with zero downtime**.
+- **You can update the primary/replica zones of a data store with zero downtime**.
 
-***Tip:*** You can also select a zone for the data store master, select the same zone as your application to avoid data transfer costs.
-
-You can update the data store replica and zones anytime with zero downtime.
+**Tip:** You can select a zone for the data store primary instance, and you should
+select the same zone as your application to avoid data transfer costs.
 
 ## Specializations
 
-**BullMQ** - Enable this for running BullMQ workloads, this requires you to apply Redis Cluster curly braces syntax for the queue names as described [here](/docs/integrations/bullmq.md).
+Dragonfly is designed from the ground up to provide a seamless, highly efficient, and blazingly fast alternative to
+Redis. Our mission is to enhance the performance of projects that rely on in-memory data stores without having to
+compromise on reliability or ease of use. Being a drop-in replacement for Redis, Dragonfly can be integrated into any
+project that utilizes Redis as its backend in-memory store. Dragonfly Cloud pushes this further by automatically
+providing the most suitable server configuration(s) for your workload when you select a specialization.
 
-If that is not possible please contact support.
-
-
-**Memcached** - Enable this for running Memcached workloads, memcached protocol will be enabled on port 6371.  
-*Note*: The memcached protocol does not support authentication, so can be enabled only for [private endpoint](#private-endpoint) data stores.
-
-**Sidekiq** - Enable this for running Sidekiq workloads, [read more](/docs/integrations/sidekiq.md).
+- **BullMQ:** Enable this for running [BullMQ](https://bullmq.io/) workloads.
+  This requires you to apply the hashtag syntax to the queue names as described [here](/docs/integrations/bullmq.md).
+  If that is not possible for your application, please contact support.
+- **Memcached:** Enable this for running Memcached workloads. Memcached protocol will be enabled on port `6371`.
+  Note that authentication is not supported for Memcached, so it can only be enabled for data stores
+  with a [private endpoint](#private-endpoint).
+- **Sidekiq:** Enable this for running [Sidekiq](https://sidekiq.org/) workloads,
+  [read more](/docs/integrations/sidekiq.md).
 
 ## Cluster Mode
 
-By default a dragonfly cloud data store support redis cluster protocol and clients so you can seamlessly migrate from redis cluster. 
+By default, a Dragonfly Cloud data store supports the Redis Cluster protocol and clients so you can seamlessly
+migrate from Redis Cluster to a single-instance Dragonfly data store.
 
-Multi node cluster is in private beta, please [schedule a meeting with a product expert](https://calendly.com/d/ymz-yhv-q8f/dragonfly-cloud?month=2024-07) to get access. 
+The multi-instance clustering, namely **Dragonfly Cluster**, is in private beta. Please contact support to get access.
+In the meantime, you can read more about Dragonfly
+Cluster ([preview](https://www.dragonflydb.io/blog/a-preview-of-dragonfly-cluster)
+and [horizontal scalability design](https://www.dragonflydb.io/blog/redis-and-dragonfly-cluster-design-comparison))
+in our blog posts.
 
-## Connecting to Data Store
+---
 
-Once a data store *Status* is *Active* you can connect to it with any Redis client using the *Connection URI* provided in the data store drawer (e.g. rediss://default:h6blm92XXXsa@52tyg3xkp.dragonflydb.cloud:6385). 
-Here are a few popular examples:
+## Connecting to a Data Store
+
+Once a data store's **Status** is **Active**, you can connect to it with any Redis client using the **Connection URI**
+provided in the data store drawer (e.g., `rediss://default:XXXXX@abcde.dragonflydb.cloud:6385`).
+Here are a few popular client libraries and code snippets to connect to the data store.
 
 ### Redis CLI
-1. Install redis-cli, `sudo apt install redis-tools`
-2. With the *Connection URI* from the data store drawer execute redis-cli in the terminal e.g. `redis-cli -u <connection URI> PING`
 
-### Node.js
-1. Install the redis npm package, `npm install redis`
-2. Use the following code snippet to connect to the data store
+- Install [`redis-cli`](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/).
+- With the **Connection URI** from the data store drawer, execute `redis-cli` in the terminal:
+
+```shell
+$> redis-cli -u <CONNECTION_URI> PING
+```
+
+### JavaScript | Typescript | Node.js
+
+- Install the [`ioredis`](https://github.com/redis/ioredis) package.
+- Use the following code snippet to connect to the data store:
+
 ```javascript
-import { createClient } from 'redis';
-const client = createClient({url: '<connection URI>'});
-client.on('connect', () => {
-  console.log('Connected to Redis');
-});
-client.on('error', (err) => {
-  console.error('Redis error', err);
-});
-client.ping((err, res) => {
-  if (err) {
-    console.error('Error:', err);
-    return;
-  }
-  console.log('Redis PING:', res);
-});
+const Redis = require("ioredis");
 
+// Replace <CONNECTION_URI> with the actual Dragonfly Cloud connection URI.
+const client = new Redis("<CONNECTION_URI>");
+client.ping().then(resp => console.log(resp));
 ```
 
 ### Python
-1. Install the redis-py package, `pip install redis`
-2. Use the following code snippet to connect to the data store
+
+- Install the [redis-py](https://github.com/redis/redis-py) package.
+- Use the following code snippet to connect to the data store:
+
 ```python
 import redis
-client = redis.Redis.from_url('<connection URI>')
+
+# Replace <CONNECTION_URI> with the actual Dragonfly Cloud connection URI.
+client = redis.Redis.from_url("<CONNECTION_URI>")
 client.ping()
 ```
 
 ### Go
-1. Install the go-redis package, `go get github.com/go-redis/redis/v8`
-2. Use the following code snippet to connect to the data store
+
+- Install the [go-redis](https://github.com/redis/go-redis) package.
+- Use the following code snippet to connect to the data store:
+
 ```go
 package main
 
 import (
-    "fmt"
-	"github.com/go-redis/redis/v8"
+	"context"
+	"fmt"
+
+	"github.com/redis/go-redis/v9"
 )
 
 func main() {
-    // Replace "<connection URI>" with the actual connection URI,  
-    // <db> is the database number, default is 0
-    opt, err := redis.ParseURL("<connection URI>/<db>")
-    if err != nil {
-	    panic(err)
-    }
+	// Replace <CONNECTION_URI> with the actual Dragonfly Cloud connection URI.
+	// Note that <db> is the database number, and its default value is 0.
+	opts, err := redis.ParseURL("<CONNECTION_URI>/<db>")
+	if err != nil {
+		panic(err)
+	}
 
-    client := redis.NewClient(opt)
+	client := redis.NewClient(opts)
 
-    pong, err := client.Ping(client.Context()).Result()
-    if err != nil {
-        fmt.Println("Error:", err)
-        return
-    }
+	pong, err := client.Ping(context.Background()).Result()
+	if err != nil {
+		fmt.Println(err)
+	}
 
-    fmt.Println("Connected to Redis:", pong)
+	fmt.Println(pong)
 }
 ```
 
 ## ACL Rules
 
-You can leverage [Dragonfly's built in support for ACLs](https://www.dragonflydb.io/docs/managing-dragonfly/acl) with Dragonfly Cloud.
+You can leverage [Dragonfly's built-in support for ACLs](https://www.dragonflydb.io/docs/category/acl) to control access
+to your data stores within Dragonfly Cloud. Each Dragonfly Cloud data store is created with a default ACL rule
+that allows all commands for the `default` user:
 
-Each Dragonfly Cloud data store is created with a default ACL rule that allows all commands for the default user.  
-`USER default ON >pmn4p0ssrbbl ~* +@ALL`
+```text
+USER default ON >pmn4p0ssrbbl ~* +@ALL
+```
 
-To modify the data store ACL rules, click the data store three dots menu (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>) and click *Acl Rules*  
-An ACL Rules editor drawer will open where you can add, modify or delete ACL rules.
+- To modify the data store ACL rules, click the data store three-dot
+  menu (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>)
+  and click **ACL Rules**.
+- An editor drawer for ACL rules will open where you can add, modify, or delete ACL rules.
+- ***CAUTION: Altering ACL rules can potentially disrupt access for current users. It is always recommended to test ACL
+  rules on a test data store before applying them to a production data store.***
 
-***Caution:*** Altering ACL rules can potentially disrupt access for current users. It is always recommended to test ACL rules on a test data store before applying them to a production data store.
+### Rotating Data Store Passkey
 
-### How to rotate data store passkey
-1. Modify the default ACL rule to e.g. `USER default ON >pmn4p0ssrbbl >mynewpass ~* +@ALL`
-2. Verify you can now authenticate with both pmn4p0ssrbbl (old passkey) and mynewpass (new passkey)
-3. Migrate all consumers to authenticate with the new passkey 
-4. Modify the default ACL rule to only include the new passkey e.g. `USER default ON >mynewpass ~* +@ALL`
-5. Verify you can no longer authenticate with the old passkey.
-6. ***Caution:*** It is always recommended to test ACL rules on a test data store before applying them to a production data store.
+Here is a recipe to rotate the passkey for a data store, since it is part of the ACL rules:
 
-## Support
+- Modify the default ACL rule to something like: `USER default ON >myoldpass >mynewpass ~* +@ALL`.
+- Verify you can now authenticate with both the old and new passkeys.
+- Migrate all consumers to authenticate with the new passkey.
+- Modify the default ACL rule to only include the new passkey: `USER default ON >mynewpass ~* +@ALL`.
+- Verify you can no longer authenticate with the old passkey.
+- ***CAUTION: Altering ACL rules can potentially disrupt access for current users. It is always recommended to test ACL
+  rules on a test data store before applying them to a production data store.***
 
-See [Support](./support.md) for information on support plans.
+## Pricing & Support
 
-
+- See more information about Dragonfly Cloud pricing [here](./pricing.md).
+- See more information about Dragonfly Cloud support plans [here](./support.md).

@@ -4,25 +4,37 @@ sidebar_position: 1
 
 # Getting Started
 
-Getting started with *Dragonfly Cloud* is easy. You can have your first *data store* up and running in minutes.
+## Overview
 
-All you have to do is navigate to [dragonflydb.cloud](https://dragonflydb.cloud) and sign up for an account.
+Getting started with [Dragonfly Cloud](https://dragonflydb.cloud) is easy.
+You can **have your first in-memory data store up and running in minutes**.
+Note that Dragonfly Cloud is powered by the exact same technology as
+the [Dragonfly project](https://github.com/dragonflydb/dragonfly), the most performant in-memory data store on earth,
+as there are no gated features.
+Dragonfly Cloud drastically simplifies the deployment, management, and operation of your Dragonfly data stores.
 
-To complete the sign up process you will be required to pick a name for your *organization*.
-You can later [add more users](./users.md) to your *organization*.
+## Creating an Account
 
-After signing up you will land on the *Data Stores* page, where you can create your first *data store* by clicking the [+Data Store](https://dragonflydb.cloud/datastores/new) button.  
-You only need to pick a *name*, a *cloud provider* and *cloud region*.  
-For more configuration options see [Data Stores](./datastores).
+- All you have to do is navigate to [Dragonfly Cloud](https://dragonflydb.cloud) and sign up for an account.
+- To complete the sign-up process, you will be required to pick a name for your **Organization**.
+- You can later [add more users](./users.md) to your organization and manage their permissions.
 
-Before creating your first *data store* you will be asked to add *payment card*.
-You can track usage and costs under the *Account > Usage* tab.
+## Creating Your First Data Store
 
-You are only charged while the *data store* is active, prorated to the hour, and you can delete the data store at any time.
- 
-We offer an unlimited 3GB Development plan for around $35/month (less than $0.05 an hour), depending on the cloud provider and region, as an easy way to get started.
+- After signing up, you will land on the [Data Stores](https://dragonflydb.cloud/datastores) page.
+- You can create your first data store by clicking the [+Data Store](https://dragonflydb.cloud/datastores/new) button.
+- You only need to pick a **Name**, a **Cloud Provider**, and a **Cloud Region** for your data store.
+- For more configuration options, see detailed documentation on [data stores](./datastores.md).
 
-***Happy building with Dragonfly Cloud!***
+## Payment & Development Instances
 
+- Before creating your first data store, you will be asked to add a **Payment Credit Card**.
+- You can track usage and costs under the [Account > Usage](https://dragonflydb.cloud/account/usage) tab.
+- You are only charged while the data store is active, prorated to the hour.
+- You can delete a data store at any time to stop incurring charges.
+- We offer unlimited 3GB development instances for around **$36/month (less than $0.05/hour)** in popular regions.
+- Depending on cloud providers and regions, the cost can vary.
+  However, a development instance is always the easiest way to get started.
+  Read more about [pricing](./pricing.md).
 
-
+**Happy building with Dragonfly Cloud!**

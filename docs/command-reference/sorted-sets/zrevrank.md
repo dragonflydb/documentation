@@ -8,66 +8,74 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis ZREVRANK Explained (Better Than Official Docs)" />
 
-## Introduction and Use Case(s)
+## Introduction
 
-The `ZREVRANK` command in Redis returns the rank of a member in a sorted set, with the scores ordered from high to low. It is particularly useful for reverse ranking scenarios, such as leaderboard systems where you want to know the position of a participant based on their score.
+In Dragonfly, as well as in Redis and Valkey, the `ZREVRANK` command is used to determine the rank of a member in a sorted set, **with the scores ordered from high to low**.
+The rank is counted starting from `0`, where `0` is the highest score.
+This command is useful when you want to rank items such as user scores or product ratings in descending order.
 
 ## Syntax
 
-```
+```shell
 ZREVRANK key member
 ```
 
+- **Time complexity:** O(log(N))
+- **ACL categories:** @read, @sortedset, @fast
+
 ## Parameter Explanations
 
-- `key`: The name of the sorted set.
-- `member`: The member whose rank you wish to retrieve.
-
-These parameters are essential for identifying which sorted set and member you are querying.
+- `key`: The key of the sorted set.
+- `member`: The value whose rank you want to retrieve in the sorted set.
 
 ## Return Values
 
-- **Integer**: The rank of the member (0-based index).
-- **nil**: If the member does not exist within the sorted set.
-
-### Example Outputs:
-
-- `(integer) 0` when the member is the highest-scoring member.
-- `(nil)` when the member is not found in the sorted set.
+- The command returns the rank of the member in the sorted set, with rank `0` being the highest.
+- If the member does not exist, the command returns `nil`.
 
 ## Code Examples
 
-```cli
-dragonfly> ZADD myzset 1 "one"
-(integer) 1
-dragonfly> ZADD myzset 2 "two"
-(integer) 1
-dragonfly> ZADD myzset 3 "three"
-(integer) 1
-dragonfly> ZREVRANK myzset "one"
-(integer) 2
-dragonfly> ZREVRANK myzset "three"
-(integer) 0
-dragonfly> ZREVRANK myzset "four"
-(nil)
+### Basic Example
+
+Getting the reverse rank of a member in a sorted set:
+
+```shell
+dragonfly$> ZADD leaderboard 100 "PlayerA" 200 "PlayerB" 150 "PlayerC"
+(integer) 3
+
+dragonfly$> ZREVRANK leaderboard "PlayerB"
+(integer) 0  # PlayerB has the highest score, so its rank is 0.
+```
+
+### Handling Non-Existent Members
+
+When the specified member is not in the sorted set, `ZREVRANK` will return `nil`:
+
+```shell
+dragonfly$> ZADD leaderboard 100 "PlayerA" 200 "PlayerB" 150 "PlayerC"
+(integer) 3
+
+dragonfly$> ZREVRANK leaderboard "PlayerD"
+(nil)  # PlayerD does not exist in the sorted set.
 ```
 
 ## Best Practices
 
-- Ensure that the sorted set (`key`) exists before calling `ZREVRANK` to avoid unnecessary nil results.
-- Use this command in operations where reverse ranking based on scores is critical, like high-score tables in gaming applications.
+- Use `ZREVRANK` when you need to retrieve ranks in descending order of scores.
+  `ZREVRANK` is particularly useful for leaderboard systems where the highest score appears first.
+- Combine `ZREVRANK` with [`ZADD`](zadd.md) for efficient ranking and scoring of members in real-time ranked systems, such as gaming leaderboards or top-performing products.
 
 ## Common Mistakes
 
-- Misinterpreting the 0-based index: A rank of `(integer) 0` means the member has the highest score.
-- Forgetting that `ZREVRANK` returns `nil` if the member does not exist, which can lead to unhandled exceptions in some applications.
+- Assuming the rank is based on ascending order. `ZREVRANK` specifically orders elements from high to low.
+- Forgetting that if the member does not exist, `ZREVRANK` will return `nil`, not an error or zero.
 
 ## FAQs
 
-**Q: What happens if the sorted set does not exist?**
+### What is the difference between `ZREVRANK` and `ZRANK`?
 
-A: The command will simply return `nil`, indicating that the member was not found.
+`ZREVRANK` gives the rank of the member with scores ordered from highest to lowest, while [`ZRANK`](zrank.md) gives the rank from lowest to highest.
 
-**Q: Can `ZREVRANK` handle negative scores?**
+### What happens if the key does not exist?
 
-A: Yes, `ZREVRANK` ranks members based on their scores regardless of whether the scores are positive or negative.
+If the key does not exist, `ZREVRANK` will return `nil`.

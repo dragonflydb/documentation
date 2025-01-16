@@ -8,30 +8,99 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis XDEL Command (Documentation) | Dragonfly" />
 
+## Introduction
+
+In Dragonfly, as well as in Redis and Valkey, the `XDEL` command is used to delete one or more entries from a stream.
+This command is particularly useful for managing data in stream-like structures by removing irrelevant or processed items.
+
 ## Syntax
 
-    XDEL key id [id ...]
+```shell
+XDEL key ID [ID ...]
+```
 
-**Time complexity:** O(1) for each single item to delete in the stream.
+## Parameter Explanations
 
-**ACL categories:** @write, @stream, @fast
+- `key`: The key of the stream from which entries are to be deleted.
+- `ID`: One or more entry IDs identifying the entries you wish to delete from the stream.
 
-**XDEL** deletes entries from the given stream. The key and ids specify
-the stream name and entry IDs respectively. Refer to [XADD referece
-page](./xadd.md#specifying-id) for more information about IDs.
+## Return Values
 
-## Return
+- The command returns an integer representing the number of entries that were successfully deleted from the stream.
 
-[Integer Reply](https://redis.io/docs/reference/protocol-spec/#integers).
-**XDEL** returns the number of deleted entries.
+## Code Examples
 
-## Example
+### Basic Example
+
+Delete a single entry from a stream:
 
 ```shell
-dragonfly> XADD mystream * name John
-"1623910120014-0"
-dragonfly> XADD mystream * name Bob
-"1623910467320-0"
-dragonfly> XDEL mystream 1623910120014-0 1-1
+dragonfly$> XADD mystream * name "Alice" age "30"
+"1527845627383-0"
+
+dragonfly$> XADD mystream * name "Bob" age "25"
+"1527845627383-1"
+
+dragonfly$> XDEL mystream "1527845627383-0"
 (integer) 1
+
+dragonfly$> XRANGE mystream - +
+1) "1527845627383-1"
+   1) "name"
+   2) "Bob"
+   3) "age"
+   4) "25"
 ```
+
+### Delete Multiple Entries
+
+Delete multiple entries from the stream by specifying multiple IDs:
+
+```shell
+dragonfly$> XADD mystream * name "Alice" age "30"
+"1527845627383-0"
+
+dragonfly$> XADD mystream * name "Bob" age "25"
+"1527845627383-1"
+
+dragonfly$> XADD mystream * name "Charlie" age "22"
+"1527845627383-2"
+
+dragonfly$> XADD mystream * name "Diana" age "28"
+"1527845627383-3"
+
+dragonfly$> XDEL mystream "1527845627383-1" "1527845627383-3"
+(integer) 2
+
+dragonfly$> XRANGE mystream - +
+1) 1) "1527845627383-0"
+   2) 1) "name"
+      2) "Alice"
+      3) "age"
+      4) "30"
+2) 1) "1527845627383-2"
+   2) 1) "name"
+      2) "Charlie"
+      3) "age"
+      4) "22"
+```
+
+## Best Practices
+
+- Make smart use of `XDEL` to keep your streams tidy and free from outdated or unnecessary data.
+- Consider removing processed entries to prevent the stream from growing indefinitely, which could lead to performance degradation and increased memory usage.
+
+## Common Mistakes
+
+- Attempting to delete an entry using a non-existent ID, which will result in a deletion count of `0`.
+- Assuming `XDEL` modifies the order of entries in a stream, while it merely removes specific entries and maintains the order of remaining entries.
+
+## FAQs
+
+### What happens if the specified IDs do not exist in the stream?
+
+If the specified IDs do not exist, `XDEL` will return `0` for each non-existent ID, meaning no entries were deleted.
+
+### Can I use `XDEL` on a non-stream data type?
+
+No, using `XDEL` on a non-stream data type will result in an error.
