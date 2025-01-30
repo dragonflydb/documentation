@@ -182,7 +182,7 @@ sidebar_position: 0
 |                                              | <span class="command">MEMORY STATS</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">MEMORY USAGE</span>                  | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">MODULE LIST</span>                   | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">MODULE LOAD</span>                   | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">MODULE LOAD</span>                   | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">MODULE LOADEX</span>                 | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">MODULE UNLOAD</span>                 | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">MONITOR</span>                       | <span class="support supported">Fully supported</span>   |
