@@ -121,9 +121,9 @@ sidebar_position: 0
 |                                              | <span class="command">PUBSUB SHARDCHANNELS</span>          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PUBSUB SHARDNUMSUB</span>            | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PUNSUBSCRIBE</span>                  | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">SPUBLISH</span>                      | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">SSUBSCRIBE</span>                    | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">SUNSUBSCRIBE</span>                  | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">SPUBLISH</span>                      | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">SSUBSCRIBE</span>                    | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">SUNSUBSCRIBE</span>                  | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SUBSCRIBE</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">UNSUBSCRIBE</span>                   | <span class="support supported">Fully supported</span>   |
 | <span class="family">Scripting</span>        | <span class="command">EVAL</span>                          | <span class="support supported">Fully supported</span>   |
