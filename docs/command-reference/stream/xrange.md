@@ -76,7 +76,7 @@ dragonfly$> XRANGE mystream "1609459200000-0" "1609459200001-0"
       5) "humidity"
       6) "50.1"
 
-# Using the `(` prefix to exclude the end range entry.
+# Using the '(' prefix to exclude the end range entry.
 dragonfly$> XRANGE mystream "1609459200000-0" "(1609459200001-0"
 1) 1) "1609459200000-0"
    2) 1) "sensor"
@@ -138,7 +138,7 @@ dragonfly$> XADD mystream "1609459200001-1" sensor 2 temperature 23.2 humidity 5
 dragonfly$> XADD mystream "1609459200002-0" sensor 3 temperature 23.3 humidity 50.3
 "1609459200002-0"
 
-# Retrieving from the stream with the `COUNT` option.
+# Retrieving from the stream with the 'COUNT' option.
 dragonfly$> XRANGE mystream - + COUNT 2
 1) 1) "1609459200000-0"
    2) 1) "sensor"
@@ -174,6 +174,6 @@ If the stream key does not exist, `XRANGE` returns an empty list.
 
 ### How are stream IDs formatted?
 
-Stream IDs are formatted as `<timestamp>-<sequence>`, where the `timestamp` part represents the Unix time in milliseconds when the entry was added,
+Stream entry IDs are formatted as `<timestamp>-<sequence>`, where the `timestamp` part represents the Unix time in milliseconds when the entry was added,
 and the `sequence` part is a unique incrementing number for entries added at the same timestamp.
 When adding an entry, you can also specify the ID yourself instead of using `*`, but it must be unique and incrementing.
