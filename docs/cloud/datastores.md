@@ -97,7 +97,7 @@ Eviction policy controls the behavior of a data store when it reaches its memory
   when the data store is full.
 - **Cache:** The data store behaves as a cache and automatically evicts items to free space for new writes
   when the data store is full. Dragonfly has only one cache eviction policy, which you can read more about
-  [here](https://www.dragonflydb.io/blog/balanced-vs-unbalanced).
+  [here](https://www.dragonflydb.io/blog/dragonfly-cache-design).
 
 To choose the eviction policy, expand the **Durability & High Availability** section and select the desired policy.
 Make sure to save the changes by creating a new data store or updating an existing one.
