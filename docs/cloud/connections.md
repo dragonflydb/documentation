@@ -57,9 +57,7 @@ and then accept the peering connection in your GCP account console:
 - Observe the connection becoming **Active** after a few moments in the Dragonfly Cloud console.
 - Don't forget to modify your firewall to allow traffic from the Dragonfly Cloud private network CIDR.
 
-## Azure (Private Beta)
-
-Currently, Azure peering connections are in private beta. If you face any issues, please contact us.
+## Microsoft Azure
 
 In Azure, For two Vnets be peered, both sides need to have access to each other's Vnet. For this, Peering permissions are given to the Dragonfly Cloud's Azure AD application on your Vnet. On the client side, A new Azure AD application is created and given permissions to the Dragonfly Cloud's Vnet. You can learn more about Azure Vnet peering [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview).
 

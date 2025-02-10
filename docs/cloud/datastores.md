@@ -21,7 +21,7 @@ On this page, you will find information on how to create, configure, and connect
 - The following cloud providers are supported:
     - Amazon Web Services (AWS)
     - Google Cloud Platform (GCP)
-    - Microsoft Azure (private beta, please contact support if you would like to run Dragonfly on Azure)
+    - Microsoft Azure
 - Note that the **Cloud Provider** and **Cloud Region** can **NOT** be modified once the data store is created.
 - The **Plan** specifies the provisioned memory size and the CPU-to-memory ratio for the data store.
   Available plans are:
