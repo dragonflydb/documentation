@@ -16,7 +16,7 @@ technology without gated features), providing full API compatibility
 with [Redis](https://github.com/redis/redis), [Valkey](https://github.com/valkey-io/valkey),
 and [Memcached](https://github.com/memcached/memcached).
 
-Hosted on Amazon Web Services (AWS), Google Cloud Platform (GCP), and other cloud providers, Dragonfly Cloud is designed
+Hosted on Amazon Web Services (AWS), Google Cloud Platform (GCP), and Microsoft Azure, Dragonfly Cloud is designed
 to be cost-efficient, highly available, secure, and simple to operate.
 
 ## Managing Data Stores & Networks

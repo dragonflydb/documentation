@@ -62,4 +62,4 @@ If you have more customized network bandwidth requirements, please contact suppo
 | Extreme      | 25        | 32.0              |
 | Extreme      | 50        | 32.0              | 
 | Extreme      | 100       | 32.0              | 
-| Extreme      | 200       | 32.0              | 
+| Extreme      | 200       | 32.0              |
