@@ -16,8 +16,6 @@ With this, we can achieve zero downtime and no data loss.
 
 Based on your source Redis, we have different migration strategies.
 
-- [AWS ElastiCache](./migrate/aws)
-- [Redis Cloud](./redis-cloud)
-- [Self-Hosted Redis](./self-hosted)
+- [AWS ElastiCache](./migrate/aws-elasticache)
 
 Feel free to reach out to us on [Discord](https://discord.gg/HsPjXGVH85) if you have any questions or need help.

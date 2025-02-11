@@ -12,11 +12,10 @@ sidebar_position: 1
 
 Before starting the migration, ensure you have:
 
-1. Access to your AWS ElastiCache cluster from the APP_VPC_ID
-2. Your Dragonfly Cloud instance peered to the APP_VPC_ID.
-3. AWS CLI configured with appropriate permissions
-4. Access to your application's VPC where ElastiCache is deployed
-5. Confirmed VPC peering between your application's VPC and Dragonfly Cloud VPC
+1. Access to your AWS ElastiCache cluster from the application's VPC (APP_VPC_ID)
+2. A Dragonfly Cloud Network peered with your application's VPC (APP_VPC_ID)
+3. A Dragonfly Cloud Datastore in the private network.
+4. AWS CLI configured with appropriate permissions
 
 ## Migration Steps
 
@@ -28,6 +27,10 @@ Before starting the migration, ensure you have:
    CLUSTER_NAME=<your-cluster-name>
    APP_VPC_ID=<your-application-vpc-id>  # VPC where your application and ElastiCache reside
    APP_SUBNET_ID=<your-application-subnet-id>  # Private subnet where your application runs
+
+   # Set the Dragonfly Cloud Datastore details
+   DRAGONFLY_CLOUD_URL=<your-dragonfly-cloud-url>
+   DRAGONFLY_CLOUD_PASSWORD=<your-dragonfly-cloud-password>
    ```
 
 2. Create security group for migration instance:
