@@ -12,90 +12,35 @@ sidebar_position: 1
 
 Before starting the migration, ensure you have:
 
-1. Access to your AWS ElastiCache cluster
-2. Your Dragonfly Cloud instance URL and credentials
+1. Access to your AWS ElastiCache cluster from the APP_VPC_ID
+2. Your Dragonfly Cloud instance peered to the APP_VPC_ID.
 3. AWS CLI configured with appropriate permissions
-4. The VPC ID, subnet, and security group ID of your ElastiCache cluster
+4. Access to your application's VPC where ElastiCache is deployed
+5. Confirmed VPC peering between your application's VPC and Dragonfly Cloud VPC
 
 ## Migration Steps
 
-### 1. Launch EC2 Instance
+### 1. Launch EC2 Instance in Application VPC
 
-1. Get ElastiCache VPC information and create public subnet:
+1. Get your application VPC and subnet information:
    ```bash
-   # Set the ElastiCache cluster Name
+   # Set the ElastiCache cluster Name and Application VPC details
    CLUSTER_NAME=<your-cluster-name>
-
-   # Get ElastiCache VPC info
-   ELASTICACHE_SUBNET_GROUP=$(aws elasticache describe-cache-clusters \
-     --cache-cluster-id $CLUSTER_NAME \
-     --query 'CacheClusters[0].CacheSubnetGroupName' \
-     --output text)
-
-   VPC_ID=$(aws elasticache describe-cache-subnet-groups \
-     --cache-subnet-group-name $ELASTICACHE_SUBNET_GROUP \
-     --query 'CacheSubnetGroups[0].VpcId' \
-     --output text)
-
-   # Create public subnet in non-overlapping range
-   PUBLIC_SUBNET_ID=$(aws ec2 create-subnet \
-     --vpc-id $VPC_ID \
-     --cidr-block 10.0.0.192/26 \
-     --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=migration-public-subnet}]' \
-     --query 'Subnet.SubnetId' \
-     --output text)
-
-   # Create and attach internet gateway
-   IGW_ID=$(aws ec2 create-internet-gateway \
-     --tag-specifications 'ResourceType=internet-gateway,Tags=[{Key=Name,Value=migration-igw}]' \
-     --query 'InternetGateway.InternetGatewayId' \
-     --output text)
-
-   aws ec2 attach-internet-gateway \
-     --internet-gateway-id $IGW_ID \
-     --vpc-id $VPC_ID
-
-   # Create a new route table for the public subnet
-   ROUTE_TABLE_ID=$(aws ec2 create-route-table \
-     --vpc-id $VPC_ID \
-     --tag-specifications 'ResourceType=route-table,Tags=[{Key=Name,Value=migration-public-rt}]' \
-     --query 'RouteTable.RouteTableId' \
-     --output text)
-
-   # Add route to internet
-   aws ec2 create-route \
-     --route-table-id $ROUTE_TABLE_ID \
-     --destination-cidr-block 0.0.0.0/0 \
-     --gateway-id $IGW_ID
-
-   # Associate route table with public subnet
-   aws ec2 associate-route-table \
-     --route-table-id $ROUTE_TABLE_ID \
-     --subnet-id $PUBLIC_SUBNET_ID
-
-   echo "VPC ID: $VPC_ID"
-   echo "Public Subnet ID: $PUBLIC_SUBNET_ID"
+   APP_VPC_ID=<your-application-vpc-id>  # VPC where your application and ElastiCache reside
+   APP_SUBNET_ID=<your-application-subnet-id>  # Private subnet where your application runs
    ```
 
-2. Create a key pair and security group:
+2. Create security group for migration instance:
    ```bash
-   # Create key pair
-   aws ec2 create-key-pair \
-     --key-name elasticache-migration-key \
-     --query 'KeyMaterial' \
-     --output text > elasticache-migration-key.pem
-
-   chmod 400 elasticache-migration-key.pem
-
    # Create security group
    REDISSHAKE_SG_ID=$(aws ec2 create-security-group \
      --group-name migration-instance-sg \
      --description "Security group for ElastiCache migration EC2 instance" \
-     --vpc-id $VPC_ID \
+     --vpc-id $APP_VPC_ID \
      --query 'GroupId' \
      --output text)
 
-   # Allow SSH access from anywhere
+   # Allow SSH access based on your security requirements
    aws ec2 authorize-security-group-ingress \
      --group-id $REDISSHAKE_SG_ID \
      --protocol tcp \
@@ -110,7 +55,7 @@ Before starting the migration, ensure you have:
      --cidr 0.0.0.0/0
    ```
 
-3. Allow EC2 instance to access ElastiCache:
+3. Allow EC2 instance from the migration security group to access ElastiCache:
    ```bash
    # Get ElastiCache security group ID
    ELASTICACHE_SG_ID=$(aws elasticache describe-cache-clusters \
@@ -126,16 +71,23 @@ Before starting the migration, ensure you have:
      --source-group $REDISSHAKE_SG_ID
    ```
 
-4. Create an EC2 instance:
+4. Create an EC2 instance in your application's private subnet:
    ```bash
-   # Launch instance in the public subnet
+   # Create key pair if needed
+   aws ec2 create-key-pair \
+     --key-name elasticache-migration-key \
+     --query 'KeyMaterial' \
+     --output text > elasticache-migration-key.pem
+
+   chmod 400 elasticache-migration-key.pem
+
+   # Launch instance in the private subnet
    INSTANCE_ID=$(aws ec2 run-instances \
      --image-id ami-085ad6ae776d8f09c \
      --instance-type t2.medium \
-     --subnet-id $PUBLIC_SUBNET_ID \
+     --subnet-id $APP_SUBNET_ID \
      --security-group-ids $REDISSHAKE_SG_ID \
      --key-name elasticache-migration-key \
-     --associate-public-ip-address \
      --user-data '#!/bin/bash
      yum update -y
      yum install -y docker
@@ -164,7 +116,8 @@ Before starting the migration, ensure you have:
 
 5. Connect to the instance:
    ```bash
-   ssh -i elasticache-migration-key.pem -v ec2-user@$PUBLIC_IP
+   # SSH into the instance using your preferred method based on your infrastructure setup
+   ssh -i elasticache-migration-key.pem ec2-user@$PUBLIC_IP
    ```
 
 ### 2. Configure Migration
@@ -235,13 +188,7 @@ The container will:
 3. Start syncing data
 4. Show progress in real-time
 
-### 4. Monitor Progress
-
-Monitor the Docker container logs:
-```bash
-docker ps  # Get the container ID
-docker logs -f <container-id>
-```
+Monitor the progress of the migration by following the logs of the container.
 
 ### 5. Verify Migration
 
@@ -258,6 +205,11 @@ After the migration completes:
    ```
 3. Sample a few keys to verify data integrity
 
+
+## Live Migration
+
+Now that you have verified the migration, Your application is already pointing to the new Dragonfly Cloud endpoint. Once you have verified that the application is working as expected, you can proceed to terminate the ElastiCache cluster after you have confirmed that the migration is successful and things are working as expected.
+
 ## Post-Migration
 
 1. Update your application configurations to point to the new Dragonfly Cloud endpoint
@@ -265,6 +217,12 @@ After the migration completes:
 3. Keep the ElastiCache cluster as backup until you're confident in the migration
 4. Clean up:
    ```bash
-   # Terminate EC2 instance when done
-   aws ec2 terminate-instances --instance-ids <your-instance-id>
+   # clean up the EC2 instance
+   aws ec2 terminate-instances --instance-ids $INSTANCE_ID
+
+   # clean up the security group
+   aws ec2 delete-security-group --group-id $REDISSHAKE_SG_ID
+
+   # clean up the key pair
+   aws ec2 delete-key-pair --key-name elasticache-migration-key
    ```
