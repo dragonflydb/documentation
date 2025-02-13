@@ -453,3 +453,129 @@ a > svg[class*="ExternalLink"] {
     transform: translateY(0);
   }
 }
+
+/* Migration Options Styling */
+.migration-option {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.migration-content {
+  margin-bottom: 0 !important;
+}
+
+.migration-action {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 1rem;
+}
+
+.migration-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1rem 2rem !important;
+  transition: transform 0.2s ease;
+}
+
+.migration-button:hover {
+  transform: translateY(-2px);
+}
+
+.migration-button-subtitle {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+/* Migration Tabs Styling */
+.migration-tabs {
+  margin: 2rem 0;
+}
+
+.migration-tabs .tabs__item {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.2s ease;
+}
+
+.migration-tabs .tabs__item--active {
+  background: var(--brand-gradient);
+  color: white;
+}
+
+.source-tabs {
+  margin-top: 1.5rem;
+}
+
+.source-tabs .tabs__item {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 6px 6px 0 0;
+}
+
+.migration-source-config {
+  background: var(--brand-gradient-bg);
+  padding: 1.5rem;
+  border-radius: 0 8px 8px 8px;
+  margin-top: -1px;
+}
+
+.migration-source-config h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--ifm-color-primary);
+}
+
+.migration-source-config p {
+  margin-bottom: 1rem;
+}
+
+/* Step-by-Step Guide Note */
+.theme-note {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  background: var(--brand-gradient-bg);
+  border-left: 4px solid var(--ifm-color-primary);
+}
+
+.theme-note h5 {
+  margin-top: 0;
+  color: var(--ifm-color-primary);
+}
+
+.theme-note ol {
+  margin-bottom: 0;
+  padding-left: 1.2rem;
+}
+
+.theme-note li {
+  margin: 0.5rem 0;
+}
+
+.alert {
+  --ifm-alert-background-color: transparent;
+  --ifm-alert-border-color: transparent;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+}
+
+.alert--info {
+  background: var(--brand-gradient-bg);
+}
+
+.alert h4 {
+  margin-bottom: 0.5rem;
+  font-family: var(--ifm-heading-font-family);
+  background: var(--brand-gradient);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.alert ul {
+  margin-bottom: 0;
+}
