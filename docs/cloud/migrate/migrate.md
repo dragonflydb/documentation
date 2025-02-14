@@ -14,6 +14,10 @@ import MigrationOptions from './_migration_options.mdx';
 
 There are two main approaches to migrate your Redis data to Dragonfly Cloud:
 
+:::tip Need Help?
+If you have any questions or need assistance with your migration, our team is here to help! Join our [Discord community](https://discord.gg/HsPjXGVH85) for real-time support.
+:::
+
 ## Quick Migration with Snapshots
 
 The fastest way to migrate your data is by importing a Redis snapshot (RDB file). This method is:
@@ -31,10 +35,6 @@ With zero-downtime migrations, we ensure no data loss and downtime by using [Red
 This is a more complex process and requires an additional component i.e [RedisShake](https://github.com/alibaba/RedisShake) to be running.
 
 This is also heavily dependent on the availability of `PSYNC` commands on the source instance.
-
-:::tip Need Help?
-If you have any questions or need assistance with your migration, our team is here to help! Join our [Discord community](https://discord.gg/HsPjXGVH85) for real-time support.
-:::
 
 ### Configure Your Migration
 

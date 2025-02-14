@@ -35,10 +35,11 @@ Before starting the migration, ensure you have:
 # Set the ElastiCache cluster Name and Application VPC details
 CLUSTER_NAME=<your-cluster-name>
 APP_VPC_ID=<your-application-vpc-id>  # VPC where your application and ElastiCache reside and Dragonfly Cloud is peered
-APP_SUBNET_ID=<your-application-subnet-id>  # Subnet where we can access both ElastiCache and Dragonfly Cloud
+APP_SUBNET_ID=<your-application-subnet-id>
 
 # Set the Dragonfly Cloud Datastore details
 DRAGONFLY_CLOUD_URL=<your-dragonfly-cloud-url>
+# not needed if its a private datastore (and password is not set)
 DRAGONFLY_CLOUD_PASSWORD=<your-dragonfly-cloud-password>
 ```
 
@@ -62,9 +63,16 @@ aws ec2 authorize-security-group-ingress \
 3. Allow EC2 instance from the migration security group to access ElastiCache:
 
 ```bash
-# Get ElastiCache security group ID
+# Get all cache cluster IDs from the replication group
+CACHE_CLUSTER_IDS=$(aws elasticache describe-replication-groups \
+  --replication-group-id $CLUSTER_NAME \
+  --query 'ReplicationGroups[0].MemberClusters[]' \
+  --output text)
+
+# Get the ElastiCache security group ID
+# Note: By default, all nodes in an ElastiCache cluster share the same security group
 ELASTICACHE_SG_ID=$(aws elasticache describe-cache-clusters \
-  --cache-cluster-id $CLUSTER_NAME \
+  --cache-cluster-id $(echo $CACHE_CLUSTER_IDS | cut -f1) \
   --query 'CacheClusters[0].SecurityGroups[0].SecurityGroupId' \
   --output text)
 
@@ -91,20 +99,24 @@ chmod 400 elasticache-migration-key.pem
 INSTANCE_ID=$(aws ec2 run-instances \
   --image-id ami-085ad6ae776d8f09c \
   --instance-type t2.medium \
-  --network-interfaces "[{\"AssociatePublicIpAddress\":true,\"DeviceIndex\":0,\"Groups\":[\"$REDISSHAKE_SG_ID\"]}]" \
+  --subnet-id $APP_SUBNET_ID \
+  --security-group-ids $REDISSHAKE_SG_ID \
+  --associate-public-ip-address \
+  --metadata-options '{"HttpEndpoint":"enabled","HttpPutResponseHopLimit":2,"HttpTokens":"required"}' \
+  --private-dns-name-options '{"HostnameType":"ip-name","EnableResourceNameDnsARecord":true,"EnableResourceNameDnsAAAARecord":false}' \
+  --count 1 \
   --key-name elasticache-migration-key \
   --user-data '#!/bin/bash
-  yum update -y
-  yum install -y docker
-  systemctl start docker
-  systemctl enable docker
-  
-  # install redis-cli
-  amazon-linux-extras install epel -y
-  yum install -y redis' \
+yum update -y
+yum install -y docker
+systemctl start docker
+systemctl enable docker
+
+# install redis-cli
+amazon-linux-extras install epel -y
+yum install -y redis' \
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=elasticache-migration-instance}]' \
   --query 'Instances[0].InstanceId' \
-  --associate-public-ip-address \
   --output text)
 
 # Wait for instance to be running
@@ -128,24 +140,88 @@ ssh -i elasticache-migration-key.pem ec2-user@$PUBLIC_IP
 
 ### 2. Configure Migration
 
-0. Retrieve the ElastiCache endpoint and auth details:
+1. Retrieve the ElastiCache endpoint details:
+
+<Tabs defaultValue={typeof window !== 'undefined' ? 
+  (new URLSearchParams(window.location.search).get('cluster') === 'true' ? 'cluster-node' : 'single-node')
+  : 'cluster-node'}>
+
+<TabItem value="cluster-node" label="Cluster  Node">
+
+For ElastiCache Cluster, Retreive all the Shard Endpoints:
+
 ```bash
-# Get cluster endpoint
+# Get cluster endpoints
+ELASTICACHE_NODE_IDS=$(aws elasticache describe-replication-groups \
+  --replication-group-id $CLUSTER_NAME \
+  --query 'ReplicationGroups[0].NodeGroups[*].NodeGroupMembers[0].CacheClusterId' \
+  --output text)
+
+# Get the endpoint for each node
+ELASTICACHE_ENDPOINTS=()
+for node_id in $(echo $ELASTICACHE_NODE_IDS | tr ',' '\n'); do
+  echo "Getting endpoint for node $node_id"
+  ENDPOINT=$(aws elasticache describe-cache-clusters \
+    --cache-cluster-id $node_id \
+    --query 'CacheClusters[0].CacheNodes[0].Endpoint.Address' \
+    --show-cache-node-info \
+    --output text)
+
+  PORT=$(aws elasticache describe-cache-clusters \
+    --cache-cluster-id $node_id \
+    --query 'CacheClusters[0].CacheNodes[0].Endpoint.Port' \
+    --show-cache-node-info \
+    --output text)
+
+  ELASTICACHE_ENDPOINTS+=("$ENDPOINT:$PORT")
+done
+
+# Final Redis Shake Source Endpoint
+REDISSHAKE_SOURCE_ENDPOINT=$(IFS=','; echo "${ELASTICACHE_ENDPOINTS[*]}")
+
+echo "REDISSHAKE_SOURCE_ENDPOINT=$REDISSHAKE_SOURCE_ENDPOINT"
+```
+
+</TabItem>
+<TabItem value="single-node" label="Single Node">
+
+For single node ElastiCache, Retreive the endpoint:
+
+```bash
+ELASTICACHE_NODE_ID=$(aws elasticache describe-replication-groups \
+  --replication-group-id $CLUSTER_NAME \
+  --query 'ReplicationGroups[0].NodeGroups[*].NodeGroupMembers[0].CacheClusterId' \
+  --output text)
+
+# Get single node endpoint
 ELASTICACHE_ENDPOINT=$(aws elasticache describe-cache-clusters \
-  --cache-cluster-id $CLUSTER_NAME \
+  --cache-cluster-id $ELASTICACHE_NODE_ID \
   --query 'CacheClusters[0].CacheNodes[0].Endpoint.Address' \
   --show-cache-node-info \
   --output text)
 
-# For cluster mode, get all node endpoints
-CLUSTER_ENDPOINTS=$(aws elasticache describe-replication-groups \
-  --replication-group-id $CLUSTER_NAME \
-  --query 'ReplicationGroups[0].NodeGroups[0].NodeGroupMembers[*].ReadEndpoint.Address' \
-  --output text | tr '\t' ',')
+# Retreive the port
+ELASTICACHE_PORT=$(aws elasticache describe-cache-clusters \
+  --cache-cluster-id $ELASTICACHE_NODE_ID \
+  --query 'CacheClusters[0].CacheNodes[0].Endpoint.Port' \
+  --show-cache-node-info \
+  --output text)
 
+# Final Redis Shake Source Endpoint
+REDISSHAKE_SOURCE_ENDPOINT="$ELASTICACHE_ENDPOINT:$ELASTICACHE_PORT"
+
+echo "REDISSHAKE_SOURCE_ENDPOINT=$REDISSHAKE_SOURCE_ENDPOINT"
+```
+
+</TabItem>
+</Tabs>
+
+2. Retreive Password if Authentication is enabled:
+
+```bash
 # Check if authentication is enabled
 AUTH_TOKEN=$(aws elasticache describe-cache-clusters \
-  --cache-cluster-id $CLUSTER_NAME \
+  --cache-cluster-id $ELASTICACHE_NODE_ID \
   --query 'CacheClusters[0].AuthTokenEnabled' \
   --output text)
 
@@ -154,12 +230,48 @@ if [ "$AUTH_TOKEN" = "true" ]; then
 else
   echo "Authentication is not enabled"
 fi
-
-# Test connection (for TLS enabled clusters)
-docker run -it redis redis-cli -h $ELASTICACHE_ENDPOINT -p 6379 --tls --insecure -c ping
-# For non-TLS clusters, use:
-docker run -it redis redis-cli -h $ELASTICACHE_ENDPOINT -p 6379 -c ping
 ```
+
+3. Test connection to ElastiCache:
+
+<Tabs defaultValue={typeof window !== 'undefined' ? 
+  (new URLSearchParams(window.location.search).get('cluster') === 'true' ? 'cluster-node' : 'single-node')
+  : 'cluster-node'}>
+
+<TabItem value="cluster-node" label="Cluster  Node">
+
+```bash
+# Test connection (for TLS enabled clusters)
+for endpoint in $(echo $REDISSHAKE_SOURCE_ENDPOINT | tr ',' '\n'); do
+  url_without_port=$(echo $endpoint | cut -d':' -f1)
+  echo "Testing connection to $url_without_port"
+  sudo docker run -it redis redis-cli -h $url_without_port --tls --insecure -c ping
+done
+
+# For non-TLS clusters, use:
+for endpoint in $(echo $REDISSHAKE_SOURCE_ENDPOINT | tr ',' '\n'); do
+  url_without_port=$(echo $endpoint | cut -d':' -f1)
+  echo "Testing connection to $url_without_port"
+  sudo docker run -it redis redis-cli -h $url_without_port -c ping
+done
+```
+
+</TabItem>
+<TabItem value="single-node" label="Single Node">
+
+```bash
+# Test connection (for TLS enabled single-node)
+url_without_port=$(echo $REDISSHAKE_SOURCE_ENDPOINT | cut -d':' -f1)
+echo "Testing connection to $url_without_port"
+sudo docker run -it redis redis-cli -h $url_without_port --tls --insecure -c ping
+
+# For non-TLS single-node, use:
+url_without_port=$(echo $REDISSHAKE_SOURCE_ENDPOINT | cut -d':' -f1)
+echo "Testing connection to $url_without_port"
+sudo docker run -it redis redis-cli -h $url_without_port -c ping
+```
+</TabItem>
+</Tabs>
 
 1. Create redis-shake configuration file:
 
@@ -174,18 +286,21 @@ Choose the appropriate configuration based on your ElastiCache setup:
 
 For single-node mode with PSYNC enabled on ElastiCache:
 
-```toml
+```bash
+cat << EOF > redis-shake.toml
 [sync_reader]
 cluster = false
-address = "$ELASTICACHE_ENDPOINT:6379"
+address = "${REDISSHAKE_SOURCE_ENDPOINT}"
 tls = true
 
 [redis_writer]
 cluster = false
-address = "$DRAGONFLY_CLOUD_URL:6379"
+# if public datastore, use 6385 port
+address = "${DRAGONFLY_CLOUD_URL}:6379"
 username = "default"
-password = "$DRAGONFLY_CLOUD_PASSWORD"
+password = "${DRAGONFLY_CLOUD_PASSWORD:-}"
 tls = true
+EOF
 ```
 
 </TabItem>
@@ -193,18 +308,21 @@ tls = true
 
 For cluster mode with PSYNC enabled on ElastiCache:
 
-```toml
+```bash
+cat << EOF > redis-shake.toml
 [sync_reader]
 cluster = true
-address = "$CLUSTER_ENDPOINTS"
+address = "${REDISSHAKE_SOURCE_ENDPOINT}"
 tls = true
 
 [redis_writer]
 cluster = true
-address = "$DRAGONFLY_CLOUD_URL:6379"
+# if public datastore, use 6385 port
+address = "${DRAGONFLY_CLOUD_URL}:6379"
 username = "default"
-password = "$DRAGONFLY_CLOUD_PASSWORD"
+password = "${DRAGONFLY_CLOUD_PASSWORD:-}"
 tls = true
+EOF
 ```
 
 </TabItem>
@@ -212,21 +330,24 @@ tls = true
 
 For single-node mode without PSYNC enabled:
 
-```toml
+```bash
+cat << EOF > redis-shake.toml
 [scan_reader]
 cluster = false
-address = "$ELASTICACHE_ENDPOINT:6379"
+address = "${REDISSHAKE_SOURCE_ENDPOINT}"
 tls = true
 
 [redis_writer]
 cluster = false
-address = "$DRAGONFLY_CLOUD_URL:6379"
+# if public datastore, use 6385 port
+address = "${DRAGONFLY_CLOUD_URL}:6379"
 username = "default"
-password = "$DRAGONFLY_CLOUD_PASSWORD"
+password = "${DRAGONFLY_CLOUD_PASSWORD:-}"
 tls = true
 
 [advanced]
 log_level = "debug"
+EOF
 ```
 
 </TabItem>
@@ -234,27 +355,32 @@ log_level = "debug"
 
 For cluster mode without PSYNC enabled:
 
-```toml
+```bash
+cat << EOF > redis-shake.toml
 [scan_reader]
 cluster = true
-address = "$CLUSTER_ENDPOINTS"
+address = "${REDISSHAKE_SOURCE_ENDPOINT}"
 tls = true
 
 [redis_writer]
 cluster = true
-address = "$DRAGONFLY_CLOUD_URL:6379"
+# if public datastore, use 6385 port
+address = "${DRAGONFLY_CLOUD_URL}:6379"
 username = "default"
-password = "$DRAGONFLY_CLOUD_PASSWORD"
+password = "${DRAGONFLY_CLOUD_PASSWORD:-}"
 tls = true
 
 [advanced]
 log_level = "debug"
+EOF
 ```
 
 </TabItem>
 </Tabs>
 
-Save the appropriate configuration to `redis-shake.toml`.
+The above approach:
+1. Uses direct variable expansion with proper quoting
+2. Uses parameter expansion with default empty string for optional password
 
 ### 3. Run Migration
 
