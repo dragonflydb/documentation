@@ -17,22 +17,29 @@ On this page, you will find information on how to create, configure, and connect
 
 - To create a data store, on the **Data Stores** tab,
   click the [+Data Store](https://dragonflydb.cloud/datastores/new) button.
-- The minimum configuration consists of a **Name**, a **Cloud Provider**, a **Cloud Region**, and a **Plan**.
+- The minimum configuration consists of a **Name**, a **Cloud Provider**, a **Cloud Region**, **Memory size** and **Compute tier**.
 - The following cloud providers are supported:
     - Amazon Web Services (AWS)
     - Google Cloud Platform (GCP)
     - Microsoft Azure
 - Note that the **Cloud Provider** and **Cloud Region** can **NOT** be modified once the data store is created.
-- The **Plan** specifies the provisioned memory size and the CPU-to-memory ratio for the data store.
-  Available plans are:
-    - **Standard**: This plan is suitable for moderate to high workloads.
+- Cluster Mode
+    - **Emulated**: The default single shard Dragonfly Cloud data store supports the Redis Cluster protocol and clients so you can seamlessly
+      migrate from Redis Cluster to a single shard Dragonfly data store that can vertically scale up to 400GB.
+    - **Swarm**: Dragonfly Swarm scales both vertically and horizontally and is practically unlimited in size, if you need more than 2TB of memory, please contact support.  
+    Dragonfly Swarm will automatically configure the appropriate number for shards depending on the amount of provisioned memory you chose.   
+    Redis cluster protocol clients are required to use Dragonfly Swarm.
+      
+- **Memory size** and **Compute tier** tier specify the provisioned memory size and the CPU-to-memory ratio for the data store.
+  Available tiers are:
+    - **Standard**: This tier is suitable for moderate to high workloads.
       It provides a balanced CPU-to-memory ratio.
-    - **Enhanced**: This plan is suitable for workloads that require more compute resources.
-      It provides **2x the CPU** for the same amount of provisioned memory compared to the **Standard** plan.
-    - **Extreme**: This plan is suitable for workloads that require extremely high compute resources.
-      It provides **4x the CPU** for the same amount of provisioned memory compared to the **Standard** plan.
+    - **Enhanced**: This tier is suitable for workloads that require more compute resources.
+      It provides **2x the CPU** for the same amount of provisioned memory compared to the **Standard** tier.
+    - **Extreme**: This tier is suitable for workloads that require extremely high compute resources.
+      It provides **4x the CPU** for the same amount of provisioned memory compared to the **Standard** tier.
 - For network bandwidth limits, please refer to the [network bandwidth](./bandwidth.md) section.
-- **You can modify the data store Plan (memory size, CPU resources) later
+- **You can modify the data store memory size and compute tier later
   with zero downtime** to easily scale up or down.
 
 ### Advanced Configurations
@@ -43,7 +50,7 @@ On this page, you will find information on how to create, configure, and connect
   and [peering connections](./connections.md).
 - By default, the data store will consist of a single Dragonfly server instance.
   To create a highly available data store, read more about [high availability](#high-availability) below.
-  For cluster mode, please see [cluster mode](#cluster-mode) below.
+  
 
 ### Connection Details & Data Store Status
 
@@ -138,19 +145,6 @@ providing the most suitable server configuration(s) for your workload when you s
   with a [private endpoint](#private-endpoint).
 - **Sidekiq:** Enable this for running [Sidekiq](https://sidekiq.org/) workloads,
   [read more](/docs/integrations/sidekiq.md).
-
-## Cluster Mode
-
-By default, a Dragonfly Cloud data store supports the Redis Cluster protocol and clients so you can seamlessly
-migrate from Redis Cluster to a single-instance Dragonfly data store.
-
-The multi-instance clustering, namely **Dragonfly Cluster**, is in private beta. Please contact support to get access.
-In the meantime, you can read more about Dragonfly
-Cluster ([preview](https://www.dragonflydb.io/blog/a-preview-of-dragonfly-cluster)
-and [horizontal scalability design](https://www.dragonflydb.io/blog/redis-and-dragonfly-cluster-design-comparison))
-in our blog posts.
-
----
 
 ## Connecting to a Data Store
 
