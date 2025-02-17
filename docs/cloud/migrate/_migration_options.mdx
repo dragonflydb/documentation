@@ -1,0 +1,73 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Link from '@docusaurus/Link';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+
+export default function MigrationOptions({ isCluster, cloudProvider, isTargetCluster }) {
+  const clusterParam = isCluster ? 'true' : 'false';
+  const nodeType = isCluster ? 'Cluster' : 'Single Node';
+  
+  return (
+    <div>
+        <p>Choose your migration type:</p>
+      <Tabs>
+        <TabItem value="sync" label="PSYNC">
+          <div className="migration-option">
+          <div className="migration-content alert alert--info">
+            <h4>PSYNC Migration</h4>
+            <ul>
+              <li>Needs PSYNC enabled on Elasticache. Raise a ticket with AWS to enable PSYNC.</li>
+              <li>All types of Data (i.e Lua Scripts, Transactions, etc.) is migrated.</li>
+              <li>Best for critical data</li>
+            </ul>
+          </div>
+          <div className="migration-action">
+            <Link
+              className="button button--primary button--lg migration-button"
+              to={`/cloud/migrate/aws-elasticache?cluster=${clusterParam}&mode=sync`}>
+              Start PSYNC Migration
+              <div className="migration-button-subtitle">
+                {cloudProvider} {nodeType}
+              </div>
+            </Link>
+          </div>
+        </div>
+      </TabItem>
+      <TabItem value="scan" label="SCAN (& Keyspace Notifications)">
+        <div className="migration-option">
+          <div className="migration-content alert alert--info">
+            <h4>SCAN (& Keyspace Notifications) Migration</h4>
+            <ul>
+              <li>Simpler migration process. No need to enable PSYNC on Elasticache.</li>
+              <li>Most common data types are migrated.</li>
+              <li>Best for non-critical data</li>
+            </ul>
+          </div>
+          <div className="migration-action">
+            <Link
+              className="button button--primary button--lg migration-button"
+              to={`/cloud/migrate/aws-elasticache?cluster=${clusterParam}&mode=scan`}>
+              Start SCAN Migration
+              <div className="migration-button-subtitle">
+                {cloudProvider} {nodeType}
+              </div>
+            </Link>
+          </div>
+        </div>
+      </TabItem>
+    </Tabs>
+    </div>
+  );
+} 
+
+export function ConfigDisplay({ isCluster, isSync }) {
+  return (
+    <div className="alert alert--info">
+      <h4>Migration Configuration:</h4>
+      <ul>
+        <li>Source: <b>{isCluster ? 'Cluster' : 'Single Node'}</b></li>
+        <li>Migration Type: <b>{isSync ? 'PSYNC' : 'SCAN'}</b></li>
+      </ul>
+    </div>
+  );
+}
