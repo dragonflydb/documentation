@@ -17,20 +17,24 @@ On this page, you will find information on how to create, configure, and connect
 
 - To create a data store, on the **Data Stores** tab,
   click the [+Data Store](https://dragonflydb.cloud/datastores/new) button.
-- The minimum configuration consists of a **Name**, a **Cloud Provider**, a **Cloud Region**, **Memory size** and **Compute tier**.
+- The minimum configuration consists of **Name**, **Cloud Provider**, **Cloud Region**, **Memory Size**, and **Compute Tier**.
 - The following cloud providers are supported:
     - Amazon Web Services (AWS)
     - Google Cloud Platform (GCP)
     - Microsoft Azure
-- Note that the **Cloud Provider** and **Cloud Region** can **NOT** be modified once the data store is created.
-- Cluster Mode
-    - **Emulated**: The default single shard Dragonfly Cloud data store supports the Redis Cluster protocol and clients so you can seamlessly
-      migrate from Redis Cluster to a single shard Dragonfly data store that can vertically scale up to 400GB.
-    - **Swarm**: Dragonfly Swarm scales both vertically and horizontally and is practically unlimited in size, if you need more than 2TB of memory, please contact support.  
-    Dragonfly Swarm will automatically configure the appropriate number for shards depending on the amount of provisioned memory you chose.   
-    Redis cluster protocol clients are required to use Dragonfly Swarm.
-      
-- **Memory size** and **Compute tier** tier specify the provisioned memory size and the CPU-to-memory ratio for the data store.
+- **Cluster Mode**
+    - **Emulated Single-Shard**:
+      When the emulated cluster mode is enabled, Dragonfly Cloud provisions a single-shard (standalone) data store.
+      A single-shard Dragonfly data store is capable of handling significantly large in-memory data sizes and high
+      QPS (queries per second) normally comparable to what a Redis Cluster typically supports.
+      This mode simplifies the migration process from either a Redis standalone instance or a Redis Cluster to a
+      single-shard Dragonfly data store, which can vertically scale up to 400GB of memory.
+    - **Dragonfly Swarm Multi-Shard**:
+      Dragonfly Swarm is designed to scale both vertically and horizontally, offering practically unlimited capacity.
+      If your workload requires more than 2TB of memory, please contact support.
+      Dragonfly Swarm automatically configures the optimal number of shards based on the amount of memory you provision.
+      To interact with a Dragonfly Swarm multi-shard data store, client libraries must support the Redis Cluster protocol.
+- **Memory Size** and **Compute Tier** specify the provisioned memory size and the CPU-to-memory ratio for the data store.
   Available tiers are:
     - **Standard**: This tier is suitable for moderate to high workloads.
       It provides a balanced CPU-to-memory ratio.
@@ -39,8 +43,9 @@ On this page, you will find information on how to create, configure, and connect
     - **Extreme**: This tier is suitable for workloads that require extremely high compute resources.
       It provides **4x the CPU** for the same amount of provisioned memory compared to the **Standard** tier.
 - For network bandwidth limits, please refer to the [network bandwidth](./bandwidth.md) section.
-- **You can modify the data store memory size and compute tier later
-  with zero downtime** to easily scale up or down.
+- **Note** -> **Cloud Provider** and **Cloud Region** can **NOT** be modified once the data store is created.
+- **Note** -> **Cluster Mode** can **NOT** be modified once the data store is created.
+- **You can modify the data store memory size and compute tier later with zero downtime to easily scale up or down.**
 
 ### Advanced Configurations
 
