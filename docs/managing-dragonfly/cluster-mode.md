@@ -46,7 +46,8 @@ b'bar'
 
 ### Overview
 
-Sometimes vertical scaling is not enough. In those cases, you'll need to set up a Dragonfly Multi-Shard Cluster.
+Sometimes vertical scaling is not enough. In those cases, you'll need to set up a Dragonfly multi-shard cluster.
+For simplicity, we will refer to the multi-shard topology as Dragonfly Cluster.
 
 A Dragonfly Cluster is similar to a Redis/Valkey Cluster:
 
@@ -70,7 +71,7 @@ cluster setup and state. You can read more about the architectural differences [
 Setting up and managing a Dragonfly Cluster is different from managing a Redis Cluster.
 Unlike Redis, Dragonfly nodes do not communicate with each other, except for replication and slot migration.
 
-Follow the below steps to set up a Dragonfly Multi-Shard Cluster.
+Follow the below steps to set up a Dragonfly Cluster.
 
 ### Start Dragonfly Nodes
 
@@ -204,12 +205,12 @@ such as adding/removing nodes, changing hostnames, etc.
 ## Dragonfly Swarm
 
 Dragonfly server provides a powerful data plane and crucial admin commands to configure
-and join a Dragonfly Multi-Shard Cluster. However, it does not include a built-in
+and join a Dragonfly Cluster. However, it does not include a built-in
 control plane for cluster management. This flexibility allows you to create your own control plane
 or leverage community-driven solutions if demand arises.
 
 To simplify cluster management in the cloud, we introduce **Dragonfly Swarm** as part of
-our cloud offering, an all-in-one solution for seamless Dragonfly Multi-Shard Cluster operations.
+our cloud offering, an all-in-one solution for seamless Dragonfly Cluster operations.
 Dragonfly Swarm offers:
 
 - **Automated Management**: Just choose your desired amount of memory to provision, which can also be
