@@ -175,6 +175,8 @@ providing the most suitable server configuration(s) for your workload when you s
 - **Sidekiq:** Enable this for running [Sidekiq](https://sidekiq.org/) workloads,
   [read more](/docs/integrations/sidekiq.md).
 
+---
+
 ## Connecting to a Data Store
 
 Once a data store's **Status** is **Active**, you can connect to it with any Redis client using the **Connection URI**
