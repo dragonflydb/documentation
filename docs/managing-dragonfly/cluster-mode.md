@@ -223,4 +223,4 @@ Dragonfly Swarm offers:
 
 Dragonfly Swarm lets you focus on your applications while handling the complexities of cluster management.
 Check out the [cloud documentation](../cloud/datastores.md#cluster-mode) to see how easy it is
-to configure your Dragonfly Swarm data stores.
+to configure and manage your Dragonfly Swarm data stores.
