@@ -74,6 +74,8 @@ On this page, you will find information on how to create, configure, and connect
 
 ---
 
+## Cluster Mode
+
 ## Security
 
 Dragonfly Cloud supports using both public and private endpoints for data access.

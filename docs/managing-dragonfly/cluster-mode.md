@@ -59,7 +59,8 @@ A Dragonfly Cluster is similar to a Redis/Valkey Cluster:
 Dragonfly only provides a _data plane_ (which is the Dragonfly server), but it does **NOT** provide a
 _control plane_ to manage cluster deployments. Tasks like node health monitoring, automatic failover,
 slot migration for data rebalancing, and others are out of the scope of Dragonfly server functionality
-and are provided as part of the [Dragonfly Cloud](https://www.dragonflydb.io/cloud) service, namely, **Dragonfly Swarm**.
+and are provided as part of the [Dragonfly Cloud](https://www.dragonflydb.io/cloud) service,
+namely, [Dragonfly Swarm](#dragonfly-swarm).
 
 Any client-side code that uses Redis Cluster should be able to migrate to Dragonfly Cluster with
 no changes. Dragonfly Cluster is similar to Redis Cluster in all client-facing behavior, but it
@@ -190,8 +191,6 @@ such as adding/removing nodes, changing hostnames, etc.
 
 ### Notes
 
-- Again, Dragonfly only provides a data plane (which is the Dragonfly server),
-  but it does **NOT** provide a control plane to manage cluster deployments.
 - You could look at
   [`cluster_mgr.py`](https://github.com/dragonflydb/dragonfly/blob/main/tools/cluster_mgr.py) as a
   reference for how to set up and configure a cluster. This script starts a cluster locally, but
@@ -201,3 +200,26 @@ such as adding/removing nodes, changing hostnames, etc.
 - Dragonfly supports the migration of data slots between nodes as well. Detailed explaination can
   be found in one of our blog posts [here](https://www.dragonflydb.io/blog/a-preview-of-dragonfly-cluster).
   We will update the documentation to reflect these steps soon.
+
+## Dragonfly Swarm
+
+Dragonfly server provides a powerful data plane and crucial admin commands to configure
+and join a Dragonfly Multi-Shard Cluster. However, it does not include a built-in
+control plane for cluster management. This flexibility allows you to create your own control plane
+or leverage community-driven solutions if demand arises.
+
+To simplify cluster management in the cloud, we introduce **Dragonfly Swarm** as part of
+our cloud offering, an all-in-one solution for seamless Dragonfly Multi-Shard Cluster operations.
+Dragonfly Swarm offers:
+
+- **Automated Management**: Just choose your desired amount of memory to provision, which can also be
+  adjusted later. From there, sharding, slot migration, data rebalancing,
+  and everything else are automatically managed.
+- **Cloud-Native Integration**: Optimized for major cloud providers including AWS, GCP, and Azure.
+- **High Availability**: Built-in failover for zero downtime.
+- **Monitoring and Analytics**: Real-time insights into cluster performance.
+- **Simplified Operations**: Intuitive tools for configuration, maintenance, and scaling.
+
+Dragonfly Swarm lets you focus on your applications while handling the complexities of cluster management.
+Check out the [cloud documentation](../cloud/datastores.md#cluster-mode) to see how easy it is
+to configure your Dragonfly Swarm data stores.
