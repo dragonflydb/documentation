@@ -24,16 +24,12 @@ On this page, you will find information on how to create, configure, and connect
     - Microsoft Azure
 - **Cluster Mode**
     - **Emulated Single-Shard**:
-      When the emulated cluster mode is enabled, Dragonfly Cloud provisions a single-shard (standalone) data store.
-      A single-shard Dragonfly data store is capable of handling significantly large in-memory data sizes and high
-      QPS (queries per second) normally comparable to what a Redis Cluster typically supports.
-      This mode simplifies the migration process from either a Redis standalone instance or a Redis Cluster to a
-      single-shard Dragonfly data store, which can vertically scale up to 400GB of memory.
+      When this mode is selected, Dragonfly Cloud provisions and manages
+      a single-shard (standalone) vertically scalable data store.
     - **Dragonfly Swarm Multi-Shard**:
-      Dragonfly Swarm is designed to scale both vertically and horizontally, offering practically unlimited capacity.
-      If your workload requires more than 2TB of memory, please contact support.
-      Dragonfly Swarm automatically configures the optimal number of shards based on the amount of memory you provision.
-      To interact with a Dragonfly Swarm multi-shard data store, client libraries must support the Redis Cluster protocol.
+      When this mode is selected, Dragonfly Cloud provisions and manages
+      a multi-shard distributed data store, which is both vertically and horizontally scalable.
+    - For more details, please refer to the [cluster mode](#cluster-mode) section.
 - **Memory Size** and **Compute Tier** specify the provisioned memory size and the CPU-to-memory ratio for the data store.
   Available tiers are:
     - **Standard**: This tier is suitable for moderate to high workloads.
@@ -73,6 +69,34 @@ On this page, you will find information on how to create, configure, and connect
 - **Dragonfly Cloud performs data store updates with zero downtime**.
 
 ---
+
+## Cluster Mode
+
+Dragonfly Cloud offers the following cluster modes to satisfy your scaling needs.
+
+### Emulated (Single-Shard)
+
+A single-shard Dragonfly data store is capable of handling significantly large in-memory data sizes and high
+QPS (queries per second) normally comparable to what a Redis Cluster typically supports.
+This mode simplifies the migration process from either a Redis standalone instance or a Redis Cluster to a
+single-shard Dragonfly data store, which can scale vertically.
+Some key points to keep in mind when you choose a single-shard Dragonfly data store:
+
+- Regular standalone Redis client libraries can be used.
+- Redis Cluster client libraries can be used.
+- Scale vertically—up to 400GB of in-memory data with millions of QPS.
+
+### Dragonfly Swarm (Multi-Shard)
+
+Dragonfly Swarm is the managed version of [Dragonfly Cluster](../managing-dragonfly/cluster-mode.md#multi-shard-cluster).
+It is designed to scale both vertically and horizontally, offering **practically unlimited capacity**.
+Dragonfly Swarm automatically configures the optimal number of shards based on the amount of memory you provision.
+To interact with a Dragonfly Swarm data store, client libraries you use must support the Redis Cluster protocol.
+Some key points to keep in mind when you choose a Dragonfly Swarm data store:
+
+- Only Redis Cluster client libraries can be used.
+- Scale both vertically and horizontally—up to 2TB of in-memory data with tens of millions of QPS.
+- If your workload requires more than 2TB of memory, please contact support.
 
 ## Security
 
@@ -150,6 +174,8 @@ providing the most suitable server configuration(s) for your workload when you s
   with a [private endpoint](#private-endpoint).
 - **Sidekiq:** Enable this for running [Sidekiq](https://sidekiq.org/) workloads,
   [read more](/docs/integrations/sidekiq.md).
+
+---
 
 ## Connecting to a Data Store
 
