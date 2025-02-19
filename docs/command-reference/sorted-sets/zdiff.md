@@ -1,5 +1,5 @@
 ---
-description: Learn to use the Redis ZCOUNT command to count elements in a sorted set within a given score range, plus expert tips beyond the official Redis docs.
+description: Learn to use the Redis ZDIFF command to compute the difference of sorted sets.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
