@@ -23,12 +23,10 @@ export default function MigrationOptions({ isCluster, cloudProvider, isTargetClu
           </div>
           <div className="migration-action">
             <Link
-              className="button button--primary button--lg migration-button"
+              className="button button--link button--lg"
+              style={{ fontSize: '1.2rem', fontWeight: 'bold' }}
               to={`/cloud/migrate/aws-elasticache?cluster=${clusterParam}&mode=sync`}>
-              Start PSYNC Migration
-              <div className="migration-button-subtitle">
-                {cloudProvider} {nodeType}
-              </div>
+              Continue with {cloudProvider} {nodeType} PSYNC Migration
             </Link>
           </div>
         </div>
@@ -45,12 +43,10 @@ export default function MigrationOptions({ isCluster, cloudProvider, isTargetClu
           </div>
           <div className="migration-action">
             <Link
-              className="button button--primary button--lg migration-button"
+              className="button button--link button--lg"
+              style={{ fontSize: '1.2rem', fontWeight: 'bold' }}
               to={`/cloud/migrate/aws-elasticache?cluster=${clusterParam}&mode=scan`}>
-              Start SCAN Migration
-              <div className="migration-button-subtitle">
-                {cloudProvider} {nodeType}
-              </div>
+              Continue with {cloudProvider} {nodeType} SCAN Migration
             </Link>
           </div>
         </div>

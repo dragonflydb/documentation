@@ -21,8 +21,8 @@ In this guide, we will walk you through the steps to migrate from AWS ElastiCach
 Before starting the migration, ensure you have:
 
 1. Access to your AWS ElastiCache cluster from the application's VPC (APP_VPC_ID)
-2. A Dragonfly Cloud Network peered with your application's VPC (APP_VPC_ID). Follow the [instructions here](/docs/cloud/connections.md) to peer your VPC with Dragonfly Cloud.
-3. A Dragonfly Cloud Datastore in the private network. Follow the [instructions here](/docs/cloud/datastores.md) to create a datastore.
+2. A Dragonfly Cloud Network peered with your application's VPC (APP_VPC_ID). Follow the [instructions here](/docs/cloud/connections.md) to peer your VPC with Dragonfly Cloud
+3. A Dragonfly Cloud Datastore in the private network. Follow the [instructions here](/docs/cloud/datastores.md) to create a datastore
 4. AWS CLI configured with appropriate permissions
 
 ## Migration Steps
@@ -397,10 +397,10 @@ The container will:
 1. Connect to ElastiCache (which is now accessible within the VPC)
 2. Connect to Dragonfly Cloud
 3. Start syncing data
-4. Show progress in real-time
+4. Show progress in real-time in the form of logs
 
 ### 4. Verify Migration
-
+ 
 After the migration completes:
 
 1. Check the container logs for any errors
@@ -417,12 +417,12 @@ docker run redis redis-cli -h $DRAGONFLY_CLOUD_URL dbsize
 
 ## Live Migration
 
-Now that you have verified the migration, Your application is already pointing to the new Dragonfly Cloud endpoint. Once you have verified that the application is working as expected, you can proceed to terminate the ElastiCache cluster after you have confirmed that the migration is successful and things are working as expected.
+Now that you have verified the data is being synced continuously, you can now proceed to point your application to the new Dragonfly Cloud endpoint. With this, You have successfully migrated your data from ElastiCache to Dragonfly Cloud without any downtime or data loss.
 
 ## Post-Migration
 
-1. Update your application configurations to point to the new Dragonfly Cloud endpoint
-2. Monitor application performance and behavior
+1. Make sure to have updated all your application configurations to point to the new Dragonfly Cloud endpoint
+2. Monitor application performance and behavior. Make sure that the application is working as expected with the new Dragonfly Cloud endpoint
 3. Keep the ElastiCache cluster as backup until you're confident in the migration
 4. Clean up:
 
