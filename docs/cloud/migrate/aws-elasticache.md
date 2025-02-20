@@ -336,6 +336,7 @@ cat << EOF > redis-shake.toml
 cluster = false
 address = "${REDISSHAKE_SOURCE_ENDPOINT}"
 tls = true
+ksn = true
 
 [redis_writer]
 cluster = false
@@ -361,7 +362,7 @@ cat << EOF > redis-shake.toml
 cluster = true
 address = "${REDISSHAKE_SOURCE_ENDPOINT}"
 tls = true
-
+ksn = true
 [redis_writer]
 cluster = true
 # if public datastore, use 6385 port
