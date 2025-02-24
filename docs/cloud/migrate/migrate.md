@@ -65,8 +65,16 @@ Select your current Redis deployment type below to get started:
   
   <TabItem value="redis-cloud" label="Redis Cloud">
     <div className="migration-source-config">
-      <h4>Redis Cloud Migration</h4>
-      <p>We're working on detailed migration guides for Redis Cloud. In the meantime, our team can help you migrate - join our <Link to="https://discord.gg/HsPjXGVH85">Discord community</Link> for assistance.</p>
+      <h4>Configure Redis Cloud Migration</h4>
+      <p>Choose your current Redis Cloud setup:</p>
+      <Tabs groupId="redis-cloud-mode">
+        <TabItem value="cluster" label="Cluster Mode">
+          <MigrationOptions isCluster={true} cloudProvider="Redis Cloud" />
+        </TabItem>
+        <TabItem value="single" label="Single Node">
+          <MigrationOptions isCluster={false} cloudProvider="Redis Cloud" />
+        </TabItem>
+      </Tabs>
     </div>
   </TabItem>
   

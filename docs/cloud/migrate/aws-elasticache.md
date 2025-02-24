@@ -16,6 +16,10 @@ In this guide, we will walk you through the steps to migrate from AWS ElastiCach
   isSync={new URLSearchParams(window.location.search).get('mode') === 'sync'} 
 />
 
+:::tip Need Help?
+If you have any questions or need assistance with your migration, our team is here to help! Join our [Discord community](https://discord.gg/HsPjXGVH85) for real-time support.
+:::
+
 ## Prerequisites
 
 Before starting the migration, ensure you have:
