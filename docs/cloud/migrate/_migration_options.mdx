@@ -1,0 +1,93 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Link from '@docusaurus/Link';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+
+export default function MigrationOptions({ isCluster, cloudProvider, isTargetCluster }) {
+  const clusterParam = isCluster ? 'true' : 'false';
+  const nodeType = isCluster ? 'Cluster' : 'Single Node';
+  
+  return (
+    <>
+      {cloudProvider === 'Redis Cloud' ? (
+        <div className="migration-option">
+          <div className="migration-content alert alert--info">
+            <h4>SCAN (& Keyspace Notifications) Migration</h4>
+            <ul>
+              <li>Simple migration process using SCAN and Keyspace Notifications</li>
+              <li>Most common data types are migrated</li>
+              <li>Best for non-critical data</li>
+              <li>Requires maintenance window for final cutover</li>
+            </ul>
+          </div>
+          <div className="migration-action">
+            <Link
+              className="button button--link button--lg"
+              style={{ fontSize: '1.2rem', fontWeight: 'bold' }}
+              to={`/cloud/migrate/redis-cloud?cluster=${clusterParam}`}>
+              Continue with {cloudProvider} {nodeType} Migration
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <p>Choose your migration type:</p>
+          <Tabs>
+            <TabItem value="sync" label="PSYNC">
+              <div className="migration-option">
+                <div className="migration-content alert alert--info">
+                  <h4>PSYNC Migration</h4>
+                  <ul>
+                    <li>Needs PSYNC enabled on Elasticache. Raise a ticket with AWS to enable PSYNC.</li>
+                    <li>All types of Data (i.e Lua Scripts, Transactions, etc.) is migrated.</li>
+                    <li>Best for critical data</li>
+                  </ul>
+                </div>
+                <div className="migration-action">
+                  <Link
+                    className="button button--link button--lg"
+                    style={{ fontSize: '1.2rem', fontWeight: 'bold' }}
+                    to={`/cloud/migrate/aws-elasticache?cluster=${clusterParam}&mode=sync`}>
+                    Continue with {cloudProvider} {nodeType} PSYNC Migration
+                  </Link>
+                </div>
+              </div>
+            </TabItem>
+            <TabItem value="scan" label="SCAN (& Keyspace Notifications)">
+              <div className="migration-option">
+                <div className="migration-content alert alert--info">
+                  <h4>SCAN (& Keyspace Notifications) Migration</h4>
+                  <ul>
+                    <li>Simpler migration process. No need to enable PSYNC on Elasticache.</li>
+                    <li>Most common data types are migrated.</li>
+                    <li>Best for non-critical data</li>
+                  </ul>
+                </div>
+                <div className="migration-action">
+                  <Link
+                    className="button button--link button--lg"
+                    style={{ fontSize: '1.2rem', fontWeight: 'bold' }}
+                    to={`/cloud/migrate/aws-elasticache?cluster=${clusterParam}&mode=scan`}>
+                    Continue with {cloudProvider} {nodeType} SCAN Migration
+                  </Link>
+                </div>
+              </div>
+            </TabItem>
+          </Tabs>
+        </div>
+      )}
+    </>
+  );
+}
+
+export function ConfigDisplay({ isCluster, isSync }) {
+  return (
+    <div className="alert alert--info">
+      <h4>Migration Configuration:</h4>
+      <ul>
+        <li>Source: <b>{isCluster ? 'Cluster' : 'Single Node'}</b></li>
+        <li>Migration Type: <b>{isSync ? 'PSYNC' : 'SCAN'}</b></li>
+      </ul>
+    </div>
+  );
+}
