@@ -6,15 +6,20 @@ sidebar_position: 1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { ConfigDisplay } from './_migration_options.mdx';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # AWS ElastiCache Migration
 
 In this guide, we will walk you through the steps to migrate from AWS ElastiCache to Dragonfly Cloud.
 
-<ConfigDisplay 
-  isCluster={new URLSearchParams(window.location.search).get('cluster') === 'true'} 
-  isSync={new URLSearchParams(window.location.search).get('mode') === 'sync'} 
-/>
+<BrowserOnly>
+{() => (
+  <ConfigDisplay 
+    isCluster={new URLSearchParams(window.location.search).get('cluster') === 'true'} 
+    isSync={new URLSearchParams(window.location.search).get('mode') === 'sync'} 
+  />
+)}
+</BrowserOnly>
 
 :::tip Need Help?
 If you have any questions or need assistance with your migration, our team is here to help! Join our [Discord community](https://discord.gg/HsPjXGVH85) for real-time support.
