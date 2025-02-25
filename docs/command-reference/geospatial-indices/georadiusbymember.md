@@ -16,14 +16,14 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @write, @geo, @slow
 
-This command is exactly like GEORADIUS with the sole difference that, it accepts the name of a member already existing inside the geospatial index.
+This command is exactly like `GEORADIUS` with the sole difference that, it accepts the name of a member already existing inside the geospatial index.
 
 The position of the specified member is used as the center of the query.
 
 ## Return
 
-  - If no *WITH* option is specified, an Array reply of matched member names
-  - If WITHCOORD, WITHDIST, or WITHHASH options are specified, the command returns an Array reply of arrays, where each sub-array represents a single item:
+  - If no `WITH*` option is specified, an array reply of matched member names
+  - If `WITHCOORD`, `WITHDIST`, or `WITHHASH` options are specified, the command returns an array reply of arrays, where each sub-array represents a single item:
     - The distance from the center as a floating point number, in the same unit specified in the radius.
     - The Geohash integer.
     - The coordinates as a two items x,y array (longitude,latitude).
