@@ -20,7 +20,7 @@ ZDIFFSTORE destination numkeys key [key ...]
 ```
 
 - **Time complexity:** O(L + (N-K)log(N)) worst case where L is the total number of elements in all the sets, N is the size of the first set, and K is the size of the result set.
-- **ACL categories:** @read, @sortedset, @slow
+- **ACL categories:** @write, @sortedset, @slow
 
 ## Parameter Explanations
 
