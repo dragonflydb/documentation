@@ -4,7 +4,7 @@ description: Learn to use the Redis ZDIFFSTORE to calculate and store the differ
 
 import PageTitle from '@site/src/components/PageTitle';
 
-# ZDIFF
+# ZDIFFSTORE
 
 <PageTitle title="Redis ZDIFFSTORE Explained (Better Than Official Docs)" />
 
@@ -47,4 +47,33 @@ dragonfly$> ZADD myzset2 2 "two" 4 "four"
 
 dragonfly$> ZDIFFSTORE result 2 myzset1 myzset2
 (integer) 2
+
+dragonfly$> ZRANGE result 0 -1
+1) "one"
+2) "three"
 ```
+
+## Best Practices
+
+- Use `ZDIFFSTORE` when you need to isolate unique elements in one sorted set compared to others.
+- Always ensure that the correct number of `numkeys` is provided to avoid errors or unwanted results.
+
+## Common Mistakes
+
+- Forgetting to specify the correct number of sorted sets in `numkeys`.
+  The first argument should match the number of subsequent sorted set keys passed to the command.
+
+## FAQs
+
+### What happens if a key does not exist?
+
+If one or more of the keys do not exist, they are treated as empty sets, and the difference is calculated accordingly.
+
+### What happens if I provide just one key?
+
+If only one key is provided in the `ZDIFFSTORE` command, it will simply store that set in `destination`,
+as there are no additional sets to subtract from it.
+
+### What happens if `destination` already exists?
+
+If the `destination` key already exists, it will be overwritten.
