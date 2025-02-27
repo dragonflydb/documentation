@@ -16,14 +16,13 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @slow, @connection
 
-The CLIENT SETINFO command assigns various info attributes to the current connection which are displayed in the output of CLIENT LIST and CLIENT INFO.
+The `CLIENT SETINFO` command assigns various info attributes to the current connection which are displayed in the output of [`CLIENT LIST`](./client-list.md) and `CLIENT INFO`.
 
 Currently the supported attributes are:
 
-lib-name - meant to hold the name of the client library that's in use.
-lib-ver - meant to hold the client library's version.
-
+- `lib-name`: The name of the client library that's in use.
+- `lib-ver`: The client library's version.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings):  OK if the attribute name was successfully set.
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` if the attribute name was successfully set.
