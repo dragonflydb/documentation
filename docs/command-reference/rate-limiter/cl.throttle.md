@@ -23,8 +23,8 @@ The command implements the fairly sophisticated [generic cell rate algorithm (GC
 which is a leaky bucket-type scheduling algorithm providing a rolling time window and doesn't depend on a background drip process.
 
 By using the `CL.THROTTLE` command, **which is natively supported in Dragonfly**,
-you can replace (directly or with code modification) existing Redis modules or libraries implementing a leaky bucket rate limiter,
-such as the following:
+you can replace (directly or with code modification) existing Redis modules or libraries implementing
+a leaky bucket or a token bucket rate limiter, such as the following:
 
 - The [redis-cell](https://github.com/brandur/redis-cell) module for Redis.
 - The [redis_rate](https://github.com/go-redis/redis_rate/) library for Go.
