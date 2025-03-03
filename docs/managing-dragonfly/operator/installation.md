@@ -22,10 +22,10 @@ The main features include:
 
 ## Installation
 
-Make sure your Kubernetes cluster is up and running. To install Dragonfly Operator, run:
+Make sure your Kubernetes cluster is up and running. To install Dragonfly Operator, run the following command:
 
-```sh
-# Install the CRD and Operator
+```shell
+# Install the Dragonfly Kubernetes Operator.
 kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/manifests/dragonfly-operator.yaml
 ```
 
@@ -35,67 +35,84 @@ By default, the operator will be installed in the `dragonfly-operator-system` na
 
 ### Create a Dragonfly instance with replicas
 
-1. To create a sample Dragonfly instance with a master and three replicas, run the this command:
+To set up a sample Dragonfly topology with a primary (master) and optional replicas (slaves), run the following command:
 
-    ```sh
-    kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/config/samples/v1alpha1_dragonfly.yaml
-    ```
+```shell
+kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/config/samples/v1alpha1_dragonfly.yaml
+```
 
-2. To check the status of the instance, run:
+**Important Note:**
+In the Dragonfly Kubernetes Operator, the `replicas` configuration adheres to Kubernetes' standard semantics, specifying the number of instances to run.
+However, since Dragonfly is a stateful data store, the interpretation differs, as it relates to a high-availability setup.
+For example:
 
-    ```sh
-    kubectl describe dragonflies.dragonflydb.io dragonfly-sample
-    ```
+- Setting `replicas=1` creates 1 primary instance of Dragonfly only.
+- Setting `replicas=2` creates 1 primary and 1 replica of Dragonfly.
+- Setting `replicas=3` creates 1 primary and 2 replicas of Dragonfly, and so on.
+- There is always only 1 primary Dragonfly instance.
 
-3.  Connect to the master instance of the service at:    
-    `<dragonfly-name>.<namespace>.svc.cluster.local`.
-    
-    As pods are added or removed, the service automatically updates to point to the new master.
+To check the status of the instance, run the following command:
 
-#### Connect with `redis-cli`
+```shell
+kubectl describe dragonflies.dragonflydb.io dragonfly-sample
+```
 
-To connect to the instance using `redis-cli`, run:
+Connect to the primary instance of the service at: `<dragonfly-name>.<namespace>.svc.cluster.local`.
+As pods are added or removed, the service automatically updates to point to the new primary.
 
-```sh
+### Connect with `redis-cli`
+
+To connect to the instance using `redis-cli`, run the following command:
+
+```shell
 kubectl run -it --rm --restart=Never redis-cli --image=redis:7.0.10 -- redis-cli -h dragonfly-sample.default
 ```
 
-The command creates a temporary pod that runs the `redis-cli` and connects to the instance. To run Redis commands, press `shift + R` and then enter the Redis commands. For example, to set and retrieve a key, you can run:
+The command creates a temporary pod that runs the `redis-cli` and connects to the instance.
+For example, to set and retrieve a key, run the following commands:
 
-```sh
-If you don't see a command prompt, try pressing enter.
-dragonfly-sample.default:6379> GET 1
+```shell
+# If you don't see a command prompt, try pressing enter.
+dragonfly-sample.default:6379$> GET my_key
 (nil)
-dragonfly-sample.default:6379> SET 1 2
+
+dragonfly-sample.default:6379$> SET my_key my_val
 OK
-dragonfly-sample.default:6379> GET 1
-"2"
-dragonfly-sample.default:6379> exit
-pod "redis-cli" deleted
+
+dragonfly-sample.default:6379$> GET my_key
+"my_val"
+
+dragonfly-sample.default:6379$> QUIT
+OK
 ```
 
 ### Change the number of replica instances
 
-To change the number of replica instances, edit the `spec.replicas` field in the Dragonfly instance. For example, to scale up to 5 replicas run:
+To change the number of replica instances, edit the `spec.replicas` field.
+For example, to scale up to 1 primary with 4 replica instances of Dragonfly, run the following command:
 
-```sh
+```shell
 kubectl patch dragonfly dragonfly-sample --type merge -p '{"spec":{"replicas":5}}'
 ```
 
 ### Pass custom Dragonfly arguments
 
-To pass custom arguments to Dragonfly, edit the `spec.args` field in the Dragonfly instance. For example, to configure Dragonfly to require a password run:
+To pass custom arguments ([server configuration flags](../flags.md))
+to Dragonfly, edit the `spec.args` field.
+For example, to configure Dragonfly to require a password, run the following command:
 
-```sh
+```shell
 kubectl patch dragonfly dragonfly-sample --type merge -p '{"spec":{"args":["--requirepass=supersecret"]}}'
 ```
 
-### Vertically scale the instance
+### Vertically scale the instances
 
-To vertically scale the instance, edit the `spec.resources` field in the Dragonfly instance. For example, to increase the CPU requests to 2 cores run:
+To vertically scale the instances, edit the `spec.resources` field.
+For example, to increase the CPU requests to 2 cores, run the following command:
 
-```sh
+```shell
 kubectl patch dragonfly dragonfly-sample --type merge -p '{"spec":{"resources":{"requests":{"cpu":"2"}}}}'
 ```
 
-To understand how to configure High Availability, please refer to the [High Availability](/docs/managing-dragonfly/high-availability.md#high-availability-with-dragonfly-operator) section.
+To understand how to configure high availability,
+please refer to the [related section](/docs/managing-dragonfly/high-availability.md#high-availability-with-dragonfly-operator).
