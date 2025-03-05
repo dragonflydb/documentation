@@ -69,7 +69,6 @@ Select your current Redis deployment type below to get started:
       <p>We're working on detailed migration guides for Redis Cloud. In the meantime, our team can help you migrate - visit our <Link to="https://www.dragonflydb.io/docs/cloud/support">support page</Link> for assistance.</p>
     </div>
   </TabItem>
-  </TabItem>
   
   <TabItem value="azure-redis" label="Azure Redis">
     <div className="migration-source-config">
