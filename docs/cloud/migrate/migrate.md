@@ -12,10 +12,10 @@ import MigrationOptions from './_migration_options.mdx';
 
 # Migrate to Dragonfly Cloud
 
-There are two main approaches to migrate your Redis data to Dragonfly Cloud:
+There are two main approaches to migrate your Redis data to Dragonfly Cl  ud:
 
 :::tip Need Help?
-If you have any questions or need assistance with your migration, our team is here to help! Visit our [support page](https://www.dragonflydb.io/docs/cloud/support) for assistance.
+If you have any questions or need assistance with your migration, our team is here to help! Visit our <u>[support page](https://www.dragonflydb.io/docs/cloud/support)</u> for assistance.
 :::
 
 ## Quick Migration with Snapshots
