@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    SADDEX key seconds member [member ...]
+    SADDEX key [KEEPTTL] seconds member [member ...]
 
 **Time complexity:** O(1) for each element added, so O(N) to add N elements when the command is called with multiple arguments.
 
@@ -19,7 +19,8 @@ import PageTitle from '@site/src/components/PageTitle';
 **Warning:** Experimental! Dragonfly-specific.
 
 Similar to [`SADD`](sadd.md) but adds one or more members that expire after specified number of seconds.
-An error is returned when the value stored at `key` is not a set.
+An error is returned when the value stored at `key` is not a set. If the `KEEPTTL` option is specified, any
+existing keys will preserve their TTL, and the supplied value will only be applied to new keys.
 
 ## Return
 
