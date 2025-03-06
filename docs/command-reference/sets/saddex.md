@@ -20,7 +20,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 Similar to [`SADD`](sadd.md) but adds one or more members that expire after specified number of seconds.
 An error is returned when the value stored at `key` is not a set. If the `KEEPTTL` option is specified, any
-existing keys will preserve their TTL, and the supplied value will only be applied to new keys.
+existing members will preserve their TTL, and the supplied value will only be applied to new members.
 
 ## Return
 
