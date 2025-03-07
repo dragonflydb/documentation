@@ -15,7 +15,7 @@ import MigrationOptions from './_migration_options.mdx';
 There are two main approaches to migrate your Redis data to Dragonfly Cl  ud:
 
 :::tip Need Help?
-If you have any questions or need assistance with your migration, our team is here to help! Visit our <u>[support page](https://www.dragonflydb.io/docs/cloud/support)</u> for assistance.
+If you have any questions or need assistance with your migration, our team is here to help! Visit our <u>[contact page](https://www.dragonflydb.io/contact)</u> for assistance.
 :::
 
 ## Quick Migration with Snapshots
@@ -66,21 +66,21 @@ Select your current Redis deployment type below to get started:
   <TabItem value="redis-cloud" label="Redis Cloud">
     <div className="migration-source-config">
       <h4>Configure Redis Cloud Migration</h4>
-      <p>We're working on detailed migration guides for Redis Cloud. In the meantime, our team can help you migrate - visit our <Link to="https://www.dragonflydb.io/docs/cloud/support">support page</Link> for assistance.</p>
+      <p>We're working on detailed migration guides for Redis Cloud. In the meantime, our team can help you migrate - visit our <Link to="https://www.dragonflydb.io/contact">contact page</Link> for assistance.</p>
     </div>
   </TabItem>
   
   <TabItem value="azure-redis" label="Azure Redis">
     <div className="migration-source-config">
       <h4>Azure Redis Migration</h4>
-      <p>We're working on detailed migration guides for Azure Redis. In the meantime, our team can help you migrate - visit our <Link to="https://www.dragonflydb.io/docs/cloud/support">support page</Link> for assistance.</p>
+      <p>We're working on detailed migration guides for Azure Redis. In the meantime, our team can help you migrate - visit our <Link to="https://www.dragonflydb.io/contact">contact page</Link> for assistance.</p>
     </div>
   </TabItem>
 
   <TabItem value="selfhosted" label="Self-hosted Redis">
     <div className="migration-source-config">
       <h4>Self-hosted Redis Migration</h4>
-      <p>We're working on detailed migration guides for self-hosted Redis. In the meantime, our team can help you migrate - visit our <Link to="https://www.dragonflydb.io/docs/cloud/support">support page</Link> for assistance.</p>
+      <p>We're working on detailed migration guides for self-hosted Redis. In the meantime, our team can help you migrate - visit our <Link to="https://www.dragonflydb.io/contact">contact page</Link> for assistance.</p>
     </div>
   </TabItem>
 </Tabs>
@@ -90,7 +90,7 @@ Select your current Redis deployment type below to get started:
 <TabItem value="cluster" label="Dragonfly Cluster">
   <div className="migration-source-config">
     <h3>Migrate to Dragonfly Cluster</h3>
-    <p>Cluster migration support is coming soon! Visit our <Link to="https://www.dragonflydb.io/docs/cloud/support">support page</Link> to get notified when it's available.</p>
+    <p>Cluster migration support is coming soon! Visit our <Link to="https://www.dragonflydb.io/contact">contact page</Link> to get notified when it's available.</p>
   </div>
 </TabItem>
 

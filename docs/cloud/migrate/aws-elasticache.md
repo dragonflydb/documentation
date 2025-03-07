@@ -22,7 +22,7 @@ In this guide, we will walk you through the steps to migrate from AWS ElastiCach
 </BrowserOnly>
 
 :::tip Need Help?
-If you have any questions or need assistance with your migration, our team is here to help! Visit our <u>[support page](https://www.dragonflydb.io/docs/cloud/support)</u> for assistance.
+If you have any questions or need assistance with your migration, our team is here to help! Visit our <u>[contact page](https://www.dragonflydb.io/contact)</u> for assistance.
 :::
 
 ## Prerequisites
