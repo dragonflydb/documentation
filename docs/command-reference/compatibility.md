@@ -30,7 +30,7 @@ sidebar_position: 0
 |                                              | <span class="command">CLIENT TRACKING</span>               | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">CLIENT TRACKINGINFO</span>           | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT UNBLOCK</span>                | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLIENT UNPAUSE</span>                | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLIENT UNPAUSE</span>                | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ECHO</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HELLO</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PING</span>                          | <span class="support supported">Fully supported</span>   |
