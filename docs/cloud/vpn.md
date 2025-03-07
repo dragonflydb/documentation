@@ -54,7 +54,7 @@ Click *Import certificate* to import the server certificate.
 
 Click *Import certificate*
 
-Repeat the same steps to import the client certificate, with the contents of client1.domain.tld.crt, client1.domain.tld.key files and the same ca.crt file.
+Repeat the same steps to import the client certificate, with the contents of `cat client1.domain.tld.crt`, ` cat client1.domain.tld.key` and the same `cat ca.crt file`.
 
 ### Locate or create a security group
 
@@ -91,6 +91,7 @@ Fill in the following fields, leaving the rest as default:
   - ***Client certificate ARNs*** dropdown will appear, select the ARN of the client certificate you imported to ACM.
 - ***DNS server 1 IP address*** - The IP address of the DNS server in your VPC.  
   This is the 3rd IP address in the CIDR block of your VPC. E.g. if your VPC CIDR block is 172.31.0.0/16, the DNS server IP address is 172.31.0.2/16.
+- ***Enable split-tunnel*** - Optional but recommended, [learn more](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/split-tunnel-vpn.html).
 - ***DNS server 2 IP address*** - Enter 8.8.8.8 (Google's public DNS server).
 - ***VPC ID*** - Select the VPC where you want to create the Client VPN endpoint. This should be the VPC that is peer connected to the Dragonfly Cloud private network.
   - ***Security group*** dropdown will appear - Select the security group you created or located for the Client VPN endpoint.
