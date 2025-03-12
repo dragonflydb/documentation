@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 12
 ---
 
 # Pricing
@@ -8,9 +8,13 @@ sidebar_position: 10
 
 Dragonfly Cloud applies a transparent usage-based pricing model with the following components:
 
-- [Active Data Stores](#active-data-stores)
-- [Data Transfer](#data-transfer)
-- [Backup Storage](#backup-storage)
+- [Pricing](#pricing)
+  - [Overview](#overview)
+  - [Active Data Stores](#active-data-stores)
+    - [Active Data Store Cost Calculation](#active-data-store-cost-calculation)
+    - [Active Data Store Cost Example](#active-data-store-cost-example)
+  - [Data Transfer](#data-transfer)
+  - [Backup Storage](#backup-storage)
 
 You can track your usage and costs under the [Account > Usage](https://dragonflydb.cloud/account/usage) tab
 in Dragonfly Cloud. The usage and cost information is updated every few hours.

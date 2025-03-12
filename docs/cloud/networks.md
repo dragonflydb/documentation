@@ -36,3 +36,5 @@ To create a private network:
 
 See [peering connections](./connections.md) to connect the Dragonfly Cloud network to a VPC in your
 cloud provider account in order to establish communication between the two networks.
+
+For connecting to private network from a local machine, see [Connect with VPN](./vpn.md).
