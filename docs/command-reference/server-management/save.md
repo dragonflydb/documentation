@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    SAVE [RDB|DF]
+    SAVE [RDB|DF] [cloud_uri] [filename]
 
 **Time complexity:** O(N) where N is the total number of keys in all databases
 
@@ -22,6 +22,11 @@ of a set of [DFS files](../../managing-dragonfly/snapshotting).
 
 Use `SAVE RDB` to save the snapshot in form of an RDB file instead.
 Please refer to the [persistence documentation][tp] for detailed information about RDB files.
+
+If `cloud_uri` argument is set, save will be done on remote cloud storage. Currently, SAVE command supports
+writing to `S3` (argument starts with `s3://`) and `GCP` (argument starts with `gs://`).
+
+Optional argument `filename` is used to override current **`dbfilename`** for saving file(s).
 
 ## Flags
 
@@ -36,3 +41,26 @@ Please refer to the [persistence documentation][tp] for detailed information abo
 ## Return
 
 [Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): The commands returns OK on success.
+
+## Examples
+
+Save into current working directory with default file name.
+
+```shell
+dragonfly> SAVE DF
+OK
+```
+
+Save into current working directory with `my_dump` as file name for saved file(s).
+
+```shell
+dragonfly> SAVE DF my_dump
+OK
+```
+
+Save into S3 bucket and use `my_dump` as file name for file(s).
+
+```shell
+dragonfly> SAVE DF s3://bucket/folder my_dump
+OK
+```

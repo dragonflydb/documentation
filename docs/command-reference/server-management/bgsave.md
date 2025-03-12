@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    BGSAVE [SCHEDULE]
+    BGSAVE SAVE [RDB|DF] [cloud_uri] [filename]
 
 **Time complexity:** O(1)
 
