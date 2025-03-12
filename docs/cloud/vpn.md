@@ -1,4 +1,8 @@
-# Connect to private endpoint datastore from your local machine
+---
+sidebar_position: 10
+---
+
+# Connect with VPN
 
 This guide will show you how to connect to a private endpoint datastore from your local machine.
 
@@ -158,4 +162,6 @@ Enter a *display name* for the profile and select the *VPN Configuration File* y
 After adding the profile, click *Connect* next to the profile you have just added.
 Once the profile is connected, you should be able to access the private endpoint datastore from your local machine.
 
+## GCP Cloud VPN
 
+Coming soon... 
