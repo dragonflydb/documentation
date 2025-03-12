@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    HSETEX key [NX] seconds field value [field value ...]
+    HSETEX key [NX] [KEEPTTL] seconds field value [field value ...]
 
 **Time complexity:** O(1) for each field/value pair added, so O(N) to add N field/value pairs when the command is called with multiple field/value pairs.
 
@@ -21,6 +21,7 @@ import PageTitle from '@site/src/components/PageTitle';
 Similar to [`HSET`](./hset.md) but adds one or more hash fields that expire after specified number of seconds.
 By default, this command overwrites the values and expirations of specified fields that exist in the hash.
 If `NX` option is specified, the field data will not be overwritten.
+If `KEEPTTL` option is specified, the TTL for the field will not be overwritten.
 If `key` doesn't exist, a new key holding a hash is created.
 
 The expiration time can be accessed with the [`FIELDTTL`](../generic/fieldttl.md) command.
