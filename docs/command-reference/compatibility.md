@@ -25,12 +25,13 @@ sidebar_position: 0
 |                                              | <span class="command">CLIENT NO-TOUCH</span>               | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT PAUSE</span>                  | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CLIENT REPLY</span>                  | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLIENT SETINFO</span>                | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLIENT SETINFO</span>                | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CLIENT SETNAME</span>                | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CLIENT TRACKING</span>               | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">CLIENT TRACKINGINFO</span>           | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT UNBLOCK</span>                | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLIENT UNPAUSE</span>                | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLIENT UNPAUSE</span>                | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">CLIENT HELP</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ECHO</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HELLO</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PING</span>                          | <span class="support supported">Fully supported</span>   |
@@ -220,7 +221,7 @@ sidebar_position: 0
 |                                              | <span class="command">ZCARD</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZCOUNT</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZDIFF</span>                         | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ZDIFFSTORE</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">ZDIFFSTORE</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZINCRBY</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZINTER</span>                        | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">ZINTERCARD</span>                    | <span class="support supported">Fully supported</span>   |
