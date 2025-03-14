@@ -1,114 +1,120 @@
 ---
 description:  Learn how to use Redis XADD to append a new entry to a stream.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # XADD
 
 <PageTitle title="Redis XADD Command (Documentation) | Dragonfly" />
 
-## Introduction
-
-In Dragonfly, as well as in Redis and Valkey, the `XADD` command is used to append a new entry to a stream. 
-Streams are data structures that enable storing and processing ordered logs of events, and `XADD` is essential for adding data to these streams.
-
 ## Syntax
 
-```shell
-XADD key [<MAXLEN | MINID> [~ | =] threshold] <* | id> field value [field value ...]
-```
+    XADD key [NOMKSTREAM] [<MAXLEN | MINID> [= | ~] threshold [LIMIT count]] <* | id> field value [field value ...]
 
-## Parameter Explanations
+**Time complexity:** O(1) when adding a new entry, O(N) when trimming where N being the number of entries evicted.
 
-- `key`: The key of the stream where the entry will be appended.
-- `MAXLEN` (optional): A flag to cap the length of the stream to `threshold` items.
-- `MINID` (optional): A flag to trim the stream to keep only entries with IDs greater than `threshold`.
-- For `MAXLEN` or `MINID`, one of the following operators can be used:
-  - The `~` operator is used to trim approximately, which can be more efficient but may not be exact.
-  - The `=` operator is used to trim exactly to the specified threshold.
-- In order to specify a unique ID for the entry in the stream, use one of the following options.
-  - `*`: Automatically generate an ID that includes a timestamp and a sequence number.
-  - `id`: A unique incremental ID for the entry specified by your application.
-  - Either way, the stored ID is a **string representing two 64-bit integers separated by a hyphen (`-`)**.
-- `field value`: Pairs of field names and their corresponding values, forming the data within the entry.
+**ACL categories:** @write, @stream, @fast
 
-## Return Values
+Appends the specified stream entry to the stream at the specified key.
+If the key does not exist, as a side effect of running this command the
+key is created with a stream value. The creation of stream's key can be
+disabled with the `NOMKSTREAM` option.
 
-- The command returns the unique ID of the added stream entry.
-- If the ID is automatically generated, the first part is a Unix timestamp in milliseconds, and the second part is an incrementing sequence number distinguishing entries with the same timestamp.
+An entry is composed of a list of field-value pairs.
+The field-value pairs are stored in the same order they are given by the user.
+Commands that read the stream, such as `XRANGE` or `XREAD`, are guaranteed to return the fields and values exactly in the same order they were added by `XADD`.
 
-## Code Examples
+`XADD` is the *only command* that can add data to a stream, but 
+there are other commands, such as `XDEL` and `XTRIM`, that are able to
+remove data from a stream.
 
-### Basic Example
+## Specifying a Stream ID as an argument
 
-Add an entry to a stream:
+A stream entry ID identifies a given entry inside a stream.
 
-```shell
-dragonfly$> XADD mystream * sensor-id 1234 temperature 20.1
-"1609459200001-0"
-```
+The `XADD` command will auto-generate a unique ID for you if the ID argument
+specified is the `*` character (asterisk ASCII character). However, while
+useful only in very rare cases, it is possible to specify a well-formed ID, so
+that the new entry will be added exactly with the specified ID.
 
-### Limit Stream Length
+IDs are specified by two numbers separated by a `-` character:
 
-Add an entry and trim the stream to keep only the latest 5 entries:
+    1526919030474-55
 
-```shell
-dragonfly$> XADD mystream MAXLEN = 5 * sensor-id 1235 temperature 20.1
-"1609459200002-0"
-```
+Both quantities are 64-bit numbers. When an ID is auto-generated, the
+first part is the Unix time in milliseconds of the Dragonfly instance generating
+the ID. The second part is just a sequence number and is used in order to
+distinguish IDs generated in the same millisecond.
 
-### Add Multiple Field-Value Pairs
-
-Stream entries can contain multiple field-value pairs:
+You can also specify an incomplete ID, that consists only of the milliseconds part, which is interpreted as a zero value for sequence part.
+To have only the sequence part automatically generated, specify the milliseconds part followed by the `-` separator and the `*` character:
 
 ```shell
-dragonfly$> XADD mystream * sensor-id 1236 temperature 20.1 humidity 40
-"1609459200003-0"
+dragonfly> XADD mystream 1526919030474-55 message "Hello,"
+"1526919030474-55"
+dragonfly> XADD mystream 1526919030474-* message " World!"
+"1526919030474-56"
 ```
 
-### Use Specific ID
+IDs are guaranteed to be always incremental: If you compare the ID of the
+entry just inserted it will be greater than any other past ID, so entries
+are totally ordered inside a stream. In order to guarantee this property,
+if the current top ID in the stream has a time greater than the current
+local time of the instance, the top entry time will be used instead, and
+the sequence part of the ID incremented. This may happen when, for instance,
+the local clock jumps backward, or if after a failover the new master has
+a different absolute time.
 
-Specify a unique ID for the stream entry.
-The ID can be in a full format or a partial format as shown below.
-When using a specific ID, ensure it is unique and greater than the target stream top item's ID.
+When a user specified an explicit ID to `XADD`, the minimum valid ID is
+`0-1`, and the user *must* specify an ID which is greater than any other
+ID currently inside the stream, otherwise the command will fail and return an error. Usually
+resorting to specific IDs is useful only if you have another system generating
+unique IDs (for instance an SQL table) and you really want the Dragonfly stream
+IDs to match the one of this other system.
+
+## Capped streams
+
+`XADD` incorporates the same semantics as the `XTRIM` command - refer to its documentation page for more information.
+This allows adding new entries and keeping the stream's size in check with a single call to `XADD`, effectively capping the stream with an arbitrary threshold.
+Although exact trimming is possible and is the default, due to the internal representation of steams it is more efficient to add an entry and trim stream with `XADD` using **almost exact** trimming (the `~` argument).
+
+For example, calling `XADD` in the following form:
+
+    XADD mystream MAXLEN ~ 1000 * ... entry fields here ...
+ 
+Will add a new entry but will also evict old entries so that the stream will contain only 1000 entries, or at most a few tens more.
+
+## Return
+
+[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings), specifically:
+
+The command returns the ID of the added entry. The ID is the one auto-generated
+if `*` is passed as ID argument, otherwise the command just returns the same ID
+specified by the user during insertion.
+
+The command returns a [Null reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings) when used with the `NOMKSTREAM` option and the
+key doesn't exist.
+
+## Examples
 
 ```shell
-# Using an auto-generated ID.
-dragonfly$> XADD mystream * sensor-id 1237 temperature 20.1
-"1735929311498-0"
-
-# Using a specific ID in full format (timestamp-sequence).
-dragonfly$> XADD mystream "1735929311498-1" sensor-id 1237 temperature 20.2
-"1735929311498-1"
-
-# Using a specific ID in partial format (timestamp only).
-dragonfly$> XADD mystream "1735929311498-*" sensor-id 1237 temperature 20.3
-"1735929311498-2"
-
-# Using an ID that is less than the top item's ID will result in an error.
-# In this case, the partial format ID is less than the top item's ID.
-dragonfly$> XADD mystream "1700000000000-*" sensor-id 1237 temperature 20.4
-(error) ERR The ID specified in XADD is equal or smaller than the target stream top item
+dragonfly> XADD mystream * name Sara surname OConnor
+"1676903939979-0"
+dragonfly> XADD mystream * field1 value1 field2 value2 field3 value3
+"1676903939979-1"
+dragonfly> XLEN mystream
+(integer) 2
+dragonfly> XRANGE mystream - +
+1) 1) "1676903939979-0"
+2) 1) "name"
+2) "Sara"
+3) "surname"
+4) "OConnor"
+2) 1) "1676903939979-1"
+2) 1) "field1"
+2) "value1"
+3) "field2"
+4) "value2"
+5) "field3"
+6) "value3"
 ```
-
-## Best Practices
-
-- Use the `MAXLEN` parameter to manage stream size, especially when operating under memory constraints.
-- Ensure field names are consistent in the stream structure to simplify data processing downstream.
-- When storing multiple data points, structure entries as time-stamped records for better traceability.
-
-## Common Mistakes
-
-- Providing an odd number of arguments for the field-value list results in a syntax error.
-- Not using the `*` for the ID will require manually assigning unique IDs, which can be error-prone.
-
-## FAQs
-
-### What happens if the key does not exist?
-
-If the key does not exist, `XADD` will automatically create a new stream with the specified key and append the entry to it.
-
-### Can I use specific IDs instead of `*`?
-
-Yes, you can specify your own unique ID instead of using `*`, but you must ensure the new ID is unique and is greater than the target stream top item's ID.

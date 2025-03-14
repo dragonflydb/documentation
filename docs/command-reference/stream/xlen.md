@@ -1,7 +1,6 @@
 ---
 description:  Learn how to use Redis XLEN to get the length of a stream.
 ---
-
 import PageTitle from '@site/src/components/PageTitle';
 
 # XLEN
@@ -10,34 +9,35 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-	XLEN key
+    XLEN key
 
-**Time Complexity:** O(1)
+**Time complexity:** O(1)
 
 **ACL categories:** @read, @stream, @fast
 
-Returns the number of entries inside a stream. If the specified
-key does not exist the command returns zero, as if the stream was
-empty. Note that a stream can be empty and hence **XLEN** is not
-a good option to check if a stream exists.
+Returns the number of entries inside a stream. If the specified key does not
+exist the command returns zero, as if the stream was empty.
+However note that unlike other Redis types, zero-length streams are
+possible, so you should call `TYPE` or `EXISTS` in order to check if
+a key exists or not.
 
-Streams are not auto-deleted once they have no entries inside
-(for instance after an **XDEL** call), because the stream may have
-consumer groups associated with it.
+Streams are not auto-deleted once they have no entries inside (for instance
+after an `XDEL` call), because the stream may have consumer groups
+associated with it.
 
 ## Return
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
-the number of entries of the stream at key.
 
-## Example
+[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of entries of the stream at `key`.
+
+## Examples
 
 ```shell
-dragonfly> XADD mystream * name John
-"1623910120014-0"
-dragonfly> XADD mystream * name Bob
-"1623910194423-0"
-dragonfly> XADD mystream * name Alice
-"1623910226955-0"
+dragonfly> XADD mystream * item 1
+"1676903940326-0"
+dragonfly> XADD mystream * item 2
+"1676903940327-0"
+dragonfly> XADD mystream * item 3
+"1676903940327-1"
 dragonfly> XLEN mystream
 (integer) 3
 ```
