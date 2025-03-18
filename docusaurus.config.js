@@ -200,11 +200,6 @@ const config = {
                 href: "https://www.dragonflydb.io/cloud",
                 target: "_self",
               },
-              {
-                type: "custom-announcmentBar",
-                label: "Test",
-                href: "https://www.dragonflydb.io/cloud",
-              },
             ],
           },
           {
