@@ -109,7 +109,7 @@ sidebar_position: 0
 |                                              | <span class="command">RPOP</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">LREM</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">LPUSHX</span>                        | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">LMPOP</span>                         | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">LMPOP</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">LPOS</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">LPOP</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BLPOP</span>                         | <span class="support supported">Fully supported</span>   |
