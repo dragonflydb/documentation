@@ -21,6 +21,11 @@ Elements are popped from either the left or right of the first non-empty list ba
 
 ## Return
 
+[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): specifically:
+
+* `nil` when no element could be popped.
+* A two-element array with the first element being the name of the key from which elements were popped and the second element being an array of elements.
+
 ## Examples
 
 ```shell
@@ -56,8 +61,8 @@ dragonfly> LRANGE mylist 0 -1
 2) "four"
 dragonfly> LMPOP 2 mylist mylist2 right count 5
 1) "mylist"
-2) 1) "four"
-   2) "five"
+2) 1) "five"
+   2) "four"
 dragonfly> LMPOP 2 mylist mylist2 right count 10
 1) "mylist2"
 2) 1) "a"
