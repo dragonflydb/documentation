@@ -59,7 +59,7 @@ On this page, you will find information on how to create, configure, and connect
   including the auto-generated passkey and a Redis-compatible **Connection URI**.
 - Once the data store's **Status** becomes **Active**, you can try accessing it with Redis CLI,
   for instance, `redis-cli -u <CONNECTION_URI> PING`.
-  Read more information on [how to connect to the data store](#connecting-to-a-data-store) below.
+  Read more information on [how to connect to the data store](./connect/redis-clients.md) below.
 
 ### Updating the Data Store Configuration
 
