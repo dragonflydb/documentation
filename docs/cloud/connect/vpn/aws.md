@@ -1,27 +1,24 @@
 ---
-sidebar_position: 10
+sidebar_position: 1
 ---
 
-# Connect with VPN
-
-This guide will show you how to connect to a private endpoint datastore from your local machine.
-
-## AWS Client VPN
+# AWS Client VPN
 
 [AWS Client VPN](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/what-is.html) is a managed client-based VPN service that enables you to securely access your AWS resources. With Client VPN, you can access your resources from any location using an OpenVPN-based VPN client.
 To connect to a private endpoint datastore from your local machine, you need to create a Client VPN endpoint in your VPC that is peer connected to the Dragonfly Cloud private network where your private endpoint datastore is deployed.
 
 Connecting via AWS Client VPN involves the following steps:
-1.  Create server and client certificates.
-2.  Import the server certificate to AWS Certificate Manager.
-3.  Locate or create a security group for the Client VPN endpoint.
-4.  Create and configure a Client VPN endpoint.
-5.  Download the Client VPN endpoint configuration file and update it with the client certificate.
-6.  Connect to the Client VPN endpoint using the OpenVPN client.
 
-### Create server and client certificates
+1. Create server and client certificates.
+2. Import the server certificate to AWS Certificate Manager.
+3. Locate or create a security group for the Client VPN endpoint.
+4. Create and configure a Client VPN endpoint.
+5. Download the Client VPN endpoint configuration file and update it with the client certificate.
+6. Connect to the Client VPN endpoint using the OpenVPN client.
 
-We will use the `easy-rsa` tool to create server and client certificates. 
+## Create server and client certificates
+
+We will use the `easy-rsa` tool to create server and client certificates.
 
 Execute the following commands to create the server and client certificates, chose default values when prompted:
 
@@ -44,7 +41,7 @@ cd easy-rsa/easyrsa3
 cp pki/ca.crt pki/issued/server.crt pki/private/server.key pki/issued/client1.domain.tld.crt pki/private/client1.domain.tld.key .
 ```
 
-### Import the certificates to AWS Certificate Manager
+## Import the certificates to AWS Certificate Manager
 
 Navigate to *ASW Certificate Manager* (ACM) in the AWS console.
 
@@ -58,9 +55,9 @@ Click *Import certificate* to import the server certificate.
 
 Click *Import certificate*
 
-Repeat the same steps to import the client certificate, with the contents of `cat client1.domain.tld.crt`, ` cat client1.domain.tld.key` and the same `cat ca.crt file`.
+Repeat the same steps to import the client certificate, with the contents of `cat client1.domain.tld.crt`, `cat client1.domain.tld.key` and the same `cat ca.crt file`.
 
-### Locate or create a security group
+## Locate or create a security group
 
 We'll need to attach to the Client VPN endpoint a security group that allows inbound traffic on port 443.
 
@@ -78,13 +75,14 @@ aws ec2 authorize-security-group-ingress --group-id sg-xxxxxxxx --protocol tcp -
 
 Replace `sg-xxxxxxxx` with the ID of the security group you created.
 
-### Create and configure a Client VPN endpoint
+## Create and configure a Client VPN endpoint
 
 Navigate to *Client VPN Endpoints* in the AWS console.
 
 Click *Create Client VPN endpoint*.
 
 Fill in the following fields, leaving the rest as default:
+
 - ***Name*** - A name for the Client VPN endpoint.
 - ***Description*** - A description for the Client VPN endpoint.
 - ***Client IPv4 CIDR*** - The CIDR block for the Client VPN endpoint.  
@@ -102,9 +100,9 @@ Fill in the following fields, leaving the rest as default:
 
 Finally, click *Create Client VPN endpoint*.
 
-#### Configure the Client VPN endpoint
+### Configure the Client VPN endpoint
 
-The Client VPN endpoint will be created in a *pending association* state. 
+The Client VPN endpoint will be created in a *pending association* state.
 Select the Client VPN endpoint and click *Associate target network*.
 
 Select the *Target network associations tab, if it is not already selected.
@@ -130,12 +128,12 @@ This will route traffic to the Dragonfly Cloud private network through the Clien
 
 By now, the Client VPN endpoint should be in the *available* state, otherwise wait for a few more minutes.
 
-### Download the Client VPN endpoint configuration file and update it with the client certificate
+## Download the Client VPN endpoint configuration file and update it with the client certificate
 
 Select the Client VPN endpoint and click *Download client configuration*.
 
 Open the downloaded file for edit.
-Under the existing <ca> </ca> block, add the following blocks:
+Under the existing `ca` block, add the following blocks:
 
 ```bash
 <cert>
@@ -149,19 +147,15 @@ Under the existing <ca> </ca> block, add the following blocks:
 
 Save the file.
 
-### Connect to the Client VPN endpoint using the OpenVPN client
+## Connect to the Client VPN endpoint using the OpenVPN client
 
 Install the AWS VPN client from [this .deb packed](https://d20adtppz83p9s.cloudfront.net/GTK/latest/awsvpnclient_amd64.deb).
 Or see other installation options [here](hhttps://docs.aws.amazon.com/vpn/latest/clientvpn-user/client-vpn-connect-linux-install.html).
 
 Launch the OpenVPN client.
 
-From the file menu select *manage profiles* and click *Add profile*.   
+From the file menu select *manage profiles* and click *Add profile*.
 Enter a *display name* for the profile and select the *VPN Configuration File* you downloaded and updated previously.
 
 After adding the profile, click *Connect* next to the profile you have just added.
 Once the profile is connected, you should be able to access the private endpoint datastore from your local machine.
-
-## GCP Cloud VPN
-
-Coming soon... 

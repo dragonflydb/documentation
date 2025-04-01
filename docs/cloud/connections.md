@@ -19,7 +19,7 @@ or simply by clicking the **+Add Connection** button under the network itself.
 
 Continue to the next sections for instructions on how to create a peering connection with your cloud provider.
 
-*Tip:* For connecting to a private network from a local machine, see [Connect with VPN](./vpn.md).
+*Tip:* For connecting to a private network from a local machine, see [Connect with VPN](./connect/vpn).
 
 ## Amazon Web Services (AWS)
 

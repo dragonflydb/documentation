@@ -1,8 +1,8 @@
 ---
-sidebar_position: 14
+sidebar_position: 1
 ---
 
-# Guide: Connecting to Dragonfly Cloud from AWS Lambda
+# Connect from AWS Lambda
 
 AWS Lambda is a serverless compute service provided by Amazon Web Services (AWS). It allows you to run code without provisioning or managing servers. You simply upload your code, and Lambda automatically handles the execution, scaling, and availability. It supports various programming languages and integrates seamlessly with other AWS services, making it ideal for building scalable, event-driven applications.
 
@@ -133,7 +133,7 @@ Private datastores are hosted within a Virtual Private Cloud (VPC), which provid
 #### 1. Set Up VPC Peering
 
 1. Create a VPC in your AWS account within the same region as your datastore.
-2. Establish a peering connection between your VPC and the datastore's VPC. This allows the two networks to communicate. For detailed guidance, refer to the [VPC Peering Connections documentation](connection.md).
+2. Establish a peering connection between your VPC and the datastore's VPC. This allows the two networks to communicate. For detailed guidance, refer to the [VPC Peering Connections documentation](../../connections.md).
 
 #### 2. Adjust Security Group Rules
 
