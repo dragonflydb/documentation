@@ -59,7 +59,7 @@ On this page, you will find information on how to create, configure, and connect
   including the auto-generated passkey and a Redis-compatible **Connection URI**.
 - Once the data store's **Status** becomes **Active**, you can try accessing it with Redis CLI,
   for instance, `redis-cli -u <CONNECTION_URI> PING`.
-  Read more information on [how to connect to the data store](#connecting-to-a-data-store) below.
+  Read more information on [how to connect to the data store](./connect/redis-clients.md) below.
 
 ### Updating the Data Store Configuration
 
@@ -179,78 +179,8 @@ providing the most suitable server configuration(s) for your workload when you s
 
 ## Connecting to a Data Store
 
-Once a data store's **Status** is **Active**, you can connect to it with any Redis client using the **Connection URI**
-provided in the data store drawer (e.g., `rediss://default:XXXXX@abcde.dragonflydb.cloud:6385`).
-Here are a few popular client libraries and code snippets to connect to the data store.
-
-### Redis CLI
-
-- Install [`redis-cli`](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/).
-- With the **Connection URI** from the data store drawer, execute `redis-cli` in the terminal:
-
-```shell
-$> redis-cli -u <CONNECTION_URI> PING
-```
-
-### JavaScript | Typescript | Node.js
-
-- Install the [`ioredis`](https://github.com/redis/ioredis) package.
-- Use the following code snippet to connect to the data store:
-
-```javascript
-const Redis = require("ioredis");
-
-// Replace <CONNECTION_URI> with the actual Dragonfly Cloud connection URI.
-const client = new Redis("<CONNECTION_URI>");
-client.ping().then(resp => console.log(resp));
-```
-
-### Python
-
-- Install the [redis-py](https://github.com/redis/redis-py) package.
-- Use the following code snippet to connect to the data store:
-
-```python
-import redis
-
-# Replace <CONNECTION_URI> with the actual Dragonfly Cloud connection URI.
-client = redis.Redis.from_url("<CONNECTION_URI>")
-client.ping()
-```
-
-### Go
-
-- Install the [go-redis](https://github.com/redis/go-redis) package.
-- Use the following code snippet to connect to the data store:
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-
-	"github.com/redis/go-redis/v9"
-)
-
-func main() {
-	// Replace <CONNECTION_URI> with the actual Dragonfly Cloud connection URI.
-	// Note that <db> is the database number, and its default value is 0.
-	opts, err := redis.ParseURL("<CONNECTION_URI>/<db>")
-	if err != nil {
-		panic(err)
-	}
-
-	client := redis.NewClient(opts)
-
-	pong, err := client.Ping(context.Background()).Result()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Println(pong)
-}
-```
+After the data store's **Status** changes to **Active**, it is ready for
+connection. For detailed instructions on connecting, see [connecting with Redis clients](./connect/redis-clients.md).
 
 ## ACL Rules
 
