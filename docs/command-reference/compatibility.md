@@ -52,7 +52,7 @@ sidebar_position: 0
 |                                              | <span class="command">OBJECT FREQ</span>                   | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">OBJECT IDLETIME</span>               | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">OBJECT REFCOUNT</span>               | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">PRESIST</span>                       | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">PERSIST</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PEXPIRE</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PEXPIREAT</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PEXPIRETIME</span>                   | <span class="support unsupported">Unsupported</span>     |
