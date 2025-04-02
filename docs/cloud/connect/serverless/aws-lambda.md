@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Connect from AWS Lambda
+# AWS Lambda
 
 AWS Lambda is a serverless compute service provided by Amazon Web Services (AWS). It allows you to run code without provisioning or managing servers. You simply upload your code, and Lambda automatically handles the execution, scaling, and availability. It supports various programming languages and integrates seamlessly with other AWS services, making it ideal for building scalable, event-driven applications.
 
@@ -124,16 +124,14 @@ export const handler = async (event) => {
 
 ---
 
-### 6. Connect to a Private Datastore
+### 6. Connecting to a Private Dragonfly Data Store
 
-### Connecting to a Private Dragonfly Datastore
-
-Private datastores are hosted within a Virtual Private Cloud (VPC), which provides an isolated network environment. To enable your AWS Lambda function to securely connect to a private Dragonfly datastore, follow these beginner-friendly steps:
+Private data stores are hosted within a Virtual Private Cloud (VPC), which provides an isolated network environment. To enable your AWS Lambda function to securely connect to a private Dragonfly data store, follow these beginner-friendly steps:
 
 #### 1. Set Up VPC Peering
 
-1. Create a VPC in your AWS account within the same region as your datastore.
-2. Establish a peering connection between your VPC and the datastore's VPC. This allows the two networks to communicate. For detailed guidance, refer to the [VPC Peering Connections documentation](../../connections.md).
+1. Create a VPC in your AWS account within the same region as your data store.
+2. Establish a peering connection between your VPC and the data store's VPC. This allows the two networks to communicate. For detailed guidance, refer to the [VPC Peering Connections documentation](../../connections.md).
 
 #### 2. Adjust Security Group Rules
 
@@ -158,17 +156,17 @@ To allow Lambda to interact with your VPC, you need to update its execution role
 2. Go to the **Configuration** tab and choose **VPC**.
 3. Click **Edit** and set the following:
     - **VPC**: Select the VPC you created.
-    - **Subnets**: Choose subnets with access to the datastore.
-    - **Security Groups**: Select the security group that allows traffic to the datastore.
+    - **Subnets**: Choose subnets with access to the data store.
+    - **Security Groups**: Select the security group that allows traffic to the data store.
 
 #### 5. Test the Connection
 
 1. Deploy your Lambda function as described earlier.
-2. Update the `DRAGONFLY_CONNECTION_URI` environment variable with the private datastore's connection URL.
+2. Update the `DRAGONFLY_CONNECTION_URI` environment variable with the private data store's connection URL.
 3. Run a test event in the Lambda Console.
-4. Check the logs or query the datastore to confirm the connection is successful.
+4. Check the logs or query the data store to confirm the connection is successful.
 
-By following these steps, you can securely connect your Lambda function to a private Dragonfly datastore, ensuring your application remains both scalable and secure.
+By following these steps, you can securely connect your Lambda function to a private Dragonfly data store, ensuring your application remains both scalable and secure.
 
 ## Conclusion
 

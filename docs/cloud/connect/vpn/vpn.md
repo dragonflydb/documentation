@@ -7,6 +7,8 @@ slug: /cloud/connect/vpn
 
 ## Overview
 
-This guide will show you how to connect to a private endpoint datastore from your local machine with vpn configured.
+The following guide(s) will show you how to connect to a private endpoint Dragonfly Cloud data store from your local machine using a configured VPN. This setup allows secure access to private resources while maintaining network isolation.
 
-- [AWS](aws.md)
+While this method enables access to private resources, one should always **follow your organization's security policies and exercise caution when interacting with production data stores**.
+
+- [AWS Client VPN](aws.md)

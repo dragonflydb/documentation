@@ -180,7 +180,7 @@ providing the most suitable server configuration(s) for your workload when you s
 ## Connecting to a Data Store
 
 After the data store's **Status** changes to **Active**, it is ready for
-connection. For detailed instructions on connecting, see [Connecting with Redis clients](./connect/redis-clients.md).
+connection. For detailed instructions on connecting, see [connecting with Redis clients](./connect/redis-clients.md).
 
 ## ACL Rules
 
