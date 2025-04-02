@@ -175,6 +175,13 @@ providing the most suitable server configuration(s) for your workload when you s
 - **Sidekiq:** Enable this for running [Sidekiq](https://sidekiq.org/) workloads,
   [read more](/docs/integrations/sidekiq.md).
 
+---
+
+## Connecting to a Data Store
+
+After the data store's **Status** changes to **Active**, it is ready for
+connection. For detailed instructions on connecting, see [Connecting with Redis clients](./connect/redis-clients.md).
+
 ## ACL Rules
 
 You can leverage [Dragonfly's built-in support for ACLs](https://www.dragonflydb.io/docs/category/acl) to control access
