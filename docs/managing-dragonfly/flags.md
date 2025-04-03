@@ -172,7 +172,7 @@ flags which include specified substring in either in the name, description or pa
   `default: ""`
 
 ### `--rename_command`
-  Change the name of commands, format is: <cmd1_name>=<cmd1_new_name>, <cmd2_name>=<cmd2_new_name>)
+  Change the name of commands, format is: `<cmd1_name>=<cmd1_new_name>, <cmd2_name>=<cmd2_new_name>`
 
   `default:`
 
@@ -545,3 +545,8 @@ flags which include specified substring in either in the name, description or pa
   Log messages at or above this level are copied to stderr in addition to logfiles. This flag obsoletes --alsologtostderr
   
   `default: 2`
+
+### `--command_alias`
+  Add an alias for given commands, format is: `<alias>=<original>, <alias>=<original>`
+
+  `default:`
