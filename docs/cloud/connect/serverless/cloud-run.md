@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Connect from Cloud Run services
+# Cloud Run
 
 Cloud Run is a serverless compute service provided by GCP. It allows you to run code without provisioning or managing servers. It supports various programming languages and integrates seamlessly with other GCP services, making it ideal for building scalable, event-driven applications.
 
