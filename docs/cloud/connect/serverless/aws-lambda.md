@@ -128,16 +128,16 @@ export const handler = async (event) => {
 
 ---
 
-### 6. Connecting to a Private Dragonfly Data Store
+## Connecting to a Private Dragonfly Data Store
 
 Private data stores are hosted within a Virtual Private Cloud (VPC), which provides an isolated network environment. To enable your AWS Lambda function to securely connect to a private Dragonfly data store, follow these beginner-friendly steps:
 
-#### 1. Set Up VPC Peering
+### 1. Set Up VPC Peering
 
 1. Create a VPC in your AWS account within the same region as your data store.
 2. Establish a peering connection between your VPC and the data store's VPC. This allows the two networks to communicate. For detailed guidance, refer to the [VPC Peering Connections documentation](../../connections.md).
 
-#### 2. Adjust Security Group Rules
+### 2. Adjust Security Group Rules
 
 1. Open the [VPC Console](https://console.aws.amazon.com/vpc/) and locate the security group associated with your vpc.
 2. Add an inbound rule to allow traffic from your vpc:
@@ -145,7 +145,7 @@ Private data stores are hosted within a Virtual Private Cloud (VPC), which provi
     - **Port Range**: `6379` (Dragonfly port).
     - **Source**: CIDR of the private network.
 
-#### 3. Grant Lambda the Necessary Permissions
+### 3. Grant Lambda the Necessary Permissions
 
 To allow Lambda to interact with your VPC, you need to update its execution role:
 
@@ -154,7 +154,7 @@ To allow Lambda to interact with your VPC, you need to update its execution role
 3. Under **Permissions**, click the execution role name.
 4. Add the **AmazonEC2FullAccess** permission to the role. This ensures Lambda can connect to your VPC.
 
-#### 4. Configure Lambda to Use the VPC
+### 4. Configure Lambda to Use the VPC
 
 1. In the [AWS Lambda Console](https://console.aws.amazon.com/lambda/), select your function.
 2. Go to the **Configuration** tab and choose **VPC**.
@@ -163,7 +163,7 @@ To allow Lambda to interact with your VPC, you need to update its execution role
     - **Subnets**: Choose subnets with access to the data store.
     - **Security Groups**: Select the security group that allows traffic to the data store.
 
-#### 5. Test the Connection
+### 5. Test the Connection
 
 1. Deploy your Lambda function as described earlier.
 2. Update the `DRAGONFLY_CONNECTION_URI` environment variable with the private data store's connection URL.
