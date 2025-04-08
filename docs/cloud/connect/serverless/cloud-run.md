@@ -128,7 +128,7 @@ The code uses two environment variables `DFADDR` and `DFPASS`.
 
 1. Click the **Test** button in the console.
 2. Create a new test event (you can use the default template).
-3. Run the test.
+3. Run the test in cloud shell.
 4. Check the logs in **Logs** to verify the connection and the key-value pair operation.
 
 ---
@@ -169,7 +169,9 @@ VPC network you just created.
 2. You need to create a vm instance inside your vpc to run the test. Go to **VM instance** tab and
    create a vm instance. Make sure you've configured the network interface to use your vpc.
 3. Update your firewall rule so that you can connect to the instance via ssh.
-4. SSH to your machine. Run the command.
+4. SSH to your machine. Run the test command.
+
+You'll see the logs in **Logs** that dragonfly has stored the value.
 
 By following these steps, you can securely connect your Cloud run service to a private Dragonfly datastore, ensuring your application remains both scalable and secure.
 
