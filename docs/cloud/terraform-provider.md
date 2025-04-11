@@ -2,7 +2,7 @@
 sidebar_position: 13
 ---
 
-# Terraform Provider for Dragonfly Cloud
+# Terraform Provider
 
 ## Overview
 
