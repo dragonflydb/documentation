@@ -44,8 +44,8 @@ The Dragonfly Cloud Terraform provider allows you to manage various resources in
 
 Key resource types include:
 - Dragonfly Datastore Configuration
-- Network configurations
-- Connection configurations
+- Network Configuration
+- Connection Configuration
 
 ## Example Usage
 
