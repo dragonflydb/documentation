@@ -8,19 +8,7 @@ sidebar_position: 13
 
 The Dragonfly Cloud Terraform Provider allows you to manage your Dragonfly Cloud resources using infrastructure as code. This provider is currently in beta and enables you to automate the provisioning and management of your Dragonfly Cloud infrastructure. The provider is available on both the [Terraform Registry](https://registry.terraform.io/providers/dragonflydb/dfcloud/latest) and [OpenTofu Registry](https://search.opentofu.org/provider/dragonflydb/dfcloud/latest).
 
-## Installation
-
-You can install the Dragonfly Cloud Terraform provider using the following methods:
-
-### Automated Installation
-
-Run the setup script to automatically download and install the provider into your local Terraform folder:
-
-```bash
-wget -qO- https://raw.githubusercontent.com/dragonflydb/terraform-provider-dfcloud/refs/heads/main/setup.sh | sh
-```
-
-### Manual Configuration
+## Usage
 
 To use the provider in your Terraform configuration, include the following provider block:
 
