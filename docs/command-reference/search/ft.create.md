@@ -14,8 +14,6 @@ description: Creates an index with the given spec
 
 **Time complexity:** O(K) at creation where K is the number of fields, O(N) if scanning the keyspace is triggered, where N is the number of keys in the keyspace.
 
-**Important**: New in Dragonfly v1.13. Currently, Dragonfly Search is in **Beta**.
-
 ## Description
 
 Create an index with the given specification.
