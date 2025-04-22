@@ -11,8 +11,6 @@ description: Creates or updates a synonym group
 
 **Time complexity:** O(N)
 
-**Important**: New in Dragonfly v1.13. Currently, Dragonfly Search is in **Beta**.
-
 ## Description
 
 Creates or updates a synonym group with additional terms. By default, the command triggers a scan of all documents.

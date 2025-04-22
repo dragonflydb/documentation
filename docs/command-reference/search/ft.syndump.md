@@ -10,8 +10,6 @@ description: Dumps the synonyms from an index
 
 **Time complexity:** O(1)
 
-**Important**: New in Dragonfly v1.13. Currently, Dragonfly Search is in **Beta**.
-
 ## Description
 
 Dumps all synonym groups that exist in the given index.
