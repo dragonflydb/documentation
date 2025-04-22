@@ -16,7 +16,7 @@ import PageTitle from '@site/src/components/PageTitle';
 **ACL categories:** @pubsub, @slow
 
 In a Dragonfly cluster, shard channels are assigned to slots with the same algorithm used to assign keys to slots. These channels remain active on a shard, even during slot migrations. After a migration is
-complete, subscribed clients get redirected to thew new node that owns the moved slot. All the shard channels needs to belong to a single slot in a given SSUBSCRIBE call. Clients can subscribe to 
+complete, subscribed clients get redirected to the new node that owns the moved slot. All the shard channels needs to belong to a single slot in a given SSUBSCRIBE call. Clients can subscribe to
 channels that belong to different slots via separate calls to SSUBSCRIBE.
 
 
