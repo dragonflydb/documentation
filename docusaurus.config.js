@@ -46,6 +46,25 @@ const config = {
       },
       tagName: "link",
     },
+
+    {
+      tagName: "script",
+      attributes: {
+        type: "application/ld+json",
+      },
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org/",
+        "@type": "Organization",
+        name: "DragonflyDB",
+        url: "https://www.dragonflydb.io/",
+        logo: "https://dragonflydb.io/assets/logo.svg",
+        sameAs: [
+          "https://twitter.com/dragonflydbio",
+          "https://github.com/dragonflydb/dragonfly",
+          "https://www.linkedin.com/company/dragonflydb",
+        ],
+      }),
+    },
   ],
 
   presets: [
