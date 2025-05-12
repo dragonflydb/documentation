@@ -2,7 +2,11 @@
 sidebar_position: 1
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Redis Clients
+
+<PageTitle title="Connecting with Redis Clients | Dragonfly Cloud" />
 
 Once a data store's **Status** is **Active**, you can connect to it with any Redis client using the **Connection URI**
 provided in the data store drawer (e.g., `rediss://default:XXXXX@abcde.dragonflydb.cloud:6385`).

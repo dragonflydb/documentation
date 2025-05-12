@@ -5,7 +5,11 @@ sidebar_position: 0
 slug: /cloud/connect
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 ## Overview
+
+<PageTitle title="Connecting to Dragonfly Cloud" />
 
 Dragonfly Cloud provides a robust and scalable in-memory data store solution that is fully compatible with Redis and Memcached APIs. This guide will walk you through the steps to connect to Dragonfly Cloud, ensuring a seamless integration with your applications. Whether you're a developer or a system administrator, you'll find the instructions straightforward and easy to follow. Let's get started!
 
