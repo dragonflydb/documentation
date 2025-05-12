@@ -5,7 +5,11 @@ sidebar_position: 0
 slug: /cloud
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Dragonfly Cloud
+
+<PageTitle title="Dragonfly Cloud" />
 
 ## Overview
 

@@ -2,7 +2,11 @@
 sidebar_position: 11
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Managing Users
+
+<PageTitle title="Managing Users | Dragonfly Cloud" />
 
 ## Overview
 

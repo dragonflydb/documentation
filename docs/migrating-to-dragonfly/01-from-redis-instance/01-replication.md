@@ -3,7 +3,11 @@ sidebar_position: 1
 description: Use the `REPLICAOF` command for migration
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Replication
+
+<PageTitle title="Migrating with Replication | Dragonfly" />
 
 ## Introduction
 

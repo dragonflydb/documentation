@@ -2,7 +2,11 @@
 sidebar_position: 8
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Data Retention
+
+<PageTitle title="Data Retention | Dragonfly Cloud" />
 
 ## Data Stores
 

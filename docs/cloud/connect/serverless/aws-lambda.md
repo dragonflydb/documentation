@@ -2,7 +2,11 @@
 sidebar_position: 1
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # AWS Lambda
+
+<PageTitle title="Connecting from AWS Lambda | Dragonfly Cloud" />
 
 AWS Lambda is a serverless compute service provided by Amazon Web Services (AWS). It allows you to run code without provisioning or managing servers. You simply upload your code, and Lambda automatically handles the execution, scaling, and availability. It supports various programming languages and integrates seamlessly with other AWS services, making it ideal for building scalable, event-driven applications.
 

@@ -2,7 +2,11 @@
 sidebar_position: 5
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Network Bandwidth
+
+<PageTitle title="Network Bandwidth | Dragonfly Cloud" />
 
 ## Overview
 

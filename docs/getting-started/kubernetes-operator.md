@@ -2,7 +2,11 @@
 sidebar_position: 1
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Install Dragonfly Kubernetes Operator
+
+<PageTitle title="Getting Started with Kubernetes Operator | Dragonfly" />
 
 Dragonfly Operator is a Kubernetes operator used to deploy and manage [Dragonfly](https://dragonflydb.io/) instances in your Kubernetes clusters.
 

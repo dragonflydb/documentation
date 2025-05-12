@@ -7,8 +7,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { ConfigDisplay } from './_migration_options.mdx';
 import BrowserOnly from '@docusaurus/BrowserOnly';
+import PageTitle from '@site/src/components/PageTitle';
 
 # AWS ElastiCache Migration
+
+<PageTitle title="AWS ElastiCache Migration | Dragonfly Cloud" />
 
 In this guide, we will walk you through the steps to migrate from AWS ElastiCache to Dragonfly Cloud.
 

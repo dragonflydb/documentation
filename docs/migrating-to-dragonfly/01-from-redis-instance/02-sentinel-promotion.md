@@ -3,7 +3,11 @@ sidebar_position: 2
 description: Use Sentinel for migration with minimal or zero downtime
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Sentinel Promotion
+
+<PageTitle title="Migrating with Sentinel Promotion | Dragonfly" />
 
 ## Introduction
 
