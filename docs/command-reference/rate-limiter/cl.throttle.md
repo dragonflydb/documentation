@@ -6,7 +6,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # CL.THROTTLE
 
-<PageTitle title="Redis CL.THROTTLE Command (Documentation) | Dragonfly" />
+<PageTitle title="Redis Rate Limiter CL.THROTTLE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

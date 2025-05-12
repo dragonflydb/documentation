@@ -3,7 +3,11 @@ sidebar_position: 0
 description: Load an RDB file into Dragonfly
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Snapshot and Restore
+
+<PageTitle title="Migrating with Snapshot and Restore | Dragonfly" />
 
 ## Introduction
 
