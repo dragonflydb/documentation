@@ -2,7 +2,11 @@
 sidebar_position: 2
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Data Stores
+
+<PageTitle title="Data Stores | Dragonfly Cloud" />
 
 ## Overview
 

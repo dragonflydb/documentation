@@ -2,7 +2,11 @@
 sidebar_position: 1
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Getting Started
+
+<PageTitle title="Getting Started | Dragonfly Cloud" />
 
 ## Overview
 

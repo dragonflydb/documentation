@@ -2,7 +2,11 @@
 sidebar_position: 12
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Pricing
+
+<PageTitle title="Pricing | Dragonfly Cloud" />
 
 ## Overview
 

@@ -2,7 +2,11 @@
 sidebar_position: 7
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Backups
+
+<PageTitle title="Managing Backups | Dragonfly Cloud" />
 
 ## Overview
 

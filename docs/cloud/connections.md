@@ -2,7 +2,11 @@
 sidebar_position: 4
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Peering Connections
+
+<PageTitle title="Peering Connections | Dragonfly Cloud" />
 
 ## Overview
 

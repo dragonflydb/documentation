@@ -9,8 +9,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Link from '@docusaurus/Link';
 import MigrationOptions from './_migration_options.mdx';
+import PageTitle from '@site/src/components/PageTitle';
 
 # Migrating to Dragonfly Cloud
+
+<PageTitle title="Migrate to Dragonfly Cloud" />
 
 There are two main approaches to migrate your Redis data to Dragonfly Cl  ud:
 

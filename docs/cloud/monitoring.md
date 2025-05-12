@@ -2,7 +2,11 @@
 sidebar_position: 6
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Monitoring
+
+<PageTitle title="Monitoring | Dragonfly Cloud" />
 
 ## Overview
 

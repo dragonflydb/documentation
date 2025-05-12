@@ -2,7 +2,11 @@
 sidebar_position: 3
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Networks
+
+<PageTitle title="Private Networks | Dragonfly Cloud" />
 
 ## Overview
 

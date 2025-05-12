@@ -2,7 +2,11 @@
 sidebar_position: 14
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Support Plans
+
+<PageTitle title="Support Plans | Dragonfly Cloud" />
 
 We offer the following support plans for Dragonfly Cloud:
 
