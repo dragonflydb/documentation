@@ -67,7 +67,7 @@ Command flags are an array. It can contain the following simple strings (status 
 * **fast:** the command operates in constant or log(N) time.
   This flag is used for monitoring latency with the `LATENCY` command.
 * **loading:** the command is allowed while the database is loading.
-* **noscript:** the command can't be called from [scripts](https://redis.io/topics/eval-intro).
+* **noscript:** the command can't be called from [scripts](https://redis.io/docs/latest/develop/interact/programmability/eval-intro/).
 * **readonly:** the command doesn't modify data.
 * **write:** the command may modify data.
 

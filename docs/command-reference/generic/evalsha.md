@@ -21,4 +21,4 @@ Evaluate a script from the server's cache by its SHA1 digest.
 The server caches scripts by using the `SCRIPT LOAD` command.
 The command is otherwise identical to `EVAL`.
 
-Please refer to the [Redis Programmability](https://redis.io/topics/programmability) and [Introduction to Eval Scripts](https://redis.io/topics/eval-intro) for more information about Lua scripts.
+Please refer to the [Redis Programmability](https://redis.io/docs/latest/develop/interact/programmability/) and [Introduction to Eval Scripts](https://redis.io/docs/latest/develop/interact/programmability/eval-intro/) for more information about Lua scripts.
