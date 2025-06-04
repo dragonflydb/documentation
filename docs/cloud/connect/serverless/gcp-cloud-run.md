@@ -17,7 +17,7 @@ This guide explains how to create a Cloud Run function that connects to a Dragon
 Note that Cloud Run is the fully managed serverless platform,
 whereas a [Cloud Run function](https://cloud.google.com/blog/products/serverless/google-cloud-functions-is-now-cloud-run-functions)
 is a deployment option that allows you to deploy inline code scripts (aka. functions) instead of container images
-or code repositories directly on the Cloud Run platform.
+or code repositories directly on the Cloud Run platform. However, the process to connect to a Dragonfly Cloud data store is generally applicable.
 
 ---
 
@@ -30,7 +30,7 @@ or code repositories directly on the Cloud Run platform.
 
 ---
 
-## Cloud Run function code
+## Cloud Run Function Example Code
 
 I am writing a function for this guide for simplicity. You can deploy a service
 instead. The process to connect to a dragonfly data store is same. I will deploy
@@ -48,9 +48,7 @@ import (
   "context"
 
   "github.com/redis/go-redis/v9"
-
   "github.com/GoogleCloudPlatform/functions-framework-go/functions"
-
 )
 
 var addr string
@@ -60,37 +58,37 @@ func init() {
    functions.HTTP("HelloHTTP", helloHTTP)
 }
 
-// helloHTTP is an HTTP Cloud Function with a request parameter.
+// An HTTP Cloud Function handler that responds to HTTP requests.
 func helloHTTP(w http.ResponseWriter, r *http.Request) {
-  var d struct {
+  var req struct {
     Name string `json:"name"`
   }
-  if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
+  if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
     fmt.Fprint(w, "Hello, World!")
     return
   }
 
-  setDragonflyValue(d.Name)
-  if d.Name == "" {
+  setDragonflyValue(req.Name)
+  if req.Name == "" {
     fmt.Fprint(w, "Hello, World!")
     return
   }
-  fmt.Fprintf(w, "Hello, %s!", html.EscapeString(d.Name))
+  fmt.Fprintf(w, "Hello, %s!", html.EscapeString(req.Name))
 }
 
 func setDragonflyValue(name string) {
     ctx := context.Background()
-    addr = os.Getenv("DFADDR") // format- <datastore-host>:<port>
-    pass = os.Getenv("DFPASS") // datastore password
+    addr = os.Getenv("DFADDR") // <data-store-host>:<port>
+    pass = os.Getenv("DFPASS") // data store password
 
-    // Create a Redis client
+    // Create a Redis client.
     client := redis.NewClient(&redis.Options{
         Addr:     addr,
         Password: pass,
-        DB:       0,    // Use default DB
+        DB:       0,    // default DB
     })
 
-    // Ping the server to test the connection
+    // Ping the server to test the connection.
     pong, err := client.Ping(ctx).Result()
     if err != nil {
         fmt.Printf("Error connecting to Dragonfly: %v\n", err)
@@ -98,7 +96,7 @@ func setDragonflyValue(name string) {
     }
     fmt.Printf("Connected to Dragonfly: %s\n", pong)
 
-    // Perform some test operations
+    // Perform some test operations.
     err = client.Set(ctx, "test_key", name, 0).Err()
     if err != nil {
         fmt.Printf("Error setting key: %v\n", err)
@@ -112,7 +110,7 @@ func setDragonflyValue(name string) {
     }
     fmt.Printf("Retrieved value: %s\n", value)
 
-    // Close the connection
+    // Close the connection.
     err = client.Close()
     if err != nil {
         fmt.Printf("Error closing connection: %v\n", err)
@@ -120,18 +118,20 @@ func setDragonflyValue(name string) {
 }
 ```
 
-The code uses two environment variables `DFADDR` and `DFPASS`.
+The example code requires two environment variables, `DFADDR` and `DFPASS`.
 
-## Steps to Connect from the Cloud Run Function to a public data store
+---
+
+## Connecting to a Public Dragonfly Data Store
 
 ### 1. Create a New Cloud Run Function
 
-1. Go to the [Cloud Run](https://console.cloud.google.com/run).
+1. Go to the [Cloud Run](https://console.cloud.google.com/run) console.
 2. Click **Write a function**.
 3. Choose **Go Runtime**.
-4. Provide a name for your function (e.g., `DragonflyConnector`).
-5. Expand the Containers section.
-6. Edit the **Container Port** to match with the data store's port.
+4. Provide a name for your function (e.g., `HelloDragonfly`).
+5. Expand the **Containers** section.
+6. Edit the **Container Port** to match the data store's port.
 7. Add `DFADDR` and `DFPASS` environment variables.
 8. Click **Create**.
 
@@ -144,50 +144,53 @@ The code uses two environment variables `DFADDR` and `DFPASS`.
 
 ---
 
-## Connect to a Private Datastore
+## Connecting to a Private Dragonfly Data Store
 
-Private datastores are hosted within a Virtual Private Cloud (VPC), which provides
+Private data stores are hosted within a Virtual Private Cloud (VPC), which provides
 an isolated network environment. To enable your Cloud Run function to securely
-connect to a private Dragonfly datastore, follow these beginner-friendly steps:
+connect to a private Dragonfly data store, follow these beginner-friendly steps:
 
 ### 1. Set Up VPC Peering
 
-1. Create a VPC in your GCP account within the same region as your datastore.
-2. Establish a peering connection between your VPC and the datastore's VPC. This allows the two networks to communicate. For detailed guidance, refer to the [VPC Peering Connections documentation](../../connections.md).
+1. Create a VPC in your GCP account within the same region as your data store.
+2. Establish a peering connection between your VPC and the data store's VPC.
+   This allows the two networks to communicate. For detailed guidance, refer to the [VPC Peering Connections documentation](../../connections.md).
 
 ### 2. Adjust Firewall Rules
 
 1. Open the [VPC Network Console](https://console.cloud.google.com/networking/networks/list).
-2. Select your network and open the Firewall settings.
-3. Add an ingress rule to allow traffic from your datastore vpc. Put datastore vpc CIDR range in the Source Ipv4 range field. Allow all ports.
+2. Select your network and open the **Firewall** settings.
+3. Add an ingress rule to allow traffic from your data store VPC. Put the data store VPC CIDR range in the source IPV4 range field, and allow all ports.
 
-### 3. Edit Cloud Run settings
+### 3. Edit Cloud Run Settings
 
-As the data store is private, you need to configure your cloud run service's network setting to the
-VPC network you just created.
+As the data store is private, you need to configure Cloud Run's network setting
+to the VPC network you just created.
 
 1. Go to the [Cloud Run](https://console.cloud.google.com/run). Select your service.
 2. Navigate to the **Networking** tab.
 3. Select **Internal Ingress**. Save changes.
 4. Once deployed, click **Edit & deploy new version**.
-5. Edit container port to your datastore's port. Update `DFADDR` and `DFPASS` (empty if passkey is not set).
-6. Go to **Networking**. Select **Connect to a VPC for outbound traffic**. Choose your vpc.
+5. Edit the container port to your data store's port. Update `DFADDR` and `DFPASS` (empty if passkey is not set).
+6. Go to **Networking**. Select **Connect to a VPC for outbound traffic**. Choose your VPC.
 7. Deploy the changes.
 
 ### 4. Test the Connection
 
 1. Click **Test**. Copy the test command.
-2. You need to create a vm instance inside your vpc to run the test. Go to **VM instance** tab and
-   create a vm instance. Make sure you've configured the network interface to use your vpc.
-3. Update your firewall rule so that you can connect to the instance via ssh.
-4. SSH to your machine. Run the test command.
+2. You need to create a VM instance inside your VPC to run the test. Go to the **VM instances** tab and
+   create a VM instance. Make sure you've configured the network interface to use your VPC.
+3. Update your firewall rules so that you can connect to the instance via SSH.
+4. SSH to your machine and run the test command.
 
-You'll see the logs in **Logs** that dragonfly has stored the value.
-
-By following these steps, you can securely connect your Cloud run service to a private Dragonfly datastore, ensuring your application remains both scalable and secure.
+You'll see in **Logs** that Dragonfly has stored the value.
+By following these steps, you can securely connect your Cloud Run service to a private Dragonfly Cloud data store,
+ensuring your application remains both scalable and secure.
 
 ---
 
 ## Conclusion
 
-You have successfully created a GCP Cloud Run function that connects to Dragonfly Cloud, sets a test key-value pair, and verifies the connection. You can now extend this function to perform more complex operations with Dragonfly.
+You have successfully created a GCP Cloud Run function that connects to Dragonfly Cloud,
+sets a test key-value pair, and verifies the connection.
+You can now extend this function to perform more complex operations with Dragonfly.
