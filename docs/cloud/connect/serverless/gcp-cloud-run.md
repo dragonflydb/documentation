@@ -56,9 +56,6 @@ import (
   "github.com/GoogleCloudPlatform/functions-framework-go/functions"
 )
 
-var addr string
-var pass string
-
 func init() {
    functions.HTTP("HelloHTTP", helloHTTP)
 }
@@ -83,15 +80,15 @@ func helloHTTP(w http.ResponseWriter, r *http.Request) {
 
 func setDragonflyValue(name string) {
     ctx := context.Background()
-    addr = os.Getenv("DFADDR") // <data-store-host>:<port>
-    pass = os.Getenv("DFPASS") // data store password
+    connectionURI := os.Getenv("DRAGONFLY_CONNECTION_URI")
 
-    // Create a Redis client.
-    client := redis.NewClient(&redis.Options{
-        Addr:     addr,
-        Password: pass,
-        DB:       0,    // default DB
-    })
+    // Dragonfly is compatible with the Redis protocol, we can use existing Redis libraries.
+    opt, err := redis.ParseURL(connectionURI)
+    if err != nil {
+        fmt.Printf("Error parsing Dragonfly connection URI: %v\n", err)
+        return
+    }
+    client := redis.NewClient(opt)
 
     // Ping the server to test the connection.
     pong, err := client.Ping(ctx).Result()
@@ -123,7 +120,7 @@ func setDragonflyValue(name string) {
 }
 ```
 
-The example code requires two environment variables, `DFADDR` and `DFPASS`.
+The example code requires an environment variable named `DRAGONFLY_CONNECTION_URI`.
 
 ---
 
@@ -133,18 +130,19 @@ The example code requires two environment variables, `DFADDR` and `DFPASS`.
 
 1. Go to the [Cloud Run](https://console.cloud.google.com/run) console.
 2. Click **Write a function**.
-3. Choose **Go Runtime**.
-4. Provide a name for your function (e.g., `HelloDragonfly`).
-5. Expand the **Container(s)** section.
-6. Edit the **Container Port** to match the data store's port.
-7. Add `DFADDR` and `DFPASS` environment variables.
-8. Click **Create**.
+3. Provide a name for your function/service (e.g., `HelloDragonfly`).
+4. Choose a Go runtime version that supports your function code.
+5. Expand the **Container(s)** section and add a new environment variable under the `Variables & Secrets` tab:
+   - **Key**: `DRAGONFLY_CONNECTION_URI`
+   - **Value**: Your Dragonfly Cloud connection URI (e.g., `rediss://<username>:<password>@<host>:<port>`).
+6. Click **Create** to create the function.
+7. Add your code or the code provided above to the inline editor and wait for the function to be deployed.
 
 ### 2. Test the Cloud Run Function
 
-1. Click the **Test** button in the console.
+1. Click the **Test** button in the Cloud Run console.
 2. Create a new test event (you can use the default template).
-3. Run the test in cloud shell.
+3. Run the test (you can use Cloud Shell for simplicity).
 4. Check the logs in **Logs** to verify the connection and the key-value pair operation.
 
 ---
@@ -176,7 +174,7 @@ to the VPC network you just created.
 2. Navigate to the **Networking** tab.
 3. Select **Internal Ingress**. Save changes.
 4. Once deployed, click **Edit & deploy new version**.
-5. Edit the container port to your data store's port. Update `DFADDR` and `DFPASS` (empty if passkey is not set).
+5. Make sure the `DRAGONFLY_CONNECTION_URI` environment variable is set to the data store's private connection URI.
 6. Go to **Networking**. Select **Connect to a VPC for outbound traffic**. Choose your VPC.
 7. Deploy the changes.
 
