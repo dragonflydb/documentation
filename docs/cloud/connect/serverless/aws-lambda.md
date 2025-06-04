@@ -8,17 +8,24 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Connecting from AWS Lambda | Dragonfly Cloud" />
 
-AWS Lambda is a serverless compute service provided by Amazon Web Services (AWS). It allows you to run code without provisioning or managing servers. You simply upload your code, and Lambda automatically handles the execution, scaling, and availability. It supports various programming languages and integrates seamlessly with other AWS services, making it ideal for building scalable, event-driven applications.
+This guide explains how to create an AWS Lambda function that connects to a Dragonfly Cloud data store.
 
-This guide explains how to create an AWS Lambda function that connects to a Dragonfly Cloud instance.
+[AWS Lambda](https://aws.amazon.com/lambda/) is a serverless compute service provided by Amazon Web Services (AWS).
+It allows you to run code without provisioning or managing servers.
+You simply upload your code, and Lambda automatically handles the execution, scaling, and availability.
+It supports various programming languages and integrates seamlessly with other AWS services,
+making it ideal for building scalable, event-driven applications.
+
+**Note**: You can skip to the [Connecting to a Private Dragonfly Data Store](#connecting-to-a-private-dragonfly-data-store)
+section if you already have the Lambda function set up and just want to learn how to work with private Dragonfly Cloud data stores.
 
 ---
 
 ## Prerequisites
 
-1. **Dragonfly Cloud Instance**: Ensure you have a running Dragonfly Cloud instance and its connection URI.
+1. **Dragonfly Cloud Data Store**: Ensure you have a running [Dragonfly Cloud](https://dragonflydb.cloud/) data store and its connection URI.
 2. **AWS Account**: Access to AWS Lambda and IAM services.
-3. **Node Runtime**: The Lambda function will be written in NodeJS.
+3. **Node Runtime**: In this guide, the Lambda function will be written in NodeJS.
 4. **Redis Client Library**: Use the `redis` package to interact with Dragonfly.
 
 ---
@@ -33,21 +40,17 @@ This guide explains how to create an AWS Lambda function that connects to a Drag
 4. Provide a name for your function (e.g., `DragonflyConnector`).
 5. Click **Create function**.
 
----
+### 2. Set Environment Variable(s)
 
-### 2. Add the Dragonfly URI as an Environment Variable
-
-1. In the Lambda function configuration, go to the **Configuration** tab.
+1. Within the Lambda function, go to the **Configuration** tab.
 2. Select **Environment variables**.
 3. Add a new variable:
    - **Key**: `DRAGONFLY_CONNECTION_URI`
    - **Value**: Your Dragonfly Cloud connection URI (e.g., `rediss://<username>:<password>@<host>:<port>`).
 
----
-
 ### 3. Write the Lambda Function Code
 
-Create a module Javascript file (e.g., `index.mjs`) with the following code:
+Create a module JavaScript file (e.g., `index.mjs`) with the following code:
 
 ```js
 import {createClient} from 'redis';
@@ -65,14 +68,14 @@ if (!redis.isReady) {
 console.log("ready")
 export const handler = async (event) => {
     try {
-        // Test connection with basic operations
+        // Test connection with some basic operations.
         await redis.set('lambda_test', JSON.stringify({
             timestamp: new Date().toISOString(),
             source: 'AWS Lambda'
         }));
-        
+
         const result = await redis.get('lambda_test');
-        
+
         return {
             statusCode: 200,
             body: JSON.stringify({
@@ -93,8 +96,6 @@ export const handler = async (event) => {
 };
 ```
 
----
-
 ### 4. Build and Deploy the Lambda Function
 
 1. Your directory should look like this:
@@ -106,7 +107,7 @@ export const handler = async (event) => {
    package-lock.json
    ```
 
-2. **Package**: Aws Lambda takes zip file to load the code:
+2. **Package**: AWS Lambda takes a zip file to load the code:
 
    ```sh
    zip -r dragonfly-lambda.zip .
@@ -117,8 +118,6 @@ export const handler = async (event) => {
    - Go to the [AWS Lambda Console](https://console.aws.amazon.com/lambda/).
    - In the **Code** section, upload the `dragonfly-lambda.zip` file.
 
----
-
 ### 5. Test the Lambda Function
 
 1. Go to the **Test** tab in the Lambda Console.
@@ -128,24 +127,25 @@ export const handler = async (event) => {
 
 ---
 
-### 6. Connecting to a Private Dragonfly Data Store
+## Connecting to a Private Dragonfly Data Store
 
-Private data stores are hosted within a Virtual Private Cloud (VPC), which provides an isolated network environment. To enable your AWS Lambda function to securely connect to a private Dragonfly data store, follow these beginner-friendly steps:
+Private data stores are hosted within a Virtual Private Cloud (VPC), which provides an isolated network environment.
+To enable your AWS Lambda function to securely connect to a private Dragonfly Cloud data store, follow these beginner-friendly steps:
 
-#### 1. Set Up VPC Peering
+### 1. Set Up VPC Peering
 
 1. Create a VPC in your AWS account within the same region as your data store.
 2. Establish a peering connection between your VPC and the data store's VPC. This allows the two networks to communicate. For detailed guidance, refer to the [VPC Peering Connections documentation](../../connections.md).
 
-#### 2. Adjust Security Group Rules
+### 2. Adjust Security Group Rules
 
-1. Open the [VPC Console](https://console.aws.amazon.com/vpc/) and locate the security group associated with your vpc.
-2. Add an inbound rule to allow traffic from your vpc:
+1. Open the [VPC Console](https://console.aws.amazon.com/vpc/) and locate the security group associated with your VPC.
+2. Add an inbound rule to allow traffic from your VPC:
     - **Type**: Custom TCP Rule
     - **Port Range**: `6379` (Dragonfly port).
     - **Source**: CIDR of the private network.
 
-#### 3. Grant Lambda the Necessary Permissions
+### 3. Grant Lambda Necessary Permissions
 
 To allow Lambda to interact with your VPC, you need to update its execution role:
 
@@ -154,7 +154,7 @@ To allow Lambda to interact with your VPC, you need to update its execution role
 3. Under **Permissions**, click the execution role name.
 4. Add the **AmazonEC2FullAccess** permission to the role. This ensures Lambda can connect to your VPC.
 
-#### 4. Configure Lambda to Use the VPC
+### 4. Configure Lambda to Use the VPC
 
 1. In the [AWS Lambda Console](https://console.aws.amazon.com/lambda/), select your function.
 2. Go to the **Configuration** tab and choose **VPC**.
@@ -163,15 +163,19 @@ To allow Lambda to interact with your VPC, you need to update its execution role
     - **Subnets**: Choose subnets with access to the data store.
     - **Security Groups**: Select the security group that allows traffic to the data store.
 
-#### 5. Test the Connection
+### 5. Test the Connection
 
 1. Deploy your Lambda function as described earlier.
 2. Update the `DRAGONFLY_CONNECTION_URI` environment variable with the private data store's connection URL.
 3. Run a test event in the Lambda Console.
 4. Check the logs or query the data store to confirm the connection is successful.
 
-By following these steps, you can securely connect your Lambda function to a private Dragonfly data store, ensuring your application remains both scalable and secure.
+By following these steps, you can securely connect your Lambda function to a private Dragonfly Cloud data store, ensuring your application remains both scalable and secure.
+
+---
 
 ## Conclusion
 
-You have successfully created an AWS Lambda function that connects to Dragonfly Cloud, sets a test key-value pair, and verifies the connection. You can now extend this function to perform more complex operations with Dragonfly.
+You have successfully created an AWS Lambda function that connects to Dragonfly Cloud,
+sets a test key-value pair, and verifies the connection.
+You can now extend this function to perform more complex operations with Dragonfly.
