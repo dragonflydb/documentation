@@ -8,16 +8,20 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Connecting from GCP Cloud Run | Dragonfly Cloud" />
 
+This guide explains how to create a GCP Cloud Run function that connects to a Dragonfly Cloud data store.
+
 [GCP Cloud Run](https://cloud.google.com/run) is a serverless compute service provided by Google Cloud Platform (GCP).
 It allows you to run code without provisioning or managing servers.
 It supports various programming languages and integrates seamlessly with other GCP services,
 making it ideal for building scalable, event-driven applications.
 
-This guide explains how to create a Cloud Run function that connects to a Dragonfly Cloud data store.
-Note that Cloud Run is the fully managed serverless platform,
-whereas a [Cloud Run function](https://cloud.google.com/blog/products/serverless/google-cloud-functions-is-now-cloud-run-functions)
-is a deployment option that allows you to deploy inline code scripts (aka. functions) instead of container images
-or code repositories directly on the Cloud Run platform. However, the process to connect to a Dragonfly Cloud data store is generally applicable.
+Within the Cloud Run service,
+a [Cloud Run function](https://cloud.google.com/blog/products/serverless/google-cloud-functions-is-now-cloud-run-functions)
+is a deployment option that allows you to deploy inline code scripts or functions directly instead of deploying container images or code repositories.
+However, the process to connect to a Dragonfly Cloud data store is generally applicable to both Cloud Run services and functions.
+
+**Note**: You can skip to the [Connecting to a Private Dragonfly Data Store](#connecting-to-a-private-dragonfly-data-store)
+section if you already have the Cloud Run function set up and just want to learn how to work with private Dragonfly Cloud data stores.
 
 ---
 
@@ -32,9 +36,10 @@ or code repositories directly on the Cloud Run platform. However, the process to
 
 ## Cloud Run Function Example Code
 
-I am writing a function for this guide for simplicity. You can deploy a service
-instead. The process to connect to a dragonfly data store is same. I will deploy
-the below sample code -
+For the purposes of this guide, a Cloud Run function implementation is provided for simplicity.
+Alternatively, a Cloud Run service deployment may be used instead.
+The connection process to a Dragonfly Cloud data store remains the same in either case.
+The following sample code will be deployed:
 
 ```go
 package helloworld
@@ -130,7 +135,7 @@ The example code requires two environment variables, `DFADDR` and `DFPASS`.
 2. Click **Write a function**.
 3. Choose **Go Runtime**.
 4. Provide a name for your function (e.g., `HelloDragonfly`).
-5. Expand the **Containers** section.
+5. Expand the **Container(s)** section.
 6. Edit the **Container Port** to match the data store's port.
 7. Add `DFADDR` and `DFPASS` environment variables.
 8. Click **Create**.
@@ -148,7 +153,7 @@ The example code requires two environment variables, `DFADDR` and `DFPASS`.
 
 Private data stores are hosted within a Virtual Private Cloud (VPC), which provides
 an isolated network environment. To enable your Cloud Run function to securely
-connect to a private Dragonfly data store, follow these beginner-friendly steps:
+connect to a private Dragonfly Cloud data store, follow these beginner-friendly steps:
 
 ### 1. Set Up VPC Peering
 

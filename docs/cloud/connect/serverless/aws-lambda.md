@@ -8,13 +8,16 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Connecting from AWS Lambda | Dragonfly Cloud" />
 
+This guide explains how to create an AWS Lambda function that connects to a Dragonfly Cloud data store.
+
 [AWS Lambda](https://aws.amazon.com/lambda/) is a serverless compute service provided by Amazon Web Services (AWS).
 It allows you to run code without provisioning or managing servers.
 You simply upload your code, and Lambda automatically handles the execution, scaling, and availability.
 It supports various programming languages and integrates seamlessly with other AWS services,
 making it ideal for building scalable, event-driven applications.
 
-This guide explains how to create an AWS Lambda function that connects to a Dragonfly Cloud data store.
+**Note**: You can skip to the [Connecting to a Private Dragonfly Data Store](#connecting-to-a-private-dragonfly-data-store)
+section if you already have the Lambda function set up and just want to learn how to work with private Dragonfly Cloud data stores.
 
 ---
 
@@ -126,7 +129,8 @@ export const handler = async (event) => {
 
 ## Connecting to a Private Dragonfly Data Store
 
-Private data stores are hosted within a Virtual Private Cloud (VPC), which provides an isolated network environment. To enable your AWS Lambda function to securely connect to a private Dragonfly data store, follow these beginner-friendly steps:
+Private data stores are hosted within a Virtual Private Cloud (VPC), which provides an isolated network environment.
+To enable your AWS Lambda function to securely connect to a private Dragonfly Cloud data store, follow these beginner-friendly steps:
 
 ### 1. Set Up VPC Peering
 
@@ -166,7 +170,7 @@ To allow Lambda to interact with your VPC, you need to update its execution role
 3. Run a test event in the Lambda Console.
 4. Check the logs or query the data store to confirm the connection is successful.
 
-By following these steps, you can securely connect your Lambda function to a private Dragonfly data store, ensuring your application remains both scalable and secure.
+By following these steps, you can securely connect your Lambda function to a private Dragonfly Cloud data store, ensuring your application remains both scalable and secure.
 
 ---
 
