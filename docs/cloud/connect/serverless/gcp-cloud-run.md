@@ -2,20 +2,31 @@
 sidebar_position: 2
 ---
 
-# Cloud Run
+import PageTitle from '@site/src/components/PageTitle';
 
-Cloud Run is a serverless compute service provided by GCP. It allows you to run code without provisioning or managing servers. It supports various programming languages and integrates seamlessly with other GCP services, making it ideal for building scalable, event-driven applications.
+# GCP Cloud Run
 
-This guide explains how to connect a Cloud run service to a Dragonfly Cloud instance.
+<PageTitle title="Connecting from GCP Cloud Run | Dragonfly Cloud" />
+
+[GCP Cloud Run](https://cloud.google.com/run) is a serverless compute service provided by Google Cloud Platform (GCP).
+It allows you to run code without provisioning or managing servers.
+It supports various programming languages and integrates seamlessly with other GCP services,
+making it ideal for building scalable, event-driven applications.
+
+This guide explains how to create a Cloud Run function that connects to a Dragonfly Cloud data store.
+Note that Cloud Run is the fully managed serverless platform,
+whereas a [Cloud Run function](https://cloud.google.com/blog/products/serverless/google-cloud-functions-is-now-cloud-run-functions)
+is a deployment option that allows you to deploy inline code scripts (aka. functions) instead of container images
+or code repositories directly on the Cloud Run platform.
 
 ---
 
 ## Prerequisites
 
-1. **Dragonfly Cloud Instance**: Ensure you have a running Dragonfly Cloud instance and its connection URI.
+1. **Dragonfly Cloud Data Store**: Ensure you have a running [Dragonfly Cloud](https://dragonflydb.cloud/) data store and its connection URI.
 2. **GCP Console**: Access to Cloud Run and IAM services.
-3. **Go Runtime**: The Cloud Run service will be written in NodeJS.
-4. **Redis Client Library**: Use the `go-redis/v9` package to interact with Dragonfly.
+3. **Go Toolchain**: In this guide, the Cloud Run service will be written in Go.
+4. **Redis Client Library**: Use the `go-redis` package to interact with Dragonfly.
 
 ---
 
@@ -174,6 +185,8 @@ VPC network you just created.
 You'll see the logs in **Logs** that dragonfly has stored the value.
 
 By following these steps, you can securely connect your Cloud run service to a private Dragonfly datastore, ensuring your application remains both scalable and secure.
+
+---
 
 ## Conclusion
 
