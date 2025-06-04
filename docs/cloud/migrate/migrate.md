@@ -65,14 +65,22 @@ Select your current Redis deployment type below to get started:
       </Tabs>
     </div>
   </TabItem>
-  
+
   <TabItem value="redis-cloud" label="Redis Cloud">
     <div className="migration-source-config">
       <h4>Configure Redis Cloud Migration</h4>
-      <p>We're working on detailed migration guides for Redis Cloud. In the meantime, our team can help you migrate - visit our <Link to="https://www.dragonflydb.io/contact">contact page</Link> for assistance.</p>
+      <p>Choose your current Redis Cloud setup:</p>
+      <Tabs groupId="redis-cloud-mode">
+        <TabItem value="cluster" label="Cluster Mode">
+          <MigrationOptions isCluster={true} cloudProvider="Redis Cloud" />
+        </TabItem>
+        <TabItem value="single" label="Single Node">
+          <MigrationOptions isCluster={false} cloudProvider="Redis Cloud" />
+        </TabItem>
+      </Tabs>
     </div>
   </TabItem>
-  
+
   <TabItem value="azure-redis" label="Azure Redis">
     <div className="migration-source-config">
       <h4>Azure Redis Migration</h4>
