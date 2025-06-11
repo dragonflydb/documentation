@@ -18,7 +18,6 @@ You may encounter this error with port `6379`:
 
 ```shell
 $> curl localhost:6379/metrics --verbose
-
 # * Received HTTP/0.9 when not allowed
 # * Closing connection
 # curl: (1) Received HTTP/0.9 when not allowed
@@ -28,7 +27,7 @@ However, you can still access the metrics at `:9999/metrics` without any issues:
 
 ```shell
 # Port-forward the pod's admin port to your local machine.
-$> kubectl port-forward dragonfly-sample-1 9999:9999
+$> kubectl port-forward dragonfly-pod-1 '9999:9999'
 
 # Now you can access the metrics via the forwarded port.
 $> curl localhost:9999/metrics
