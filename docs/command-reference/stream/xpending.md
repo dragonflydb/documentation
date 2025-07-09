@@ -31,7 +31,7 @@ XPENDING key group [start end count] [consumer]
 ## Return Values
 
 The `XPENDING` command returns the number of pending messages, followed by a summary with detailed information about specified pending messages.
-It includes message IDs, consumer IDs, and the time since each message was claimed.
+It includes smallest and greatest ID among the pending messages, and then list every consumer in the consumer group with at least one pending message, and the number of pending messages it has.
 
 ## Code Examples
 
@@ -40,43 +40,60 @@ It includes message IDs, consumer IDs, and the time since each message was claim
 Get basic pending message information:
 
 ```shell
-dragonfly$> XADD mystream * name John
-"1657659051233-0"
+dragonfly$> > XADD mystream * name John
+"1752095746463-0"
+
 dragonfly$> XGROUP CREATE mystream mygroup 0
 OK
+
 dragonfly$> XREADGROUP GROUP mygroup myconsumer COUNT 1 STREAMS mystream >
 1) 1) "mystream"
-   2) 1) 1) "1657659051233-0"
+   2) 1) 1) "1752095746463-0"
          2) 1) "name"
             2) "John"
+
 dragonfly$> XPENDING mystream mygroup
 1) (integer) 1
-2) "1657659051233-0"
-3) "myconsumer"
-4) (integer) 1231
+2) "1752095746463-0"
+3) "1752095746463-0"
+4) 1) 1) "myconsumer"
+      2) (integer) 1
 ```
 
-### Get Pending Messages for a Specific Consumer
+### Extended Form for `XPENDING`
 
-Retrieve pending messages for a specific consumer:
+In order to see all the pending messages with more associated information we need to also pass a range of IDs, in a similar way we do it with [`XRANGE`](xrange.md):
 
 ```shell
-dragonfly$> XPENDING mystream mygroup - + 10 myconsumer
-1) 1) "1657659051233-0"
+dragonfly$> XPENDING mystream mygroup - + 10
+1) 1) "1752095746463-0"
    2) "myconsumer"
-   3) (integer) 1231
+   3) (integer) 638625
    4) (integer) 1
 ```
 
-### Filter by Message ID Range
+In the extended form we no longer see the summary information, instead there is detailed information for each message in the pending entries list. For each message four attributes are returned:
 
-Get pending messages within a specific ID range:
+- The ID of the message.
+- The name of the consumer (the current owner) that fetched the message and has still to acknowledge it.
+- The number of milliseconds that elapsed since the last time this message was delivered to this consumer.
+- The number of times this message was delivered.
+
+It is also possible to pass an additional argument, the consumer, in order to see the messages having a specific owner:
 
 ```shell
-dragonfly$> XPENDING mystream mygroup "1657650000000-0" "1657659999999-0" 10
-1) 1) "1657659051233-0"
+dragonfly$> XPENDING mystream mygroup - + 10 myconsumer
+```
+
+### Filter by Idle Time
+
+It is also possible to filter pending stream entries by their idle-time, given in milliseconds:
+
+```shell
+dragonfly$> XPENDING mystream mygroup IDLE 10000 - + 10
+1) 1) "1752095746463-0"
    2) "myconsumer"
-   3) (integer) 1231
+   3) (integer) 997525
    4) (integer) 1
 ```
 
