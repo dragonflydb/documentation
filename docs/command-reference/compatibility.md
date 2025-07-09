@@ -305,6 +305,10 @@ sidebar_position: 0
 |                                              | <span class="command">BF.EXISTS</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BF.MEXISTS</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BF.RESERVE</span>                    | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">BF.INSERT</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">BF.SCANDUMP</span>                   | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">BF.LOADCHUNK</span>                  | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">BF.CARD</span>                       | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Cuckoo Filter</span>    | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Count-min Sketch</span> | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Graph</span>            | <span class="command">Not supported</span>                 | <span class="support unsupported">Unsupported</span>     |
