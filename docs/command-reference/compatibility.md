@@ -341,6 +341,18 @@ sidebar_position: 0
 | <span class="family">T-Digest</span>         | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Time Series</span>      | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Top-K</span>            | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">CF</span>               | <span class="command">CF.ADD</span>                        | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CF.ADDNX</span>                      | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CF.COUNT</span>                      | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CF.DEL</span>                        | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CF.EXISTS</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CF.INFO</span>                       | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CF.INSERT</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CF.INSERTNX</span>                   | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CF.LOADCHUNK</span>                  | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CF.MEXISTS</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CF.RESERVE</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CF.SCANDUMP</span>                   | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Cluster</span>          | <span class="command">ASKING</span>                        | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLUSTER ADDSLOTS</span>              | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLUSTER ADDSLOTSRANGE</span>         | <span class="support unsupported">Unsupported</span>     |
