@@ -23,12 +23,13 @@ XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] id [id ...]
 
 - `COUNT count`: The maximum number of entries to return per stream. Optional, defaults to return all available entries.
 - `BLOCK milliseconds`: The maximum number of milliseconds the command will block if no messages are available. Optional, defaults to non-blocking behavior.
-- `STREAMS key [key ...]`: One or more stream keys to read from.
-- `id [id ...]`: One or more specific entry IDs to start reading from, or use `$` to start from the latest message.
+- `STREAMS key`: One or more stream keys to read from.
+- `id`: One or more specific entry IDs to start reading from, or use `$` to start from the latest message.
 
 ## Return Values
 
-The command returns a list of streams and the corresponding entries that were read from them, or an empty list if the `BLOCK` option is used and no messages are available within the specified time.
+- The command returns a list of streams and the corresponding entries that were read from them.
+- If the `BLOCK` option is used and a timeout occurs, or if there is no stream that can be served, `nil` is returned.
 
 ## Code Examples
 

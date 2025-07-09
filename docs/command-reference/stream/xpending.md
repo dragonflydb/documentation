@@ -30,8 +30,8 @@ XPENDING key group [start end count] [consumer]
 
 ## Return Values
 
-The `XPENDING` command returns the number of pending messages, followed by a summary with detailed information about specified pending messages.
-It includes smallest and greatest ID among the pending messages, and then list every consumer in the consumer group with at least one pending message, and the number of pending messages it has.
+- The `XPENDING` command returns the number of pending messages, followed by a summary with detailed information about specified pending messages.
+- It includes smallest and greatest ID among the pending messages, and then list every consumer in the consumer group with at least one pending message, and the number of pending messages it has.
 
 ## Code Examples
 
