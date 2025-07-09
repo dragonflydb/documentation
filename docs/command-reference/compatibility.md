@@ -152,7 +152,7 @@ sidebar_position: 0
 |                                              | <span class="command">ACL USERS</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ACL WHOAMI</span>                    | <span class="support supported">Fully Supported</span>   |
 |                                              | <span class="command">BGREWRITEAOF</span>                  | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">BGSAVE</span>                        | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">BGSAVE</span>                        | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">COMMAND</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">COMMAND COUNT</span>                 | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">COMMAND DOCS</span>                  | <span class="support unsupported">Unsupported</span>     |
