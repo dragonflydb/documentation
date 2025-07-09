@@ -341,6 +341,12 @@ sidebar_position: 0
 | <span class="family">T-Digest</span>         | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Time Series</span>      | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Top-K</span>            | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">CMS</span>              | <span class="command">CMS.INCRBY</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CMS.INFO</span>                      | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CMS.INITBYDIM</span>                 | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CMS.INITBYPROB</span>                | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CMS.MERGE</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CMS.QUERY</span>                     | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Cluster</span>          | <span class="command">ASKING</span>                        | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLUSTER ADDSLOTS</span>              | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLUSTER ADDSLOTSRANGE</span>         | <span class="support unsupported">Unsupported</span>     |
