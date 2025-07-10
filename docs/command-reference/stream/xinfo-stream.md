@@ -81,6 +81,6 @@ dragonfly$> XINFO STREAM mystream
 
 `radix-tree-keys` indicates the number of entries in the underlying radix tree data structure for streams.
 
-### How do I interpret `first-entry` and `last-entry?
+### How do I interpret `first-entry` and `last-entry`?
 
 `first-entry` and `last-entry` give you the stream's start and end records, which helps to identify the pattern of data.

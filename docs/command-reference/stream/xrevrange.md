@@ -28,8 +28,9 @@ XREVRANGE key end start [COUNT count]
 
 ## Return Values
 
-The command returns an array of entries, where each entry is itself an array consisting of an ID and a field-value pair list.
-The entries are ordered from the highest ID to the lowest ID, within the specified range.
+- The command returns a list of stream entries that correspond to the specified range.
+- The entries are ordered from the highest ID to the lowest ID, within the specified range.
+- Each entry is represented by a two-element array with the entry ID as the first element and the entry data (field-value pairs) as the second element.
 
 ## Code Examples
 
@@ -40,63 +41,36 @@ Retrieve entries from a stream within a specified ID range in reverse order:
 ```shell
 # Adding entries to a stream.
 dragonfly$> XADD mystream * field1 value1
-"1617825600000-0"
-dragonfly$> XADD mystream * field1 value2
-"1617826800000-0"
-dragonfly$> XADD mystream * field1 value3
-"1617828000000-0"
+"1752105492073-0"
+
+dragonfly$> XADD mystream * field2 value2
+"1752105495609-0"
+
+dragonfly$> XADD mystream * field3 value3
+"1752105500367-0"
 
 # Retrieve entries in reverse order.
-dragonfly$> XREVRANGE mystream 1617828000000-0 1617825600000-0
-1) 1) "1617828000000-0"
-   2) 1) "field1"
+dragonfly$> XREVRANGE mystream + -
+1) 1) "1752105500367-0"
+   2) 1) "field3"
       2) "value3"
-2) 1) "1617826800000-0"
-   2) 1) "field1"
+2) 1) "1752105495609-0"
+   2) 1) "field2"
       2) "value2"
-3) 1) "1617825600000-0"
+3) 1) "1752105492073-0"
    2) 1) "field1"
       2) "value1"
 ```
 
 ### Using `COUNT` Option
 
-Retrieve a limited number of entries in reverse order using the `COUNT` option:
+You can get just the last element added into the stream using the `COUNT` option:
 
 ```shell
-# Adding more entries to the stream.
-dragonfly$> XADD mystream * field1 value4
-"1617829200000-0"
-
-# Retrieve only the two most recent entries.
-dragonfly$> XREVRANGE mystream + - COUNT 2
-1) 1) "1617829200000-0"
-   2) 1) "field1"
-      2) "value4"
-2) 1) "1617828000000-0"
-   2) 1) "field1"
+dragonfly$> XREVRANGE mystream + - COUNT 1
+1) 1) "1752105500367-0"
+   2) 1) "field3"
       2) "value3"
-```
-
-### Applications in Event Logging
-
-Consider a log stream where you want to fetch the most recent events up to a specific moment:
-
-```shell
-# Adding log entries.
-dragonfly$> XADD logs * event login
-"1617830000000-0"
-dragonfly$> XADD logs * event logout
-"1617831000000-0"
-
-# Retrieve events in reverse order up to a specific ID.
-dragonfly$> XREVRANGE logs 1617831000000-0 1617830000000-0
-1) 1) "1617831000000-0"
-   2) 1) "event"
-      2) "logout"
-2) 1) "1617830000000-0"
-   2) 1) "event"
-      2) "login"
 ```
 
 ## Best Practices
@@ -117,4 +91,4 @@ If the stream key does not exist, `XREVRANGE` returns an empty array.
 
 ### Can negative indexes be used for `end` and `start` parameters?
 
-Stream IDs are lexicographic and do not support negative indexes. Instead, ranges define specific or approximate position and order within the stream based on IDs.
+Stream IDs are lexicographic and do not support negative indexes.

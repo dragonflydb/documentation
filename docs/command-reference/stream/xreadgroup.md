@@ -106,13 +106,9 @@ dragonfly$> XREADGROUP GROUP mygroup myconsumer BLOCK 2000 STREAMS mystream >
 
 ## FAQs
 
-### What happens if a stream key doesn't exist?
+### What happens if the stream or consumer group does not exist?
 
-The `XREADGROUP` command will return an error if a stream key does not exist.
-
-### What happens if a consumer group doesn't exist?
-
-The `XREADGROUP` command will return an error if a consumer group does not exist.
+If the stream or consumer group does not exist, the `XREADGROUP` command will return an error.
 
 ### How can I include already read messages?
 
