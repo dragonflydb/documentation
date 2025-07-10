@@ -45,9 +45,9 @@ In this example, we will find the first occurrence of `1` in the string:
 # String: example
 # Hex:    0x65     0x78     0x61     0x6d     0x70     0x6c     0x65
 # Binary: 01100101 01111000 01100001 01101101 01110000 01101100 01100101
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> BITPOS mykey 1
+dragonfly$> BITPOS mykey 1
 (integer) 1
 ```
 
@@ -58,9 +58,9 @@ The first occurrence of a `1` happens at bit position 1. (Remember, positions ar
 Similarly, we can find the first occurrence of a `0` bit in the string:
 
 ```shell
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> BITPOS mykey 0
+dragonfly$> BITPOS mykey 0
 (integer) 0
 ```
 
@@ -74,9 +74,9 @@ We can specify a search range within bytes to limit the search. The following ex
 # String: example
 # Hex:    0x65     0x78     0x61     0x6d     0x70     0x6c     0x65
 # Binary: 01100101 01111000 01100001 01101101 01110000 01101100 01100101
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> BITPOS mykey 1 1 3
+dragonfly$> BITPOS mykey 1 1 3
 (integer) 9
 ```
 
@@ -89,9 +89,9 @@ You can also use `BITPOS` in a system where flags are represented by bits within
 ```shell
 # Example binary string: 0x00 0x04 0x80
 # Binary:                00000000 00000100 10000000
-dragonfly> SET flags "\x00\x04\x80"
+dragonfly$> SET flags "\x00\x04\x80"
 OK
-dragonfly> BITPOS flags 1
+dragonfly$> BITPOS flags 1
 (integer) 13
 ```
 

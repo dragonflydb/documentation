@@ -39,9 +39,9 @@ GET key
 Retrieve the value of a key:
 
 ```shell
-dragonfly> SET mykey "Hello, Dragonfly!"
+dragonfly$> SET mykey "Hello, Dragonfly!"
 OK
-dragonfly> GET mykey
+dragonfly$> GET mykey
 "Hello, Dragonfly!"
 ```
 
@@ -50,7 +50,7 @@ dragonfly> GET mykey
 If the key does not exist, `GET` will return `nil`:
 
 ```shell
-dragonfly> GET non_existent_key
+dragonfly$> GET non_existent_key
 (nil)
 ```
 
@@ -59,13 +59,13 @@ dragonfly> GET non_existent_key
 Setting and then retrieving the updated value of a key:
 
 ```shell
-dragonfly> SET counter "5"
+dragonfly$> SET counter "5"
 OK
-dragonfly> GET counter
+dragonfly$> GET counter
 "5"
-dragonfly> SET counter "10"
+dragonfly$> SET counter "10"
 OK
-dragonfly> GET counter
+dragonfly$> GET counter
 "10"
 ```
 
@@ -76,9 +76,9 @@ This means that you can store ASCII strings, unicode strings, or even binary dat
 For instance, you can store JSON-encoded values to model more complex and structured data:
 
 ```shell
-dragonfly> SET user:1001 '{"name": "Alice", "age": 30, "country": "Wonderland"}'
+dragonfly$> SET user:1001 '{"name": "Alice", "age": 30, "country": "Wonderland"}'
 OK
-dragonfly> GET user:1001
+dragonfly$> GET user:1001
 "{\"name\": \"Alice\", \"age\": 30, \"country\": \"Wonderland\"}"
 ```
 
@@ -89,9 +89,9 @@ You can decode this string in your application using your favorite JSON library.
 `GET` also works for values that contain binary data:
 
 ```shell
-dragonfly> SET binary_data "\x00\x01\x02\x03"
+dragonfly$> SET binary_data "\x00\x01\x02\x03"
 OK
-dragonfly> GET binary_data
+dragonfly$> GET binary_data
 "\x00\x01\x02\x03"
 ```
 

@@ -42,13 +42,13 @@ It will overwrite any existing keys with the provided values.
 Set multiple key-value pairs:
 
 ```shell
-dragonfly> MSET key1 "value1" key2 "value2" key3 "value3"
+dragonfly$> MSET key1 "value1" key2 "value2" key3 "value3"
 OK
-dragonfly> GET key1
+dragonfly$> GET key1
 "value1"
-dragonfly> GET key2
+dragonfly$> GET key2
 "value2"
-dragonfly> GET key3
+dragonfly$> GET key3
 "value3"
 ```
 
@@ -57,13 +57,13 @@ dragonfly> GET key3
 If any of the specified keys already exist, `MSET` will overwrite them:
 
 ```shell
-dragonfly> SET key1 "initial"
+dragonfly$> SET key1 "initial"
 OK
-dragonfly> MSET key1 "new_value" key2 "additional_value"
+dragonfly$> MSET key1 "new_value" key2 "additional_value"
 OK
-dragonfly> GET key1
+dragonfly$> GET key1
 "new_value"
-dragonfly> GET key2
+dragonfly$> GET key2
 "additional_value"
 ```
 
@@ -72,11 +72,11 @@ dragonfly> GET key2
 The atomic nature of the `MSET` command ensures that all keys are set together, providing consistency across values even in concurrent situations:
 
 ```shell
-dragonfly> MSET key1 "first_value" key2 "second_value" key3 "third_value"
+dragonfly$> MSET key1 "first_value" key2 "second_value" key3 "third_value"
 OK
 
 # Atomicity ensures these values are set together.
-dragonfly> MGET key1 key2 key3
+dragonfly$> MGET key1 key2 key3
 1) "first_value"
 2) "second_value"
 3) "third_value"

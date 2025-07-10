@@ -44,9 +44,9 @@ If the key does not exist, `GETEX` returns `nil`.
 Get the current value of a key and set a new TTL (in seconds):
 
 ```shell
-dragonfly> SET mykey "hello" EX 3600
+dragonfly$> SET mykey "hello" EX 3600
 OK
-dragonfly> GETEX mykey EX 1200
+dragonfly$> GETEX mykey EX 1200
 "hello"
 ```
 
@@ -58,9 +58,9 @@ Then, we retrieve the value with `GETEX` and update the TTL to 1200 seconds (20 
 Set the expiration time in milliseconds:
 
 ```shell
-dragonfly> SET mykey "data"
+dragonfly$> SET mykey "data"
 OK
-dragonfly> GETEX mykey PX 15000
+dragonfly$> GETEX mykey PX 15000
 "data"
 ```
 
@@ -71,9 +71,9 @@ Here, the key `mykey` has its value retrieved (`"data"`) while the expiration ti
 Set an expiration using a UNIX timestamp in seconds:
 
 ```shell
-dragonfly> SET report "yearly"
+dragonfly$> SET report "yearly"
 OK
-dragonfly> GETEX report EXAT 1699999999
+dragonfly$> GETEX report EXAT 1699999999
 "yearly"
 ```
 
@@ -84,9 +84,9 @@ In this case, the key `report` is set to expire at the specified UNIX timestamp 
 Remove the key's expiration:
 
 ```shell
-dragonfly> SET session "active" EX 1800
+dragonfly$> SET session "active" EX 1800
 OK
-dragonfly> GETEX session PERSIST
+dragonfly$> GETEX session PERSIST
 "active"
 ```
 

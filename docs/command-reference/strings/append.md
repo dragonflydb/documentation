@@ -40,11 +40,11 @@ APPEND key value
 Appending a value to an existing key:
 
 ```shell
-dragonfly> SET mystring "Hello"
+dragonfly$> SET mystring "Hello"
 OK
-dragonfly> APPEND mystring " World"
+dragonfly$> APPEND mystring " World"
 (integer) 11
-dragonfly> GET mystring
+dragonfly$> GET mystring
 "Hello World"
 ```
 
@@ -53,11 +53,11 @@ dragonfly> GET mystring
 Accumulating log entries for a simple logging mechanism:
 
 ```shell
-dragonfly> APPEND log "2023-07-26 10:00:00 - User login\n"
+dragonfly$> APPEND log "2023-07-26 10:00:00 - User login\n"
 (integer) 33
-dragonfly> APPEND log "2023-07-26 10:05:00 - User logout\n"
+dragonfly$> APPEND log "2023-07-26 10:05:00 - User logout\n"
 (integer) 66
-dragonfly> GET log
+dragonfly$> GET log
 "2023-07-26 10:00:00 - User login\n2023-07-26 10:05:00 - User logout\n"
 ```
 
@@ -66,13 +66,13 @@ dragonfly> GET log
 Building a configuration file or script incrementally:
 
 ```shell
-dragonfly> APPEND config "server {\n"
+dragonfly$> APPEND config "server {\n"
 (integer) 9
-dragonfly> APPEND config "  listen 80;\n"
+dragonfly$> APPEND config "  listen 80;\n"
 (integer) 22
-dragonfly> APPEND config "}\n"
+dragonfly$> APPEND config "}\n"
 (integer) 24
-dragonfly> GET config
+dragonfly$> GET config
 "server {\n  listen 80;\n}\n"
 ```
 
@@ -86,9 +86,9 @@ dragonfly> GET config
 - Appending to a key that holds a non-string value can result in an error. Always ensure the data type compatibility.
 
   ```shell
-  dragonfly> LPUSH mylist "item"
+  dragonfly$> LPUSH mylist "item"
   (integer) 1
-  dragonfly> APPEND mylist "string"
+  dragonfly$> APPEND mylist "string"
   (error) WRONGTYPE Operation against a key holding the wrong kind of value
   ```
 

@@ -39,11 +39,11 @@ The command returns the original bit value that was at the specified `offset` be
 Set a bit at a specific offset and retrieve its original state:
 
 ```shell
-dragonfly> SET mykey "foo"
+dragonfly$> SET mykey "foo"
 OK
-dragonfly> SETBIT mykey 7 1
+dragonfly$> SETBIT mykey 7 1
 (integer) 0  # The bit at offset 7 was originally 0, now set to 1.
-dragonfly> GETBIT mykey 7
+dragonfly$> GETBIT mykey 7
 (integer) 1  # We just set this bit to 1.
 ```
 
@@ -53,13 +53,13 @@ Example of switching bits on and off at different positions:
 
 ```shell
 # Initial value: 01000001
-dragonfly> SET mykey "A"
+dragonfly$> SET mykey "A"
 OK
-dragonfly> SETBIT mykey 1 0
+dragonfly$> SETBIT mykey 1 0
 (integer) 1  # The bit at position 1 was originally 1.
-dragonfly> SETBIT mykey 1 1
+dragonfly$> SETBIT mykey 1 1
 (integer) 0  # The bit was previously cleared, now set to 1.
-dragonfly> GET mykey
+dragonfly$> GET mykey
 "A"
 ```
 
@@ -69,19 +69,19 @@ Suppose you have a system where each bit in a string represents whether a featur
 
 ```shell
 # Initial value: 00000000 (all features disabled)
-dragonfly> SET mykey "\x00"
+dragonfly$> SET mykey "\x00"
 OK
-dragonfly> SETBIT mykey 0 1  # Enable feature at position 0
+dragonfly$> SETBIT mykey 0 1  # Enable feature at position 0
 (integer) 0
-dragonfly> SETBIT mykey 4 1  # Enable feature at position 4
+dragonfly$> SETBIT mykey 4 1  # Enable feature at position 4
 (integer) 0
-dragonfly> GETBIT mykey 0
+dragonfly$> GETBIT mykey 0
 (integer) 1
-dragonfly> GETBIT mykey 4
+dragonfly$> GETBIT mykey 4
 (integer) 1
-dragonfly> getbit mykey 5
+dragonfly$> getbit mykey 5
 (integer) 0
-dragonfly> GET mykey
+dragonfly$> GET mykey
 "\x88"  # Binary: 10001000
 ```
 

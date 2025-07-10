@@ -38,9 +38,9 @@ The command returns the integer result after the decrement operation is performe
 Decrement the value stored at a key by a specified amount:
 
 ```shell
-dragonfly> SET mycounter 10
+dragonfly$> SET mycounter 10
 OK
-dragonfly> DECRBY mycounter 3
+dragonfly$> DECRBY mycounter 3
 (integer) 7
 ```
 
@@ -49,7 +49,7 @@ dragonfly> DECRBY mycounter 3
 If the key does not exist, `DECRBY` assumes the initial value to be `0`:
 
 ```shell
-dragonfly> DECRBY non_existent 5
+dragonfly$> DECRBY non_existent 5
 (integer) -5
 ```
 
@@ -58,9 +58,9 @@ dragonfly> DECRBY non_existent 5
 You can provide a negative `decrement` to increase the value:
 
 ```shell
-dragonfly> SET score 50
+dragonfly$> SET score 50
 OK
-dragonfly> DECRBY score -10
+dragonfly$> DECRBY score -10
 (integer) 60  # Effectively increments by 10
 ```
 
@@ -69,9 +69,9 @@ dragonfly> DECRBY score -10
 You can use large decrement values, but the key's value must always remain within the 64-bit signed integer limit:
 
 ```shell
-dragonfly> SET largekey 1000000000000
+dragonfly$> SET largekey 1000000000000
 OK
-dragonfly> DECRBY largekey 999999999999
+dragonfly$> DECRBY largekey 999999999999
 (integer) 1
 ```
 

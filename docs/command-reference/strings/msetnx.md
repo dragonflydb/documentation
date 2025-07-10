@@ -44,9 +44,9 @@ The command returns:
 Set multiple keys only if none of them exist:
 
 ```shell
-dragonfly> MSETNX user:1000 "Alice" user:1001 "Bob"
+dragonfly$> MSETNX user:1000 "Alice" user:1001 "Bob"
 (integer) 1  # Both keys were set because they didn't exist before.
-dragonfly> MGET user:1000 user:1001
+dragonfly$> MGET user:1000 user:1001
 1) "Alice"
 2) "Bob"
 ```
@@ -56,11 +56,11 @@ dragonfly> MGET user:1000 user:1001
 If at least one of the keys exists, no keys are set:
 
 ```shell
-dragonfly> SET user:1002 "Charlie"
+dragonfly$> SET user:1002 "Charlie"
 OK
-dragonfly> MSETNX user:1000 "Alice" user:1002 "Dave"
+dragonfly$> MSETNX user:1000 "Alice" user:1002 "Dave"
 (integer) 0  # No keys were set because "user:1002" already exists.
-dragonfly> MGET user:1000 user:1002
+dragonfly$> MGET user:1000 user:1002
 1) (nil)     # "user:1000" wasn't set.
 2) "Charlie" # "user:1002" remains unchanged.
 ```
@@ -72,15 +72,15 @@ dragonfly> MGET user:1000 user:1002
 ```shell
 # Acquiring a distributed lock for a shared resource as well as for the specific user.
 # The same user also cannot acquire the lock twice.
-dragonfly> MSETNX shared:resource:lock "locked" user:1000 "locked"
+dragonfly$> MSETNX shared:resource:lock "locked" user:1000 "locked"
 (integer) 1  # Lock acquired.
 
 # Another process trying to acquire the same shared resource for a different user.
-dragonfly> MSETNX shared:resource:lock "locked" user:1001 "locked"
+dragonfly$> MSETNX shared:resource:lock "locked" user:1001 "locked"
 (integer) 0  # Lock NOT acquired.
 
 # Original process releasing the lock for the user who acquired it.
-dragonfly> DEL shared:resource:lock user:1000
+dragonfly$> DEL shared:resource:lock user:1000
 (integer) 2  # Lock released.
 ```
 

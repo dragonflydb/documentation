@@ -37,9 +37,9 @@ The command returns the value of the key after the decrement operation.
 Decrement the value of a key:
 
 ```shell
-dragonfly> SET mycounter 5
+dragonfly$> SET mycounter 5
 OK
-dragonfly> DECR mycounter
+dragonfly$> DECR mycounter
 (integer) 4
 ```
 
@@ -50,7 +50,7 @@ In this example, the value of `mycounter` is decremented from `5` to `4`.
 If the key does not exist, `DECR` initializes the value to `0` before performing the decrement:
 
 ```shell
-dragonfly> DECR not_yet_set
+dragonfly$> DECR not_yet_set
 (integer) -1
 ```
 
@@ -61,15 +61,15 @@ Here, since `not_yet_set` did not previously exist, it is initialized to `0` and
 You can easily implement a countdown timer using `DECR`, which decrements until a limit is reached:
 
 ```shell
-dragonfly> SET countdown 10
+dragonfly$> SET countdown 10
 OK
-dragonfly> DECR countdown
+dragonfly$> DECR countdown
 (integer) 9
-dragonfly> DECR countdown
+dragonfly$> DECR countdown
 (integer) 8
-dragonfly> DECR countdown
+dragonfly$> DECR countdown
 (integer) 7
-dragonfly> DECR countdown
+dragonfly$> DECR countdown
 (integer) 6
 ```
 
@@ -85,9 +85,9 @@ Each `DECR` call reduces the value by `1`, simulating a countdown from `10` to `
 - Using `DECR` on a key that holds a non-integer, such as a string that cannot be parsed as a number. This will result in an error.
 
 ```shell
-dragonfly> SET mykey "abc"
+dragonfly$> SET mykey "abc"
 OK
-dragonfly> DECR mykey
+dragonfly$> DECR mykey
 (error) ERR value is not an integer or out of range
 ```
 

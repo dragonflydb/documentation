@@ -41,14 +41,14 @@ The command returns `OK` if the operation was successful.
 Set a key with a value and a 10-second expiration:
 
 ```shell
-dragonfly> SETEX mykey 10 "my_value"
+dragonfly$> SETEX mykey 10 "my_value"
 OK
 ```
 
 After 10 seconds, the key will automatically expire, and trying to access it will return `nil`:
 
 ```shell
-dragonfly> GET mykey
+dragonfly$> GET mykey
 (nil)
 ```
 
@@ -57,21 +57,21 @@ dragonfly> GET mykey
 Set a key that expires in 2 seconds:
 
 ```shell
-dragonfly> SETEX anotherkey 2 "temporary_data"
+dragonfly$> SETEX anotherkey 2 "temporary_data"
 OK
 ```
 
 If you query the key immediately, you will get the stored value:
 
 ```shell
-dragonfly> GET anotherkey
+dragonfly$> GET anotherkey
 "temporary_data"
 ```
 
 However, after 2 seconds, the key will no longer exist:
 
 ```shell
-dragonfly> GET anotherkey
+dragonfly$> GET anotherkey
 (nil)
 ```
 
@@ -80,21 +80,21 @@ dragonfly> GET anotherkey
 Let's use `SETEX` to store the result of an expensive database query, and ensure it expires after 30 seconds to keep the cache fresh:
 
 ```shell
-dragonfly> SETEX cached_query_result 30 "{\"user\": \"john_doe\", \"age\": 30}"
+dragonfly$> SETEX cached_query_result 30 "{\"user\": \"john_doe\", \"age\": 30}"
 OK
 ```
 
 For the next 30 seconds, you can retrieve this cached result:
 
 ```shell
-dragonfly> GET cached_query_result
+dragonfly$> GET cached_query_result
 "{\"user\": \"john_doe\", \"age\": 30}"
 ```
 
 After 30 seconds, the key will no longer be available, and the cache will need to be refreshed:
 
 ```shell
-dragonfly> GET cached_query_result
+dragonfly$> GET cached_query_result
 (nil)
 ```
 

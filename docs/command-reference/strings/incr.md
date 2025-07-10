@@ -37,9 +37,9 @@ Returns the new value of the key after the increment as an integer.
 Increment an integer stored in a key:
 
 ```shell
-dragonfly> SET mykey 10
+dragonfly$> SET mykey 10
 OK
-dragonfly> INCR mykey
+dragonfly$> INCR mykey
 (integer) 11
 ```
 
@@ -48,9 +48,9 @@ dragonfly> INCR mykey
 If the key does not exist, `INCR` will set it to `0` before incrementing it:
 
 ```shell
-dragonfly> EXISTS counter
+dragonfly$> EXISTS counter
 (integer) 0
-dragonfly> INCR counter
+dragonfly$> INCR counter
 (integer) 1
 ```
 
@@ -60,9 +60,9 @@ dragonfly> INCR counter
 It will still increase the value by one in this case:
 
 ```shell
-dragonfly> SET mykey -5
+dragonfly$> SET mykey -5
 OK
-dragonfly> INCR mykey
+dragonfly$> INCR mykey
 (integer) -4
 ```
 
@@ -71,11 +71,11 @@ dragonfly> INCR mykey
 You can repeatedly call `INCR` to track a counter of operations:
 
 ```shell
-dragonfly> SET request_count 100
+dragonfly$> SET request_count 100
 OK
-dragonfly> INCR request_count
+dragonfly$> INCR request_count
 (integer) 101
-dragonfly> INCR request_count
+dragonfly$> INCR request_count
 (integer) 102
 ```
 
@@ -91,9 +91,9 @@ dragonfly> INCR request_count
   This will result in an error, as `INCR` expects the value stored at `key` to be a string representation of an integer.
 
   ```shell
-  dragonfly> LPUSH mylist 1
+  dragonfly$> LPUSH mylist 1
   (integer) 1
-  dragonfly> INCR mylist
+  dragonfly$> INCR mylist
   (error) WRONGTYPE Operation against a key holding the wrong kind of value
   ```
 

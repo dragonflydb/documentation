@@ -41,9 +41,9 @@ The command returns an array of integers, where each integer corresponds to the 
 Retrieve an unsigned 8-bit integer (starting at offset `0`) and a signed 16-bit integer (starting at offset `8`).
 
 ```shell
-dragonfly> SET mystring "\x01\x02\x03"
+dragonfly$> SET mystring "\x01\x02\x03"
 OK
-dragonfly> BITFIELD_RO mystring GET u8 0 GET i16 8
+dragonfly$> BITFIELD_RO mystring GET u8 0 GET i16 8
 1) (integer) 1
 2) (integer) 515
 ```
@@ -54,9 +54,9 @@ In this example, we extract multiple bitfields from a single string.
 This demonstrates how to handle different offsets and encodings.
 
 ```shell
-dragonfly> SET mystring "\xFF\xFE\xFD"
+dragonfly$> SET mystring "\xFF\xFE\xFD"
 OK
-dragonfly> BITFIELD_RO mystring GET u8 0 GET u8 8 GET i16 16
+dragonfly$> BITFIELD_RO mystring GET u8 0 GET u8 8 GET i16 16
 1) (integer) 255
 2) (integer) 254
 3) (integer) -3
@@ -67,9 +67,9 @@ dragonfly> BITFIELD_RO mystring GET u8 0 GET u8 8 GET i16 16
 Extracting larger bitfields, such as 32-bit integers, to demonstrate handling of wider data.
 
 ```shell
-dragonfly> SET mystring "\x00\x00\x00\x01\x00\x00\x00\x02"
+dragonfly$> SET mystring "\x00\x00\x00\x01\x00\x00\x00\x02"
 OK
-dragonfly> BITFIELD_RO mystring GET u32 0 GET u32 32
+dragonfly$> BITFIELD_RO mystring GET u32 0 GET u32 32
 1) (integer) 1
 2) (integer) 2
 ```

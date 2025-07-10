@@ -39,13 +39,13 @@ After the operation, the key is guaranteed to be deleted from the database.
 Retrieve the value and delete the key:
 
 ```shell
-dragonfly> SET mykey "Hello, Dragonfly!"
+dragonfly$> SET mykey "Hello, Dragonfly!"
 OK
 
-dragonfly> GETDEL mykey
+dragonfly$> GETDEL mykey
 "Hello, Dragonfly!"
 
-dragonfly> GET mykey
+dragonfly$> GET mykey
 (nil)
 ```
 
@@ -56,7 +56,7 @@ In this example, the value `"Hello, Dragonfly!"` is returned by `GETDEL` and the
 If the key does not exist, `GETDEL` will return `nil` without throwing an error:
 
 ```shell
-dragonfly> GETDEL nonexistent_key
+dragonfly$> GETDEL nonexistent_key
 (nil)
 ```
 

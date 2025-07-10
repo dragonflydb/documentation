@@ -38,9 +38,9 @@ The command returns an integer representing the length of the string, in bytes.
 Get the length of a string:
 
 ```shell
-dragonfly> SET mykey "Dragonfly"
+dragonfly$> SET mykey "Dragonfly"
 OK
-dragonfly> STRLEN mykey
+dragonfly$> STRLEN mykey
 (integer) 9
 ```
 
@@ -49,9 +49,9 @@ dragonfly> STRLEN mykey
 If the string is an empty string, return `0`:
 
 ```shell
-dragonfly> SET mykey ""
+dragonfly$> SET mykey ""
 OK
-dragonfly> STRLEN mykey
+dragonfly$> STRLEN mykey
 (integer) 0
 ```
 
@@ -60,7 +60,7 @@ dragonfly> STRLEN mykey
 When the key does not exist, `STRLEN` will return `0`:
 
 ```shell
-dragonfly> STRLEN non_existent_key
+dragonfly$> STRLEN non_existent_key
 (integer) 0
 ```
 
@@ -70,9 +70,9 @@ Bear in mind that `STRLEN` returns the length in **bytes**, not characters.
 For example, a string with multibyte characters will have a byte length that may differ from its character count:
 
 ```shell
-dragonfly> SET mykey "你好"
+dragonfly$> SET mykey "你好"
 OK
-dragonfly> STRLEN mykey
+dragonfly$> STRLEN mykey
 (integer) 6  # Most Chinese characters require 3 bytes each in UTF-8 encoding.
 ```
 

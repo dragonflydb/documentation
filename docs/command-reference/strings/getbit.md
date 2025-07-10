@@ -42,11 +42,11 @@ Retrieve a bit at a specific position in a string:
 # String: example
 # Hex:    0x65     0x78     0x61     0x6d     0x70     0x6c     0x65
 # Binary: 01100101 01111000 01100001 01101101 01110000 01101100 01100101
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> GETBIT mykey 1
+dragonfly$> GETBIT mykey 1
 (integer) 1  # The bit at position 1 is 1.
-dragonfly> GETBIT mykey 6
+dragonfly$> GETBIT mykey 6
 (integer) 0  # The bit at position 6 is 0.
 ```
 
@@ -56,7 +56,7 @@ Attempting to retrieve a bit beyond the length of the string:
 
 ```shell
 # The length of the string "example" in bits is 56 (7 characters * 8 bits).
-dragonfly> GETBIT mykey 100
+dragonfly$> GETBIT mykey 100
 (integer) 0  # Returns 0 because the offset is out of bounds.
 ```
 
@@ -65,11 +65,11 @@ dragonfly> GETBIT mykey 100
 In many use cases, each bit can signify a flag that is either enabled (`1`) or disabled (`0`):
 
 ```shell
-dragonfly> SET flags "\x0F"  # Binary: 00001111 (four flags enabled)
+dragonfly$> SET flags "\x0F"  # Binary: 00001111 (four flags enabled)
 OK
-dragonfly> GETBIT flags 0
+dragonfly$> GETBIT flags 0
 (integer) 0  # The first feature is disabled.
-dragonfly> GETBIT flags 4
+dragonfly$> GETBIT flags 4
 (integer) 1  # The fifth feature is enabled.
 ```
 

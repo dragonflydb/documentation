@@ -41,7 +41,7 @@ SETNX key value
 Set a new key if it doesn't exist:
 
 ```shell
-dragonfly> SETNX mykey "hello"
+dragonfly$> SETNX mykey "hello"
 (integer) 1
 ```
 
@@ -52,7 +52,7 @@ In this example, `"mykey"` did not exist, so the command sets it to `"hello"` an
 Attempt to set a key that already exists:
 
 ```shell
-dragonfly> SETNX mykey "world"
+dragonfly$> SETNX mykey "world"
 (integer) 0
 ```
 
@@ -64,14 +64,14 @@ One typical use case for `SETNX` is implementing a distributed lock.
 The lock is created by setting a key if it doesn't already exist, preventing other clients from acquiring the lock.
 
 ```shell
-dragonfly> SETNX lock:resource "lock_token_1"
+dragonfly$> SETNX lock:resource "lock_token_1"
 (integer) 1  # Lock acquired
 ```
 
 If another client tries to acquire the lock, they would fail:
 
 ```shell
-dragonfly> SETNX lock:resource "lock_token_2"
+dragonfly$> SETNX lock:resource "lock_token_2"
 (integer) 0  # Lock already held
 ```
 
@@ -101,9 +101,9 @@ you can execute a combination of `SETNX` and `EXPIRE` to ensure the key is set w
 However, prefer using the [`SET`](set.md) command with its `NX` and `EX` options or a library that implements distributed locking mechanisms.
 
 ```shell
-dragonfly> SETNX mylock "locked"
+dragonfly$> SETNX mylock "locked"
 (integer) 1
-dragonfly> EXPIRE mylock 10  # Lock expires after 10 seconds
+dragonfly$> EXPIRE mylock 10  # Lock expires after 10 seconds
 (integer) 1
 ```
 

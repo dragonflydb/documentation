@@ -41,9 +41,9 @@ The command returns the specified substring extracted from the string value stor
 Retrieve a substring from a stored string:
 
 ```shell
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> GETRANGE mykey 0 2
+dragonfly$> GETRANGE mykey 0 2
 "exa"
 ```
 
@@ -54,9 +54,9 @@ In the above example, the substring `exa` is returned as it starts from index `0
 You can use negative numbers to address characters starting from the end:
 
 ```shell
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> GETRANGE mykey -4 -1
+dragonfly$> GETRANGE mykey -4 -1
 "mple"
 ```
 
@@ -67,9 +67,9 @@ In this case, `-4` refers to the fourth character from the end, and `-1` refers 
 If the given range exceeds the string's length, the command will still return what is available:
 
 ```shell
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> GETRANGE mykey 5 50
+dragonfly$> GETRANGE mykey 5 50
 "le"
 ```
 
@@ -80,9 +80,9 @@ Here, although the ending index is beyond the actual string length, Dragonfly re
 For user data like URLs, session identifiers, or logs, you may want to extract meaningful segments without loading the entire dataset:
 
 ```shell
-dragonfly> SET logentry "ErrorCode:404,Page:/about,Message:Not Found,ClientIP:192.168.1.50"
+dragonfly$> SET logentry "ErrorCode:404,Page:/about,Message:Not Found,ClientIP:192.168.1.50"
 OK
-dragonfly> GETRANGE logentry 11 24
+dragonfly$> GETRANGE logentry 11 24
 "404,Page:/about"
 ```
 

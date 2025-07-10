@@ -46,9 +46,9 @@ The command returns the substring specified by the start and end positions.
 Extract a substring from an entire string:
 
 ```shell
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> SUBSTR mykey 0 6
+dragonfly$> SUBSTR mykey 0 6
 "example"
 ```
 
@@ -57,9 +57,9 @@ dragonfly> SUBSTR mykey 0 6
 Extract a substring from the second to the sixth character:
 
 ```shell
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> SUBSTR mykey 1 5
+dragonfly$> SUBSTR mykey 1 5
 "xampl"
 ```
 
@@ -70,9 +70,9 @@ You can use negative numbers to specify positions relative to the string's end.
 For instance, the positions `-2` and `-1` refer to the second-to-last and the last characters, respectively:
 
 ```shell
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> SUBSTR mykey -2 -1
+dragonfly$> SUBSTR mykey -2 -1
 "le"
 ```
 
@@ -81,9 +81,9 @@ dragonfly> SUBSTR mykey -2 -1
 If the specified range goes out of bounds, `SUBSTR` will return only the portion of the string up to its maximum length:
 
 ```shell
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> SUBSTR mykey 4 100
+dragonfly$> SUBSTR mykey 4 100
 "ple"
 ```
 
