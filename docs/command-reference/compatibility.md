@@ -313,31 +313,31 @@ sidebar_position: 0
 |                                              | <span class="command">CMS.MERGE</span>                     | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CMS.QUERY</span>                     | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Graph</span>            | <span class="command">Not supported</span>                 | <span class="support unsupported">Unsupported</span>     |
-| <span class="family">JSON</span>             | <span class="command">ARRAPPEND</span>                     | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ARRINDEX</span>                      | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ARRINSERT</span>                     | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ARRLEN</span>                        | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ARRPOP</span>                        | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ARRTRIM</span>                       | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">CLEAR</span>                         | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">DEBUG</span>                         | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">DEBUG MEMORY</span>                  | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">DEL</span>                           | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">FORGET</span>                        | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">GET</span>                           | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">MERGE</span>                         | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">MGET</span>                          | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">MSET</span>                          | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">NUMINCRBY</span>                     | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">NUMMULTBY</span>                     | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">OBJKEYS</span>                       | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">OBJLEN</span>                        | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">RESP</span>                          | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">SET</span>                           | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">STRAPPEND</span>                     | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">STRLEN</span>                        | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">TOGGLE</span>                        | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">TYPE</span>                          | <span class="support supported">Fully supported</span>   |
+| <span class="family">JSON</span>             | <span class="command">JSON.ARRAPPEND</span>                | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.ARRINDEX</span>                 | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.ARRINSERT</span>                | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.ARRLEN</span>                   | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.ARRPOP</span>                   | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.ARRTRIM</span>                  | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.CLEAR</span>                    | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.DEBUG</span>                    | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.DEBUG MEMORY</span>             | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">JSON.DEL</span>                      | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.FORGET</span>                   | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.GET</span>                      | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.MERGE</span>                    | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.MGET</span>                     | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.MSET</span>                     | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.NUMINCRBY</span>                | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.NUMMULTBY</span>                | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.OBJKEYS</span>                  | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.OBJLEN</span>                   | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.RESP</span>                     | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.SET</span>                      | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.STRAPPEND</span>                | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.STRLEN</span>                   | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.TOGGLE</span>                   | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">JSON.TYPE</span>                     | <span class="support supported">Fully supported</span>   |
 | <span class="family">Search</span>           | <span class="command">FT.CREATE</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">FT.SEARCH</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">FT.SYNUPDATE</span>                  | <span class="support supported">Fully supported</span>   |

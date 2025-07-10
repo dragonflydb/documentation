@@ -10,7 +10,7 @@ Dragonfly can be tuned and configured by a set of config flags. These flags can 
 You can try `dragonfly --helpfull` to get a list of all flags or `--help=substring` shows help for
 flags which include specified substring in either in the name, description or path.
 
-## Available flags
+## Available Flags
 
 ### `--port`
   Redis port. 0 disables the port, -1 will bind on a random available port.
@@ -182,7 +182,7 @@ flags which include specified substring in either in the name, description or pa
   `default:`
 
 
-### --`lock_on_hashtags`
+### `--lock_on_hashtags`
   When true, locks are done in the {hashtag} level instead of key level. Only use this with `--cluster_mode=emulated|yes`.
   
   `default: false`
