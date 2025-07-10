@@ -20,6 +20,12 @@ XREADGROUP GROUP groupname consumer [COUNT count] [BLOCK milliseconds]
     [NOACK] STREAMS key [key ...] id [id ...]
 ```
 
+- **Time complexity:** For each stream mentioned: O(M) with M being the number of elements returned.
+  If M is constant (e.g. always asking for the first 10 elements with `COUNT`), you can consider it O(1).
+  On the other side when `XREADGROUP` blocks, `XADD` will pay the O(N) time in order to serve the N clients
+  blocked on the stream getting new data.
+- **ACL categories:** @write, @stream, @slow, @blocking
+
 ## Parameter Explanations
 
 - `GROUP groupname`: The name of the consumer group.

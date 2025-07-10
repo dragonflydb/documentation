@@ -19,6 +19,9 @@ This command is essential for monitoring and managing stream processing tasks, p
 XINFO GROUPS key
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @read, @stream, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the stream for which consumer groups information is requested.

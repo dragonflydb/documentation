@@ -19,6 +19,10 @@ The directionality of this command makes it useful for scenarios where you need 
 XREVRANGE key end start [COUNT count]
 ```
 
+- **Time complexity:** O(N) with N being the number of elements returned.
+  If N is constant (e.g. always asking for the first 10 elements with `COUNT`), you can consider it O(1).
+- **ACL categories:** @read, @stream, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the stream from which elements are retrieved.

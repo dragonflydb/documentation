@@ -19,6 +19,9 @@ The command is useful for monitoring and managing data streams, providing quick 
 XLEN key
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @read, @stream, @fast
+
 ## Parameter Explanations
 
 - `key`: The key of the stream for which you wish to know the number of entries.

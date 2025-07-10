@@ -19,6 +19,9 @@ It is a blocking command by nature and is commonly utilized for implementing mes
 XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] id [id ...]
 ```
 
+- **Time complexity:** 
+- **ACL categories:** @read, @stream, @slow, @blocking
+
 ## Parameter Explanations
 
 - `COUNT count`: The maximum number of entries to return per stream. Optional, defaults to return all available entries.

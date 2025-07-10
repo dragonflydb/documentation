@@ -19,6 +19,9 @@ This command is helpful for monitoring the activity of consumers connected to a 
 XINFO CONSUMERS key group
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @read, @stream, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the stream.

@@ -19,6 +19,9 @@ This command is particularly useful for managing data in stream-like structures 
 XDEL key ID [ID ...]
 ```
 
+- **Time complexity:** O(1) for each single item to delete in the stream, regardless of the stream size.
+- **ACL categories:** @write, @stream, @fast
+
 ## Parameter Explanations
 
 - `key`: The key of the stream from which entries are to be deleted.

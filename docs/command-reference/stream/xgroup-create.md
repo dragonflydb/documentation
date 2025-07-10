@@ -20,6 +20,9 @@ This command is essential for managing distributed message processing systems wh
 XGROUP CREATE key group <id | $> [MKSTREAM]
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @stream, @slow
+
 ## Parameter Explanations
 
 - `key`: The key name of the stream.

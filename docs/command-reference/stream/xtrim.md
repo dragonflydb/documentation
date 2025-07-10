@@ -20,6 +20,9 @@ It helps in controlling memory usage by removing old entries from the stream.
 XTRIM key [MAXLEN | MINID] [~ | =] threshold
 ```
 
+- **Time complexity:** O(N), with N being the number of evicted entries.
+- **ACL categories:** @write, @stream, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the stream that you want to trim.

@@ -19,6 +19,12 @@ This command is particularly useful for monitoring and managing consumer group m
 XPENDING key group [start end count] [consumer]
 ```
 
+- **Time complexity:** O(N) with N being the number of elements returned, so asking for a small fixed number of entries per call is O(1).
+  O(M), where M is the total number of entries scanned when used with the `IDLE` filter.
+  When the command returns just the summary and the list of consumers is small, it runs in O(1) time.
+  Otherwise, an additional O(N) time for iterating every consumer.
+- **ACL categories:** @read, @stream, @slow
+
 ## Parameter Explanations
 
 - `key`: The name of the stream.

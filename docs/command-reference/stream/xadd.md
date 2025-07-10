@@ -19,6 +19,9 @@ Streams are data structures that enable storing and processing ordered logs of e
 XADD key [<MAXLEN | MINID> [~ | =] threshold] <* | id> field value [field value ...]
 ```
 
+- **Time complexity:** O(1) when adding a new entry, O(N) when trimming where N being the number of entries evicted.
+- **ACL categories:** @write, @stream, @fast
+
 ## Parameter Explanations
 
 - `key`: The key of the stream where the entry will be appended.

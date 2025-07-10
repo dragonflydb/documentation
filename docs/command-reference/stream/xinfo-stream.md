@@ -19,6 +19,9 @@ This command can be used to monitor and debug streams, as it helps you understan
 XINFO STREAM key [FULL [COUNT count]]
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @read, @stream, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the stream for which information is to be retrieved.

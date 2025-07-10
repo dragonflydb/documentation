@@ -20,6 +20,9 @@ After successfully processing a message, a consumer should call `XACK` to preven
 XACK key group id [id ...]
 ```
 
+- **Time complexity:** O(1) for each message ID processed.
+- **ACL categories:** @write, @stream, @fast
+
 ## Parameter Explanations
 
 - `key`: The name of the stream.

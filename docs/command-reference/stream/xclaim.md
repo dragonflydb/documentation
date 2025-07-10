@@ -20,6 +20,9 @@ XCLAIM key group consumer min-idle-time id [id ...] [IDLE ms] [TIME ms-unix-time
        [RETRYCOUNT count] [FORCE] [JUSTID]
 ```
 
+- **Time complexity:** O(log N) with N being the number of messages in the pending entries list (PEL) of the consumer group.
+- **ACL categories:** @write, @stream, @fast
+
 ## Parameter Explanations
 
 - `key`: The key of the stream.

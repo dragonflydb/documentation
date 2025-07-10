@@ -19,6 +19,10 @@ Streams are powerful data types for handling ordered logs and time-series data, 
 XRANGE key start end [COUNT count]
 ```
 
+- **Time complexity:** O(N) with N being the number of elements being returned.
+  If N is constant (e.g. always asking for the first 10 elements with `COUNT`), you can consider it O(1).
+- **ACL categories:** @read, @stream, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the stream from which entries are fetched.
