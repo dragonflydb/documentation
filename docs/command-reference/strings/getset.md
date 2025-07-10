@@ -39,16 +39,16 @@ If the key did not exist, it returns `nil`.
 Set a key to a new value and retrieve the old value:
 
 ```shell
-dragonfly> SET mykey "old_value"
+dragonfly$> SET mykey "old_value"
 OK
-dragonfly> GETSET mykey "new_value"
+dragonfly$> GETSET mykey "new_value"
 "old_value"
 ```
 
 If the key does not exist yet, `GETSET` will return `nil`:
 
 ```shell
-dragonfly> GETSET mykey2 "first_value"
+dragonfly$> GETSET mykey2 "first_value"
 (nil)
 ```
 
@@ -58,11 +58,11 @@ This command is particularly useful when you want to update a key's value atomic
 
 ```shell
 # User balance system where balance is first saved, then updated atomically
-dragonfly> SET balance "100"
+dragonfly$> SET balance "100"
 OK
-dragonfly> GETSET balance "200"
+dragonfly$> GETSET balance "200"
 "100"  # Old balance
-dragonfly> GET balance
+dragonfly$> GET balance
 "200"  # New balance
 ```
 
@@ -72,15 +72,15 @@ In cache systems, `GETSET` is great for refreshing stale values atomically:
 
 ```shell
 # Set initial cache value
-dragonfly> SET cache_item "stale_value"
+dragonfly$> SET cache_item "stale_value"
 OK
 
 # Atomically refresh the cache with a new value, returning the old one
-dragonfly> GETSET cache_item "fresh_value"
+dragonfly$> GETSET cache_item "fresh_value"
 "stale_value"
 
 # Verify that the value has been updated
-dragonfly> GET cache_item
+dragonfly$> GET cache_item
 "fresh_value"
 ```
 

@@ -21,6 +21,9 @@ Therefore, be sure to claim or acknowledge any pending messages before removing 
 XGROUP DELCONSUMER key group consumer
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @stream, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the stream.

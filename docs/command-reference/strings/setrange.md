@@ -40,13 +40,13 @@ The command returns the length of the string after it has been modified.
 Overwrite part of a string at a specific offset:
 
 ```shell
-dragonfly> SET mykey "Hello World"
+dragonfly$> SET mykey "Hello World"
 OK
-dragonfly> SETRANGE mykey 6 "Dragonfly"
+dragonfly$> SETRANGE mykey 6 "Dragonfly"
 (integer) 15
 
 # Updated string: "Hello Dragonfly"
-dragonfly> GET mykey
+dragonfly$> GET mykey
 "Hello Dragonfly"
 ```
 
@@ -57,13 +57,13 @@ In this example, we replaced `"World"` starting at offset 6 with `"Dragonfly"`, 
 If the `offset` is beyond the current length of the string, `SETRANGE` pads the string with null characters (`\x00`):
 
 ```shell
-dragonfly> SET mykey "Hello"
+dragonfly$> SET mykey "Hello"
 OK
-dragonfly> SETRANGE mykey 10 "Redis"
+dragonfly$> SETRANGE mykey 10 "Redis"
 (integer) 15
 
 # Updated string with padding: "Hello\x00\x00\x00\x00Redis"
-dragonfly> GET mykey
+dragonfly$> GET mykey
 "Hello\x00\x00\x00\x00Redis"
 ```
 
@@ -74,13 +74,13 @@ Note that the string is expanded with null bytes to accommodate the value `"Redi
 You can choose to overwrite only a part of the original string, preserving the rest:
 
 ```shell
-dragonfly> SET mykey "Dragonfly"
+dragonfly$> SET mykey "Dragonfly"
 OK
-dragonfly> SETRANGE mykey 0 "Fly"
+dragonfly$> SETRANGE mykey 0 "Fly"
 (integer) 9
 
 # Updated string: "Flygonfly"
-dragonfly> GET mykey
+dragonfly$> GET mykey
 "Flygonfly"
 ```
 

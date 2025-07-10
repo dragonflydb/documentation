@@ -42,9 +42,9 @@ Count all set bits in a string:
 # String: example
 # Hex:    0x65     0x78     0x61     0x6d     0x70     0x6c     0x65
 # Binary: 01100101 01111000 01100001 01101101 01110000 01101100 01100101
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> BITCOUNT mykey
+dragonfly$> BITCOUNT mykey
 (integer) 27
 ```
 
@@ -56,9 +56,9 @@ Count bits from the second to the fourth byte:
 # String: example
 # Hex:    0x65     0x78     0x61     0x6d     0x70     0x6c     0x65
 # Binary: 01100101 01111000 01100001 01101101 01110000 01101100 01100101
-dragonfly> SET mykey "example"
+dragonfly$> SET mykey "example"
 OK
-dragonfly> BITCOUNT mykey 1 3
+dragonfly$> BITCOUNT mykey 1 3
 (integer) 12
 ```
 
@@ -69,9 +69,9 @@ Imagine you have a feature flag system where each bit represents whether a featu
 ```shell
 # Hex:    0x01     0x02     0x04
 # Binary: 00000001 00000010 00000100
-dragonfly> SET features "\x01\x02\x04"
+dragonfly$> SET features "\x01\x02\x04"
 OK
-dragonfly> BITCOUNT features
+dragonfly$> BITCOUNT features
 (integer) 3  # Three features are enabled across different users.
 ```
 

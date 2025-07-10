@@ -21,6 +21,9 @@ Use this command only when absolutely necessary.**
 XGROUP DESTROY key group
 ```
 
+- **Time complexity:** O(N) where N is the number of entries in the group's pending entries list (PEL).
+- **ACL categories:** @write, @stream, @slow
+
 ## Parameter Explanations
 
 - `key`: The name of the stream from which the consumer group will be deleted.

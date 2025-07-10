@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Redis XSETID to set the last delivered ID for streams.
+description: Learn how to use Redis XSETID to set the last delivered ID for streams.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -8,19 +8,21 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis XSETID Command (Documentation) | Dragonfly" />
 
+## Introduction
+
+The `XSETID` command is an internal command. It is used by a Dragonfly primary instance to replicate the last delivered ID of streams.
+
 ## Syntax
 
-	XSETID key last-id
+```shell
+XSETID key last-id
+```
 
-**Time Complexity:** O(1)
+## Parameter Explanations
 
-**ACL categories:** @write, @stream, @fast
+- `key`: The stream for which you want to set the last delivered ID.
+- `last-id`: The last delivered ID of a stream to set.
 
-**XSETID** sets the last id of the specified stream. **<key\>**
-must exists before executing the command. The **<last-id\>** can't
-be smaller than target stream top entry.
+## Return Values
 
-## Return
-
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings):
-**OK** on success.
+- The command returns `OK` if the ID for the consumer group is successfully set.

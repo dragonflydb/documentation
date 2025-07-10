@@ -41,17 +41,17 @@ The command returns `OK` if the operation was successful.
 In this example, we set the key `mykey` with the value `"hello"` and an expiration time of 2000 milliseconds (2 seconds):
 
 ```shell
-dragonfly> PSETEX mykey 2000 "hello"
+dragonfly$> PSETEX mykey 2000 "hello"
 OK
 ```
 
 To verify the key expires after 2 seconds:
 
 ```shell
-dragonfly> GET mykey
+dragonfly$> GET mykey
 "hello"
 # Wait for more than 2 seconds
-dragonfly> GET mykey
+dragonfly$> GET mykey
 (nil)
 ```
 
@@ -64,14 +64,14 @@ As you can see in the example below, `PSETEX` can be replaced by the [`SET`](set
 
 ```shell
 # Set cart data to expire after 10 minutes (600,000 milliseconds).
-dragonfly> PSETEX cart:user123 600000 "cart_payload"
+dragonfly$> PSETEX cart:user123 600000 "cart_payload"
 OK
 
 # Adding an item to the cart updates the expiration time to 10 minutes from now.
-dragonfly> SET cart:user123 "updated_cart_payload" PX 600000
+dragonfly$> SET cart:user123 "updated_cart_payload" PX 600000
 
 # After 10 minutes, the cart data is automatically removed.
-dragonfly> GET cart:user123
+dragonfly$> GET cart:user123
 (nil)
 ```
 

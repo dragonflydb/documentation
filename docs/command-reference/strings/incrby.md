@@ -39,9 +39,9 @@ The command returns the new value of the key, which is the result of adding the 
 Increment a key by `5`:
 
 ```shell
-dragonfly> SET mycounter 10
+dragonfly$> SET mycounter 10
 OK
-dragonfly> INCRBY mycounter 5
+dragonfly$> INCRBY mycounter 5
 (integer) 15
 ```
 
@@ -53,7 +53,7 @@ If the key does not exist, `INCRBY` will first set it to `0` and then increment 
 
 ```shell
 
-dragonfly> INCRBY newcounter 4
+dragonfly$> INCRBY newcounter 4
 (integer) 4
 ```
 
@@ -65,9 +65,9 @@ Here, `newcounter` did not exist initially.
 You can also decrement a key by passing a negative number as the increment value:
 
 ```shell
-dragonfly> SET score 20
+dragonfly$> SET score 20
 OK
-dragonfly> INCRBY score -7
+dragonfly$> INCRBY score -7
 (integer) 13
 ```
 
@@ -78,11 +78,11 @@ In this example, `INCRBY` is used with a negative value of `-7` to decrement the
 Increment the same key multiple times with different values:
 
 ```shell
-dragonfly> SET visits 100
+dragonfly$> SET visits 100
 OK
-dragonfly> INCRBY visits 10
+dragonfly$> INCRBY visits 10
 (integer) 110
-dragonfly> INCRBY visits 15
+dragonfly$> INCRBY visits 15
 (integer) 125
 ```
 
@@ -101,9 +101,9 @@ Here, the value of `visits` is incremented twice, first by `10` and then by `15`
 - Using `INCRBY` with a key that stores a non-numeric value will cause an error and fail:
 
   ```shell
-  dragonfly> SET mystring "hello"
+  dragonfly$> SET mystring "hello"
   OK
-  dragonfly> INCRBY mystring 2
+  dragonfly$> INCRBY mystring 2
   (error) ERR value is not an integer or out of range
   ```
 

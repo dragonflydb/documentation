@@ -21,6 +21,9 @@ which is particularly useful in scenarios where message processing needs to be r
 XAUTOCLAIM key group consumer min-idle-time start [COUNT count] [JUSTID]
 ```
 
+- **Time complexity:** O(1) if `COUNT` is small.
+- **ACL categories:** @write, @stream, @fast
+
 ## Parameter Explanations
 
 - `key`: The key of the stream.

@@ -8,130 +8,82 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis XINFO STREAM Command (Documentation) | Dragonfly" />
 
+## Introduction
+
+In Dragonfly, as well as in Redis and Valkey, the `XINFO STREAM` command provides information about a specific stream.
+This command can be used to monitor and debug streams, as it helps you understand the structure and state of a stream.
+
 ## Syntax
 
-    XINFO STREAM key [FULL [COUNT count]]
+```shell
+XINFO STREAM key [FULL [COUNT count]]
+```
 
-**ACL categories:** @read, @stream, @slow
+- **Time complexity:** O(1)
+- **ACL categories:** @read, @stream, @slow
 
-**XINFO STREAM** command returns information about the stream stored at **<key\>**.
+## Parameter Explanations
 
-The informative details provided by this command are:
+- `key`: The key of the stream for which information is to be retrieved.
+- `FULL` (optional): If specified, the command returns additional details about the stream.
+- `COUNT count` (optional): If `FULL` is specified, this parameter limits the number of returned stream and PEL entries returned.
+  `COUNT` is default to `10`. Setting `COUNT` to `0` returns all entries, which should be used with caution as it increases execution time for large streams.
 
- * **length:** the number of entries in the stream (see **XLEN**)
- * **radix-tree-keys:** the number of keys in the underlying radix data structure
- * **radix-tree-nodes:** the number of nodes in the underlying radix data structure
- * **groups:** the number of consumer groups defined for the stream
- * **last-generated-id:** the ID of the least-recently entry that was added to the stream
- * **max-deleted-entry-id:** the maximal entry ID that was deleted from the stream
- * **entries-added:** the count of all entries added to the stream during its lifetime
- * **first-entry:** the ID and field-value tuples of the first entry in the stream
- * **last-entry:** the ID and field-value tuples of the last entry in the stream
+## Return Values
 
-The optional **FULL** modifier provides a more verbose reply. When provided, the **FULL** reply includes an **entries** array that consists of the stream entries (ID and field-value tuples) in ascending order. Furthermore, **groups** is also an array, and for each of the consumer groups it consists of the information reported by **XINFO GROUPS** and **XINFO CONSUMERS**.
+- The command returns a list of information about the specified stream's state and entries.
 
-The **COUNT** option can be used to limit the number of stream and PEL entries that are returned (The first **<count\>** entries are returned). The default **COUNT** is **10** and a **COUNT** of **0** means that all entries will be returned (execution time may be long if the stream has a lot of entries).
+## Code Examples
 
-## Return
+### Retrieve Stream Information
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays):
-a list of informational bits.
-
-## Example
+Get information about a stream:
 
 ```shell
-dragonfly> XINFO STREAM mystream
+dragonfly$> XADD mystream * sensor-id 1234 temperature 19.8
+"1632494980015-0"
+
+dragonfly$> XINFO STREAM mystream
  1) "length"
- 2) (integer) 2
+ 2) (integer) 1
  3) "radix-tree-keys"
  4) (integer) 1
  5) "radix-tree-nodes"
  6) (integer) 2
- 7) "last-generated-id"
- 8) "1638125141232-0"
- 9) "max-deleted-entry-id"
-10) "0-0"
-11) "entries-added"
-12) (integer) 2
-13) "groups"
-14) (integer) 1
-15) "first-entry"
-16) 1) "1638125133432-0"
-    2) 1) "message"
-       2) "apple"
-17) "last-entry"
-18) 1) "1638125141232-0"
-    2) 1) "message"
-       2) "banana"
+ 7) "groups"
+ 8) (integer) 0
+ 9) "last-generated-id"
+10) "1632494980015-0"
+11) "first-entry"
+12) 1) "1632494980015-0"
+    2) 1) "sensor-id"
+       2) "1234"
+       3) "temperature"
+       4) "19.8"
+13) "last-entry"
+14) 1) "1632494980015-0"
+    2) 1) "sensor-id"
+       2) "1234"
+       3) "temperature"
+       4) "19.8"
 ```
 
-Full reply:
+## Best Practices
 
-```shell
-dragonfly> XADD mystream * foo bar
-"1638125133432-0"
+- Regularly use `XINFO STREAM` to monitor the health and performance of streams.
+- Analyze the output to optimize memory and understand stream usage patterns.
 
-dragonfly> XADD mystream * foo bar2
-"1638125141232-0"
+## Common Mistakes
 
-dragonfly> XGROUP CREATE mystream mygroup 0-0
-OK
+- Forgetting that `XINFO STREAM` only queries data and does not modify the stream content.
+- Not grasping the meaning of each output field; ensure you understand terms like `radix-tree-keys` and `last-generated-id` in the context of streams.
 
-dragonfly> XREADGROUP GROUP mygroup Alice COUNT 1 STREAMS mystream >
-1) 1) "mystream"
-   2) 1) 1) "1638125133432-0"
-         2) 1) "foo"
-            2) "bar"
+## FAQs
 
-dragonfly> XINFO STREAM mystream FULL
- 1) "length"
- 2) (integer) 2
- 3) "radix-tree-keys"
- 4) (integer) 1
- 5) "radix-tree-nodes"
- 6) (integer) 2
- 7) "last-generated-id"
- 8) "1638125141232-0"
- 9) "max-deleted-entry-id"
-10) "0-0"
-11) "entries-added"
-12) (integer) 2
-13) "entries"
-14) 1) 1) "1638125133432-0"
-       2) 1) "foo"
-          2) "bar"
-    2) 1) "1638125141232-0"
-       2) 1) "foo"
-          2) "bar2"
-15) "groups"
-16) 1)  1) "name"
-        2) "mygroup"
-        3) "last-delivered-id"
-        4) "1638125133432-0"
-        5) "entries-read"
-        6) (integer) 1
-        7) "lag"
-        8) (integer) 1
-        9) "pel-count"
-       10) (integer) 1
-       11) "pending"
-       12) 1) 1) "1638125133432-0"
-              2) "Alice"
-              3) (integer) 1638125153423
-              4) (integer) 1
-       13) "consumers"
-       14) 1) 1) "name"
-              2) "Alice"
-              3) "seen-time"
-              4) (integer) 1638125133422
-              5) "active-time"
-              6) (integer) 1638125133432
-              7) "pel-count"
-              8) (integer) 1
-              9) "pending"
-              10) 1) 1) "1638125133432-0"
-                     2) (integer) 1638125133432
-                     3) (integer) 1
-```
+### What does `radix-tree-keys` signify?
 
+`radix-tree-keys` indicates the number of entries in the underlying radix tree data structure for streams.
 
+### How do I interpret `first-entry` and `last-entry`?
+
+`first-entry` and `last-entry` give you the stream's start and end records, which helps to identify the pattern of data.

@@ -8,36 +8,74 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis XLEN Command (Documentation) | Dragonfly" />
 
+## Introduction
+
+In Dragonfly, as well as in Redis and Valkey, the `XLEN` command is used to determine the number of entries in a stream.
+The command is useful for monitoring and managing data streams, providing quick insights into the size and health of your data pipeline.
+
 ## Syntax
 
-	XLEN key
+```shell
+XLEN key
+```
 
-**Time Complexity:** O(1)
+- **Time complexity:** O(1)
+- **ACL categories:** @read, @stream, @fast
 
-**ACL categories:** @read, @stream, @fast
+## Parameter Explanations
 
-Returns the number of entries inside a stream. If the specified
-key does not exist the command returns zero, as if the stream was
-empty. Note that a stream can be empty and hence **XLEN** is not
-a good option to check if a stream exists.
+- `key`: The key of the stream for which you wish to know the number of entries.
 
-Streams are not auto-deleted once they have no entries inside
-(for instance after an **XDEL** call), because the stream may have
-consumer groups associated with it.
+## Return Values
 
-## Return
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
-the number of entries of the stream at key.
+- The command returns the number of entries in the specified stream as an integer.
 
-## Example
+## Code Examples
+
+### Basic Example
+
+Determine the number of entries in a stream:
 
 ```shell
-dragonfly> XADD mystream * name John
-"1623910120014-0"
-dragonfly> XADD mystream * name Bob
-"1623910194423-0"
-dragonfly> XADD mystream * name Alice
-"1623910226955-0"
-dragonfly> XLEN mystream
+dragonfly$> XADD mystream * sensor-1-temperature 23.1
+"1678819562090-0"
+
+dragonfly$> XADD mystream * sensor-2-temperature 23.2
+"1678819562091-0"
+
+dragonfly$> XADD mystream * sensor-3-temperature 23.3
+"1678819562092-0"
+
+dragonfly$> XLEN mystream
 (integer) 3
 ```
+
+### Non-Existent Stream
+
+Check the length of a non-existent stream:
+
+```shell
+dragonfly$> XLEN non-existent-stream
+(integer) 0
+```
+
+## Best Practices
+
+- Regularly check stream lengths as part of a comprehensive data management strategy.
+- Integrate `XLEN` into your monitoring dashboards to provide real-time feedback on stream sizes and help detect bottlenecks or unusual activity patterns.
+
+## Common Mistakes
+
+- Using `XLEN` on non-stream data types will result in an error, so ensure that the key provided is indeed a stream.
+- Confusing `XLEN` with list length commands like `LLEN`, as they apply to different data structures.
+
+## FAQs
+
+### What happens if the stream key does not exist?
+
+If the stream key does not exist, `XLEN` returns `0`.
+
+### Can `XLEN` be used to determine entries in other data types like lists or sets?
+
+No, `XLEN` is specifically designed for streams.
+To determine the length of other data types, use the appropriate commands such as `LLEN` for lists or `SCARD` for sets.

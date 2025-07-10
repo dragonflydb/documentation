@@ -19,6 +19,9 @@ This command is part of the streams data type which facilitates managing consume
 XGROUP CREATECONSUMER key group consumer
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @stream, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the stream for which the consumer is being created.

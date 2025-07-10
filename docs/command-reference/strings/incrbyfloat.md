@@ -40,9 +40,9 @@ The command returns the new floating-point value after the increment.
 Increment the float value of a key:
 
 ```shell
-dragonfly> SET counter 10.5
+dragonfly$> SET counter 10.5
 OK
-dragonfly> INCRBYFLOAT counter 1.5
+dragonfly$> INCRBYFLOAT counter 1.5
 "12"
 ```
 
@@ -54,7 +54,7 @@ If the key does not exist, it is initialized to `0` before incrementing by the s
 
 ```shell
 
-dragonfly> INCRBYFLOAT new_counter 2.5
+dragonfly$> INCRBYFLOAT new_counter 2.5
 "2.5"
 ```
 
@@ -63,9 +63,9 @@ dragonfly> INCRBYFLOAT new_counter 2.5
 You can also use negative numbers to decrement the value:
 
 ```shell
-dragonfly> SET score 20.0
+dragonfly$> SET score 20.0
 OK
-dragonfly> INCRBYFLOAT score -5.5
+dragonfly$> INCRBYFLOAT score -5.5
 "14.5"
 ```
 
@@ -74,9 +74,9 @@ dragonfly> INCRBYFLOAT score -5.5
 `INCRBYFLOAT` maintains float precision, allowing fine-grained changes, such as adding a small decimal value:
 
 ```shell
-dragonfly> SET balance 150.0
+dragonfly$> SET balance 150.0
 OK
-dragonfly> INCRBYFLOAT balance 0.03
+dragonfly$> INCRBYFLOAT balance 0.03
 "150.03"
 ```
 
@@ -85,11 +85,11 @@ dragonfly> INCRBYFLOAT balance 0.03
 You can repeatedly increment the same key for cumulative updates:
 
 ```shell
-dragonfly> SET total 100.0
+dragonfly$> SET total 100.0
 OK
-dragonfly> INCRBYFLOAT total 10.7
+dragonfly$> INCRBYFLOAT total 10.7
 "110.7"
-dragonfly> INCRBYFLOAT total 2.3
+dragonfly$> INCRBYFLOAT total 2.3
 "113"
 ```
 

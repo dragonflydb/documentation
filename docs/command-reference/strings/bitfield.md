@@ -54,9 +54,9 @@ BITFIELD key [GET type offset]
 ### Basic Example
 
 ```shell
-dragonfly> BITFIELD mykey SET u8 0 100
+dragonfly$> BITFIELD mykey SET u8 0 100
 1) (integer) 0
-dragonfly> BITFIELD mykey GET u8 0
+dragonfly$> BITFIELD mykey GET u8 0
 1) (integer) 100
 ```
 
@@ -65,13 +65,13 @@ dragonfly> BITFIELD mykey GET u8 0
 Using `BITFIELD` to implement an 8-bit counter:
 
 ```shell
-dragonfly> BITFIELD mycounter INCRBY u8 0 1
+dragonfly$> BITFIELD mycounter INCRBY u8 0 1
 1) (integer) 1
-dragonfly> BITFIELD mycounter INCRBY u8 0 1
+dragonfly$> BITFIELD mycounter INCRBY u8 0 1
 1) (integer) 2
-dragonfly> BITFIELD mycounter INCRBY u8 0 253
+dragonfly$> BITFIELD mycounter INCRBY u8 0 253
 1) (integer) 255
-dragonfly> BITFIELD mycounter INCRBY u8 0 1
+dragonfly$> BITFIELD mycounter INCRBY u8 0 1
 1) (integer) 0  # Overflow occurs as it wraps around.
 ```
 
@@ -80,13 +80,13 @@ dragonfly> BITFIELD mycounter INCRBY u8 0 1
 Using `BITFIELD` to manage multiple flags within a single key:
 
 ```shell
-dragonfly> BITFIELD user_flags SET u1 0 1
+dragonfly$> BITFIELD user_flags SET u1 0 1
 1) (integer) 0
-dragonfly> BITFIELD user_flags SET u1 1 1
+dragonfly$> BITFIELD user_flags SET u1 1 1
 1) (integer) 0
-dragonfly> BITFIELD user_flags GET u1 0
+dragonfly$> BITFIELD user_flags GET u1 0
 1) (integer) 1
-dragonfly> BITFIELD user_flags GET u1 1
+dragonfly$> BITFIELD user_flags GET u1 1
 1) (integer) 1
 ```
 

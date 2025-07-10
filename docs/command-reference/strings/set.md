@@ -48,9 +48,9 @@ SET key value [NX | XX] [GET] [EX seconds | PX milliseconds |
 In its simplest form, the `SET` command assigns a string value to a given key:
 
 ```shell
-dragonfly> SET mykey "hello"
+dragonfly$> SET mykey "hello"
 OK
-dragonfly> GET mykey
+dragonfly$> GET mykey
 "hello"
 ```
 
@@ -59,11 +59,11 @@ dragonfly> GET mykey
 This will only set the value if the key does not already exist:
 
 ```shell
-dragonfly> SET mykey "hello" NX
+dragonfly$> SET mykey "hello" NX
 OK
-dragonfly> SET mykey "world" NX
+dragonfly$> SET mykey "world" NX
 (nil)  # The key already exists, so the second operation doesn't change the value.
-dragonfly> GET mykey
+dragonfly$> GET mykey
 "hello"
 ```
 
@@ -72,13 +72,13 @@ dragonfly> GET mykey
 Use `SET` with the `XX` option to only set the value if the key already exists:
 
 ```shell
-dragonfly> SET mykey "initial"
+dragonfly$> SET mykey "initial"
 OK
-dragonfly> SET mykey "update" XX
+dragonfly$> SET mykey "update" XX
 OK
-dragonfly> GET mykey
+dragonfly$> GET mykey
 "update"
-dragonfly> SET non_existent_key "value" XX
+dragonfly$> SET non_existent_key "value" XX
 (nil)  # Key doesn't exist, so the value is not set.
 ```
 
@@ -88,18 +88,18 @@ The `EX` option sets the expiration time in seconds.
 It is notable that since this is a single command, the expiration time is set **atomically** with the value:
 
 ```shell
-dragonfly> SET mykey "temporary-ex" EX 10
+dragonfly$> SET mykey "temporary-ex" EX 10
 OK
-dragonfly> TTL mykey
+dragonfly$> TTL mykey
 (integer) 10  # Remaining time-to-live in seconds.
 ```
 
 You can alternatively use `PX` for a more granular TTL setting in milliseconds:
 
 ```shell
-dragonfly> SET mykey "temporary-px" PX 5000
+dragonfly$> SET mykey "temporary-px" PX 5000
 OK
-dragonfly> TTL mykey
+dragonfly$> TTL mykey
 (integer) 5  # Remaining time-to-live in seconds.
 ```
 
@@ -108,9 +108,9 @@ dragonfly> TTL mykey
 The command returns the previous value stored at the key before updating it:
 
 ```shell
-dragonfly> SET mykey "initial"
+dragonfly$> SET mykey "initial"
 OK
-dragonfly> SET mykey "updated" GET
+dragonfly$> SET mykey "updated" GET
 "initial"
 ```
 
@@ -119,9 +119,9 @@ dragonfly> SET mykey "updated" GET
 Set an expiration as a specific Unix timestamp, instead of after a relative period:
 
 ```shell
-dragonfly> SET mykey "expiring_soon" EXAT 1700000000
+dragonfly$> SET mykey "expiring_soon" EXAT 1700000000
 OK
-dragonfly> TTL mykey
+dragonfly$> TTL mykey
 (integer) 123456789  # TTL is based on the current time and the specified timestamp.
 ```
 
@@ -132,11 +132,11 @@ For even more precise control, you can specify the expiration in milliseconds us
 This will change the value of the key but retain its original expiration time:
 
 ```shell
-dragonfly> SET mykey "initial" EX 10
+dragonfly$> SET mykey "initial" EX 10
 OK
-dragonfly> SET mykey "new_value" KEEPTTL
+dragonfly$> SET mykey "new_value" KEEPTTL
 OK
-dragonfly> TTL mykey
+dragonfly$> TTL mykey
 (integer) 8  # Previous TTL remains unchanged.
 ```
 

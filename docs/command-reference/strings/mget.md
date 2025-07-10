@@ -40,13 +40,13 @@ If a key does not exist, `nil` is returned for that particular key.
 Retrieve values from multiple keys:
 
 ```shell
-dragonfly> SET key1 "value1"
+dragonfly$> SET key1 "value1"
 OK
-dragonfly> SET key2 "value2"
+dragonfly$> SET key2 "value2"
 OK
-dragonfly> SET key3 "value3"
+dragonfly$> SET key3 "value3"
 OK
-dragonfly> MGET key1 key2 key3
+dragonfly$> MGET key1 key2 key3
 1) "value1"
 2) "value2"
 3) "value3"
@@ -57,7 +57,7 @@ dragonfly> MGET key1 key2 key3
 If one or more keys do not exist, `MGET` will return `nil` for the missing keys:
 
 ```shell
-dragonfly> MGET key1 key_non_existent key3
+dragonfly$> MGET key1 key_non_existent key3
 1) "value1"
 2) (nil)
 3) "value3"
@@ -68,13 +68,13 @@ dragonfly> MGET key1 key_non_existent key3
 In scenarios where you are managing session data for multiple users, you can use `MGET` to efficiently retrieve their session information in one operation:
 
 ```shell
-dragonfly> SET session:user1 "data1"
+dragonfly$> SET session:user1 "data1"
 OK
-dragonfly> SET session:user2 "data2"
+dragonfly$> SET session:user2 "data2"
 OK
-dragonfly> SET session:user3 "data3"
+dragonfly$> SET session:user3 "data3"
 OK
-dragonfly> MGET session:user1 session:user2 session:user3
+dragonfly$> MGET session:user1 session:user2 session:user3
 1) "data1"
 2) "data2"
 3) "data3"
@@ -85,16 +85,16 @@ dragonfly> MGET session:user1 session:user2 session:user3
 If some of the keys have expired or are nearing expiration, `MGET` will still retrieve available keys but return `nil` for those that no longer exist:
 
 ```shell
-dragonfly> SET key_expiring "temp_value" EX 1  # Expires in 1 second
+dragonfly$> SET key_expiring "temp_value" EX 1  # Expires in 1 second
 OK
-dragonfly> SET key_persistent "persistent_value"
+dragonfly$> SET key_persistent "persistent_value"
 OK
-dragonfly> MGET key_expiring key_persistent
+dragonfly$> MGET key_expiring key_persistent
 1) "temp_value"
 2) "persistent_value"
 
 # After 1 second
-dragonfly> MGET key_expiring key_persistent
+dragonfly$> MGET key_expiring key_persistent
 1) (nil)
 2) "persistent_value"
 ```

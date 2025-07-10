@@ -19,6 +19,9 @@ This command is beneficial when you need to reprocess messages or adjust a consu
 XGROUP SETID key group <id | $>
 ```
 
+- **Time complexity:** O(1)
+- **ACL categories:** @write, @stream, @slow
+
 ## Parameter Explanations
 
 - `key`: The key of the stream.

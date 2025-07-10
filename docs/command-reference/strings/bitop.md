@@ -40,13 +40,13 @@ Returns the size of the string stored in the destination key, measured in bytes.
 Performing a basic bitwise `AND` operation between two keys:
 
 ```shell
-dragonfly> SET key1 "foobar"
+dragonfly$> SET key1 "foobar"
 OK
-dragonfly> SET key2 "abcdef"
+dragonfly$> SET key2 "abcdef"
 OK
-dragonfly> BITOP AND result key1 key2
+dragonfly$> BITOP AND result key1 key2
 (integer) 6
-dragonfly> GET result
+dragonfly$> GET result
 "\x60\x60\x04\x00\x00\x00"
 ```
 
@@ -55,15 +55,15 @@ dragonfly> GET result
 Combining three keys using the `OR` operation:
 
 ```shell
-dragonfly> SET key1 "\x01"
+dragonfly$> SET key1 "\x01"
 OK
-dragonfly> SET key2 "\x02"
+dragonfly$> SET key2 "\x02"
 OK
-dragonfly> SET key3 "\x03"
+dragonfly$> SET key3 "\x03"
 OK
-dragonfly> BITOP OR result key1 key2 key3
+dragonfly$> BITOP OR result key1 key2 key3
 (integer) 1
-dragonfly> GET result
+dragonfly$> GET result
 "\x03"
 ```
 
@@ -72,13 +72,13 @@ dragonfly> GET result
 Using the `XOR` operation to combine two keys:
 
 ```shell
-dragonfly> SET key1 "\x0F"
+dragonfly$> SET key1 "\x0F"
 OK
-dragonfly> SET key2 "\xF0"
+dragonfly$> SET key2 "\xF0"
 OK
-dragonfly> BITOP XOR result key1 key2
+dragonfly$> BITOP XOR result key1 key2
 (integer) 1
-dragonfly> GET result
+dragonfly$> GET result
 "\xFF"
 ```
 
@@ -87,11 +87,11 @@ dragonfly> GET result
 Performing the `NOT` operation on a single key:
 
 ```shell
-dragonfly> SET key1 "\xAA"  # 10101010 in binary
+dragonfly$> SET key1 "\xAA"  # 10101010 in binary
 OK
-dragonfly> BITOP NOT result key1
+dragonfly$> BITOP NOT result key1
 (integer) 1
-dragonfly> GET result
+dragonfly$> GET result
 "\x55"  # 01010101 in binary (inverted bits)
 ```
 
