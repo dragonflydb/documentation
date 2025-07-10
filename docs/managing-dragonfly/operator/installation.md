@@ -17,8 +17,8 @@ The main features include:
 
 ## Prerequisites
 
-- A working Kubernetes cluster (tested with Kubernetes 1.19+)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/) installed and configured to connect to your cluster
+- A working Kubernetes cluster (tested with Kubernetes 1.19+).
+- [kubectl](https://kubernetes.io/docs/tasks/tools/) installed and configured to connect to your Kubernetes cluster.
 
 ## Installation
 
@@ -35,14 +35,39 @@ By default, the operator will be installed in the `dragonfly-operator-system` na
 
 ### Create a Dragonfly instance with replicas
 
-To set up a sample Dragonfly topology with a primary (master) and optional replicas (slaves), run the following command:
+To set up a sample Dragonfly topology with a primary (master) and optional replicas (slaves), create a YAML file:
+
+```yaml
+# dragonfly-sample.yaml
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  labels:
+    app.kubernetes.io/name: dragonfly
+    app.kubernetes.io/instance: dragonfly-sample
+    app.kubernetes.io/part-of: dragonfly-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: dragonfly-operator
+  name: dragonfly-sample
+spec:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500Mi
+    limits:
+      cpu: 600m
+      memory: 750Mi
+```
+
+And then run the following command:
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/config/samples/v1alpha1_dragonfly.yaml
+kubectl apply -f dragonfly-sample.yaml
 ```
 
 **Important Note:**
-In the Dragonfly Kubernetes Operator, the `replicas` configuration adheres to Kubernetes' standard semantics, specifying the number of instances to run.
+When using the Dragonfly Kubernetes Operator, the `replicas` configuration adheres to Kubernetes' standard semantics, specifying the number of instances to run.
 However, since Dragonfly is a stateful data store, the interpretation differs, as it relates to a high-availability setup.
 For example:
 
