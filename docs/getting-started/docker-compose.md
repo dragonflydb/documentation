@@ -5,9 +5,8 @@ sidebar_position: 1
 # Install with Docker Compose
 
 
-This guide will have you up running Dragonfly with `docker-compose` in just a few minutes.
-
-If you do not have `docker` and `docker-compose` installed on your machine, before continuing install [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/).
+This guide will have you up and running Dragonfly with Docker Compose in just a few minutes.
+Before continuing, make sure that you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed.
 
 ## Step 1
 
