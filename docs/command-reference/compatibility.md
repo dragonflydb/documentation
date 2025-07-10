@@ -145,7 +145,7 @@ sidebar_position: 0
 |                                              | <span class="command">ACL GENPASS</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ACL GETUSER</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ACL LIST</span>                      | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ACL LOAD</span>                      | <span class="support partial">Fully supported</span>     |
+|                                              | <span class="command">ACL LOAD</span>                      | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">ACL LOG</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ACL SAVE</span>                      | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">ACL SETUSER</span>                   | <span class="support partial">Partially supported</span> |
