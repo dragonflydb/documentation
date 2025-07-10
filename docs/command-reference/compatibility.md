@@ -306,7 +306,12 @@ sidebar_position: 0
 |                                              | <span class="command">BF.MEXISTS</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BF.RESERVE</span>                    | <span class="support partial">Partially supported</span> |
 | <span class="family">Cuckoo Filter</span>    | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
-| <span class="family">Count-min Sketch</span> | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">Count-Min Sketch</span> | <span class="command">CMS.INCRBY</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CMS.INFO</span>                      | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CMS.INITBYDIM</span>                 | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CMS.INITBYPROB</span>                | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CMS.MERGE</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CMS.QUERY</span>                     | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Graph</span>            | <span class="command">Not supported</span>                 | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">JSON</span>             | <span class="command">ARRAPPEND</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ARRINDEX</span>                      | <span class="support supported">Fully supported</span>   |
