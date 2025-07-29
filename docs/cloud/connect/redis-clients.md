@@ -66,9 +66,9 @@ import { Redis as Dragonfly } from "ioredis";
 // Connection details can be found in your Dragonfly Cloud console.
 //
 // For the 'scaleReads' option:
-//  - 'master': read from primary instances only.
-//  - 'slave': read from replica instances only.
-//  - 'all': read from both primary & replica instances.
+//  - 'master': All queries, including reads, are sent to primary nodes.
+//  - 'all': Write to primary nodes, read from either primary nodes or replicas.
+//  - 'slave': Write to primary nodes, read from replicas exclusively.
 import { Redis as Dragonfly } from "ioredis";
 
 const client = new Dragonfly.Cluster(
@@ -78,9 +78,10 @@ const client = new Dragonfly.Cluster(
       username: "default",
       password: "<KEY>",
     },
-    scaleReads: "slave", // Enables read-only commands on replicas.
+    scaleReads: "slave",
   },
 );
+
 client.ping().then((resp) => console.log(resp));
 ```
 
