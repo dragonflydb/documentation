@@ -58,7 +58,8 @@ client.ping().then((resp) => console.log(resp));
 ```
 
 - While running a **Dragonfly Swarm** cluster, make sure to use the cluster-aware version of the client as shown below.
-- If your application can tolerate potentially stale reads, you can further scale read throughput by leveraging read replicas, available by default when you deploy Dragonfly Swarm with replicas.
+- If your application requires even higher read throughput and can tolerate slightly stale reads, you can use **read replicas**,
+  which are enabled by default when deploying Dragonfly Swarm with replicas.
 
 ```javascript
 import { Redis as Dragonfly } from "ioredis";
@@ -101,7 +102,8 @@ client.ping()
 ```
 
 - While running a **Dragonfly Swarm** cluster, make sure to use the cluster-aware version of the client as shown below.
-- If your application can tolerate potentially stale reads, you can further scale read throughput by leveraging read replicas, available by default when you deploy Dragonfly Swarm with replicas.
+- If your application requires even higher read throughput and can tolerate slightly stale reads, you can use **read replicas**,
+  which are enabled by default when deploying Dragonfly Swarm with replicas.
 
 ```python
 from redis import RedisCluster as DragonflySwarm
@@ -153,7 +155,8 @@ func main() {
 ```
 
 - While running a **Dragonfly Swarm** cluster, make sure to use the cluster-aware version of the client as shown below.
-- If your application can tolerate potentially stale reads, you can further scale read throughput by leveraging read replicas, available by default when you deploy Dragonfly Swarm with replicas.
+- If your application requires even higher read throughput and can tolerate slightly stale reads, you can use **read replicas**,
+  which are enabled by default when deploying Dragonfly Swarm with replicas.
 
 ```go
 package main
