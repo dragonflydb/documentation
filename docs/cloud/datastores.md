@@ -99,8 +99,8 @@ To interact with a Dragonfly Swarm data store, client libraries you use must sup
 Some key points to keep in mind when you choose a Dragonfly Swarm data store:
 
 - Only Redis Cluster client libraries can be used.
-- Scale both vertically and horizontally—up to 2TB of in-memory data with tens of millions of QPS.
-- If your workload requires more than 2TB of memory, please contact support.
+- Scale both vertically and horizontally—up to 15TB of in-memory data with tens of millions of QPS.
+- If your workload requires more than 15TB of memory, please contact support.
 
 ## Security
 
