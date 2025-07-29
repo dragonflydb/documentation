@@ -95,7 +95,7 @@ client.ping().then((resp) => console.log(resp));
 import redis
 
 # Connection details can be found in your Dragonfly Cloud console.
-client = redis.Redis.from_url("CONNECTION_URI")
+client = redis.Redis.from_url("<CONNECTION_URI>")
 client.ping()
 ```
 
@@ -103,10 +103,17 @@ client.ping()
 - If your application can tolerate potentially stale reads, you can further scale read throughput by leveraging read replicas, available by default when you deploy Dragonfly Swarm with replicas.
 
 ```python
-import redis
+from redis import RedisCluster as DragonflySwarm
 
 # Connection details can be found in your Dragonfly Cloud console.
-client = redis.Redis.from_url("CONNECTION_URI")
+client = DragonflySwarm(
+    host="<URL>",
+    port=6385,
+    username="default",
+    password="<KEY>",
+    read_from_replicas=True,  # Enables read-only commands on replicas.
+)
+
 client.ping()
 ```
 
