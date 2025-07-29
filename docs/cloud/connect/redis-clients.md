@@ -38,7 +38,7 @@ $> redis-cli -c -u <CONNECTION_URI> PING
 
 ---
 
-## Typescript & JavaScript
+## TypeScript & JavaScript
 
 - Install the [`ioredis`](https://github.com/redis/ioredis) package.
 - Use the following code snippet to connect to the data store:
@@ -57,7 +57,7 @@ const client = new Dragonfly({
 client.ping().then((resp) => console.log(resp));
 ```
 
-- While running a **Dragonfly Swarm** cluster in Dragonfly Cloud, make sure to use the cluster-aware version of the client.
+- While running a **Dragonfly Swarm** cluster, make sure to use the cluster-aware version of the client as shown below.
 - If your application can tolerate potentially stale reads, you can further scale read throughput by leveraging read replicas, available by default when you deploy Dragonfly Swarm with replicas.
 
 ```javascript
@@ -78,7 +78,7 @@ const client = new Dragonfly.Cluster(
       username: "default",
       password: "<KEY>",
     },
-    scaleReads: "slave",
+    scaleReads: "slave", // Enables read-only commands on replicas.
   },
 );
 client.ping().then((resp) => console.log(resp));
@@ -99,7 +99,7 @@ client = redis.Redis.from_url("<CONNECTION_URI>")
 client.ping()
 ```
 
-- While running a **Dragonfly Swarm** cluster in Dragonfly Cloud, make sure to use the cluster-aware version of the client.
+- While running a **Dragonfly Swarm** cluster, make sure to use the cluster-aware version of the client as shown below.
 - If your application can tolerate potentially stale reads, you can further scale read throughput by leveraging read replicas, available by default when you deploy Dragonfly Swarm with replicas.
 
 ```python
@@ -151,7 +151,7 @@ func main() {
 }
 ```
 
-- While running a **Dragonfly Swarm** cluster in Dragonfly Cloud, make sure to use the cluster-aware version of the client.
+- While running a **Dragonfly Swarm** cluster, make sure to use the cluster-aware version of the client as shown below.
 - If your application can tolerate potentially stale reads, you can further scale read throughput by leveraging read replicas, available by default when you deploy Dragonfly Swarm with replicas.
 
 ```go
