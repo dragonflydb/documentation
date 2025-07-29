@@ -88,7 +88,7 @@ Some key points to keep in mind when you choose a single-shard Dragonfly data st
 
 - Regular standalone Redis client libraries can be used.
 - Redis Cluster client libraries can be used.
-- Scale vertically—up to 400GB of in-memory data with millions of QPS.
+- Single-shard data stores scale vertically—up to 600GB of in-memory data with millions of QPS.
 
 ### Dragonfly Swarm (Multi-Shard)
 
@@ -98,8 +98,11 @@ Dragonfly Swarm automatically configures the optimal number of shards based on t
 To interact with a Dragonfly Swarm data store, client libraries you use must support the Redis Cluster protocol.
 Some key points to keep in mind when you choose a Dragonfly Swarm data store:
 
-- Only Redis Cluster client libraries can be used.
-- Scale both vertically and horizontally—up to 15TB of in-memory data with tens of millions of QPS.
+- Only Redis Cluster client libraries can be used. See [connecting with Redis clients](./connect/redis-clients.md) for more details.
+- You can also add replica(s) for primary nodes within a Dragonfly Swarm cluster. By doing so, each shard becomes highly available.
+  In the meantime, you can leverage these replicas to scale read traffic even further. **Read replicas** are enabled for
+  Dragonfly Swarm clusters by default. Learn how to [configure your clients here](./connect/redis-clients.md).
+- Multi-shard data stores scale both vertically and horizontally—up to 15TB of in-memory data with tens of millions of QPS.
 - If your workload requires more than 15TB of memory, please contact support.
 
 ## Security
