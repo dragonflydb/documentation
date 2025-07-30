@@ -8,9 +8,11 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Connecting with Redis Clients | Dragonfly Cloud" />
 
-Once a data store's **Status** is **Active**, you can connect to it with any Redis client by following the **Connection Details**
-section in the data store details drawer.
+Once a data store's **Status** is **Active**, you can connect to it with any Redis client by following
+the **Connection Details** section in the data store details drawer.
 Here are a few popular client libraries and code snippets to connect to the data store.
+
+![Dragonfly Cloud Connection Details](/img/dragonfly-cloud-connection-details.png)
 
 ### Notes
 
