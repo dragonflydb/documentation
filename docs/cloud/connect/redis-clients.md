@@ -14,7 +14,7 @@ Here are a few popular client libraries and code snippets to connect to the data
 
 ![Dragonfly Cloud Connection Details](/img/dragonfly-cloud-connection-details.png)
 
-### Notes
+**Notes:**
 
 - Unless otherwise specified, you should use the connection details found for each data store
   to replace those placeholders in the code snippets below, where we use public endpoints with the `default` user and TLS disabled.
@@ -24,12 +24,16 @@ Here are a few popular client libraries and code snippets to connect to the data
 
 ## Redis CLI
 
+### Single-Shard Data Store
+
 - Install [`redis-cli`](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/).
 - With the **Connection URI** from the data store drawer, run `redis-cli` in the terminal:
 
 ```shell
 $> redis-cli -u <CONNECTION_URI> PING
 ```
+
+### Dragonfly Swarm
 
 - If you are running a **Dragonfly Swarm** multi-shard cluster in Dragonfly Cloud, make sure to use the cluster-aware flag:
 
@@ -41,6 +45,8 @@ $> redis-cli -c -u <CONNECTION_URI> PING
 ---
 
 ## TypeScript & JavaScript
+
+### Single-Shard Data Store
 
 - Install the [`ioredis`](https://github.com/redis/ioredis) package.
 - Use the following code snippet to connect to the data store:
@@ -58,6 +64,8 @@ const client = new Dragonfly({
 
 client.ping().then((resp) => console.log(resp));
 ```
+
+### Dragonfly Swarm & Read Replicas
 
 - While running a **Dragonfly Swarm** cluster, make sure to use the cluster-aware version of the client as shown below.
 - If your application requires even higher read throughput and can tolerate slightly stale reads, you can use **read replicas**,
@@ -92,6 +100,8 @@ client.ping().then((resp) => console.log(resp));
 
 ## Python
 
+### Single-Shard Data Store
+
 - Install the [redis-py](https://github.com/redis/redis-py) package.
 - Use the following code snippet to connect to the data store:
 
@@ -102,6 +112,8 @@ import redis
 client = redis.Redis.from_url("<CONNECTION_URI>")
 client.ping()
 ```
+
+### Dragonfly Swarm & Read Replicas
 
 - While running a **Dragonfly Swarm** cluster, make sure to use the cluster-aware version of the client as shown below.
 - If your application requires even higher read throughput and can tolerate slightly stale reads, you can use **read replicas**,
@@ -125,6 +137,8 @@ client.ping()
 ---
 
 ## Go
+
+### Single-Shard Data Store
 
 - Install the [go-redis](https://github.com/redis/go-redis) package.
 - Use the following code snippet to connect to the data store:
@@ -155,6 +169,8 @@ func main() {
     fmt.Println(pong)
 }
 ```
+
+### Dragonfly Swarm & Read Replicas
 
 - While running a **Dragonfly Swarm** cluster, make sure to use the cluster-aware version of the client as shown below.
 - If your application requires even higher read throughput and can tolerate slightly stale reads, you can use **read replicas**,
