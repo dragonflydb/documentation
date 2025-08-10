@@ -30,6 +30,12 @@ _`network=host` doesn't work well on macOS, see [this issue](https://github.com/
 docker run -p 6379:6379 --ulimit memlock=-1 docker.dragonflydb.io/dragonflydb/dragonfly
 ```
 
+### On Windows
+
+```bash
+docker run -p 6379:6379 --ulimit memlock=-1 docker.dragonflydb.io/dragonflydb/dragonfly
+```
+
 Dragonfly will respond to both `http` and `redis` requests out of the box!
 
 You can use the `redis-cli` to connect to `localhost:6379` or open a browser and visit `http://localhost:6379`
