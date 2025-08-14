@@ -7,8 +7,12 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { ConfigDisplay } from './_migration_options.mdx';
 import BrowserOnly from '@docusaurus/BrowserOnly';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Redis Cloud Migration
+
+<CloudBadge/>
+<br/>
 
 In this guide, we will walk you through the steps to migrate from Redis Cloud to Dragonfly Cloud.
 

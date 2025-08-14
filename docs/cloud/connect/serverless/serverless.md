@@ -6,8 +6,12 @@ slug: /cloud/connect/serverless
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
+
+<CloudBadge/>
 
 ## Overview
+
 
 <PageTitle title="Connecting from Serverless Environments | Dragonfly Cloud" />
 

@@ -3,9 +3,10 @@ sidebar_position: 6
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Monitoring
-
+<CloudBadge/>
 <PageTitle title="Monitoring | Dragonfly Cloud" />
 
 ## Overview

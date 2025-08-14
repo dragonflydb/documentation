@@ -6,8 +6,11 @@ slug: /cloud
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Dragonfly Cloud
+
+<CloudBadge/>
 
 <PageTitle title="Dragonfly Cloud" />
 

@@ -3,8 +3,11 @@ sidebar_position: 5
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Network Bandwidth
+
+<CloudBadge/>
 
 <PageTitle title="Network Bandwidth | Dragonfly Cloud" />
 

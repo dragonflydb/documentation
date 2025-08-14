@@ -3,9 +3,12 @@ sidebar_position: 1
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # AWS Lambda
 
+<CloudBadge/>
+<br/>
 <PageTitle title="Connecting from AWS Lambda | Dragonfly Cloud" />
 
 This guide explains how to create an AWS Lambda function that connects to a Dragonfly Cloud data store.

@@ -3,12 +3,15 @@ sidebar_position: 4
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Peering Connections
-
+<CloudBadge/>
 <PageTitle title="Peering Connections | Dragonfly Cloud" />
 
 ## Overview
+
+
 
 **Peering connections** are used to connect a Dragonfly Cloud private network with a VPC in your
 cloud provider account to establish communication between the two networks over private IP space.

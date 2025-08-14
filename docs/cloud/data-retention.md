@@ -3,8 +3,11 @@ sidebar_position: 8
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Data Retention
+
+<CloudBadge/>
 
 <PageTitle title="Data Retention | Dragonfly Cloud" />
 

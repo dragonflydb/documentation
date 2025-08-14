@@ -1,2 +1,5 @@
 position: 8
 label: "Dragonfly Cloud"
+className: "cloud-category"
+customProps:
+  description: "Cloud-managed Dragonfly instances"

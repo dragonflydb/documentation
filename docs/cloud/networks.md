@@ -3,9 +3,10 @@ sidebar_position: 3
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Networks
-
+<CloudBadge/>
 <PageTitle title="Private Networks | Dragonfly Cloud" />
 
 ## Overview
