@@ -294,7 +294,7 @@ sidebar_position: 0
 |                                              | <span class="command">GEODIST</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEOHASH</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEOPOS</span>                        | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">GEORADIUS</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEORADIUS</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEORADIUS_RO</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">GEORADIUSBYMEMBER</span>             | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEORADIUSBYMEMBER_RO</span>          | <span class="support unsupported">Unsupported</span>     |
