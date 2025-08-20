@@ -22,5 +22,6 @@ Currently, the following subcommands are supported:
 - [`CONFIG GET`](./config-get.md)
 - [`CONFIG RESETSTAT`](./config-resetstat.md)
 - [`CONFIG SET`](./config-set.md)
+- [`CONFIG HELP`](./config-help.md)
 
 <!-- To see the list of available commands you can call `CONFIG HELP`. -->
