@@ -21,7 +21,7 @@ A key is ignored if it does not exist.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): The number of keys that were removed.
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): The number of keys that were removed.
 
 ## Examples
 

@@ -19,7 +19,7 @@ Adds one or more items to a Bloom filter `key`.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays):
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays):
 an array of integers, each representing the result for an individual item as if being processed by the [`BF.ADD`](./bf.add.md) command:
 
 - `1` if the item was successfully added to the filter.

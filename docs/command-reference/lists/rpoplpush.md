@@ -32,7 +32,7 @@ list, so it can be considered as a list rotation command.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the element being popped and pushed.
+[Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): the element being popped and pushed.
 
 ## Examples
 

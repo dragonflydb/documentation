@@ -28,7 +28,7 @@ Please for the specific semantics of the command refer to the documentation of
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers), specifically:
 
 - `1` if the timeout was set.
 - `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.

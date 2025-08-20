@@ -20,4 +20,4 @@ Prints latency histograms in usec for all called scripts.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays) This command returns an array of elements. The first element is the SHA1 digest of the scripts added into the script cache. The second element is latency historgram.
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) This command returns an array of elements. The first element is the SHA1 digest of the scripts added into the script cache. The second element is latency historgram.

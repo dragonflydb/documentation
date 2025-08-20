@@ -38,8 +38,8 @@ is JSONPath to specify. Default is root `$`, if not provided. Returns null if th
 
 ## Return
 
-`JSON.ARRLEN` returns an [array](https://redis.io/docs/reference/protocol-spec/#arrays) of integer replies, an integer for each matching value, each is the array's length, or `nil`, if the matching value is not an array.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
+`JSON.ARRLEN` returns an [array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) of integer replies, an integer for each matching value, each is the array's length, or `nil`, if the matching value is not an array.
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 ## Examples
 

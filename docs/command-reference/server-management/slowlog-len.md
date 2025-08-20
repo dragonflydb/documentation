@@ -20,4 +20,4 @@ The slow log can be cleared with the `SLOWLOG RESET` command.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): The number of entries in the slow log.
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): The number of entries in the slow log.

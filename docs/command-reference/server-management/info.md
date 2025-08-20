@@ -40,7 +40,7 @@ When no parameter is provided, the `default` option is assumed.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): as a collection of text lines.
+[Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): as a collection of text lines.
 
 Lines can contain a section name (starting with a # character) or a property.
 All the properties are in the form of `field:value` terminated by `\r\n`.

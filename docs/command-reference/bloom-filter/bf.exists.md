@@ -19,7 +19,7 @@ Checks for the existence of a single item in a Bloom filter `key`.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers):
 
 - `1` if the item exists with a high probability.
 - `0` if the item definitely does not exist.

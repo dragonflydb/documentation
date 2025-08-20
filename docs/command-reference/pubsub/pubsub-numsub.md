@@ -23,6 +23,6 @@ Cluster note: in a Redis Cluster clients can subscribe to every node, and can al
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of channels and number of subscribers for every channel.
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a list of channels and number of subscribers for every channel.
 
 The format is channel, count, channel, count, ..., so the list is flat. The order in which the channels are listed is the same as the order of the channels specified in the command call.

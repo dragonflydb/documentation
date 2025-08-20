@@ -85,15 +85,15 @@ const getCommandsConfigFromZip = (zip: AdmZip): Record<string, CommandConfig> =>
 const specialSyntaxes = {
   return: "## Return",
   examples: "## Examples",
-  "nil-reply": "[Null reply](/docs/reference/protocol-spec#resp-bulk-strings)",
+  "nil-reply": "[Null reply](/docs/latest/develop/reference/protocol-spec#resp-bulk-strings)",
   "simple-string-reply":
-    "[Simple string reply](/docs/reference/protocol-spec#resp-simple-strings)",
+    "[Simple string reply](/docs/latest/develop/reference/protocol-spec#resp-simple-strings)",
   "integer-reply":
-    "[Integer reply](/docs/reference/protocol-spec#resp-integers)",
+    "[Integer reply](/docs/latest/develop/reference/protocol-spec#resp-integers)",
   "bulk-string-reply":
-    "[Bulk string reply](/docs/reference/protocol-spec#resp-bulk-strings)",
-  "array-reply": "[Array reply](/docs/reference/protocol-spec#resp-arrays)",
-  "error-reply": "[Error reply](/docs/reference/protocol-spec#resp-errors)",
+    "[Bulk string reply](/docs/latest/develop/reference/protocol-spec#resp-bulk-strings)",
+  "array-reply": "[Array reply](/docs/latest/develop/reference/protocol-spec#resp-arrays)",
+  "error-reply": "[Error reply](/docs/latest/develop/reference/protocol-spec#resp-errors)",
 };
 
 const processMdSpecialSyntax = (mdContent: string) =>

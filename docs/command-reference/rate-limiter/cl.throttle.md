@@ -48,7 +48,7 @@ dragonfly$> CL.THROTTLE user123 20 120 60 1
 
 ## Return Values
 
-An [array](https://redis.io/docs/reference/protocol-spec/#arrays) of 5 integers with the following values:
+An [array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) of 5 integers with the following values:
 
 1. Whether to limit the related action (0 for allowed, 1 for limited).
 2. The total limit of the key. (Equivalent to `X-RateLimit-Limit`)

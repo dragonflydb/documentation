@@ -20,4 +20,4 @@ The `SCRIPT HELP` command returns a helpful text describing the different subcom
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of subcommands and their descriptions
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a list of subcommands and their descriptions

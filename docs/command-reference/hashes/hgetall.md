@@ -22,7 +22,7 @@ of the reply is twice the size of the hash.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of fields and their values stored in the hash, or an
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): list of fields and their values stored in the hash, or an
 empty list when `key` does not exist.
 
 ## Examples

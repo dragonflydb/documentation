@@ -23,4 +23,4 @@ It is strongly recommended, therefore, that any pending messages are claimed or 
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of pending messages that the consumer had before it was deleted
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the number of pending messages that the consumer had before it was deleted

@@ -23,4 +23,4 @@ Note: an asynchronous `FLUSHALL` command only deletes keys that were present at 
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings)
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings)

@@ -20,4 +20,4 @@ The consumer group will be destroyed even if there are active consumers, and pen
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of destroyed consumer groups (0 or 1)
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the number of destroyed consumer groups (0 or 1)

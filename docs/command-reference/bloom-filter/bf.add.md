@@ -20,7 +20,7 @@ If the `key` does not exist, a new Bloom filter is created with default paramete
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers):
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers):
 
 - `1` if the item was successfully added to the filter.
 - `0` if the item was already added to the filter, which could be a false positive.

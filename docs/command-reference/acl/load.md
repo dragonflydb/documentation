@@ -18,7 +18,7 @@ When Dragonfly is configured to use an ACL file (with the `--aclfile` configurat
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` on success.
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` on success.
 The error otherwise.
 
 ## Examples
