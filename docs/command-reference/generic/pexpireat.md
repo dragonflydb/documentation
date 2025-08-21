@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    PEXPIREAT key unix-time-milliseconds
+    PEXPIREAT key unix-time-milliseconds [NX | XX | GT | LT]
 
 **Time complexity:** O(1)
 
@@ -18,6 +18,10 @@ import PageTitle from '@site/src/components/PageTitle';
 
 `PEXPIREAT` has the same effect and semantic as `EXPIREAT`, but the Unix time at
 which the key will expire is specified in milliseconds instead of seconds.
+If `NX` option is specified, the field data will not be overwritten.
+If `XX` option is specified, expiry will only be set if there is an existing expiry.
+If `GT` option is specified, expiry will only be set if new value is greater than current value.
+If `LT` option is specified, expiry will only be set if the new value is less than current value.
 
 ## Return
 
