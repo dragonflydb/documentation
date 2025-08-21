@@ -22,20 +22,21 @@ The `CONFIG HELP` command returns a helpful text describing the different `CONFI
 
 [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a list of subcommands and their descriptions.
 
-## Subcommands listed
+## Example
 
-The output includes the following entries as implemented in Dragonfly:
+The output of the `CONFIG HELP` command includes the following entries as implemented in Dragonfly:
 
-```
-CONFIG <subcommand> [<arg> [value] [opt] ...]. Subcommands are:
-GET <pattern>
-    Return parameters matching the glob-like <pattern> and their values.
-SET <directive> <value>
-    Set the configuration <directive> to <value>.
-RESETSTAT
-    Reset statistics reported by the INFO command.
-REWRITE
-    Rewrite the configuration file with the current configuration.
-HELP
-    Prints this help.
+```shell
+dragonfly> CONFIG HELP
+ 1) CONFIG <subcommand> [<arg> [value] [opt] ...]. Subcommands are:
+ 2) GET <pattern>
+ 3)     Return parameters matching the glob-like <pattern> and their values.
+ 4) SET <directive> <value>
+ 5)     Set the configuration <directive> to <value>.
+ 6) RESETSTAT
+ 7)     Reset statistics reported by the INFO command.
+ 8) REWRITE
+ 9)     Rewrite the configuration file with the current configuration.
+10) HELP
+11)     Prints this help.
 ```
