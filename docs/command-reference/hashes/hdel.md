@@ -23,7 +23,7 @@ If `key` does not exist, it is treated as an empty hash and this command returns
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of fields that were removed from the hash, not
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the number of fields that were removed from the hash, not
 including specified but non existing fields.
 
 ## Examples

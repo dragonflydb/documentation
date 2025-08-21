@@ -81,7 +81,7 @@ JSON.GET returns a bulk string representing a JSON array of string replies.
 Each string is the JSON serialization of each JSON value that matches a path. 
 Using multiple paths, JSON.GET returns a bulk string representing a JSON object with string values. 
 Each string value is an array of the JSON serialization of each JSON value that matches a path.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 ## Examples
 

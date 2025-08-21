@@ -27,10 +27,10 @@ The `RESET` arguments clears the log.
 
 When called to show security events:
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of ACL security events.
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a list of ACL security events.
 
 When called with `RESET`:
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if the security log was cleared.
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` if the security log was cleared.
 
 ## Examples
 

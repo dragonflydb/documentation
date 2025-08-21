@@ -19,7 +19,7 @@ Posts a message to the given channel.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of clients that received the message. 
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the number of clients that received the message. 
 
 ## Examples
 

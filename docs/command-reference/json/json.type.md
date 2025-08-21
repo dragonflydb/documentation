@@ -37,7 +37,7 @@ is JSONPath to specify. Default is root `$`. Returns null if the `key` or `path`
 ## Return
 
 JSON.TYPE returns an array of string replies for each path, specified as the value's type.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 ## Examples
 

@@ -38,4 +38,4 @@ restart will reset it.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of slow log entries.
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a list of slow log entries.

@@ -20,7 +20,7 @@ and a false positive rate `false_positive_rate` that should be a double between 
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if the Bloom filter was created successfully.
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` if the Bloom filter was created successfully.
 
 ## Examples
 

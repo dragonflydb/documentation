@@ -36,7 +36,7 @@ is JSONPath to specify. Default is root `$`. Nonexisting paths are ignored.
 ## Return
 
 JSON.CLEAR returns an integer reply specified as the number of values cleared. 
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 :::note Note
 

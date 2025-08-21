@@ -20,4 +20,4 @@ The `CLIENT GETNAME` returns the name of the current connection as set by `CLIEN
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): The connection name, or a null bulk reply if no name is set.
+[Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): The connection name, or a null bulk reply if no name is set.

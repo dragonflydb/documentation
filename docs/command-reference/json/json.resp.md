@@ -15,7 +15,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @json
 
-Return the JSON in `key` in [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec) form 
+Return the JSON in `key` in [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec) form 
 
 [Examples](#examples)
 
@@ -39,12 +39,12 @@ is JSONPath to specify. Default is root `$`. This command uses the following map
 *   JSON array is represented as an array reply in which the first element is the simple string reply `[`, followed by the array's elements.
 *   JSON object is represented as an array reply in which the first element is the simple string reply `{`. Each successive entry represents a key-value pair as a two-entry array reply of the bulk string reply.
 
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 </details>
 
 ## Return
 
-JSON.RESP returns an array reply specified as the JSON's RESP form detailed in [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
+JSON.RESP returns an array reply specified as the JSON's RESP form detailed in [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 ## Examples
 

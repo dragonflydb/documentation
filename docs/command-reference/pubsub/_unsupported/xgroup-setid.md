@@ -29,4 +29,4 @@ In such cases, the `entries_read` can be set to the stream's `entries_added` sub
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` on success.
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` on success.

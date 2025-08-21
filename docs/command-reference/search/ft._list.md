@@ -19,7 +19,7 @@ In the future, a `SCAN` type of command will be added for use when a database co
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec#arrays) with index names.
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec#arrays) with index names.
 
 ## Examples
 

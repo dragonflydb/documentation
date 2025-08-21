@@ -21,7 +21,7 @@ Elements are popped from either the left or right of the first non-empty list ba
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): specifically:
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): specifically:
 
 * `nil` when no element could be popped.
 * A two-element array with the first element being the name of the key from which elements were popped and the second element being an array of elements.

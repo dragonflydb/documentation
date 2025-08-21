@@ -28,7 +28,7 @@ The expiration time can be accessed with the [`FIELDTTL`](../generic/fieldttl.md
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): The number of fields that were added.
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): The number of fields that were added.
 
 ## Examples
 

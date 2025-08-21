@@ -23,4 +23,4 @@ Equvalent to [SAVE](../server-management/save) and kept for compatibility reason
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `Background saving started` if `BGSAVE` started correctly or `Background saving scheduled` when used with the `SCHEDULE` subcommand. 
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `Background saving started` if `BGSAVE` started correctly or `Background saving scheduled` when used with the `SCHEDULE` subcommand. 

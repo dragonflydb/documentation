@@ -22,7 +22,7 @@ connections server in a mostly human readable format.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): a unique string, formatted as follows:
+[Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): a unique string, formatted as follows:
 
 * One client connection per line (separated by LF)
 * Each line is composed of a succession of `property=value` fields separated

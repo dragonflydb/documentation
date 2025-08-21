@@ -31,7 +31,7 @@ exist, the command will always return `0`.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of removed elements.
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the number of removed elements.
 
 ## Examples
 

@@ -23,4 +23,4 @@ seconds if `LASTSAVE` changed. Dragonfly considers the database saved successful
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): an UNIX time stamp.
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): an UNIX time stamp.

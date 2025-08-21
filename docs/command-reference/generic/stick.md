@@ -21,7 +21,7 @@ This command is Dragonfly-specific.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): Number of keys that were made sticky successfully: those that existed and were not already sticky.
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): Number of keys that were made sticky successfully: those that existed and were not already sticky.
 
 ## Examples
 

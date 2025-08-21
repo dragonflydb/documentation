@@ -32,7 +32,7 @@ information.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the value of `field` after the increment.
+[Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): the value of `field` after the increment.
 
 ## Examples
 

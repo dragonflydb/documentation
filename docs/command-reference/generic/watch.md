@@ -23,4 +23,4 @@ Marks the given keys to be watched for conditional execution of a
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): always `OK`.
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): always `OK`.

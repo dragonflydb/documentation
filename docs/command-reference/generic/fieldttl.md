@@ -24,7 +24,7 @@ A ```WRONGTYPE``` error is returned if the key is not a hash or set.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): TTL in seconds, or a negative value in order to signal an error.
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): TTL in seconds, or a negative value in order to signal an error.
 
 - The command returns `-1` if the field exists but has no associated TTL.
 - The command returns `-2` if the key does not exist.

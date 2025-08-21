@@ -23,7 +23,7 @@ If `key` doesn't exist, a new key holding a hash is created.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): The number of fields that were added.
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): The number of fields that were added.
 
 ## Examples
 

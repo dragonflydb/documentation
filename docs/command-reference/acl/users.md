@@ -18,7 +18,7 @@ Shows a list of all the usernames in Dragonfly.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays)
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays)
 
 ## Examples
 

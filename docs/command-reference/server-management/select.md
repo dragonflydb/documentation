@@ -26,4 +26,4 @@ In practical terms, Dragonfly databases should be used to separate different key
 Since the currently selected database is a property of the connection, clients should track the currently selected database and re-select it on reconnection.
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings)
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings)

@@ -28,7 +28,7 @@ not modified, allowing for a [check-and-set mechanism][ttc].
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): each element being the reply to each of the commands in the
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): each element being the reply to each of the commands in the
 atomic transaction.
 
-When using `WATCH`, `EXEC` can return a [Null reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings) if the execution was aborted.
+When using `WATCH`, `EXEC` can return a [Null reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) if the execution was aborted.

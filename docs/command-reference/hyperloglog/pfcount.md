@@ -42,7 +42,7 @@ technically a write command.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers), specifically:
 *  The approximated number of unique elements observed via PFADD.
 
 ## Examples

@@ -22,7 +22,7 @@ For every `member`, `1` is returned if the value is a member of the set, or `0` 
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list representing the membership of the given elements, in the same
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): list representing the membership of the given elements, in the same
 order as they are requested.
 
 ## Examples

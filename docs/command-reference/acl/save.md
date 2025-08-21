@@ -22,7 +22,7 @@ you plan them to be read only (and in that case it would make sense to store the
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` on success.
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` on success.
 The error otherwise.
 
 ## Examples

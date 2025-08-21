@@ -19,8 +19,8 @@ It can be used to test the permissions without having to enable the user or caus
 
 ## Return
 
-- [Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` on success.
-- [Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): an error describing why the user can't execute the command.
+- [Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` on success.
+- [Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): an error describing why the user can't execute the command.
 
 ## Examples
 
