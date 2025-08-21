@@ -57,7 +57,7 @@ sidebar_position: 0
 |                                              | <span class="command">PEXPIREAT</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PEXPIRETIME</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PTTL</span>                          | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">RANDOMKEY</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">RANDOMKEY</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">RENAME</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">RENAMENX</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">RESTORE</span>                       | <span class="support supported">Fully supported</span>   |
