@@ -193,6 +193,7 @@ sidebar_position: 0
 |                                              | <span class="command">SHUTDOWN</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SLAVEOF</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SLOWLOG GET</span>                   | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">SLOWLOG HELP</span>                  | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SLOWLOG LEN</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SLOWLOG RESET</span>                 | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SWAPDB</span>                        | <span class="support unsupported">Unsupported</span>     |
