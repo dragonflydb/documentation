@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    HRANDFIELD key
+    HRANDFIELD key [count [WITHVALUES]]
 
 **Time complexity:** O(N) where N is the number of fields returned
 
