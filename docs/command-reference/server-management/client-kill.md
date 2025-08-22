@@ -10,10 +10,10 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    CLIENT KILL <ip:port>
-    CLIENT KILL ADDR <ip:port>
-    CLIENT KILL LADDR <ip:port>
-    CLIENT KILL ID <client-id>
+    CLIENT KILL ip:port
+    CLIENT KILL ADDR ip:port
+    CLIENT KILL LADDR ip:port
+    CLIENT KILL ID client-id
 
 **Time complexity:** O(N) where N is the number of client connections.
 
@@ -23,10 +23,10 @@ Terminate client connections that match the specified filter.
 
 Dragonfly supports the following filters:
 
-- ADDR <ip:port>: kill connections made from the specified remote address.
-- LADDR <ip:port>: kill connections made to the specified local bind address.
-- ID <client-id>: kill a specific client by numeric id.
-- A single `<ip:port>` argument is equivalent to `ADDR <ip:port>`.
+- ADDR ip:port: kill connections made from the specified remote address.
+- LADDR ip:port: kill connections made to the specified local bind address.
+- ID client-id: kill a specific client by numeric id.
+- A single `ip:port` argument is equivalent to `ADDR ip:port`.
 
 Unsupported filters from Redis/Valkey (such as USER/TYPE/SKIPME) are currently not implemented in Dragonfly.
 
