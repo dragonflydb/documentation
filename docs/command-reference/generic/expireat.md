@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    EXPIREAT key unix-time-seconds
+    EXPIREAT key unix-time-seconds [NX | XX | GT | LT]
 
 **Time complexity:** O(1)
 
