@@ -268,6 +268,7 @@ sidebar_position: 0
 |                                              | <span class="command">DECR</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">DECRBY</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GET</span>                           | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">GETEX</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GETDEL</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">MSGETEXET</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GETRANGE</span>                      | <span class="support supported">Fully supported</span>   |
