@@ -26,6 +26,13 @@ timestamp in the past will delete the key immediately.
 Please for the specific semantics of the command refer to the documentation of
 `EXPIRE`.
 
+## Options
+
+- `NX`: Expiry will only be set if the key has no expiry.
+- `XX`: Expiry will only be set if the key has an existing expiry.
+- `GT`: Expiry will only be set if the new expiry is greater than current one.
+- `LT`: Expiry will only be set if the new expiry is less than current one.
+
 ## Return
 
 [Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers), specifically:
