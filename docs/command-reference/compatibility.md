@@ -94,7 +94,7 @@ sidebar_position: 0
 |                                              | <span class="command">PFSELFTEST</span>                    | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">List</span>             | <span class="command">BRPOPLPUSH</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BRPOP</span>                         | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">BLMPOP</span>                        | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">BLMPOP</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">LINDEX</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">LINSERT</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">LLEN</span>                          | <span class="support supported">Fully supported</span>   |
