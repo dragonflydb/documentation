@@ -4,7 +4,7 @@ description: "PEXPIRETIME returns absolute unix expiry of a key in milliseconds.
 
 import PageTitle from '@site/src/components/PageTitle';
 
-# PEXPIRE
+# PEXPIRETIME
 
 <PageTitle title="Redis PEXPIRETIME Command (Documentation) | Dragonfly" />
 

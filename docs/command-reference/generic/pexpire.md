@@ -18,10 +18,13 @@ import PageTitle from '@site/src/components/PageTitle';
 
 This command works exactly like `EXPIRE` but the time to live of the key is
 specified in milliseconds instead of seconds.
-If `NX` option is specified, the field data will not be overwritten.
-If `XX` option is specified, expiry will only be set if there is an existing expiry.
-If `GT` option is specified, expiry will only be set if new value is greater than current value.
-If `LT` option is specified, expiry will only be set if the new value is less than current value.
+
+## Options
+
+- `NX`: Expiry will only be set if the key has no expiry.
+- `XX`: Expiry will only be set if the key has an existing expiry.
+- `GT`: Expiry will only be set if the new expiry is greater than current one.
+- `LT`: Expiry will only be set if the new expiry is less than current one.
 
 ## Return
 
