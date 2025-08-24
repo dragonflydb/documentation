@@ -17,7 +17,7 @@ sidebar_position: 0
 |                                              | <span class="command">CLIENT CACHING</span>                | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CLIENT GETNAME</span>                | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BITCCLIENT GETREDIROUNT</span>       | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLIENT ID</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLIENT ID</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CLIENT INFO</span>                   | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT KILL</span>                   | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT LIST</span>                   | <span class="support supported">Fully supported</span>   |
