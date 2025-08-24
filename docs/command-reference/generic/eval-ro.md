@@ -23,7 +23,7 @@ Scripts executed via `EVAL_RO` are treated as read-only and may run with differe
 
 The first argument is the script's source code. The second argument is the number of input key name arguments, followed by all the keys accessed by the script. Any additional input arguments should not represent names of keys.
 
-For a general introduction to scripting, see `EVAL` and the [Redis Programmability](https://redis.io/docs/latest/develop/interact/programmability/) docs. For Valkey semantics reference, see `valkey.io` command page.
+For a general introduction to scripting, see `EVAL` and the [Redis Programmability](https://redis.io/docs/latest/develop/interact/programmability/) docs. For Valkey semantics reference, see the [corresponding command page](https://valkey.io/commands/eval_ro/).
 
 ## Return
 
