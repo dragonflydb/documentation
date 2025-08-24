@@ -51,6 +51,4 @@ dragonfly> EVAL_RO "redis.call('SET', KEYS[1], 'x'); return 1" 1 mykey
 
 ## See also
 
-- `EVAL`
-- `EVALSHA`
-
+[`EVAL`](./eval.md) | [`EVALSHA`](./evalsha.md)
