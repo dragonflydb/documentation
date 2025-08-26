@@ -23,20 +23,18 @@ Terminate client connections that match the specified filter.
 
 Dragonfly supports the following filters:
 
-- ADDR ip:port: kill connections made from the specified remote address.
-- LADDR ip:port: kill connections made to the specified local bind address.
-- ID client-id: kill a specific client by numeric id.
+- `ADDR ip:port`: kill connections made from the specified remote address.
+- `LADDR ip:port`: kill connections made to the specified local bind address.
+- `ID client-id`: kill a specific client by numeric ID.
 - A single `ip:port` argument is equivalent to `ADDR ip:port`.
 
-Unsupported filters from Redis/Valkey (such as USER/TYPE/SKIPME) are currently not implemented in Dragonfly.
+Some filters from Redis/Valkey (such as `USER/TYPE/SKIPME`) are currently not implemented in Dragonfly.
 
 Admin-protected connections cannot be killed by non-privileged clients. If the request attempts to kill admin connections, the command returns an error indicating how many were not terminated.
 
 ## Return
 
 [Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the number of client connections that were terminated.
-
-If some admin connections could not be killed by a non-privileged client.
 
 ## Examples
 
