@@ -15,8 +15,8 @@ import PageTitle from '@site/src/components/PageTitle';
 - **Large-Scale Data**: Datasets from over **500GB** to multiple terabytes.
 - **Extreme Throughput**: **Millions of requests per second (RPS)** with low latency.
 - **High Availability**: **99.99% uptime** with robust failover and multi-region backups.
-- **Automatic Scalability**: Intelligent **auto-scaling** capabilities adapt to dynamic traffic patterns.
-- **Security and Compliance**: Advanced security controls and **deployments on your existing cloud servers (BYOC)**.
+- **Automatic Scalability**: Intelligent autoscaling capabilities adapt to dynamic traffic patterns.
+- **Security and Compliance**: Advanced security controls and deployments on your existing cloud servers (BYOC).
 
 Dragonfly Cloud Enterprise offers everything in Dragonfly Cloud plus the following enhancements and guarantees.
 If you are interested in Dragonfly Cloud Enterprise, please [contact us](https://www.dragonflydb.io/enterprise)
@@ -44,11 +44,21 @@ These replicas distribute read traffic across multiple instances to reduce laten
 
 ## Flexibility and Cost Efficiency
 
-### Auto-Scaling
+### Autoscaling
 
-Dragonfly Cloud Enterprise includes an auto-scaling feature that **dynamically adjusts resources** in response to traffic fluctuations,
+Dragonfly Cloud Enterprise includes an autoscaling feature that **dynamically adjusts resources** in response to traffic fluctuations,
 **without any manual intervention**. This helps maintain performance during demand spikes and optimize efficiency during quieter periods.
 Scaling policies can be customized to align with specific workload patterns.
+Key features and configurations of autoscaling include:
+
+- **Supported Data Stores**: At the moment, autoscaling supports any Dragonfly Swarm (distributed multi-shard) data store. It doesn't support single-shard data stores.
+- **Monitoring & Autoscaling**: It constantly monitors your data store memory and CPU utilization and triggers scale-up or scale-down based on your preconfigured scaling policies.
+- **Resource Utilization Scaling Policies**:
+  You can specify maximum and minimum memory utilization and CPU targets.
+  For example, "max 60% CPU utilization" means once CPU utilization surpasses 60%, a scale-up will be performed to get CPU utilization back under 60%.
+  Similarly, "min 30% memory utilization" means once memory goes below 30% utilization, a scale-down will be performed.
+- **Schedule-Based Scaling Policies**: You can specify different policies for weekdays and weekends or daytime and nighttime. This suits workloads with recurring load patterns.
+- **Safety Limits**: You must specify maximum and minimum capacity limits to avoid scaling too large or too small. 
 
 ### Bring-Your-Own-Cloud (BYOC) \[Beta\]
 
@@ -74,11 +84,11 @@ Data durability is provided through multi-region backups.
 Critical data is replicated and stored across geographically diverse locations to
 ensure resilience and speedy recovery in the event of a regional outage.
 
-### Premium Enhanced Support
+### Enterprise Level Support
 
 Enterprise includes direct support from the engineers who built Dragonfly.
 This provides assistance for onboarding, configuration, and ongoing operations.
-**Expert support is available 24/7**.
+[Enterprise support is available 24/7](./support.md).
 
 ---
 
