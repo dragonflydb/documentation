@@ -34,6 +34,17 @@ The exact number of elements in the array depends on the server's version.
 4. First key
 5. Last key
 6. Step
+7. ACL categories
+
+## Subcommands
+
+- [`COMMAND COUNT`](./command-count.md): Return the total number of commands.
+- [`COMMAND INFO`](./command-info.md): Return details about a specific command.
+- [`COMMAND HELP`](./command-help.md): Show usage information for supported subcommands.
+
+Unsupported in Dragonfly:
+
+- `COMMAND DOCS`: Not implemented. The server returns an error ("COMMAND DOCS Not Implemented").
 
 ## Name
 
@@ -70,6 +81,10 @@ Command flags are an array. It can contain the following simple strings (status 
 * **noscript:** the command can't be called from [scripts](https://redis.io/docs/latest/develop/interact/programmability/eval-intro/).
 * **readonly:** the command doesn't modify data.
 * **write:** the command may modify data.
+
+## Key specifications
+
+`COMMAND` describes key access using the triplet of positions: first key, last key, and step. See the sections below for details.
 
 ## First key
 
@@ -125,6 +140,14 @@ Unlike `MGET`, which uses a step value of _1_.
 [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a nested list of command details.
 
 The order of commands in the array is random.
+
+## Tips
+
+- Command names are case-insensitive.
+- The array includes ACL categories as a trailing nested array (e.g. `@READ`, `@STRING`).
+- Hidden commands (with the `HIDDEN` flag) are not returned.
+- A step of `2` indicates interleaved key/argument pairs (e.g., `MSET`).
+- Use [`COMMAND HELP`](./command-help.md) to discover supported subcommands. `COMMAND DOCS` is not implemented in Dragonfly.
 
 ## Examples
 
