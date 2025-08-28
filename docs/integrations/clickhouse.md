@@ -35,7 +35,7 @@ $> ./clickhouse local
 ```
 
 Note that the above installation steps might be the simplest way to get started with Dragonfly and ClickHouse locally in order to demonstrate the integration.
-For production deployments, we recommend reading through the [Managing Dragonfly section](../managing-dragonfly/managing-dragonfly.md) for Dragonfly
+For production deployments, we recommend reading through the [Managing Dragonfly section](../managing-dragonfly/high-availability.md) for Dragonfly
 and the [Production Deployments section](https://clickhouse.com/docs/en/install#available-installation-options) for ClickHouse.
 
 ### 2. Table Engine Configuration
