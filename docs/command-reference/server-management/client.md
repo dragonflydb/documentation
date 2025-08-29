@@ -17,3 +17,7 @@ import PageTitle from '@site/src/components/PageTitle';
 This is a container command for client connection commands.
 
 <!-- To see the list of available commands you can call `CLIENT HELP`. -->
+
+## See also
+
+- [`CLIENT HELP`](./client-help.md)
