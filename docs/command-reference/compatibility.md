@@ -44,7 +44,7 @@ sidebar_position: 0
 |                                              | <span class="command">EXISTS</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">EXPIRE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">EXPIREAT</span>                      | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">EXPIRETIME</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">EXPIRETIME</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">KEYS</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">MIGRATE</span>                       | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">MOVE</span>                          | <span class="support supported">Fully supported</span>   |
