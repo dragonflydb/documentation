@@ -3,9 +3,10 @@ title: AWS ElastiCache
 description: The following guide will help you migrate from AWS ElastiCache to Dragonfly Cloud
 sidebar_position: 1
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import { ConfigDisplay } from './_migration_options.mdx';
+import { ConfigDisplay } from './\_migration_options.mdx';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import PageTitle from '@site/src/components/PageTitle';
 import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
@@ -13,10 +14,9 @@ import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 # AWS ElastiCache Migration
 
 <CloudBadge/>
+<br /><br />
 
 <PageTitle title="AWS ElastiCache Migration | Dragonfly Cloud" />
-
-<br/>
 
 In this guide, we will walk you through the steps to migrate from AWS ElastiCache to Dragonfly Cloud.
 
@@ -44,7 +44,7 @@ Before starting the migration, ensure you have:
 
 ## Migration Steps
 
-### 1. Launch EC2 Instance in Application VPC 
+### 1. Launch EC2 Instance in Application VPC
 
 1. Get your application VPC and subnet information:
 
@@ -150,6 +150,7 @@ echo "Public IP: $PUBLIC_IP"
 ```
 
 5. Connect to the instance:
+
 ```bash
 # SSH into the instance using your preferred method based on your infrastructure setup
 ssh -i elasticache-migration-key.pem ec2-user@$PUBLIC_IP
@@ -159,9 +160,9 @@ ssh -i elasticache-migration-key.pem ec2-user@$PUBLIC_IP
 
 1. Retrieve the ElastiCache endpoint details:
 
-<Tabs defaultValue={typeof window !== 'undefined' ? 
-  (new URLSearchParams(window.location.search).get('cluster') === 'true' ? 'cluster-node' : 'single-node')
-  : 'cluster-node'}>
+<Tabs defaultValue={typeof window !== 'undefined' ?
+(new URLSearchParams(window.location.search).get('cluster') === 'true' ? 'cluster-node' : 'single-node')
+: 'cluster-node'}>
 
 <TabItem value="cluster-node" label="Cluster  Node">
 
@@ -251,9 +252,9 @@ fi
 
 3. Test connection to ElastiCache:
 
-<Tabs defaultValue={typeof window !== 'undefined' ? 
-  (new URLSearchParams(window.location.search).get('cluster') === 'true' ? 'cluster-node' : 'single-node')
-  : 'cluster-node'}>
+<Tabs defaultValue={typeof window !== 'undefined' ?
+(new URLSearchParams(window.location.search).get('cluster') === 'true' ? 'cluster-node' : 'single-node')
+: 'cluster-node'}>
 
 <TabItem value="cluster-node" label="Cluster  Node">
 
@@ -287,6 +288,7 @@ url_without_port=$(echo $REDISSHAKE_SOURCE_ENDPOINT | cut -d':' -f1)
 echo "Testing connection to $url_without_port"
 sudo docker run -it redis redis-cli -h $url_without_port -c ping
 ```
+
 </TabItem>
 </Tabs>
 
@@ -294,11 +296,11 @@ sudo docker run -it redis redis-cli -h $url_without_port -c ping
 
 Choose the appropriate configuration based on your ElastiCache setup:
 
-<Tabs defaultValue={typeof window !== 'undefined' ? 
-  (new URLSearchParams(window.location.search).get('cluster') === 'true' ? 
-    (new URLSearchParams(window.location.search).get('mode') === 'sync' ? 'cluster-sync' : 'cluster-scan') :
-    (new URLSearchParams(window.location.search).get('mode') === 'sync' ? 'single-node-sync' : 'single-node-scan')
-  ) : 'single-node-sync'}>
+<Tabs defaultValue={typeof window !== 'undefined' ?
+(new URLSearchParams(window.location.search).get('cluster') === 'true' ?
+(new URLSearchParams(window.location.search).get('mode') === 'sync' ? 'cluster-sync' : 'cluster-scan') :
+(new URLSearchParams(window.location.search).get('mode') === 'sync' ? 'single-node-sync' : 'single-node-scan')
+) : 'single-node-sync'}>
 <TabItem value="single-node-sync" label="Single-Node + SYNC">
 
 For single-node mode with PSYNC enabled on ElastiCache:
@@ -397,6 +399,7 @@ EOF
 </Tabs>
 
 The above approach:
+
 1. Uses direct variable expansion with proper quoting
 2. Uses parameter expansion with default empty string for optional password
 
@@ -412,17 +415,19 @@ ghcr.io/tair-opensource/redisshake:latest \
 ```
 
 The container will:
+
 1. Connect to ElastiCache (which is now accessible within the VPC)
 2. Connect to Dragonfly Cloud
 3. Start syncing data
 4. Show progress in real-time in the form of logs
 
 ### 4. Verify Migration
- 
+
 After the migration completes:
 
 1. Check the container logs for any errors
 2. Compare key counts:
+
 ```bash
 # On source (from EC2 instance)
 docker run redis redis-cli -h $ELASTICACHE_ENDPOINT dbsize
@@ -430,8 +435,8 @@ docker run redis redis-cli -h $ELASTICACHE_ENDPOINT dbsize
 # On target
 docker run redis redis-cli -h $DRAGONFLY_CLOUD_URL dbsize
 ```
-3. Sample a few keys to verify data integrity
 
+3. Sample a few keys to verify data integrity
 
 ## Live Migration
 

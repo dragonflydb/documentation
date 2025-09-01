@@ -8,19 +8,17 @@ slug: /cloud/migrate
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Link from '@docusaurus/Link';
-import MigrationOptions from './_migration_options.mdx';
+import MigrationOptions from './\_migration_options.mdx';
 import PageTitle from '@site/src/components/PageTitle';
 import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Migrating to Dragonfly Cloud
 
-<CloudBadge/>
-<br/>
+<CloudBadge/> <br /><br />
+
 <PageTitle title="Migrate to Dragonfly Cloud" />
 
-
-
-There are two main approaches to migrate your Redis data to Dragonfly Cl  ud:
+There are two main approaches to migrate your Redis data to Dragonfly Cl ud:
 
 :::tip Need Help?
 If you have any questions or need assistance with your migration, our team is here to help! Visit our <u>[contact page](https://www.dragonflydb.io/contact)</u> for assistance.
@@ -29,6 +27,7 @@ If you have any questions or need assistance with your migration, our team is he
 ## Quick Migration with Snapshots
 
 The fastest way to migrate your data is by importing a Redis snapshot (RDB file). This method is:
+
 - **Best for large datasets** - efficiently transfer terabytes of data
 - **Simple process** - just upload your RDB file and restore
 - **Supports all Redis data types** - complete data compatibility

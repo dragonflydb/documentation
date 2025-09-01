@@ -8,7 +8,7 @@ import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 # AWS Client VPN
 
 <CloudBadge/>
-<br/>
+<br /><br />
 
 <PageTitle title="Connecting with AWS Client VPN | Dragonfly Cloud" />
 
@@ -30,7 +30,7 @@ We will use the `easy-rsa` tool to create server and client certificates.
 
 Execute the following commands to create the server and client certificates, chose default values when prompted:
 
-``` bash
+```bash
 # Clone the easy-rsa repository
 git clone https://github.com/OpenVPN/easy-rsa.git
 
@@ -51,17 +51,17 @@ cp pki/ca.crt pki/issued/server.crt pki/private/server.key pki/issued/client1.do
 
 ## Import the certificates to AWS Certificate Manager
 
-Navigate to *ASW Certificate Manager* (ACM) in the AWS console.
+Navigate to _ASW Certificate Manager_ (ACM) in the AWS console.
 
-***Note:*** Make sure you are in the same the region of your VPC which is peer connected to the Dragonfly Cloud private network, which is the region where you will also create the Client VPN endpoint.
+**_Note:_** Make sure you are in the same the region of your VPC which is peer connected to the Dragonfly Cloud private network, which is the region where you will also create the Client VPN endpoint.
 
-Click *Import certificate* to import the server certificate.
+Click _Import certificate_ to import the server certificate.
 
-`cat server.crt` and copy the output to the *Certificate body* field.
-`cat server.key` and copy the output to the *Certificate private* key field.
-`cat ca.crt` and copy the output to the *Certificate chain* field.
+`cat server.crt` and copy the output to the _Certificate body_ field.
+`cat server.key` and copy the output to the _Certificate private_ key field.
+`cat ca.crt` and copy the output to the _Certificate chain_ field.
 
-Click *Import certificate*
+Click _Import certificate_
 
 Repeat the same steps to import the client certificate, with the contents of `cat client1.domain.tld.crt`, `cat client1.domain.tld.key` and the same `cat ca.crt file`.
 
@@ -85,60 +85,60 @@ Replace `sg-xxxxxxxx` with the ID of the security group you created.
 
 ## Create and configure a Client VPN endpoint
 
-Navigate to *Client VPN Endpoints* in the AWS console.
+Navigate to _Client VPN Endpoints_ in the AWS console.
 
-Click *Create Client VPN endpoint*.
+Click _Create Client VPN endpoint_.
 
 Fill in the following fields, leaving the rest as default:
 
-- ***Name*** - A name for the Client VPN endpoint.
-- ***Description*** - A description for the Client VPN endpoint.
-- ***Client IPv4 CIDR*** - The CIDR block for the Client VPN endpoint.  
+- **_Name_** - A name for the Client VPN endpoint.
+- **_Description_** - A description for the Client VPN endpoint.
+- **_Client IPv4 CIDR_** - The CIDR block for the Client VPN endpoint.  
   This should be a private IP range that does not overlap with the CIDR blocks of the your VPC or the Dragonfly Cloud private network.  
   E.g. if your VPC CIDR block is 172.31.0.0/16 and the Dragonfly Cloud private network CIDR block is 10.5.0.0/16, you can use 172.32.0.0/16.
-- ***Server certificate ARN*** - Select the ARN of the server certificate you imported to ACM.
-- Under *Authentication options* - select *Mutual authentication*.
-  - ***Client certificate ARNs*** dropdown will appear, select the ARN of the client certificate you imported to ACM.
-- ***DNS server 1 IP address*** - The IP address of the DNS server in your VPC.  
+- **_Server certificate ARN_** - Select the ARN of the server certificate you imported to ACM.
+- Under _Authentication options_ - select _Mutual authentication_.
+  - **_Client certificate ARNs_** dropdown will appear, select the ARN of the client certificate you imported to ACM.
+- **_DNS server 1 IP address_** - The IP address of the DNS server in your VPC.  
   This is the 3rd IP address in the CIDR block of your VPC. E.g. if your VPC CIDR block is 172.31.0.0/16, the DNS server IP address is 172.31.0.2/16.
-- ***Enable split-tunnel*** - Optional but recommended, [learn more](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/split-tunnel-vpn.html).
-- ***DNS server 2 IP address*** - Enter 8.8.8.8 (Google's public DNS server).
-- ***VPC ID*** - Select the VPC where you want to create the Client VPN endpoint. This should be the VPC that is peer connected to the Dragonfly Cloud private network.
-  - ***Security group*** dropdown will appear - Select the security group you created or located for the Client VPN endpoint.
+- **_Enable split-tunnel_** - Optional but recommended, [learn more](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/split-tunnel-vpn.html).
+- **_DNS server 2 IP address_** - Enter 8.8.8.8 (Google's public DNS server).
+- **_VPC ID_** - Select the VPC where you want to create the Client VPN endpoint. This should be the VPC that is peer connected to the Dragonfly Cloud private network.
+  - **_Security group_** dropdown will appear - Select the security group you created or located for the Client VPN endpoint.
 
-Finally, click *Create Client VPN endpoint*.
+Finally, click _Create Client VPN endpoint_.
 
 ### Configure the Client VPN endpoint
 
-The Client VPN endpoint will be created in a *pending association* state.
-Select the Client VPN endpoint and click *Associate target network*.
+The Client VPN endpoint will be created in a _pending association_ state.
+Select the Client VPN endpoint and click _Associate target network_.
 
-Select the *Target network associations tab, if it is not already selected.
+Select the \*Target network associations tab, if it is not already selected.
 
-For ***VPC*** select the VPC that is peer connected to the Dragonfly Cloud private network.
-For ***Subnet*** you can select any subnet in the VPC.
+For **_VPC_** select the VPC that is peer connected to the Dragonfly Cloud private network.
+For **_Subnet_** you can select any subnet in the VPC.
 
-click *Associate target network*.
+click _Associate target network_.
 
 Next, select the Security group tab and verify that the security group you created or located previously is attached to the Client VPN endpoint.
 
-Next, select the *Authorization rules* tab and click *Add authorization rule*.
-Enter *Destination network to enable access* as the CIDR block of the VPC that is peer connected to the Dragonfly Cloud private network.
+Next, select the _Authorization rules_ tab and click _Add authorization rule_.
+Enter _Destination network to enable access_ as the CIDR block of the VPC that is peer connected to the Dragonfly Cloud private network.
 Repeat for the CIDR block of the Dragonfly Cloud private network.
 You should have two authorization rules, one for each VPC.
 
-Next, select the *Route table* tab and click *Create route*.
-You should see an already existing route with description *default route*.
-Click *Create route*.
-For *Route destination* enter the CIDR block of the Dragonfly Cloud private network.
-For *Subnet ID for target network association* select the same subnet you selected when associating the target network.
+Next, select the _Route table_ tab and click _Create route_.
+You should see an already existing route with description _default route_.
+Click _Create route_.
+For _Route destination_ enter the CIDR block of the Dragonfly Cloud private network.
+For _Subnet ID for target network association_ select the same subnet you selected when associating the target network.
 This will route traffic to the Dragonfly Cloud private network through the Client VPN endpoint.
 
-By now, the Client VPN endpoint should be in the *available* state, otherwise wait for a few more minutes.
+By now, the Client VPN endpoint should be in the _available_ state, otherwise wait for a few more minutes.
 
 ## Download the Client VPN endpoint configuration file and update it with the client certificate
 
-Select the Client VPN endpoint and click *Download client configuration*.
+Select the Client VPN endpoint and click _Download client configuration_.
 
 Open the downloaded file for edit.
 Under the existing `ca` block, add the following blocks:
@@ -162,8 +162,8 @@ Or see other installation options [here](hhttps://docs.aws.amazon.com/vpn/latest
 
 Launch the OpenVPN client.
 
-From the file menu select *manage profiles* and click *Add profile*.
-Enter a *display name* for the profile and select the *VPN Configuration File* you downloaded and updated previously.
+From the file menu select _manage profiles_ and click _Add profile_.
+Enter a _display name_ for the profile and select the _VPN Configuration File_ you downloaded and updated previously.
 
-After adding the profile, click *Connect* next to the profile you have just added.
+After adding the profile, click _Connect_ next to the profile you have just added.
 Once the profile is connected, you should be able to access the private endpoint datastore from your local machine.

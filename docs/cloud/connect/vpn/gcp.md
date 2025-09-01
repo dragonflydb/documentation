@@ -10,7 +10,7 @@ import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 # Google Cloud VPN
 
 <CloudBadge/>
-<br/>
+<br /><br />
 
 This guide shows how to connect to your private Dragonfly Cloud instance using Google Cloud VPN.
 

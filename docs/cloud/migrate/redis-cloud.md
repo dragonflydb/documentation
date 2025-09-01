@@ -3,16 +3,17 @@ title: Redis Cloud
 description: The following guide will help you migrate from Redis Cloud to Dragonfly Cloud
 sidebar_position: 2
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import { ConfigDisplay } from './_migration_options.mdx';
+import { ConfigDisplay } from './\_migration_options.mdx';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Redis Cloud Migration
 
 <CloudBadge/>
-<br/>
+<br /><br />
 
 In this guide, we will walk you through the steps to migrate from Redis Cloud to Dragonfly Cloud.
 
@@ -126,6 +127,7 @@ echo "Public IP: $PUBLIC_IP"
 ```
 
 4. Connect to the instance:
+
 ```bash
 # SSH into the instance using your preferred method based on your infrastructure setup
 ssh -i redis-cloud-migration-key.pem ec2-user@$PUBLIC_IP
@@ -136,8 +138,8 @@ ssh -i redis-cloud-migration-key.pem ec2-user@$PUBLIC_IP
 1. Test connection to Redis Cloud:
 
 <Tabs defaultValue={typeof window !== 'undefined' ?
-  (new URLSearchParams(window.location.search).get('cluster') === 'true' ? 'cluster-node' : 'single-node')
-  : 'cluster-node'}>
+(new URLSearchParams(window.location.search).get('cluster') === 'true' ? 'cluster-node' : 'single-node')
+: 'cluster-node'}>
 
 <TabItem value="cluster-node" label="Cluster Node">
 
@@ -160,8 +162,8 @@ redis-cli -h $REDIS_CLOUD_URL -p $REDIS_CLOUD_PORT -a $REDIS_CLOUD_PASSWORD ping
 2. Create redis-shake configuration file:
 
 <Tabs defaultValue={typeof window !== 'undefined' ?
-  (new URLSearchParams(window.location.search).get('cluster') === 'true' ? 'cluster-node' : 'single-node')
-  : 'cluster-node'}>
+(new URLSearchParams(window.location.search).get('cluster') === 'true' ? 'cluster-node' : 'single-node')
+: 'cluster-node'}>
 <TabItem value="cluster-node" label="Cluster Node">
 
 ```bash
@@ -228,6 +230,7 @@ ghcr.io/tair-opensource/redisshake:latest \
 ```
 
 The container will:
+
 1. Connect to Redis Cloud using the public endpoint
 2. Connect to Dragonfly Cloud through the peered VPC
 3. Start scanning and copying data
@@ -239,6 +242,7 @@ After the migration completes:
 
 1. Check the container logs for any errors
 2. Compare key counts:
+
 ```bash
 # On source (Redis Cloud)
 redis-cli -h $REDIS_CLOUD_URL -p $REDIS_CLOUD_PORT -a $REDIS_CLOUD_PASSWORD dbsize
@@ -246,6 +250,7 @@ redis-cli -h $REDIS_CLOUD_URL -p $REDIS_CLOUD_PORT -a $REDIS_CLOUD_PASSWORD dbsi
 # On target (Dragonfly Cloud)
 redis-cli -h $DRAGONFLY_CLOUD_URL -p 6379 -a "${DRAGONFLY_CLOUD_PASSWORD:-}" dbsize
 ```
+
 3. Sample a few keys to verify data integrity
 
 ## Cutover Strategy
