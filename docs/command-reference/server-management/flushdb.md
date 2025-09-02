@@ -16,7 +16,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @keyspace, @write, @slow, @dangerous
 
-Delete all the keys of the currently selected DB.
+Delete all the keys of the currently selected database.
 This command never fails.
 
 The `FLUSHDB` command always deletes keys asynchronously.

@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    FLUSHALL [ ASYNC | SYNC ]
+    FLUSHALL [ASYNC | SYNC]
 
 **Time complexity:** O(N) where N is the total number of keys in all databases
 
