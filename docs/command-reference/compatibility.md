@@ -38,7 +38,7 @@ sidebar_position: 0
 |                                              | <span class="command">QUIT</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">RESET</span>                         | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">SELECT</span>                        | <span class="support supported">Fully supported</span>   |
-| <span class="family">Generic</span>          | <span class="command">COPY</span>                          | <span class="support supported">Fully supported</span>   |
+| <span class="family">Generic</span>          | <span class="command">COPY</span>                          | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">DEL</span>                           | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">DUMP</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">EXISTS</span>                        | <span class="support supported">Fully supported</span>   |

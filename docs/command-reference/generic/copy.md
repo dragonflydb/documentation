@@ -10,14 +10,13 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    COPY source destination [DB destination-db] [REPLACE]
+    COPY source destination [REPLACE]
 
 **Time complexity:** O(N) worst case for collections, where N is the number of nested items. O(1) for string values.
 
 **ACL categories:** @keyspace, @write, @slow
 
 Copies the value at `source` key to the `destination` key.
-The `DB` option allows specifying an alternative database index.
 The `REPLACE` option removes an existing key before copying.
 
 ## Return
