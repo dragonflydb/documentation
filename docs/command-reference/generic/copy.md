@@ -4,7 +4,7 @@ description: "Learn how to use Redis COPY command to copy a key."
 
 import PageTitle from '@site/src/components/PageTitle';
 
-# DEL
+# COPY
 
 <PageTitle title="Redis COPY Command (Documentation) | Dragonfly" />
 
