@@ -22,7 +22,8 @@ Evaluate a script from the server's cache by its SHA1 digest in read-only mode.
 
 The first argument is the script's SHA1 digest as returned by `SCRIPT LOAD`. The second argument is the number of input key name arguments, followed by all the keys accessed by the script. Any additional input arguments should not represent names of keys.
 
-For a general introduction to scripting, see `EVAL` and the Redis Programmability docs. For Valkey semantics reference, see the corresponding command page at `https://valkey.io/commands/evalsha_ro/`.
+For a general introduction to scripting, see `EVAL` and the [Redis Programmability docs](https://redis.io/docs/latest/develop/interact/programmability/).
+For Valkey semantics reference, see the [corresponding command page here](https://valkey.io/commands/evalsha_ro/).
 
 ## Return
 
@@ -35,25 +36,23 @@ dragonfly> SET mykey 1
 OK
 dragonfly> SCRIPT LOAD "return redis.call('GET', KEYS[1])"
 "<sha1>"
-dragonfly> EVALSHA_RO <sha1> 1 mykey
+dragonfly> EVALSHA_RO "<sha1>" 1 mykey
 "1"
 ```
 
 ```shell
 dragonfly> SCRIPT LOAD "redis.call('SET', KEYS[1], 'x'); return 1"
 "<sha1>"
-dragonfly> EVALSHA_RO <sha1> 1 mykey
+dragonfly> EVALSHA_RO "<sha1>" 1 mykey
 (error) ERR Error running script ... Write commands are not allowed from read-only scripts
 ```
 
 ## Notes
 
 - `EVALSHA_RO` must not modify data. If a script attempts to call mutating commands (e.g., `SET`, `HSET`, `LPUSH`), the server returns an error.
-- Keys used by the script must be declared via `numkeys` and subsequent key arguments, same as `EVAL`/`EVALSHA`.
+- Keys used by the script must be declared via `numkeys` and subsequent key arguments, the same as `EVAL`/`EVALSHA`.
 - Dragonfly enforces read-only behavior and may optimize execution accordingly.
 
 ## See also
 
 [`EVAL`](./eval.md) | [`EVAL_RO`](./eval-ro.md) | [`EVALSHA`](./evalsha.md)
-
-
