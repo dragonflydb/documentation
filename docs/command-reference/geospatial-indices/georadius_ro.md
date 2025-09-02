@@ -16,6 +16,6 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @read, @geo, @slow
 
-Read-only variant of the GEORADIUS command.
+Read-only variant of the [`GEORADIUS`](./georadius.md) command.
 
-This command is identical to the GEORADIUS command, except that it doesn't support the optional STORE and STOREDIST parameters.
+This command is identical to the [`GEORADIUS`](./georadius.md) command, except that it doesn't support the optional `STORE` and `STOREDIST` parameters.

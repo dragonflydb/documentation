@@ -16,6 +16,6 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @read, @geo, @slow
 
-Read-only variant of the GEORADIUSBYMEMBER command.
+Read-only variant of the [`GEORADIUSBYMEMBER`](./georadiusbymember.md) command.
 
-This command is identical to the GEORADIUSBYMEMBER command, except that it doesn't support the optional STORE and STOREDIST parameters.
+This command is identical to the [`GEORADIUSBYMEMBER`](./georadiusbymember.md) command, except that it doesn't support the optional `STORE` and `STOREDIST` parameters.
