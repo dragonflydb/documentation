@@ -19,6 +19,8 @@ import PageTitle from '@site/src/components/PageTitle';
 Delete all the keys of the currently selected DB.
 This command never fails.
 
+The `FLUSHDB` command always deletes keys asynchronously.
+
 Note: an asynchronous `FLUSHDB` command only deletes keys that were present at the time the command was invoked. Keys created during an asynchronous flush will be unaffected.
 
 ## Return
