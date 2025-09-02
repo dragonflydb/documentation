@@ -3,8 +3,12 @@ sidebar_position: 1
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # AWS Client VPN
+
+<CloudBadge/>
+<br/>
 
 <PageTitle title="Connecting with AWS Client VPN | Dragonfly Cloud" />
 

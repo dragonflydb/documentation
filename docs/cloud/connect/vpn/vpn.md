@@ -6,8 +6,14 @@ slug: /cloud/connect/vpn
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
+
+
+<CloudBadge/>
 
 ## Overview
+
+
 
 <PageTitle title="Connecting with VPN | Dragonfly Cloud" />
 

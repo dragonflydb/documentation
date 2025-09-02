@@ -2,7 +2,11 @@
 sidebar_position: 14
 ---
 
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
+
 # Terraform Provider
+
+<CloudBadge/>
 
 ## Overview
 
