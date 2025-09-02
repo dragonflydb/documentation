@@ -36,8 +36,8 @@ dragonfly> COMMAND HELP
 
 ## Tips
 
-- The help reflects only subcommands currently supported by Dragonfly.
-- `COMMAND DOCS` is not implemented and returns an error: "COMMAND DOCS Not Implemented".
+- The help lines reflect only subcommands currently supported by Dragonfly.
+- For instance, `COMMAND DOCS` is not implemented at the moment and returns an error when called.
 
 
 ## See also
