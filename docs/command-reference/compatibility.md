@@ -128,9 +128,9 @@ sidebar_position: 0
 |                                              | <span class="command">SUBSCRIBE</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">UNSUBSCRIBE</span>                   | <span class="support supported">Fully supported</span>   |
 | <span class="family">Scripting</span>        | <span class="command">EVAL</span>                          | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">EVAL_RO</span>                       | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">EVAL_RO</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">EVALSHA</span>                       | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">EVALSHA_RO</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">EVALSHA_RO</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">FCALL</span>                         | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">FUNCTION FLUSH</span>                | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">FUNCTION</span> \*                   | <span class="support unsupported">Unsupported</span>     |
