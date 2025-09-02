@@ -38,6 +38,8 @@ dragonfly> COMMAND HELP
 
 - The help reflects only subcommands currently supported by Dragonfly.
 - `COMMAND DOCS` is not implemented and returns an error: "COMMAND DOCS Not Implemented".
-- See also: [`COMMAND`](./command.md), [`COMMAND INFO`](./command-info.md), [`COMMAND COUNT`](./command-count.md)
 
 
+## See also
+
+[`COMMAND`](./command.md) | [`COMMAND INFO`](./command-info.md) | [`COMMAND COUNT`](./command-count.md)

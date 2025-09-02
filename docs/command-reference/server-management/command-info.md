@@ -58,6 +58,10 @@ dragonfly> COMMAND INFO UNKNOWN_COMMAND
 ## Tips
 
 - Command names are case-insensitive.
-- The reply includes ACL categories as the 7th element; see [`COMMAND`](./command.md) for category semantics and the general reply format.
+- The reply includes ACL categories as the 7th element. See [`COMMAND`](./command.md) for category semantics and the general reply format.
 - The output schema is stable but may include more fields in future versions.
-- See also: [`COMMAND`](./command.md), [`COMMAND COUNT`](./command-count.md), [`ACL CAT`](../acl/cat.md)
+
+
+## See also
+
+[`COMMAND`](./command.md) | [`COMMAND COUNT`](./command-count.md) | [`ACL CAT`](../acl/cat.md)
