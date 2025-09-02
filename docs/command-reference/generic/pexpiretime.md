@@ -1,5 +1,5 @@
 ---
-description: "PEXPIRETIME returns absolute unix expiry of a key in milliseconds."
+description: "PEXPIRETIME returns absolute Unix expiry of a key in milliseconds."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -16,14 +16,14 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @keyspace, @write, @fast
 
-This command works exactly like `EXPIRETIME` but the absolute unix expiration timestamp of the key is
-returned in milliseconds instead of seconds.
+This command works exactly like [`EXPIRETIME`](./expiretime.md),
+but the absolute Unix expiration timestamp of the key is returned in milliseconds instead of seconds.
 
 ## Return
 
 [Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers), specifically:
 
-- The expiration unix timestamp, in milliseconds
+- The expiration Unix timestamp, in milliseconds
 - `-1` if the key exists but has no expiration time.
 - `-2` if the key does not exist.
 
