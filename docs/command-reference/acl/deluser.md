@@ -21,7 +21,7 @@ In such cases, no operation is performed for the non-existent ACL users.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of users that were deleted.
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the number of users that were deleted.
 This number will not always match the number of arguments since certain users may not exist.
 
 ## Examples

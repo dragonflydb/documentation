@@ -20,4 +20,4 @@ Return the number of keys in the currently-selected database.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers)
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers)

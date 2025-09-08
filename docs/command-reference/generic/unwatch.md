@@ -24,4 +24,4 @@ If you call `EXEC` or `DISCARD`, there's no need to manually call `UNWATCH`.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): always `OK`.
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): always `OK`.

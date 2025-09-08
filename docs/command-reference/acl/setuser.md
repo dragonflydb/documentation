@@ -64,7 +64,7 @@ This restriction does not exist on the rest of the family of pub/sub commands.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` on success. If the rules contain errors, the error is returned.
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` on success. If the rules contain errors, the error is returned.
 
 ## Examples
 

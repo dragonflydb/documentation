@@ -45,7 +45,7 @@ Deleting an object's root is equivalent to deleting the key from Redis.
 ## Return
 
 JSON.DEL returns an integer reply specified as the number of paths deleted (0 or more).
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec).
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 ## Examples
 

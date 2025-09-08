@@ -23,7 +23,7 @@ If `key` does not exist, a new key holding a hash is created.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings)
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings)
 
 ## Examples
 

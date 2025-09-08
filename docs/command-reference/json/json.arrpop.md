@@ -40,8 +40,8 @@ is JSONPath to specify. Default is root `$`.
 
 ## Return
 
-`JSON.ARRPOP` returns an [array](https://redis.io/docs/reference/protocol-spec/#arrays) of bulk string replies for each path, each reply is the popped JSON value, or `nil`, if the matching JSON value is not an array.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/reference/protocol-spec). 
+`JSON.ARRPOP` returns an [array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) of bulk string replies for each path, each reply is the popped JSON value, or `nil`, if the matching JSON value is not an array.
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec). 
 
 ## Examples
 

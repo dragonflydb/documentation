@@ -22,7 +22,7 @@ The user should be aware that if the same existing key is mentioned in the argum
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically the number of keys that exist from those specified as arguments.
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers), specifically the number of keys that exist from those specified as arguments.
 
 ## Examples
 

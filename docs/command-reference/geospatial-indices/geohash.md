@@ -30,7 +30,7 @@ The returned Geohashes have the following properties:
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays), specifically:
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays), specifically:
 
 The command returns an array where each element is the Geohash corresponding to each member name passed as argument to the command.
 

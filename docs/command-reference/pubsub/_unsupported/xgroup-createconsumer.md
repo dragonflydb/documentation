@@ -21,4 +21,4 @@ This is valid for `XREADGROUP` only when there is data in the stream.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the number of created consumers (0 or 1)
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the number of created consumers (0 or 1)

@@ -32,7 +32,7 @@ Keys that do not exist are considered to be empty sets.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list with members of the resulting set.
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): list with members of the resulting set.
 
 ## Examples
 

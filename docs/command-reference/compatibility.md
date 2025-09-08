@@ -17,9 +17,9 @@ sidebar_position: 0
 |                                              | <span class="command">CLIENT CACHING</span>                | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CLIENT GETNAME</span>                | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BITCCLIENT GETREDIROUNT</span>       | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLIENT ID</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLIENT ID</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CLIENT INFO</span>                   | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CLIENT KILL</span>                   | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CLIENT KILL</span>                   | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">CLIENT LIST</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CLIENT NO-EVICT</span>               | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CLIENT NO-TOUCH</span>               | <span class="support unsupported">Unsupported</span>     |
@@ -38,13 +38,13 @@ sidebar_position: 0
 |                                              | <span class="command">QUIT</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">RESET</span>                         | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">SELECT</span>                        | <span class="support supported">Fully supported</span>   |
-| <span class="family">Generic</span>          | <span class="command">COPY</span>                          | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">Generic</span>          | <span class="command">COPY</span>                          | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">DEL</span>                           | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">DUMP</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">EXISTS</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">EXPIRE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">EXPIREAT</span>                      | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">EXPIRETIME</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">EXPIRETIME</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">KEYS</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">MIGRATE</span>                       | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">MOVE</span>                          | <span class="support supported">Fully supported</span>   |
@@ -55,9 +55,9 @@ sidebar_position: 0
 |                                              | <span class="command">PERSIST</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PEXPIRE</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PEXPIREAT</span>                     | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">PEXPIRETIME</span>                   | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">PEXPIRETIME</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">PTTL</span>                          | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">RANDOMKEY</span>                     | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">RANDOMKEY</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">RENAME</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">RENAMENX</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">RESTORE</span>                       | <span class="support supported">Fully supported</span>   |
@@ -80,7 +80,7 @@ sidebar_position: 0
 |                                              | <span class="command">HLEN</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HMGET</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HMSET</span>                         | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">HRANDFIELD</span>                    | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">HRANDFIELD</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HSCAN</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HSET</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">HSETNX</span>                        | <span class="support supported">Fully supported</span>   |
@@ -128,9 +128,9 @@ sidebar_position: 0
 |                                              | <span class="command">SUBSCRIBE</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">UNSUBSCRIBE</span>                   | <span class="support supported">Fully supported</span>   |
 | <span class="family">Scripting</span>        | <span class="command">EVAL</span>                          | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">EVAL_RO</span>                       | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">EVAL_RO</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">EVALSHA</span>                       | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">EVALSHA_RO</span>                    | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">EVALSHA_RO</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">FCALL</span>                         | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">FUNCTION FLUSH</span>                | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">FUNCTION</span> \*                   | <span class="support unsupported">Unsupported</span>     |
@@ -193,6 +193,7 @@ sidebar_position: 0
 |                                              | <span class="command">SHUTDOWN</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SLAVEOF</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SLOWLOG GET</span>                   | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">SLOWLOG HELP</span>                  | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SLOWLOG LEN</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SLOWLOG RESET</span>                 | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SWAPDB</span>                        | <span class="support unsupported">Unsupported</span>     |
@@ -267,6 +268,7 @@ sidebar_position: 0
 |                                              | <span class="command">DECR</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">DECRBY</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GET</span>                           | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">GETEX</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GETDEL</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">MSGETEXET</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GETRANGE</span>                      | <span class="support supported">Fully supported</span>   |
@@ -294,10 +296,10 @@ sidebar_position: 0
 |                                              | <span class="command">GEODIST</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEOHASH</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEOPOS</span>                        | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">GEORADIUS</span>                     | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">GEORADIUS_RO</span>                  | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEORADIUS</span>                     | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">GEORADIUS_RO</span>                  | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEORADIUSBYMEMBER</span>             | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">GEORADIUSBYMEMBER_RO</span>          | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">GEORADIUSBYMEMBER_RO</span>          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEOSEARCH</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GEOSEARCHSTORE</span>                | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Bloom Filter</span>     | <span class="command">BF.ADD</span>                        | <span class="support supported">Fully supported</span>   |

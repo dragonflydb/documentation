@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    EXPIRE key seconds
+    EXPIRE key seconds [NX | XX | GT | LT]
 
 **Time complexity:** O(1)
 
@@ -49,17 +49,24 @@ will be `del`, not `expired`).
 [del]: ./del.md
 [ntf]: https://redis.io/topics/notifications
 
-## Refreshing expires
+## Options
+
+- `NX`: Expiry will only be set if the key has no expiry.
+- `XX`: Expiry will only be set if the key has an existing expiry.
+- `GT`: Expiry will only be set if the new expiry is greater than current one.
+- `LT`: Expiry will only be set if the new expiry is less than current one.
+
+## Refreshing Expiries
 
 It is possible to call `EXPIRE` using as argument a key that already has an
-existing expire set.
-In this case the time to live of a key is _updated_ to the new value.
+existing expiry set.
+In this case the time to live of a key is **updated** to the new value.
 There are many useful applications for this, an example is documented in the
-_Navigation session_ pattern section below.
+**Navigation Session** pattern section below.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers), specifically:
 
 - `1` if the timeout was set.
 - `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.
@@ -79,12 +86,12 @@ dragonfly> TTL mykey
 (integer) -1
 ```
 
-## Pattern: Navigation session
+## Pattern: Navigation Session
 
 Imagine you have a web service and you are interested in the latest N pages
-_recently_ visited by your users, such that each adjacent page view was not
+**recently** visited by your users, such that each adjacent page view was not
 performed more than 60 seconds after the previous.
-Conceptually you may consider this set of page views as a _Navigation session_
+Conceptually you may consider this set of page views as a **navigation session**
 of your user, that may contain interesting information about what kind of
 products he or she is looking for currently, so that you can recommend related
 products.
@@ -100,54 +107,53 @@ EXEC
 ```
 
 If the user will be idle more than 60 seconds, the key will be deleted and only
-subsequent page views that have less than 60 seconds of difference will be
-recorded.
+subsequent page views that have less than 60 seconds of difference will be recorded.
+This pattern can also be easily modified to use counters (i.e., `INCR`) instead of lists.
 
-This pattern is easily modified to use counters using `INCR` instead of lists
-using `RPUSH`.
+---
 
-# Appendix: Dragonfly expires
+## Appendix: Dragonfly Expiries
 
-## Keys with an expire
+### Keys with an Expiry
 
 Normally Dragonfly keys are created without an associated time to live.
 The key will simply live forever, unless it is removed by the user in an
-explicit way, for instance using the `DEL` command.
+explicit way, for instance, using the `DEL` command.
 
-The `EXPIRE` family of commands is able to associate an expire to a given key,
+The `EXPIRE` family of commands is able to associate an expiry to a given key,
 at the cost of some additional memory used by the key.
-When a key has an expire set, Dragonfly will make sure to remove the key when the
-specified amount of time elapsed.
+When a key has an expiry set, Dragonfly will make sure to remove the key when the
+specified amount of time has elapsed.
 
 The key time to live can be updated or entirely removed using the `EXPIRE` and
-`PERSIST` command (or other strictly related commands).
+`PERSIST` commands (or other strictly related commands).
 
-## Expire accuracy
+### Expiry Accuracy
 
-Dragonfly expire accuracy is in order of milliseconds.
+Dragonfly expiry accuracy is in order of milliseconds.
 
-## How Dragonfly expires keys
+### How Dragonfly Expires Keys
 
-Dragonfly keys are expired in two ways: a passive way, and an active way.
+Dragonfly keys expire in two ways: a passive way and an active way.
 
 A key is passively expired simply when some client tries to access it, and the
 key is found to be timed out.
 
-Of course this is not enough as there are expired keys that will never be
+Of course this is not enough, as there are expired keys that will never be
 accessed again.
 These keys should be expired anyway, so periodically Dragonfly tests a few keys at
 random among keys with an expire set.
 All the keys that are already expired are deleted from the keyspace.
 
-## How expires are handled in the replication link
+### How Expiries Are Handled in the Replication Link
 
 In order to obtain a correct behavior without sacrificing consistency, when a
-key expires, a `DEL` operation is sent to all the attached replicas nodes.
+key expires, a `DEL` operation is sent to all the attached replica nodes.
 This way the expiration process is centralized in the master instance, and there
 is no chance of consistency errors.
 
-However while the replicas connected to a master will not expire keys
+However, while the replicas connected to a master will not expire keys
 independently (but will wait for the `DEL` coming from the master), they'll
-still take the full state of the expires existing in the dataset, so when a
-replica is elected to master it will be able to expire the keys independently,
+still take the full state of the expiries existing in the dataset, so when a
+replica is elected to master, it will be able to expire the keys independently,
 fully acting as a master.

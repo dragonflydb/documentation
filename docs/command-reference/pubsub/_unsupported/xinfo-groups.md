@@ -56,7 +56,7 @@ Once the consumer group delivers the last message in the stream to its members, 
 
 @reply
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of consumer groups.
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a list of consumer groups.
 
 ## Examples
 

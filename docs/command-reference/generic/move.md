@@ -24,7 +24,7 @@ It is possible to use `MOVE` as a locking primitive because of this.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers), specifically:
 
 - `1` if `key` was moved.
 - `0` if `key` was not moved.

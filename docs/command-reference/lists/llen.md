@@ -21,7 +21,7 @@ An error is returned when the value stored at `key` is not a list.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the length of the list at `key`.
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the length of the list at `key`.
 
 ## Examples
 

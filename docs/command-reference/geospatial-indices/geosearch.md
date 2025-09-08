@@ -52,7 +52,7 @@ so to query very large areas with a very small `COUNT` option may be slow even i
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays), specifically:
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays), specifically:
 
 * Without any `WITH` option specified, the command just returns a linear array like ["New York","Milan","Paris"].
 * If `WITHCOORD`, `WITHDIST` or `WITHHASH` options are specified, the command returns an array of arrays, where each sub-array represents a single item.

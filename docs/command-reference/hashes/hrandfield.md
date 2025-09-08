@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    HRANDFIELD key
+    HRANDFIELD key [count [WITHVALUES]]
 
 **Time complexity:** O(N) where N is the number of fields returned
 
@@ -28,9 +28,9 @@ The optional `WITHVALUES` modifier changes the reply so it includes the respecti
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): without the additional `count` argument, the command returns a Bulk Reply with the randomly selected field, or `nil` when `key` does not exist.
+[Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): without the additional `count` argument, the command returns a Bulk Reply with the randomly selected field, or `nil` when `key` does not exist.
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): when the additional `count` argument is passed, the command returns an array of fields, or an empty array when `key` does not exist.
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): when the additional `count` argument is passed, the command returns an array of fields, or an empty array when `key` does not exist.
 If the `WITHVALUES` modifier is used, the reply is a list fields and their values from the hash.
 
 ## Examples

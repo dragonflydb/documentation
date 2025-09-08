@@ -40,7 +40,7 @@ Optional argument `filename` is used to override current **`dbfilename`** for sa
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): The commands returns OK on success.
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): The commands returns OK on success.
 
 ## Examples
 

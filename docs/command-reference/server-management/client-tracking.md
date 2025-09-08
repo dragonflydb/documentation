@@ -31,7 +31,7 @@ and Dragonfly stops tracking the keys for the connection, and no invalidation me
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` if the connection was
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` if the connection was
 successfully put in tracking mode or if the tracking mode was successfully disabled. Otherwise, an error is returned.
 
 ## Options

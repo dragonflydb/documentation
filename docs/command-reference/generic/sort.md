@@ -69,4 +69,4 @@ SORT mylist LIMIT 0 5 ALPHA DESC
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): list of sorted elements.
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): list of sorted elements.

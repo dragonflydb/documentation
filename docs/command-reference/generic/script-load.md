@@ -18,8 +18,8 @@ import PageTitle from '@site/src/components/PageTitle';
 
 Load a script into the scripts cache, without executing it.
 After the specified command is loaded into the script cache it will be callable
-using `EVALSHA` with the correct SHA1 digest of the script, exactly like after
-the first successful invocation of `EVAL`.
+using `EVALSHA` (or `EVALSHA_RO` for read-only scripts) with the correct SHA1
+digest of the script, exactly like after the first successful invocation of `EVAL`.
 
 The script is guaranteed to stay in the script cache forever (unless `SCRIPT
 FLUSH` is called).
@@ -31,5 +31,5 @@ For more information about `EVAL` scripts please refer to [Introduction to Eval 
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings) This command returns the SHA1 digest of the script added into the
+[Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) This command returns the SHA1 digest of the script added into the
 script cache.

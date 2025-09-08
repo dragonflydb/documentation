@@ -16,11 +16,13 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @keyspace, @write, @slow, @dangerous
 
-Delete all the keys of the currently selected DB.
+Delete all the keys of the currently selected database.
 This command never fails.
+
+The `FLUSHDB` command always deletes keys asynchronously.
 
 Note: an asynchronous `FLUSHDB` command only deletes keys that were present at the time the command was invoked. Keys created during an asynchronous flush will be unaffected.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings)
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings)

@@ -20,7 +20,7 @@ Return helpful information about the [`JSON.DEBUG`](./json.debug.md) command.
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): a list of helpful messages.
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a list of helpful messages.
 
 ## Examples
 

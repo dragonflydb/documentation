@@ -16,15 +16,24 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @slow, @connection
 
-Returns [Integer reply](https://redis.io/docs/reference/protocol-spec/#integers) of number of total commands in this Dragonfly server.
+Returns the number of total commands in this Dragonfly server.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): number of commands returned by `COMMAND`
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): number of commands returned by `COMMAND`.
 
 ## Examples
 
 ```shell
 dragonfly> COMMAND COUNT
-(integer) 240
+(integer) 283
 ```
+
+## Tips
+
+- Counts only non-hidden commands (commands marked with the `HIDDEN` flag are excluded from `COMMAND`).
+- Equivalent to the number of elements returned by `COMMAND` without subcommands.
+
+## See also
+
+[`COMMAND`](./command.md) | [`COMMAND INFO`](./command-info.md)

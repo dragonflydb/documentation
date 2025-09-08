@@ -23,7 +23,7 @@ If `field` already exists, this operation has no effect.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers), specifically:
 
 - `1` if `field` is a new field in the hash and `value` was set.
 - `0` if `field` already exists in the hash and no operation was performed.

@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    EXPIREAT key unix-time-seconds
+    EXPIREAT key unix-time-seconds [NX | XX | GT | LT]
 
 **Time complexity:** O(1)
 
@@ -26,9 +26,16 @@ timestamp in the past will delete the key immediately.
 Please for the specific semantics of the command refer to the documentation of
 `EXPIRE`.
 
+## Options
+
+- `NX`: Expiry will only be set if the key has no expiry.
+- `XX`: Expiry will only be set if the key has an existing expiry.
+- `GT`: Expiry will only be set if the new expiry is greater than current one.
+- `LT`: Expiry will only be set if the new expiry is less than current one.
+
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers), specifically:
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers), specifically:
 
 - `1` if the timeout was set.
 - `0` if the timeout was not set. e.g. key doesn't exist, or operation skipped due to the provided arguments.

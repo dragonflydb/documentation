@@ -21,4 +21,4 @@ the memory allocator.
 
 ## Return
 
-[Bulk string reply](https://redis.io/docs/reference/protocol-spec/#bulk-strings): the memory allocator's internal statistics report
+[Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): the memory allocator's internal statistics report

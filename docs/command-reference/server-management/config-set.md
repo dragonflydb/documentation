@@ -26,7 +26,7 @@ Note we only support configuring a single parameter at a time.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings): `OK` when the configuration was set properly, error otherwise.
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` when the configuration was set properly, error otherwise.
 
 ## Examples
 

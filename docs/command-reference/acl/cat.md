@@ -19,7 +19,7 @@ If a category name is given, the command shows all the Dragonfly commands in the
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays)
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays)
 
 ## Examples
 

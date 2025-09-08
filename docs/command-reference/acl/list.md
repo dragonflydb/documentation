@@ -19,7 +19,7 @@ Each line consists of the username, followed by their status (ON/OFF), a 15-char
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): An array of strings. 
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): An array of strings. 
 
 ## Examples
 

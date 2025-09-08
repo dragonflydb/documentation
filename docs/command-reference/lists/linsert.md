@@ -25,7 +25,7 @@ An error is returned when `key` exists but does not hold a list value.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/reference/protocol-spec/#integers): the list length after a successful insert operation, `0` if the `key` doesn't exist, and `-1` when the `pivot` wasn't found.
+[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the list length after a successful insert operation, `0` if the `key` doesn't exist, and `-1` when the `pivot` wasn't found.
 
 ## Examples
 

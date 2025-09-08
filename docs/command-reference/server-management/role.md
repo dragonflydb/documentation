@@ -65,4 +65,4 @@ The replica output is composed of the following parts:
 
 ## Return
 
-[Array reply](https://redis.io/docs/reference/protocol-spec/#arrays): where the first element is one of `master`, `slave`, `sentinel` and the additional elements are role-specific as illustrated above.
+[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): where the first element is one of `master`, `slave`, `sentinel` and the additional elements are role-specific as illustrated above.

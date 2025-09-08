@@ -22,7 +22,7 @@ An error is returned for out of range indexes.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/reference/protocol-spec/#simple-strings)
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings)
 
 ## Examples
 
