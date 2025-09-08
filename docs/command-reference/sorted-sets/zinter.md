@@ -22,7 +22,8 @@ ZINTER numkeys key [key ...]
   [WEIGHTS weight [weight ...]] [AGGREGATE <SUM | MIN | MAX>] [WITHSCORES]
 ```
 
-- **Time complexity:** O(N*K)+O(M*log(M)) worst case with N being the smallest input sorted set, K being the number of input sorted sets and M being the number of elements in the resulting sorted set.
+- **Time complexity:** O(N\*K)+O(M\*log(M)) worst case with N being the smallest input sorted set,
+  K being the number of input sorted sets and M being the number of elements in the resulting sorted set.
 - **ACL categories:** @read, @sortedset, @slow
 
 ## Parameter Explanations
@@ -38,7 +39,7 @@ ZINTER numkeys key [key ...]
 
 ## Return Values
 
-- [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) the result of the intersection
+- [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) the result of the intersection.
 - If `WITHSCORES` is provided, the array contains each element followed by its score.
 
 ## Code Examples
@@ -54,12 +55,9 @@ dragonfly$> ZADD zset1 1 a 2 b
 dragonfly$> ZADD zset2 2 a 3 b
 (integer) 2
 
-127.0.0.1:6379> ZINTER 2 zset1 zset2 WITHSCORES
+dragonfly$> ZINTER 2 zset1 zset2 WITHSCORES
 1) "a"
 2) (double) 3  # Score: (1 + 2) = 2
 3) "b"
 4) (double) 5  # Score: (2 + 3) = 5
 ```
-
-
-
