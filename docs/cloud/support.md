@@ -3,9 +3,12 @@ sidebar_position: 15
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Support Plans
 
+<CloudBadge/>
+<br /><br />
 <PageTitle title="Support Plans | Dragonfly Cloud" />
 
 We offer the following support plans for Dragonfly Cloud:

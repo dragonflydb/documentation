@@ -3,8 +3,11 @@ sidebar_position: 1
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Getting Started
+
+<CloudBadge/>
 
 <PageTitle title="Getting Started | Dragonfly Cloud" />
 

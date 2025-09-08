@@ -3,8 +3,11 @@ sidebar_position: 2
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Data Stores
+
+<CloudBadge/>
 
 <PageTitle title="Data Stores | Dragonfly Cloud" />
 

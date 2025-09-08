@@ -6,6 +6,9 @@ slug: /cloud/connect
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
+
+<CloudBadge/>
 
 ## Overview
 

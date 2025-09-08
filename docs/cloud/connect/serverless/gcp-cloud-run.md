@@ -3,8 +3,12 @@ sidebar_position: 2
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # GCP Cloud Run
+
+<CloudBadge/>
+<br /><br />
 
 <PageTitle title="Connecting from GCP Cloud Run | Dragonfly Cloud" />
 

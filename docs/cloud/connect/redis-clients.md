@@ -3,8 +3,12 @@ sidebar_position: 1
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # Redis Clients
+
+<CloudBadge/>
+<br /><br />
 
 <PageTitle title="Connecting with Redis Clients | Dragonfly Cloud" />
 
@@ -82,16 +86,13 @@ import { Redis as Dragonfly } from "ioredis";
 //  - 'slave': Write to primary nodes, read from replicas exclusively.
 import { Redis as Dragonfly } from "ioredis";
 
-const client = new Dragonfly.Cluster(
-  [{ host: "<URL>", port: 6385 }],
-  {
-    redisOptions: {
-      username: "default",
-      password: "<KEY>",
-    },
-    scaleReads: "slave",
+const client = new Dragonfly.Cluster([{ host: "<URL>", port: 6385 }], {
+  redisOptions: {
+    username: "default",
+    password: "<KEY>",
   },
-);
+  scaleReads: "slave",
+});
 
 client.ping().then((resp) => console.log(resp));
 ```

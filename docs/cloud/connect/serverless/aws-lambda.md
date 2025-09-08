@@ -3,9 +3,12 @@ sidebar_position: 1
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 # AWS Lambda
 
+<CloudBadge/>
+<br /><br />
 <PageTitle title="Connecting from AWS Lambda | Dragonfly Cloud" />
 
 This guide explains how to create an AWS Lambda function that connects to a Dragonfly Cloud data store.
@@ -53,46 +56,49 @@ section if you already have the Lambda function set up and just want to learn ho
 Create a module JavaScript file (e.g., `index.mjs`) with the following code:
 
 ```js
-import {createClient} from 'redis';
+import { createClient } from "redis";
 
 const redis = createClient({
-    url: process.env.DRAGONFLY_CONNECTION_URI
-})
+  url: process.env.DRAGONFLY_CONNECTION_URI,
+});
 
-await redis.connect()
+await redis.connect();
 
 if (!redis.isReady) {
-    console.log("not ready yet")
+  console.log("not ready yet");
 }
 
-console.log("ready")
+console.log("ready");
 export const handler = async (event) => {
-    try {
-        // Test connection with some basic operations.
-        await redis.set('lambda_test', JSON.stringify({
-            timestamp: new Date().toISOString(),
-            source: 'AWS Lambda'
-        }));
+  try {
+    // Test connection with some basic operations.
+    await redis.set(
+      "lambda_test",
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        source: "AWS Lambda",
+      })
+    );
 
-        const result = await redis.get('lambda_test');
+    const result = await redis.get("lambda_test");
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify({
-                message: 'Successfully connected to Dragonfly',
-                data: JSON.parse(result)
-            })
-        };
-    } catch (error) {
-        console.error('Dragonfly connection error:', error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({
-                error: 'Connection failed',
-                details: error.message
-            })
-        };
-    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: "Successfully connected to Dragonfly",
+        data: JSON.parse(result),
+      }),
+    };
+  } catch (error) {
+    console.error("Dragonfly connection error:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: "Connection failed",
+        details: error.message,
+      }),
+    };
+  }
 };
 ```
 
@@ -141,9 +147,9 @@ To enable your AWS Lambda function to securely connect to a private Dragonfly Cl
 
 1. Open the [VPC Console](https://console.aws.amazon.com/vpc/) and locate the security group associated with your VPC.
 2. Add an inbound rule to allow traffic from your VPC:
-    - **Type**: Custom TCP Rule
-    - **Port Range**: `6379` (Dragonfly port).
-    - **Source**: CIDR of the private network.
+   - **Type**: Custom TCP Rule
+   - **Port Range**: `6379` (Dragonfly port).
+   - **Source**: CIDR of the private network.
 
 ### 3. Grant Lambda Necessary Permissions
 
@@ -159,9 +165,9 @@ To allow Lambda to interact with your VPC, you need to update its execution role
 1. In the [AWS Lambda Console](https://console.aws.amazon.com/lambda/), select your function.
 2. Go to the **Configuration** tab and choose **VPC**.
 3. Click **Edit** and set the following:
-    - **VPC**: Select the VPC you created.
-    - **Subnets**: Choose subnets with access to the data store.
-    - **Security Groups**: Select the security group that allows traffic to the data store.
+   - **VPC**: Select the VPC you created.
+   - **Subnets**: Choose subnets with access to the data store.
+   - **Security Groups**: Select the security group that allows traffic to the data store.
 
 ### 5. Test the Connection
 
