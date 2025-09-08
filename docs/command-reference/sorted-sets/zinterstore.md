@@ -22,7 +22,8 @@ ZINTERSTORE destination numkeys key [key ...]
   [WEIGHTS weight [weight ...]] [AGGREGATE <SUM | MIN | MAX>]
 ```
 
-- **Time complexity:** O(N*K)+O(M*log(M)) worst case with N being the smallest input sorted set, K being the number of input sorted sets and M being the number of elements in the resulting sorted set.
+- **Time complexity:** O(N\*K)+O(M\*log(M)) worst case with N being the smallest input sorted set,
+  K being the number of input sorted sets and M being the number of elements in the resulting sorted set.
 - **ACL categories:** @write, @sortedset, @slow
 
 ## Parameter Explanations

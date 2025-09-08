@@ -224,7 +224,7 @@ sidebar_position: 0
 |                                              | <span class="command">ZDIFF</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZDIFFSTORE</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZINCRBY</span>                       | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ZINTER</span>                        | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">ZINTER</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZINTERCARD</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZINTERSTORE</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZLEXCOUNT</span>                     | <span class="support supported">Fully supported</span>   |
