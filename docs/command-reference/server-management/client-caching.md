@@ -34,7 +34,7 @@ Again, the behavior change enforced by the `CLIENT CACHING` command is only appl
 
 [Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` if the argument is valid.
 An error is returned if RESP3 is not enabled, or the argument does not match the current tracking mode for the client.
-For example, if `YES` is specified when the mode is not `OFF OPTIN`, or `NO` is specified when the mode is not `ON OPTOUT`.
+For example, if `YES` is specified when the mode is not `OPTIN`, or `NO` is specified when the mode is not `OPTOUT`.
 
 ## Examples
 
