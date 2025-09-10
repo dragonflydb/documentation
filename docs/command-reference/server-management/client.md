@@ -18,7 +18,7 @@ This is a container command for client connection commands.
 
 Currently, the following subcommands are supported:
 
-- CLIENT CACHING
+- [CLIENT CACHING](./client-caching.md)
 - [CLIENT GETNAME](./client-getname.md)
 - [CLIENT ID](./client-id.md)
 - [CLIENT KILL](./client-kill.md)
