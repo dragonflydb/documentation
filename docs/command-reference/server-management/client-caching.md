@@ -23,7 +23,7 @@ The `CLIENT CACHING` command changes tracking of keys **only for the next comman
 When tracking is enabled using [`CLIENT TRACKING`](./client-tracking.md), it is possible to specify `OPTIN` or `OPTOUT` options,
 so that keys in read-only commands are not automatically remembered by the server to be invalidated later.
 
-- When the client is in `OFF OPTIN` mode, the standard behavior is to not track keys.
+- When the client is in `OPTIN` mode, the standard behavior is to not track keys.
   The client can force tracking of the keys used in the next command by calling `CLIENT CACHING YES` before the command.
 - Similarly, when the client is in `ON OPTOUT` mode, the standard behavior is to track keys.
   This behavior can be overridden for keys used in the next command by calling `CLIENT CACHING NO` before the command.
