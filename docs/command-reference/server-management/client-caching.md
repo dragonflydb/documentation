@@ -54,7 +54,7 @@ dragonfly> GET user_count
 "100"
 
 # Change client tracking mode.
-dragonfly> CLIENT TRACKING OFF OPTIN
+dragonfly> CLIENT TRACKING ON OPTIN
 OK
 
 # The next command will be cached.
