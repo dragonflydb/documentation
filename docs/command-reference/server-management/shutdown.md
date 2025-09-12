@@ -25,9 +25,9 @@ The `SHUTDOWN` command supports optional modifiers to alter the behavior of the 
 * `SAFE` is accepted for Valkey compatibility and is treated the same as `SAVE`.
 * `NOW` performs a fast shutdown. Dragonfly will attempt to accelerate shutdown and may close client connections sooner.
 * `FORCE` performs a fast shutdown and ensures no snapshot is created during shutdown. This overrides `SAVE`/`SAFE` and is equivalent to combining fast shutdown with a no-save behavior.
-* `ABORT` is not supported in Dragonfly. Supplying `ABORT` returns an error and the server remains running.
+* `ABORT` is not supported in Dragonfly. Supplying `ABORT` returns an error, and the server remains running.
 
-Notes:
+### Notes
 
 * `SAVE` and `NOSAVE` are mutually exclusive. Supplying both results in a syntax error.
 * `FORCE` takes precedence over `SAVE`/`SAFE` and `NOSAVE` regarding snapshot behavior.
@@ -45,8 +45,10 @@ Notes:
 
 -->
 
-Also note: If Dragonfly receives one of the signals `SIGTERM` and `SIGINT`, the same shutdown sequence is performed.
-See also [Signal Handling](https://redis.io/topics/signals).
+### Signal Handling
+
+* If Dragonfly receives one of the signals `SIGTERM` and `SIGINT`, the same `SHUTDOWN` sequence is performed.
+* See also [Signal Handling](https://redis.io/topics/signals).
 
 ## Return
 
