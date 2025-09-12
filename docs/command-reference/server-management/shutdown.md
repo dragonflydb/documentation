@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    SHUTDOWN [NOSAVE | SAVE]
+    SHUTDOWN [SAVE | NOSAVE | SAFE] [NOW] [FORCE] [ABORT]
 
 **Time complexity:** O(1)
 
@@ -22,6 +22,15 @@ The `SHUTDOWN` command supports optional modifiers to alter the behavior of the 
 
 * `SAVE` will force a DB saving operation even if no save points are configured.
 * `NOSAVE` will prevent a DB saving operation even if one or more save points are configured.
+* `SAFE` is accepted for Valkey compatibility and is treated the same as `SAVE`.
+* `NOW` performs a fast shutdown. Dragonfly will attempt to accelerate shutdown and may close client connections sooner.
+* `FORCE` performs a fast shutdown and ensures no snapshot is created during shutdown. This overrides `SAVE`/`SAFE` and is equivalent to combining fast shutdown with a no-save behavior.
+* `ABORT` is not supported in Dragonfly. Supplying `ABORT` returns an error, and the server remains running.
+
+### Notes
+
+* `SAVE` and `NOSAVE` are mutually exclusive. Supplying both results in a syntax error.
+* `FORCE` takes precedence over `SAVE`/`SAFE` and `NOSAVE` regarding snapshot behavior.
 
 
 <!-- we dont do any of that useful stuff:
@@ -36,11 +45,15 @@ The `SHUTDOWN` command supports optional modifiers to alter the behavior of the 
 
 -->
 
-Also note: If Dragonfly receives one of the signals `SIGTERM` and `SIGINT`, the same shutdown sequence is performed.
-See also [Signal Handling](https://redis.io/topics/signals).
+### Signal Handling
+
+* If Dragonfly receives one of the signals `SIGTERM` and `SIGINT`, the same `SHUTDOWN` sequence is performed.
+* See also [Signal Handling](https://redis.io/topics/signals).
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` if `ABORT` was specified and shutdown was aborted.
-On successful shutdown, nothing is returned since the server quits and the connection is closed.
-On failure, an error is returned.
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings):
+
+* On successful shutdown, nothing is returned since the server quits and the connection is closed.
+* If `ABORT` is specified, Dragonfly returns an error: `SHUTDOWN ABORT is not supported`, and the server remains running.
+* On other failures (e.g., invalid option combinations), an error is returned.
