@@ -28,6 +28,8 @@ Continue to the next sections for instructions on how to create a peering connec
 
 *Tip:* For connecting to a private network from a local machine, see [Connect with VPN](./connect/vpn).
 
+---
+
 ## Amazon Web Services (AWS)
 
 Follow the steps below to create a peering connection within the Dragonfly Cloud console,
@@ -39,15 +41,18 @@ and then accept the peering connection in your AWS account console:
   and the **Acceptor VPC ID** of your AWS VPC from where you want to connect, and click **Create**.
 - The connection will be created in the **Inactive** status.
 - Next, you should accept the peering connection in your AWS account console (**VPC > Peering Connections**).
-- Create a route in your AWS VPC, set the destination to the CIDR of the Dragonfly Cloud private network,
-  and set the target to the AWS peering connection ID.
-- You can read more about AWS peering
-  connections [here](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html).
+- Create a route in your AWS VPC's route table (**Route Table > Edit Routes > Add Route**):
+  - Set the **Destination** to the CIDR of the Dragonfly Cloud private network (i.e., `192.168.0.0/16`).
+  - Set the **Target** to the AWS peering connection ID (i.e., `pcx-0f727XXXXXXXXXXXX`).
 - Modify your relevant security groups to allow traffic from the Dragonfly Cloud private network CIDR.
 - Observe the connection becoming **Active** after a few moments in the Dragonfly Cloud console.
 
+You can read more about AWS peering
+connections [here](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html).
 If you haven't done so already, create a data store with a private endpoint and start building your applications with
 it. Read more about creating a data store with a private endpoint [here](./datastores#private-endpoint).
+
+---
 
 ## Google Cloud Platform (GCP)
 
@@ -65,6 +70,8 @@ and then accept the peering connection in your GCP account console:
   private network you wish to connect.
 - Observe the connection becoming **Active** after a few moments in the Dragonfly Cloud console.
 - Don't forget to modify your firewall to allow traffic from the Dragonfly Cloud private network CIDR.
+
+---
 
 ## Microsoft Azure
 
