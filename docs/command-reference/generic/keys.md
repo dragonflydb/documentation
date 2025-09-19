@@ -17,9 +17,7 @@ import PageTitle from '@site/src/components/PageTitle';
 **ACL categories:** @keyspace, @read, @slow, @dangerous
 
 Returns all keys matching `pattern`.
-
-While the time complexity for this operation is O(N), the constant times are
-fairly low.
+While the time complexity for this operation is O(N), the constant times are fairly low.
 
 Supported glob-style patterns:
 
@@ -35,9 +33,10 @@ Use `\` to escape special characters if you want to match them verbatim.
 
 [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): list of keys matching `pattern`.
 
-**Number of elements returned:**
+### Number of Elements Returned
 
-Dragonfly protects itself from an overwhelming number of returned keys by imposing a limit on the quantity. To modify this limit, update the value of the "keys_output_limit" flag. Please refer to [Dragonfly configuration](https://github.com/dragonflydb/dragonfly#configuration) for more information how to change dragonfly flag values.
+Dragonfly protects itself from an overwhelming number of returned keys by imposing a limit on the quantity.
+To modify this limit, update the value of the [`--keys_output_limit`](../../managing-dragonfly/flags.md#--keys_output_limit) server configuration flag.
 
 ## Examples
 
