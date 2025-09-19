@@ -28,4 +28,5 @@ Client pause currently supports two modes:
 * WRITE: Clients are only blocked if they attempt to execute a write command.
 
 ## Return
-Simple string reply: OK or an error if the timeout is invalid.
+
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` or an error if the timeout is invalid.

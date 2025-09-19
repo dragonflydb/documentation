@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    FLUSHDB
+    FLUSHDB [ASYNC | SYNC]
 
 **Time complexity:** O(N) where N is the number of keys in the selected database
 
@@ -19,10 +19,14 @@ import PageTitle from '@site/src/components/PageTitle';
 Delete all the keys of the currently selected database.
 This command never fails.
 
-The `FLUSHDB` command always deletes keys asynchronously.
+## Notes
 
-Note: an asynchronous `FLUSHDB` command only deletes keys that were present at the time the command was invoked. Keys created during an asynchronous flush will be unaffected.
+- The `FLUSHDB` command always deletes keys asynchronously.
+  It only deletes keys that were present at the time the command was invoked.
+  Keys created during the deletion will be unaffected.
+- However, if the `SYNC` option is specified, the command waits for the deletion (which is still asynchronous) to finish.
+  Because of this, unlike Redis/Valkey, this command never blocks other commands.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings)
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK`.

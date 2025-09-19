@@ -16,13 +16,17 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @keyspace, @write, @slow, @dangerous
 
-Delete all the keys of all the existing databases, not just the currently selected one.
+Delete all the keys for all the existing databases, not just the currently selected one.
 This command never fails.
 
-`FLUSHALL` will always asynchronously flush databases. Specifying `ASYNC` or `SYNC` does not currently affect the behavior.
+## Notes
 
-Note: an asynchronous `FLUSHALL` command only deletes keys that were present at the time the command was invoked. Keys created during an asynchronous flush will be unaffected.
+- The `FLUSHALL` command always deletes keys asynchronously.
+  It only deletes keys that were present at the time the command was invoked.
+  Keys created during the deletion will be unaffected.
+- However, if the `SYNC` option is specified, the command waits for the deletion (which is still asynchronous) to finish.
+  Because of this, unlike Redis/Valkey, this command never blocks other commands.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): OK
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK`.
