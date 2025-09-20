@@ -4,34 +4,44 @@ sidebar_position: 1
 
 # Install on Kubernetes with Helm Chart
 
-This guide describes how to deploy Dragonfly on a Kubernetes cluster using Helm (See [Install Helm](https://helm.sh/docs/intro/install/)).
+<PageTitle title="Getting Started with Helm | Dragonfly" />
+
+This guide describes how to deploy Dragonfly on a Kubernetes cluster using Helm.
+Before you begin, please ensure that [Helm is installed](https://helm.sh/docs/intro/install/) properly.
 
 ## Prerequisites
 
-- A Kubernetes cluster (see [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/) or [Minikube](https://minikube.sigs.k8s.io/docs/start/) if you want to experiment locally).
+- A running Kubernetes cluster (see [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/) or [Minikube](https://minikube.sigs.k8s.io/docs/start/) if you want to experiment locally).
 - Select the Dragonfly version:
-  - For the latest version, set:
-    `VERSION=v{{DRAGONFLY_VERSION}}`
-  - Choose a version from [here](https://github.com/dragonflydb/dragonfly/pkgs/container/dragonfly%2Fhelm%2Fdragonfly)
+  - For the latest version, set `VERSION=v{{DRAGONFLY_VERSION}}` as an environment variable, which will be used later.
+  - Choose from [here](https://github.com/dragonflydb/dragonfly/pkgs/container/dragonfly%2Fhelm%2Fdragonfly) if you need a specific version.
 
-## Install a standalone master
+For full control and customization, please check out
+the [complete list of configuration values](https://github.com/dragonflydb/dragonfly/tree/main/contrib/charts/dragonfly) you can use.
+Now, let's see a couple of examples of deploying Dragonfly using Helm below.
 
-Run this command:
+## Standalone Instance
 
-`helm upgrade --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version $VERSION`
+Run the following command to deploy a standalone primary Dragonfly instance:
 
-## Install a standalone master with snapshot taken every minute
+```bash
+helm upgrade \
+    --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly \
+    --version $VERSION
+```
 
-1. Add the following to the `myvals.yaml` values file (create a new file if it doesn't exist):
+## Standalone Instance with Snapshotting
 
-```yml "
+Add the following to the [values file](https://helm.sh/docs/chart_template_guide/values_files/) (create a new values file if it doesn't exist):
+
+```yml
 storage:
   enabled: true
-  requests: 128Mi # Set as desired
+  requests: 128Mi # Set a desired volume size for PVC.
 
 extraArgs:
-  - --dbfilename=my-dump-{timestamp} # should only contain the filename without any file extensions
-  - --snapshot_cron=* * * * * # cron format
+  - --dbfilename=my-dump-{timestamp} # Only the filename without any file extensions.
+  - --snapshot_cron=* * * * *        # Set a valid cron schedule.
 
 podSecurityContext:
   fsGroup: 2000
@@ -45,14 +55,22 @@ securityContext:
   runAsUser: 1000
 ```
 
-1. Run this command:
-   `helm upgrade -f myvals.yaml --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly --version $VERSION`
+Run the following command to deploy a Dragonfly instance with the configurations above:
 
-## Integrate with Kube-Prometheus Monitoring
+```bash
+# Make sure to use the correct values file.
+helm upgrade -f values.yaml \
+    --install dragonfly oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly \
+    --version $VERSION
+```
 
-If you have [Kube-Prometheus](https://github.com/prometheus-operator/kube-prometheus) installed in your cluster, you set it to monitor your Dragonfly deployment by enabling the `serviceMonitor` and `prometheusRule` in your values file. For example:
+## Monitoring with Kube-Prometheus
 
-```yml "
+If you have [Kube-Prometheus](https://github.com/prometheus-operator/kube-prometheus) installed in your cluster,
+you can set it to monitor your Dragonfly deployment by enabling the `serviceMonitor` and `prometheusRule` in your values file.
+For example:
+
+```yml
 serviceMonitor:
   enabled: true
 
@@ -68,7 +86,3 @@ prometheusRule:
         summary: Dragonfly is missing
         description: "Dragonfly is missing"
 ```
-
-## More Customization
-
-For more customization please see the [Dragonfly Chart](https://github.com/dragonflydb/dragonfly/tree/main/contrib/charts/dragonfly)
