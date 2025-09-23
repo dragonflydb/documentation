@@ -348,6 +348,7 @@ sidebar_position: 0
 |                                              | <span class="command">FT.SEARCH</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">FT.SYNUPDATE</span>                  | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">FT.SYNDUMP</span>                    | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">FT.ALTER</span>                      | <span class="support supported">Fully supported</span>   |
 | <span class="family">Auto Suggest</span>     | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">T-Digest</span>         | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Time Series</span>      | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
