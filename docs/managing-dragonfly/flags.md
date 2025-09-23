@@ -141,10 +141,15 @@ flags which include specified substring in either in the name, description or pa
   `default: false`
 
 ### `--tcp_keepalive`
-  The period in seconds of inactivity after which keep-alives are triggerred, the duration 
-  until an inactive connection is terminated is twice the specified time. 
+  The period in seconds of inactivity after which keep-alives are triggerred,
+  the duration until an inactive connection is terminated is twice the specified time.
 
   `default: 300`
+
+### `--timeout`
+  Close the connection after it is idle for N seconds (`0` to disable).
+
+  `default: 0`
 
 ### `--tls`
   Enable tls.
