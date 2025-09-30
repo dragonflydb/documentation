@@ -29,9 +29,9 @@ See also: [`LMOVE`](lmove.md) for the command options.
 
 ## Return
 
-* [Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): the element being
+- [Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): the element being
   popped from `source` and pushed to `destination`, when successful.
-* [Nil reply](https://redis.io/docs/latest/develop/reference/protocol-spec#bulk-strings) when the command times out.
+- [Nil reply](https://redis.io/docs/latest/develop/reference/protocol-spec#bulk-strings) when the command times out.
 
 ## Examples
 
