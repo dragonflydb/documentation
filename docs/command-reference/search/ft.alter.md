@@ -2,43 +2,33 @@
 description: Searches the index with a query, returning docs or just IDs
 ---
 
-# FT.SEARCH
+# FT.ALTER
 
 ## Syntax
 
     FT.ALTER {index} [SKIPINITIALSCAN] SCHEMA ADD {attribute} {options} ...
 
-**Time complexity:** O(N)
+**Time complexity:** O(N) where N is the number of keys in the keyspace
+
 **ACL Categories:** @search
 
 ## Description
 
-Add a new attribute to the index. Adding an attribute to the index causes any future document updates to use the new attribute when indexing and reindexing existing documents.
+Add a new attribute to the index.
+Note that adding an attribute to the index causes any future document updates to use the new attribute when indexing and reindexing existing documents.
 
 ## Required arguments
 
-<details open>
-<summary><code>index</code></summary>
-is index name to create.
-
-<details open>
-<summary><code>SKIPINITIALSCAN</code></summary>
-if set, does not scan and index.
-
-<details open>
-<summary><code> SCHEMA ADD {attribute} {options} ... </code></summary>
-
-after the SCHEMA keyword, declares which fields to add:
-
-attribute is attribute to add.
-options are attribute options. Refer to FT.CREATE for more information.
+- The `index` parameter is the index name to alter.
+- The `SKIPINITIALSCAN` option: if set, the command does not scan and index.
+- After the `SCHEMA ADD` keywords, declares which fields to add:
+  - `attribute` is an attribute to add.
+  - `options` are attribute options. Refer to [`FT.CREATE`](ft.create.md) for more information.
 
 ## Return Values
 
-[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` on success.
-
-[Simple error reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors):
-no such index, invalid schema syntax.
+- [Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` if executed correctly.
+- [Simple error reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors) in these cases: no such index, invalid schema syntax.
 
 ## Examples
 
