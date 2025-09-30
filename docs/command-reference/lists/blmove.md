@@ -22,18 +22,20 @@ import PageTitle from '@site/src/components/PageTitle';
 If the `source` list is empty or does not exist, the connected client will be blocked until another client pushes an
 element to `source`, or until the specified `timeout` is reached.
 
-See also: [`LMOVE`](lmove.md) for the command options.
+- A `timeout` of `0` blocks indefinitely until an element is available.
+- If the `timeout` expires without an element becoming available, the command returns `nil` and no element is moved.
 
-A timeout of zero blocks indefinitely until an element is available. If the timeout expires without an element becoming
-available, the command returns a `nil` reply and no element is moved.
+See also: [`LMOVE`](lmove.md) for the command options.
 
 ## Return
 
-* [Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): The element being
+* [Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): the element being
   popped from `source` and pushed to `destination`, when successful.
-* [Nil reply](https://redis.io/docs/latest/develop/reference/protocol-spec#bulk-strings) when the timeout expires.
+* [Nil reply](https://redis.io/docs/latest/develop/reference/protocol-spec#bulk-strings) when the command times out.
 
 ## Examples
+
+### Moving an Element
 
 ```shell
 dragonfly> RPUSH src a b c
@@ -51,7 +53,7 @@ dragonfly> LRANGE dst 0 -1
 3) "y"
 ```
 
-Blocking with timeout:
+### Blocking with Non-Zero Timeout
 
 ```shell
 dragonfly> DEL src dst
