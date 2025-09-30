@@ -215,7 +215,7 @@ sidebar_position: 0
 |                                              | <span class="command">SSCAN</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SUNION</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SUNIONSTORE</span>                   | <span class="support supported">Fully supported</span>   |
-| <span class="family">Sorted Set</span>       | <span class="command">BZMPOP</span>                        | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">Sorted Set</span>       | <span class="command">BZMPOP</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BZPOPMAX</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BZPOPMIN</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZADD</span>                          | <span class="support supported">Fully supported</span>   |
