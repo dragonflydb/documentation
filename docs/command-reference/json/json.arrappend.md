@@ -9,7 +9,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    JSON.ARRAPPEND key [path] value [value ...]
+    JSON.ARRAPPEND key path value [value ...]
 
 **Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
@@ -26,6 +26,11 @@ Append the `json` values into the array at `path` after the last element in it
 is key to modify.
 </details>
 
+<details open><summary><code>path</code></summary> 
+
+is JSONPath to specify.
+</details>
+
 <details open><summary><code>value</code></summary> 
 
 is one or more values to append to one or more arrays. 
@@ -35,13 +40,6 @@ is one or more values to append to one or more arrays.
 To specify a string as an array value to append, wrap the quoted string with an additional set of single quotes. Example: `'"silver"'`. For more detailed use, see [Examples](#examples).
 
 :::
-</details>
-
-## Optional arguments
-
-<details open><summary><code>path</code></summary> 
-
-is JSONPath to specify. Default is root `$`.
 </details>
 
 ## Return value 
