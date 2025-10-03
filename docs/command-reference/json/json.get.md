@@ -9,7 +9,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    JSON.GET key [INDENT indent] [NEWLINE newline] [SPACE space] [paths [paths ...]]
+    JSON.GET key [INDENT indent] [NEWLINE newline] [SPACE space] [NOESCAPE] [paths [paths ...]]
 
 **Time complexity:** O(N) when path is evaluated to a single value where N is the size of the value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
@@ -60,6 +60,11 @@ sets the string that's printed at the end of each line.
 <details open><summary><code>SPACE</code></summary> 
 
 sets the string that's put between a key and a value.
+</details>
+
+<details open><summary><code>NOESCAPE</code></summary> 
+
+present for legacy compatibility and has no other effect.
 </details>
 
 :::note Note
