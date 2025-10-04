@@ -28,6 +28,7 @@ is index name, created using the [`FT.CREATE`](./ft.create.md) command.
 specifies which command to profile.
 - `SEARCH` profiles a search query
 - `AGGREGATE` profiles an aggregation query
+
 </details>
 
 <details open>
@@ -106,8 +107,7 @@ dragonfly> FT.PROFILE idx SEARCH QUERY "@category:{default}"
 
 ## See also
 
-[`FT.SEARCH`](./ft.search.md)
-[`FT.AGGREGATE`](./ft.aggregate.md)
+[`FT.SEARCH`](./ft.search.md) | [`FT.AGGREGATE`](./ft.aggregate.md)
 
 ## Related topics
 

@@ -70,6 +70,7 @@ Common functions include:
 - `MAX property` - finds maximum value
 - `AVG property` - calculates average value
 - `STDDEV property` - calculates standard deviation
+
 </details>
 
 <details open>
