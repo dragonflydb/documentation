@@ -6,13 +6,13 @@ description: Uses SEARCH command to collect performance info
 
 ## Syntax
 
-    FT.PROFILE index SEARCH [LIMITED] QUERY query
+    FT.PROFILE index SEARCH | AGGREGATE [LIMITED] QUERY query
 
 **Time complexity:** O(N)
 
 ## Description
 
-Apply the [`FT.SEARCH`](./ft.search.md) command to collect performance details.
+Apply the [`FT.SEARCH`](./ft.search.md) or [`FT.AGGREGATE`](./ft.aggregate.md) command to collect performance details.
 
 ## Required arguments
 
@@ -23,9 +23,27 @@ is index name, created using the [`FT.CREATE`](./ft.create.md) command.
 </details>
 
 <details open>
+<summary><code>SEARCH | AGGREGATE</code></summary>
+
+specifies which command to profile.
+- `SEARCH` profiles a search query
+- `AGGREGATE` profiles an aggregation query
+</details>
+
+<details open>
+<summary><code>LIMITED</code></summary>
+
+enables limited profiling mode (planned feature).
+
+:::info Future functionality
+The `LIMITED` option is planned for future releases but full functionality is not currently implemented in Dragonfly.
+:::
+</details>
+
+<details open>
 <summary><code>QUERY query</code></summary>
 
-is query string, sent to the [`FT.SEARCH`](./ft.search.md) command to collect performance details.
+is query string, sent to the [`FT.SEARCH`](./ft.search.md) or [`FT.AGGREGATE`](./ft.aggregate.md) command to collect performance details.
 </details>
 
 ## Return
@@ -89,6 +107,7 @@ dragonfly> FT.PROFILE idx SEARCH QUERY "@category:{default}"
 ## See also
 
 [`FT.SEARCH`](./ft.search.md)
+[`FT.AGGREGATE`](./ft.aggregate.md)
 
 ## Related topics
 

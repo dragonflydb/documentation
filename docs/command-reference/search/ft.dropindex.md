@@ -14,6 +14,10 @@ description: Deletes the index
 
 Delete an index.
 
+:::info Future functionality
+The `DD` (delete documents) option is planned for future releases but is not currently implemented in Dragonfly.
+:::
+
 ## Required arguments
 
 <details open>

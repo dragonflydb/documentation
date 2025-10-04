@@ -344,12 +344,18 @@ sidebar_position: 0
 |                                              | <span class="command">JSON.STRLEN</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">JSON.TOGGLE</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">JSON.TYPE</span>                     | <span class="support supported">Fully supported</span>   |
-| <span class="family">Search</span>           | <span class="command">FT.CREATE</span>                     | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">FT.SEARCH</span>                     | <span class="support supported">Fully supported</span>   |
+| <span class="family">Search</span>           | <span class="command">FT.CREATE</span>                     | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">FT.SEARCH</span>                     | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">FT.ALTER</span>                      | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">FT.DROPINDEX</span>                  | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">FT.INFO</span>                       | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">FT._LIST</span>                      | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">FT.PROFILE</span>                    | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">FT.AGGREGATE</span>                  | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">FT.TAGVALS</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">FT.SYNUPDATE</span>                  | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">FT.SYNDUMP</span>                    | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">FT.ALTER</span>                      | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">FT.TAGVALS</span>                    | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">FT.CONFIG</span>                     | <span class="support supported">Fully supported</span>   |
 | <span class="family">Auto Suggest</span>     | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">T-Digest</span>         | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Time Series</span>      | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
