@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Dragonfly DFLYCLUSTER FLUSHSLOTS to get status of the current migration on the node.
+description: Delete all the keys of selected hash slots.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -12,15 +12,15 @@ import PageTitle from '@site/src/components/PageTitle';
 
     DFLYCLUSTER FLUSHSLOTS start_slot end_slot [start_slot end_slot ...]
 
-**Time complexity:** O(N) where N is the total number of keys in selected slots
+**Time complexity:** O(N) where N is the total number of keys in selected hash slots
 
 **ACL categories:** @keyspace, @write, @slow, @dangerous
 
-Delete all the keys of selected slots.
+Delete all the keys of selected hash slots.
 This command never fails.
 
 Note: command only deletes keys that were present at the time the command was invoked. Keys created during an asynchronous flush will be unaffected.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings)
+[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK`.

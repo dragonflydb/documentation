@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Dragonfly DFLYCLUSTER GETSLOTINFO to get status of the current migration on the node.
+description: Get hash slot info of the current node.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -16,12 +16,11 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:**  @admin, @slow
 
-The `DFLYCLUSTER GETSLOTINFO` command is used to get information regarding provided slots.
+The `DFLYCLUSTER GETSLOTINFO` command is used to get information regarding provided hash slots.
 
 ## Return
 
 [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a nested list of slots info.
-
 
 ## Examples
 
@@ -45,5 +44,4 @@ dragonfly> DFLYCLUSTER GETSLOTINFO SLOTS 1 12
    7) (integer) 23
    8) "memory_bytes"
    9) (integer) 933
-
 ```
