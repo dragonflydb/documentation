@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-In Dragonfly, as well as in Redis and Valkey, the `ZRANGESTORE` command fetch elements in a specific range from a sorted set and store the result.
+In Dragonfly, as well as in Redis and Valkey, the `ZRANGESTORE` command fetches elements in a specific range from a sorted set and stores the result.
 
 ## Syntax
 
@@ -30,11 +30,13 @@ This command is like [`ZRANGE`](./zrange.md), but stores the result in the `dest
 ## Code Examples
 
 ```shell
-dragonfly> ZADD key 1 one 2 two 3 three 4 four
+dragonfly$> ZADD key 1 one 2 two 3 three 4 four
 (integer) 4
-dragonfly> ZRANGESTORE dst key 1 3
+
+dragonfly$> ZRANGESTORE dst key 1 3
 (integer) 3
-dragonfly> ZRANGE dst 0 -1
+
+dragonfly$> ZRANGE dst 0 -1
 1) "two"
 2) "three"
 3) "four"
