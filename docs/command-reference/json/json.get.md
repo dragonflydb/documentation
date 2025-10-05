@@ -64,7 +64,7 @@ sets the string that's put between a key and a value.
 
 <details open><summary><code>NOESCAPE</code></summary> 
 
-present for legacy compatibility and has no other effect.
+is present for legacy compatibility and has no other effect.
 </details>
 
 :::note Note
