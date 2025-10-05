@@ -8,6 +8,11 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Redis BZMPOP Explained" />
 
+## Introduction
+
+In Dragonfly, as well as in Redis and Valkey, the `BZMPOP` command pops one or more members (element-score pairs) from the first non-empty sorted set
+in the provided list of key names. It will block the connection for a specified period until a member is available to pop.
+
 ## Syntax
 
 ```shell
@@ -17,16 +22,13 @@ BZMPOP timeout numkeys key [key ...] <MIN | MAX> [COUNT count]
 - **Time complexity:** O(K) + O(M*log(N)) where K is the number of provided keys, N being the number of elements in the sorted set, and M being the number of elements popped.
 - **ACL categories:** @write, @sortedset, @slow, @blocking
 
-## Introduction
+`BZMPOP` is the blocking variant of the [`ZMPOP`](./zmpop) command.
 
-`BZMPOP` is the blocking variant of [`ZMPOP`](./zmpop.md).
-
-When any of the sorted sets contains elements, this command behaves exactly like `ZMPOP`. When used inside a `MULTI/EXEC` block, this command behaves exactly like `ZMPOP`. When all sorted sets are empty, Redis will block the connection until another client adds members to one of the keys or until the timeout (a double value specifying the maximum number of seconds to block) elapses. A timeout of zero can be used to block indefinitely.
+When any of the sorted sets contains elements, this command behaves exactly like `ZMPOP`. When used inside a `MULTI/EXEC` block, this command behaves exactly like `ZMPOP`. When all sorted sets are empty, Redis will block the connection until another client adds members to one of the keys or until the `timeout` (a double value specifying the maximum number of seconds to block) elapses. A `timeout` of zero can be used to block indefinitely.
 
 ## Return Values
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): specifically:
-
-* `nil` when no element could be popped.
-* A two-element array with the first element being the name of the key from which elements were popped, and the second element is an array of the popped elements. Every entry in the elements array is also an array that contains
-the member and its score.
+- [Null reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#nulls): when no element could be popped.
+- [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a two-element array with the first element
+  being the name of the key from which elements were popped, and the second element is an array of the popped elements.
+  Every entry in the elements array is also an array that contains the member and its score.
