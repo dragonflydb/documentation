@@ -8,6 +8,11 @@ import PageTitle from '@site/src/components/PageTitle';
 
 <PageTitle title="Dragonfly ZRANDMEMBER Command (Documentation) | Dragonfly" />
 
+## Introduction
+
+In Dragonfly, as well as in Redis and Valkey, the `ZRANDMEMBER` command is used to return one or more random members from a sorted set.
+It provides flexibility for both sampling single and multiple elements, with or without their associated scores.
+
 ## Syntax
 
 ```shell
@@ -26,7 +31,7 @@ If called with a negative `count`, the behavior changes and the command is allow
 
 The optional `WITHSCORES` modifier changes the reply so it includes the respective scores of the randomly selected elements from the sorted set.
 
-## Return
+## Return Values
 
 - [Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): when called without the `count` argument,
   returns the random member or `nil` if `key` does not exist.
@@ -34,7 +39,7 @@ The optional `WITHSCORES` modifier changes the reply so it includes the respecti
   returns the random members, or an empty array if `key` does not exist.
   If the `WITHSCORES` modifier is used, the reply is a list of members and their scores from the sorted set.
 
-## Examples
+## Code Examples
 
 ```shell
 dragonfly$> ZADD numbers 1 one 2 two 3 three 4 four
