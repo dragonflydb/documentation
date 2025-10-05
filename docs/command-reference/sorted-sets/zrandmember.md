@@ -19,9 +19,8 @@ It provides flexibility for both sampling single and multiple elements, with or 
 ZRANDMEMBER key [count [WITHSCORES]]
 ```
 
-**Time complexity:** O(N) where N is the number of members returned
-
-**ACL categories:** @read, @sortedset, @slow
+- **Time complexity:** O(N) where N is the number of members returned.
+- **ACL categories:** @read, @sortedset, @slow
 
 When called with just the `key` argument, return a random element from the sorted set value stored at `key`.
 
