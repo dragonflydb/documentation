@@ -21,7 +21,8 @@ ZMPOP numkeys key [key ...] <MIN | MAX> [COUNT count]
 - **Time complexity:** O(K) + O(M*log(N)) where K is the number of provided keys, N being the number of elements in the sorted set, and M being the number of elements popped.
 - **ACL categories:** @write, @sortedset, @slow
 
-When the `MIN` modifier is used, the elements popped are those with the lowest scores from the first non-empty sorted set. The `MAX` modifier causes elements with the highest scores to be popped. 
+When the `MIN` modifier is used, the elements popped are those with the lowest scores from the first non-empty sorted set.
+The `MAX` modifier causes elements with the highest scores to be popped. 
 The optional `COUNT` can be used to specify the number of elements to pop, and is set to 1 by default.
 
 The number of popped elements is the minimum from the sorted set's cardinality and `COUNT`'s value.
@@ -30,9 +31,9 @@ See [`BZMPOP`](./bzmpop) for the blocking variant of this command.
 
 ## Return Values
 
-- [Null reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#nulls): when no element could be popped.
+- [Null reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#nulls): when no member could be popped.
 - [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a two-element array with the first element
-  being the name of the key from which elements were popped, and the second element is an array of the popped elements.
+  being the name of the key from which members were popped, and the second element is an array of the popped members.
   Every entry in the elements array is also an array that contains the member and its score.
 
 ## Code Examples
