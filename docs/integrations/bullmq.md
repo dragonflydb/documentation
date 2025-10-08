@@ -14,7 +14,7 @@ By replacing Redis with Dragonfly, you can achieve superior performance and scal
 
 ## TL;DR
 
-If you can use [hashtags](https://redis.io/docs/reference/cluster-spec/#hash-tags) in your queue names or prefixes (e.g., use `{queue1}` instead of `queue1`),
+If you can use [hashtags](https://redis.io/docs/latest/operate/oss_and_stack/reference/cluster-spec/#hash-tags) in your queue names or prefixes (e.g., use `{queue1}` instead of `queue1`),
 add the following flags. This will enhance the performance of your BullMQ workloads.
 
 ```bash
