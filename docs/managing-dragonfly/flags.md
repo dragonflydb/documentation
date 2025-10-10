@@ -289,7 +289,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--tiered_storage_write_depth`
   Maximum number of concurrent stash requests issued by background offload. 
 
-  `default: 32`
+  `default: 50`
 
 ### `--tiered_min_value_size`
   Minimum size of values eligible for offloading. Must be at least 64
