@@ -98,7 +98,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--publish_buffer_limit`
   Amount of memory to use for storing pub commands in bytes - per IO thread.
 
-  `default: 128MB`
+  `default: 128MiB`
 
 ### `--pipeline_squash`
   Number of queued pipelined commands above which squashing is enabled, 0 means disabled. 
