@@ -74,3 +74,12 @@ dragonfly> JSON.DEBUG fields arr_doc '$[7,8]'
 dragonfly> JSON.DEBUG fields arr_doc '$'
 1) (integer) 15
 ```
+
+## See also
+
+[`JSON.DEBUG MEMORY`](./json.debug-memory.md) | [`JSON.DEBUG HELP`](./json.debug-help.md)
+
+## Related Topics
+
+- [RedisJSON](https://redis.io/docs/latest/develop/data-types/json/)
+- [Index and search JSON documents](https://redis.io/docs/latest/develop/data-types/json/indexing_json/)
