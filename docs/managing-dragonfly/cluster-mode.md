@@ -54,7 +54,7 @@ A Dragonfly Cluster is similar to a Redis/Valkey Cluster:
 - Multiple Dragonfly servers participate in a single logical data store.
 - It provides all cluster-related commands required by Redis client libraries.
 - It [distributes keys](https://redis.io/docs/reference/cluster-spec/#key-distribution-model) in the same way Redis Cluster does.
-- It supports [hash tags](https://redis.io/docs/reference/cluster-spec/#hash-tags) in the same way Redis Cluster does.
+- It supports [hash tags](https://redis.io/docs/latest/operate/oss_and_stack/reference/cluster-spec/#hash-tags) in the same way Redis Cluster does.
 
 **There is one important distinction regarding Dragonfly Cluster:**
 Dragonfly only provides a _data plane_ (which is the Dragonfly server), but it does **NOT** provide a
