@@ -17,7 +17,7 @@ Flags can be configured in multiple ways:
 #### 1. Inside the script source code
 
 ```lua
---!df flags=allow-undeclared-keys,disable-atomicity
+--!df flags=allow-undeclared-keys
 -- script body below
 ```
 
@@ -25,14 +25,14 @@ Flags can be configured in multiple ways:
 
 Default flags are applied to all scripts and can be provided as an argument to Dragonfly.
 
-`./dragonfly --default_lua_flags=allow-undeclared-keys,disable-atomicity`
+`./dragonfly --default_lua_flags=allow-undeclared-keys`
 
 
 #### 3. With `SCRIPT FLAGS` command
 
 Flags can be set for a script by its SHA.
 
-`SCRIPT FLAGS sha1 disable-atomicity allow-undeclared-keys`
+`SCRIPT FLAGS sha1 allow-undeclared-keys`
 
 This command can be called even **before the script is loaded**. This makes it possible to patch scripts used by frameworks or side applications.
 
@@ -48,13 +48,3 @@ script tried accessing undeclared key
  
 To allow accessing any keys, including undeclared, the flag `allow-undeclared-keys` should be used. 
 This option is disabled by default because unpredictability, atomicity and multithreading don't mix well. If enabled, Dragonfly has to stop all other operations when the script is running.
-
-### Disabling atomicity
-
-Disabling atomicity for a script allows Dragonfly to execute commands that access any of the declared keys while the script is still running. The script's execution can be compared to a series of pipelined commands, only that it's not produced by a remote client, but the script itself.
-
-The `disable-atomicity` flag disables atomicity. 
-
-This behavior can be useful for long-running scripts that don't require strict atomicity. Because the keys will always be available to other clients for both reads and writes, latency spikes can be avoided.
-
-Dragonfly's asynchronous model keeps this flag functional even on with low number of cores. Please note that a script can only be interrupted when calling commands. Intensive computations can still cause latency spikes. 
