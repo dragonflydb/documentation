@@ -102,5 +102,5 @@ dragonfly> JSON.GET doc
 
 ## Related topics
 
-* [RedisJSON](https://redis.io/docs/stack/json)
-* [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)
+* [RedisJSON](https://redis.io/docs/latest/develop/data-types/json/)
+* [Index and search JSON documents](https://redis.io/docs/latest/develop/data-types/json/indexing_json/)
