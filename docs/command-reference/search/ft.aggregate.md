@@ -19,7 +19,7 @@ description: Runs a search query and performs aggregate transformations
 
 Run a search query and perform aggregate transformations on the results.
 
-This command provides aggregation functionality similar to SQL GROUP BY operations, allowing you to group search results and apply reduction functions.
+This command provides aggregation functionality similar to SQL `GROUP BY` operations, allowing you to group search results and apply reduction functions.
 
 ## Required arguments
 
