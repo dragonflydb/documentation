@@ -44,11 +44,18 @@ If `option` is specified, returns help for that specific parameter.
 If no option is given, returns help for all available parameters.
 </details>
 
+## Available Parameters
+
+DragonflyDB supports the following search configuration parameters:
+
+- **MAXSEARCHRESULTS** - Maximum number of results from ft.search command. Default: `1000000`
+- **search.query-string-bytes** - Maximum number of bytes in search query string. Default: `10240`
+
 ## Return
 
-- `FT.CONFIG GET` returns an array with parameter names and their values.
+- `FT.CONFIG GET` returns an array with parameter names and their values in MAP format.
 - `FT.CONFIG SET` returns a simple string reply `OK` if executed correctly, or an error reply otherwise.
-- `FT.CONFIG HELP` returns an array with parameter information including descriptions and current values.
+- `FT.CONFIG HELP` returns an array of arrays, where each inner array contains 5 elements: parameter name, the string "Description", parameter description, the string "Value", and current value.
 
 ## Examples
 
@@ -59,6 +66,8 @@ If no option is given, returns help for all available parameters.
 dragonfly> FT.CONFIG GET *
 1) "MAXSEARCHRESULTS"
 2) "1000000"
+3) "search.query-string-bytes"
+4) "10240"
 ```
 </details>
 
@@ -81,6 +90,43 @@ dragonfly> FT.CONFIG HELP MAXSEARCHRESULTS
 3) "Maximum number of results from ft.search command"
 4) "Value"
 5) "500000"
+```
+</details>
+
+<details open>
+<summary><b>Get a specific configuration parameter</b></summary>
+
+```bash
+dragonfly> FT.CONFIG GET search.query-string-bytes
+1) "search.query-string-bytes"
+2) "10240"
+```
+</details>
+
+<details open>
+<summary><b>Set query string size limit</b></summary>
+
+```bash
+dragonfly> FT.CONFIG SET search.query-string-bytes 20480
+OK
+```
+</details>
+
+<details open>
+<summary><b>Get help for all parameters</b></summary>
+
+```bash
+dragonfly> FT.CONFIG HELP *
+1) 1) "MAXSEARCHRESULTS"
+   2) "Description"
+   3) "Maximum number of results from ft.search command"
+   4) "Value"
+   5) "1000000"
+2) 1) "search_query_string_bytes"
+   2) "Description"
+   3) "Maximum number of bytes in search query string"
+   4) "Value"
+   5) "10240"
 ```
 </details>
 
