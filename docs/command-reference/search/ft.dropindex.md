@@ -79,4 +79,4 @@ This will permanently delete all HASH or JSON keys that were indexed by `idx`.
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/stack/search)
+- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)

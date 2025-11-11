@@ -181,6 +181,6 @@ dragonfly> FT.CREATE idx ON JSON SCHEMA $.title AS title TEXT $.categories AS ca
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/stack/search)
+- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
 - [Hash](../hashes/hset.md)
 - [JSON](../json/json.set.md)

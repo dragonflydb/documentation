@@ -214,5 +214,5 @@ dragonfly> FT.SEARCH books-idx "python" FILTER price 10 50
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/stack/search)
+- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
 - [Query Syntax](https://redis.io/docs/interact/search-and-query/query/)

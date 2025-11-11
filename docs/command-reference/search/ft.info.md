@@ -99,4 +99,4 @@ dragonfly> FT.INFO idx
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/stack/search)
+- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
