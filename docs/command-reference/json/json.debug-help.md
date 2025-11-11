@@ -26,11 +26,12 @@ Return helpful information about the [`JSON.DEBUG`](./json.debug.md) command.
 
 ```shell
 dragonfly> JSON.DEBUG HELP
-1) "JSON.DEBUG FIELDS <key> <path> - report number of fields in the JSON element."
-2) "JSON.DEBUG HELP - print help message."
+1) "JSON.DEBUG MEMORY <key> [path] - report memory size (bytes) of the JSON element. Path defaults to root if not provided."
+2) "JSON.DEBUG FIELDS <key> [path] - report number of fields in the JSON element. Path defaults to root if not provided."
+3) "JSON.DEBUG HELP - print help message."
 ```
 
 ## Related Topics
 
-- [RedisJSON](https://redis.io/docs/stack/json)
-- [Index and search JSON documents](https://redis.io/docs/stack/search/indexing_json)
+- [RedisJSON](https://redis.io/docs/latest/develop/data-types/json/)
+- [Index and search JSON documents](https://redis.io/docs/latest/develop/data-types/json/indexing_json/)

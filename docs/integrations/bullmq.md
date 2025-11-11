@@ -14,8 +14,9 @@ By replacing Redis with Dragonfly, you can achieve superior performance and scal
 
 ## TL;DR
 
-If you can use [hashtags](https://redis.io/docs/reference/cluster-spec/#hash-tags) in your queue names or prefixes (e.g., use `{queue1}` instead of `queue1`),
-add the following flags. This will enhance the performance of your BullMQ workloads.
+If you can use [hashtags](https://redis.io/docs/latest/operate/oss_and_stack/reference/cluster-spec/#hash-tags)
+in your queue names or prefixes (e.g., use `{queue1}` instead of `queue1`), add the following flags.
+This will enhance the performance of your BullMQ workloads.
 
 ```bash
 $> ./dragonfly --cluster_mode=emulated --lock_on_hashtags
@@ -72,7 +73,7 @@ $> ./dragonfly --cluster_mode=emulated --lock_on_hashtags
 
 When setting up your application, use hashtags in your queue names.
 In short, when a hashtag is present in a key, along with the `--lock_on_hashtags` flag, Dragonfly will lock the key to a thread based on the hashtag.
-Read more about the original hashtag design for the Redis Cluster specification [here](https://redis.io/docs/reference/cluster-spec/#hash-tags),
+Read more about the original hashtag design for the Redis Cluster specification [here](https://redis.io/docs/latest/operate/oss_and_stack/reference/cluster-spec/#hash-tags),
 as well as the Dragonfly emulated cluster mode [here](../managing-dragonfly/cluster-mode.md).
 
 In order to use a hashtag in a queue name, you can initialize a queue as follows:

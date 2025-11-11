@@ -52,20 +52,15 @@ flags which include specified substring in either in the name, description or pa
 
   `default: "dump-{timestamp}"`
 
+### `--dir`
+  Working directory
+
+  `default: ""`
+
 ### `--snapshot_cron`
   Cron expression for the time to save a snapshot, crontab style.
 
   `default:`
-
-### `--use_set2`
-  If true use DenseSet for an optimized set data structure. 
-
-  `default: true`
-
-### `--use_zset_tree`
-  If true use b+tree for zset implementation.
-
-  `default: true`
 
 ### `--admin_bind`
   If set, the admin console TCP connection would be bind to the given address. 
@@ -100,15 +95,15 @@ flags which include specified substring in either in the name, description or pa
 
   `default: false`
 
-### `--subscriber_thread_limit`
+### `--publish_buffer_limit`
   Amount of memory to use for storing pub commands in bytes - per IO thread.
 
-  `default: 134217728`
+  `default: 128MiB`
 
 ### `--pipeline_squash`
   Number of queued pipelined commands above which squashing is enabled, 0 means disabled. 
 
-  `default: 10`
+  `default: 1`
 
 ### `--primary_port_http_enabled`
   If true allows accessing http console on main TCP port.
@@ -186,7 +181,6 @@ flags which include specified substring in either in the name, description or pa
 
   `default:`
 
-
 ### `--lock_on_hashtags`
   When true, locks are done in the {hashtag} level instead of key level. Only use this with `--cluster_mode=emulated|yes`.
   
@@ -242,6 +236,22 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 100`
 
+### `--oom_deny_ratio`
+  commands with flag denyoom will return OOM when the ratio between maxmemory and used memory is above this value. 
+
+  `default: 1.1`
+
+### `--masterauth`
+  Password for authentication with master. 
+
+  `default: ""`
+
+### `--replicaof`
+  Specifies a host and port which point to a target master to replicate.
+  Format should be `<IPv4>:<PORT>` or `host:<PORT>` or `[<IPv6>]:<PORT>`.
+
+  `default:`
+
 ### `--mem_defrag_page_utilization_threshold`
   Memory page under utilization threshold. Ratio between used and committed size, below this, memory in
   this page will defragmented. 
@@ -261,20 +271,35 @@ flags which include specified substring in either in the name, description or pa
 ### `--shard_round_robin_prefix`
   When non-empty, keys which start with this prefix are not distributed across shards based on their value but instead
   via round-robin. Use cautiously! This can efficiently support up to a few hundreds of prefixes. Note: prefix is 
-  looked inside hash tags when cluster mode is enabled.
+  looked inside hashtags when cluster mode is enabled.
 
   `default: ""`
 
-### `--singlehop_blocking`
-  Use single hop optimization for blocking commands.
-
-  `default: true`
-
-### `--spill_file_prefix`
+### `--tiered_prefix`
   Enables tiered storage if set. The string denotes the path and prefix of the files associated
-  with tiered storage. For example, `spill_file_prefix=/path/to/file-prefix`.
+  with tiered storage. For example, `tiered_prefix=/path/to/file-prefix`.
 
   `default: ""`
+
+### `--tiered_offload_threshold`
+  Ratio of free memory (free/max memory) below which offloading starts
+
+  `default: 0.5`
+
+### `--tiered_upload_threshold`
+  Ratio of free memory (free/max memory) below which uploading stops. 
+
+  `default: 0.1`
+
+### `--tiered_storage_write_depth`
+  Maximum number of concurrent stash requests issued by background offload. 
+
+  `default: 50`
+
+### `--tiered_min_value_size`
+  Minimum size of values eligible for offloading. Must be at least 64
+
+  `default: 64`
 
 ### `--keys_output_limit`
   Maximum number of keys output by keys command.
@@ -325,22 +350,6 @@ flags which include specified substring in either in the name, description or pa
   Number of database shards, 0 - to choose automatically.
   
   `default: 0`
-
-### `--oom_deny_ratio`
-  commands with flag denyoom will return OOM when the ratio between maxmemory and used memory is above this value. 
-
-  `default: 1.1`
-
-### `--masterauth`
-  Password for authentication with master. 
-
-  `default: ""`
-
-### `--replicaof`
-  Specifies a host and port which point to a target master to replicate.
-  Format should be `<IPv4>:<PORT>` or `host:<PORT>` or `[<IPv6>]:<PORT>`.
-
-  `default:`
 
 ### `--tls_replication`
   Enable TLS on replication. 
@@ -407,11 +416,6 @@ flags which include specified substring in either in the name, description or pa
 
   `default: true`
 
-### `--dir`
-  Working directory
-
-  `default: ""`
-
 ### `--epoll_file_threads`
   Thread size for file workers when running in epoll mode, default is hardware concurrent threads. 
 
@@ -470,11 +474,6 @@ flags which include specified substring in either in the name, description or pa
 
   `default: false`
 
-### `--tiered_storage_max_pending_writes`
-  Maximal number of pending writes per thread. 
-
-  `default: 32`
-
 ### `--aclfile`
   Path and name to aclfile.
 
@@ -502,7 +501,7 @@ flags which include specified substring in either in the name, description or pa
   `default: "on"`
 
 ### `--proactor_threads`
-  Number of io threads in the pool. 
+  Number of io threads in the pool. If zero is specified, it will use as many as there are CPU cores.
 
   `default: 0`
 

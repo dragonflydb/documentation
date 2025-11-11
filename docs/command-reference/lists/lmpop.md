@@ -9,7 +9,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    LMPOP numkeys key [key ...] <LEFT | RIGHT> [COUNT count]
+```shell
+LMPOP numkeys key [key ...] <LEFT | RIGHT> [COUNT count]
+```
 
 **Time complexity:** O(N+M) where N is the number of provided keys and M is the number of elements returned.
 
@@ -17,14 +19,16 @@ import PageTitle from '@site/src/components/PageTitle';
 
 Pops one or more elements from the first non-empty list key from the list of provided key names.
 
-Elements are popped from either the left or right of the first non-empty list based on the passed argument. The number of returned elements is limited to the lower between the non-empty list's length, and the count argument (which defaults to 1).
+Elements are popped from either the left or right of the first non-empty list based on the passed argument.
+The number of returned elements is limited to the lower between the non-empty list's length, and the `count` argument (which defaults to `1`).
+
+See [`BLMPOP`](./blmpop) for the blocking variant of this command.
 
 ## Return
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): specifically:
-
-* `nil` when no element could be popped.
-* A two-element array with the first element being the name of the key from which elements were popped and the second element being an array of elements.
+- [Null reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#nulls): when no element could be popped.
+- [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a two-element array with the first element
+  being the name of the key from which elements were popped, and the second element being an array of the popped elements.
 
 ## Examples
 

@@ -94,7 +94,7 @@ sidebar_position: 0
 |                                              | <span class="command">PFSELFTEST</span>                    | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">List</span>             | <span class="command">BRPOPLPUSH</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BRPOP</span>                         | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">BLMPOP</span>                        | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">BLMPOP</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">LINDEX</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">LINSERT</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">LLEN</span>                          | <span class="support supported">Fully supported</span>   |
@@ -215,7 +215,7 @@ sidebar_position: 0
 |                                              | <span class="command">SSCAN</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SUNION</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SUNIONSTORE</span>                   | <span class="support supported">Fully supported</span>   |
-| <span class="family">Sorted Set</span>       | <span class="command">BZMPOP</span>                        | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">Sorted Set</span>       | <span class="command">BZMPOP</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BZPOPMAX</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">BZPOPMIN</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZADD</span>                          | <span class="support supported">Fully supported</span>   |
@@ -228,7 +228,7 @@ sidebar_position: 0
 |                                              | <span class="command">ZINTERCARD</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZINTERSTORE</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZLEXCOUNT</span>                     | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ZMPOP</span>                         | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">ZMPOP</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZMSCORE</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZPOPMAX</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZPOPMIN</span>                       | <span class="support supported">Fully supported</span>   |
@@ -236,7 +236,7 @@ sidebar_position: 0
 |                                              | <span class="command">ZRANGE</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZRANGEBYLEX</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZRANGEBYSCORE</span>                 | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">ZRANGESTORE</span>                   | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">ZRANGESTORE</span>                   | <span class="support supported">Fully supported</span>    |
 |                                              | <span class="command">ZRANK</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZREM</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">ZREMRANGEBYLEX</span>                | <span class="support supported">Fully supported</span>   |
