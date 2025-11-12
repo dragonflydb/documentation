@@ -8,10 +8,12 @@ description: Searches the index with a query, returning docs or just IDs
 
     FT.SEARCH index query
       [NOCONTENT]
+      [LOAD count identifier [AS property] [ identifier [AS property] ...]]
       [RETURN count identifier [AS property] [ identifier [AS property] ...]]
       [SORTBY sortby [ ASC | DESC] [WITHCOUNT]]
       [LIMIT offset num]
       [PARAMS nargs name value [ name value ...]]
+      [FILTER field min max]
 
 **Time complexity:** O(N)
 
@@ -43,6 +45,20 @@ Refer to [query syntax](https://redis.io/docs/interact/search-and-query/query/) 
 returns the document IDs and not the content.
 
 This is useful if Dragonfly is storing an index on an external document collection.
+</details>
+
+<details open>
+<summary><code>LOAD num identifier AS property ...</code></summary>
+
+loads specific attributes from documents instead of all content. Similar to `RETURN` but for pre-loading fields during search.
+
+`num` is the number of attributes following the keyword.
+`identifier` is either an attribute name (for Hash and JSON) or a JSONPath expression (for JSON).
+`property` is an optional name used in the result. If not provided, the `identifier` is used in the result.
+
+:::note About `LOAD` vs `RETURN`
+`LOAD` and `RETURN` cannot be used together. `LOAD` is used for pre-loading fields, while `RETURN` filters the final output.
+:::
 </details>
 
 <details open>
@@ -88,6 +104,17 @@ You can reference parameters in the `query` by a `$`, followed by the parameter 
 Each such reference in the search query to a parameter name is substituted by the corresponding parameter value.
 For example, with parameter definition `PARAMS 4 start 2020 end 2021`, the expression `@published_at:[$start $end]` is evaluated to `@published_at:[2020 2021]`.
 You cannot reference parameters in the query string where concrete values are not allowed, such as in field names, for example, `@published_at`.
+</details>
+
+<details open>
+<summary><code>FILTER field min max</code></summary>
+
+applies a numeric filter to the results based on the value of a numeric field.
+
+`field` is the name of a numeric field in the index.
+`min` and `max` define the numeric range (inclusive) that matching documents must have for the specified field.
+
+Multiple `FILTER` clauses can be used to apply filters on different fields.
 </details>
 
 ## Return
@@ -171,11 +198,21 @@ dragonfly> FT.SEARCH books-idx "python" RETURN 3 $.book.price AS price
 ```
 </details>
 
+<details open>
+<summary><b>Search with numeric filter</b></summary>
+
+Search for books with "python" in any TEXT attribute, filtering by price range between 10 and 50.
+
+``` bash
+dragonfly> FT.SEARCH books-idx "python" FILTER price 10 50
+```
+</details>
+
 ## See also
 
 [`FT.CREATE`](./ft.create.md)
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/stack/search)
+- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
 - [Query Syntax](https://redis.io/docs/interact/search-and-query/query/)
