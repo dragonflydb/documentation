@@ -4,7 +4,8 @@ sidebar_position: 5
 
 # SSD Data Tiering
 
-Dragonfly [v1.35.0](https://github.com/dragonflydb/dragonfly/releases/tag/v1.35.0) introduces a powerful new feature: **SSD Data Tiering**.
+Dragonfly v1.35 ([v1.35.0](https://github.com/dragonflydb/dragonfly/releases/tag/v1.35.0) &
+[v1.35.1](https://github.com/dragonflydb/dragonfly/releases/tag/v1.35.1)) introduces a powerful new feature: **SSD Data Tiering**.
 With it, Dragonfly can leverage SSD/NVMe devices as a secondary storage tier that complements
 RAM. By intelligently offloading specific data to fast disk storage,
 Dragonfly can significantly reduce physical memory usage, potentially
@@ -135,6 +136,7 @@ with locally attached SSDs is recommended. See below for specific cloud provider
 
 ## Notes
 
-- Dragonfly [v1.35.0](https://github.com/dragonflydb/dragonfly/releases/tag/v1.35.0) is the first official release of SSD data tiering.
+- Dragonfly v1.35 (release notes for [v1.35.0](https://github.com/dragonflydb/dragonfly/releases/tag/v1.35.0)
+  and [v1.35.1](https://github.com/dragonflydb/dragonfly/releases/tag/v1.35.1)) is the first official release of SSD data tiering.
 - If you encounter any problems while using this feature, please report them by [filing a GitHub issue](https://github.com/dragonflydb/dragonfly/issues/).
 - Data tiering is currently only for string values. But it is not supported for BitMap and HyperLogLog operations.
