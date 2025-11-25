@@ -31,6 +31,8 @@ corresponding to the number of threads Dragonfly is running with.
 Here are the main server flags related to SSD data tiering:
 
 - `tiered_prefix`: The path and base file name for SSD data tiering. **This flag also enables the feature overall**.
+  Note that when SSD data tiering is enabled, new values are always placed on disk immediately after creation.
+  See upload/offload thresholds and examples below for more details.
 - `tiered_offload_threshold`: The ratio of free memory, below which values will be actively offloaded to disk by a background process.
 - `tiered_upload_threshold`: The ratio of free memory, below which values are no longer returned to memory when read.
 - `tiered_storage_write_depth`: The maximum number of concurrent disk writes to avoid overloading the disk.
