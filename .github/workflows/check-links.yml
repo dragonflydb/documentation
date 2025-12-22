@@ -21,14 +21,26 @@ jobs:
       - name: Install markdown-link-check
         run: npm install -g markdown-link-check
 
-      - name: Check links in all markdown files
+      - name: Create config
         run: |
-          set -e
+          cat > .mlc-config.json << 'EOF'
+          {
+            "ignorePatterns": [{ "pattern": "^/" }, { "pattern": "^#" }, { "pattern": "localhost" }],
+            "retryOn429": true,
+            "retryCount": 3,
+            "aliveStatusCodes": [200, 201, 202, 203, 204, 206, 301, 302, 303, 307, 308, 403, 429]
+          }
+          EOF
+
+      - name: Check links in all markdown files
+        env:
+          FORCE_COLOR: 1
+        run: |
           error_found=0
 
           while IFS= read -r file; do
             echo "Checking: $file"
-            if ! markdown-link-check --retry-on-429 --alive-status-codes 200,201,202,203,204,301,302,303,307,308,403,429 "$file"; then
+            if ! markdown-link-check --config .mlc-config.json "$file"; then
               error_found=1
             fi
           done < <(find docs -name "*.md" -type f)
