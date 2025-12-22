@@ -33,6 +33,8 @@ jobs:
           EOF
 
       - name: Check links in all markdown files
+        env:
+          FORCE_COLOR: 1
         run: |
           error_found=0
 
