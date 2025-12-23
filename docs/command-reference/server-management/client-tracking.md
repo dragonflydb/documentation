@@ -19,7 +19,7 @@ import PageTitle from '@site/src/components/PageTitle';
 **Important**: New in Dragonfly v1.14, only available when the [RESP3](https://github.com/redis/redis-specifications/blob/master/protocol/RESP3.md) protocol is used.
 
 The `CLIENT TRACKING` command enables the tracking feature of the Dragonfly server, which is used for server-assisted client side caching.
-See more details about server-assisted client side caching in the [Redis documentation](https://redis.io/docs/manual/client-side-caching/).
+See more details about server-assisted client side caching in the [Redis documentation](https://redis.io/docs/latest/develop/use/client-side-caching/).
 
 When tracking is enabled, Dragonfly remembers the keys that the connection requested in order to send later invalidation messages when such keys are modified.
 Invalidation messages are sent in the same connection when the RESP3 protocol is used.

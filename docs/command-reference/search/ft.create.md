@@ -51,19 +51,19 @@ Field types are:
    * `SEPARATOR {char}` - indicates how text is split into individual tags. Default is `,`.
    * `CASESENSITIVE` - preserve original case for tags. Default is case insensitive.
    * `WITHSUFFIXTRIE` - builds a suffix trie for efficient suffix and infix queries.
-   For more information, see [tag fields](https://redis.io/docs/interact/search-and-query/advanced-concepts/tags/).
+   For more information, see [tag fields](https://redis.io/docs/latest/develop/interact/search-and-query/advanced-concepts/tags/).
 
  - `NUMERIC [BLOCKSIZE {size}]` - Allows numeric range queries against the value in this attribute.
    * `BLOCKSIZE {size}` - block size for the range tree data structure. Default is optimized based on data size.
-   See [query syntax](https://redis.io/docs/interact/search-and-query/query/) for details on how to use numeric ranges.
+   See [query syntax](https://redis.io/docs/latest/develop/interact/search-and-query/query/) for details on how to use numeric ranges.
 
  - `VECTOR` - Allows vector similarity queries against the value in this attribute.
-   For more information, see [vector fields](https://redis.io/docs/interact/search-and-query/search/vectors/).
+   For more information, see [vector fields](https://redis.io/docs/latest/develop/ai/search-and-query/query/vector-search/).
 
  - `GEO` - Allows geographic range queries against the value in this attribute.
 
 :::note About `VECTOR`
-- Full documentation on vector options is available [here](https://redis.io/docs/interact/search-and-query/advanced-concepts/vectors/).
+- Full documentation on vector options is available [here](https://redis.io/docs/latest/develop/ai/search-and-query/vectors/).
 - Currently, Dragonfly has limited support for vector options.
 - You can specify either the `FLAT` or the `HNSW` index type.
   - For both index types, `DIM`, `DISTANCE_METRIC`, and `INITIAL_CAP` options can be specified.
@@ -73,7 +73,7 @@ Field types are:
 Field options are:
 
  - `SORTABLE` - `NUMERIC`, `TAG`, `TEXT` attributes can have an optional **SORTABLE** argument.
-    As the user [sorts the results by the value of this attribute](https://redis.io/docs/interact/search-and-query/advanced-concepts/sorting/), the results are available with very low latency.
+    As the user [sorts the results by the value of this attribute](https://redis.io/docs/latest/develop/interact/search-and-query/advanced-concepts/sorting/), the results are available with very low latency.
     Note that his adds memory overhead, so consider not declaring it on large text attributes.
     You can sort an attribute without the `SORTABLE` option, but the latency is not as good as with `SORTABLE`.
 

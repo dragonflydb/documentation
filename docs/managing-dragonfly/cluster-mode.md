@@ -53,7 +53,7 @@ A Dragonfly Cluster is similar to a Redis/Valkey Cluster:
 
 - Multiple Dragonfly servers participate in a single logical data store.
 - It provides all cluster-related commands required by Redis client libraries.
-- It [distributes keys](https://redis.io/docs/reference/cluster-spec/#key-distribution-model) in the same way Redis Cluster does.
+- It [distributes keys](https://redis.io/docs/latest/operate/oss_and_stack/reference/cluster-spec/) in the same way Redis Cluster does.
 - It supports [hashtags](https://redis.io/docs/latest/operate/oss_and_stack/reference/cluster-spec/#hash-tags) in the same way Redis Cluster does.
 
 **There is one important distinction regarding Dragonfly Cluster:**
@@ -199,7 +199,7 @@ such as adding/removing nodes, changing hostnames, etc.
 - If you're getting errors trying to issue the `DFLYCLUSTER CONFIG`, check Dragonfly's logs (you
   can pass `--logtostdout` temporarily) to see why the config was rejected.
 - Dragonfly supports the migration of data slots between nodes as well. Detailed explaination can
-  be found in one of our blog posts [here](https://www.dragonflydb.io/blog/a-preview-of-dragonfly-cluster).
+  be found in one of our blog posts [here](https://www.dragonflydb.io/blog/redis-and-dragonfly-cluster-design-comparison).
   We will update the documentation to reflect these steps soon.
 
 ## Dragonfly Swarm

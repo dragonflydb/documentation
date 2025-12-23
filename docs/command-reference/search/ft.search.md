@@ -34,7 +34,7 @@ is index name. You must first create the index using [`FT.CREATE`](./ft.create.m
 <summary><code>query</code></summary>
 
 is text query to search. If it's more than a single word, put it in quotes.
-Refer to [query syntax](https://redis.io/docs/interact/search-and-query/query/) for more details.
+Refer to [query syntax](https://redis.io/docs/latest/develop/interact/search-and-query/query/) for more details.
 </details>
 
 ## Optional arguments
@@ -215,4 +215,4 @@ dragonfly> FT.SEARCH books-idx "python" FILTER price 10 50
 ## Related topics
 
 - [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
-- [Query Syntax](https://redis.io/docs/interact/search-and-query/query/)
+- [Query Syntax](https://redis.io/docs/latest/develop/interact/search-and-query/query/)
