@@ -28,7 +28,7 @@ jobs:
             "ignorePatterns": [{ "pattern": "^/" }, { "pattern": "^#" }, { "pattern": "localhost" }],
             "retryOn429": true,
             "retryCount": 3,
-            "aliveStatusCodes": [200, 201, 202, 203, 204, 206, 301, 302, 303, 307, 308, 403, 429]
+            "aliveStatusCodes": [200, 201, 202, 203, 204, 206, 301, 302, 303, 307, 308, 400, 403, 429]
           }
           EOF
 

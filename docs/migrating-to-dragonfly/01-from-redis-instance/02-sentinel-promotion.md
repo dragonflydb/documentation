@@ -109,7 +109,7 @@ The reason is that during a failover process, Sentinel needs to notify the clien
 - The primary instance is offline.
 - Sentinel has promoted a new primary instance, and here is the network information of the new primary.
 
-The Sentinel-to-clients notification mechanism is powered by Pub/Sub, you can read more about Sentinel internals [here](https://redis.io/docs/management/sentinel/).
+The Sentinel-to-clients notification mechanism is powered by Pub/Sub, you can read more about Sentinel internals [here](https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/).
 **Using a Sentinel-compatible client is essential to achieve the goal of minimal downtime migration.**
 
 ### 3. Configure Replication

@@ -14,7 +14,7 @@ Before you begin, please ensure that [Helm is installed](https://helm.sh/docs/in
 - A running Kubernetes cluster (see [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/) or [Minikube](https://minikube.sigs.k8s.io/docs/start/) if you want to experiment locally).
 - Select the Dragonfly version:
   - For the latest version, set `VERSION=v{{DRAGONFLY_VERSION}}` as an environment variable, which will be used later.
-  - Choose from [here](https://github.com/dragonflydb/dragonfly/pkgs/container/dragonfly%2Fhelm%2Fdragonfly) if you need a specific version.
+  - Choose from [here](https://github.com/dragonflydb/dragonfly/releases) if you need a specific version.
 
 For full control and customization, please check out
 the [complete list of configuration values](https://github.com/dragonflydb/dragonfly/tree/main/contrib/charts/dragonfly) you can use.

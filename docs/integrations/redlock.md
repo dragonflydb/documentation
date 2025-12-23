@@ -7,7 +7,7 @@ description: Redlock
 
 ## Introduction
 
-[Redlock](https://redis.io/docs/manual/patterns/distributed-locks/) is a recognized algorithm based on Redis for
+[Redlock](https://redis.io/docs/latest/develop/use/patterns/distributed-locks/) is a recognized algorithm based on Redis for
 distributed locks, ensuring consistent operation and protection against failures such as network partitions and Redis crashes.
 It operates by having a client application send lock requests, using [`SET`](../command-reference/strings/set.md) commands, to **multiple primary Redis instances**.
 The lock is successfully acquired when more than half of these instances agree on the lock acquisition.
@@ -146,5 +146,5 @@ func main() {
 
 ## Useful Resources
 
-- Redlock [Documentation](https://redis.io/docs/manual/patterns/distributed-locks/).
+- Redlock [Documentation](https://redis.io/docs/latest/develop/use/patterns/distributed-locks/).
 - The [dragonfly-examples](https://github.com/dragonflydb/dragonfly-examples) repository, which contains code examples for using Redlock with Dragonfly in Go.
