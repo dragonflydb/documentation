@@ -24,7 +24,3 @@ Dragonfly has implemented more than 200 Redis commands which we think represents
 for the vast majority of use cases. Having said that, if you require commands that are not supported,
 please feel free to open an issue or vote on an existing issue.
 We will do our best to prioritise those commands according to their popularity.
-
-## Test broken link (remove after testing)
-
-This is a [broken link for CI testing](https://this-domain-does-not-exist-12345.com/broken-page).
