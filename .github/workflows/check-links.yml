@@ -51,3 +51,15 @@ jobs:
           fi
 
           echo "All links are valid!"
+
+      - name: Send notification on failure
+        if: failure()
+        run: |
+          job_link="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          message="Link check failed in documentation.\nJob Link: ${job_link}"
+
+          curl -s \
+            -X POST \
+            -H 'Content-Type: application/json' \
+            '${{ secrets.GSPACES_BOT_DF_BUILD }}' \
+            -d '{"text": "'"${message}"'"}'
