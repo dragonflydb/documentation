@@ -85,13 +85,17 @@ Setup instructions...
 
 **Commands**:
 ```bash
-yarn              # Install dependencies
-yarn start        # Local dev server
-yarn build        # Build site
-yarn serve        # Serve build locally
+yarn install      # Install dependencies (required after cloning or if build fails)
+yarn start        # Local dev server at http://localhost:3000
+yarn build        # Build site (verifies no broken links)
+yarn serve        # Serve production build locally
 ```
 
-**Always** run `yarn build` before committing to verify no broken links.
+**Important Notes**:
+- Always run `yarn install` first if `yarn build` fails with "docusaurus: not found"
+- Run `yarn build` before committing to verify no broken links or errors
+- The build process takes 1-2 minutes to complete
+- If node_modules becomes corrupted, delete it and run `yarn install` again
 
 ## Content Areas
 
