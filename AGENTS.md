@@ -264,16 +264,16 @@ const client = new Redis();
 
 ### Command Line Examples
 
-Use the `dragonfly>` prompt for interactive examples:
+Use the `dragonfly>` prompt (not `redis>`) for interactive command examples in shell code blocks:
 
-```markdown
+````markdown
 ```shell
 dragonfly> SET key value
 "OK"
 dragonfly> GET key
 "value"
 ```
-```
+````
 
 ### Links
 
