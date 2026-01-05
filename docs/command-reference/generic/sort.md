@@ -33,14 +33,14 @@ SORT mylist
 
 Assuming `mylist` is a list of numbers, this command will return the same list
 with the elements sorted from small to large.
-In order to sort the numbers from large to small, use the `!DESC` modifier:
+In order to sort the numbers from large to small, use the `DESC` modifier:
 
 ```
 SORT mylist DESC
 ```
 
 When `mylist` contains string values and you want to sort them
-lexicographically, use the `!ALPHA` modifier:
+lexicographically, use the `ALPHA` modifier:
 
 ```
 SORT mylist ALPHA
@@ -82,7 +82,7 @@ SORT mylist STORE sorted_mylist
 
 When using `STORE`, the command returns the number of elements stored.
 
-The number of returned elements can be limited using the `!LIMIT` modifier.
+The number of returned elements can be limited using the `LIMIT` modifier.
 This modifier takes the `offset` argument, specifying the number of elements to
 skip and the `count` argument, specifying the number of elements to return from
 starting at `offset`.
