@@ -123,6 +123,8 @@ dragonfly> SET key value
 
 **Option Markers**: Preserve `!` markers when referencing command options in prose text (e.g., `!DESC`, `!ALPHA`, `!TYPE`). This is an established documentation convention for highlighting options.
 
+**Reference Links**: Always use [Valkey documentation](https://valkey.io/) for command references and protocol specifications. Use `https://valkey.io/commands/` for command reference and `https://valkey.io/topics/protocol/` for protocol specifications. Do not link to redis.io.
+
 **Links**: Internal links use relative paths (`./page.md`), external use full URLs.
 
 **Images**: Store in `/static/img/`, reference as `/img/filename.png` with alt text.
@@ -157,7 +159,8 @@ Highlight these differentiators:
 - [Docusaurus Docs](https://docusaurus.io/docs)
 - [Dragonfly GitHub](https://github.com/dragonflydb/dragonfly)
 - [Dragonfly Website](https://www.dragonflydb.io)
-- [Redis Commands](https://redis.io/commands) (for reference)
+- [Valkey Commands](https://valkey.io/commands/) (for reference)
+- [Valkey Protocol](https://valkey.io/topics/protocol/) (for protocol spec)
 - [Discord](https://discord.gg/HsPjXGVH85)
 
 ## Quality Checklist

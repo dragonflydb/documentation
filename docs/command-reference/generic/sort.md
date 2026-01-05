@@ -23,9 +23,9 @@ By default, sorting is numeric and elements are compared by their value
 interpreted as double precision floating point number.
 This is `SORT` in its simplest form:
 
-[tdtl]: https://redis.io/topics/data-types#lists
-[tdts]: https://redis.io/topics/data-types#set
-[tdtss]: https://redis.io/topics/data-types#sorted-sets
+[tdtl]: https://valkey.io/topics/data-types/#lists
+[tdts]: https://valkey.io/topics/data-types/#sets
+[tdtss]: https://valkey.io/topics/data-types/#sorted-sets
 
 ```
 SORT mylist
@@ -69,4 +69,4 @@ SORT mylist LIMIT 0 5 ALPHA DESC
 
 ## Return
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): list of sorted elements.
+[Array reply](https://valkey.io/topics/protocol/#arrays): list of sorted elements.
