@@ -63,7 +63,7 @@ sidebar_position: 0
 |                                              | <span class="command">RESTORE</span>                       | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SCAN</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">SORT</span>                          | <span class="support partial">Partially supported</span> |
-|                                              | <span class="command">SORT_RO</span>                       | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">SORT_RO</span>                       | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">TOUCH</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">TTL</span>                           | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">TYPE</span>                          | <span class="support supported">Fully supported</span>   |
