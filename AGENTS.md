@@ -121,8 +121,6 @@ dragonfly> SET key value
 ```
 ````
 
-**Option Markers**: Preserve `!` markers when referencing command options in prose text (e.g., `!DESC`, `!ALPHA`, `!TYPE`). This is an established documentation convention for highlighting options.
-
 **Reference Links**: Always use [Valkey documentation](https://valkey.io/) for command references and protocol specifications. Use `https://valkey.io/commands/` for command reference and `https://valkey.io/topics/protocol/` for protocol specifications. Do not link to redis.io.
 
 **Links**: Internal links use relative paths (`./page.md`), external use full URLs.
