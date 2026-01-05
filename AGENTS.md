@@ -187,8 +187,8 @@ When documenting commands:
 
 1. **Use Docker as source of truth**: Always test command syntax with a running Dragonfly container to verify actual behavior:
    ```bash
-   docker run -d -p 6379:6379 docker.dragonflydb.io/dragonflydb/dragonfly:latest
-   docker exec -it <container> redis-cli
+   docker run -d --name dragonfly-test -p 6379:6379 docker.dragonflydb.io/dragonflydb/dragonfly:latest
+   docker exec -it dragonfly-test redis-cli
    ```
 
 2. **Verify actual behavior**: Test commands interactively to confirm syntax, options, and return values. The running container is the authoritative source for what is supported.
