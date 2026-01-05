@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    SORT key [LIMIT offset count] [ASC | DESC] [ALPHA]
+    SORT key [BY pattern] [LIMIT offset count] [GET pattern [GET pattern ...]] [ASC | DESC] [ALPHA] [STORE destination]
 
 **Time complexity:** O(N+M\*log(M)) where N is the number of elements in the list or set to sort, and M the number of returned elements. When the elements are not sorted, complexity is O(N).
 
@@ -47,6 +47,40 @@ SORT mylist ALPHA
 ```
 
 Dragonfly is UTF-8 aware.
+
+## Sorting by External Keys
+
+The `BY` option allows sorting by external keys instead of the values in the collection itself:
+
+```
+SORT mylist BY weight_*
+```
+
+The `*` in the pattern is replaced with the values from the list.
+
+## Retrieving External Keys
+
+The `GET` option allows retrieving external keys instead of the elements themselves:
+
+```
+SORT mylist GET object_*
+```
+
+Multiple `GET` patterns can be specified to retrieve multiple values:
+
+```
+SORT mylist GET object_*->name GET object_*->email
+```
+
+## Storing Results
+
+The `STORE` option stores the sorted result at the specified destination key instead of returning it:
+
+```
+SORT mylist STORE sorted_mylist
+```
+
+When using `STORE`, the command returns the number of elements stored.
 
 The number of returned elements can be limited using the `!LIMIT` modifier.
 This modifier takes the `offset` argument, specifying the number of elements to
