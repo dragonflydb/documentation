@@ -11,7 +11,7 @@ Dragonfly is a modern in-memory datastore that is fully compatible with Redis an
 This is a [Docusaurus v2](https://docusaurus.io/) documentation site with the following structure:
 
 ```
-/home/runner/work/documentation/documentation/
+documentation/                     # Repository root
 ├── docs/                          # Main documentation content
 │   ├── about/                     # About Dragonfly, FAQ, license
 │   ├── getting-started/           # Installation and setup guides
