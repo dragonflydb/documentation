@@ -117,6 +117,8 @@ dragonfly> SET key value
 ```
 ````
 
+**Option Markers**: Preserve `!` markers when referencing command options in prose text (e.g., `!DESC`, `!ALPHA`, `!TYPE`). This is an established documentation convention for highlighting options.
+
 **Links**: Internal links use relative paths (`./page.md`), external use full URLs.
 
 **Images**: Store in `/static/img/`, reference as `/img/filename.png` with alt text.
@@ -169,7 +171,26 @@ Highlight these differentiators:
 - **Minimal changes** - Only modify relevant files
 - **Follow patterns** - Use existing doc structure
 - **Test changes** - Always build and verify
+- **Verify with Docker** - Test command syntax and behavior using a running Dragonfly container before documenting
 - **Emphasize compatibility** - Dragonfly is drop-in Redis replacement
 - **Highlight performance** - Note benefits when relevant
 - **Real examples only** - No placeholder content
 - Version info: https://version.dragonflydb.io/v1
+
+## Testing Guidelines
+
+When documenting commands:
+
+1. **Use Docker as source of truth**: Always test command syntax with a running Dragonfly container to verify actual behavior:
+   ```bash
+   docker run -d -p 6379:6379 docker.dragonflydb.io/dragonflydb/dragonfly:latest
+   docker exec -it <container> redis-cli
+   ```
+
+2. **Verify actual behavior**: Test commands interactively to confirm syntax, options, and return values. The running container is the authoritative source for what is supported.
+
+3. **Update compatibility table**: If you discover discrepancies between the compatibility table (`docs/command-reference/compatibility.md`) and actual container behavior, update the table to match reality.
+
+4. **Document only supported features**: Do not document command options or features that produce errors or are not yet implemented in Dragonfly, even if they exist in Redis/Valkey.
+
+5. **Do not rely on introspection**: The `COMMAND DOCS` and similar introspection commands may not be implemented - always test with actual command execution.
