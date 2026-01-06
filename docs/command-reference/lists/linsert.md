@@ -9,7 +9,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    LINSERT key \<BEFORE | AFTER\> pivot element
+```
+LINSERT key <BEFORE | AFTER> pivot element
+```
 
 **Time complexity:** O(N) where N is the number of elements to traverse before seeing the value pivot. This means that inserting somewhere on the left end on the list (head) can be considered O(1) and inserting somewhere on the right end (tail) is O(N).
 

@@ -6,7 +6,9 @@ description: Searches the index with a query, returning docs or just IDs
 
 ## Syntax
 
-    FT.ALTER \{index\} [SKIPINITIALSCAN] SCHEMA ADD \{attribute\} \{options\} ...
+```
+FT.ALTER {index} [SKIPINITIALSCAN] SCHEMA ADD {attribute} {options} ...
+```
 
 **Time complexity:** O(N) where N is the number of keys in the keyspace
 

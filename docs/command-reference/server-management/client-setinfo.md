@@ -10,7 +10,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    CLIENT SETINFO \<LIB-NAME libname | LIB-VER libver\>
+```
+CLIENT SETINFO <LIB-NAME libname | LIB-VER libver>
+```
 
 **Time complexity:** O(1)
 

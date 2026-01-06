@@ -10,7 +10,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    CLIENT TRACKING \<ON | OFF\> [OPTIN] [OPTOUT] [NOLOOP]
+```
+CLIENT TRACKING <ON | OFF> [OPTIN] [OPTOUT] [NOLOOP]
+```
 
 **Time complexity:** O(1). Some options may introduce additional complexity.
 
