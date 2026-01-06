@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    MONITOR 
+    MONITOR
 
 **Time complexity:** undefined
 

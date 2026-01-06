@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    ROLE 
+    ROLE
 
 **Time complexity:** O(1)
 

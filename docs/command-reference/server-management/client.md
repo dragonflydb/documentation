@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    CLIENT 
+    CLIENT
 
 **Time complexity:** Depends on subcommand.
 

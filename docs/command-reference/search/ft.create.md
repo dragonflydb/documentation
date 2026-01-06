@@ -31,7 +31,7 @@ is index name to create. If such index already exists, returns an error reply.
 
 <a name="SCHEMA"></a>
 <details open>
-<summary><code>SCHEMA field_name [AS alias] TEXT | TAG | NUMERIC | VECTOR [ SORTABLE ]</code></summary> 
+<summary><code>SCHEMA field_name [AS alias] TEXT | TAG | NUMERIC | VECTOR [ SORTABLE ]</code></summary>
 
 after the SCHEMA keyword, declares which fields to index:
 
@@ -103,7 +103,7 @@ currently supports `HASH` (default) and `JSON`.
 
 <a name="PREFIX"></a>
 <details open>
-<summary><code>PREFIX count prefix</code></summary> 
+<summary><code>PREFIX count prefix</code></summary>
 
 tells the index which keys it should index.
 You can add several prefixes to index.

@@ -31,7 +31,7 @@ Returned values include:
 - `index_name`: name of the index upon creation by using [`FT.CREATE`](./ft.create.md).
 - `index_definition`: contains information about the index configuration, including `key_type` and `prefix`.
 - `attributes`: index schema - for each field contains:
-  - `identifier`: the original field name or JSONPath 
+  - `identifier`: the original field name or JSONPath
   - `attribute`: the field alias (or same as identifier if no alias provided)
   - `type`: field type (TEXT, TAG, NUMERIC, VECTOR, GEO)
   - field-specific options like `SORTABLE` and `NOINDEX` flags when applicable

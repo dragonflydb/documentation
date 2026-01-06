@@ -88,7 +88,7 @@ Note that for the same reason a Lua script or a `MULTI/EXEC` block may push elem
 
 Dragonfly can potentially parallelize the execution of a single `MULTI`/`EXEC` transaction or script, which makes it impossible to determine what key will receive a new elemenet first. Because of this, `BLPOP` can return an element from any of the listed keys that have become non-empty after the last `MULTI`/`EXEC` transaction or script.
 
-To disable parallel execution, `multi_exec_squash=false` and `lua_auto_async=false` flags should be used. This will make `BLPOP` return an element from the first key that 
+To disable parallel execution, `multi_exec_squash=false` and `lua_auto_async=false` flags should be used. This will make `BLPOP` return an element from the first key that
 received a new element.
 
 For example, let's assume a client is blocked on `BLPOP c b a` and the following sequence of commands is run:

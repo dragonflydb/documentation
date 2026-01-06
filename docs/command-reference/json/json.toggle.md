@@ -21,7 +21,7 @@ Toggle a Boolean value stored at `path`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to modify.
 
@@ -29,9 +29,9 @@ is key to modify.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
-is JSONPath to specify. Default is root `$`. 
+is JSONPath to specify. Default is root `$`.
 
 </details>
 
@@ -43,7 +43,7 @@ For more information about replies, see [Redis serialization protocol specificat
 ## Examples
 
 <details open>
-<summary><b>Toogle a Boolean value stored at <code>path</code></b></summary> 
+<summary><b>Toogle a Boolean value stored at <code>path</code></b></summary>
 
 Create a JSON document.
 
@@ -84,4 +84,4 @@ dragonfly> JSON.GET doc $
 
 ## See also
 
-`JSON.SET` | `JSON.GET` 
+`JSON.SET` | `JSON.GET`

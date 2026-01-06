@@ -21,7 +21,7 @@ Return the value at `path` in JSON serialized form
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to parse.
 
@@ -29,7 +29,7 @@ is key to parse.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. JSON.GET accepts multiple `path` arguments.
 
@@ -38,7 +38,7 @@ is JSONPath to specify. Default is root `$`. JSON.GET accepts multiple `path` ar
 :::note Note
 
 
-When using a single JSONPath, the root of the matching values is a JSON string with a top-level **array** of serialized JSON value. 
+When using a single JSONPath, the root of the matching values is a JSON string with a top-level **array** of serialized JSON value.
 In contrast, a legacy path returns a single value.
 
 When using multiple JSONPath arguments, the root of the matching values is a JSON string with a top-level **object**, with each object value being a top-level array of serialized JSON value.
@@ -48,25 +48,25 @@ If there are multiple paths that include both legacy path and JSONPath, the retu
 
 :::
 
-<details open><summary><code>INDENT</code></summary> 
+<details open><summary><code>INDENT</code></summary>
 
 sets the indentation string for nested levels.
 
 </details>
 
-<details open><summary><code>NEWLINE</code></summary> 
+<details open><summary><code>NEWLINE</code></summary>
 
 sets the string that's printed at the end of each line.
 
 </details>
 
-<details open><summary><code>SPACE</code></summary> 
+<details open><summary><code>SPACE</code></summary>
 
 sets the string that's put between a key and a value.
 
 </details>
 
-<details open><summary><code>NOESCAPE</code></summary> 
+<details open><summary><code>NOESCAPE</code></summary>
 
 is present for legacy compatibility and has no other effect.
 
@@ -74,7 +74,7 @@ is present for legacy compatibility and has no other effect.
 
 :::note Note
 
- 
+
 Produce pretty-formatted JSON with `redis-cli` by following this example:
 
 ``` bash
@@ -87,9 +87,9 @@ dragonfly> JSON.GET myjsonkey INDENT "\t" NEWLINE "\n" SPACE " " path.to.value[1
 
 ## Return
 
-JSON.GET returns a bulk string representing a JSON array of string replies. 
-Each string is the JSON serialization of each JSON value that matches a path. 
-Using multiple paths, JSON.GET returns a bulk string representing a JSON object with string values. 
+JSON.GET returns a bulk string representing a JSON array of string replies.
+Each string is the JSON serialization of each JSON value that matches a path.
+Using multiple paths, JSON.GET returns a bulk string representing a JSON object with string values.
 Each string value is an array of the JSON serialization of each JSON value that matches a path.
 For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
@@ -123,4 +123,4 @@ dragonfly> JSON.GET doc ..a $..b
 
 ## See also
 
-`JSON.SET` | `JSON.MGET` 
+`JSON.SET` | `JSON.MGET`

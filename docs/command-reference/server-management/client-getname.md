@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    CLIENT GETNAME 
+    CLIENT GETNAME
 
 **Time complexity:** O(1)
 

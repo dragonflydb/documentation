@@ -15,13 +15,13 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @json
 
-Return the JSON in `key` in [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec) form 
+Return the JSON in `key` in [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec) form
 
 [Examples](#examples)
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to parse.
 
@@ -29,7 +29,7 @@ is key to parse.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. This command uses the following mapping from JSON to RESP:
 
@@ -51,7 +51,7 @@ JSON.RESP returns an array reply specified as the JSON's RESP form detailed in [
 ## Examples
 
 <details open>
-<summary><b>Return an array of RESP details about a document</b></summary> 
+<summary><b>Return an array of RESP details about a document</b></summary>
 
 Create a JSON document.
 
@@ -94,7 +94,7 @@ dragonfly> JSON.RESP item:2
 
 ## See also
 
-`JSON.SET` | `JSON.ARRLEN` 
+`JSON.SET` | `JSON.ARRLEN`
 
 ## Related topics
 

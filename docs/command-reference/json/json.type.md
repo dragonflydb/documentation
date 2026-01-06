@@ -21,7 +21,7 @@ Report the type of JSON value at `path`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to parse.
 
@@ -29,7 +29,7 @@ is key to parse.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. Returns null if the `key` or `path` do not exist.
 
@@ -56,7 +56,7 @@ dragonfly> JSON.TYPE doc $..dummy
 
 ## See also
 
-`JSON.SET` | `JSON.ARRLEN` 
+`JSON.SET` | `JSON.ARRLEN`
 
 
 

@@ -5,7 +5,7 @@ description: "Learn how to use GEORADIUSBYMEMBER_RO to find geographical data in
 import PageTitle from '@site/src/components/PageTitle';
 
 # GEORADIUSBYMEMBER_RO
- 
+
 <PageTitle title="GEORADIUSBYMEMBER_RO Command (Documentation) | Dragonfly" />
 
 ## Syntax

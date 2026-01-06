@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    REPLCONF 
+    REPLCONF
 
 **Time complexity:** O(1)
 

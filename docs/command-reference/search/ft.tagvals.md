@@ -26,7 +26,7 @@ Use `FT.TAGVALS` if your tag indexes things like cities, categories, and so on.
 ## Limitations
 
 `FT.TAGVALS` provides no paging or sorting, and the tags are not alphabetically sorted.
-`FT.TAGVALS` only operates on tag fields. 
+`FT.TAGVALS` only operates on tag fields.
 The returned strings are lowercase with whitespaces removed, but otherwise unchanged.
 
 ## Return

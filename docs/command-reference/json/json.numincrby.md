@@ -21,35 +21,35 @@ Increment the number value stored at `path` by `number`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to modify.
 
 </details>
 
-<details open><summary><code>value</code></summary> 
+<details open><summary><code>value</code></summary>
 
-is number value to increment. 
+is number value to increment.
 
 </details>
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`.
 
 </details>
 
-## Return 
+## Return
 
-JSON.NUMINCRBY returns a bulk string reply specified as a stringified new value for each path, or `nil`, if the matching JSON value is not a number. 
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec). 
+JSON.NUMINCRBY returns a bulk string reply specified as a stringified new value for each path, or `nil`, if the matching JSON value is not a number.
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 ## Examples
 
 <details open>
-<summary><b>Increment number values</b></summary> 
+<summary><b>Increment number values</b></summary>
 
 Create a document.
 
@@ -76,4 +76,4 @@ dragonfly> JSON.NUMINCRBY doc $..a 2
 
 ## See also
 
-`JSON.ARRINDEX` | `JSON.ARRINSERT` 
+`JSON.ARRINDEX` | `JSON.ARRINSERT`

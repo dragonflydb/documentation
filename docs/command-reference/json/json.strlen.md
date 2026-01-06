@@ -21,7 +21,7 @@ Report the length of the JSON String at `path` in `key`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to parse.
 
@@ -29,7 +29,7 @@ is key to parse.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`, if not provided. Returns null if the `key` or `path` do not exist.
 
@@ -38,7 +38,7 @@ is JSONPath to specify. Default is root `$`, if not provided. Returns null if th
 ## Return
 
 JSON.STRLEN returns by recursive descent an array of integer replies for each path, the array's length, or `nil`, if the matching JSON value is not a string.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec). 
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 ## Examples
 
@@ -53,4 +53,4 @@ dragonfly> JSON.STRLEN doc $..a
 
 ## See also
 
-`JSON.ARRLEN` | `JSON.ARRINSERT` 
+`JSON.ARRLEN` | `JSON.ARRINSERT`

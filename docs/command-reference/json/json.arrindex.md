@@ -21,15 +21,15 @@ Search for the first occurrence of a JSON value in an array
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to parse.
 
 </details>
 
-<details open><summary><code>value</code></summary> 
+<details open><summary><code>value</code></summary>
 
-is value to find its index in one or more arrays. 
+is value to find its index in one or more arrays.
 
 </details>
 
@@ -41,14 +41,14 @@ To specify a string as an array value to index, wrap the quoted string with an a
 
 ## Optional arguments
 
-<details open><summary><code>start</code></summary> 
+<details open><summary><code>start</code></summary>
 
-is inclusive start value to specify in a slice of the array to search. Default is `0`. 
+is inclusive start value to specify in a slice of the array to search. Default is `0`.
 
 </details>
 
 
-<details open><summary><code>stop</code></summary> 
+<details open><summary><code>stop</code></summary>
 
 is exclusive stop value to specify in a slice of the array to search, including the last element. Default is `0`. Negative values are interpreted as starting from the end.
 
@@ -61,10 +61,10 @@ Out-of-range indexes round to the array's start and end. An inverse index range 
 
 :::
 
-## Return value 
+## Return value
 
 `JSON.ARRINDEX` returns an [array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) of integer replies for each path, the first position in the array of each JSON value that matches the path, `-1` if unfound in the array, or `nil`, if the matching JSON value is not an array.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec). 
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 ## Examples
 
@@ -124,5 +124,5 @@ dragonfly> JSON.ARRINDEX item:1 $..colors '"silver"'
 
 ## See also
 
-`JSON.ARRAPPEND` | `JSON.ARRINSERT` 
+`JSON.ARRAPPEND` | `JSON.ARRINSERT`
 

@@ -21,7 +21,7 @@ Trim an array so that it contains only the specified inclusive range of elements
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to modify.
 
@@ -29,19 +29,19 @@ is key to modify.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`.
 
 </details>
 
-<details open><summary><code>start</code></summary> 
+<details open><summary><code>start</code></summary>
 
-is index of the first element to keep (previous elements are trimmed). Default is 0. 
+is index of the first element to keep (previous elements are trimmed). Default is 0.
 
 </details>
 
-<details open><summary><code>stop</code></summary> 
+<details open><summary><code>stop</code></summary>
 
 is the index of the last element to keep (following elements are trimmed), including the last element. Default is 0. Negative values are interpreted as starting from the end.
 
@@ -54,7 +54,7 @@ JSON.ARRTRIM is extremely forgiving, and using it with out-of-range indexes does
 
 Behavior as of RedisJSON v2.0:
 
-* If `start` is larger than the array's size or `start` > `stop`, returns 0 and an empty array. 
+* If `start` is larger than the array's size or `start` > `stop`, returns 0 and an empty array.
 * If `start` is < 0, then start from the end of the array.
 * If `stop` is larger than the end of the array, it is treated like the last element.
 
@@ -63,12 +63,12 @@ Behavior as of RedisJSON v2.0:
 ## Return
 
 JSON.ARRTRIM returns an array of integer replies for each path, the array's new size, or `nil`, if the matching JSON value is not an array.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec). 
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 ## Examples
 
 <details open>
-<summary><b>Trim an array to a specific set of values</b></summary> 
+<summary><b>Trim an array to a specific set of values</b></summary>
 
 Create two headphone products with maximum sound levels.
 

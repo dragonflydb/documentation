@@ -21,7 +21,7 @@ Clear container values (arrays/objects) and set numeric values to `0`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to parse.
 
@@ -29,7 +29,7 @@ is key to parse.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. Nonexisting paths are ignored.
 
@@ -37,12 +37,12 @@ is JSONPath to specify. Default is root `$`. Nonexisting paths are ignored.
 
 ## Return
 
-JSON.CLEAR returns an integer reply specified as the number of values cleared. 
+JSON.CLEAR returns an integer reply specified as the number of values cleared.
 For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 :::note Note
 
- 
+
 Already cleared values are ignored for empty containers and zero numbers.
 
 
@@ -51,7 +51,7 @@ Already cleared values are ignored for empty containers and zero numbers.
 ## Examples
 
 <details open>
-<summary><b>Clear container values and set numeric values to <code>0</code></b></summary> 
+<summary><b>Clear container values and set numeric values to <code>0</code></b></summary>
 
 Create a JSON document.
 
@@ -78,5 +78,5 @@ dragonfly> JSON.GET doc $
 
 ## See also
 
-`JSON.ARRINDEX` | `JSON.ARRINSERT` 
+`JSON.ARRINDEX` | `JSON.ARRINSERT`
 

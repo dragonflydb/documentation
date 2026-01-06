@@ -5,7 +5,7 @@ description: "Learn how to use GEORADIUS_RO to find geographical data in your Dr
 import PageTitle from '@site/src/components/PageTitle';
 
 # GEORADIUS_RO
- 
+
 <PageTitle title="GEORADIUS_RO Command (Documentation) | Dragonfly" />
 
 ## Syntax

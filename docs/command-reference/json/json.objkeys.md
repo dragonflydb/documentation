@@ -21,7 +21,7 @@ Return the keys in the object that's referenced by `path`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to parse. Returns `null` for nonexistent keys.
 
@@ -29,7 +29,7 @@ is key to parse. Returns `null` for nonexistent keys.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. Returns `null` for nonexistant path.
 
@@ -37,7 +37,7 @@ is JSONPath to specify. Default is root `$`. Returns `null` for nonexistant path
 
 ## Return
 
-JSON.OBJKEYS returns an array of array replies for each path, an array of the key names in the object as a bulk string reply, or `nil` if the matching JSON value is not an object. 
+JSON.OBJKEYS returns an array of array replies for each path, an array of the key names in the object as a bulk string reply, or `nil` if the matching JSON value is not an object.
 For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 ## Examples
@@ -53,4 +53,4 @@ dragonfly> JSON.OBJKEYS doc $..a
 
 ## See also
 
-`JSON.ARRINDEX` | `JSON.ARRINSERT` 
+`JSON.ARRINDEX` | `JSON.ARRINSERT`

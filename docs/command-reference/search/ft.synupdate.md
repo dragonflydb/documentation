@@ -6,7 +6,7 @@ description: Creates or updates a synonym group
 
 ## Syntax
 
-    FT.SYNUPDATE index synonym_group_id 
+    FT.SYNUPDATE index synonym_group_id
       [SKIPINITIALSCAN] term [term ...]
 
 **Time complexity:** O(N)

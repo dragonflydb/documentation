@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    COMMAND 
+    COMMAND
 
 **Time complexity:** O(N) where N is the total number of Dragonfly commands
 
@@ -137,7 +137,7 @@ dragonfly> COMMAND
 # ...
 ```
 
-The step count allows us to find keys' positions. 
+The step count allows us to find keys' positions.
 - For example, the `MSET` command has a syntax of `MSET key1 val1 [key2] [val2] [key3] [val3]...`,
   so the keys are at every other position, which has a step value of `2`.
 - For the `MGET` command with a syntax of `MGET key1 [key2] [key3]...`, it uses a step value of `1`.

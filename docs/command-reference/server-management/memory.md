@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    MEMORY 
+    MEMORY
 
 **Time complexity:** Depends on subcommand.
 

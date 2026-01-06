@@ -5,7 +5,7 @@ description: "Learn how to use GEORADIUSBYMEMBER to add geographical data to you
 import PageTitle from '@site/src/components/PageTitle';
 
 # GEORADIUSBYMEMBER
- 
+
 <PageTitle title="GEORADIUSBYMEMBER Command (Documentation) | Dragonfly" />
 
 ## Syntax

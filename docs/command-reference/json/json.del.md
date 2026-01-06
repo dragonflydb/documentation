@@ -22,7 +22,7 @@ Delete a value
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to modify.
 
@@ -30,7 +30,7 @@ is key to modify.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. Nonexisting paths are ignored.
 
@@ -38,7 +38,7 @@ is JSONPath to specify. Default is root `$`. Nonexisting paths are ignored.
 
 :::note Note
 
- 
+
 Deleting an object's root is equivalent to deleting the key from Redis.
 
 
@@ -79,7 +79,7 @@ dragonfly> JSON.GET doc $
 
 ## See also
 
-`JSON.SET` | `JSON.ARRLEN` 
+`JSON.SET` | `JSON.ARRLEN`
 
 ## Related topics
 
