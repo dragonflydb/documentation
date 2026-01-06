@@ -23,9 +23,9 @@ By default, sorting is numeric and elements are compared by their value
 interpreted as double precision floating point number.
 This is `SORT` in its simplest form:
 
-[tdtl]: https://redis.io/topics/data-types#lists
-[tdts]: https://redis.io/topics/data-types#set
-[tdtss]: https://redis.io/topics/data-types#sorted-sets
+[tdtl]: https://valkey.io/topics/data-types/#lists
+[tdts]: https://valkey.io/topics/data-types/#sets
+[tdtss]: https://valkey.io/topics/data-types/#sorted-sets
 
 ```
 SORT mylist
@@ -33,14 +33,14 @@ SORT mylist
 
 Assuming `mylist` is a list of numbers, this command will return the same list
 with the elements sorted from small to large.
-In order to sort the numbers from large to small, use the `!DESC` modifier:
+In order to sort the numbers from large to small, use the `DESC` modifier:
 
 ```
 SORT mylist DESC
 ```
 
 When `mylist` contains string values and you want to sort them
-lexicographically, use the `!ALPHA` modifier:
+lexicographically, use the `ALPHA` modifier:
 
 ```
 SORT mylist ALPHA
@@ -48,7 +48,7 @@ SORT mylist ALPHA
 
 Dragonfly is UTF-8 aware.
 
-The number of returned elements can be limited using the `!LIMIT` modifier.
+The number of returned elements can be limited using the `LIMIT` modifier.
 This modifier takes the `offset` argument, specifying the number of elements to
 skip and the `count` argument, specifying the number of elements to return from
 starting at `offset`.
@@ -69,4 +69,4 @@ SORT mylist LIMIT 0 5 ALPHA DESC
 
 ## Return
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): list of sorted elements.
+[Array reply](https://valkey.io/topics/protocol/#arrays): list of sorted elements.

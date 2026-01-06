@@ -85,13 +85,17 @@ Setup instructions...
 
 **Commands**:
 ```bash
-yarn              # Install dependencies
-yarn start        # Local dev server
-yarn build        # Build site
-yarn serve        # Serve build locally
+yarn install      # Install dependencies (required after cloning or if build fails)
+yarn start        # Local dev server at http://localhost:3000
+yarn build        # Build site (verifies no broken links)
+yarn serve        # Serve production build locally
 ```
 
-**Always** run `yarn build` before committing to verify no broken links.
+**Important Notes**:
+- Always run `yarn install` first if `yarn build` fails with "docusaurus: not found"
+- Run `yarn build` before committing to verify no broken links or errors
+- The build process takes 1-2 minutes to complete
+- If node_modules becomes corrupted, delete it and run `yarn install` again
 
 ## Content Areas
 
@@ -116,6 +120,8 @@ dragonfly> SET key value
 "OK"
 ```
 ````
+
+**Reference Links**: Always use [Valkey documentation](https://valkey.io/) for command references and protocol specifications. Use `https://valkey.io/commands/` for command reference and `https://valkey.io/topics/protocol/` for protocol specifications. Do not link to redis.io.
 
 **Links**: Internal links use relative paths (`./page.md`), external use full URLs.
 
@@ -151,7 +157,8 @@ Highlight these differentiators:
 - [Docusaurus Docs](https://docusaurus.io/docs)
 - [Dragonfly GitHub](https://github.com/dragonflydb/dragonfly)
 - [Dragonfly Website](https://www.dragonflydb.io)
-- [Redis Commands](https://redis.io/commands) (for reference)
+- [Valkey Commands](https://valkey.io/commands/) (for reference)
+- [Valkey Protocol](https://valkey.io/topics/protocol/) (for protocol spec)
 - [Discord](https://discord.gg/HsPjXGVH85)
 
 ## Quality Checklist
@@ -169,7 +176,26 @@ Highlight these differentiators:
 - **Minimal changes** - Only modify relevant files
 - **Follow patterns** - Use existing doc structure
 - **Test changes** - Always build and verify
+- **Verify with Docker** - Test command syntax and behavior using a running Dragonfly container before documenting
 - **Emphasize compatibility** - Dragonfly is drop-in Redis replacement
 - **Highlight performance** - Note benefits when relevant
 - **Real examples only** - No placeholder content
 - Version info: https://version.dragonflydb.io/v1
+
+## Testing Guidelines
+
+When documenting commands:
+
+1. **Use Docker as source of truth**: Always test command syntax with a running Dragonfly container to verify actual behavior:
+   ```bash
+   docker run -d --name dragonfly-test -p 6379:6379 docker.dragonflydb.io/dragonflydb/dragonfly:latest
+   docker exec -it dragonfly-test redis-cli
+   ```
+
+2. **Verify actual behavior**: Test commands interactively to confirm syntax, options, and return values. The running container is the authoritative source for what is supported.
+
+3. **Update compatibility table**: If you discover discrepancies between the compatibility table (`docs/command-reference/compatibility.md`) and actual container behavior, update the table to match reality.
+
+4. **Document only supported features**: Do not document command options or features that produce errors or are not yet implemented in Dragonfly, even if they exist in Redis/Valkey.
+
+5. **Do not rely on introspection**: The `COMMAND DOCS` and similar introspection commands may not be implemented - always test with actual command execution.
