@@ -24,6 +24,7 @@ Trim an array so that it contains only the specified inclusive range of elements
 <details open><summary><code>key</code></summary> 
 
 is key to modify.
+
 </details>
 
 ## Optional arguments
@@ -31,16 +32,19 @@ is key to modify.
 <details open><summary><code>path</code></summary> 
 
 is JSONPath to specify. Default is root `$`.
+
 </details>
 
 <details open><summary><code>start</code></summary> 
 
 is index of the first element to keep (previous elements are trimmed). Default is 0. 
+
 </details>
 
 <details open><summary><code>stop</code></summary> 
 
 is the index of the last element to keep (following elements are trimmed), including the last element. Default is 0. Negative values are interpreted as starting from the end.
+
 </details>
 
 :::note About out-of-range indexes
@@ -64,7 +68,7 @@ For more information about replies, see [Redis serialization protocol specificat
 ## Examples
 
 <details open>
-<summary><b>Trim an array to a specific set of values</b></summary>
+<summary><b>Trim an array to a specific set of values</b></summary> 
 
 Create two headphone products with maximum sound levels.
 
@@ -101,6 +105,7 @@ Get the updated array.
 dragonfly> JSON.GET key $[1].max_level
 "[[140,160,180,200,220]]"
 ```
+
 </details>
 
 ## See also

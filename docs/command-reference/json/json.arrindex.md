@@ -24,30 +24,34 @@ Search for the first occurrence of a JSON value in an array
 <details open><summary><code>key</code></summary> 
 
 is key to parse.
+
 </details>
 
 <details open><summary><code>value</code></summary> 
 
 is value to find its index in one or more arrays. 
 
+</details>
+
 :::note About using strings with JSON commands
 
 To specify a string as an array value to index, wrap the quoted string with an additional set of single quotes. Example: `'"silver"'`. For more detailed use, see [Examples](#examples).
 
 :::
-</details>
 
 ## Optional arguments
 
 <details open><summary><code>start</code></summary> 
 
 is inclusive start value to specify in a slice of the array to search. Default is `0`. 
+
 </details>
 
 
 <details open><summary><code>stop</code></summary> 
 
 is exclusive stop value to specify in a slice of the array to search, including the last element. Default is `0`. Negative values are interpreted as starting from the end.
+
 </details>
 
 :::note About out-of-range indexes
@@ -115,6 +119,7 @@ Find the place where color `silver` is located.
 dragonfly> JSON.ARRINDEX item:1 $..colors '"silver"'
 1) (integer) 1
 ```
+
 </details>
 
 ## See also

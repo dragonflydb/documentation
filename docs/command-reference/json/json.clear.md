@@ -24,6 +24,7 @@ Clear container values (arrays/objects) and set numeric values to `0`
 <details open><summary><code>key</code></summary> 
 
 is key to parse.
+
 </details>
 
 ## Optional arguments
@@ -31,6 +32,7 @@ is key to parse.
 <details open><summary><code>path</code></summary> 
 
 is JSONPath to specify. Default is root `$`. Nonexisting paths are ignored.
+
 </details>
 
 ## Return
@@ -49,7 +51,7 @@ Already cleared values are ignored for empty containers and zero numbers.
 ## Examples
 
 <details open>
-<summary><b>Clear container values and set numeric values to <code>0</code></b></summary>
+<summary><b>Clear container values and set numeric values to <code>0</code></b></summary> 
 
 Create a JSON document.
 
@@ -71,6 +73,7 @@ Get the updated document. Note that numeric values have been set to `0`.
 dragonfly> JSON.GET doc $
 "[{\"obj\":{},\"arr\":[],\"str\":\"foo\",\"bool\":true,\"int\":0,\"float\":0}]"
 ```
+
 </details>
 
 ## See also

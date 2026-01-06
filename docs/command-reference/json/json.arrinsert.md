@@ -24,22 +24,25 @@ Insert the `json` values into the array at `path` before the `index` (shifts to 
 <details open><summary><code>key</code></summary> 
 
 is key to modify.
+
 </details>
 
 <details open><summary><code>value</code></summary> 
 
 is one or more values to insert in one or more arrays. 
 
+</details>
+
 :::note About using strings with JSON commands
 
 To specify a string as an array value to insert, wrap the quoted string with an additional set of single quotes. Example: `'"silver"'`. For more detailed use, see [Examples](#examples).
 
 :::
-</details>
 
 <details open><summary><code>index</code></summary> 
 
 is position in the array where you want to insert a value. The index must be in the array's range. Inserting at `index` 0 prepends to the array. Negative index values start from the end of the array.
+
 </details>
 
 ## Optional arguments
@@ -47,6 +50,7 @@ is position in the array where you want to insert a value. The index must be in 
 <details open><summary><code>path</code></summary> 
 
 is JSONPath to specify. Default is root `$`.
+
 </details>
 
 ## Return value 
@@ -100,6 +104,7 @@ Get the updated list of colors.
 dragonfly> JSON.GET item:1 $.colors
 "[[\"black\",\"silver\",\"yellow\",\"gold\",\"blue\"]]"
 ```
+
 </details>
 
 ## See also

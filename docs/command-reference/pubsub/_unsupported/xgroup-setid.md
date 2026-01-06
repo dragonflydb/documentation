@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    XGROUP SETID key group <id | $> [ENTRIESREAD entries-read]
+    XGROUP SETID key group \<id | $\> [ENTRIESREAD entries-read]
 
 **Time complexity:** O(1)
 

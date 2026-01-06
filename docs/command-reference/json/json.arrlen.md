@@ -22,7 +22,7 @@ Report the length of the JSON array at `path` in `key`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open><summary><code>key</code></summary> 
 
 is key to parse.
 
@@ -30,7 +30,7 @@ is key to parse.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open><summary><code>path</code></summary> 
 
 is JSONPath to specify. Default is root `$`, if not provided. Returns null if the `key` or `path` do not exist.
 
@@ -44,7 +44,7 @@ For more information about replies, see [Redis serialization protocol specificat
 ## Examples
 
 <details open>
-<summary><b>Get lengths of JSON arrays in a document</b></summary>
+<summary><b>Get lengths of JSON arrays in a document</b></summary> 
 
 Create a document for wireless earbuds.
 

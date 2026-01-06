@@ -24,6 +24,7 @@ Report the type of JSON value at `path`
 <details open><summary><code>key</code></summary> 
 
 is key to parse.
+
 </details>
 
 ## Optional arguments

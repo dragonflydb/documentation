@@ -24,6 +24,7 @@ Return the keys in the object that's referenced by `path`
 <details open><summary><code>key</code></summary> 
 
 is key to parse. Returns `null` for nonexistent keys.
+
 </details>
 
 ## Optional arguments

@@ -24,6 +24,7 @@ Return the values at `path` from multiple `key` arguments
 <details open><summary><code>key</code></summary> 
 
 is key to parse. Returns `null` for nonexistent keys.
+
 </details>
 
 ## Optional arguments
@@ -42,7 +43,7 @@ For more information about replies, see [Redis serialization protocol specificat
 ## Examples
 
 <details open>
-<summary><b>Return the values at <code>path</code> from multiple <code>key</code> arguments</b></summary>
+<summary><b>Return the values at <code>path</code> from multiple <code>key</code> arguments</b></summary> 
 
 Create two JSON documents.
 
@@ -60,6 +61,7 @@ dragonfly> JSON.MGET doc1 doc2 $..a
 1) "[1,3]"
 2) "[4,6]"
 ```
+
 </details>
 
 ## See also

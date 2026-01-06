@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    CLIENT CACHING <YES | NO>
+    CLIENT CACHING \<YES | NO\>
 
 **Time complexity:** O(1). Some options may introduce additional complexity.
 

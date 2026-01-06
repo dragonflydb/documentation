@@ -24,6 +24,7 @@ Report the number of keys in the JSON object at `path` in `key`
 <details open><summary><code>key</code></summary> 
 
 is key to parse. Returns `null` for nonexistent keys.
+
 </details>
 
 ## Optional arguments

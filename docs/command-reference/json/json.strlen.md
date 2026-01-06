@@ -24,6 +24,7 @@ Report the length of the JSON String at `path` in `key`
 <details open><summary><code>key</code></summary> 
 
 is key to parse.
+
 </details>
 
 ## Optional arguments
@@ -31,6 +32,7 @@ is key to parse.
 <details open><summary><code>path</code></summary> 
 
 is JSONPath to specify. Default is root `$`, if not provided. Returns null if the `key` or `path` do not exist.
+
 </details>
 
 ## Return

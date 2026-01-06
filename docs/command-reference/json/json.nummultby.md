@@ -24,11 +24,13 @@ Multiply the number value stored at `path` by `number`
 <details open><summary><code>key</code></summary> 
 
 is key to modify.
+
 </details>
 
 <details open><summary><code>value</code></summary> 
 
 is number value to multiply. 
+
 </details>
 
 ## Optional arguments
@@ -36,6 +38,7 @@ is number value to multiply.
 <details open><summary><code>path</code></summary> 
 
 is JSONPath to specify. Default is root `$`.
+
 </details>
 
 ## Return

@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    XGROUP CREATE key group <id | $> [MKSTREAM] [ENTRIESREAD entries-read]
+    XGROUP CREATE key group \<id | $\> [MKSTREAM] [ENTRIESREAD entries-read]
 
 **Time complexity:** O(1)
 

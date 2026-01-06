@@ -24,11 +24,13 @@ Remove and return an element from the index in the array
 <details open><summary><code>key</code></summary> 
 
 is key to modify.
+
 </details>
 
 <details open><summary><code>index</code></summary> 
 
 is position in the array to start popping from. Default is `-1`, meaning the last element. Out-of-range indexes round to their respective array ends. Popping an empty array returns null.
+
 </details>
 
 ## Optional arguments
@@ -36,6 +38,7 @@ is position in the array to start popping from. Default is `-1`, meaning the las
 <details open><summary><code>path</code></summary> 
 
 is JSONPath to specify. Default is root `$`.
+
 </details>
 
 ## Return
@@ -46,7 +49,7 @@ For more information about replies, see [Redis serialization protocol specificat
 ## Examples
 
 <details open>
-<summary><b>Pop a value from an index and insert a new value</b></summary>
+<summary><b>Pop a value from an index and insert a new value</b></summary> 
 
 Create two headphone products with maximum sound levels.
 
@@ -89,6 +92,7 @@ Get the updated array.
 dragonfly> JSON.GET key $[1].max_level
 "[[85,90,100,120]]"
 ```
+
 </details>
 
 ## See also

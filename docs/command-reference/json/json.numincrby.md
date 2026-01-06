@@ -24,11 +24,13 @@ Increment the number value stored at `path` by `number`
 <details open><summary><code>key</code></summary> 
 
 is key to modify.
+
 </details>
 
 <details open><summary><code>value</code></summary> 
 
 is number value to increment. 
+
 </details>
 
 ## Optional arguments
@@ -36,6 +38,7 @@ is number value to increment.
 <details open><summary><code>path</code></summary> 
 
 is JSONPath to specify. Default is root `$`.
+
 </details>
 
 ## Return 
@@ -46,7 +49,7 @@ For more information about replies, see [Redis serialization protocol specificat
 ## Examples
 
 <details open>
-<summary><b>Increment number values</b></summary>
+<summary><b>Increment number values</b></summary> 
 
 Create a document.
 

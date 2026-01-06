@@ -24,6 +24,7 @@ Return the JSON in `key` in [Redis serialization protocol specification](https:/
 <details open><summary><code>key</code></summary> 
 
 is key to parse.
+
 </details>
 
 ## Optional arguments
@@ -40,6 +41,7 @@ is JSONPath to specify. Default is root `$`. This command uses the following map
 *   JSON object is represented as an array reply in which the first element is the simple string reply `{`. Each successive entry represents a key-value pair as a two-entry array reply of the bulk string reply.
 
 For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
+
 </details>
 
 ## Return
@@ -49,7 +51,7 @@ JSON.RESP returns an array reply specified as the JSON's RESP form detailed in [
 ## Examples
 
 <details open>
-<summary><b>Return an array of RESP details about a document</b></summary>
+<summary><b>Return an array of RESP details about a document</b></summary> 
 
 Create a JSON document.
 
@@ -87,6 +89,7 @@ dragonfly> JSON.RESP item:2
     3) (integer) 100
     4) (integer) 120
 ```
+
 </details>
 
 ## See also

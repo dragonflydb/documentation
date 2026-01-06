@@ -24,6 +24,7 @@ Toggle a Boolean value stored at `path`
 <details open><summary><code>key</code></summary> 
 
 is key to modify.
+
 </details>
 
 ## Optional arguments
@@ -42,7 +43,7 @@ For more information about replies, see [Redis serialization protocol specificat
 ## Examples
 
 <details open>
-<summary><b>Toogle a Boolean value stored at <code>path</code></b></summary>
+<summary><b>Toogle a Boolean value stored at <code>path</code></b></summary> 
 
 Create a JSON document.
 
@@ -78,6 +79,7 @@ Get the updated document.
 dragonfly> JSON.GET doc $
 "[{\"bool\":true}]"
 ```
+
 </details>
 
 ## See also

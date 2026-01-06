@@ -22,16 +22,18 @@ Report the memory size in bytes of the JSON element.
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open><summary><code>key</code></summary> 
 
 is key to analyze.
+
 </details>
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open><summary><code>path</code></summary> 
 
 is JSONPath to specify. Default is root `$` if not provided.
+
 </details>
 
 ## Return
@@ -45,7 +47,7 @@ is JSONPath to specify. Default is root `$` if not provided.
 ## Examples
 
 <details open>
-<summary><b>Check memory usage of different JSON types</b></summary>
+<summary><b>Check memory usage of different JSON types</b></summary> 
 
 Primitive types (numbers, booleans, null) return 0 bytes as they are stored inline:
 
@@ -66,7 +68,7 @@ dragonfly> JSON.DEBUG MEMORY primitives $.null
 </details>
 
 <details open>
-<summary><b>Check memory usage of objects and arrays</b></summary>
+<summary><b>Check memory usage of objects and arrays</b></summary> 
 
 Objects and arrays allocate memory and return their size in bytes:
 
@@ -90,7 +92,7 @@ dragonfly> JSON.DEBUG MEMORY arr_doc $
 </details>
 
 <details open>
-<summary><b>Check memory usage of strings</b></summary>
+<summary><b>Check memory usage of strings</b></summary> 
 
 Short strings may be optimized (SSO - Small String Optimization) and return 0, while longer strings allocate memory:
 
@@ -111,7 +113,7 @@ dragonfly> JSON.DEBUG MEMORY long_str $.text
 </details>
 
 <details open>
-<summary><b>Check memory usage of multiple paths</b></summary>
+<summary><b>Check memory usage of multiple paths</b></summary> 
 
 When using JSONPath expressions that match multiple values, returns an array of memory sizes:
 

@@ -24,23 +24,26 @@ Append the `json` values into the array at `path` after the last element in it
 <details open><summary><code>key</code></summary> 
 
 is key to modify.
+
 </details>
 
 <details open><summary><code>path</code></summary> 
 
 is JSONPath to specify.
+
 </details>
 
 <details open><summary><code>value</code></summary> 
 
 is one or more values to append to one or more arrays. 
 
+</details>
+
 :::note About using strings with JSON commands
 
 To specify a string as an array value to append, wrap the quoted string with an additional set of single quotes. Example: `'"silver"'`. For more detailed use, see [Examples](#examples).
 
 :::
-</details>
 
 ## Return value 
 

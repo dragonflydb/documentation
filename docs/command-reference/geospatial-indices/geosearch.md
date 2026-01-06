@@ -10,9 +10,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    GEOSEARCH key <FROMMEMBER member | FROMLONLAT longitude latitude>
-    <BYRADIUS radius <M | KM | FT | MI> | BYBOX width height <M | KM |
-     FT | MI>> [ASC | DESC] [COUNT count [ANY]] [WITHCOORD] [WITHDIST]
+    GEOSEARCH key \<FROMMEMBER member | FROMLONLAT longitude latitude\>
+    \<BYRADIUS radius \<M | KM | FT | MI\> | BYBOX width height \<M | KM |
+     FT | MI\>\> [ASC | DESC] [COUNT count [ANY]] [WITHCOORD] [WITHDIST]
     [WITHHASH]
 
 **Time complexity:** O(N+log(M)) where N is the number of elements in the grid-aligned bounding box

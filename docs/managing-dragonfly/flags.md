@@ -182,7 +182,7 @@ flags which include specified substring in either in the name, description or pa
   `default:`
 
 ### `--lock_on_hashtags`
-  When true, locks are done in the {hashtag} level instead of key level. Only use this with `--cluster_mode=emulated|yes`.
+  When true, locks are done in the \{hashtag\} level instead of key level. Only use this with `--cluster_mode=emulated|yes`.
   
   `default: false`
 
