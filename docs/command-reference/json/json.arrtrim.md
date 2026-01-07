@@ -21,7 +21,8 @@ Trim an array so that it contains only the specified inclusive range of elements
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to modify.
 
@@ -29,19 +30,22 @@ is key to modify.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open>
+<summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`.
 
 </details>
 
-<details open><summary><code>start</code></summary>
+<details open>
+<summary><code>start</code></summary>
 
 is index of the first element to keep (previous elements are trimmed). Default is 0.
 
 </details>
 
-<details open><summary><code>stop</code></summary>
+<details open>
+<summary><code>stop</code></summary>
 
 is the index of the last element to keep (following elements are trimmed), including the last element. Default is 0. Negative values are interpreted as starting from the end.
 

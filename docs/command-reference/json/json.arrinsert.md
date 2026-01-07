@@ -21,13 +21,15 @@ Insert the `json` values into the array at `path` before the `index` (shifts to 
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to modify.
 
 </details>
 
-<details open><summary><code>value</code></summary>
+<details open>
+<summary><code>value</code></summary>
 
 is one or more values to insert in one or more arrays.
 
@@ -39,7 +41,8 @@ To specify a string as an array value to insert, wrap the quoted string with an 
 
 :::
 
-<details open><summary><code>index</code></summary>
+<details open>
+<summary><code>index</code></summary>
 
 is position in the array where you want to insert a value. The index must be in the array's range. Inserting at `index` 0 prepends to the array. Negative index values start from the end of the array.
 
@@ -47,7 +50,8 @@ is position in the array where you want to insert a value. The index must be in 
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open>
+<summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`.
 

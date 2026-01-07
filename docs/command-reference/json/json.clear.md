@@ -21,7 +21,8 @@ Clear container values (arrays/objects) and set numeric values to `0`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to parse.
 
@@ -29,7 +30,8 @@ is key to parse.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open>
+<summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. Nonexisting paths are ignored.
 

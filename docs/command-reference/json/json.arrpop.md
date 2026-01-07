@@ -21,13 +21,15 @@ Remove and return an element from the index in the array
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to modify.
 
 </details>
 
-<details open><summary><code>index</code></summary>
+<details open>
+<summary><code>index</code></summary>
 
 is position in the array to start popping from. Default is `-1`, meaning the last element. Out-of-range indexes round to their respective array ends. Popping an empty array returns null.
 
@@ -35,7 +37,8 @@ is position in the array to start popping from. Default is `-1`, meaning the las
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open>
+<summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`.
 

@@ -1,12 +1,12 @@
 // @ts-check
 // https://www.gatsbyjs.com/plugins/gatsby-remark-find-replace/
 
-const visit = require("unist-util-visit");
+import { visit } from "unist-util-visit";
 
 const regexp = /\{{DRAGONFLY_VERSION}}/g;
 const version = process.env.DRAGONFLY_VERSION;
 
-module.exports = () => {
+export default function remarkDragonflyVersion() {
   // Go through all text, html, code, inline code, and links.
   return (root) => {
     if (!version) return;
@@ -19,4 +19,4 @@ module.exports = () => {
       }
     });
   };
-};
+}
