@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Redis SELECT command to switch the database for the present connection. 
+description:  Learn how to use Redis SELECT command to switch the database for the present connection.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

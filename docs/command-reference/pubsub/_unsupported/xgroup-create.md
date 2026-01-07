@@ -10,7 +10,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    XGROUP CREATE key group <id | $> [MKSTREAM] [ENTRIESREAD entries-read]
+```
+XGROUP CREATE key group <id | $> [MKSTREAM] [ENTRIESREAD entries-read]
+```
 
 **Time complexity:** O(1)
 
@@ -24,12 +26,16 @@ The special ID `$` is the ID of the last entry in the stream, but you can substi
 
 For example, if you want the group's consumers to fetch the entire stream from the beginning, use zero as the starting ID for the consumer group:
 
-    XGROUP CREATE mystream mygroup 0
+```
+XGROUP CREATE key group <id | $> [MKSTREAM] [ENTRIESREAD entries-read]
+```
 
 By default, the `XGROUP CREATE` command expects that the target stream exists, and returns an error when it doesn't.
 If a stream does not exist, you can create it automatically with length of 0 by using the optional `MKSTREAM` subcommand as the last argument after the `<id>`:
 
-    XGROUP CREATE mystream mygroup $ MKSTREAM
+```
+XGROUP CREATE key group <id | $> [MKSTREAM] [ENTRIESREAD entries-read]
+```
 
 To enable consumer group lag tracking, specify the optional `entries_read` named argument with an arbitrary ID.
 An arbitrary ID is any ID that isn't the ID of the stream's first entry, last entry, or zero ("0-0") ID.

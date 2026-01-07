@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    CONFIG 
+    CONFIG
 
 **Time complexity:** Depends on subcommand.
 

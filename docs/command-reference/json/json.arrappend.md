@@ -21,31 +21,34 @@ Append the `json` values into the array at `path` after the last element in it
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to modify.
+
 </details>
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify.
+
 </details>
 
-<details open><summary><code>value</code></summary> 
+<details open><summary><code>value</code></summary>
 
-is one or more values to append to one or more arrays. 
+is one or more values to append to one or more arrays.
+
+</details>
 
 :::note About using strings with JSON commands
 
 To specify a string as an array value to append, wrap the quoted string with an additional set of single quotes. Example: `'"silver"'`. For more detailed use, see [Examples](#examples).
 
 :::
-</details>
 
-## Return value 
+## Return value
 
-`JSON.ARRAPEND` returns an [array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) of integer replies for each path, the array's new size, or `nil`, if the matching JSON value is not an array. 
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec). 
+`JSON.ARRAPEND` returns an [array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) of integer replies for each path, the array's new size, or `nil`, if the matching JSON value is not an array.
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 ## Examples
 
@@ -77,4 +80,4 @@ dragonfly> JSON.GET item:1
 
 ## See also
 
-`JSON.ARRINDEX` | `JSON.ARRINSERT` 
+`JSON.ARRINDEX` | `JSON.ARRINSERT`

@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    LASTSAVE 
+    LASTSAVE
 
 **Time complexity:** O(1)
 

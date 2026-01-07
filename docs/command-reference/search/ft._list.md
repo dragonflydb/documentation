@@ -6,7 +6,7 @@ description: Returns a list of all existing indexes
 
 ## Syntax
 
-    FT._LIST 
+    FT._LIST
 
 **Time complexity:** O(1)
 

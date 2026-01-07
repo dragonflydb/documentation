@@ -21,14 +21,15 @@ Report the number of keys in the JSON object at `path` in `key`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to parse. Returns `null` for nonexistent keys.
+
 </details>
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. Returns `null` for nonexistant path.
 
@@ -51,4 +52,4 @@ dragonfly> JSON.OBJLEN doc $..a
 
 ## See also
 
-`JSON.ARRINDEX` | `JSON.ARRINSERT` 
+`JSON.ARRINDEX` | `JSON.ARRINSERT`

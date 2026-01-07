@@ -10,7 +10,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    BLMOVE source destination <LEFT | RIGHT> <LEFT | RIGHT> timeout
+```
+BLMOVE source destination <LEFT | RIGHT> <LEFT | RIGHT> timeout
+```
 
 **Time complexity:** O(1)
 

@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    MEMORY MALLOC-STATS 
+    MEMORY MALLOC-STATS
 
 **Time complexity:** Depends on how much memory is allocated, could be slow
 

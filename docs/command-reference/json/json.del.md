@@ -22,25 +22,27 @@ Delete a value
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to modify.
+
 </details>
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. Nonexisting paths are ignored.
 
+</details>
+
 :::note Note
 
- 
+
 Deleting an object's root is equivalent to deleting the key from Redis.
 
 
 :::
-</details>
 
 ## Return
 
@@ -72,11 +74,12 @@ Get the updated document.
 dragonfly> JSON.GET doc $
 "[{\"nested\":{\"b\":3}}]"
 ```
+
 </details>
 
 ## See also
 
-`JSON.SET` | `JSON.ARRLEN` 
+`JSON.SET` | `JSON.ARRLEN`
 
 ## Related topics
 

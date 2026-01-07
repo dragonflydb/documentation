@@ -140,7 +140,7 @@ dragonfly$> ZRANGE leaderboard 0 9 WITHSCORES REV
 ```
 
 You can also ask for players within a specific score range.
-For example, to get players with 4200 < score <= 4800:
+For example, to get players with 4200 &lt; score &lt;= 4800:
 
 ```shell
 # With 'BYSCORE' option, get players with scores between 4800 (inclusive) and 4200 (exclusive).

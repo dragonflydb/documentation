@@ -10,7 +10,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    XGROUP SETID key group <id | $> [ENTRIESREAD entries-read]
+```
+XGROUP SETID key group <id | $> [ENTRIESREAD entries-read]
+```
 
 **Time complexity:** O(1)
 
@@ -20,7 +22,9 @@ Normally, a consumer group's last delivered ID is set when the group is created 
 The `XGROUP SETID` command allows modifying the group's last delivered ID, without having to delete and recreate the group.
 For instance if you want the consumers in a consumer group to re-process all the messages in a stream, you may want to set its next ID to 0:
 
-    XGROUP SETID mystream mygroup 0
+```
+XGROUP SETID key group <id | $> [ENTRIESREAD entries-read]
+```
 
 The optional `entries_read` argument can be specified to enable consumer group lag tracking for an arbitrary ID.
 An arbitrary ID is any ID that isn't the ID of the stream's first entry, its last entry or the zero ("0-0") ID.

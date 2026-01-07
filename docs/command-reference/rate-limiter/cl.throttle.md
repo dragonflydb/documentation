@@ -10,7 +10,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    CL.THROTTLE <key> <max_burst> <count per period> <period> [<quantity>]
+```
+CL.THROTTLE <key> <max_burst> <count per period> <period> [<quantity>]
+```
 
 **Time complexity:** O(1)
 

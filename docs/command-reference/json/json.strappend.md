@@ -21,33 +21,36 @@ Append the `json-string` values to the string at `path`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to modify.
+
 </details>
 
-<details open><summary><code>value</code></summary> 
+<details open><summary><code>value</code></summary>
 
-is value to append to one or more strings. 
+is value to append to one or more strings.
+
+</details>
 
 :::note About using strings with JSON commands
 
 To specify a string as an array value to append, wrap the quoted string with an additional set of single quotes. Example: `'"silver"'`. For more detailed use, see [Examples](#examples).
 
 :::
-</details>
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`.
+
 </details>
 
-## Return value 
+## Return value
 
 JSON.STRAPPEND returns an array of integer replies for each path, the string's new length, or `nil`, if the matching JSON value is not a string.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec). 
+For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 ## Examples
 
@@ -64,7 +67,7 @@ dragonfly> JSON.GET doc $
 
 ## See also
 
-`JSON.ARRAPEND` | `JSON.ARRINSERT` 
+`JSON.ARRAPEND` | `JSON.ARRINSERT`
 
 ## Related topics
 

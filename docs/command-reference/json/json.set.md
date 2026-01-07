@@ -24,11 +24,13 @@ Set the JSON value at `path` in `key`
 <details open><summary><code>key</code></summary>
 
 is key to modify.
+
 </details>
 
 <details open><summary><code>value</code></summary>
 
 is value to set at the specified path
+
 </details>
 
 ## Optional arguments
@@ -38,16 +40,19 @@ is value to set at the specified path
 is JSONPath to specify. Default is root `$`. For new Redis keys the `path` must be the root. For existing keys, when the entire `path` exists, the value that it contains is replaced with the `json` value. For existing keys, when the `path` exists, except for the last element, a new child is added with the `json` value.
 
 Adds a key (with its respective value) to a JSON Object (in a RedisJSON data type key) only if it is the last child in the `path`, or it is the parent of a new child being added in the `path`. Optional arguments `NX` and `XX` modify this behavior for both new RedisJSON data type keys as well as the JSON Object keys in them.
+
 </details>
 
 <details open><summary><code>NX</code></summary>
 
 sets the key only if it does not already exist.
+
 </details>
 
 <details open><summary><code>XX</code></summary>
 
 sets the key only if it already exists.
+
 </details>
 
 ## Return value
@@ -68,6 +73,7 @@ OK
 dragonfly> JSON.GET doc $
 "[{\"a\":3}]"
 ```
+
 </details>
 
 <details open>
@@ -81,6 +87,7 @@ OK
 dragonfly> JSON.GET doc $
 "[{\"a\":2,\"b\":8}]"
 ```
+
 </details>
 
 <details open>
@@ -94,6 +101,7 @@ OK
 dragonfly> JSON.GET doc
 "{\"f1\":{\"a\":3},\"f2\":{\"a\":3}}"
 ```
+
 </details>
 
 ## See also

@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    MEMORY HELP 
+    MEMORY HELP
 
 **Time complexity:** O(1)
 

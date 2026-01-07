@@ -9,7 +9,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    JSON.DEBUG 
+    JSON.DEBUG
 
 **Time complexity:** N/A
 

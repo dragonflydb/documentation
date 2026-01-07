@@ -9,7 +9,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    LMOVE source destination <LEFT | RIGHT> <LEFT | RIGHT>
+```
+LMOVE source destination <LEFT | RIGHT> <LEFT | RIGHT>
+```
 
 **Time complexity:** O(1)
 

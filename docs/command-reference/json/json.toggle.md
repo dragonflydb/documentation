@@ -21,16 +21,17 @@ Toggle a Boolean value stored at `path`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to modify.
+
 </details>
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
-is JSONPath to specify. Default is root `$`. 
+is JSONPath to specify. Default is root `$`.
 
 </details>
 
@@ -78,8 +79,9 @@ Get the updated document.
 dragonfly> JSON.GET doc $
 "[{\"bool\":true}]"
 ```
+
 </details>
 
 ## See also
 
-`JSON.SET` | `JSON.GET` 
+`JSON.SET` | `JSON.GET`

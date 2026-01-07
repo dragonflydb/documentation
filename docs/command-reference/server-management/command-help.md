@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    COMMAND HELP 
+    COMMAND HELP
 
 **Time complexity:** O(1)
 

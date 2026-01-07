@@ -5,12 +5,14 @@ description: "Learn how to use GEORADIUSBYMEMBER to add geographical data to you
 import PageTitle from '@site/src/components/PageTitle';
 
 # GEORADIUSBYMEMBER
- 
+
 <PageTitle title="GEORADIUSBYMEMBER Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
-    GEORADIUSBYMEMBER key member radius <M | KM | FT | MI> [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count [ANY]] [ASC | DESC] [STORE key | STOREDIST key]
+```
+GEORADIUSBYMEMBER key member radius <M | KM | FT | MI> [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count [ANY]] [ASC | DESC] [STORE key | STOREDIST key]
+```
 
 **Time complexity:** O(N+log(M)) where N is the number of elements inside the bounding box of the circular area delimited by center and radius and M is the number of items inside the index.
 

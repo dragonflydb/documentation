@@ -168,6 +168,7 @@ Highlight these differentiators:
 - [ ] Tested code examples
 - [ ] Valid links
 - [ ] `dragonfly>` prompt (not `redis>`)
+- [ ] No trailing whitespace in modified files
 - [ ] Build succeeds: `yarn build`
 - [ ] Preview checked: `yarn start`
 
@@ -176,6 +177,7 @@ Highlight these differentiators:
 - **Minimal changes** - Only modify relevant files
 - **Follow patterns** - Use existing doc structure
 - **Test changes** - Always build and verify
+- **Trim trailing spaces** - Remove trailing whitespace from all modified files
 - **Verify with Docker** - Test command syntax and behavior using a running Dragonfly container before documenting
 - **Emphasize compatibility** - Dragonfly is drop-in Redis replacement
 - **Highlight performance** - Note benefits when relevant

@@ -21,14 +21,15 @@ Return the values at `path` from multiple `key` arguments
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary> 
+<details open><summary><code>key</code></summary>
 
 is key to parse. Returns `null` for nonexistent keys.
+
 </details>
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary> 
+<details open><summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. Returns `null` for nonexistent paths.
 
@@ -60,8 +61,9 @@ dragonfly> JSON.MGET doc1 doc2 $..a
 1) "[1,3]"
 2) "[4,6]"
 ```
+
 </details>
 
 ## See also
 
-`JSON.SET` | `JSON.GET` 
+`JSON.SET` | `JSON.GET`
