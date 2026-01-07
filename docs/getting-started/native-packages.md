@@ -105,7 +105,7 @@ sudo dnf update dragonfly
 **Debian/Ubuntu-based distributions:**
 
 ```shell
-sudo apt update && sudo apt upgrade dragonfly
+sudo apt update && sudo apt install --only-upgrade dragonfly
 ```
 
 After updating, restart the Dragonfly service to apply the changes:
