@@ -92,6 +92,28 @@ redis-cli -p 6379 PING
 
 You should see a `PONG` response if Dragonfly is running correctly.
 
+## Update Dragonfly
+
+To update Dragonfly to the latest available version:
+
+**RPM-based distributions:**
+
+```shell
+sudo dnf update dragonfly
+```
+
+**Debian/Ubuntu-based distributions:**
+
+```shell
+sudo apt update && sudo apt upgrade dragonfly
+```
+
+After updating, restart the Dragonfly service to apply the changes:
+
+```shell
+sudo systemctl restart dragonfly
+```
+
 ## Version Availability
 
 The YUM/DNF repository maintains the latest 5 releases, allowing you to install specific versions as needed. The APT repository contains the latest version of Dragonfly. If you need an older version on Debian/Ubuntu systems, you can download the package directly from the [GitHub releases page](https://github.com/dragonflydb/dragonfly/releases).
