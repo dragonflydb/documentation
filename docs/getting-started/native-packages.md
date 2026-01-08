@@ -1,8 +1,8 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 ---
 
-# Install Dragonfly using Linux Packages
+# Install from Packages
 
 Dragonfly provides native packages for RPM-based and Debian-based Linux distributions. These packages are hosted at [packages.dragonflydb.io](https://packages.dragonflydb.io/) and are signed with GPG keys for security.
 
