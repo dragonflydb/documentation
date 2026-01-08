@@ -11,6 +11,7 @@ Use one of these options to get Dragonfly up and running quickly:
 - [Install Dragonfly Kubernetes Operator](./kubernetes-operator.md)
 - [Install on Kubernetes with Helm Chart](./kubernetes.md)
 - [Install from Binary](./binary.md)
+- [Install using Linux Packages](./native-packages.md)
 - [Get Started with Dragonfly Cloud](./cloud.md)
 
 # Hardware Compatibility
