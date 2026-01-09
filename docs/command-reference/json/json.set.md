@@ -21,13 +21,15 @@ Set the JSON value at `path` in `key`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to modify.
 
 </details>
 
-<details open><summary><code>value</code></summary>
+<details open>
+<summary><code>value</code></summary>
 
 is value to set at the specified path
 
@@ -35,7 +37,8 @@ is value to set at the specified path
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open>
+<summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. For new Redis keys the `path` must be the root. For existing keys, when the entire `path` exists, the value that it contains is replaced with the `json` value. For existing keys, when the `path` exists, except for the last element, a new child is added with the `json` value.
 
@@ -43,13 +46,15 @@ Adds a key (with its respective value) to a JSON Object (in a RedisJSON data typ
 
 </details>
 
-<details open><summary><code>NX</code></summary>
+<details open>
+<summary><code>NX</code></summary>
 
 sets the key only if it does not already exist.
 
 </details>
 
-<details open><summary><code>XX</code></summary>
+<details open>
+<summary><code>XX</code></summary>
 
 sets the key only if it already exists.
 

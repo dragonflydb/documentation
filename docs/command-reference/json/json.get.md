@@ -21,7 +21,8 @@ Return the value at `path` in JSON serialized form
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to parse.
 
@@ -29,7 +30,8 @@ is key to parse.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open>
+<summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. JSON.GET accepts multiple `path` arguments.
 
@@ -48,25 +50,29 @@ If there are multiple paths that include both legacy path and JSONPath, the retu
 
 :::
 
-<details open><summary><code>INDENT</code></summary>
+<details open>
+<summary><code>INDENT</code></summary>
 
 sets the indentation string for nested levels.
 
 </details>
 
-<details open><summary><code>NEWLINE</code></summary>
+<details open>
+<summary><code>NEWLINE</code></summary>
 
 sets the string that's printed at the end of each line.
 
 </details>
 
-<details open><summary><code>SPACE</code></summary>
+<details open>
+<summary><code>SPACE</code></summary>
 
 sets the string that's put between a key and a value.
 
 </details>
 
-<details open><summary><code>NOESCAPE</code></summary>
+<details open>
+<summary><code>NOESCAPE</code></summary>
 
 is present for legacy compatibility and has no other effect.
 
