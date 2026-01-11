@@ -23,6 +23,7 @@ providing users with peace of mind and confidence in the stability and performan
 - [ClickHouse](./clickhouse.md): Ultra fast and resource efficient open-source database for real-time applications and analytics.
 - [django-cacheops](./django-cacheops.md): Slick ORM cache with automatic granular event-driven invalidation for Django.
 - [Feast](./feast.md): Customizable feature store for operational machine learning written in Python.
+- [Magento](./magento.md): Powerful open-source e-commerce platform for high-traffic online stores.
 - [Redlock](./redlock.md): Distributed lock pattern with implementations in various languages.
 - [Relay](./relay.md): Next-generation shared in-memory caching layer for PHP.
 - [Sidekiq](./sidekiq.md): Simple and efficient background job processing for Ruby.
