@@ -42,11 +42,14 @@ jobs:
           files_with_errors=0
 
           while IFS= read -r file; do
-            echo "Checking: $file"
             files_checked=$((files_checked + 1))
 
             # Run markdown-link-check and capture output
             output=$(markdown-link-check --config .mlc-config.json "$file" 2>&1) || true
+
+            # Print the full output for each file
+            echo "$output"
+            echo ""
 
             # Check if there are any broken links (lines with [✖])
             if echo "$output" | grep -q '\[✖\]'; then
