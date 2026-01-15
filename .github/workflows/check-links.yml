@@ -85,7 +85,7 @@ jobs:
           echo "✅ All links are valid!"
 
       - name: Send notification on failure
-        if: failure()
+        if: failure() && github.ref == 'refs/heads/main'
         run: |
           job_link="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
           message="Link check failed in documentation.\nJob Link: ${job_link}"
