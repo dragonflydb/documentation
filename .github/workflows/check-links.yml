@@ -1,6 +1,10 @@
 name: Check Markdown Links
 
 on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - '*.md'
   schedule:
     # Run daily at 6:00 UTC
     - cron: '0 6 * * *'
