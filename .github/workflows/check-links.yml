@@ -26,8 +26,17 @@ jobs:
           cat > .mlc-config.json << 'EOF'
           {
             "ignorePatterns": [{ "pattern": "^/" }, { "pattern": "^#" }, { "pattern": "localhost" }],
+            "httpHeaders": [
+              {
+                "urls": ["https://"],
+                "headers": {
+                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                }
+              }
+            ],
+            "timeout": "20s",
             "retryOn429": true,
-            "retryCount": 3,
+            "retryCount": 5,
             "aliveStatusCodes": [200, 201, 202, 203, 204, 206, 301, 302, 303, 307, 308, 400, 403, 429]
           }
           EOF
