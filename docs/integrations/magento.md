@@ -7,7 +7,7 @@ description: Magento (Adobe Commerce)
 
 ## Introduction
 
-[Magento](https://magento.com/products/open-source) (also known as Adobe Commerce) is a powerful open-source e-commerce platform written in PHP.
+[Magento](https://github.com/magento/magento2) (also known as Adobe Commerce) is a powerful open-source e-commerce platform written in PHP.
 It powers thousands of online stores worldwide and requires a fast in-memory data store for optimal performance.
 
 Magento relies on an in-memory store for three critical functions:
@@ -184,7 +184,7 @@ For optimal Magento performance with Dragonfly:
 
 ## Useful Resources
 
-- Magento Open Source [Homepage](https://magento.com/products/open-source) and [Documentation](https://developer.adobe.com/commerce/docs/).
+- Magento Open Source [Homepage](https://github.com/magento/magento2) and [Documentation](https://developer.adobe.com/commerce/docs/).
 - Complete Docker example in the [dragonfly-examples](https://github.com/dragonflydb/dragonfly-examples/tree/main/magento-integration) repository.
 - Dragonfly [Getting Started](../getting-started/getting-started.md) guide.
 - For PHP applications, also see the [Relay](./relay.md) integration for enhanced in-memory caching.
