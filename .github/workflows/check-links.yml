@@ -51,12 +51,13 @@ jobs:
             echo "$output"
             echo ""
 
-            # Check if there are any broken links (lines with [✖])
-            if echo "$output" | grep -q '\[✖\]'; then
+            # Check if there are any broken links (look for "ERROR:" in output)
+            if echo "$output" | grep -q 'ERROR:'; then
               files_with_errors=$((files_with_errors + 1))
               echo "" >> "$broken_links_report"
               echo "📄 $file" >> "$broken_links_report"
-              echo "$output" | grep '\[✖\]' >> "$broken_links_report"
+              # Extract broken link lines (contain "→ Status:" pattern)
+              echo "$output" | grep -E '→ Status:' >> "$broken_links_report" || true
             fi
           done < <(find docs -name "*.md" -type f)
 
