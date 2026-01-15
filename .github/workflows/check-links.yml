@@ -36,21 +36,49 @@ jobs:
         env:
           FORCE_COLOR: 1
         run: |
-          error_found=0
+          # Create a temporary file to collect all broken links
+          broken_links_report=$(mktemp)
+          files_checked=0
+          files_with_errors=0
 
           while IFS= read -r file; do
             echo "Checking: $file"
-            if ! markdown-link-check --config .mlc-config.json "$file"; then
-              error_found=1
+            files_checked=$((files_checked + 1))
+
+            # Run markdown-link-check and capture output
+            output=$(markdown-link-check --config .mlc-config.json "$file" 2>&1) || true
+
+            # Check if there are any broken links (lines with [✖])
+            if echo "$output" | grep -q '\[✖\]'; then
+              files_with_errors=$((files_with_errors + 1))
+              echo "" >> "$broken_links_report"
+              echo "📄 $file" >> "$broken_links_report"
+              echo "$output" | grep '\[✖\]' >> "$broken_links_report"
             fi
           done < <(find docs -name "*.md" -type f)
 
-          if [ "$error_found" -eq 1 ]; then
-            echo "::error::Broken links found!"
+          echo ""
+          echo "=========================================="
+          echo "📊 Link Check Summary"
+          echo "=========================================="
+          echo "Files checked: $files_checked"
+
+          if [ "$files_with_errors" -gt 0 ]; then
+            echo "Files with broken links: $files_with_errors"
+            echo ""
+            echo "=========================================="
+            echo "❌ Broken Links Report"
+            echo "=========================================="
+            cat "$broken_links_report"
+            echo ""
+            echo "=========================================="
+            rm "$broken_links_report"
+            echo "::error::Found broken links in $files_with_errors file(s)!"
             exit 1
           fi
 
-          echo "All links are valid!"
+          rm "$broken_links_report"
+          echo "✅ All links are valid!"
 
       - name: Send notification on failure
         if: failure()
