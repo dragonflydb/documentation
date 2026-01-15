@@ -158,7 +158,7 @@ Save the file.
 ## Connect to the Client VPN endpoint using the OpenVPN client
 
 Install the AWS VPN client from [this .deb packed](https://d20adtppz83p9s.cloudfront.net/GTK/latest/awsvpnclient_amd64.deb).
-Or see other installation options [here](hhttps://docs.aws.amazon.com/vpn/latest/clientvpn-user/client-vpn-connect-linux-install.html).
+Or see other installation options [here](https://docs.aws.amazon.com/vpn/latest/clientvpn-user/client-vpn-connect-linux-install.html).
 
 Launch the OpenVPN client.
 
