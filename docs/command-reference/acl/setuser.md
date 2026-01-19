@@ -62,6 +62,10 @@ This restriction does not exist on the rest of the family of pub/sub commands.
 - `>password`: Set or update the list of passwords for this user.
 - `nopass`: Allow the user to authenticate with `any` password.
 
+### Database Selectors
+
+Dragonfly ACL supports **database selectors**, a Dragonfly-specific feature that allows you to restrict user access to specific logical databases. This provides fine-grained control over which databases authenticated users can access. See database-selectors for more.
+
 ## Return
 
 [Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` on success. If the rules contain errors, the error is returned.
