@@ -21,7 +21,8 @@ Return the values at `path` from multiple `key` arguments
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to parse. Returns `null` for nonexistent keys.
 
@@ -29,7 +30,8 @@ is key to parse. Returns `null` for nonexistent keys.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open>
+<summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. Returns `null` for nonexistent paths.
 

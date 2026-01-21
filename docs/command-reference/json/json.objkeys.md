@@ -21,7 +21,8 @@ Return the keys in the object that's referenced by `path`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to parse. Returns `null` for nonexistent keys.
 
@@ -29,7 +30,8 @@ is key to parse. Returns `null` for nonexistent keys.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open>
+<summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. Returns `null` for nonexistant path.
 

@@ -21,13 +21,15 @@ Search for the first occurrence of a JSON value in an array
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to parse.
 
 </details>
 
-<details open><summary><code>value</code></summary>
+<details open>
+<summary><code>value</code></summary>
 
 is value to find its index in one or more arrays.
 
@@ -41,14 +43,16 @@ To specify a string as an array value to index, wrap the quoted string with an a
 
 ## Optional arguments
 
-<details open><summary><code>start</code></summary>
+<details open>
+<summary><code>start</code></summary>
 
 is inclusive start value to specify in a slice of the array to search. Default is `0`.
 
 </details>
 
 
-<details open><summary><code>stop</code></summary>
+<details open>
+<summary><code>stop</code></summary>
 
 is exclusive stop value to specify in a slice of the array to search, including the last element. Default is `0`. Negative values are interpreted as starting from the end.
 

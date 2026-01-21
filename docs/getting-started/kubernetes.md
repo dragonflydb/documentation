@@ -2,6 +2,8 @@
 sidebar_position: 1
 ---
 
+import PageTitle from '@site/src/components/PageTitle';
+
 # Install on Kubernetes with Helm Chart
 
 <PageTitle title="Getting Started with Helm | Dragonfly" />

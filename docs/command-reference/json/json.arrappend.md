@@ -21,19 +21,22 @@ Append the `json` values into the array at `path` after the last element in it
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to modify.
 
 </details>
 
-<details open><summary><code>path</code></summary>
+<details open>
+<summary><code>path</code></summary>
 
 is JSONPath to specify.
 
 </details>
 
-<details open><summary><code>value</code></summary>
+<details open>
+<summary><code>value</code></summary>
 
 is one or more values to append to one or more arrays.
 
