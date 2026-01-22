@@ -14,6 +14,8 @@ The `DELEX` command provides conditional key deletion based on value or digest c
 It enables atomic conditional operations, allowing you to delete keys only when specific conditions are met.
 This is useful for implementing optimistic locking patterns and ensuring data consistency.
 
+**Availability:** Dragonfly v1.37.0 and later.
+
 ## Syntax
 
 ```shell
@@ -99,8 +101,8 @@ Delete the key only if the digest matches:
 dragonfly$> SET mykey "test"
 OK
 dragonfly$> DIGEST mykey
-"a1b2c3d4e5f67890"
-dragonfly$> DELEX mykey IFDEQ "a1b2c3d4e5f67890"
+"9ec9f7918d7dfc40"
+dragonfly$> DELEX mykey IFDEQ "9ec9f7918d7dfc40"
 (integer) 1
 
 dragonfly$> SET mykey "test"
@@ -119,13 +121,13 @@ Delete the key only if the digest differs:
 dragonfly$> SET mykey "test"
 OK
 dragonfly$> DIGEST mykey
-"a1b2c3d4e5f67890"
+"9ec9f7918d7dfc40"
 dragonfly$> DELEX mykey IFDNE "0000000000000000"
 (integer) 1
 
 dragonfly$> SET mykey "test"
 OK
-dragonfly$> DELEX mykey IFDNE "a1b2c3d4e5f67890"
+dragonfly$> DELEX mykey IFDNE "9ec9f7918d7dfc40"
 (integer) 0
 dragonfly$> GET mykey
 "test"
@@ -139,10 +141,10 @@ Use `DELEX` for optimistic locking to ensure data hasn't changed:
 dragonfly$> SET counter "100"
 OK
 dragonfly$> DIGEST counter
-"d4f3c8b2a1e6f7d9"
+"e3cd843a18868415"
 
 # Later, delete only if the value hasn't changed
-dragonfly$> DELEX counter IFDEQ "d4f3c8b2a1e6f7d9"
+dragonfly$> DELEX counter IFDEQ "e3cd843a18868415"
 (integer) 1
 ```
 
@@ -180,7 +182,3 @@ Yes, `DELEX` operations are journaled and replicated to replicas, ensuring consi
 ### How is DELEX different from DEL?
 
 `DELEX` extends [`DEL`](./del.md) by adding conditional deletion based on value or digest matching. Without conditions, `DELEX key` behaves identically to `DEL key`.
-
-### Is DELEX compatible with Redis?
-
-Yes, `DELEX` is compatible with Redis 8.4.0 and later versions.

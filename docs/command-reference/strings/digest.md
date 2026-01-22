@@ -14,6 +14,8 @@ The `DIGEST` command returns a hash digest for the value stored at a specified k
 It uses the XXH3 hashing algorithm to compute a 64-bit hash and returns it as a 16-character hexadecimal string.
 This command is useful for comparing values without transferring the full content, implementing checksums, or detecting changes.
 
+**Availability:** Dragonfly v1.37.0 and later.
+
 ## Syntax
 
 ```shell
@@ -44,7 +46,7 @@ Compute digest of a string value:
 dragonfly$> SET mykey "Hello, Dragonfly!"
 OK
 dragonfly$> DIGEST mykey
-"d4f3c8b2a1e6f7d9"
+"063b4909128e92b7"
 ```
 
 ### Non-Existent Key
@@ -66,9 +68,9 @@ OK
 dragonfly$> SET key2 "test"
 OK
 dragonfly$> DIGEST key1
-"a1b2c3d4e5f67890"
+"9ec9f7918d7dfc40"
 dragonfly$> DIGEST key2
-"a1b2c3d4e5f67890"
+"9ec9f7918d7dfc40"
 ```
 
 ### Different Values Produce Different Digests
@@ -79,9 +81,9 @@ OK
 dragonfly$> SET key2 "world"
 OK
 dragonfly$> DIGEST key1
-"1234567890abcdef"
+"9555e8555c62dcfd"
 dragonfly$> DIGEST key2
-"fedcba0987654321"
+"d6476c25083d69be"
 ```
 
 ### Error on Wrong Type
@@ -117,7 +119,3 @@ No, `DIGEST` uses XXH3 which is not a cryptographic hash function. For cryptogra
 ### Can DIGEST work with compressed or integer-encoded strings?
 
 Yes, `DIGEST` handles all string encodings including raw strings, integer-encoded strings, and compressed strings.
-
-### Is DIGEST compatible with Redis?
-
-Yes, `DIGEST` is compatible with Redis 8.4.0 and later versions.
