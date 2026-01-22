@@ -116,6 +116,6 @@ dragonfly$> DIGEST mylist
 
 No, `DIGEST` uses XXH3 which is not a cryptographic hash function. For cryptographic purposes, use dedicated cryptographic hash functions.
 
-### Can DIGEST work with compressed or integer-encoded strings?
+### Can DIGEST work with integer-encoded strings?
 
-Yes, `DIGEST` handles all string encodings including raw strings, integer-encoded strings, and compressed strings.
+Yes, `DIGEST` handles all string encodings including raw strings and integer-encoded strings.
