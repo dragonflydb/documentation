@@ -27,7 +27,7 @@ DELEX key [IFEQ value | IFNE value | IFDEQ digest | IFDNE digest]
 - O(min(M,N)) for value comparisons (IFEQ/IFNE) where M and N are value lengths
 - O(N) for digest comparisons (IFDEQ/IFDNE) where N is the length of the stored string value
 
-**ACL categories:** @keyspace, @write, @fast
+**ACL categories:** @keyspace, @write, @slow
 
 ## Parameter Explanations
 
