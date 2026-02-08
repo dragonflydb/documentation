@@ -1,7 +1,10 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const codeTheme = require("prism-react-renderer/themes/palenight");
+import {themes} from "prism-react-renderer";
+import remarkDragonflyVersion from "./src/theme/plugins/remark-dragonfly-version.mjs";
+
+const codeTheme = themes.palenight;
 const isPreviewDeployment = process.env.VERCEL_ENV === "preview";
 
 /** @type {import('@docusaurus/types').Config} */
@@ -73,11 +76,11 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve("./sidebars.js"),
+          sidebarPath: "./sidebars.js",
           editUrl: "https://github.com/dragonflydb/documentation/edit/main/",
           routeBasePath: "/",
           remarkPlugins: [
-            require("./src/theme/plugins/remark-dragonfly-version.js"),
+            remarkDragonflyVersion,
           ],
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
@@ -85,7 +88,7 @@ const config = {
         blog: false,
         pages: false,
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss: "./src/css/custom.css",
         },
         googleTagManager: {
           containerId: "GTM-M7MX697",
@@ -279,4 +282,4 @@ const config = {
     }),
 };
 
-module.exports = config;
+export default config;

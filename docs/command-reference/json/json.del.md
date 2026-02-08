@@ -22,7 +22,8 @@ Delete a value
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to modify.
 
@@ -30,7 +31,8 @@ is key to modify.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open>
+<summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`. Nonexisting paths are ignored.
 

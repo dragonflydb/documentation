@@ -22,7 +22,8 @@ Report the memory size in bytes of the JSON element.
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to analyze.
 
@@ -30,7 +31,8 @@ is key to analyze.
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open>
+<summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$` if not provided.
 

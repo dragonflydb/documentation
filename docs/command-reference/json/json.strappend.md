@@ -21,13 +21,15 @@ Append the `json-string` values to the string at `path`
 
 ## Required arguments
 
-<details open><summary><code>key</code></summary>
+<details open>
+<summary><code>key</code></summary>
 
 is key to modify.
 
 </details>
 
-<details open><summary><code>value</code></summary>
+<details open>
+<summary><code>value</code></summary>
 
 is value to append to one or more strings.
 
@@ -41,7 +43,8 @@ To specify a string as an array value to append, wrap the quoted string with an 
 
 ## Optional arguments
 
-<details open><summary><code>path</code></summary>
+<details open>
+<summary><code>path</code></summary>
 
 is JSONPath to specify. Default is root `$`.
 
