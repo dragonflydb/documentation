@@ -40,6 +40,7 @@ sidebar_position: 0
 |                                              | <span class="command">SELECT</span>                        | <span class="support supported">Fully supported</span>   |
 | <span class="family">Generic</span>          | <span class="command">COPY</span>                          | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">DEL</span>                           | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">DELEX</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">DUMP</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">EXISTS</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">EXPIRE</span>                        | <span class="support supported">Fully supported</span>   |
@@ -267,6 +268,7 @@ sidebar_position: 0
 | <span class="family">String</span>           | <span class="command">APPEND</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">DECR</span>                          | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">DECRBY</span>                        | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">DIGEST</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GET</span>                           | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GETEX</span>                         | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">GETDEL</span>                        | <span class="support supported">Fully supported</span>   |
