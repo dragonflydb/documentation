@@ -17,23 +17,24 @@
     "dragonfly-latest-version": "curl -s https://version.dragonflydb.io/v1 | grep -oE '[0-9.]+'"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.0.0",
-    "@docusaurus/preset-classic": "^3.0.0",
+    "@docusaurus/core": "3.9.2",
+    "@docusaurus/preset-classic": "3.9.2",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^1.2.1",
     "prism-react-renderer": "^2.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.0.0",
-    "@docusaurus/tsconfig": "^3.0.0",
+    "@docusaurus/module-type-aliases": "3.9.2",
+    "@docusaurus/tsconfig": "3.9.2",
     "@types/adm-zip": "^0.5.0",
     "adm-zip": "^0.5.10",
     "cross-fetch": "^3.1.5",
     "csv": "^6.3.1",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2",
+    "typescript": "~5.2.2",
     "yaml": "^2.2.1"
   },
   "browserslist": {
@@ -49,7 +50,7 @@
     ]
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=20.0"
   },
   "prettier": {}
 }
