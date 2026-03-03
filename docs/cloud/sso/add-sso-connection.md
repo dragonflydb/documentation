@@ -72,7 +72,7 @@ To disable an SSO connection:
 2. Toggle the connection to "Disabled"
 
 When a connection is disabled, users from associated domains will no longer be able to sign in through SSO.
-Existing sessions will remain active until they expired.
+Existing sessions will remain active until they expire.
 
 :::warning
 Disabling an SSO connection does not delete user accounts. Users created through SSO will still exist in your organization.
