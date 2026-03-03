@@ -41,13 +41,13 @@ Before setting up an SSO connection, you need to:
 To add a new SSO connection in Dragonfly Cloud:
 
 1. Navigate to the **Access > SSO** section in Dragonfly Cloud.
-2. Click the **Create Connection** button to create a new SSO connection, put down name, type and linked domains.
-3. Copy the following information ACS URL and Entity ID, you will need it for IdP app configuration.
-4. Create IdP application configuration with data from step 3.
-3. Provide the following information from your IdP metadata:
+2. Click the **Create Connection** button to start a new SSO connection and enter the name, type, and linked domains.
+3. Copy the **ACS URL** and **Entity ID** values; you will need them when configuring your IdP application.
+4. In your identity provider, create and configure a SAML application using the ACS URL and Entity ID from step 3.
+5. Back in Dragonfly Cloud, provide the following information from your IdP metadata:
    - **Metadata URL**: Metadata URL of your identity provider
-   - **Certificate**: Copy your PEM encoded certificate into form
-5. Click **Create Connection** to save your configuration
+   - **Certificate**: Copy your PEM-encoded certificate into the form
+6. Click **Create Connection** to save your configuration.
 
 ## Configuring Your Identity Provider
 
