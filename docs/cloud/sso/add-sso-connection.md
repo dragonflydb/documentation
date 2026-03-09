@@ -1,37 +1,21 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
-# Adding an Identity Provider Connection
+# Adding an SSO Connection
 <CloudBadge/>
-<PageTitle title="Adding an Identity Provider Connection | Dragonfly Cloud" />
+<PageTitle title="Adding an SSO Connection | Dragonfly Cloud" />
 
-## Overview
-
-Dragonfly Cloud supports Single Sign-On (SSO) integration with external identity providers (IdP) using SAML 2.0 protocol.
-This allows your organization to centralize user authentication and leverage your existing identity management system.
-
-With SSO enabled, users can:
-- Sign in to Dragonfly Cloud using their corporate credentials
-- Benefit from your organization's security policies (MFA, password policies, etc.)
-- Have their access automatically managed through your identity provider
-
-## Supported Identity Providers
-
-Dragonfly Cloud supports the following identity providers:
-
-- **[Okta](./okta.md)**: Native integration with Okta using SAML 2.0
-- **Custom SAML Provider**: Any SAML 2.0 compliant identity provider (Azure AD, Google Workspace, Auth0, OneLogin, etc.)
 
 ## Prerequisites
 
-Before setting up an SSO connection, you need to:
+Before setting up an SSO connection with your Identity Provider, you need to:
 
 1. **Verify your domain**: You must verify ownership of your organization's email domain. See [Domain Verification](./domains.md) for detailed instructions.
-2. **IdP Administrator Access**: You need administrative access to your identity provider to configure the SAML application.
+2. **IdP Administrator Access**: You need administrative access to your identity provider to configure the SAML v2 application.
 3. **SAML Metadata**: Your identity provider must provide SAML metadata, including:
    - Metadata URL (recommended) or manual configuration
    - X.509 Certificate
@@ -55,14 +39,16 @@ For detailed provider-specific instructions, see:
 
 - [Okta Configuration Guide](./okta.md)
 - [OneLogin Configuration Guide](./onelogin.md)
+- For other providers please contact [support](mailto:support@dragonflydb.io).
 
 ## Enabling and Managing Connections
 
 After configuring both Dragonfly Cloud and your identity provider:
 
 1. **Enable the Connection**: Toggle the connection to "Enabled" to activate SSO for your domains.
-2. **Test the Connection**: Verify that users can successfully authenticate through your IdP.
-3. **Enable SCIM (Optional)**: Enable SCIM provisioning to automatically manage users. See [Managed Users](./managed-users.md) for details.
+2. **Add test user you have access to**: Navigate to Access > Users and create new user with connection you created. 
+3. **Test the Connection**: Verify this user can successfully authenticate through your IdP.
+4. **Enable SCIM (Optional)**: Enable SCIM provisioning to automatically manage users. See [Managed Users](./managed-users.md) for details.
 
 ## Disabling an SSO Connection
 
