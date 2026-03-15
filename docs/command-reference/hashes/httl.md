@@ -24,7 +24,7 @@ Field-level expiry is set via [`HEXPIRE`](./hexpire.md) or [`HSETEX`](./hsetex.m
 
 ## Return
 
-[Array reply](https://valkey.io/docs/latest/develop/reference/protocol-spec/#arrays): an array of integer replies, one per field, in the same order as the fields were requested:
+[Array reply](https://valkey.io/topics/protocol/#arrays): an array of integer replies, one per field, in the same order as the fields were requested:
 
 - Integer reply: `-2` if the field does not exist in the hash, or if the hash key itself does not exist.
 - Integer reply: `-1` if the field exists but has no associated expiration (it persists indefinitely).
