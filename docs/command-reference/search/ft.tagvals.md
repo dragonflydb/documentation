@@ -33,8 +33,8 @@ The returned strings are lowercase with whitespaces removed, but otherwise uncha
 
 One of the following:
 
-- [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): an array of distinct tag values as bulk strings.
-- [Simple error reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors) in these cases: no such index, not a tag field.
+- [Array reply](https://valkey.io/topics/protocol/#arrays): an array of distinct tag values as bulk strings.
+- [Simple error reply](https://valkey.io/topics/protocol/#simple-errors) in these cases: no such index, not a tag field.
 
 ## Examples
 

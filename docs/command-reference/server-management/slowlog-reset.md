@@ -17,4 +17,4 @@ Once deleted the information is lost forever.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK`
+[Simple string reply](https://valkey.io/topics/protocol/#simple-strings): `OK`

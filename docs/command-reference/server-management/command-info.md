@@ -32,7 +32,7 @@ The reply format matches one entry of the `COMMAND` output:
 
 ## Return
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a single-element nested array describing the command, or a [null reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#nulls) if the command does not exist.
+[Array reply](https://valkey.io/topics/protocol/#arrays): a single-element nested array describing the command, or a [null reply](https://valkey.io/topics/protocol/#nulls) if the command does not exist.
 
 ## Examples
 

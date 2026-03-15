@@ -27,7 +27,7 @@ be included in the cardinality of the computed HyperLogLog.
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): The
+[Simple string reply](https://valkey.io/topics/protocol/#simple-strings): The
 command just returns OK.
 
 ## Examples

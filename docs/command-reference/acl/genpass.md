@@ -23,7 +23,7 @@ Note that the number of bits provided is rounded to the next multiple of 4.
 
 ## Return
 
-- [Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec#bulk-strings): pseudorandom data.
+- [Bulk string reply](https://valkey.io/topics/protocol/#bulk-strings): pseudorandom data.
   By default it contains 64 bytes, representing 256 bits of data.
   If the `bits` argument was given, the output string length is the number of specified bits (rounded to the next multiple of 4) divided by 4.
 

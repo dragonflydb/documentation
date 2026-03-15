@@ -40,7 +40,7 @@ is JSONPath to specify. Default is root `$`. Returns `null` for nonexistent path
 ## Return
 
 JSON.MGET returns an array of bulk string replies specified as the JSON serialization of the value at each key's path.
-For more information about replies, see [Redis serialization protocol specification](https://redis.io/docs/latest/develop/reference/protocol-spec).
+For more information about replies, see [Redis serialization protocol specification](https://valkey.io/topics/protocol/).
 
 ## Examples
 

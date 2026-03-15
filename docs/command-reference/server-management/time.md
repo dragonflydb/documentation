@@ -23,7 +23,7 @@ call.
 
 ## Return
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays), specifically:
+[Array reply](https://valkey.io/topics/protocol/#arrays), specifically:
 
 A multi bulk reply containing two elements:
 

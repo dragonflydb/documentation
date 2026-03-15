@@ -36,7 +36,7 @@ Unsupported in Dragonfly:
 
 ## Return
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a nested list of command details.
+[Array reply](https://valkey.io/topics/protocol/#arrays): a nested list of command details.
 The order of commands in the array is random.
 
 The reply is an array with **an element per command**.

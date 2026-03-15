@@ -26,8 +26,8 @@ See [`BLMPOP`](./blmpop) for the blocking variant of this command.
 
 ## Return
 
-- [Null reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#nulls): when no element could be popped.
-- [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a two-element array with the first element
+- [Null reply](https://valkey.io/topics/protocol/#nulls): when no element could be popped.
+- [Array reply](https://valkey.io/topics/protocol/#arrays): a two-element array with the first element
   being the name of the key from which elements were popped, and the second element being an array of the popped elements.
 
 ## Examples

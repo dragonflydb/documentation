@@ -29,4 +29,4 @@ Client pause currently supports two modes:
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` or an error if the timeout is invalid.
+[Simple string reply](https://valkey.io/topics/protocol/#simple-strings): `OK` or an error if the timeout is invalid.

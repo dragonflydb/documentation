@@ -97,7 +97,7 @@ specific logical databases. This provides fine-grained control over which databa
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` on success. If the rules contain errors, the error is returned.
+[Simple string reply](https://valkey.io/topics/protocol/#simple-strings): `OK` on success. If the rules contain errors, the error is returned.
 
 ## Examples
 

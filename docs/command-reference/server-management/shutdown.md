@@ -52,7 +52,7 @@ The `SHUTDOWN` command supports optional modifiers to alter the behavior of the 
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings):
+[Simple string reply](https://valkey.io/topics/protocol/#simple-strings):
 
 * On successful shutdown, nothing is returned since the server quits and the connection is closed.
 * If `ABORT` is specified, Dragonfly returns an error: `SHUTDOWN ABORT is not supported`, and the server remains running.

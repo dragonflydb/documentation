@@ -29,8 +29,8 @@ Note that adding an attribute to the index causes any future document updates to
 
 ## Return Values
 
-- [Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` if executed correctly.
-- [Simple error reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors) in these cases: no such index, invalid schema syntax.
+- [Simple string reply](https://valkey.io/topics/protocol/#simple-strings): `OK` if executed correctly.
+- [Simple error reply](https://valkey.io/topics/protocol/#simple-errors) in these cases: no such index, invalid schema syntax.
 
 ## Examples
 

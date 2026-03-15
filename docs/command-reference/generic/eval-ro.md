@@ -27,7 +27,7 @@ For a general introduction to scripting, see `EVAL` and the [Redis Programmabili
 
 ## Return
 
-The reply is the result returned by the script, using the [RESP](https://redis.io/docs/latest/develop/reference/protocol-spec/) types.
+The reply is the result returned by the script, using the [RESP](https://valkey.io/topics/protocol//) types.
 
 ## Examples
 

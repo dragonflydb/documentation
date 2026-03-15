@@ -22,13 +22,13 @@ Field(s) will automatically be deleted from the hash key when their TTLs expire.
 
 ## Return
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays):
+[Array reply](https://valkey.io/topics/protocol/#arrays):
 
 - Integer reply: `-2` if no such field exists in the provided hash key, or the provided key does not exist.
 - Integer reply: `1` if the expiration time was set/updated.
 - Integer reply: `2` when `HEXPIRE` is called with 0 seconds.
 
-[Simple error reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors):
+[Simple error reply](https://valkey.io/topics/protocol/#simple-errors):
 
 - If parsing failed, mandatory arguments are missing, unknown arguments are specified, or argument values are of the wrong type or out of range, an error is returned.
 - If the provided key exists but is not a hash, an error is returned.

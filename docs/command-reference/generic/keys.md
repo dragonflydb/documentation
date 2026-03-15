@@ -31,7 +31,7 @@ Use `\` to escape special characters if you want to match them verbatim.
 
 ## Return
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): list of keys matching `pattern`.
+[Array reply](https://valkey.io/topics/protocol/#arrays): list of keys matching `pattern`.
 
 ### Number of Elements Returned
 

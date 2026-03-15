@@ -32,9 +32,9 @@ The optional `WITHSCORES` modifier changes the reply so it includes the respecti
 
 ## Return Values
 
-- [Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): when called without the `count` argument,
+- [Bulk string reply](https://valkey.io/topics/protocol/#bulk-strings): when called without the `count` argument,
   returns the random member or `nil` if `key` does not exist.
-- [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): when called with the `count` argument,
+- [Array reply](https://valkey.io/topics/protocol/#arrays): when called with the `count` argument,
   returns the random members, or an empty array if `key` does not exist.
   If the `WITHSCORES` modifier is used, the reply is a list of members and their scores from the sorted set.
 

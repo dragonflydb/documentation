@@ -21,7 +21,7 @@ but the absolute Unix expiration timestamp of the key is returned in millisecond
 
 ## Return
 
-[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers), specifically:
+[Integer reply](https://valkey.io/topics/protocol/#integers), specifically:
 
 - The expiration Unix timestamp, in milliseconds
 - `-1` if the key exists but has no expiration time.

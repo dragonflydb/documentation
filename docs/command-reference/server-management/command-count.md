@@ -20,7 +20,7 @@ Returns the number of total commands in this Dragonfly server.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): number of commands returned by `COMMAND`.
+[Integer reply](https://valkey.io/topics/protocol/#integers): number of commands returned by `COMMAND`.
 
 ## Examples
 

@@ -22,7 +22,7 @@ The ID can be used with other client-management commands such as `CLIENT KILL ID
 
 ## Return
 
-[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the current connection's client ID.
+[Integer reply](https://valkey.io/topics/protocol/#integers): the current connection's client ID.
 
 ## Examples
 

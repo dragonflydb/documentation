@@ -26,11 +26,11 @@ If called with a negative `count`, the behavior changes and the command is allow
 
 When called without the `count` argument:
 
-[Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): the random member, or `nil` when `key` does not exist.
+[Bulk string reply](https://valkey.io/topics/protocol/#bulk-strings): the random member, or `nil` when `key` does not exist.
 
 When called with the `count` argument:
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): the random members, or an empty array when `key` does not exist.
+[Array reply](https://valkey.io/topics/protocol/#arrays): the random members, or an empty array when `key` does not exist.
 
 ## Examples
 
