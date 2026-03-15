@@ -75,11 +75,11 @@ dragonfly> HTTL mystring FIELDS 1 field1
 - `HTTL` is a read-only command and does not modify the hash or any field TTLs.
 - The reported TTL reflects the time remaining at the moment the command is executed. For precise expiry management, consider the clock resolution on the server.
 - To remove an expiry from a field (make it persist), re-set the field without an expiry using [`HSET`](./hset.md).
-- For millisecond precision, use the `HPTTL` command when it becomes available.
 
 ## Related Commands
 
 - [`HEXPIRE`](./hexpire.md) — Set a TTL on one or more hash fields.
+- `FIELDTTL` — Retrieve the TTL of a specific field.
 - [`HSETEX`](./hsetex.md) — Set hash field values along with a TTL.
 - [`HSET`](./hset.md) — Set hash field values (no expiry).
 - [`HGETALL`](./hgetall.md) — Retrieve all fields and values of a hash.
