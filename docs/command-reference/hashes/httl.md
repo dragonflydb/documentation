@@ -30,20 +30,6 @@ Field-level expiry is set via [`HEXPIRE`](./hexpire.md) or [`HSETEX`](./hsetex.m
 - Integer reply: `-1` if the field exists but has no associated expiration (it persists indefinitely).
 - Integer reply: a positive integer representing the remaining TTL in seconds.
 
-[Simple error reply](https://valkey.io/docs/latest/develop/reference/protocol-spec/#simple-errors):
-
-- If the `FIELDS` argument is missing or not at the correct position, a syntax error is returned.
-- If `numfields` does not match the number of field arguments provided, a syntax error is returned.
-- If the key exists but is not a hash, a `WRONGTYPE` error is returned.
-
-## Parameters
-
-| Parameter   | Description                                                 |
-|-------------|-------------------------------------------------------------|
-| `key`       | The hash key to inspect.                                    |
-| `numfields` | The number of field names that follow.                      |
-| `field`     | One or more field names whose remaining TTL you want to query. |
-
 ## Examples
 
 **Fields with no expiry, one non-existent field:**
