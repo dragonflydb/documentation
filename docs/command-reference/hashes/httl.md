@@ -79,7 +79,7 @@ dragonfly> HTTL mystring FIELDS 1 field1
 ## Related Commands
 
 - [`HEXPIRE`](./hexpire.md) — Set a TTL on one or more hash fields.
-- `FIELDTTL` — Retrieve the TTL of a specific field.
+- [`FIELDTTL`](../generic/fieldttl.md) — Retrieve the TTL of a specific field.
 - [`HSETEX`](./hsetex.md) — Set hash field values along with a TTL.
 - [`HSET`](./hset.md) — Set hash field values (no expiry).
 - [`HGETALL`](./hgetall.md) — Retrieve all fields and values of a hash.
