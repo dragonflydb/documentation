@@ -20,7 +20,7 @@ The `CONFIG HELP` command returns a helpful text describing the different `CONFI
 
 ## Return
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a list of subcommands and their descriptions.
+[Array reply](https://valkey.io/topics/protocol/#arrays): a list of subcommands and their descriptions.
 
 ## Example
 

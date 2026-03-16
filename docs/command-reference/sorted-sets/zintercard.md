@@ -34,7 +34,7 @@ ZINTERCARD numkeys key [key ...] [LIMIT limit]
 
 ## Return Values
 
-- [Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers) the cardinality (number of elements) of members in the resulting intersection.
+- [Integer reply](https://valkey.io/topics/protocol/#integers) the cardinality (number of elements) of members in the resulting intersection.
 
 ## Code Examples
 

@@ -39,7 +39,7 @@ ZINTER numkeys key [key ...]
 
 ## Return Values
 
-- [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) the result of the intersection.
+- [Array reply](https://valkey.io/topics/protocol/#arrays) the result of the intersection.
 - If `WITHSCORES` is provided, the array contains each element followed by its score.
 
 ## Code Examples

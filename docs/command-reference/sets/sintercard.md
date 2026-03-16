@@ -30,7 +30,7 @@ Such implementation ensures a significant speedup for queries where the limit is
 
 ## Return
 
-[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the cardinality (number of elements) of the set which would result from the intersection of all the given sets.
+[Integer reply](https://valkey.io/topics/protocol/#integers): the cardinality (number of elements) of the set which would result from the intersection of all the given sets.
 
 ## Examples
 

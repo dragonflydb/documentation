@@ -34,7 +34,7 @@ Admin-protected connections cannot be killed by non-privileged clients. If the r
 
 ## Return
 
-[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the number of client connections that were terminated.
+[Integer reply](https://valkey.io/topics/protocol/#integers): the number of client connections that were terminated.
 
 ## Examples
 

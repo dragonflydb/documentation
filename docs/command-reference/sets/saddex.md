@@ -27,7 +27,7 @@ An error is returned when the value stored at `key` is not a set.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the number of elements that were added to the set, not including all the elements already present in the set.
+[Integer reply](https://valkey.io/topics/protocol/#integers): the number of elements that were added to the set, not including all the elements already present in the set.
 
 ## Examples
 

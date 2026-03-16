@@ -22,7 +22,7 @@ Otherwise, it returns the statuses of all migrations on the current node.
 
 ## Return
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a nested list of migration info.
+[Array reply](https://valkey.io/topics/protocol/#arrays): a nested list of migration info.
 For each migration, the following fields are returned:
 - The migration direction, which can be `in` or `out`.
 - The `node_id` of the migration.

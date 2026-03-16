@@ -25,7 +25,7 @@ This command is like [`ZRANGE`](./zrange.md), but stores the result in the `dest
 
 ## Return Values
 
-- [Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers) the number of elements in the resulting sorted set, stored in `destination`.
+- [Integer reply](https://valkey.io/topics/protocol/#integers) the number of elements in the resulting sorted set, stored in `destination`.
 
 ## Code Examples
 

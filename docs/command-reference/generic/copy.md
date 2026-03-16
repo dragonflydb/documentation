@@ -21,8 +21,8 @@ The `REPLACE` option removes an existing key before copying.
 
 ## Return
 
-- [Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): `1` if the `source` was copied.
-- [Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): `0` if the `source` was not copied when `destination` already exists.
+- [Integer reply](https://valkey.io/topics/protocol/#integers): `1` if the `source` was copied.
+- [Integer reply](https://valkey.io/topics/protocol/#integers): `0` if the `source` was not copied when `destination` already exists.
 
 ## Examples
 

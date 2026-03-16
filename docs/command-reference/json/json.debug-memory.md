@@ -40,9 +40,9 @@ is JSONPath to specify. Default is root `$` if not provided.
 
 ## Return
 
-[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): memory size in bytes of the JSON value when path is evaluated to a single value.
+[Integer reply](https://valkey.io/topics/protocol/#integers): memory size in bytes of the JSON value when path is evaluated to a single value.
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a list that represents the memory size in bytes of JSON value at each path when path is evaluated to multiple values.
+[Array reply](https://valkey.io/topics/protocol/#arrays): a list that represents the memory size in bytes of JSON value at each path when path is evaluated to multiple values.
 
 **Note:** Primitive JSON types (numbers, booleans, and `null`) return `0` because they are stored inline and do not allocate separate memory. Objects, arrays, and strings (that exceed the Small String Optimization buffer) return their actual heap-allocated memory size.
 

@@ -20,5 +20,5 @@ Return a random key from the currently selected database.
 
 ## Return
 
-- [Bulk string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): A random key in database.
+- [Bulk string reply](https://valkey.io/topics/protocol/#bulk-strings): A random key in database.
 - `nil` when the database is empty.

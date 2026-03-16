@@ -27,4 +27,4 @@ Currently the supported attributes are:
 
 ## Return
 
-[Simple string reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings): `OK` if the attribute name was successfully set.
+[Simple string reply](https://valkey.io/topics/protocol/#simple-strings): `OK` if the attribute name was successfully set.

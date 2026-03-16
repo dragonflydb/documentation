@@ -22,7 +22,7 @@ See also the [`PEXPIRETIME`](./pexpiretime.md) command which returns the same in
 
 ## Return
 
-[Integer reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers), specifically:
+[Integer reply](https://valkey.io/topics/protocol/#integers), specifically:
 
 - The expiration Unix timestamp, in seconds.
 - `-1` if the key exists but has no expiration time.

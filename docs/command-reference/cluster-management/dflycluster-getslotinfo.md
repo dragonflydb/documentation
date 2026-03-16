@@ -20,7 +20,7 @@ The `DFLYCLUSTER GETSLOTINFO` command is used to get information regarding provi
 
 ## Return
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a nested list of slots info.
+[Array reply](https://valkey.io/topics/protocol/#arrays): a nested list of slots info.
 
 ## Examples
 

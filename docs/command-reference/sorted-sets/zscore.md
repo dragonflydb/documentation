@@ -29,8 +29,8 @@ ZSCORE key member
 
 ## Return Values
 
-- The command returns the score (as [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) in RESP2
-  or as [double](https://redis.io/docs/latest/develop/reference/protocol-spec/#doubles) in RESP3) associated with the specified `member`.
+- The command returns the score (as [bulk string](https://valkey.io/topics/protocol/#bulk-strings) in RESP2
+  or as [double](https://valkey.io/topics/protocol/#doubles) in RESP3) associated with the specified `member`.
 - If the `member` does not exist within the sorted set, `nil` is returned.
 
 ## Code Examples

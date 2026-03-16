@@ -20,7 +20,7 @@ Return usage information for the supported `COMMAND` subcommands in this Dragonf
 
 ## Return
 
-[Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a list of human-readable help lines.
+[Array reply](https://valkey.io/topics/protocol/#arrays): a list of human-readable help lines.
 
 ## Examples
 

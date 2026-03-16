@@ -32,7 +32,7 @@ A `timeout` of zero can be used to block indefinitely.
 
 ## Return Values
 
-- [Null reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#nulls): when no member could be popped and the `timeout` is reached.
-- [Array reply](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays): a two-element array with the first element
+- [Null reply](https://valkey.io/topics/protocol/#nulls): when no member could be popped and the `timeout` is reached.
+- [Array reply](https://valkey.io/topics/protocol/#arrays): a two-element array with the first element
   being the name of the key from which members were popped, and the second element is an array of the popped members.
   Every entry in the elements array is also an array that contains the member and its score.

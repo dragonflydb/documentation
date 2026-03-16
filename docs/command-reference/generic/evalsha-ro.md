@@ -27,7 +27,7 @@ For Valkey semantics reference, see the [corresponding command page here](https:
 
 ## Return
 
-The reply is the result returned by the script, using the [RESP](https://redis.io/docs/latest/develop/reference/protocol-spec/) types.
+The reply is the result returned by the script, using the [RESP](https://valkey.io/topics/protocol//) types.
 
 ## Examples
 
