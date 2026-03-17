@@ -21,6 +21,9 @@ from a remote storage system is also supported.
 Existing backups in your Dragonfly Cloud account can be [restored to an active data store](#restoring-from-backup)
 at any time.
 
+For clustered (multi-shard) data stores, please review the [cluster backup limitations](#cluster-datastore-backups)
+before restoring.
+
 ## Manual On-Demand Backups
 
 To create a manual on-demand backup, follow the steps below:
@@ -62,6 +65,26 @@ To restore a backup in an existing data store, follow the steps below, **with ca
 - The **Restore Backup** drawer will open on the right.
 - Make **100% sure you select the correct backup** from the dropdown.
 - Click **Restore**.
+
+## Cluster Datastore Backups
+
+Dragonfly Cloud supports backups for clustered (multi-shard) data stores. A cluster backup captures
+the full dataset distributed across all shards at the point in time the backup was taken.
+
+### Limitations
+
+- **Shard count must match on restore**: The target data store must have the same number of shards
+  as the data store at the time the backup was created. Restoring a cluster backup to a data store
+  with a different shard count is not supported.
+- **Shard distribution is enforced by the backup**: Data is partitioned across shards by hash slot ranges.
+  When restoring, the slot distribution of the target data store is overwritten to match the shard
+  distribution recorded in the backup. The target data store will reflect the original slot layout
+  after the restore completes.
+- **Cross-tier restore is not supported**: A backup taken from a clustered data store cannot be
+  restored to a single-shard (non-clustered) data store, and vice versa.
+
+***CAUTION: Before initiating a restore, verify that the target data store's shard count and
+configuration match the data store that the backup was originally taken from.***
 
 ## Viewing and Deleting Backups
 
