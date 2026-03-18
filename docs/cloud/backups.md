@@ -21,8 +21,7 @@ from a remote storage system is also supported.
 Existing backups in your Dragonfly Cloud account can be [restored to an active data store](#restoring-from-backup)
 at any time.
 
-For clustered (multi-shard) data stores, please review the [cluster backup limitations](#cluster-datastore-backups)
-before restoring.
+For Swarm (multi-shard) data stores see [cluster backup limitations](#swarm-multi-shard-backups).
 
 ## Manual On-Demand Backups
 
@@ -66,10 +65,11 @@ To restore a backup in an existing data store, follow the steps below, **with ca
 - Make **100% sure you select the correct backup** from the dropdown.
 - Click **Restore**.
 
-## Cluster Datastore Backups
+## Swarm (multi-shard) Backups
 
-Dragonfly Cloud supports backups for clustered (multi-shard) data stores. A cluster backup captures
-the full dataset distributed across all shards at the point in time the backup was taken.
+Dragonfly Cloud supports backups for Swarm (multi-shard) data stores. A multi shard datastore backup
+captures the full dataset distributed across all shards at the point in time the
+backup was taken.
 
 ### Limitations
 
@@ -80,11 +80,9 @@ the full dataset distributed across all shards at the point in time the backup w
   When restoring, the slot distribution of the target data store is overwritten to match the shard
   distribution recorded in the backup. The target data store will reflect the original slot layout
   after the restore completes.
-- **Cross-tier restore is not supported**: A backup taken from a clustered data store cannot be
-  restored to a single-shard (non-clustered) data store, and vice versa.
-
-***CAUTION: Before initiating a restore, verify that the target data store's shard count and
-configuration match the data store that the backup was originally taken from.***
+- **Swarm backups cannot be restored to a single-shard data store**: A backup taken from a
+  multi-shard swarm data store cannot be restored to a single-shard (non-clustered) data store.
+  The reverse is supported — a single-shard backup can be restored to a swarm data store.
 
 ## Viewing and Deleting Backups
 
