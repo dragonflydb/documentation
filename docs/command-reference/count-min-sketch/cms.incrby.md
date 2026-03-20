@@ -17,7 +17,8 @@ import PageTitle from '@site/src/components/PageTitle';
 **ACL categories:** @cms
 
 Increments the count of one or more `item`s in the Count-Min Sketch stored at `key` by the given `increment` values.
-If `key` does not exist, a new sketch is created with default dimensions before incrementing.
+The `increment` value must be a positive integer greater than `0`.
+If `key` does not exist, an error is returned.
 
 ## Return
 

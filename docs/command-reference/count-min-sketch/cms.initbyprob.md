@@ -21,8 +21,8 @@ the desired `error` rate and `probability` of accuracy.
 
 - `error`: The desired error rate as a fraction of the total count. Must be a positive number between `0` and `1`.
   For example, `0.01` means the estimated count will be within `1%` of the true count.
-- `probability`: The desired probability that an estimate will fall within the error bounds. Must be a positive number between `0` and `1`.
-  For example, `0.999` means the estimate will be within the error bounds `99.9%` of the time.
+- `probability`: The desired failure probability — the probability that an estimate will exceed the error bounds. Must be a positive number between `0` and `1`.
+  For example, `0.01` means there is a `1%` chance the estimate exceeds the error bounds. Lower values produce a deeper sketch with fewer errors but higher memory and CPU usage.
 
 If `key` already exists, an error is returned.
 
@@ -33,7 +33,7 @@ If `key` already exists, an error is returned.
 ## Examples
 
 ```shell
-dragonfly> CMS.INITBYPROB cms_key 0.01 0.999
+dragonfly> CMS.INITBYPROB cms_key 0.01 0.01
 OK
 ```
 
