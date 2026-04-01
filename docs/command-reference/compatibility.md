@@ -313,6 +313,8 @@ sidebar_position: 0
 |                                              | <span class="command">BF.SCANDUMP</span>                   | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">BF.LOADCHUNK</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">BF.INFO</span>                       | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">BF.CARD</span>                       | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">BF.DEBUG</span>                      | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Cuckoo Filter</span>    | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Count-Min Sketch</span> | <span class="command">CMS.INCRBY</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CMS.INFO</span>                      | <span class="support supported">Fully supported</span>   |
@@ -361,7 +363,13 @@ sidebar_position: 0
 | <span class="family">Auto Suggest</span>     | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">T-Digest</span>         | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
 | <span class="family">Time Series</span>      | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
-| <span class="family">Top-K</span>            | <span class="command">TBD</span>                           | <span class="support unsupported">Unsupported</span>     |
+| <span class="family">Top-K</span>            | <span class="command">TOPK.RESERVE</span>                  | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">TOPK.ADD</span>                      | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">TOPK.INCRBY</span>                   | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">TOPK.QUERY</span>                    | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">TOPK.COUNT</span>                    | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">TOPK.LIST</span>                     | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">TOPK.INFO</span>                     | <span class="support supported">Fully supported</span>   |
 | <span class="family">CF</span>               | <span class="command">CF.ADD</span>                        | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CF.ADDNX</span>                      | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CF.COUNT</span>                      | <span class="support unsupported">Unsupported</span>     |
