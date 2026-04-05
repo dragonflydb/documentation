@@ -12,7 +12,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
     TOPK.COUNT key item [item ...]
 
-**Time complexity:** O(n * depth) where n is the number of items and depth is the number of hash function rows
+**Time complexity:** O(n) where n is the number of items
 
 **ACL categories:** @topk
 

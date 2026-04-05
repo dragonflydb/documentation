@@ -23,6 +23,11 @@ Creates a new Top-K data structure at `key` that tracks the top `topk` most freq
 - `depth` (optional): The number of hash function rows (default `7`, max `100`).
 - `decay` (optional): The probability decay factor between `0` and `1` (default `0.9`).
 
+The default parameters are recommended for most use cases.
+In particular, the default `decay` value of `0.9` uses a globally shared pre-computed lookup table,
+while a custom `decay` value forces Dragonfly to allocate a separate lookup table in memory for each key.
+Using many Top-K structures with different custom `decay` values will result in higher memory consumption.
+
 If `width`, `depth`, and `decay` are provided, all three must be specified together.
 If `key` already exists, an error (`item exists`) is returned.
 
