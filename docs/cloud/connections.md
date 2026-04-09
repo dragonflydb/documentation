@@ -88,7 +88,6 @@ Before starting, set these variables in your shell:
 user_subscription_id=""      # Your Azure subscription ID
 user_resource_group=""      # Your Azure resource group name
 user_vnet_name=""          # Your Azure VNet name
-azure_region=""            # Your Azure region (e.g., centralus)
 dfcloud_account_id=""        # Account ID under the user created Dragonfly Cloud network
 dfcloud_vpc_id=""            # VPC ID under the user created Dragonfly Cloud network
 
@@ -156,7 +155,6 @@ In the Dragonfly Cloud console, create a new connection with these details:
 
 - **Acceptor Account ID**: Your Azure subscription ID (`$user_subscription_id`)
 - **Acceptor VPC ID**: Your VNet name (`$user_vnet_name`)
-- **Acceptor Region**: Your Azure region (`$azure_region`)
 - **App ID**: Your Azure AD application ID (`$user_app_id`)
 - **Resource Group**: Your resource group name (`$user_resource_group`)
 - **Tenant ID**: Your Azure tenant ID (`$user_tenant_id`)
