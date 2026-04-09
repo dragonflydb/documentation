@@ -3,7 +3,7 @@ sidebar_position: 13
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
-import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
+import CloudBadge from '@site/src/components/CloudBadge/CloudBadge'
 
 # Pricing
 <CloudBadge/>
@@ -13,13 +13,12 @@ import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 Dragonfly Cloud applies a transparent usage-based pricing model with the following components:
 
-- [Pricing](#pricing)
-  - [Overview](#overview)
-  - [Active Data Stores](#active-data-stores)
-    - [Active Data Store Cost Calculation](#active-data-store-cost-calculation)
-    - [Active Data Store Cost Example](#active-data-store-cost-example)
-  - [Data Transfer](#data-transfer)
-  - [Backup Storage](#backup-storage)
+- [Overview](#overview)
+- [Active Data Stores](#active-data-stores)
+  - [Active Data Store Cost Calculation](#active-data-store-cost-calculation)
+  - [Active Data Store Cost Example](#active-data-store-cost-example)
+- [Data Transfer](#data-transfer)
+- [Backup Storage](#backup-storage)
 
 You can track your usage and costs under the [Account > Usage](https://dragonflydb.cloud/account/usage) tab
 in Dragonfly Cloud. The usage and cost information is updated every few hours.

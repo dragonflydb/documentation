@@ -110,7 +110,7 @@ See [Thread Balancing](#3-thread-balancing) below for more details.
 
 You should always avoid using the same hashtag for all queues.
 But sometimes, it is fine to strategically place certain queues on the same Dragonfly thread.
-See [Queue Dependencies](#4-queue-dependencies) below for more details.
+See [Queue Dependencies](#4-queue-dependencies-parent--child) below for more details.
 
 ### 3. Thread Balancing
 
