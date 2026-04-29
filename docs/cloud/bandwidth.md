@@ -41,8 +41,8 @@ If you have more customized network bandwidth requirements, please contact suppo
 | Extreme      | 6.25      | 0.75                | 10.0                    |
 | Extreme      | 12.5      | 1.25                | 10.0                    |
 | Extreme      | 25        | 2.5                 | 10.0                    |
-| Extreme      | 50        | 12                  | -                       |
-| Extreme      | 100       | 20                  | -                       |
+| Extreme      | 50        | 5                  | 10.0                       |
+| Extreme      | 100       | 12                  | -                       |
 | Extreme      | 200       | 25                  | -                       |
 
 ## Google Cloud Platform (GCP)
