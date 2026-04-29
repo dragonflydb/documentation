@@ -48,7 +48,7 @@ On this page, you will find information on how to create, configure, and connect
 - For network bandwidth limits, please refer to the [network bandwidth](./bandwidth.md) section.
 - **Note** -> **Cloud Provider** and **Cloud Region** can **NOT** be modified once the data store is created.
 - **Note** -> **Cluster Mode** can **NOT** be modified once the data store is created.
-- **You can modify the data store memory size and compute tier later with zero downtime to easily scale up or down.**
+- **You can modify the data store memory size and compute tier later to easily scale up or down.** see [Updating the Data Store Configuration](#updating-the-data-store-configuration
 
 ### Advanced Configurations
 
@@ -73,7 +73,7 @@ On this page, you will find information on how to create, configure, and connect
 - To update the data store configuration, click the three-dot
   menu (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>)
   in the data store row and then select **Edit**.
-- **Dragonfly Cloud performs data store updates with zero downtime**.
+- **Dragonfly Cloud performs data store updates with zero downtime for Swarm (cluster mode) and near zero downtime (<5 secs) for single master data stores**.
 
 ---
 
