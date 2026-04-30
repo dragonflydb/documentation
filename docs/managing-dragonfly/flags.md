@@ -336,11 +336,6 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 4096`
 
-### `--multi_exec_mode`
-  Set multi exec atomicity mode: 1 for global, 2 for locking ahead, 3 for non atomic. 
-
-  `default: 2`
-
 ### `--multi_exec_squash`
   Whether multi exec will squash single shard commands to optimize performance. 
 
