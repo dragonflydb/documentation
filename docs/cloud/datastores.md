@@ -162,8 +162,8 @@ To add one or more replicas to your data store:
 - Click on the **+Add Replica** button and select the zone for the replica.
 - You can select the same zone as the primary or a different zone.
 - When selecting a different zone, inter-zone data transfer costs may apply.
-- **You can update the number of replicas of a data store with zero downtime**.
-- **You can update the primary/replica zones of a data store with zero downtime**.
+- You can update the number of replicas of a data store. See [Updating the Data Store Configuration](#updating-the-data-store-configuration).
+- You can update the primary/replica zones of a data store. See [Updating the Data Store Configuration](#updating-the-data-store-configuration).
 
 **Tip:** You can select a zone for the data store primary instance, and you should
 select the same zone as your application to avoid data transfer costs.
