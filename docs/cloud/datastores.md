@@ -3,7 +3,7 @@ sidebar_position: 2
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
-import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
+import CloudBadge from '@site/src/components/CloudBadge/CloudBadge'
 
 # Data Stores
 
@@ -48,7 +48,7 @@ On this page, you will find information on how to create, configure, and connect
 - For network bandwidth limits, please refer to the [network bandwidth](./bandwidth.md) section.
 - **Note** -> **Cloud Provider** and **Cloud Region** can **NOT** be modified once the data store is created.
 - **Note** -> **Cluster Mode** can **NOT** be modified once the data store is created.
-- **You can modify the data store memory size and compute tier later with zero downtime to easily scale up or down.**
+- **You can modify the data store memory size and compute tier later to easily scale up or down.** See [Updating the Data Store Configuration](#updating-the-data-store-configuration).
 
 ### Advanced Configurations
 
@@ -73,7 +73,7 @@ On this page, you will find information on how to create, configure, and connect
 - To update the data store configuration, click the three-dot
   menu (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>)
   in the data store row and then select **Edit**.
-- **Dragonfly Cloud performs data store updates with zero downtime**.
+- **Dragonfly Cloud performs data store updates with zero downtime for Swarm (cluster mode) and near zero downtime (typically under 5 seconds) for single master data stores**.
 
 ---
 
@@ -162,8 +162,8 @@ To add one or more replicas to your data store:
 - Click on the **+Add Replica** button and select the zone for the replica.
 - You can select the same zone as the primary or a different zone.
 - When selecting a different zone, inter-zone data transfer costs may apply.
-- **You can update the number of replicas of a data store with zero downtime**.
-- **You can update the primary/replica zones of a data store with zero downtime**.
+- You can update the number of replicas of a data store. See [Updating the Data Store Configuration](#updating-the-data-store-configuration).
+- You can update the primary/replica zones of a data store. See [Updating the Data Store Configuration](#updating-the-data-store-configuration).
 
 **Tip:** You can select a zone for the data store primary instance, and you should
 select the same zone as your application to avoid data transfer costs.
