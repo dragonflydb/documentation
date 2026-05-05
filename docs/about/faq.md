@@ -11,7 +11,9 @@ We followed the model set by other companies like Elastic, Redis, MongoDB, Cockr
 
 ## Can I use Dragonfly in production?
 
-License wise you are free to use dragonfly in production as long as you do not provide dragonfly as a managed service. If you would like help from the DragonflyDB team in getting up and running, you may apply for our [free Early Access Program](https://www.dragonflydb.io/early-access).
+Yes, Dragonfly is built for production and has seen massive adoption across demanding, data-intensive environments. As long as you do not offer Dragonfly as a managed service, you are completely free to self-host it in production under the BSL license.
+
+For teams that want out-of-the-box scaling, security, and expert support, we launched **[Dragonfly Cloud](https://www.dragonflydb.io/cloud)** - the easiest and most reliable way to run Dragonfly in production.
 
 ## How does Dragonfly's vertical scaling compare to a Redis cluster?
 
