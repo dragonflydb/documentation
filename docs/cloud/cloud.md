@@ -41,6 +41,7 @@ to be cost-efficient, highly available, secure, and simple to operate.
 
 ## Other Dragonfly Cloud Features, Pricing & Support
 
+- [Bring Your Own Cloud (BYOC)](byoc/byoc.md)
 - [Data Retention Policy](data-retention.md)
 - [Managing Dragonfly Cloud Users](users.md)
 - [Dragonfly Cloud Pricing](pricing.md)
