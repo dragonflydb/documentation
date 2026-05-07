@@ -43,5 +43,6 @@ to be cost-efficient, highly available, secure, and simple to operate.
 
 - [Data Retention Policy](data-retention.md)
 - [Managing Dragonfly Cloud Users](users.md)
+- [MCP Server For Dragonfly Cloud](mcp.md)
 - [Dragonfly Cloud Pricing](pricing.md)
 - [Dragonfly Cloud Support Plans](support.md)
