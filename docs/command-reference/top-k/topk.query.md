@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(k) per queried item, or O(m * k) when querying m items at once
 
-**ACL categories:** @topk
+**ACL categories:** @topk, @fast, @read
 
 Checks whether one or more items are currently in the Top-K list stored at `key`.
 The `key` must already exist (created via [`TOPK.RESERVE`](./topk.reserve.md)); otherwise, an error is returned.

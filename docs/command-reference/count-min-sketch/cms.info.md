@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @cms
+**ACL categories:** @cms, @fast, @read
 
 Returns metadata about the Count-Min Sketch stored at `key`, including its dimensions and the total number of counted events.
 

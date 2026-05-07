@@ -12,7 +12,7 @@ FT.ALTER {index} [SKIPINITIALSCAN] SCHEMA ADD {attribute} {options} ...
 
 **Time complexity:** O(N) where N is the number of keys in the keyspace
 
-**ACL Categories:** @search
+**ACL Categories:** @ft_search
 
 ## Description
 

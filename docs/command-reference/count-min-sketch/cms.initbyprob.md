@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @cms
+**ACL categories:** @cms, @fast
 
 Initializes a Count-Min Sketch filter at `key` with dimensions automatically calculated from
 the desired `error` rate and `probability` of accuracy.

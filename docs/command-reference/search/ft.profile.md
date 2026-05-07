@@ -9,6 +9,7 @@ description: Uses SEARCH command to collect performance info
     FT.PROFILE index SEARCH | AGGREGATE [LIMITED] QUERY query
 
 **Time complexity:** O(N)
+**ACL categories:** @ft_search
 
 ## Description
 

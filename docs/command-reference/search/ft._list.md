@@ -10,6 +10,8 @@ description: Returns a list of all existing indexes
 
 **Time complexity:** O(1)
 
+**ACL categories:** @ft_search
+
 ## Description
 
 Return a list of all existing indexes.

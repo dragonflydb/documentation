@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** Depends on subcommand.
 
-**ACL categories:** @slow
+**ACL categories:** @slow, @admin, @dangerous
 
 This is a container command for runtime configuration commands.
 Currently, the following subcommands are supported:

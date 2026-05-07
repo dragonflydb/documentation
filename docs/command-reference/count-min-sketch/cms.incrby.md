@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(n) where n is the number of items
 
-**ACL categories:** @cms
+**ACL categories:** @cms, @fast
 
 Increments the count of one or more `item`s in the Count-Min Sketch stored at `key` by the given `increment` values.
 The `increment` value must be a positive integer greater than `0`.

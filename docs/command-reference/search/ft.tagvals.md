@@ -10,7 +10,7 @@ description: Searches the index with a query, returning docs or just IDs
 
 **Time complexity:** O(N)
 
-**ACL Categories:** @dangerous, @read, @search, @slow
+**ACL Categories:** @ft_search
 
 ## Description
 

@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(n) where n is the number of items
 
-**ACL categories:** @topk
+**ACL categories:** @topk, @fast, @read
 
 Returns the estimated count of one or more items in the Top-K data structure stored at `key`.
 The `key` must already exist (created via [`TOPK.RESERVE`](./topk.reserve.md)); otherwise, an error is returned.

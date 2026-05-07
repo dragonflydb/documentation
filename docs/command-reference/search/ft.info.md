@@ -10,6 +10,8 @@ description: Returns information and statistics on the index
 
 **Time complexity:** O(1)
 
+**ACL categories:** @ft_search
+
 ## Description
 
 Return information and statistics on the index.

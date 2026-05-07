@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** Depends on subcommand.
 
-**ACL categories:** @slow
+**ACL categories:** @slow, @read
 
 This is a container command for memory introspection and management commands.
 

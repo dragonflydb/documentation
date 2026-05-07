@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @topk
+**ACL categories:** @topk, @fast, @read
 
 Returns metadata about the Top-K data structure stored at `key`, including its configuration parameters.
 The `key` must already exist (created via [`TOPK.RESERVE`](./topk.reserve.md)); otherwise, an error is returned.

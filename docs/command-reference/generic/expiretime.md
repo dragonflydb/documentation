@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @keyspace, @write, @fast
+**ACL categories:** @keyspace, @fast, @read
 
 Returns the absolute Unix timestamp (since January 1, 1970) in seconds at which the given key will expire.
 

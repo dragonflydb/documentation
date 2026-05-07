@@ -9,6 +9,7 @@ description: Deletes the index
     FT.DROPINDEX index [DD]
 
 **Time complexity:** O(1) or O(N) if `DD` is used, where N is the number of documents in the index.
+**ACL categories:** @ft_search
 
 ## Description
 
