@@ -19,9 +19,9 @@ import PageTitle from '@site/src/components/PageTitle';
 Initializes a Count-Min Sketch filter at `key` with dimensions automatically calculated from
 the desired `error` rate and `probability` of accuracy.
 
-- `error`: The desired error rate as a fraction of the total count. Must be a positive number between `0` and `1`.
+- `error`: The desired error rate as a fraction of the total count. Must be a positive number between `0` and `1` (exclusive).
   For example, `0.01` means the estimated count will be within `1%` of the true count.
-- `probability`: The desired failure probability — the probability that an estimate will exceed the error bounds. Must be a positive number between `0` and `1`.
+- `probability`: The desired failure probability — the probability that an estimate will exceed the error bounds. Must be a positive number between `0` and `1` (exclusive).
   For example, `0.01` means there is a `1%` chance the estimate exceeds the error bounds. Lower values produce a deeper sketch with fewer errors but higher memory and CPU usage.
 
 If `key` already exists, an error is returned.
@@ -36,7 +36,6 @@ If `key` already exists, an error is returned.
 dragonfly> CMS.INITBYPROB cms_key 0.01 0.01
 OK
 ```
-
 ## See also
 
 [`CMS.INITBYDIM`](./cms.initbydim.md) | [`CMS.INCRBY`](./cms.incrby.md) | [`CMS.QUERY`](./cms.query.md) | [`CMS.INFO`](./cms.info.md)

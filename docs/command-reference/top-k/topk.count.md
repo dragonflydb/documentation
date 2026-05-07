@@ -30,7 +30,6 @@ An item can have a non-zero estimated count even if it is not currently in the t
 ```shell
 dragonfly> TOPK.RESERVE topk 3
 OK
-
 dragonfly> TOPK.ADD topk foo foo foo bar bar baz
 1) (nil)
 2) (nil)
@@ -38,13 +37,11 @@ dragonfly> TOPK.ADD topk foo foo foo bar bar baz
 4) (nil)
 5) (nil)
 6) (nil)
-
 dragonfly> TOPK.COUNT topk foo bar baz
-1) (integer) 3
-2) (integer) 2
-3) (integer) 1
+1) (integer) 0
+2) (integer) 0
+3) (integer) 0
 ```
-
 ## See also
 
 [`TOPK.RESERVE`](./topk.reserve.md) | [`TOPK.QUERY`](./topk.query.md) | [`TOPK.LIST`](./topk.list.md) | [`TOPK.INFO`](./topk.info.md)

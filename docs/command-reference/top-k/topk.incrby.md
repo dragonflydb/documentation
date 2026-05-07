@@ -34,19 +34,16 @@ Each entry is either:
 ```shell
 dragonfly> TOPK.RESERVE topk 2
 OK
-
 dragonfly> TOPK.INCRBY topk foo 3 bar 5 baz 10
 1) (nil)
 2) (nil)
-3) foo
-
+3) (nil)
 dragonfly> TOPK.LIST topk WITHCOUNT
-1) baz
-2) (integer) 10
-3) bar
-4) (integer) 5
+1) "bar"
+2) (integer) 5
+3) "foo"
+4) (integer) 3
 ```
-
 ## See also
 
 [`TOPK.RESERVE`](./topk.reserve.md) | [`TOPK.ADD`](./topk.add.md) | [`TOPK.COUNT`](./topk.count.md) | [`TOPK.LIST`](./topk.list.md)

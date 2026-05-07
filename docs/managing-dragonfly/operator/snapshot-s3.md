@@ -8,6 +8,8 @@ pod.
 As this mechanism uses OIDC (OpenID Connect) to authenticate the service account, we will also get the benefits of
 credentials isolation and automatic rotation of credentials. This way we can avoid having to pass long lived credentials. This is all done automatically by EKS.
 
+Alternatively, you can use [EKS Pod Identity](https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html) to provide credentials to the Dragonfly pod. EKS Pod Identity is a newer mechanism that simplifies the process of associating IAM roles with Kubernetes service accounts, without requiring an OIDC provider.
+
 ## Prerequisites
 
 - A Kubernetes cluster with [Dragonfly installed](./installation.md)
@@ -66,6 +68,29 @@ Replace `<account-no>` with your AWS account number.
 
 ```bash
 eksctl create iamserviceaccount --name dragonfly-backup --namespace default --cluster df-s3 --role-name dragonfly-backup --attach-policy-arn arn:aws:iam::<account-no>:policy/dragonfly-backup --approve
+```
+
+### Using EKS Pod Identity (Alternative)
+
+If you prefer to use EKS Pod Identity instead of IAM roles for service accounts, you can associate the IAM role with the service account using the EKS Pod Identity mechanism. This does not require an OIDC provider.
+
+First, create the IAM role and attach the policy:
+
+```bash
+aws iam create-role --role-name dragonfly-backup --assume-role-policy-document file://trust-policy.json
+aws iam attach-role-policy --role-name dragonfly-backup --policy-arn arn:aws:iam::<account-no>:policy/dragonfly-backup
+```
+
+Then, create the EKS Pod Identity association:
+
+```bash
+aws eks create-pod-identity-association --cluster-name df-s3 --namespace default --service-account dragonfly-backup --role-arn arn:aws:iam::<account-no>:role/dragonfly-backup
+```
+
+You will also need to ensure the EKS Pod Identity Agent add-on is installed in your cluster:
+
+```bash
+eksctl create addon --name eks-pod-identity-agent --cluster df-s3 --region us-east-1
 ```
 
 ## Create a Dragonfly Instance with that service account

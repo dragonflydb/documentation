@@ -33,20 +33,13 @@ The expiration time can be accessed with the [`FIELDTTL`](../generic/fieldttl.md
 ## Examples
 
 ```shell
-dragonfly> HSETEX myhash 5 field1 "Hello"
+dragonfly> HSETEX myhash 100 field1 Hello
 (integer) 1
-# wait for 4 seconds
 dragonfly> HGETALL myhash
 1) "field1"
 2) "Hello"
-# wait for 1 seconds
-dragonfly> HGETALL myhash
-(empty array)
-dragonfly> HSETEX myhash 5 field1 "Hello"
-(integer) 1
-dragonfly> HSETEX myhash NX 100 field1 "Hello"
+dragonfly> HSETEX myhash 100 field1 Hello
 (integer) 0
-# wait for 5 seconds
-dragonfly> HGETALL myhash
-(empty array)
+dragonfly> HSETEX myhash NX 100 field1 Hello
+(integer) 0
 ```

@@ -22,6 +22,8 @@ description: Searches the index with a query, returning docs or just IDs
 Search the index with a textual query, returning either documents or just IDs.
 For usage, see [examples](#examples) below.
 
+Dragonfly supports HNSW vector range search via the `VECTOR_RANGE` query operator. Use it in the query string as `@field:[VECTOR_RANGE radius $vec]` to find all vectors within a given distance. Optionally, append `=>{$YIELD_DISTANCE_AS: alias}` to include the distance score in results. HNSW vector range search is mutually exclusive with KNN vector search.
+
 ## Required arguments
 
 <details open>

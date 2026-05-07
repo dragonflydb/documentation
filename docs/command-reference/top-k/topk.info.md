@@ -33,18 +33,16 @@ The `key` must already exist (created via [`TOPK.RESERVE`](./topk.reserve.md)); 
 ```shell
 dragonfly> TOPK.RESERVE topk 5 20 7 0.9
 OK
-
 dragonfly> TOPK.INFO topk
-1) k
+1) "k"
 2) (integer) 5
-3) width
+3) "width"
 4) (integer) 20
-5) depth
+5) "depth"
 6) (integer) 7
-7) decay
+7) "decay"
 8) "0.9"
 ```
-
 ## See also
 
 [`TOPK.RESERVE`](./topk.reserve.md) | [`TOPK.LIST`](./topk.list.md) | [`TOPK.COUNT`](./topk.count.md)

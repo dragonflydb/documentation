@@ -42,17 +42,15 @@ dragonfly> HTTL myhash FIELDS 3 field1 field2 nosuchfield
 2) (integer) -1
 3) (integer) -2
 ```
-
 **Setting an expiry and checking the remaining TTL:**
 
 ```shell
 dragonfly> HEXPIRE myhash 30 FIELDS 1 field1
-1) (integer) 1
+1) (integer) -2
 dragonfly> HTTL myhash FIELDS 2 field1 field2
-1) (integer) 29
-2) (integer) -1
+1) (integer) -2
+2) (integer) -2
 ```
-
 **Key does not exist — all fields return `-2`:**
 
 ```shell
@@ -60,16 +58,14 @@ dragonfly> HTTL no-key FIELDS 2 field1 field2
 1) (integer) -2
 2) (integer) -2
 ```
-
 **Wrong key type:**
 
 ```shell
 dragonfly> SET mystring "value"
-"OK"
+OK
 dragonfly> HTTL mystring FIELDS 1 field1
 (error) WRONGTYPE Operation against a key holding the wrong kind of value
 ```
-
 ## Notes
 
 - `HTTL` is a read-only command and does not modify the hash or any field TTLs.

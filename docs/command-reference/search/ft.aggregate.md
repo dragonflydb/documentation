@@ -10,8 +10,11 @@ description: Runs a search query and performs aggregate transformations
       [LOAD count field [field ...]]
       [GROUPBY nargs property [property ...] [REDUCE function nargs arg [arg ...]] [REDUCE function nargs arg [arg ...]]]
       [SORTBY nargs property [ASC|DESC] [property [ASC|DESC] ...] [MAX num]]
+      [APPLY expression AS name]
       [LIMIT offset num]
+      [FILTER expression]
       [PARAMS nargs name value [name value ...]]
+      [DIALECT dialect]
 
 **Time complexity:** O(N)
 
@@ -85,6 +88,15 @@ sorts the results by the given properties.
 </details>
 
 <details open>
+<summary><code>APPLY expression AS name</code></summary>
+
+applies a 1-to-1 transformation on one or more properties and stores the result as a new property.
+
+`expression` is the transformation expression to apply.
+`name` is the alias for the resulting value.
+</details>
+
+<details open>
 <summary><code>LIMIT offset num</code></summary>
 
 limits the results to the offset and number of results given.
@@ -93,11 +105,27 @@ The offset is zero-indexed. Default is 0 10.
 </details>
 
 <details open>
+<summary><code>FILTER expression</code></summary>
+
+filters the results using a predicate expression, similar to the `WHERE` clause in SQL.
+
+`expression` is the filter predicate to apply after aggregation.
+</details>
+
+<details open>
 <summary><code>PARAMS nargs name value [name value ...]</code></summary>
 
 defines one or more value parameters that can be referenced in the query.
 
 Similar to [`FT.SEARCH`](./ft.search.md) PARAMS option.
+</details>
+
+<details open>
+<summary><code>DIALECT dialect</code></summary>
+
+selects the dialect version to use for the query.
+
+`dialect` is the dialect version number.
 </details>
 
 ## Return
