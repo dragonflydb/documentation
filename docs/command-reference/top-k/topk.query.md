@@ -32,18 +32,15 @@ Each item is checked via a linear scan of the top-k heap.
 ```shell
 dragonfly> TOPK.RESERVE topk 2
 OK
-
 dragonfly> TOPK.ADD topk foo bar baz
 1) (nil)
 2) (nil)
-3) foo
-
+3) (nil)
 dragonfly> TOPK.QUERY topk foo bar baz
-1) (integer) 0
+1) (integer) 1
 2) (integer) 1
-3) (integer) 1
+3) (integer) 0
 ```
-
 ## See also
 
 [`TOPK.RESERVE`](./topk.reserve.md) | [`TOPK.ADD`](./topk.add.md) | [`TOPK.COUNT`](./topk.count.md) | [`TOPK.LIST`](./topk.list.md)

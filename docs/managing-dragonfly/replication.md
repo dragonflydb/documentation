@@ -54,6 +54,12 @@ This will stop the instance from replicating the primary instance but will not d
 This syntax is useful in cases where the original primary fails.
 After running `REPLICAOF NO ONE` on a replica of the failed primary, the former replica can be used as the new primary and have its own replicas as a failsafe.
 
+### Expired Key Deletion on Replicas
+
+By default, replicas do not proactively delete expired keys — they wait for expiry propagation from the primary.
+You can change this behavior by starting the replica with the `--replica_delete_expired=true` flag, which causes the replica to proactively delete expired keys on its own, without waiting for the primary to propagate the deletions.
+This can reduce memory usage on replicas that have many keys with TTLs, at the cost of a small amount of additional work on the replica.
+
 ## Secure Replication with TLS
 
 ### Secure Replication Prerequisites

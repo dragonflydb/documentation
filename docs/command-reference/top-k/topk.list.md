@@ -34,7 +34,6 @@ With `WITHCOUNT`:
 ```shell
 dragonfly> TOPK.RESERVE topk 3
 OK
-
 dragonfly> TOPK.ADD topk foo foo foo bar bar baz
 1) (nil)
 2) (nil)
@@ -42,21 +41,18 @@ dragonfly> TOPK.ADD topk foo foo foo bar bar baz
 4) (nil)
 5) (nil)
 6) (nil)
-
 dragonfly> TOPK.LIST topk
-1) foo
-2) bar
-3) baz
-
+1) "foo"
+2) "bar"
+3) "baz"
 dragonfly> TOPK.LIST topk WITHCOUNT
-1) foo
-2) (integer) 3
-3) bar
-4) (integer) 2
-5) baz
-6) (integer) 1
+1) "foo"
+2) (integer) 1
+3) "bar"
+4) (integer) 0
+5) "baz"
+6) (integer) 0
 ```
-
 ## See also
 
 [`TOPK.RESERVE`](./topk.reserve.md) | [`TOPK.ADD`](./topk.add.md) | [`TOPK.QUERY`](./topk.query.md) | [`TOPK.INFO`](./topk.info.md)

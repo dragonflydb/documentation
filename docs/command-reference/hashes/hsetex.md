@@ -32,21 +32,59 @@ The expiration time can be accessed with the [`FIELDTTL`](../generic/fieldttl.md
 
 ## Examples
 
+Cache a user session with a 30-second TTL on every field:
+
 ```shell
-dragonfly> HSETEX myhash 5 field1 "Hello"
-(integer) 1
-# wait for 4 seconds
-dragonfly> HGETALL myhash
-1) "field1"
-2) "Hello"
-# wait for 1 seconds
-dragonfly> HGETALL myhash
-(empty array)
-dragonfly> HSETEX myhash 5 field1 "Hello"
-(integer) 1
-dragonfly> HSETEX myhash NX 100 field1 "Hello"
-(integer) 0
-# wait for 5 seconds
-dragonfly> HGETALL myhash
-(empty array)
+dragonfly> HSETEX session:abc 30 user "alice" role "admin"
+(integer) 2
+dragonfly> HGETALL session:abc
+1) "user"
+2) "alice"
+3) "role"
+4) "admin"
+dragonfly> FIELDTTL session:abc user
+(integer) 29
 ```
+
+Refreshing a field without `KEEPTTL` resets the TTL:
+
+```shell
+dragonfly> HSETEX session:abc 60 user "alice-updated"
+(integer) 0
+dragonfly> FIELDTTL session:abc user
+(integer) 60
+```
+
+`HSETEX` returns the number of NEW fields added, not modified. Above the reply
+is `0` because `user` already existed.
+
+Use `NX` to set a value only if the field does not yet exist (useful for
+write-once flags):
+
+```shell
+dragonfly> HSETEX session:abc NX 60 user "bob"
+(integer) 0
+dragonfly> HGET session:abc user
+"alice-updated"
+dragonfly> HSETEX session:abc NX 60 ip "10.0.0.1"
+(integer) 1
+dragonfly> HGET session:abc ip
+"10.0.0.1"
+```
+
+Use `KEEPTTL` to update a value without changing its existing expiry — useful
+when refreshing data but keeping the original session deadline:
+
+```shell
+dragonfly> FIELDTTL session:abc ip
+(integer) 58
+dragonfly> HSETEX session:abc KEEPTTL 9999 ip "10.0.0.2"
+(integer) 0
+dragonfly> FIELDTTL session:abc ip
+(integer) 56
+dragonfly> HGET session:abc ip
+"10.0.0.2"
+```
+
+Note: the `9999` argument is required by the syntax but ignored when `KEEPTTL`
+is set.
