@@ -21,3 +21,6 @@ yarn-error.log*
 
 temp-content-update.js
 temp-new-content.json
+
+tools/generated/
+__pycache__
