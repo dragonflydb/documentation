@@ -8,10 +8,6 @@ By default, Dragonfly allows HTTP access via its main TCP port (i.e, `6379`) and
 
 Check out this complete example of setting up a [Grafana Monitoring Stack with Dragonfly](https://github.com/dragonflydb/dragonfly/tree/main/tools/local/monitoring).
 
-Notable metrics added in recent versions include:
-- `tls_handshakes_total` — a labeled counter tracking the total number of TLS handshakes.
-- Pipeline latency histogram exported as a Prometheus SUMMARY.
-
 ** :warning: **
 
 If you're using kubernetes, Metrics are also available on admin port `9999`. You may encounter this error with port `6379`:

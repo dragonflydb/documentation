@@ -32,38 +32,38 @@ Field-level expiry is set via [`HEXPIRE`](./hexpire.md) or [`HSETEX`](./hsetex.m
 
 ## Examples
 
-**Fields with no expiry, one non-existent field:**
+Build a session hash and inspect its per-field TTLs. Some fields have no
+expiry, some do, and one is missing entirely:
 
 ```shell
-dragonfly> HSET myhash field1 "hello" field2 "world"
-(integer) 2
-dragonfly> HTTL myhash FIELDS 3 field1 field2 nosuchfield
+dragonfly> HSET session:1 user "alice" role "admin" temp_token "xyz"
+(integer) 3
+dragonfly> HEXPIRE session:1 600 FIELDS 1 temp_token
+1) (integer) 1
+dragonfly> HTTL session:1 FIELDS 4 user role temp_token nosuch
 1) (integer) -1
 2) (integer) -1
-3) (integer) -2
+3) (integer) 600
+4) (integer) -2
 ```
-**Setting an expiry and checking the remaining TTL:**
+
+`user` and `role` exist but have no TTL set (`-1`). `temp_token` expires in 600
+seconds. `nosuch` does not exist in the hash (`-2`).
+
+When the hash key itself does not exist, every queried field returns `-2`:
 
 ```shell
-dragonfly> HEXPIRE myhash 30 FIELDS 1 field1
-1) (integer) -2
-dragonfly> HTTL myhash FIELDS 2 field1 field2
-1) (integer) -2
-2) (integer) -2
-```
-**Key does not exist — all fields return `-2`:**
-
-```shell
-dragonfly> HTTL no-key FIELDS 2 field1 field2
+dragonfly> HTTL no-such-key FIELDS 2 a b
 1) (integer) -2
 2) (integer) -2
 ```
-**Wrong key type:**
+
+Calling `HTTL` on a non-hash key fails with `WRONGTYPE`:
 
 ```shell
-dragonfly> SET mystring "value"
+dragonfly> SET plain-key "hello"
 OK
-dragonfly> HTTL mystring FIELDS 1 field1
+dragonfly> HTTL plain-key FIELDS 1 field
 (error) WRONGTYPE Operation against a key holding the wrong kind of value
 ```
 ## Notes
