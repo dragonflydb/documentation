@@ -16,6 +16,7 @@ description: Searches the index with a query, returning docs or just IDs
       [FILTER field min max]
 
 **Time complexity:** O(N)
+**ACL categories:** @ft_search
 
 ## Description
 

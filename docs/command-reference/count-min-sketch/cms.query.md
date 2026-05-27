@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(n) where n is the number of items
 
-**ACL categories:** @cms
+**ACL categories:** @cms, @fast, @read
 
 Returns the estimated count of one or more `item`s from the Count-Min Sketch stored at `key`.
 

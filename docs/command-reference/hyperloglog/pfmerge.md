@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) to merge N HyperLogLogs, but with high constant times.
 
-**ACL categories:** @write, @hyperloglog, @slow
+**ACL categories:** @write, @slow, @hyperlog
 
 Merge multiple HyperLogLog values into a unique value that will approximate the cardinality of the
 union of the observed Sets of the source HyperLogLog structures.

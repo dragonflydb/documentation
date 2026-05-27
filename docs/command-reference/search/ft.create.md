@@ -14,6 +14,7 @@ description: Creates an index with the given spec
       [NOINDEX] [ field_name [AS alias] TEXT | TAG | NUMERIC | VECTOR | GEO [ SORTABLE ] [NOINDEX] ...]
 
 **Time complexity:** O(K) at creation where K is the number of fields, O(N) if scanning the keyspace is triggered, where N is the number of keys in the keyspace.
+**ACL categories:** @ft_search
 
 ## Description
 

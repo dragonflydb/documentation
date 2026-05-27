@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N+M\*log(M)) where N is the number of elements in the list or set to sort, and M the number of returned elements. When the elements are not sorted, complexity is O(N).
 
-**ACL categories:** @read, @set, @sortedset, @list, @slow
+**ACL categories:** @read, @set, @sortedset, @list, @slow, @dangerous
 
 Read-only variant of the [SORT](./sort) command. It is exactly like the original [SORT](./sort) command but refuses the `STORE` option and can safely be used in read-only replicas.
 

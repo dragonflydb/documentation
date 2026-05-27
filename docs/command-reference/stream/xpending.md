@@ -23,7 +23,7 @@ XPENDING key group [start end count] [consumer]
   O(M), where M is the total number of entries scanned when used with the `IDLE` filter.
   When the command returns just the summary and the list of consumers is small, it runs in O(1) time.
   Otherwise, an additional O(N) time for iterating every consumer.
-- **ACL categories:** @read, @stream, @slow
+- **ACL categories:** @read, @stream
 
 ## Parameter Explanations
 

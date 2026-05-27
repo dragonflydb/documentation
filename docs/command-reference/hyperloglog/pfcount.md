@@ -15,7 +15,7 @@ import PageTitle from '@site/src/components/PageTitle';
 O(N) with N being the number of keys, and much bigger constant times, when called with multiple
 keys.
 
-**ACL categories:** @read, @hyperloglog, @slow
+**ACL categories:** @read, @slow, @hyperlog
 
 When called with a single key, returns the approximated cardinality computed by the HyperLogLog data
 structure stored at the specified variable, which is 0 if the variable does not exist.

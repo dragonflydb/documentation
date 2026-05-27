@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(k log k) where k is the number of top items tracked
 
-**ACL categories:** @topk
+**ACL categories:** @topk, @read, @slow
 
 Returns all items currently tracked in the Top-K data structure stored at `key`, sorted by estimated count in descending order.
 The `key` must already exist (created via [`TOPK.RESERVE`](./topk.reserve.md)); otherwise, an error is returned.

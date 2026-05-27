@@ -9,6 +9,7 @@ description: Dumps the synonyms from an index
     FT.SYNDUMP index
 
 **Time complexity:** O(1)
+**ACL categories:** @ft_search
 
 ## Description
 

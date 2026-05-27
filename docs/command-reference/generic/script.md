@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** Depends on subcommand.
 
-**ACL categories:** @slow
+**ACL categories:** @slow, @scripting
 
 This is a container command for script management commands.
 

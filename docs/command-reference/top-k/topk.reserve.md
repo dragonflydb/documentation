@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @topk
+**ACL categories:** @topk, @fast, @write
 
 Creates a new Top-K data structure at `key` that tracks the top `topk` most frequent items.
 

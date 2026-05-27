@@ -11,6 +11,7 @@ description: Configure search engine at runtime
     FT.CONFIG HELP [option]
 
 **Time complexity:** O(1)
+**ACL categories:** @ft_search
 
 ## Description
 

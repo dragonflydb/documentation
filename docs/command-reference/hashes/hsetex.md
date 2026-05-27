@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1) for each field/value pair added, so O(N) to add N field/value pairs when the command is called with multiple field/value pairs.
 
-**ACL categories:** @read, @hash, @fast
+**ACL categories:** @hash, @fast, @write
 
 **Warning:** Experimental! Dragonfly-specific.
 

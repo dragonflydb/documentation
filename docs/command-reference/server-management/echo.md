@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @admin, @slow, @dangerous
+**ACL categories:** @connection, @fast
 
 Returns `message`.
 

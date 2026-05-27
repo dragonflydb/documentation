@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(n·w·d) where n is the number of source sketches, w is the width, and d is the depth
 
-**ACL categories:** @cms
+**ACL categories:** @cms, @slow
 
 Merges multiple source Count-Min Sketches into `destination`.
 The `destination` key must be pre-initialized via [`CMS.INITBYDIM`](./cms.initbydim.md) or [`CMS.INITBYPROB`](./cms.initbyprob.md) before calling this command — if it does not exist, an error is returned.

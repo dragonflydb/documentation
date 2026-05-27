@@ -18,6 +18,8 @@ The `XSETID` command is an internal command. It is used by a Dragonfly primary i
 XSETID key last-id
 ```
 
+**ACL categories:** @slow, @stream, @write
+
 ## Parameter Explanations
 
 - `key`: The stream for which you want to set the last delivered ID.

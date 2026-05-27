@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @read, @hash, @fast
+**ACL categories:** @hash, @fast, @write
 
 Sets `field` in the hash stored at `key` to `value`, only if `field` does not
 yet exist.

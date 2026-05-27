@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(n * depth) where n is the number of items
 
-**ACL categories:** @topk
+**ACL categories:** @topk, @fast, @write
 
 Adds one or more items to the Top-K data structure stored at `key`.
 The `key` must already exist (created via [`TOPK.RESERVE`](./topk.reserve.md)); otherwise, an error is returned.

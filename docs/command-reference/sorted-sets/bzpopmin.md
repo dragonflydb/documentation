@@ -22,7 +22,7 @@ BZPOPMIN key [key ...] timeout
 ```
 
 - **Time complexity:** O(log(N)) with N being the number of elements in the sorted set.
-- **ACL categories:** @write, @sortedset, @fast, @blocking
+- **ACL categories:** @write, @sortedset, @blocking, @slow
 
 ## Parameter Explanations
 

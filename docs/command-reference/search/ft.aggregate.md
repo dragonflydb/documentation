@@ -15,6 +15,8 @@ description: Runs a search query and performs aggregate transformations
 
 **Time complexity:** O(N)
 
+**ACL categories:** @ft_search
+
 ## Description
 
 Run a search query and perform aggregate transformations on the results.

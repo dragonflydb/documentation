@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) where N is the size of the hash.
 
-**ACL categories:** @read, @hash, @fast
+**ACL categories:** @read, @hash, @slow
 
 Returns all values in the hash stored at `key`.
 

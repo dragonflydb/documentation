@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1) for each element added.
 
-**ACL categories:** @write, @hyperloglog, @fast
+**ACL categories:** @write, @fast, @hyperlog
 
 Adds all the element arguments to the HyperLogLog data structure stored at the variable name
 specified as first argument.

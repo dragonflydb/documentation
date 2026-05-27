@@ -12,7 +12,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
     SLOWLOG [GET | LEN | RESET | HELP]
 
-**ACL categories:** @slow, @admin
+**ACL categories:** @slow, @admin, @dangerous
 
 This is a container command for slowlog management commands.
 

@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @keyspace, @write, @fast
+**ACL categories:** @keyspace, @fast, @read
 
 This command works exactly like [`EXPIRETIME`](./expiretime.md),
 but the absolute Unix expiration timestamp of the key is returned in milliseconds instead of seconds.

@@ -22,7 +22,7 @@ ZLEXCOUNT key min max
 ```
 
 - **Time complexity:** O(log(N)) with N being the number of elements in the sorted set.
-- **ACL categories:** @read, @sortedset, @fast
+- **ACL categories:** @read, @sortedset, @slow
 
 ## Parameter Explanations
 
