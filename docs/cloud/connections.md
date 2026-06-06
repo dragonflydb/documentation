@@ -41,9 +41,11 @@ and then accept the peering connection in your AWS account console:
   and the **Acceptor VPC ID** of your AWS VPC from where you want to connect, and click **Create**.
 - The connection will be created in the **Inactive** status.
 - Next, you should accept the peering connection in your AWS account console (**VPC > Peering Connections**).
-- Create a route in your AWS VPC's route table (**Route Table > Edit Routes > Add Route**):
-  - Set the **Destination** to the CIDR of the Dragonfly Cloud private network (i.e., `192.168.0.0/16`).
-  - Set the **Target** to the AWS peering connection ID (i.e., `pcx-0f727XXXXXXXXXXXX`).
+- Update routing in your AWS VPC route tables:
+  - For each route table associated with subnets that require access, add a route:
+    - Go to Route Tables → Select route table → Edit routes → Add route.
+    - Set the **Destination** to the CIDR of the Dragonfly Cloud private network (i.e., `192.168.0.0/16`).
+    - Set the **Target** to the AWS peering connection ID (i.e., `pcx-0f727XXXXXXXXXXXX`).
 - Modify your relevant security groups to allow traffic from the Dragonfly Cloud private network CIDR.
 - Observe the connection becoming **Active** after a few moments in the Dragonfly Cloud console.
 
