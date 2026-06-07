@@ -17,7 +17,7 @@ import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 <PageTitle title="Connecting with VPN | Dragonfly Cloud" />
 
-The following guide(s) will show you how to connect to a private endpoint Dragonfly Cloud data store from your local machine using a configured VPN. This setup allows secure access to private resources while maintaining network isolation.
+The following guide(s) will show you how to connect to a private connectivity Dragonfly Cloud data store from your local machine using a configured VPN. This setup allows secure access to private resources while maintaining network isolation.
 
 While this method enables access to private resources, one should always **follow your organization's security policies and exercise caution when interacting with production data stores**.
 

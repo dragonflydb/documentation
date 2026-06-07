@@ -21,7 +21,7 @@ Here are a few popular client libraries and code snippets to connect to the data
 **Notes:**
 
 - Unless otherwise specified, you should use the connection details found for each data store
-  to replace those placeholders in the code snippets below, where we use public endpoints with the `default` user and TLS disabled.
+  to replace those placeholders in the code snippets below, where we use public connectivity with the `default` user and TLS disabled.
 - **For production, we strongly recommend using private [networks](../networks.md) and [connections](../connections.md).**
 
 ---

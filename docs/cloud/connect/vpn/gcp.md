@@ -17,7 +17,7 @@ This guide shows how to connect to your private Dragonfly Cloud instance using G
 ## Prerequisites
 
 - A Google Cloud account with appropriate permissions
-- A Dragonfly Cloud instance deployed in Google Cloud with a private endpoint
+- A Dragonfly Cloud instance deployed in Google Cloud with private connectivity
 - [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) installed on your machine
 - OpenVPN client software installed on your local machine
 
@@ -65,7 +65,7 @@ This guide shows how to connect to your private Dragonfly Cloud instance using G
 
 Once your VPN connection is established:
 
-1. Use your standard Dragonfly client with the private endpoint address
+1. Use your standard Dragonfly client with the private connectivity address
 2. Your connection is now securely tunneled through the VPN
 
 ```python
