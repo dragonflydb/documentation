@@ -49,8 +49,8 @@ and then accept the peering connection in your AWS account console:
 
 You can read more about AWS peering
 connections [here](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html).
-If you haven't done so already, create a data store with private connectivity and start building your applications with
-it. Read more about creating a data store with private connectivity [here](./datastores#private-endpoint).
+If you haven't done so already, create a data store with a private network and start building your applications with
+it. Read more about creating a data store with a private network [here](./datastores#private-endpoint).
 
 ---
 
@@ -193,5 +193,5 @@ With Azure, By default the `AllowVnetInbound` and `AllowVnetOutbound` rules allo
 add the required firewall rule to allow `6379` port traffic between the two networks.
 
 
-If you haven't done so already, create a data store with private connectivity and start building your applications with
-it. Read more about creating a data store with private connectivity [here](./datastores#private-endpoint).
+If you haven't done so already, create a data store with a private network and start building your applications with
+it. Read more about creating a data store with a private network [here](./datastores#private-endpoint).

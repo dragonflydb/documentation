@@ -52,9 +52,9 @@ On this page, you will find information on how to create, configure, and connect
 
 ### Advanced Configurations
 
-- By default, the data store will be configured with **public connectivity**, **TLS**, and an auto-generated **passkey**,
+- By default, the data store will be configured with a **public network**, **TLS**, and an auto-generated **passkey**,
   meaning you can securely connect to it from anywhere over the public internet.
-- To create a data store with **private connectivity**, see [security](#security), [networks](./networks.md),
+- To create a data store with a **private network**, see [security](#security), [networks](./networks.md),
   and [peering connections](./connections.md).
 - By default, the data store will consist of a single Dragonfly server instance.
   To create a highly available data store, read more about [high availability](#high-availability) below.
@@ -110,25 +110,25 @@ Some key points to keep in mind when you choose a Dragonfly Swarm data store:
 
 ## Security
 
-Dragonfly Cloud supports using both public and private connectivity for data access.
+Dragonfly Cloud supports using both public and private networks for data access.
 
-### Public Connectivity {#public-endpoint}
+### Public Network {#public-endpoint}
 
-- With public connectivity, you can connect to the data store from anywhere over the internet.
+- With a public network, you can connect to the data store from anywhere over the internet.
 - To protect your data store from unauthorized access,
-  public connectivity is default with **TLS** and **passkey** enabled.
+  public networks are default with **TLS** and **passkey** enabled.
 - **TLS** has some performance impact, so it can be disabled. **But it is highly recommended to leave it enabled**.
-- **Passkey** is mandatory and cannot be disabled for public connectivity.
+- **Passkey** is mandatory and cannot be disabled for public networks.
 
-### Private Connectivity {#private-endpoint}
+### Private Network {#private-endpoint}
 
-- Private connectivity provides **better security**, **better performance**, and **lower latency** as the data transports
+- Private networks provide **better security**, **better performance**, and **lower latency** as the data transports
   to and from the data stores over private networks and not via the public internet.
-- Using private connectivity also **reduces data transfer costs** applied by the cloud provider.
-- In order to create a data store with private connectivity, **you must first create a [private network](./networks.md)**.
-- Once you have created a private network, you can select it in the **Connectivity** dropdown
+- Using a private network also **reduces data transfer costs** applied by the cloud provider.
+- In order to create a data store with a private network, **you must first create a [private network](./networks.md)**.
+- Once you have created a private network, you can select it in the **Network** dropdown
   when creating a new data store.
-- **TLS** and **passkey** are disabled by default for data stores with private connectivity but can be enabled.
+- **TLS** and **passkey** are disabled by default for data stores with a private network but can be enabled.
 
 **Tip:** In order to completely avoid data transfer charges, place your data store in the same availability zone (AZ)
 as your application. See [high availability](#high-availability) for specifying the data store availability zone.
@@ -181,7 +181,7 @@ providing the most suitable server configuration(s) for your workload when you s
   If that is not possible for your application, please contact support.
 - **Memcached:** Enable this for running Memcached workloads. Memcached protocol will be enabled on port `6371`.
   Note that authentication is not supported for Memcached, so it can only be enabled for data stores
-  with [private connectivity](#private-endpoint).
+  with a [private network](#private-endpoint).
 - **Sidekiq:** Enable this for running [Sidekiq](https://sidekiq.org/) workloads,
   [read more](/docs/integrations/sidekiq.md).
 
