@@ -13,7 +13,7 @@ import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 <PageTitle title="Connecting with AWS Client VPN | Dragonfly Cloud" />
 
 [AWS Client VPN](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/what-is.html) is a managed client-based VPN service that enables you to securely access your AWS resources. With Client VPN, you can access your resources from any location using an OpenVPN-based VPN client.
-To connect to a private endpoint datastore from your local machine, you need to create a Client VPN endpoint in your VPC that is peer connected to the Dragonfly Cloud private network where your private endpoint datastore is deployed.
+To connect to a private network datastore from your local machine, you need to create a Client VPN endpoint in your VPC that is peer connected to the Dragonfly Cloud private network where your private network datastore is deployed.
 
 Connecting via AWS Client VPN involves the following steps:
 
@@ -166,4 +166,4 @@ From the file menu select _manage profiles_ and click _Add profile_.
 Enter a _display name_ for the profile and select the _VPN Configuration File_ you downloaded and updated previously.
 
 After adding the profile, click _Connect_ next to the profile you have just added.
-Once the profile is connected, you should be able to access the private endpoint datastore from your local machine.
+Once the profile is connected, you should be able to access the private network datastore from your local machine.
