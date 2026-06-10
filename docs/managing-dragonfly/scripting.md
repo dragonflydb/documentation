@@ -48,3 +48,11 @@ script tried accessing undeclared key
  
 To allow accessing any keys, including undeclared, the flag `allow-undeclared-keys` should be used. 
 This option is disabled by default because unpredictability, atomicity and multithreading don't mix well. If enabled, Dragonfly has to stop all other operations when the script is running.
+
+## Sandbox restrictions
+
+Dragonfly's Lua environment runs in a restricted sandbox. The following restrictions apply:
+
+- The `load()` function is restricted to text mode only (binary chunks are not accepted).
+- The built-in `rawset`, `setmetatable`, and `getmetatable` functions are replaced with protected versions that refuse to modify or read the metatable of the global environment (`_G`). (These functions can still be reassigned or shadowed inside a script; the protection guards the global environment, it does not prevent a script from overriding the names.)
+- The `dragonfly.randstr()` helper validates its input size argument and rejects values that exceed allowed limits.

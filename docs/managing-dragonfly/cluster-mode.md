@@ -197,7 +197,7 @@ such as adding/removing nodes, changing hostnames, etc.
   reference for how to set up and configure a cluster. This script starts a cluster locally, but
   much of its logic can be reused for nodes present on remote machines as well.
 - If you're getting errors trying to issue the `DFLYCLUSTER CONFIG`, check Dragonfly's logs (you
-  can pass `--logtostdout` temporarily) to see why the config was rejected.
+  can pass `--logtostderr` temporarily) to see why the config was rejected.
 - Dragonfly supports the migration of data slots between nodes as well. Detailed explaination can
   be found in one of our blog posts [here](https://www.dragonflydb.io/blog/redis-and-dragonfly-cluster-design-comparison).
   We will update the documentation to reflect these steps soon.

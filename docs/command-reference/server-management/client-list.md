@@ -10,7 +10,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    CLIENT LIST
+```text
+CLIENT LIST [TYPE <type>] [ID <client-id> [client-id ...]]
+```
 
 **Time complexity:** O(N) where N is the number of client connections
 
@@ -18,6 +20,10 @@ import PageTitle from '@site/src/components/PageTitle';
 
 The `CLIENT LIST` command returns information and statistics about the client
 connections server in a mostly human readable format.
+
+The optional `TYPE` filter limits the output to clients of the specified type.
+The optional `ID` filter limits the output to clients with the specified client ID(s).
+`TYPE` and `ID` are mutually exclusive — only one of the two filters may be supplied per call.
 
 
 ## Return

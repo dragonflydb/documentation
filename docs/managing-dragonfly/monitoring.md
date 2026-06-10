@@ -18,3 +18,7 @@ If you're using kubernetes, Metrics are also available on admin port `9999`. You
 * Closing connection
 curl: (1) Received HTTP/0.9 when not allowed
 ```
+
+## Replication Metrics
+
+The `/metrics` endpoint also exposes replication information. These metrics include details about the replication role of the instance, connected replicas, and replication lag, allowing you to monitor the health and status of your Dragonfly replication setup via Prometheus.

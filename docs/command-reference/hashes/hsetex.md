@@ -35,7 +35,7 @@ The expiration time can be accessed with the [`FIELDTTL`](../generic/fieldttl.md
 Cache a user session with a 30-second TTL on every field:
 
 ```shell
-dragonfly> HSETEX session:abc 30 user "alice" role "admin"
+dragonfly> HSETEX session:abc 30 user alice role admin
 (integer) 2
 dragonfly> HGETALL session:abc
 1) "user"
@@ -43,30 +43,36 @@ dragonfly> HGETALL session:abc
 3) "role"
 4) "admin"
 dragonfly> FIELDTTL session:abc user
-(integer) 29
+(integer) 30
 ```
 
-Refreshing a field without `KEEPTTL` resets the TTL:
+Refreshing a field re-sets its TTL. `HSETEX` returns the number of NEW fields
+added, not modified, so the second call below replies `0` because `user`
+already existed:
 
 ```shell
-dragonfly> HSETEX session:abc 60 user "alice-updated"
+dragonfly> HSETEX session:abc 30 user alice
+(integer) 1
+dragonfly> HSETEX session:abc 60 user alice-updated
 (integer) 0
 dragonfly> FIELDTTL session:abc user
 (integer) 60
-```
-
-`HSETEX` returns the number of NEW fields added, not modified. Above the reply
-is `0` because `user` already existed.
-
-Use `NX` to set a value only if the field does not yet exist (useful for
-write-once flags):
-
-```shell
-dragonfly> HSETEX session:abc NX 60 user "bob"
-(integer) 0
 dragonfly> HGET session:abc user
 "alice-updated"
-dragonfly> HSETEX session:abc NX 60 ip "10.0.0.1"
+```
+
+Use `NX` to set a value only if the field does not yet exist (useful for
+write-once flags). `NX` leaves an existing field untouched and replies `0`,
+while a brand-new field is added and replies `1`:
+
+```shell
+dragonfly> HSETEX session:abc 60 user alice
+(integer) 1
+dragonfly> HSETEX session:abc NX 60 user bob
+(integer) 0
+dragonfly> HGET session:abc user
+"alice"
+dragonfly> HSETEX session:abc NX 60 ip 10.0.0.1
 (integer) 1
 dragonfly> HGET session:abc ip
 "10.0.0.1"
@@ -76,15 +82,17 @@ Use `KEEPTTL` to update a value without changing its existing expiry — useful
 when refreshing data but keeping the original session deadline:
 
 ```shell
+dragonfly> HSETEX session:abc 60 ip 10.0.0.1
+(integer) 1
 dragonfly> FIELDTTL session:abc ip
-(integer) 58
-dragonfly> HSETEX session:abc KEEPTTL 9999 ip "10.0.0.2"
+(integer) 60
+dragonfly> HSETEX session:abc KEEPTTL 9999 ip 10.0.0.2
 (integer) 0
 dragonfly> FIELDTTL session:abc ip
-(integer) 56
+(integer) 60
 dragonfly> HGET session:abc ip
 "10.0.0.2"
 ```
 
 Note: the `9999` argument is required by the syntax but ignored when `KEEPTTL`
-is set.
+is set — the TTL above stays at `60`.

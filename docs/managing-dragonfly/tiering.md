@@ -36,7 +36,7 @@ Here are the main server flags related to SSD data tiering:
   See upload/offload thresholds and examples below for more details.
 - `tiered_offload_threshold`: The ratio of free memory, below which values will be actively offloaded to disk by a background process.
 - `tiered_upload_threshold`: The ratio of free memory, below which values are no longer returned to memory when read.
-- `tiered_storage_write_depth`: The maximum number of concurrent disk writes to avoid overloading the disk.
+- `tiered_max_pending_stash_bytes`: The maximum number of bytes in-flight to disk before new stashes are rejected or client backpressure is applied. This allows batching writes to saturate disk I/O even with few clients. (Replaces the retired `tiered_storage_write_depth` flag.)
 - `tiered_max_file_size`: The maximum file size in bytes (must be multiples of 256MB), usually determined automatically.
 - `tiered_min_value_size`: This option can be used to raise the 64-byte value limit to offload only larger values.
 - `registered_buffer_size`: The size of registered buffers to use for zero-copy reads and writes with `io_uring`.
@@ -139,4 +139,4 @@ with locally attached SSDs is recommended. See below for specific cloud provider
 - Dragonfly v1.35 (release notes for [v1.35.0](https://github.com/dragonflydb/dragonfly/releases/tag/v1.35.0)
   and [v1.35.1](https://github.com/dragonflydb/dragonfly/releases/tag/v1.35.1)) is the first official release of SSD data tiering.
 - If you encounter any problems while using this feature, please report them by [filing a GitHub issue](https://github.com/dragonflydb/dragonfly/issues/).
-- Data tiering is currently supported for string values and experimentally for list nodes. It is not supported for BitMap and HyperLogLog operations.
+- Data tiering is currently supported for string values and, experimentally, for list nodes and mutable hash commands. It is not supported for BitMap and HyperLogLog operations.

@@ -13,6 +13,9 @@ description: Runs a search query and performs aggregate transformations
       [APPLY expression AS name]
       [LIMIT offset num]
       [FILTER expression]
+      [WITHSCORES]
+      [ADDSCORES]
+      [SCORER scorer]
       [PARAMS nargs name value [name value ...]]
       [DIALECT dialect]
 
@@ -112,6 +115,24 @@ The offset is zero-indexed. Default is 0 10.
 filters the results using a predicate expression, similar to the `WHERE` clause in SQL.
 
 `expression` is the filter predicate to apply after aggregation.
+</details>
+
+<details open>
+<summary><code>WITHSCORES</code></summary>
+
+is accepted for compatibility with [`FT.SEARCH`](./ft.search.md) but has no effect on `FT.AGGREGATE` — it is silently ignored. To include the score in aggregate output, use `ADDSCORES` instead.
+</details>
+
+<details open>
+<summary><code>ADDSCORES</code></summary>
+
+adds the document score to each result as the `__score` field. When no `SCORER` is specified, the default BM25STD scorer is used.
+</details>
+
+<details open>
+<summary><code>SCORER scorer</code></summary>
+
+specifies the scoring function used to compute the score. Supported scorers are `BM25STD`, `TFIDF`, and `TFIDF.DOCNORM`. On its own `SCORER` only sets the scoring function — it does not add a visible score to the output; combine it with `ADDSCORES` to expose the computed score as `__score`.
 </details>
 
 <details open>

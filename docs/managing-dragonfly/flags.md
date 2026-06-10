@@ -135,6 +135,11 @@ flags which include specified substring in either in the name, description or pa
 
   `default: false`
 
+### `--container_iteration_yield_interval_usec`
+  Yield the fiber every N microseconds during container iteration. 0 disables yielding.
+
+  `default: 0`
+
 ### `--tcp_keepalive`
   The period in seconds of inactivity after which keep-alives are triggerred,
   the duration until an inactive connection is terminated is twice the specified time.
@@ -286,15 +291,15 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 0.1`
 
-### `--tiered_storage_write_depth`
-  Maximum number of concurrent stash requests issued by background offload. 
-
-  `default: 200`
-
 ### `--tiered_min_value_size`
   Minimum size of values eligible for offloading. Must be at least 64
 
   `default: 64`
+
+### `--tiered_max_pending_stash_bytes`
+  Maximum bytes in-flight to disk before rejecting new stashes or applying client backpressure. Allows batching writes to saturate disk I/O even with few clients.
+
+  `default: 256.0KiB`
 
 ### `--keys_output_limit`
   Maximum number of keys output by keys command.
@@ -315,6 +320,16 @@ flags which include specified substring in either in the name, description or pa
   Maximum listpack size, default is 8kb.
   
   `default: -2`
+
+### `--listpack_max_bytes`
+  Maximum total bytes of a hash in listpack encoding before converting to a hash table.
+
+  `default: 1024`
+
+### `--listpack_max_field_len`
+  Maximum length of a hash field or value to be stored in listpack encoding.
+
+  `default: 64`
 
 ### `--admin_nopass`
   If set, would enable open admin access to console on the assigned port, without authorization needed.
@@ -437,6 +452,11 @@ flags which include specified substring in either in the name, description or pa
 
   `default: true`
 
+### `--s3_use_helio_client`
+  If true, use helio's native S3 client; if false, use aws-sdk-cpp.
+
+  `default: true`
+
 ### `--slowlog_log_slower_than`
   Add commands slower than this threshold to slow log. The value is expressed in microseconds 
   and if it's negative disables the slowlog.
@@ -460,6 +480,11 @@ flags which include specified substring in either in the name, description or pa
   
   `default: 65536`
 
+### `--serialization_tagged_chunks`
+  Allow serializer output to be split into tagged chunks and reassembled by receiver.
+
+  `default: false`
+
 ### `--aclfile`
   Path and name to aclfile.
 
@@ -475,6 +500,16 @@ flags which include specified substring in either in the name, description or pa
   Ip that cluster commands announce to the client.
 
   `default: ""`
+
+### `--cluster_coordinator_connect_timeout_ms`
+  Timeout in milliseconds for coordinator to connect to remote shards.
+
+  `default: 3000`
+
+### `--cluster_coordinator_response_timeout_ms`
+  Timeout in milliseconds for coordinator to read responses from remote shards.
+
+  `default: 3000`
 
 ### `--shard_repl_backlog_len`
   The length of the circular replication log per shard.
@@ -506,20 +541,25 @@ flags which include specified substring in either in the name, description or pa
 
   `default: ""`
 
+### `--logbuflevel`
+  Buffer log messages logged at this level or below. (-1 means don't buffer; 0 means buffer INFO only).
+
+  `default: 0`
+
+### `--logbufsecs`
+  Buffer log messages for at most this many seconds.
+
+  `default: 30`
+
 ### `--logtostderr`
   Log messages go to stderr instead of logfiles.
-
-  `default: false`
-
-### `--logtostdout`
-  Log messages go to stdout instead of logfiles.
 
   `default: false`
 
 ### `--max_log_size`
   Approx. maximum log file size (in MB). A value of 0 will be silently overridden to 1. 
 
-  `default: 1800`
+  `default: 200`
 
 ### `--minloglevel`
   Messages logged at a lower level than this don't actually get logged anywhere. 
@@ -611,6 +651,16 @@ flags which include specified substring in either in the name, description or pa
 
   `default: true`
 
+### `--enable_memcache_io_loop_v2`
+  Enable the event-driven IoLoopV2 for non-TLS Memcache connections.
+
+  `default: true`
+
+### `--enable_resp_io_loop_v2`
+  Enable the event-driven IoLoopV2 for non-TLS RESP connections.
+
+  `default: false`
+
 ### `--enable_tcp_defer_accept`
   Enable TCP_DEFER_ACCEPT option on server sockets.
 
@@ -630,11 +680,6 @@ flags which include specified substring in either in the name, description or pa
   If true, uses flat json implementation.
 
   `default: false`
-
-### `--experimental_io_loop_v2`
-  Use the new io loop implementation.
-
-  `default: true`
 
 ### `--experimental_replicaof_v2`
   Use ReplicaOfV2 algorithm for initiating replication.
@@ -673,6 +718,11 @@ flags which include specified substring in either in the name, description or pa
 
 ### `--info_replication_valkey_compatible`
   When true, output valkey compatible values for info-replication.
+
+  `default: true`
+
+### `--journal_omit_redundant_writes`
+  If true, omit journal writes for keys during full sync that are yet to be reached by the serialization loop. Reduces full sync overhead.
 
   `default: true`
 
@@ -869,7 +919,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--rdb_sbf_chunked`
   Enable new save format for saving SBFs in chunks.
 
-  `default: false`
+  `default: true`
 
 ### `--registered_buffer_size`
   Size of registered buffer for IoUring fixed read/writes.
@@ -1080,6 +1130,11 @@ flags which include specified substring in either in the name, description or pa
   Use range tree for numeric index. If false, use a simple implementation with btree_set. Range tree is more memory efficient and faster for range queries, but slower for single value queries.
 
   `default: true`
+
+### `--use_oah_set`
+  If true, store SET values in OAHSet instead of StringSet.
+
+  `default: false`
 
 ### `--user`
   If not empty - drop privileges to this user (and their primary group) after binding ports. Accepts username or numeric uid. If `--dir` is set, chowns the data directory to this user.
