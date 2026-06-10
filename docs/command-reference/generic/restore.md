@@ -31,6 +31,7 @@ If the `ABSTTL` modifier was used, `ttl` should represent an absolute
 exists unless you use the `REPLACE` modifier.
 
 `!RESTORE` checks the data checksum. If it does not match an error is returned.
+Additionally, listpack and intset payloads are deeply validated on restore.
 
 ## Return
 
@@ -38,15 +39,21 @@ exists unless you use the `REPLACE` modifier.
 
 ## Examples
 
+Serialize a key with `DUMP`, then recreate it from that payload with `RESTORE`:
+
 ```
-dragonfly> DEL mykey
-0
-dragonfly> RESTORE mykey 0 "\x0e\x01\x11\x11\x00\x00\x00\x0e\x00\x00\x00\x03\x00\x00\xf2\x02\xf3\x02\xf4\xff\t\x00\xfa\x81\x98P\x85\xf8\xd9\xed"
+dragonfly> SET greeting Hello
 OK
-dragonfly> TYPE mykey
-list
-dragonfly> LRANGE mykey 0 -1
-1) "1"
-2) "2"
-3) "3"
+dragonfly> DUMP greeting
+"\x00\x05Hello\t\x00l;\xa6$i\x83\x9c2"
+dragonfly> DEL greeting
+(integer) 1
+dragonfly> RESTORE greeting 0 "\x00\x05Hello\t\x00l;\xa6$i\x83\x9c2"
+OK
+dragonfly> GET greeting
+"Hello"
 ```
+
+The serialized value is a binary blob produced by `DUMP` and is tied to the
+server's RDB version — a payload dumped from a different version may be rejected
+by the version/checksum check described above.

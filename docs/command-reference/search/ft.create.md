@@ -38,7 +38,7 @@ after the SCHEMA keyword, declares which fields to index:
 
  - `{identifier}` is the name of the field to index:
    - For Hash values, identifier is a field name within the Hash.
-   - For JSON values, the identifier is a JSONPath expression.
+   - For JSON values, the identifier is a JSONPath expression (e.g., `$.title`) or a bare field name (e.g., `title`).
 
  - `AS {attribute}` defines the attribute associated to the identifier.
    For example, you can use this feature to alias a complex JSONPath expression with more memorable (and easier to type) name.
@@ -173,6 +173,12 @@ Index a JSON document using a JSONPath expression.
 
 ``` bash
 dragonfly> FT.CREATE idx ON JSON SCHEMA $.title AS title TEXT $.categories AS categories TAG
+```
+
+Index a JSON document using bare field names (without JSONPath prefix).
+
+``` bash
+dragonfly> FT.CREATE idx2 ON JSON SCHEMA title TEXT categories TAG
 ```
 </details>
 

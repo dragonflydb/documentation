@@ -10,17 +10,18 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    BGSAVE SAVE [RDB|DF] [cloud_uri] [filename]
+    BGSAVE [SCHEDULE] [RDB|DF] [cloud_uri] [filename]
 
 **Time complexity:** O(1)
 
 **ACL categories:** @admin, @slow, @dangerous
 
-Equvalent to [SAVE](../server-management/save) and kept for compatibility reasons.
+Equivalent to [SAVE](../server-management/save) and kept for compatibility reasons.
 
+The optional `SCHEDULE` subcommand is accepted for client compatibility but is a no-op: concurrent saves are still rejected and saves are not queued.
 
 [tp]: https://redis.io/topics/persistence
 
 ## Return
 
-[Simple string reply](https://valkey.io/topics/protocol/#simple-strings): `Background saving started` if `BGSAVE` started correctly or `Background saving scheduled` when used with the `SCHEDULE` subcommand.
+[Simple string reply](https://valkey.io/topics/protocol/#simple-strings): `OK`. Dragonfly replies with a plain `OK` for `BGSAVE` (including when invoked with the `SCHEDULE` subcommand), not the Redis-style `Background saving started` / `Background saving scheduled` strings.

@@ -8,6 +8,8 @@ description: Searches the index with a query, returning docs or just IDs
 
     FT.SEARCH index query
       [NOCONTENT]
+      [WITHSCORES]
+      [SCORER scorer_name]
       [LOAD count identifier [AS property] [ identifier [AS property] ...]]
       [RETURN count identifier [AS property] [ identifier [AS property] ...]]
       [SORTBY sortby [ ASC | DESC] [WITHCOUNT]]
@@ -38,6 +40,12 @@ is index name. You must first create the index using [`FT.CREATE`](./ft.create.m
 
 is text query to search. If it's more than a single word, put it in quotes.
 Refer to [query syntax](https://redis.io/docs/latest/develop/interact/search-and-query/query/) for more details.
+
+The query language supports the following operators:
+
+- `~term` — optional match: documents matching the term are scored higher but the term is not required.
+- `w'glob*pattern'` — glob wildcard matching on TEXT and TAG fields (e.g., `w'py*'` matches `python`).
+- `"exact phrase"` — exact phrase search; use `"term1 term2"~N` (slop) to allow up to `N` word gaps between terms.
 </details>
 
 ## Optional arguments
@@ -48,6 +56,22 @@ Refer to [query syntax](https://redis.io/docs/latest/develop/interact/search-and
 returns the document IDs and not the content.
 
 This is useful if Dragonfly is storing an index on an external document collection.
+</details>
+
+<details open>
+<summary><code>WITHSCORES</code></summary>
+
+includes the relevance score of each result in the reply. When `WITHSCORES` is set without an explicit `SCORER`, the default scorer is `BM25STD`.
+</details>
+
+<details open>
+<summary><code>SCORER scorer_name</code></summary>
+
+uses the specified scoring function to rank results. Supported scorers:
+
+- `BM25STD` — BM25 with standard per-field TF tracking (default when `WITHSCORES` is used).
+- `TFIDF` — classic TF-IDF scoring.
+- `TFIDF.DOCNORM` — TF-IDF with document-length normalization.
 </details>
 
 <details open>
@@ -123,6 +147,8 @@ Multiple `FILTER` clauses can be used to apply filters on different fields.
 ## Return
 
 `FT.SEARCH` returns an array reply, where the first element is an integer reply of the total number of results, and then array reply pairs of document IDs, and array replies of attribute/value pairs.
+
+When `WITHSCORES` is used, each result entry includes the relevance score between the document ID and the attribute/value pairs.
 
 :::note Notes
 - If `NOCONTENT` is given, an array is returned where the first element is the total number of results, and the rest of the members are document IDs.
@@ -211,9 +237,29 @@ dragonfly> FT.SEARCH books-idx "python" FILTER price 10 50
 ```
 </details>
 
+<details open>
+<summary><b>Search with relevance scores</b></summary>
+
+Search for books with "python" in any TEXT attribute and include the BM25STD relevance score for each result.
+
+``` bash
+dragonfly> FT.SEARCH books-idx "python" WITHSCORES
+```
+</details>
+
+<details open>
+<summary><b>Search with a specific scorer</b></summary>
+
+Search for books with "python" in any TEXT attribute using the TFIDF scorer.
+
+``` bash
+dragonfly> FT.SEARCH books-idx "python" WITHSCORES SCORER TFIDF
+```
+</details>
+
 ## See also
 
-[`FT.CREATE`](./ft.create.md)
+[`FT.CREATE`](./ft.create.md) | [`FT.HYBRID`](./ft.hybrid.md)
 
 ## Related topics
 

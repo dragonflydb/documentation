@@ -46,6 +46,7 @@ import argparse
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import time
@@ -646,13 +647,30 @@ def kill_docker(session: DockerSession) -> None:
                    capture_output=True)
 
 
+def tokenize_invocation(cmd: str) -> list[str]:
+    """Split a `dragonfly>` command line into redis-cli argv.
+
+    Uses shell-style tokenization (shlex) so quoted values are unquoted the
+    way a shell / the redis-cli REPL would handle them — e.g.
+    `HSETEX k 30 user "alice"` yields the value `alice`, not the literal
+    `"alice"` (which the server would store with the quotes, rendering as
+    `"\\"alice\\""` under --no-raw). Falls back to a plain whitespace split
+    if the line is not valid shell syntax (e.g. an unbalanced quote), so a
+    malformed example degrades to the old behaviour instead of raising.
+    """
+    try:
+        return shlex.split(cmd)
+    except ValueError:
+        return cmd.split()
+
+
 def verify_invocations(session: DockerSession,
                        invocations: list[str]) -> list[dict]:
     """Run each invocation and capture the actual output. Returns a list of
     {invocation, stdout, stderr, returncode}."""
     out: list[dict] = []
     for inv in invocations:
-        argv = inv.split()
+        argv = tokenize_invocation(inv)
         stdout, stderr, rc = session.exec(argv)
         out.append({
             "invocation": inv,
@@ -780,7 +798,7 @@ def verify_and_substitute_examples(
                 i += 1
                 continue
             cmd = line[len("dragonfly> "):].strip()
-            argv = cmd.split()
+            argv = tokenize_invocation(cmd)
             stdout, stderr, rc = session.exec(argv)
             invocation_count += 1
             rebuilt.append(line)
