@@ -179,7 +179,7 @@ dragonfly> FT.AGGREGATE products "*" GROUPBY 1 @category REDUCE AVG 1 @price AS 
 
 ## See also
 
-[`FT.SEARCH`](./ft.search.md) | [`FT.CREATE`](./ft.create.md)
+[`FT.SEARCH`](./ft.search.md) | [`FT.CREATE`](./ft.create.md) | [`FT.HYBRID`](./ft.hybrid.md)
 
 ## Related topics
 

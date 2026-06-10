@@ -259,7 +259,7 @@ dragonfly> FT.SEARCH books-idx "python" WITHSCORES SCORER TFIDF
 
 ## See also
 
-[`FT.CREATE`](./ft.create.md)
+[`FT.CREATE`](./ft.create.md) | [`FT.HYBRID`](./ft.hybrid.md)
 
 ## Related topics
 

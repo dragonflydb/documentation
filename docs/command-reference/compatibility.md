@@ -350,6 +350,7 @@ sidebar_position: 0
 |                                              | <span class="command">JSON.TYPE</span>                     | <span class="support supported">Fully supported</span>   |
 | <span class="family">Search</span>           | <span class="command">FT.CREATE</span>                     | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">FT.SEARCH</span>                     | <span class="support partial">Partially supported</span> |
+|                                              | <span class="command">FT.HYBRID</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">FT.ALTER</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">FT.DROPINDEX</span>                  | <span class="support partial">Partially supported</span> |
 |                                              | <span class="command">FT.INFO</span>                       | <span class="support partial">Partially supported</span> |
