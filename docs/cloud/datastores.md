@@ -12,7 +12,7 @@ import CloudBadge from '@site/src/components/CloudBadge/CloudBadge'
 <PageTitle title="Data Stores | Dragonfly Cloud" />
 
 ## Overview
-
+B
 A [Dragonfly Cloud](https://dragonflydb.cloud/) data store represents an endpoint for storing and retrieving in-memory
 data, which is compatible with Redis (RESP2 and RESP3) and Memcached protocols. The endpoint is a fully managed
 service that is backed by one or more [Dragonfly](https://github.com/dragonflydb/dragonfly) server instances.
@@ -186,7 +186,7 @@ providing the most suitable server configuration(s) for your workload when you s
   [read more](/docs/integrations/sidekiq.md).
 - **SSD Data Tiering:** Extends data store capacity X8 with SSD, for example, a 50GB memory data store has 400GB capacity.  
   SSD data tiering offloeads large string values, keys and small values are kept in memory.
-  SSD data tiering is curretly supported on AWS and BCP and requires ehanced Compute tier or supported BYOC instance family.
+  SSD data tiering is currently supported on AWS and GCP and requires Enhanced Compute tier or supported BYOC instance family.
   Support for more data types is coming soon.
 
 ---
