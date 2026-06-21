@@ -185,7 +185,7 @@ providing the most suitable server configuration(s) for your workload when you s
 - **Sidekiq:** Enable this for running [Sidekiq](https://sidekiq.org/) workloads,
   [read more](/docs/integrations/sidekiq.md).
 - **SSD Data Tiering:** Extends data store capacity X8 with SSD, for example, a 50GB memory data store has 400GB capacity.  
-  SSD data tiering offloeads large string values, keys and small values are kept in memory.
+  SSD data tiering offloads large string values, keys and small values are kept in memory.
   SSD data tiering is currently supported on AWS and GCP and requires Enhanced Compute tier or supported BYOC instance family.
   Support for more data types is coming soon.
 
