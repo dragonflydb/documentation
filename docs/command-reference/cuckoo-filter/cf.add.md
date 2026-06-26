@@ -45,4 +45,4 @@ dragonfly> CF.COUNT cf Hello
 
 ## See also
 
-[`CF.ADDNX`](./cf.addnx.md) | [`CF.RESERVE`](./cf.reserve.md)
+[`CF.ADDNX`](./cf.addnx.md) | [`CF.EXISTS`](./cf.exists.md) | [`CF.RESERVE`](./cf.reserve.md)

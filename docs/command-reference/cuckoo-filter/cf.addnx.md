@@ -46,4 +46,4 @@ dragonfly> CF.ADDNX cf World
 
 ## See also
 
-[`CF.ADD`](./cf.add.md) | [`CF.RESERVE`](./cf.reserve.md)
+[`CF.ADD`](./cf.add.md) | [`CF.EXISTS`](./cf.exists.md) | [`CF.RESERVE`](./cf.reserve.md)
