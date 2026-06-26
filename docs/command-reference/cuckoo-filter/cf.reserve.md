@@ -49,3 +49,6 @@ dragonfly> CF.RESERVE cf_custom 10000 BUCKETSIZE 4 MAXITERATIONS 50 EXPANSION 2
 OK
 ```
 
+## See also
+
+[`CF.ADD`](./cf.add.md) | [`CF.ADDNX`](./cf.addnx.md)
