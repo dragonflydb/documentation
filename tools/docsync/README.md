@@ -12,6 +12,7 @@ fix.
 tools/docsync/
 ├── acl_sync.py                 # update **ACL categor(y|ies):** lines
 ├── flags_sync.py               # update flag defaults + add new flags
+├── compat_sync.py              # build command compatibility evidence + draft
 ├── docs_sync.py                # update doc pages from a tag-to-tag source diff
 ├── propose_change_message.py   # write a commit/PR title+body for the diff
 ├── dfly_facts.py               # helper — Docker → JSON ground truth
@@ -23,6 +24,7 @@ Generated artifacts live under `tools/generated/` and are gitignored:
 ```
 tools/generated/
 ├── facts/<tag>.json            # output of dfly_facts.py
+├── compatibility/<ts>/          # compat_sync evidence + draft table
 ├── source/<tag>.json           # parsed ABSL_FLAG / enum data (flags_sync)
 ├── update_plans/plan_<ts>.json     # output of docs_sync Phase 1
 ├── update_plans/results_<ts>.json  # output of docs_sync Phase 2
@@ -38,6 +40,8 @@ tools/generated/
 ```sh
 pip install -r tools/docsync/requirements.txt
 docker pull docker.dragonflydb.io/dragonflydb/dragonfly:v1.38.0
+# compat_sync needs NO API key by default (deterministic source analysis).
+export OPENAI_API_KEY=...       # required for: compat_sync.py --review (optional)
 export ANTHROPIC_API_KEY=...    # required for: flags_sync LLM polish,
                                 # docs_sync (both phases), acl_sync repair pass,
                                 # propose_change_message
@@ -85,6 +89,126 @@ python tools/docsync/acl_sync.py --facts tools/generated/facts/v1.38.0.json
 
 Exit code is non-zero if any page is reported as FAILED after both
 passes.
+
+## compat_sync.py
+
+Rebuilds `docs/command-reference/compatibility.md` from **source ground truth —
+no LLM, no runtime probing**. Every support label is derived deterministically
+from the Redis command specs and the Dragonfly source tree, so the same
+checkouts always produce the same table and a new Dragonfly/Redis version is
+handled by re-reading the sources. (This replaced an earlier LLM pipeline whose
+labels were non-deterministic and often wrong — output differences read as gaps,
+hallucinated option lists, run-to-run flips.)
+
+The curated table owns the **row set**; the **labels are recomputed**. The table
+is never restructured — commands present in Redis/Dragonfly but missing from it
+are reported as `missing-row` tasks, not injected (opt in with
+`--add-missing-rows`). Writing the doc is **opt-in** (`--write-table`); by
+default the tool only writes review artifacts under
+`tools/generated/compatibility/<ts>/`. Docker is used **only** to detect module
+versions.
+
+**How each label is decided**, per curated row:
+
+1. **Existence** — is the command registered in the Dragonfly source
+   (`CI{"NAME", …}`)? A subcommand (`CONFIG GET`, `SCRIPT LOAD`) exists iff it is
+   registered directly, **or** the parent is registered and the parent's
+   implementation parses the subcommand token. Not in Dragonfly but in Redis →
+   `unsupported`. In Dragonfly with no Redis spec → `dragonfly-specific`.
+2. **Options** — for each Redis option token of the command (from the
+   version-tracked spec), is it **honored** in the command's Dragonfly
+   implementation? A token counts only as a string **literal** (`"DIALECT"`, not
+   the bare word — bare `DB` matched `db_index` variables) and **not** when it
+   appears only inside an explicit rejection (`"SHUTDOWN ABORT is not supported"`,
+   `"COMMAND DOCS Not Implemented"` — recognized but stubbed). Any genuinely
+   absent/stubbed → `partial` `Missing: <tokens>.`; none → `supported`.
+   Subcommand existence uses only the code reachable from the command's **own**
+   public handler, so the internal `DFLYCLUSTER FLUSHSLOTS` dispatch is not
+   mistaken for public `CLUSTER FLUSHSLOTS`.
+
+The label is **surface capability**, not behavior: output/value differences,
+precision, ordering, a bug, an intentional behavior change, and error-response
+differences never reduce support. That is why `FT.INFO` (returns fewer stats
+fields but accepts the command) is `Fully supported`, and `SORT` (parses
+`BY`/`ASC`/`DESC` in `SortGeneric`) is `Fully supported`. Conversely, an option
+the command **silently accepts but does not honor** (a catch-all that ignores it
+with no effect, e.g. the `FT.SEARCH` options behind *"unsupported parameters are
+ignored for now"*) is a gap, exactly like a rejected one → `partial`. "Honored"
+means the option token is genuinely parsed, not merely tolerated.
+
+**The engine — `DragonflySource`.** It indexes every command registration and
+function definition once, then per command returns the full implementation text,
+**following delegation across files** so options parsed in helpers or sibling
+files are visible:
+
+- `SORT` → `SortGeneric`; `ACL SETUSER` → `SetUser` → `ParseAclSetUser`;
+- `SCRIPT` → `script_mgr.cc`; `MEMORY USAGE` → `memory_cmd.cc` (cross-file);
+- `SCAN` → `ScanOpts::TryFrom` in `common.cc` (a class-qualified call is matched
+  on the class, so a generic method name resolves to the right file);
+- `FT.*` → the whole `src/server/search/` directory.
+
+An unqualified generic callee (`Parse`, `Run`) is only followed into a file of
+the same command family (matching the `family_mgr.cc` / `family_cmd.cc`
+convention), so it can't drag in an unrelated family's code. The handler file's
+**file-scope string constants** are appended too, because some option tokens are
+compared via a `const char* X = "AND"` that never appears in a walked body (e.g.
+`BITOP`'s ops). Test files are excluded; the brace matcher skips
+comments/strings/char-literals and C++ digit separators (`100'000`) so neither
+can truncate a capture. Option presence then greps that text; punctuation-only
+tokens (`~`, `=`) are skipped. A corrupted curated row name found in **neither**
+source keeps its curated label and is flagged (`unresolved-command`), never
+guessed.
+
+**Redis modules are mandatory.** Core Redis has no module command surfaces, so
+the tool reads the exact module versions from the Redis image's `MODULE LIST`
+(drift-proof; falls back to pinned defaults when Docker is unavailable) and loads
+each module's `commands.json` from its repo at that version
+(`RediSearch`/`RedisJSON`/`RedisBloom` [BF/CF/CMS/TOPK]/`RedisTimeSeries`). The
+resolved `tag@sha` is recorded in `metadata.json`; the run **aborts** if module
+specs cannot be loaded. Override with `--module-ref search=v8.6.7`.
+
+```sh
+# Recompute labels + write draft/change log; does NOT write the doc:
+python tools/docsync/compat_sync.py --dragonfly-ref v1.39.0 --redis-ref 8.6.4
+# Same, then apply the recomputed labels to compatibility.md after review:
+python tools/docsync/compat_sync.py --dragonfly-ref v1.39.0 --redis-ref 8.6.4 --write-table
+```
+
+Artifacts under `tools/generated/compatibility/<ts>/`:
+
+- `assessments.json` — per-row status, `Missing:` details, and source evidence.
+- `tasks.json` — `status-change-applied` (every label change vs the curated
+  table, with evidence), `missing-row` (commands absent from the table),
+  `unresolved-command` (a name in neither source — verify by hand), and
+  `placeholder-row`.
+- `unsupported_commands.{json,md}` — convenience list of unsupported commands.
+- `draft_table.md` — the recomputed table, byte-identical to what
+  `--write-table` writes.
+
+**Model review (`--review`, opt-in).** The deterministic core is the authority,
+but its source heuristic can still be wrong — a subcommand Dragonfly *recognizes*
+but stubs with a "Not Implemented" error (e.g. `COMMAND DOCS`), a fundamental
+option mis-listed as missing (e.g. `BITOP AND`), or spec-artifact noise
+(`FT.AGGREGATE` function names). So `--review` has a model **independently review
+every row** against the Redis spec + Dragonfly source excerpt and flag
+disagreements. It is **advisory: it never changes a label** — it produces
+`review-flag` tasks with a concrete concern and a suggested status, and the run
+summary lists them. The shipped table stays fully deterministic; the model is a
+second pair of eyes at scale, not the decider (which is why the LLM-only tool
+failed). Needs `OPENAI_API_KEY` (`--review-model`, default `gpt-4.1`); the
+default run needs no key.
+
+```sh
+# deterministic + model review of every row (flags disagreements, labels unchanged):
+python tools/docsync/compat_sync.py --dragonfly-ref v1.39.0 --redis-ref 8.6.4 --review
+```
+
+**Reviewing a run:** without `--review`, the change log in `tasks.json` is short
+and source-grounded — review those changes, not all 400 rows. With `--review`,
+also work the `review-flag` list. Version drift (Redis adds an option, Dragonfly
+drops one) shows up automatically: the deterministic pass recomputes option
+presence each run, so a new/removed option flips the label and appears in the
+change log, and the review flags whether it is a real gap.
 
 ## flags_sync.py
 
@@ -277,7 +401,12 @@ python tools/docsync/propose_change_message.py --dump-prompt
 python tools/docsync/acl_sync.py    --tag v1.38.0
 python tools/docsync/flags_sync.py  --tag v1.38.0
 
-# 2. Cross-page content sync between two releases (LLM-driven, expensive
+# 2. Recompute the command compatibility table (deterministic; no API key).
+#    Review the change log, then re-run with --write-table to apply it.
+python tools/docsync/compat_sync.py --dragonfly-ref v1.39.0 --redis-ref 8.6.4
+python tools/docsync/compat_sync.py --dragonfly-ref v1.39.0 --redis-ref 8.6.4 --write-table
+
+# 3. Cross-page content sync between two releases (LLM-driven, expensive
 #    — only run when there is a real release-to-release jump to process).
 #    Start with --discover-only to review the plan, then run Phase 2.
 python tools/docsync/docs_sync.py --before v1.37.0 --after v1.38.0 --discover-only
@@ -301,8 +430,8 @@ Boots `docker.dragonflydb.io/dragonflydb/dragonfly:<tag>`, captures
 `dragonfly --helpfull`, then writes a JSON snapshot under
 `tools/generated/facts/<tag>.json`.
 
-Both sync scripts call this on demand and reuse the cached file when
-present. It can also be run by hand:
+Sync scripts call this on demand and reuse the cached file when present.
+It can also be run by hand:
 
 ```sh
 python tools/docsync/dfly_facts.py --tag v1.38.0
