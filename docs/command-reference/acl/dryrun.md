@@ -1,5 +1,5 @@
 ---
-description: Simulate execution of a command from a user
+description: "Simulate whether a given user is allowed to run a command, without actually executing it."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

@@ -1,5 +1,5 @@
 ---
-description: Persist currently defined ACL's to file
+description: "Persist Dragonfly Access Control List rules that are currently defined to the ACL file."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

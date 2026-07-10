@@ -1,5 +1,5 @@
 ---
-description: Load all ACL configuration from a file
+description: "Reload Dragonfly ACL configuration from the ACL file, replacing the current rules."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

@@ -1,5 +1,5 @@
 ---
-description: Simulate execution of a command from a user
+description: "Generate a secure, pseudo-random password for use with Dragonfly ACL user accounts."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

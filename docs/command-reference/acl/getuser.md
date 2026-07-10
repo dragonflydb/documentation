@@ -1,5 +1,5 @@
 ---
-description: Print ACL's of a user
+description: "Print the ACL rules and permissions currently assigned to a specific Dragonfly user."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
