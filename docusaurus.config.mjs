@@ -90,6 +90,9 @@ const config = {
         theme: {
           customCss: "./src/css/custom.css",
         },
+        sitemap: {
+          lastmod: "datetime",
+        },
         googleTagManager: {
           containerId: "GTM-M7MX697",
         },
