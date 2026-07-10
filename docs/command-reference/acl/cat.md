@@ -1,5 +1,5 @@
 ---
-description: Print ACL categories and per-group commands
+description: "Print ACL categories and the commands that belong to each category in Dragonfly."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

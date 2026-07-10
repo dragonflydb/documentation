@@ -1,5 +1,5 @@
 ---
-description: "Learn Redis RENAME command which renames a key."
+description: "Rename an existing key to a new key name in Dragonfly, the Redis-compatible RENAME command."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

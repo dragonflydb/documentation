@@ -1,5 +1,5 @@
 ---
-description: Get migration status of the current node.
+description: "Check the status of an in-progress hash slot migration on a Dragonfly cluster node."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
