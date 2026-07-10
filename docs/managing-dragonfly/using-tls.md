@@ -1,4 +1,5 @@
 ---
+description: "Configure Dragonfly to encrypt client connections with TLS."
 sidebar_position: 9
 ---
 

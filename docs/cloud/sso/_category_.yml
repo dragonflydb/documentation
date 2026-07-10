@@ -1,2 +1,5 @@
 position: 13
 label: "SSO"
+link:
+  type: "generated-index"
+  description: "Configure single sign-on (SSO) for Dragonfly Cloud, including Okta, OneLogin, and managed users."

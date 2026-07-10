@@ -2,3 +2,4 @@ position: 8
 label: "Reference"
 link:
   type: "generated-index"
+  description: "Supplementary reference material for Dragonfly."

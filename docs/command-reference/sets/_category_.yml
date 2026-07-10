@@ -2,3 +2,4 @@ position: 1
 label: Sets
 link:
   type: generated-index
+  description: "Commands for working with Dragonfly's set data type."

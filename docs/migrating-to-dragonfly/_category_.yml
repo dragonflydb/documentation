@@ -1,2 +1,5 @@
 position: 5
 label: "Migrating to Dragonfly"
+link:
+  type: "generated-index"
+  description: "Step-by-step guides for migrating existing Redis deployments, single instance or cluster, to Dragonfly."

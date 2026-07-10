@@ -1,4 +1,5 @@
 ---
+description: "Connect to a private Dragonfly Cloud network from your local machine using AWS Client VPN."
 sidebar_position: 1
 ---
 

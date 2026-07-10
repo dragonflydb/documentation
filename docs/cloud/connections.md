@@ -1,4 +1,5 @@
 ---
+description: "Create peering connections between a Dragonfly Cloud private network and your cloud provider VPC."
 sidebar_position: 5
 ---
 

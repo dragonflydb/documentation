@@ -1,4 +1,5 @@
 ---
+description: "Dragonfly's BSL 1.1 software license and the Creative Commons license covering this documentation."
 sidebar_position: 3
 ---
 

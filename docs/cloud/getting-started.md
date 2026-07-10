@@ -1,4 +1,5 @@
 ---
+description: "Sign up and create your first Dragonfly Cloud data store in minutes."
 sidebar_position: 1
 ---
 

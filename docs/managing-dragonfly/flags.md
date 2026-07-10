@@ -1,3 +1,7 @@
+---
+description: "Reference for Dragonfly's server configuration flags and how to set them."
+---
+
 # Server Configuration Flags
 
 Dragonfly can be tuned and configured by a set of config flags. These flags can be:

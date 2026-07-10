@@ -2,3 +2,4 @@ position: 1
 label: Hashes
 link:
   type: generated-index
+  description: "Commands for working with Dragonfly's hash data type."

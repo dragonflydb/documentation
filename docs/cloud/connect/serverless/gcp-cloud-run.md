@@ -1,4 +1,5 @@
 ---
+description: "Connect a GCP Cloud Run service or function to a Dragonfly Cloud data store."
 sidebar_position: 2
 ---
 

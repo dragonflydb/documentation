@@ -2,3 +2,4 @@ position: 1
 label: Bloom Filter
 link:
   type: generated-index
+  description: "Commands for using Dragonfly's probabilistic Bloom filter data structure."

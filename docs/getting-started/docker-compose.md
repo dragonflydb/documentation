@@ -1,4 +1,5 @@
 ---
+description: "Run Dragonfly locally in minutes using Docker Compose."
 sidebar_position: 1
 ---
 

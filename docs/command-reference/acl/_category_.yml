@@ -2,3 +2,4 @@ position: 1
 label: ACL
 link:
   type: generated-index
+  description: "Commands for managing Dragonfly's Access Control List (ACL) users and permissions."

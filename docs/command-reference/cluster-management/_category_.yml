@@ -2,3 +2,4 @@ position: 1
 label: Cluster Management
 link:
   type: generated-index
+  description: "Commands for managing Dragonfly's native cluster mode, including slot migration and cluster info."

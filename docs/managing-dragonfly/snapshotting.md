@@ -1,4 +1,5 @@
 ---
+description: "Internals of Dragonfly's forkless, point-in-time snapshotting algorithm."
 sidebar_position: 3
 ---
 

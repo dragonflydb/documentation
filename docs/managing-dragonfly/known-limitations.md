@@ -1,4 +1,5 @@
 ---
+description: "Known limits on key counts, collection sizes, TTLs, and argument sizes in Dragonfly."
 sidebar_position: 10
 ---
 

@@ -1,2 +1,5 @@
 position: 6
 label: "Development"
+link:
+  type: "generated-index"
+  description: "Developer tools for working with Dragonfly, including the CLI and client SDKs."

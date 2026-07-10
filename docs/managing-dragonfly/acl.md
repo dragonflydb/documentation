@@ -1,3 +1,7 @@
+---
+description: "Configure Dragonfly's Access Control Lists (ACL) to control which users can access which data and commands."
+---
+
 # Access Control Lists (ACL)
 
 Dragonfly has built-in support for ACL. Dragonfly operators get fine-grained control over how and who accesses the datastore via the ACL family of commands.

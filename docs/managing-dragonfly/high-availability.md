@@ -1,4 +1,5 @@
 ---
+description: "Achieve high availability with Dragonfly using replication and the Dragonfly Operator."
 sidebar_position: 5
 ---
 

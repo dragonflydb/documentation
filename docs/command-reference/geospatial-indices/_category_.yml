@@ -2,3 +2,4 @@ position: 1
 label: Geospatial Indices
 link:
   type: generated-index
+  description: "Commands for storing and querying geospatial data in Dragonfly."

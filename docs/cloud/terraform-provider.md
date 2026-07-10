@@ -1,4 +1,5 @@
 ---
+description: "Manage Dragonfly Cloud resources as infrastructure as code with the official Terraform provider."
 sidebar_position: 15
 ---
 

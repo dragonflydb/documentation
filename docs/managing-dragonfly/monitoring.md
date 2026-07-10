@@ -1,4 +1,5 @@
 ---
+description: "Monitor a Dragonfly instance's HTTP and Prometheus-compatible metrics endpoint, including replication metrics."
 sidebar_position: 5
 ---
 

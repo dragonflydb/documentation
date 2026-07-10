@@ -1,4 +1,5 @@
 ---
+description: "Set up primary-replica replication in Dragonfly, including migrating replication from Redis."
 sidebar_position: 4
 ---
 

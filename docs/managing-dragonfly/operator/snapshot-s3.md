@@ -1,3 +1,7 @@
+---
+description: "Configure Dragonfly instances managed by the Dragonfly Operator to back up snapshots to Amazon S3."
+---
+
 # Configure Snapshots to S3 with the Dragonfly Operator
 
 In this guide, We will see how to configure the Dragonfly Instances to use S3 as a backup location with the

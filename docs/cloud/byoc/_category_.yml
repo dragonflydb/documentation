@@ -1,2 +1,5 @@
 position: 3
 label: "BYOC"
+link:
+  type: "generated-index"
+  description: "Deploy Dragonfly Cloud in your own AWS or GCP account with Bring Your Own Cloud (BYOC)."

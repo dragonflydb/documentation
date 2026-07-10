@@ -1,4 +1,5 @@
 ---
+description: "Dragonfly Cloud's usage-based pricing model for active data stores, data transfer, and backup storage."
 sidebar_position: 13
 ---
 

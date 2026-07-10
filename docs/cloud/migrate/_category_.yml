@@ -1,2 +1,5 @@
 position: 10
 label: "Migrating to Dragonfly Cloud"
+link:
+  type: "generated-index"
+  description: "Migrate existing Redis or ElastiCache workloads to Dragonfly Cloud."
