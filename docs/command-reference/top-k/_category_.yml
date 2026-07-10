@@ -2,3 +2,4 @@ position: 1
 label: Top-K
 link:
   type: generated-index
+  description: "Commands for tracking the most frequent items in a data stream with Dragonfly's Top-K data structure."

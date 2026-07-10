@@ -2,3 +2,4 @@ position: 1
 label: Count-Min Sketch
 link:
   type: generated-index
+  description: "Commands for approximate frequency counting with Dragonfly's Count-Min Sketch data structure."

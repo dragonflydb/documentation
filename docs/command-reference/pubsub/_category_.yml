@@ -2,3 +2,4 @@ position: 1
 label: Pub/Sub
 link:
   type: generated-index
+  description: "Commands for publish/subscribe messaging in Dragonfly."

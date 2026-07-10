@@ -2,3 +2,4 @@ position: 1
 label: Lists
 link:
   type: generated-index
+  description: "Commands for working with Dragonfly's list data type."

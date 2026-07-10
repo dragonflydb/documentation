@@ -1,2 +1,5 @@
 position: 11
 label: "Connecting to Dragonfly Cloud"
+link:
+  type: "generated-index"
+  description: "How to connect to Dragonfly Cloud instances, including client configuration, VPN, and serverless environments."

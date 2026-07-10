@@ -1,2 +1,5 @@
 label: Serverless
 position: 3
+link:
+  type: "generated-index"
+  description: "Connect to Dragonfly Cloud from serverless environments like AWS Lambda and Google Cloud Run."

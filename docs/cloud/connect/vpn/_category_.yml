@@ -1,2 +1,5 @@
 position: 2
 label: "VPN"
+link:
+  type: "generated-index"
+  description: "Connect to Dragonfly Cloud over a private VPN on AWS or GCP."

@@ -1,2 +1,5 @@
 position: 1
 label: "From Redis Instance"
+link:
+  type: "generated-index"
+  description: "Guides for migrating a standalone Redis instance to Dragonfly via snapshot/restore, replication, or Sentinel promotion."
