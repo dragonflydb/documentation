@@ -1,4 +1,5 @@
 ---
+description: "Monitor a Dragonfly Cloud data store with the built-in Grafana dashboard and Prometheus-compatible metrics endpoint."
 sidebar_position: 7
 ---
 

@@ -1,4 +1,5 @@
 ---
+description: "Dragonfly's emulated single-shard and multi-shard cluster modes."
 sidebar_position: 5
 ---
 

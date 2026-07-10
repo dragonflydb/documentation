@@ -1,4 +1,5 @@
 ---
+description: "Add and configure a SAML SSO connection between your identity provider and Dragonfly Cloud."
 sidebar_position: 2
 ---
 

@@ -1,4 +1,5 @@
 ---
+description: "Create private networks and peering connections for Dragonfly Cloud data stores."
 sidebar_position: 4
 ---
 

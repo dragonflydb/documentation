@@ -1,4 +1,5 @@
 ---
+description: "Store Dragonfly snapshots on a Kubernetes persistent volume claim (PVC) with the Dragonfly Operator."
 sidebar_position: 4
 ---
 

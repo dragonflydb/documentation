@@ -1,3 +1,7 @@
+---
+description: "Access Dragonfly over HTTP and configure HTTP authentication."
+---
+
 # HTTP
 
 Dragonfly supports HTTP for certain operations. By default, `HTTP` can be accessed on 

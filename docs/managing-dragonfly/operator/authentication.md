@@ -1,4 +1,5 @@
 ---
+description: "Set up password- or TLS-based authentication for Dragonfly instances managed by the Dragonfly Operator."
 sidebar_position: 3
 ---
 

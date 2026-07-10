@@ -1,4 +1,5 @@
 ---
+description: "Overview of ways to install and run Dragonfly, plus its hardware and OS compatibility requirements."
 sidebar_position: 1
 ---
 

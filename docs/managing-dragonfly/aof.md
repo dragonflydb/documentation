@@ -1,4 +1,5 @@
 ---
+description: "Status of Append Only File (AOF) persistence support in Dragonfly."
 sidebar_position: 3
 ---
 

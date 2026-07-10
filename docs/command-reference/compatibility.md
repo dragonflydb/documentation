@@ -1,4 +1,5 @@
 ---
+description: "Redis command compatibility table showing which commands Dragonfly fully, partially, or does not support."
 sidebar_position: 0
 ---
 

@@ -1,4 +1,5 @@
 ---
+description: "Enable TLS encryption for Dragonfly instances managed by the Dragonfly Operator."
 sidebar_position: 5
 ---
 

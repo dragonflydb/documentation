@@ -1,4 +1,5 @@
 ---
+description: "Install Dragonfly using native RPM or Debian packages."
 sidebar_position: 3
 ---
 

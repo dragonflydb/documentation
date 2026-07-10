@@ -1,4 +1,5 @@
 ---
+description: "Manage user roles and access (Owner, User, Viewer) for a Dragonfly Cloud account."
 sidebar_position: 12
 ---
 

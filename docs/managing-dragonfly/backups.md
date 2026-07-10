@@ -1,4 +1,5 @@
 ---
+description: "Configure automatic and manual disk backups for a Dragonfly instance."
 sidebar_position: 5
 ---
 

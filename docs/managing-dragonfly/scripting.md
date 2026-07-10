@@ -1,4 +1,5 @@
 ---
+description: "Write and run Lua scripts in Dragonfly using a Redis-compatible scripting interface."
 sidebar_position: 5
 ---
 

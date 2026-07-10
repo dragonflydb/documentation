@@ -1,4 +1,5 @@
 ---
+description: "Verify ownership of your organization's email domain to enable SSO in Dragonfly Cloud."
 sidebar_position: 1
 ---
 

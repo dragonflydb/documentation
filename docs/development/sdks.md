@@ -1,4 +1,5 @@
 ---
+description: "Redis client libraries and SDKs that are officially supported and tested with Dragonfly."
 sidebar_position: 0
 ---
 
