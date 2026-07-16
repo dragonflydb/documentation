@@ -1,12 +1,12 @@
 ---
-description: "Learn how the Redis WAIT command blocks until write commands are acknowledged by replicas."
+description: "Learn how the WAIT command blocks until write commands are acknowledged by replicas."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
 
 # WAIT
 
-<PageTitle title="Redis WAIT Command (Documentation) | Dragonfly" />
+<PageTitle title="WAIT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -34,15 +34,16 @@ However, it greatly reduces the window of data loss.
 
 ## Dragonfly-specific behavior
 
-Dragonfly's `WAIT` differs from Redis in a few ways:
+Dragonfly's `WAIT` differs from the standard implementation in the following
+ways:
 
-- **Stronger acknowledgment guarantee.** Redis only waits for the writes
-  issued on the calling connection. Dragonfly waits for **all** writes
-  performed on the instance up to the moment `WAIT` is called, from any
-  connection. This is a strictly stronger guarantee.
-- **A timeout of `0` is bounded.** In Redis, `timeout = 0` blocks forever.
-  In Dragonfly, it is capped at 10 minutes, after which the command returns
-  the current acknowledgment count.
+- **Stronger acknowledgment guarantee.** The standard implementation only
+  waits for the writes issued on the calling connection. Dragonfly waits for
+  **all** writes performed on the instance up to the moment `WAIT` is called,
+  from any connection. This is a strictly stronger guarantee.
+- **A timeout of `0` is bounded.** In the standard implementation, a timeout
+  of `0` blocks forever. In Dragonfly, it is capped at 10 minutes, after which
+  the command returns the current acknowledgment count.
 - **Early return on role or state changes.** `WAIT` returns the current count
   early if the instance starts shutting down or a takeover begins, and returns
   an error if the instance becomes a replica while waiting (for example, due to
@@ -52,9 +53,9 @@ Dragonfly's `WAIT` differs from Redis in a few ways:
   them have already acknowledged, the command returns immediately instead of
   waiting out the timeout.
 
-As in Redis, when `WAIT` is called inside a `MULTI`/`EXEC` transaction it does
-not block, and instead returns the number of replicas that have already
-acknowledged all prior writes.
+As in the standard implementation, when `WAIT` is called inside a
+`MULTI`/`EXEC` transaction it does not block, and instead returns the number
+of replicas that have already acknowledged all prior writes.
 
 ## Return
 
