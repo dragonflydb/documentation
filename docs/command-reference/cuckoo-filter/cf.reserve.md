@@ -51,4 +51,4 @@ OK
 
 ## See also
 
-[`CF.ADD`](./cf.add.md) | [`CF.ADDNX`](./cf.addnx.md)
+[`CF.ADD`](./cf.add.md) | [`CF.ADDNX`](./cf.addnx.md) | [`CF.INSERT`](./cf.insert.md) | [`CF.INFO`](./cf.info.md)

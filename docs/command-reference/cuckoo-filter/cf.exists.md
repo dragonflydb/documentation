@@ -49,4 +49,4 @@ dragonfly> CF.EXISTS no_such_key item
 
 ## See also
 
-[`CF.MEXISTS`](./cf.mexists.md) | [`CF.ADD`](./cf.add.md) | [`CF.RESERVE`](./cf.reserve.md)
+[`CF.MEXISTS`](./cf.mexists.md) | [`CF.COUNT`](./cf.count.md) | [`CF.ADD`](./cf.add.md) | [`CF.RESERVE`](./cf.reserve.md)
