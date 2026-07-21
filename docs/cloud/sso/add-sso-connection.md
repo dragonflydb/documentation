@@ -40,6 +40,7 @@ For detailed provider-specific instructions, see:
 
 - [Okta Configuration Guide](./okta.md)
 - [OneLogin Configuration Guide](./onelogin.md)
+- [Microsoft Entra ID Configuration Guide](./microsoft.md)
 - For other providers please contact [support](mailto:support@dragonflydb.io).
 
 ## Enabling and Managing Connections
