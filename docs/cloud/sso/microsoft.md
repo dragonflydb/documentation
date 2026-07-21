@@ -67,10 +67,7 @@ Click **Edit** on the **Basic SAML Configuration** section and configure:
 
 **Reply URL (Assertion Consumer Service URL):**
 - Enter the ACS URL provided by Dragonfly Cloud
-- Example: `https://dragonflydb.cloud/auth/saml/callback`
-
-**Sign on URL** (optional):
-- Enter `https://dragonflydb.cloud` to support IdP-initiated login from the Microsoft My Apps portal
+- Example: `https://account.dragonflydb.cloud/login/saml/callback`
 
 Click **Save**.
 
@@ -91,19 +88,12 @@ In the **Attributes & Claims** section, click **Edit** and configure the followi
 
 Remove any other default claims that are not required to keep the assertion minimal.
 
-:::tip
-Set the **Email attribute** field on the Dragonfly Cloud SSO connection to `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress` (see [Step 4](#step-4-complete-dragonfly-cloud-configuration)) so it matches this claim name. The **Email attribute** is required; if left blank, Dragonfly Cloud defaults to looking for a claim named `email`. The **First name attribute** and **Last name attribute** are optional and, if used, should be set to `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname` and `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname` respectively.
-:::
-
 ## Step 3: Get Microsoft Entra ID SAML Metadata
 
 After configuring SAML settings, obtain the metadata to configure Dragonfly Cloud:
 
 1. In the **SAML Certificates** section, copy the **App Federation Metadata Url**
-
-   OR
-
-   Download the **Certificate (Base64)** and note the **Login URL** and **Microsoft Entra Identifier** from the **Set up Dragonfly Cloud** section for manual configuration
+2. Also download the **Certificate (Base64)** and note the **Login URL** and **Microsoft Entra Identifier** from the **Set up Dragonfly Cloud** section, so you can verify or manually enter these values in the next step
 
 The metadata URL will look like:
 ```
@@ -114,22 +104,11 @@ https://login.microsoftonline.com/{tenant-id}/federationmetadata/2007-06/federat
 
 Return to the Dragonfly Cloud SSO connection configuration:
 
-### Option A: Using Metadata URL
-
-1. Paste the Microsoft Entra ID metadata URL into the **Metadata URL** field
-2. Dragonfly Cloud will automatically fetch and populate:
-   - Entity ID
-   - SSO URL
-   - Certificate
-
-### Option B: Manual Configuration
-
-1. Enter the values you copied from Microsoft Entra ID:
+1. Paste the Microsoft Entra ID metadata URL into the **Metadata URL** field.
+2. Also enter the values you copied from Microsoft Entra ID:
    - **Entity ID**: Microsoft Entra Identifier
-   - **SSO URL**: Login URL
    - **Certificate**: Certificate (Base64)
-
-2. Click **Create Connection**
+3. Click **Create Connection**
 
 ## Step 5: Assign Users and Groups in Microsoft Entra ID
 
@@ -171,7 +150,7 @@ SCIM (System for Cross-domain Identity Management) allows Microsoft Entra ID to 
 
 1. Navigate to your SSO connection in Dragonfly Cloud
 2. Toggle **SCIM Provisioning** to enabled
-3. Copy the **SCIM Endpoint URL** and ******** (you'll need these for Microsoft Entra ID configuration)
+3. Copy the **SCIM Endpoint URL** and **bearer token** (you'll need these for Microsoft Entra ID configuration)
 
 ### Configuring SCIM in Microsoft Entra ID
 
@@ -181,7 +160,7 @@ SCIM (System for Cross-domain Identity Management) allows Microsoft Entra ID to 
 4. Set **Provisioning Mode** to **Automatic**
 5. Under **Admin Credentials**, enter:
    - **Tenant URL**: Paste the SCIM endpoint URL from Dragonfly Cloud
-   - **Secret ****** Paste the bearer token from Dragonfly Cloud
+   - **Secret Token**: Paste the bearer token from Dragonfly Cloud
 6. Click **Test Connection** to verify the connection
 7. Click **Save**
 
