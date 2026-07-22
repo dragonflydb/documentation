@@ -69,14 +69,14 @@ Navigate to the **Configuration** tab:
    - Example: `XXXXXXXXXXX` or the specific SP Entity ID from Dragonfly
 
 2. **Recipient**: Enter the ACS URL provided by Dragonfly Cloud
-   - Example: `https://dragonflydb.cloud/auth/saml/callback`
+   - Example: `https://account.dragonflydb.cloud/login/saml/callback`
 
 3. **ACS (Consumer) URL Validator**: Enter a regular expression to validate the ACS URL
-   - Example: `https://dragonflydb\.cloud/.*`
+   - Example: `https://account\.dragonflydb\.cloud/.*`
    - Or leave as default: `.*`
 
 4. **ACS (Consumer) URL**: Enter the same ACS URL as Recipient
-   - Example: `https://dragonflydb.cloud/auth/saml/callback`
+   - Example: `https://account.dragonflydb.cloud/login/saml/callback`
 
 5. **SAML initiator**: Select **Service Provider** (SP-initiated login)
 
@@ -125,41 +125,22 @@ Click the **+** button to add new parameters for each required attribute:
 
 Navigate to the **SSO** tab to obtain SAML metadata:
 
-### Option A: Using Metadata URL (Recommended)
-
 1. Scroll to the **Issuer URL** section
 2. Copy the **Issuer URL** (this is your metadata URL)
    - Example: `https://app.onelogin.com/saml/metadata/your-app-id`
-
-### Option B: Manual Configuration
-
-If you prefer manual configuration:
-
-1. **Issuer URL**: Copy this value (this is the Entity ID)
-2. **SAML 2.0 Endpoint (HTTP)**: Copy this value (this is the SSO URL)
-3. **X.509 Certificate**: Click **View Details** next to the certificate
-4. Copy the certificate content (including BEGIN and END lines)
+3. Also note the following values so you can verify or manually enter them in the next step:
+   - **Issuer URL**: this is the Entity ID
+   - **X.509 Certificate**: click **View Details** next to the certificate and copy the certificate content (including BEGIN and END lines)
 
 ## Step 6: Complete Dragonfly Cloud Configuration
 
 Return to the Dragonfly Cloud SSO connection configuration:
 
-### Option A: Using Metadata URL (Recommended)
-
-1. Paste the OneLogin metadata URL into the **Metadata URL** field
-2. Dragonfly Cloud will automatically fetch and populate:
-   - Entity ID
-   - SSO URL
-   - Certificate
-
-### Option B: Manual Configuration
-
-1. Enter the values you copied from OneLogin:
+1. Paste the OneLogin metadata URL into the **Metadata URL** field.
+2. Also enter the values you copied from OneLogin:
    - **Entity ID**: Issuer URL from OneLogin
-   - **SSO URL**: SAML 2.0 Endpoint (HTTP) from OneLogin
    - **Certificate**: X.509 Certificate from OneLogin
-
-2. Click **Create Connection**
+3. Click **Create Connection**
 
 ## Step 7: Assign Users in OneLogin
 
