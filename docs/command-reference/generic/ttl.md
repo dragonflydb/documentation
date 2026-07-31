@@ -3,6 +3,7 @@ description: "Learn the Redis TTL command to get remaining time-to-live of a key
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # TTL
 
@@ -37,3 +38,19 @@ dragonfly> EXPIRE mykey 10
 dragonfly> TTL mykey
 (integer) 10
 ```
+
+## Benchmark
+
+<Benchmark
+  command="TTL"
+  dragonflyOps={10630000}
+  valkeyOps={2330000}
+  redisOps={1940000}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, 128B values, uniform key distribution"
+  duration="60s (10s warmup), 1 trial"
+  measuredOn="2026-07-29"
+  harnessPath="benchmarks/TTL/dfly_bench/TTL_reproduce.md"
+/>

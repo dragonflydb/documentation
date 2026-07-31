@@ -2,6 +2,7 @@
 description:  Learn how to use the Redis LPOP command for removing and getting the first element in the list.
 ---
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # LPOP
 
@@ -45,3 +46,19 @@ dragonfly> LRANGE mylist 0 -1
 1) "four"
 2) "five"
 ```
+
+## Benchmark
+
+<Benchmark
+  command="LPOP"
+  dragonflyOps={10250000}
+  valkeyOps={1690000}
+  redisOps={1330000}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="1M lists, 100 items each, 128B values, uniform key distribution"
+  duration="300s (10s warmup), 1 trial"
+  measuredOn="2026-07-29"
+  harnessPath="benchmarks/LPOP/dfly_bench/LPOP_reproduce.md"
+/>

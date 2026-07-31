@@ -2,6 +2,7 @@
 description:  Discover how to use Redis RPOP command to remove and fetch the last element of a list.
 ---
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # RPOP
 
@@ -45,3 +46,19 @@ dragonfly> LRANGE mylist 0 -1
 1) "one"
 2) "two"
 ```
+
+## Benchmark
+
+<Benchmark
+  command="RPOP"
+  dragonflyOps={10670000}
+  valkeyOps={1810000}
+  redisOps={1490000}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="1M lists, 100 items each, 128B values, uniform key distribution"
+  duration="300s (10s warmup), 1 trial"
+  measuredOn="2026-07-29"
+  harnessPath="benchmarks/RPOP/dfly_bench/RPOP_reproduce.md"
+/>

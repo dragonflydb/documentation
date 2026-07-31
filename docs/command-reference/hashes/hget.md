@@ -3,6 +3,7 @@ description: "Learn how to use Redis HGET command to retrieve the value of a has
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # HGET
 
@@ -33,3 +34,19 @@ dragonfly> HGET myhash field1
 dragonfly> HGET myhash field2
 (nil)
 ```
+
+## Benchmark
+
+<Benchmark
+  command="HGET"
+  dragonflyOps={9310000}
+  valkeyOps={791800}
+  redisOps={744400}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, 128B values, uniform key distribution"
+  duration="60s (10s warmup), 1 trial"
+  measuredOn="2026-07-28"
+  harnessPath="benchmarks/HGET/dfly_bench/HGET_reproduce.md"
+/>

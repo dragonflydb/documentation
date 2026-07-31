@@ -3,6 +3,7 @@ description: Learn how to use Redis MGET to retrieve the values of all specified
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # MGET
 
@@ -98,6 +99,22 @@ dragonfly$> MGET key_expiring key_persistent
 1) (nil)
 2) "persistent_value"
 ```
+
+## Benchmark
+
+<Benchmark
+  command="MGET"
+  dragonflyOps={8090000}
+  valkeyOps={1490000}
+  redisOps={1370000}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, 128B values, uniform key distribution"
+  duration="60s (10s warmup), 1 trial"
+  measuredOn="2026-07-28"
+  harnessPath="benchmarks/MGET/dfly_bench/MGET_reproduce.md"
+/>
 
 ## Best Practices
 

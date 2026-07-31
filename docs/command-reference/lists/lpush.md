@@ -2,6 +2,7 @@
 description:  Learn how to use Redis LPUSH command to insert an element at the start of a list.
 ---
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # LPUSH
 
@@ -42,3 +43,19 @@ dragonfly> LRANGE mylist 0 -1
 1) "hello"
 2) "world"
 ```
+
+## Benchmark
+
+<Benchmark
+  command="LPUSH"
+  dragonflyOps={6020000}
+  valkeyOps={866300}
+  redisOps={661900}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, 128B values, uniform key distribution"
+  duration="300s (10s warmup), 1 trial"
+  measuredOn="2026-07-29"
+  harnessPath="benchmarks/LPUSH/dfly_bench/LPUSH_reproduce.md"
+/>

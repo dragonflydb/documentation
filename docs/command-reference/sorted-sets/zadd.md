@@ -3,6 +3,7 @@ description: Learn how to use the Redis ZADD command to add members to sorted se
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # ZADD
 
@@ -132,6 +133,22 @@ dragonfly$> ZADD myzset GT CH 20 "player1"
 dragonfly$> ZADD myzset LT CH 20 "player1"
 (integer) 1  # "player1" was updated because 20 is less than 25.
 ```
+
+## Benchmark
+
+<Benchmark
+  command="ZADD"
+  dragonflyOps={7220000}
+  valkeyOps={526000}
+  redisOps={448400}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, 128B values, uniform key distribution"
+  duration="300s (10s warmup), 1 trial"
+  measuredOn="2026-07-28"
+  harnessPath="benchmarks/ZADD/dfly_bench/ZADD_reproduce.md"
+/>
 
 ## Best Practices
 

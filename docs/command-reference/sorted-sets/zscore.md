@@ -3,6 +3,7 @@ description: Learn how to use Redis ZSCORE command to get the score associated w
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # ZSCORE
 
@@ -70,6 +71,22 @@ dragonfly$> ZADD myzset 1.5 "memberA" 3.7 "memberB"
 dragonfly$> ZSCORE myzset "memberB"
 "3.7"
 ```
+
+## Benchmark
+
+<Benchmark
+  command="ZSCORE"
+  dragonflyOps={9100000}
+  valkeyOps={910400}
+  redisOps={692700}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="1M sorted-set members, 128B values, uniform key distribution"
+  duration="60s (10s warmup), 1 trial"
+  measuredOn="2026-07-28"
+  harnessPath="benchmarks/ZSCORE/dfly_bench/ZSCORE_reproduce.md"
+/>
 
 ## Best Practices
 
