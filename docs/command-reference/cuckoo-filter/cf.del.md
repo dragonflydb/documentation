@@ -5,7 +5,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # CF.DEL
 
-<PageTitle title="Redis CF.DEL Command (Documentation) | Dragonfly" />
+<PageTitle title="CF.DEL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

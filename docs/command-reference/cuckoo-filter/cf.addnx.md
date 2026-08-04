@@ -5,7 +5,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # CF.ADDNX
 
-<PageTitle title="Redis CF.ADDNX Command (Documentation) | Dragonfly" />
+<PageTitle title="CF.ADDNX Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

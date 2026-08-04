@@ -5,7 +5,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # CF.COMPACT
 
-<PageTitle title="Redis CF.COMPACT Command (Documentation) | Dragonfly" />
+<PageTitle title="CF.COMPACT Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

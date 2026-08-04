@@ -5,7 +5,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # CF.MEXISTS
 
-<PageTitle title="Redis CF.MEXISTS Command (Documentation) | Dragonfly" />
+<PageTitle title="CF.MEXISTS Command (Documentation) | Dragonfly" />
 
 ## Syntax
 

@@ -5,7 +5,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # CF.RESERVE
 
-<PageTitle title="Redis CF.RESERVE Command (Documentation) | Dragonfly" />
+<PageTitle title="CF.RESERVE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
