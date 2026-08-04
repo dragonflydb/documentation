@@ -13,14 +13,14 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(k), where k is the number of sub-filters
 
-**ACL categories:** @cuckoo
+**ACL categories:** @cuckoo_filter, @fast, @read
 
 Returns the number of times `item` occurs in the Cuckoo filter at `key`.
 
 Since [`CF.ADD`](./cf.add.md) allows duplicate insertions, the same item can occupy more than one
 slot. `CF.COUNT` reports how many slots currently match `item`, which may include false positives.
 
-If `key` does not exist, `0` is returned.
+If `key` does not exist or holds a value of a different type, `0` is returned.
 
 ## Return
 

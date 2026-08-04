@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(k), where k is the number of sub-filters
 
-**ACL categories:** @cuckoo
+**ACL categories:** @cuckoo_filter, @fast, @read
 
 Checks whether `item` exists in the Cuckoo filter at `key`.
 
@@ -22,7 +22,7 @@ still be reported as present due to a fingerprint collision. False negatives are
 not possible: if an item was inserted and never deleted, `CF.EXISTS` will always
 return `1`.
 
-If `key` does not exist, `0` is returned.
+If `key` does not exist or holds a value of a different type, `0` is returned.
 
 ## Return
 

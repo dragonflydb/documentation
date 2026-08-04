@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # Monitoring
 
-By default, Dragonfly allows HTTP access via its main TCP port (i.e, `6379`) and it exposes Prometheus compatible metrics on `:6379/metrics`.
+By default, Dragonfly allows HTTP access through its main TCP port (i.e., `6379`) and exposes Prometheus-compatible metrics at `:6379/metrics`. These include metrics for connection memory and pipelines. Batch I/O counters are available through `INFO stats`, but are not currently exported by the Prometheus endpoint.
 
 Check out this complete example of setting up a [Grafana Monitoring Stack with Dragonfly](https://github.com/dragonflydb/dragonfly/tree/main/tools/local/monitoring).
 
@@ -22,4 +22,4 @@ curl: (1) Received HTTP/0.9 when not allowed
 
 ## Replication Metrics
 
-The `/metrics` endpoint also exposes replication information. These metrics include details about the replication role of the instance, connected replicas, and replication lag, allowing you to monitor the health and status of your Dragonfly replication setup via Prometheus.
+The `/metrics` endpoint also exposes replication information. These metrics include details about the replication role of the instance, connected replicas, replication backlog, and replication lag, allowing you to monitor the health and status of your Dragonfly replication setup via Prometheus.

@@ -12,7 +12,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
     WAIT numreplicas timeout
 
-**Time complexity:** O(1)
+**Time complexity:** Depends on the number of tracked replicas and shards, and on how long the command waits.
 
 **ACL categories:** @slow, @connection
 

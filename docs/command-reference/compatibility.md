@@ -5,6 +5,11 @@ sidebar_position: 0
 
 # Dragonfly API Compatibility
 
+This table tracks command-surface compatibility: whether Dragonfly accepts a
+command and its documented options or subcommands. "Fully supported" does not
+imply byte-for-byte identical behavior. See each command page for
+Dragonfly-specific precision, limits, and other behavioral differences.
+
 | Command Family | Command | Dragonfly Support | Details |
 |:--|:--|:--|:--|
 | <span class="family">Bitmap</span> | <span class="command">BITCOUNT</span> | <span class="support supported">Fully supported</span> |  |
@@ -37,7 +42,7 @@ sidebar_position: 0
 |  | <span class="command">HELLO</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">PING</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">QUIT</span> | <span class="support supported">Fully supported</span> |  |
-|  | <span class="command">RESET</span> | <span class="support unsupported">Unsupported</span> |  |
+|  | <span class="command">RESET</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">SELECT</span> | <span class="support supported">Fully supported</span> |  |
 | <span class="family">Generic</span> | <span class="command">COPY</span> | <span class="support partial">Partially supported</span> | Missing: DB. |
 |  | <span class="command">DEL</span> | <span class="support supported">Fully supported</span> |  |
@@ -76,12 +81,14 @@ sidebar_position: 0
 |  | <span class="command">HEXISTS</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">HGET</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">HGETALL</span> | <span class="support supported">Fully supported</span> |  |
+|  | <span class="command">HGETEX</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">HINCRBY</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">HINCRBYFLOAT</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">HKEYS</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">HLEN</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">HMGET</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">HMSET</span> | <span class="support supported">Fully supported</span> |  |
+|  | <span class="command">HPEXPIRETIME</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">HRANDFIELD</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">HSCAN</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">HSET</span> | <span class="support supported">Fully supported</span> |  |
@@ -312,10 +319,9 @@ sidebar_position: 0
 |  | <span class="command">BF.INSERT</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">BF.SCANDUMP</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">BF.LOADCHUNK</span> | <span class="support supported">Fully supported</span> |  |
-|  | <span class="command">BF.INFO</span> | <span class="support unsupported">Unsupported</span> |  |
+|  | <span class="command">BF.INFO</span> | <span class="support partial">Partially supported</span> | Missing: ERROR, MAXSCALEDCAPACITY, TIGHTENING. |
 |  | <span class="command">BF.CARD</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">BF.DEBUG</span> | <span class="support unsupported">Unsupported</span> |  |
-| <span class="family">Cuckoo Filter</span> | <span class="command">TBD</span> | <span class="support unsupported">Unsupported</span> |  |
 | <span class="family">Count-Min Sketch</span> | <span class="command">CMS.INCRBY</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CMS.INFO</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CMS.INITBYDIM</span> | <span class="support supported">Fully supported</span> |  |
@@ -350,7 +356,7 @@ sidebar_position: 0
 |  | <span class="command">JSON.TYPE</span> | <span class="support supported">Fully supported</span> |  |
 | <span class="family">Search</span> | <span class="command">FT.CREATE</span> | <span class="support partial">Partially supported</span> | Missing: DISABLE, ENABLE, INDEXALL, MAXTEXTFIELDS, NOFIELDS, NOFREQS, NOHL, PAYLOAD_FIELD, SCORE, SCORE_FIELD. |
 |  | <span class="command">FT.SEARCH</span> | <span class="support partial">Partially supported</span> | Missing: EXPANDER, EXPLAINSCORE, FIELDS, FRAGS, GEOFILTER, HIGHLIGHT, INFIELDS, INKEYS, INORDER, LEN, NOSTOPWORDS, PAYLOAD, SLOP, SUMMARIZE, TAGS, TIMEOUT, VERBATIM, WITHPAYLOADS. |
-|  | <span class="command">FT.HYBRID</span> | <span class="support partial">Partially supported</span> | Missing: ADHOC, BATCHES, BATCH_SIZE, COUNT_DISTINCTISH, EF_RUNTIME, EPSILON, FIRST_VALUE, NOSORT, OFFSET, POLICY, QUANTILE, RADIUS, RANDOM_SAMPLE, STDDEV, TIMEOUT, TIMESHARING, TIMESTAMP, TOLIST. |
+|  | <span class="command">FT.HYBRID</span> | <span class="support partial">Partially supported</span> | Missing: ADHOC, BATCHES, BATCH_SIZE, COUNT_DISTINCTISH, FIRST_VALUE, NOSORT, OFFSET, POLICY, QUANTILE, RANDOM_SAMPLE, STDDEV, TIMEOUT, TIMESHARING, TIMESTAMP, TOLIST. |
 |  | <span class="command">FT.ALTER</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">FT.DROPINDEX</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">FT.INFO</span> | <span class="support supported">Fully supported</span> |  |
@@ -371,7 +377,7 @@ sidebar_position: 0
 |  | <span class="command">TOPK.COUNT</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">TOPK.LIST</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">TOPK.INFO</span> | <span class="support supported">Fully supported</span> |  |
-| <span class="family">CF</span> | <span class="command">CF.ADD</span> | <span class="support supported">Fully supported</span> |  |
+| <span class="family">Cuckoo Filter</span> | <span class="command">CF.ADD</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CF.ADDNX</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CF.COMPACT</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CF.COUNT</span> | <span class="support supported">Fully supported</span> |  |
@@ -415,4 +421,4 @@ sidebar_position: 0
 |  | <span class="command">READONLY</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">READWRITE</span> | <span class="support supported">Fully supported</span> |  |
 
-Verification: Dragonfly v1.39.0; Redis 8.6.4; modules: BF, CF, CMS, FT, JSON, TDIGEST, TOPK, TS.
+Verification: Dragonfly v1.40.0; Redis 8.6.4; modules: BF, CF, CMS, FT, JSON, TDIGEST, TOPK, TS.

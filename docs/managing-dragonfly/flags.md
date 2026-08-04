@@ -19,7 +19,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--port`
   Redis port. 0 disables the port, -1 will bind on a random available port.
 
-   `default: 6379`
+  `default: 6379`
 
 ### `--cache_mode`
   If true, the backend behaves like a cache, by evicting entries when getting close to maxmemory limit
@@ -39,7 +39,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--dbnum`
   Number of databases.
 
-   `default: 16`
+  `default: 16`
 
 ### `--bind`
   Bind address. If empty - binds on all interfaces. It's not advised due to security implications.
@@ -49,7 +49,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--requirepass`
   Password for AUTH authentication.
 
-   `default: ""`
+  `default: ""`
 
 ### `--dbfilename`
   The filename to save/load the DB.
@@ -66,15 +66,20 @@ flags which include specified substring in either in the name, description or pa
 
   `default:`
 
+### `--snapshot_egress_limit_bytes`
+  Per-shard-thread socket egress bandwidth budget in bytes per second. Each shard throttles its snapshot traversal loop to stay under this rate. Accepts human-readable sizes such as `100mb` and `1gb`. A value of 0 disables throttling.
+
+  `default: 0B`
+
 ### `--admin_bind`
-  If set, the admin console TCP connection would be bind to the given address. 
-  This supports both HTTP and RESP protocols. 
+  If set, the admin console TCP connection would be bind to the given address.
+  This supports both HTTP and RESP protocols.
 
   `default: ""`
 
 ### `--admin_port`
-  If set, would enable admin access to console on the assigned port. 
-  This supports both HTTP and RESP protocols. 
+  If set, would enable admin access to console on the assigned port.
+  This supports both HTTP and RESP protocols.
 
   `default: 0`
 
@@ -86,7 +91,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--max_multi_bulk_len`
   Maximum multi-bulk (array) length that is allowed to be accepted when parsing RESP protocol
 
-   `default: 65536`
+  `default: 65536`
 
 ### `--migrate_connections`
   When enabled, Dragonfly will try to migrate connections to the target thread on which they operate. Currently this is
@@ -100,12 +105,17 @@ flags which include specified substring in either in the name, description or pa
   `default: false`
 
 ### `--publish_buffer_limit`
-  Amount of memory to use for storing pub commands in bytes - per IO thread.
+  Amount of memory to use for storing publish commands per IO thread. This is the soft Pub/Sub back-pressure limit; publishers are only parked once the per-thread subscriber memory reaches this value times the internal hard-limit multiplier.
 
-  `default: 128.00MiB`
+  `default: 196.00MiB`
+
+### `--pubsub_slow_subscriber_timeout_ms`
+  If a subscriber connection keeps a Pub/Sub socket write blocked for at least this many milliseconds, Dragonfly closes it when either its queued Pub/Sub memory reaches one-sixteenth of `publish_buffer_limit` or the per-IO-thread subscriber memory is above `publish_buffer_limit`. A value of 0 disables this slow-subscriber protection. This is a startup-only flag, like `publish_buffer_limit`.
+
+  `default: 0`
 
 ### `--pipeline_squash`
-  Number of queued pipelined commands above which squashing is enabled, 0 means disabled. 
+  Number of queued pipelined commands above which squashing is enabled, 0 means disabled.
 
   `default: 1`
 
@@ -115,18 +125,18 @@ flags which include specified substring in either in the name, description or pa
   `default: true`
 
 ### `--request_cache_limit`
-  Amount of memory to use for request cache in bytes per IO thread. 
+  Amount of memory to use for request cache in bytes per IO thread.
 
   `default: 64.00MiB`
 
 ### `--tcp_nodelay`
-  Configures dragonfly connections with socket option TCP_NODELAY. 
+  Configures dragonfly connections with socket option TCP_NODELAY.
 
   `default: true`
 
 ### `--conn_io_thread_start`
   Starting thread id for handling server connections.
-  
+
   `default: 0`
 
 ### `--conn_io_threads`
@@ -142,7 +152,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--container_iteration_yield_interval_usec`
   Yield the fiber every N microseconds during container iteration. 0 disables yielding.
 
-  `default: 0`
+  `default: 500`
 
 ### `--tcp_keepalive`
   The period in seconds of inactivity after which keep-alives are triggerred,
@@ -171,7 +181,7 @@ flags which include specified substring in either in the name, description or pa
   `default: ""`
 
 ### `--tls_cert_file`
-  Cert file(public key) for tls connections. 
+  Cert file(public key) for tls connections.
 
   `default: ""`
 
@@ -180,11 +190,6 @@ flags which include specified substring in either in the name, description or pa
 
   `default: ""`
 
-### `--rename_command`
-  Change the name of commands, format is: `<cmd1_name>=<cmd1_new_name>, <cmd2_name>=<cmd2_new_name>`
-
-  `default:`
-
 ### `--restricted_commands`
   Commands restricted to connections on the admin port.
 
@@ -192,30 +197,28 @@ flags which include specified substring in either in the name, description or pa
 
 ### `--lock_on_hashtags`
   When true, locks are done in the \{hashtag\} level instead of key level. Only use this with `--cluster_mode=emulated|yes`.
-  
+
   `default: false`
 
 ### `--enable_heartbeat_eviction`
-  Enable eviction during heartbeat when memory is under pressure. 
+  Enable eviction during heartbeat when memory is under pressure.
 
   `default: true`
 
 ### `--max_eviction_per_heartbeat`
+  The maximum number of key-value pairs that will be deleted in each eviction when heartbeat based eviction is
+  triggered under memory pressure.
 
- The maximum number of key-value pairs that will be deleted in each eviction when heartbeat based eviction is
- triggered under memory pressure.
-
- `default: 100`
+  `default: 100`
 
 ### `--max_segment_to_consider`
-
   The maximum number of dashtable segments to scan in each eviction when heartbeat based eviction is triggered under memory
   pressure.
 
   `default: 4`
 
 ### `--force_epoll`
-  If true - uses linux epoll engine underneath. Can fit for kernels older than 5.10. 
+  If true - uses linux epoll engine underneath. Can fit for kernels older than 5.10.
 
   `default: false`
 
@@ -225,18 +228,17 @@ flags which include specified substring in either in the name, description or pa
   `default: ""`
 
 ### `--unixsocket`
-
   If not empty - specifies path for the Unix socket that will be used for listening for incoming connections.
 
   `default: ""`
 
 ### `--unixsocketperm`
   Set permissions for unixsocket, in octal value.
-   
+
   `default: ""`
 
 ### `--version_check`
-  If true, Will monitor for new releases on Dragonfly servers once a day. 
+  If true, Will monitor for new releases on Dragonfly servers once a day.
 
   `default: true`
 
@@ -246,7 +248,7 @@ flags which include specified substring in either in the name, description or pa
   `default: 100`
 
 ### `--masterauth`
-  Password for authentication with master. 
+  Password for authentication with master.
 
   `default: ""`
 
@@ -258,24 +260,26 @@ flags which include specified substring in either in the name, description or pa
 
 ### `--mem_defrag_page_utilization_threshold`
   Memory page under utilization threshold. Ratio between used and committed size, below this, memory in
-  this page will defragmented. 
+  this page will defragmented.
 
   `default: 0.8`
 
 ### `--mem_defrag_threshold`
-  Minimum percentage of used memory relative to maxmemory cap before running defragmentation. 
+  Minimum percentage of used memory relative to maxmemory cap before running defragmentation.
 
   `default: 0.7`
 
 ### `--mem_defrag_waste_threshold`
-  The ratio of wasted/committed memory above which we run defragmentation. 
+  The ratio of wasted/committed memory above which we run defragmentation.
 
   `default: 0.2`
 
 ### `--shard_round_robin_prefix`
+  Deprecated and will be removed.
+
   When non-empty, keys which start with this prefix are not distributed across shards based on their value but instead
-  via round-robin. Use cautiously! This can efficiently support up to a few hundreds of prefixes. Note: prefix is 
-  looked inside hashtags when cluster mode is enabled.
+  via round-robin. Use cautiously! This can efficiently support up to a few hundreds of prefixes. Note: the prefix is
+  inspected inside hashtags when cluster mode is enabled.
 
   `default: ""`
 
@@ -291,7 +295,7 @@ flags which include specified substring in either in the name, description or pa
   `default: 0.5`
 
 ### `--tiered_upload_threshold`
-  Ratio of free memory (free/max memory) below which uploading stops. 
+  Ratio of free memory (free/max memory) below which uploading stops.
 
   `default: 0.1`
 
@@ -300,6 +304,11 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 64`
 
+### `--tiered_min_ttl_to_offload_ms`
+  Minimum remaining TTL in milliseconds for a value to be eligible for offloading.
+
+  `default: 5000`
+
 ### `--tiered_max_pending_stash_bytes`
   Maximum bytes in-flight to disk before rejecting new stashes or applying client backpressure. Allows batching writes to saturate disk I/O even with few clients.
 
@@ -307,7 +316,7 @@ flags which include specified substring in either in the name, description or pa
 
 ### `--keys_output_limit`
   Maximum number of keys output by keys command.
-  
+
   `default: 8192`
 
 ### `--backing_file_direct`
@@ -315,14 +324,29 @@ flags which include specified substring in either in the name, description or pa
 
   `default: true`
 
+### `--tiering_disk_storage_initial_size`
+  Initial disk storage size.
+
+  `default: 256.00MiB`
+
 ### `--list_compress_depth`
-  Compress depth of the list. Default is no compression. 
+  Compress depth of the list. Default is no compression.
 
   `default: 0`
 
+### `--list_compress_dict_threshold`
+  Minimum list malloc usage in bytes before attempting ZSTD dictionary compression. A value of 0 disables it. Compression is synchronous and may block the thread.
+
+  `default: 0`
+
+### `--list_compress_level`
+  Compression level for QList ZSTD dictionaries. A value of -1 uses ZSTD's default tuning.
+
+  `default: -1`
+
 ### `--list_max_listpack_size`
   Maximum listpack size, default is 8kb.
-  
+
   `default: -2`
 
 ### `--listpack_max_bytes`
@@ -341,27 +365,27 @@ flags which include specified substring in either in the name, description or pa
   `default: false`
 
 ### `--memcached_port`
-  Memcached port: 
+  Memcached port:
 
   `default: 0`
 
 ### `--multi_eval_squash_buffer`
   Max buffer for squashed commands per script:
 
-  `default: 4096`
+  `default: 8096`
 
 ### `--multi_exec_squash`
-  Whether multi exec will squash single shard commands to optimize performance. 
+  Whether multi exec will squash single shard commands to optimize performance.
 
   `default: true`
 
 ### `--num_shards`
   Number of database shards, 0 - to choose automatically.
-  
+
   `default: 0`
 
 ### `--tls_replication`
-  Enable TLS on replication. 
+  Enable TLS on replication.
 
   `default: false`
 
@@ -384,12 +408,12 @@ flags which include specified substring in either in the name, description or pa
   - `3` — `MULTI_ENTRY_LZ4` — multi entry lz4 compression on df snapshot and single entry on rdb snapshot.
 
 ### `--master_connect_timeout_ms`
-  Timeout for establishing connection to a replication master. 
+  Timeout for establishing connection to a replication master.
 
   `default: 20000`
 
 ### `--master_reconnect_timeout_ms`
-  Timeout for re-establishing connection to a replication master. 
+  Timeout for re-establishing connection to a replication master.
 
   `default: 1000`
 
@@ -404,19 +428,17 @@ flags which include specified substring in either in the name, description or pa
   `default: 1000`
 
 ### `--default_lua_flags`
-
   Configure default flags for running Lua scripts:
 
-   - Use `allow-undeclared-keys` to allow accessing undeclared keys,
-   - Use `disable-atomicity` to allow running scripts non-atomically.
+  - Use `allow-undeclared-keys` to allow accessing undeclared keys,
+  - Use `disable-atomicity` to allow running scripts non-atomically.
 
-  Specify multiple values separated by space, for example `allow-undeclared-keys disable-atomicity` 
-  runs scripts non-atomically and allows accessing undeclared keys. 
+  Specify multiple values separated by space, for example `allow-undeclared-keys disable-atomicity`
+  runs scripts non-atomically and allows accessing undeclared keys.
 
   `default: ""`
 
 ### `--lua_auto_async`
-
   If enabled, call/pcall with discarded values are automatically replaced with acall/apcall.
 
   `default: false`
@@ -427,32 +449,32 @@ flags which include specified substring in either in the name, description or pa
   `default: true`
 
 ### `--epoll_file_threads`
-  Thread size for file workers when running in epoll mode, default is hardware concurrent threads. 
+  Thread size for file workers when running in epoll mode, default is hardware concurrent threads.
 
   `default: 0`
 
 ### `--maxclients`
   Maximum number of concurrent clients allowed.
-   
+
   `default: 64000`
 
 ### `--s3_ec2_metadata`
-  Whether to load credentials and configuration from EC2 metadata. 
+  Whether to load credentials and configuration from EC2 metadata.
 
   `default: false`
 
 ### `--s3_endpoint`
-  Endpoint for s3 snapshots, default uses aws regional endpoint. 
+  Endpoint for s3 snapshots, default uses aws regional endpoint.
 
   `default: ""`
 
 ### `--s3_sign_payload`
-  Whether to sign the s3 request payload when uploading snapshots. 
+  Whether to sign the s3 request payload when uploading snapshots.
 
   `default: true`
 
 ### `--s3_use_https`
-  Whether to use https for s3 endpoints. 
+  Whether to use https for s3 endpoints.
 
   `default: true`
 
@@ -462,7 +484,7 @@ flags which include specified substring in either in the name, description or pa
   `default: true`
 
 ### `--slowlog_log_slower_than`
-  Add commands slower than this threshold to slow log. The value is expressed in microseconds 
+  Add commands slower than this threshold to slow log. The value is expressed in microseconds
   and if it's negative disables the slowlog.
 
   `default: 10000`
@@ -479,15 +501,15 @@ flags which include specified substring in either in the name, description or pa
 
 ### `--serialization_max_chunk_size`
   Maximum size of a value that may be serialized at once during snapshotting or full sync.
-  Values bigger than this threshold will be serialized using streaming serialization. 
+  Values bigger than this threshold will be serialized using streaming serialization.
   0 - to disable streaming mode.
-  
+
   `default: 65536`
 
 ### `--serialization_tagged_chunks`
   Allow serializer output to be split into tagged chunks and reassembled by receiver.
 
-  `default: false`
+  `default: true`
 
 ### `--aclfile`
   Path and name to aclfile.
@@ -495,7 +517,7 @@ flags which include specified substring in either in the name, description or pa
   `default: ""`
 
 ### `--acllog_max_len`
-  Specify the number of log entries. Logs are kept locally for each thread and therefore 
+  Specify the number of log entries. Logs are kept locally for each thread and therefore
   the total number of entries are `acllog_max_len * threads`
 
   `default: 32`
@@ -521,7 +543,7 @@ flags which include specified substring in either in the name, description or pa
   `default: 8192`
 
 ### `--proactor_affinity_mode`
-  Can be on, off or auto. 
+  Can be on, off or auto.
 
   `default: "on"`
 
@@ -531,7 +553,7 @@ flags which include specified substring in either in the name, description or pa
   `default: 0`
 
 ### `--flagfile`
-  Comma-separated list of files to load flags from. 
+  Comma-separated list of files to load flags from.
 
   `default:`
 
@@ -561,18 +583,18 @@ flags which include specified substring in either in the name, description or pa
   `default: false`
 
 ### `--max_log_size`
-  Approx. maximum log file size (in MB). A value of 0 will be silently overridden to 1. 
+  Approx. maximum log file size (in MB). A value of 0 will be silently overridden to 1.
 
-  `default: 200`
+  `default: 1800`
 
 ### `--minloglevel`
-  Messages logged at a lower level than this don't actually get logged anywhere. 
+  Messages logged at a lower level than this don't actually get logged anywhere.
 
   `default: 0`
 
 ### `--stderrthreshold`
   Log messages at or above this level are copied to stderr in addition to logfiles. This flag obsoletes --alsologtostderr
-  
+
   `default: 2`
 
 ### `--command_alias`
@@ -660,6 +682,11 @@ flags which include specified substring in either in the name, description or pa
 
   `default: true`
 
+### `--enable_pipeline_squashing_v2`
+  Enable vectorized pipeline squashing for the V2 dispatch loop. It groups consecutive single-shard pipeline commands by shard and executes them in parallel.
+
+  `default: true`
+
 ### `--enable_resp_io_loop_v2`
   Enable the event-driven IoLoopV2 for non-TLS RESP connections.
 
@@ -675,6 +702,11 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 0.1`
 
+### `--experimental_cascaded_partial_sync`
+  Enable experimental cascaded partial synchronization.
+
+  `default: false`
+
 ### `--experimental_cluster_shard_by_slot`
   If true, cluster mode is enabled and sharding is done by slot. Otherwise, sharding is done by hash tag.
 
@@ -684,11 +716,6 @@ flags which include specified substring in either in the name, description or pa
   If true, uses flat json implementation.
 
   `default: false`
-
-### `--experimental_replicaof_v2`
-  Use ReplicaOfV2 algorithm for initiating replication.
-
-  `default: true`
 
 ### `--expose_http_api`
   If set, will expose a POST `/api` handler for sending redis commands as json array.
@@ -715,6 +742,11 @@ flags which include specified substring in either in the name, description or pa
 
   `default: false`
 
+### `--get_zero_copy`
+  If true, `GET` returns a borrowed view into the CompactObj raw payload for large raw strings. If false, it uses the materializing path. This flag can be used to compare the zero-copy and materializing `GET` paths.
+
+  `default: true`
+
 ### `--huffman_table`
   A comma separated map: `domain1:code1,domain2:code2,...` where domain can currently be only `KEYS` or `STRINGS`, code is a base64-encoded huffman table exported via `DEBUG COMPRESSION EXPORT`. If the flag is empty no huffman compression is applied.
 
@@ -738,20 +770,20 @@ flags which include specified substring in either in the name, description or pa
 ### `--keep_legacy_memory_metrics`
   When true, keeps the legacy metrics format for memory-related info fields.
 
-  `default: true`
+  `default: false`
 
 ### `--latency_tracking`
   If true, track latency for commands.
 
   `default: false`
 
-### `--list_experimental_zstd_dict_threshold`
-  Minimum list malloc usage in bytes before attempting ZSTD dictionary compression. 0 disables. Experimental: compression is synchronous and may block the thread.
+### `--list_tiering_threshold`
+  Tiering threshold for lists. Default - no tiering.
 
   `default: 0`
 
-### `--list_tiering_threshold`
-  Tiering threshold for lists. Default - no tiering.
+### `--list_tiering_prefetch_depth`
+  Before loading a tiered list node, scan up to this many neighboring nodes and issue asynchronous load requests for any that are offloaded. A value of 0 disables prefetching.
 
   `default: 0`
 
@@ -880,11 +912,6 @@ flags which include specified substring in either in the name, description or pa
 
   `default: false`
 
-### `--oom_deny_commands`
-  Additional commands that will be marked as denyoom.
-
-  `default:`
-
 ### `--pause_wait_timeout`
   Timeout in seconds, to set up the pause for all connections for CLIENT PAUSE command and cluster slot migration finalization procedure.
 
@@ -894,6 +921,16 @@ flags which include specified substring in either in the name, description or pa
   Amount of memory to use for storing pipeline requests per IO thread. Please note that clients that send excessively huge pipelines may deadlock themselves. See https://github.com/dragonflydb/dragonfly/discussions/3997 for details.
 
   `default: 128.00MiB`
+
+### `--pipeline_parse_in_proactor`
+  V2 only: parse newly arrived bytes from the proactor `OnRecv` callback while the fiber is parked waiting for parallel work, so the next batch has already grown when execution resumes.
+
+  `default: true`
+
+### `--pipeline_prioritize_large_batches`
+  V2 only: in `ParseLoop`, defer executing a parsed pipeline batch and return to the read loop to accumulate more already-available input, so the squasher sees one large batch instead of many small ones.
+
+  `default: true`
 
 ### `--pipeline_queue_limit`
   Pipeline queue max length. The server will stop reading from the client socket once its pipeline queue crosses this limit, and will resume once it processes excessive requests. This is to prevent OOM states. Users of huge pipeline sizes may require increasing this limit to prevent the risk of deadlocking. See https://github.com/dragonflydb/dragonfly/discussions/3997 for details.
@@ -1025,11 +1062,6 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 0`
 
-### `--squash_stats_latency_lower_limit`
-  If set, will not track latency stats below this threshold (usec).
-
-  `default: 0`
-
 ### `--squashed_reply_size_limit`
   Max bytes allowed for squashing_current_reply_size. If this limit is reached, connections dispatching pipelines won't squash them.
 
@@ -1144,3 +1176,8 @@ flags which include specified substring in either in the name, description or pa
   If not empty - drop privileges to this user (and their primary group) after binding ports. Accepts username or numeric uid. If `--dir` is set, chowns the data directory to this user.
 
   `default: ""`
+
+### `--write_connection_throttling_sleep_usec`
+  Sleep period for a write connection in microseconds. A value of 0 disables yielding.
+
+  `default: 0`
