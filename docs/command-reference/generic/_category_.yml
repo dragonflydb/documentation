@@ -2,3 +2,4 @@ position: 1
 label: Generic
 link:
   type: generated-index
+  description: "General-purpose key management commands supported by Dragonfly."

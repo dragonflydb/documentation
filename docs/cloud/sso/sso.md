@@ -1,4 +1,5 @@
 ---
+description: "Overview of Dragonfly Cloud's SAML 2.0 single sign-on support and supported identity providers."
 position: 0
 ---
 
@@ -26,7 +27,8 @@ Dragonfly Cloud supports the following identity providers:
 
 - **[Okta SAML](./okta.md)**: Native integration with Okta using SAML 2.0
 - **[Onelogin SAML](./onelogin.md)**: Native integration with Onelogin using SAML 2.0
-- **Custom SAML Provider**: Any SAML 2.0 compliant identity provider (Azure AD, Google Workspace, Auth0, OneLogin, etc.)
+- **[Microsoft Entra ID SAML](./microsoft.md)**: Native integration with Microsoft Entra ID using SAML 2.0
+- **Custom SAML Provider**: Any SAML 2.0 compliant identity provider (Google Workspace, Auth0, etc.)
 - For other SSO integrations types please contact [support](mailto:support@dragonflydb.io).
 
 ## Setup guide

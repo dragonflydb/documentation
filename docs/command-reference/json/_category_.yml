@@ -2,3 +2,4 @@ position: 1
 label: JSON
 link:
   type: generated-index
+  description: "Commands for storing and querying JSON documents in Dragonfly."

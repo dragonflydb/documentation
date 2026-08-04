@@ -1,4 +1,5 @@
 ---
+description: "Network bandwidth available for each Dragonfly Cloud data store size and compute tier on AWS, GCP, and Azure."
 sidebar_position: 6
 ---
 

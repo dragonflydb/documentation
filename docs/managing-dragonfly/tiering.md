@@ -1,4 +1,5 @@
 ---
+description: "Offload large string values to SSD/NVMe storage with Dragonfly's SSD data tiering feature."
 sidebar_position: 5
 ---
 

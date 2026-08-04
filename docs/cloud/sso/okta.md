@@ -1,4 +1,5 @@
 ---
+description: "Set up SAML-based single sign-on between Dragonfly Cloud and Okta."
 sidebar_position: 4
 ---
 
@@ -62,7 +63,7 @@ In the SAML Settings section, configure the following:
 
 **Single Sign-On URL:**
 - Enter the ACS (Assertion Consumer Service) URL provided by Dragonfly Cloud
-- Example: `https://dragonflydb.cloud/auth/saml/callback`
+- Example: `https://account.dragonflydb.cloud/login/saml/callback`
 - Check **Use this for Recipient URL and Destination URL**
 
 **Audience URI (SP Entity ID):**
@@ -110,10 +111,9 @@ After creating the application, you need to obtain the SAML metadata to configur
 1. In the Okta application you just created, go to the **Sign On** tab
 2. Scroll down to the **SAML 2.0** section
 3. Right-click on **Identity Provider metadata** link and copy the URL
-
-   OR
-
-   Click on **Identity Provider metadata** to view the XML, then save it for manual configuration
+4. Also click on **Identity Provider metadata** to view the XML, then note the following values so you can verify or manually enter them in the next step:
+   - **Identity Provider Issuer**: this is the Entity ID
+   - **X.509 Certificate**: copy the certificate content (including BEGIN and END lines)
 
 The metadata URL will look like:
 ```
@@ -124,13 +124,11 @@ https://your-domain.okta.com/app/exk.../sso/saml/metadata
 
 Return to the Dragonfly Cloud SSO connection configuration:
 
-### Option A: Using Metadata URL
-
-1. Paste the Okta metadata URL into the **Metadata URL** field
-2. Dragonfly Cloud will automatically fetch and populate:
-   - Entity ID
-   - SSO URL
-   - Certificate
+1. Paste the Okta metadata URL into the **Metadata URL** field.
+2. Also enter the values you copied from Okta:
+   - **Entity ID**: Identity Provider Issuer from Okta
+   - **Certificate**: X.509 Certificate from Okta
+3. Click **Create Connection**
 
 ## Step 5: Assign Users in Okta
 

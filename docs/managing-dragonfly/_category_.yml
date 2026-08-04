@@ -1,2 +1,5 @@
 position: 4
 label: "Managing Dragonfly"
+link:
+  type: "generated-index"
+  description: "Operational guides for running Dragonfly in production, covering ACLs, AOF persistence, backups, cluster mode, configuration flags, and high availability."

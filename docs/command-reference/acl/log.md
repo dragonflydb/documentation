@@ -1,5 +1,5 @@
 ---
-description: Print the ACL logs
+description: "Print a log of security events from Dragonfly ACL, such as failed authentication attempts."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

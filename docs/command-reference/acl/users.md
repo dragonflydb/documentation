@@ -1,5 +1,5 @@
 ---
-description: Print the usernames of all users
+description: "List the usernames of every ACL user currently defined on the Dragonfly instance."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

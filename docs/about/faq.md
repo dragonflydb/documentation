@@ -1,4 +1,5 @@
 ---
+description: "Answers to frequently asked questions about Dragonfly's licensing, production readiness, scaling, and command support."
 sidebar_position: 2
 ---
 

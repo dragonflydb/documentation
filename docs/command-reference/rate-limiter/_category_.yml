@@ -2,3 +2,4 @@ position: 1
 label: Rate Limiter
 link:
   type: generated-index
+  description: "Commands for client-side rate limiting with Dragonfly's throttle implementation."

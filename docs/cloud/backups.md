@@ -1,4 +1,5 @@
 ---
+description: "Create, schedule, and restore manual and automatic backups for a Dragonfly Cloud data store."
 sidebar_position: 8
 ---
 

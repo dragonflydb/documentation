@@ -18,6 +18,13 @@ const config = {
   favicon: "website/favicon.ico",
   trailingSlash: false,
 
+  // Captured once per build so pages without a real per-file date (e.g.
+  // auto-generated category indexes) get a stable dateModified instead of
+  // drifting to "now" on every render. See src/utils/buildPageJsonLd.ts.
+  customFields: {
+    buildTimeIso: new Date().toISOString(),
+  },
+
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
@@ -89,6 +96,9 @@ const config = {
         pages: false,
         theme: {
           customCss: "./src/css/custom.css",
+        },
+        sitemap: {
+          lastmod: "datetime",
         },
         googleTagManager: {
           containerId: "GTM-M7MX697",

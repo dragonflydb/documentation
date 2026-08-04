@@ -1,5 +1,5 @@
 ---
-description: Delete all the keys of selected hash slots.
+description: "Delete all keys belonging to a range of hash slots on the current Dragonfly cluster node."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';

@@ -1,4 +1,5 @@
 ---
+description: "Download and run Dragonfly directly from a prebuilt binary release."
 sidebar_position: 2
 ---
 

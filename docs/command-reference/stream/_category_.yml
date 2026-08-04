@@ -2,3 +2,4 @@ position: 1
 label: Streams
 link:
   type: generated-index
+  description: "Commands for working with Dragonfly's stream data type."

@@ -1,4 +1,5 @@
 ---
+description: "Use redis-cli to connect to and interact with a Dragonfly instance."
 sidebar_position: 1
 ---
 

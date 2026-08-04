@@ -1,4 +1,5 @@
 ---
+description: "Enable and use Dragonfly's Memcached-compatible interface alongside the Redis API."
 sidebar_position: 5
 ---
 

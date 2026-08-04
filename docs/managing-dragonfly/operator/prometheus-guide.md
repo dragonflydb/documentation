@@ -1,4 +1,5 @@
 ---
+description: "Set up Prometheus monitoring for Dragonfly instances managed by the Dragonfly Operator."
 sidebar_position: 6
 ---
 

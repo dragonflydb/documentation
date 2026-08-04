@@ -2,3 +2,4 @@ position: 1
 label: Strings
 link:
   type: generated-index
+  description: "Commands for working with Dragonfly's string data type, including bit-level operations."

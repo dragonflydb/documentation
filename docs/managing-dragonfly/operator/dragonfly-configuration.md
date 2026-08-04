@@ -1,4 +1,5 @@
 ---
+description: "Reference for the Dragonfly Operator's custom resource definition (CRD) fields."
 sidebar_position: 2
 ---
 

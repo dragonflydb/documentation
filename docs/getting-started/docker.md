@@ -1,4 +1,5 @@
 ---
+description: "Run Dragonfly locally with a single docker run command."
 sidebar_position: 0
 ---
 

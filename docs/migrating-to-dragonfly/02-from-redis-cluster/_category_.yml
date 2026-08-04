@@ -1,2 +1,5 @@
 position: 2
 label: "From Redis Cluster"
+link:
+  type: "generated-index"
+  description: "Guide for migrating a Redis Cluster deployment to a single Dragonfly node."

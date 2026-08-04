@@ -1,4 +1,5 @@
 ---
+description: "How Dragonfly Cloud retains and deletes data store and backup data."
 sidebar_position: 9
 ---
 

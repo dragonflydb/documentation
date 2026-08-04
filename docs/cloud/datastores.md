@@ -1,4 +1,5 @@
 ---
+description: "Create, configure, and connect to a Dragonfly Cloud data store."
 sidebar_position: 2
 ---
 

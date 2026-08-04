@@ -1,4 +1,5 @@
 ---
+description: "Deploy Dragonfly on Kubernetes using the official Helm chart."
 sidebar_position: 1
 ---
 

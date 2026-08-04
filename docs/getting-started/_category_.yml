@@ -1,2 +1,5 @@
 position: 2
 label: "Getting Started"
+link:
+  type: "generated-index"
+  description: "Install and run Dragonfly via Docker, Docker Compose, Kubernetes, or a binary, with quickstart and benchmarking guides."

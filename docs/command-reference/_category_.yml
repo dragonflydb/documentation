@@ -2,3 +2,4 @@ position: 3
 label: "Command Reference"
 link:
   type: "generated-index"
+  description: "Redis and Memcached-compatible commands supported by Dragonfly, organized by data type and category."

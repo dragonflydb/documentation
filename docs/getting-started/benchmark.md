@@ -1,4 +1,5 @@
 ---
+description: "Methodology and results for benchmarking Dragonfly's throughput with memtier_benchmark."
 sidebar_position: 5
 ---
 

@@ -2,3 +2,4 @@ position: 1
 label: Search
 link:
   type: generated-index
+  description: "Commands for full-text and secondary-index search over Dragonfly data using the FT.* command family."

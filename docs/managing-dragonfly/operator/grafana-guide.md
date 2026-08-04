@@ -1,4 +1,5 @@
 ---
+description: "Set up a Grafana dashboard to monitor Dragonfly pods managed by the Dragonfly Operator."
 sidebar_position: 7
 ---
 

@@ -1,4 +1,5 @@
 ---
+description: "Install the Dragonfly Operator to deploy and manage Dragonfly instances on Kubernetes."
 sidebar_position: 1
 ---
 

@@ -1,4 +1,5 @@
 ---
+description: "Connect an AWS Lambda function to a Dragonfly Cloud data store."
 sidebar_position: 1
 ---
 

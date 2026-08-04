@@ -1,2 +1,5 @@
 position: 7
 label: "Integrations"
+link:
+  type: "generated-index"
+  description: "Third-party integrations and client libraries for using Dragonfly with tools like BullMQ, ClickHouse, Django, and Feast."

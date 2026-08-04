@@ -1,2 +1,5 @@
 position: 8
 label: "Dragonfly Operator"
+link:
+  type: "generated-index"
+  description: "Deploy and operate Dragonfly on Kubernetes using the Dragonfly Operator, including TLS, authentication, and monitoring with Prometheus and Grafana."

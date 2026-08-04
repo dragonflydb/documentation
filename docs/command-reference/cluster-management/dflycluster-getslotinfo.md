@@ -1,5 +1,5 @@
 ---
-description: Get hash slot info of the current node.
+description: "Get key count and metadata for specific hash slots on the current Dragonfly cluster node."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
