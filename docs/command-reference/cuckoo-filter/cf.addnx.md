@@ -31,6 +31,8 @@ If the filter is full and expansion is disabled (`EXPANSION 0`), an error is ret
 - `1` if the item was successfully added.
 - `0` if the item already exists in the filter (or is a false positive match).
 
+If the filter is full and cannot be expanded, an error is returned instead of an integer reply.
+
 ## Examples
 
 ```shell
