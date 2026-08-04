@@ -70,7 +70,7 @@ sidebar_position: 0
 |  | <span class="command">TTL</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">TYPE</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">UNLINK</span> | <span class="support supported">Fully supported</span> |  |
-|  | <span class="command">WAIT</span> | <span class="support unsupported">Unsupported</span> |  |
+|  | <span class="command">WAIT</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">WAITAOF</span> | <span class="support unsupported">Unsupported</span> |  |
 | <span class="family">Hash</span> | <span class="command">HDEL</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">HEXISTS</span> | <span class="support supported">Fully supported</span> |  |
