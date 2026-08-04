@@ -50,4 +50,4 @@ dragonfly> CF.MEXISTS no_such_key a b c
 
 ## See also
 
-[`CF.EXISTS`](./cf.exists.md) | [`CF.ADD`](./cf.add.md) | [`CF.RESERVE`](./cf.reserve.md)
+[`CF.EXISTS`](./cf.exists.md) | [`CF.INSERT`](./cf.insert.md) | [`CF.ADD`](./cf.add.md) | [`CF.RESERVE`](./cf.reserve.md)

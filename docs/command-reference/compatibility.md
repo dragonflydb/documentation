@@ -372,12 +372,13 @@ sidebar_position: 0
 |                                              | <span class="command">TOPK.INFO</span>                     | <span class="support supported">Fully supported</span>   |
 | <span class="family">Cuckoo Filter</span>    | <span class="command">CF.ADD</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CF.ADDNX</span>                      | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">CF.COMPACT</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CF.COUNT</span>                      | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CF.DEL</span>                        | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CF.EXISTS</span>                     | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CF.INFO</span>                       | <span class="support supported">Fully supported</span>   |
-|                                              | <span class="command">CF.INSERT</span>                     | <span class="support unsupported">Unsupported</span>     |
-|                                              | <span class="command">CF.INSERTNX</span>                   | <span class="support unsupported">Unsupported</span>     |
+|                                              | <span class="command">CF.INSERT</span>                     | <span class="support supported">Fully supported</span>   |
+|                                              | <span class="command">CF.INSERTNX</span>                   | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CF.LOADCHUNK</span>                  | <span class="support unsupported">Unsupported</span>     |
 |                                              | <span class="command">CF.MEXISTS</span>                    | <span class="support supported">Fully supported</span>   |
 |                                              | <span class="command">CF.RESERVE</span>                    | <span class="support supported">Fully supported</span>   |
