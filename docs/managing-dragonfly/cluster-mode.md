@@ -23,7 +23,7 @@ $> dragonfly --cluster_mode=emulated
 $> redis-cli
 
 # See which cluster commands are supported
-dragonfly$> CLUSTER HELP
+dragonfly> CLUSTER HELP
 ```
 
 Now you can connect to your Dragonfly instance with a Redis client that supports the Redis Cluster protocol,
@@ -42,6 +42,8 @@ b'bar'
 
 - Your application code may be using a regular Redis client that does not require cluster commands as well.
 - By default, if the `--cluster_mode` server flag is not specified, Dragonfly runs in this emulated cluster mode.
+- In emulated mode, `cluster_announce_ip` and `announce_port` can be changed at runtime with `CONFIG SET`.
+  Subsequent cluster topology replies use the new values.
 
 ## Multi-Shard Cluster
 
@@ -54,8 +56,8 @@ A Dragonfly Cluster is similar to a Redis/Valkey Cluster:
 
 - Multiple Dragonfly servers participate in a single logical data store.
 - It provides all cluster-related commands required by Redis client libraries.
-- It [distributes keys](https://redis.io/docs/latest/operate/oss_and_stack/reference/cluster-spec/) in the same way Redis Cluster does.
-- It supports [hashtags](https://redis.io/docs/latest/operate/oss_and_stack/reference/cluster-spec/#hash-tags) in the same way Redis Cluster does.
+- It [distributes keys](https://valkey.io/topics/cluster-spec/) in the same way as Valkey Cluster.
+- It supports [hash tags](https://valkey.io/topics/cluster-spec/#hash-tags) in the same way as Valkey Cluster.
 
 **There is one important distinction regarding Dragonfly Cluster:**
 Dragonfly only provides a _data plane_ (which is the Dragonfly server), but it does **NOT** provide a
@@ -193,13 +195,14 @@ such as adding/removing nodes, changing hostnames, etc.
 
 ### Notes
 
+- Multi-shard cluster mode supports only database 0.
 - You could look at
   [`cluster_mgr.py`](https://github.com/dragonflydb/dragonfly/blob/main/tools/cluster_mgr.py) as a
   reference for how to set up and configure a cluster. This script starts a cluster locally, but
   much of its logic can be reused for nodes present on remote machines as well.
-- If you're getting errors trying to issue the `DFLYCLUSTER CONFIG`, check Dragonfly's logs (you
+- If you're getting errors trying to issue the `DFLYCLUSTER CONFIG`, check Dragonfly's logs (if you
   can pass `--logtostderr` temporarily) to see why the config was rejected.
-- Dragonfly supports the migration of data slots between nodes as well. Detailed explaination can
+- Dragonfly supports the migration of data slots between nodes as well. A detailed explanation can
   be found in one of our blog posts [here](https://www.dragonflydb.io/blog/redis-and-dragonfly-cluster-design-comparison).
   We will update the documentation to reflect these steps soon.
 

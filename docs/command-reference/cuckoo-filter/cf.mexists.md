@@ -13,13 +13,13 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(k * n), where k is the number of sub-filters and n is the number of items
 
-**ACL categories:** @cuckoo
+**ACL categories:** @cuckoo_filter, @fast, @read
 
 Checks whether one or more items exist in the Cuckoo filter at `key`.
 Returns one reply per item in the same order as the input.
 
 Like [`CF.EXISTS`](./cf.exists.md), false positives are possible but false negatives are not.
-If `key` does not exist, `0` is returned for every item.
+If `key` does not exist or holds a value of a different type, `0` is returned for every item.
 
 ## Return
 

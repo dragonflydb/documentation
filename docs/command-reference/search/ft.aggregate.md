@@ -16,6 +16,7 @@ description: Runs a search query and performs aggregate transformations
       [WITHSCORES]
       [ADDSCORES]
       [SCORER scorer]
+      [BM25STD_TANH_FACTOR factor]
       [PARAMS nargs name value [name value ...]]
       [DIALECT dialect]
 
@@ -41,7 +42,8 @@ is index name. You must first create the index using [`FT.CREATE`](./ft.create.m
 <summary><code>query</code></summary>
 
 is text query to search. If it's more than a single word, put it in quotes.
-Refer to [query syntax](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/) for more details.
+Both `FLAT` and `HNSW` indexes support KNN and `VECTOR_RANGE` queries. HNSW queries can override `EF_RUNTIME` for KNN search and `EPSILON` for range search. A vector distance score alias defined by the query can be referenced by aggregation operations.
+Refer to the [Valkey Search query syntax](https://valkey.io/topics/search-query/) for more details.
 </details>
 
 ## Optional arguments
@@ -132,7 +134,7 @@ adds the document score to each result as the `__score` field. When no `SCORER` 
 <details open>
 <summary><code>SCORER scorer</code></summary>
 
-specifies the scoring function used to compute the score. Supported scorers are `BM25STD`, `TFIDF`, and `TFIDF.DOCNORM`. On its own `SCORER` only sets the scoring function — it does not add a visible score to the output; combine it with `ADDSCORES` to expose the computed score as `__score`.
+specifies the scoring function used to compute the score. Supported scorers are `BM25STD`, `BM25STD.NORM`, `BM25STD.TANH`, `TFIDF`, and `TFIDF.DOCNORM`. On its own `SCORER` only sets the scoring function — it does not add a visible score to the output; combine it with `ADDSCORES` to expose the computed score as `__score`. With `BM25STD.TANH`, `BM25STD_TANH_FACTOR` optionally sets the positive integer scaling factor; its default is `4`.
 </details>
 
 <details open>
@@ -183,4 +185,4 @@ dragonfly> FT.AGGREGATE products "*" GROUPBY 1 @category REDUCE AVG 1 @price AS 
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
+- [Valkey Search](https://valkey.io/topics/search/)

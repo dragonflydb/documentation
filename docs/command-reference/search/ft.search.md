@@ -10,6 +10,7 @@ description: Searches the index with a query, returning docs or just IDs
       [NOCONTENT]
       [WITHSCORES]
       [SCORER scorer_name]
+      [BM25STD_TANH_FACTOR factor]
       [LOAD count identifier [AS property] [ identifier [AS property] ...]]
       [RETURN count identifier [AS property] [ identifier [AS property] ...]]
       [SORTBY sortby [ ASC | DESC] [WITHCOUNT]]
@@ -17,7 +18,7 @@ description: Searches the index with a query, returning docs or just IDs
       [PARAMS nargs name value [ name value ...]]
       [FILTER field min max]
 
-**Time complexity:** O(N)
+**Time complexity:** Varies with query structure, index type, scoring, sorting, and result set size.
 **ACL categories:** @ft_search
 
 ## Description
@@ -25,7 +26,7 @@ description: Searches the index with a query, returning docs or just IDs
 Search the index with a textual query, returning either documents or just IDs.
 For usage, see [examples](#examples) below.
 
-Dragonfly supports HNSW vector range search via the `VECTOR_RANGE` query operator. Use it in the query string as `@field:[VECTOR_RANGE radius $vec]` to find all vectors within a given distance. Optionally, append `=>{$YIELD_DISTANCE_AS: alias}` to include the distance score in results. HNSW vector range search is mutually exclusive with KNN vector search.
+Dragonfly supports KNN and vector range searches with both `FLAT` and `HNSW` indexes. HNSW KNN queries can override `EF_RUNTIME` inline or in a query-attribute block. Use the `VECTOR_RANGE` query operator as `@field:[VECTOR_RANGE radius $vec]` to find all vectors within a given distance; HNSW range queries can override `EPSILON`. Optionally, append `=>{$YIELD_DISTANCE_AS: alias}` to include the distance score in results. A vector range search is mutually exclusive with KNN search. For HNSW, only one vector range clause is supported; it can be used by itself or combined with a filter using AND, while OR and NOT are not supported.
 
 ## Required arguments
 
@@ -39,13 +40,17 @@ is index name. You must first create the index using [`FT.CREATE`](./ft.create.m
 <summary><code>query</code></summary>
 
 is text query to search. If it's more than a single word, put it in quotes.
-Refer to [query syntax](https://redis.io/docs/latest/develop/interact/search-and-query/query/) for more details.
+Refer to the [Valkey Search query syntax](https://valkey.io/topics/search-query/) for more details.
 
 The query language supports the following operators:
 
 - `~term` — optional match: documents matching the term are scored higher but the term is not required.
 - `w'glob*pattern'` — glob wildcard matching on TEXT and TAG fields (e.g., `w'py*'` matches `python`).
 - `"exact phrase"` — exact phrase search; use `"term1 term2"~N` (slop) to allow up to `N` word gaps between terms.
+- `term=>{$weight: value}` — applies a query-time weight to a term. Term weights can also be used inside field groups.
+
+Configured stopwords are removed from textual query terms before search.
+`FT.CREATE ... STOPWORDS 0` disables stopword removal.
 </details>
 
 ## Optional arguments
@@ -70,8 +75,12 @@ includes the relevance score of each result in the reply. When `WITHSCORES` is s
 uses the specified scoring function to rank results. Supported scorers:
 
 - `BM25STD` — BM25 with standard per-field TF tracking (default when `WITHSCORES` is used).
+- `BM25STD.NORM` — a normalized BM25STD scoring variant.
+- `BM25STD.TANH` — a BM25STD scoring variant using tanh normalization.
 - `TFIDF` — classic TF-IDF scoring.
 - `TFIDF.DOCNORM` — TF-IDF with document-length normalization.
+
+With `BM25STD.TANH`, the optional `BM25STD_TANH_FACTOR` argument sets the positive integer used to scale scores before tanh normalization. Its default is `4`.
 </details>
 
 <details open>
@@ -157,12 +166,7 @@ When `WITHSCORES` is used, each result entry includes the relevance score betwee
 
 ## Complexity
 
-`FT.SEARCH` complexity is O(N) for single word queries, where `N` is the number of the results in the result set.
-Finding all the documents that have a specific term is O(1).
-However, a scan on all those documents is needed to load the documents data from Hash or JSON values and return them.
-
-The time complexity for more complex queries varies, but in general it's proportional to the number of words,
-the number of intersection points between them and the number of results in the result set.
+For a single-term text query, locating the term's posting list is O(1), while loading and returning `N` matching documents is O(N). More complex text queries also depend on the number of terms and intersections. Vector search, scoring, and sorting costs depend on the selected index and query options.
 
 ## Examples
 
@@ -263,5 +267,5 @@ dragonfly> FT.SEARCH books-idx "python" WITHSCORES SCORER TFIDF
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
-- [Query Syntax](https://redis.io/docs/latest/develop/interact/search-and-query/query/)
+- [Valkey Search](https://valkey.io/topics/search/)
+- [Query Syntax](https://valkey.io/topics/search-query/)

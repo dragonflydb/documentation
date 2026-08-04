@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(k + i), where k is the number of sub-filters and i is `MAXITERATIONS`
 
-**ACL categories:** @cuckoo
+**ACL categories:** @cuckoo_filter, @slow, @write
 
 Adds a single `item` to the Cuckoo filter at `key` only if it does not already exist.
 If `key` does not exist, a new filter is created with default parameters.

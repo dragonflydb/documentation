@@ -11,16 +11,19 @@ import PageTitle from '@site/src/components/PageTitle';
 
     CF.COMPACT key
 
-**Time complexity:** O(k), where k is the number of sub-filters
+**Time complexity:** O(S × k) in the worst case, where S is the total number of fingerprint slots and k is the number of sub-filters.
 
-**ACL categories:** @cuckoo
+**ACL categories:** @cuckoo_filter, @slow, @write
 
 Attempts to compact the Cuckoo filter at `key` by consolidating its sub-filters.
 
-When a filter expands, older sub-filters are kept around until [`CF.DEL`](./cf.del.md) empties
-them out. `CF.DEL` already triggers this automatically once deletions exceed 10% of the items in
-the filter, so `CF.COMPACT` mainly exists to force the pass on demand, for example after a batch
-of deletions.
+Compaction scans newer sub-filters and tries to move their fingerprints into
+free slots in older sub-filters. It can remove a sub-filter only when the newest
+one becomes completely empty.
+
+[`CF.DEL`](./cf.del.md) automatically runs a compaction pass when accumulated
+deletions exceed one tenth of the remaining items. `CF.COMPACT` forces a full
+pass on demand, for example after a batch of deletions.
 
 ## Return
 
@@ -44,7 +47,7 @@ dragonfly> CF.COMPACT cf
 OK
 
 dragonfly> CF.COMPACT no_such_key
-(error) no such key
+(error) ERR no such key
 ```
 
 ## See also

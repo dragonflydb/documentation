@@ -12,7 +12,8 @@ import PageTitle from '@site/src/components/PageTitle';
 
     DFLYCLUSTER SLOT-MIGRATION-STATUS [node_id]
 
-**Time complexity:** O(N), where N is the number of migrations on the node
+**Time complexity:** O(M + R), where M is the number of migrations on the
+node and R is the total number of their slot ranges.
 
 **ACL categories:** @admin, @slow
 
@@ -28,17 +29,18 @@ For each migration, the following fields are returned:
 - The `node_id` of the migration.
 - The migration state, which can be `CONNECTING`, `SYNC`, `ERROR`, `FINISHED`, or `FATAL`.
 - The number of keys for selected slots on the current node.
-- The error status, which is `0` if no error happens. Otherwise, it shows the last error description.
+- The error status, which is `0` when no error occurred. Otherwise, it shows the last error description.
+- The slot ranges included in the migration, formatted as a string.
 
 ## Examples
 
 ```shell
-# The current node is migrating out to 'node_xfsef234fs'.
-# It is currently syncing the data of 2250125 keys.
+# The current node finished migrating four keys in slots 3000 through 9000.
 dragonfly> DFLYCLUSTER SLOT-MIGRATION-STATUS
 1) 1) "out"
-   2) "node_xfsef234fs"
-   3) "SYNC"
-   4) (integer) 2250125
+   2) "133807dea9b616400e22587b99abd87a1cbf6473"
+   3) "FINISHED"
+   4) (integer) 4
    5) "0"
+   6) "[3000, 9000]"
 ```

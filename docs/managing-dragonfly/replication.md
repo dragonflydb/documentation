@@ -7,7 +7,7 @@ sidebar_position: 4
 
 ## Managing Replication
 
-Dragonfly supports a primary-replica high-availability model, similarly to Redis's [replication](https://redis.io/topics/replication).
+Dragonfly supports a primary-replica high-availability model, similarly to [Valkey replication](https://valkey.io/topics/replication/).
 When using replication, Dragonfly creates exact copies of the primary instance.
 Once configured properly, replicas reconnect to the primary instance any time their connections break and will always aim to remain an exact copy of the primary.
 
@@ -16,7 +16,7 @@ The Dragonfly replication management API is compatible with the Redis API and co
 If you're not sure whether the Dragonfly instance you're currently connected to is a primary instance or a replica, you can check by running the `ROLE` command:
 
 ```bash
-dragonfly$> ROLE
+dragonfly> ROLE
 1) "master"
 2) 1) 1) "172.19.0.4"
       2) "6379"
@@ -35,11 +35,25 @@ The instructions below apply to this type of replication as well, with the only 
 
 This replication process internally is vastly different from the original Redis replication algorithm, but from the outside, the API is kept the same to make it compatible with the current ecosystem.
 
+:::caution Experimental cascading replication
+
+Starting with Dragonfly v1.40.0, cascading replication is available behind the
+`--experimental_cascaded_partial_sync=true` flag, which is disabled by default.
+Start every node in the replication chain with this flag to let a replica serve
+as the upstream instance for downstream replicas and support partial
+synchronization across the chain.
+
+If an intermediate replica performs a full synchronization after its upstream
+primary changes, it forces its downstream replicas to fully resynchronize so
+that the entire chain converges to the new dataset.
+
+:::
+
 To designate a Dragonfly instance as a replica of another instance on the fly, run the `REPLICAOF` command.
 This command takes the intended primary instance's hostname or IP address and port as arguments:
 
 ```bash
-dragonfly$> REPLICAOF hostname_or_IP port
+dragonfly> REPLICAOF hostname_or_IP port
 ```
 
 If the server is already a replica of another primary, it will stop replicating the old primary and immediately start synchronizing with the new one.
@@ -48,7 +62,7 @@ It will also discard the entire old dataset.
 To promote a replica back to being a primary, run the following `REPLICAOF` command:
 
 ```bash
-dragonfly$> REPLICAOF NO ONE
+dragonfly> REPLICAOF NO ONE
 ```
 
 This will stop the instance from replicating the primary instance but will not discard the dataset it has already replicated.
@@ -57,9 +71,9 @@ After running `REPLICAOF NO ONE` on a replica of the failed primary, the former 
 
 ### Expired Key Deletion on Replicas
 
-By default, replicas do not proactively delete expired keys — they wait for expiry propagation from the primary.
-You can change this behavior by starting the replica with the `--replica_delete_expired=true` flag, which causes the replica to proactively delete expired keys on its own, without waiting for the primary to propagate the deletions.
-This can reduce memory usage on replicas that have many keys with TTLs, at the cost of a small amount of additional work on the replica.
+By default, replicas proactively delete expired keys when those keys are read.
+Start a replica with `--replica_delete_expired=false` to disable this behavior and wait for the primary to propagate deletions instead.
+Keeping the default can reduce memory usage on replicas that have many keys with TTLs, at the cost of a small amount of additional work on the replica.
 
 ## Secure Replication with TLS
 
@@ -132,7 +146,7 @@ Finally, connect to the secondary Dragonfly instance and issue the `REPLICAOF` c
 ```bash
 redis-cli --tls --key ./client-key.pem --cert ./client-cert.pem --cacert ./ca-cert.pem -p 6380
 
-dragonfly$> REPLICAOF PRIMARY_HOST 6379
+dragonfly> REPLICAOF PRIMARY_HOST 6379
 ```
 
 Now, the replication works over TLS and is secure.
@@ -169,7 +183,7 @@ Then, connect to the secondary Dragonfly instance and issue the `REPLICAOF` comm
 ```bash
 redis-cli -p 6382
 
-dragonfly$> REPLICAOF PRIMARY_HOST 6380
+dragonfly> REPLICAOF PRIMARY_HOST 6380
 ```
 
 From now on, the replica **does not** communicate with the primary instance over TLS.
@@ -184,7 +198,7 @@ as well as in the `INFO REPLICATION` command output as the `lag` field.
 ```bash
 # On the primary instance:
 
-dragonfly$> INFO REPLICATION
+dragonfly> INFO REPLICATION
 # Replication
 role:master
 connected_slaves:1

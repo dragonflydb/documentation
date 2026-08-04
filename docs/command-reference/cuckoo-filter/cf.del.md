@@ -11,9 +11,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
     CF.DEL key item
 
-**Time complexity:** O(k), where k is the number of sub-filters
+**Time complexity:** Normally O(k), where k is the number of sub-filters. If the deletion triggers automatic compaction, the worst case is O(S × k), where S is the total number of fingerprint slots.
 
-**ACL categories:** @cuckoo
+**ACL categories:** @cuckoo_filter, @fast, @write
 
 Removes a single occurrence of `item` from the Cuckoo filter at `key`.
 
@@ -48,7 +48,7 @@ dragonfly> CF.DEL cf Hello
 (integer) 0
 
 dragonfly> CF.DEL no_such_key Hello
-(error) no such key
+(error) ERR no such key
 ```
 
 ## See also

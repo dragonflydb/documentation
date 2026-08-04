@@ -11,9 +11,9 @@ import PageTitle from '@site/src/components/PageTitle';
 
     CF.INFO key
 
-**Time complexity:** O(1)
+**Time complexity:** O(k), where k is the number of sub-filters.
 
-**ACL categories:** @cuckoo
+**ACL categories:** @cuckoo_filter, @fast, @read
 
 Returns information about the Cuckoo filter at `key`.
 
@@ -22,12 +22,12 @@ Returns information about the Cuckoo filter at `key`.
 [Array reply](https://valkey.io/topics/protocol/#arrays) of alternating field names and values:
 
 - `Size`: memory used by the filter, in bytes.
-- `Number of buckets`: total number of buckets across all sub-filters.
-- `Number of filters`: number of sub-filters created due to expansion.
+- `Number of buckets`: configured base number of buckets in the initial sub-filter.
+- `Number of filters`: total number of sub-filters, including the initial one.
 - `Number of items inserted`: total number of items currently in the filter.
-- `Number of items deleted`: total number of items deleted from the filter.
+- `Number of items deleted`: number of deletions accumulated since the last compaction.
 - `Bucket size`: number of fingerprint slots per bucket.
-- `Expansion rate`: the configured expansion rate.
+- `Expansion rate`: effective expansion rate after rounding a nonzero configured value up to the next power of two.
 - `Max iterations`: the configured maximum number of cuckoo-displacement attempts.
 
 [Error reply](https://valkey.io/topics/protocol/#simple-errors): if `key` does not exist or is not a Cuckoo filter.
@@ -43,9 +43,9 @@ dragonfly> CF.ADD cf foo
 
 dragonfly> CF.INFO cf
  1) "Size"
- 2) (integer) 128
+ 2) (integer) 1136
  3) "Number of buckets"
- 4) (integer) 512
+ 4) (integer) 256
  5) "Number of filters"
  6) (integer) 1
  7) "Number of items inserted"
@@ -60,7 +60,7 @@ dragonfly> CF.INFO cf
 16) (integer) 10
 
 dragonfly> CF.INFO no_such_key
-(error) no such key
+(error) ERR no such key
 ```
 
 ## See also

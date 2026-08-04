@@ -27,7 +27,7 @@ entirely in-memory, leveraging disk-based keys for efficient operation.
 The feature can be enabled by passing the `--tiered_prefix <nvme_path>/<basename>` flag.
 Dragonfly will automatically check the free disk space on the partition hosting the `<nvme_path>`
 to determine the maximum capacity it can use. Finally, it creates one storage file for
-each [proactor thread](http://localhost:3000/docs/managing-dragonfly/flags#--proactor_threads),
+each [proactor thread](./flags.md#--proactor_threads),
 corresponding to the number of threads Dragonfly is running with.
 
 Here are the main server flags related to SSD data tiering:
@@ -140,4 +140,4 @@ with locally attached SSDs is recommended. See below for specific cloud provider
 - Dragonfly v1.35 (release notes for [v1.35.0](https://github.com/dragonflydb/dragonfly/releases/tag/v1.35.0)
   and [v1.35.1](https://github.com/dragonflydb/dragonfly/releases/tag/v1.35.1)) is the first official release of SSD data tiering.
 - If you encounter any problems while using this feature, please report them by [filing a GitHub issue](https://github.com/dragonflydb/dragonfly/issues/).
-- Data tiering is currently supported for string values and, experimentally, for list nodes and mutable hash commands. It is not supported for BitMap and HyperLogLog operations.
+- Data tiering is currently supported for string values and, experimentally, for list nodes and mutable hash commands. List-node prefetching is disabled by default. If `--list_tiering_prefetch_depth` is set above `0`, loading a tiered list node asynchronously prefetches up to that many eligible neighboring nodes in each direction. Data tiering is not supported for BitMap and HyperLogLog operations.

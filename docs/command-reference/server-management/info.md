@@ -12,14 +12,16 @@ import PageTitle from '@site/src/components/PageTitle';
 
     INFO [section [section ...]]
 
-**Time complexity:** O(1)
+**Time complexity:** Depends on the requested sections and the metrics they collect.
 
 **ACL categories:** @slow, @dangerous
 
 The `INFO` command returns information and statistics about the server in a
 format that is simple to parse by computers and easy to read by humans.
+When `INFO` is called through a TLS listener, the `server` section can also
+include the subject, issuer, and validity period of the listener's certificate.
 
-The optional parameter can be used to select a specific section of information:
+The optional parameters can be used to select one or more sections of information:
 
 *   `server`: General information about the Dragonfly server
 *   `clients`: Client connections section
@@ -29,6 +31,7 @@ The optional parameter can be used to select a specific section of information:
 *   `replication`: Master/replica replication information
 *   `cpu`: CPU consumption statistics
 *   `commandstats`: Command statistics
+*   `latencystats`: Command latency statistics
 *   `keyspace`: Database related statistics
 *   `errorstats`: Error statistics
 
@@ -36,7 +39,8 @@ It can also take the following values:
 
 *   `all`: Return all sections (excluding module generated ones)
 
-When no parameter is provided, the `default` option is assumed.
+When no parameter is provided, the default output is returned. It includes the
+`memory` and `latencystats` sections, but not the `commandstats` section.
 
 ## Return
 
@@ -127,6 +131,8 @@ used_cpu_sys_children:0.0
 used_cpu_user_children:0.0
 used_cpu_sys_main_thread:0.32040
 used_cpu_user_main_thread:4.681903
+
+# Latencystats
 ```
 
 ## Notes

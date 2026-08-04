@@ -10,11 +10,11 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    ACL DRYRUN username command
+    ACL DRYRUN username command [arg [arg ...]]
 
 **ACL categories:** @admin, @slow, @dangerous
 
-This command simulates the execution of a given command by a user.
+This command simulates the execution of a given command and its arguments by a user.
 It can be used to test the permissions without having to enable the user or cause the side effects of running the actual command.
 
 ## Return
@@ -32,5 +32,5 @@ dragonfly> ACL DRYRUN mike GET
 OK
 
 dragonfly> ACL DRYRUN mike SET
-"This user has no permissions to run the 'set' command"
+"This user has no permissions to run the 'SET' command"
 ```

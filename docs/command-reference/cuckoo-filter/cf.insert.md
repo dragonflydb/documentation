@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(k * n), where k is the number of sub-filters and n is the number of items
 
-**ACL categories:** @cuckoo
+**ACL categories:** @cuckoo_filter, @slow, @write
 
 Adds one or more items to the Cuckoo filter at `key`, creating it first if it doesn't exist.
 
@@ -51,7 +51,7 @@ dragonfly> CF.INSERT cf NOCREATE ITEMS bar
 1) (integer) 1
 
 dragonfly> CF.INSERT no_such_key NOCREATE ITEMS bar
-(error) no such key
+(error) ERR no such key
 ```
 
 ## See also

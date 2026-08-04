@@ -45,49 +45,49 @@ after the SCHEMA keyword, declares which fields to index:
 
 Field types are:
 
- - `TEXT [WITHSUFFIXTRIE]` - Allows searching for words against the text value in this attribute.
+ - `TEXT [WEIGHT {weight}] [NOSTEM] [WITHSUFFIXTRIE]` - Allows searching for words against the text value in this attribute.
+   * `WEIGHT {weight}` - adjusts the field's contribution to relevance scores. The default is `1`.
+   * `NOSTEM` - disables stemming for this field.
    * `WITHSUFFIXTRIE` - builds a suffix trie for efficient suffix and infix queries.
 
  - `TAG [SEPARATOR {char}] [CASESENSITIVE] [WITHSUFFIXTRIE]` - Allows exact-match queries, such as categories or primary keys, against the value in this attribute.
    * `SEPARATOR {char}` - indicates how text is split into individual tags. Default is `,`.
    * `CASESENSITIVE` - preserve original case for tags. Default is case insensitive.
    * `WITHSUFFIXTRIE` - builds a suffix trie for efficient suffix and infix queries.
-   For more information, see [tag fields](https://redis.io/docs/latest/develop/interact/search-and-query/advanced-concepts/tags/).
+   For more information, see [Valkey Search data formats](https://valkey.io/topics/search-data-formats/).
 
  - `NUMERIC [BLOCKSIZE {size}]` - Allows numeric range queries against the value in this attribute.
    * `BLOCKSIZE {size}` - block size for the range tree data structure. Default is optimized based on data size.
-   See [query syntax](https://redis.io/docs/latest/develop/interact/search-and-query/query/) for details on how to use numeric ranges.
+   See [Valkey Search query syntax](https://valkey.io/topics/search-query/) for details on how to use numeric ranges.
 
  - `VECTOR` - Allows vector similarity queries against the value in this attribute.
-   For more information, see [vector fields](https://redis.io/docs/latest/develop/ai/search-and-query/query/vector-search/).
+   For more information, see [Valkey Search query syntax](https://valkey.io/topics/search-query/).
 
  - `GEO` - Allows geographic range queries against the value in this attribute.
 
 :::note About `VECTOR`
-- Full documentation on vector options is available [here](https://redis.io/docs/latest/develop/ai/search-and-query/vectors/).
+- Full documentation on vector options is available in the [Valkey FT.CREATE reference](https://valkey.io/commands/ft.create/).
 - Currently, Dragonfly has limited support for vector options.
 - You can specify either the `FLAT` or the `HNSW` index type.
-  - For both index types, `DIM`, `DISTANCE_METRIC`, and `INITIAL_CAP` options can be specified.
-  - For the `DISTANCE_METRIC` option, only `L2` and `COSINE` are supported.
+  - For both index types, `TYPE`, `DIM`, `DISTANCE_METRIC`, and `INITIAL_CAP` options can be specified.
+  - `TYPE` supports `FLOAT32`, `FLOAT64`, `FLOAT16`, `BFLOAT16`, `INT8`, and `UINT8`.
+  - `DISTANCE_METRIC` supports `L2`, `IP`, and `COSINE`.
+  - `HNSW` additionally supports `M`, `EF_CONSTRUCTION`, `EF_RUNTIME`, and `EPSILON`.
 :::
 
 Field options are:
 
  - `SORTABLE` - `NUMERIC`, `TAG`, `TEXT` attributes can have an optional **SORTABLE** argument.
-    As the user [sorts the results by the value of this attribute](https://redis.io/docs/latest/develop/interact/search-and-query/advanced-concepts/sorting/), the results are available with very low latency.
-    Note that his adds memory overhead, so consider not declaring it on large text attributes.
-    You can sort an attribute without the `SORTABLE` option, but the latency is not as good as with `SORTABLE`.
-
-:::note About `SORTABLE`
-Dragonfly does **not** support sorting without the `SORTABLE` option.
-:::
+    Dragonfly requires this option before the field can be used for sorting.
+    When the user [sorts results by this attribute](https://valkey.io/commands/ft.search/), the results are available with very low latency.
+    This adds memory overhead, so consider not declaring it on large text attributes.
 
  - `NOINDEX` - Attributes can have the `NOINDEX` option, which means they will not be indexed. This is useful in conjunction with `SORTABLE`, to create attributes whose update using PARTIAL will not cause full reindexing of the document. If an attribute has NOINDEX and doesn't have SORTABLE, it will just be ignored by the index.
 
 :::note About ignored field options
 The following field options are accepted but ignored for compatibility with Redis:
-- `UNF`, `NOSTEM` - ignored without arguments
-- `WEIGHT`, `PHONETIC` - ignored with their arguments
+- `UNF` - ignored without arguments
+- `PHONETIC` - ignored with its argument
 - `INDEXMISSING`, `INDEXEMPTY` - ignored without warning
 :::
 
@@ -188,6 +188,6 @@ dragonfly> FT.CREATE idx2 ON JSON SCHEMA title TEXT categories TAG
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
+- [Valkey Search](https://valkey.io/topics/search/)
 - [Hash](../hashes/hset.md)
 - [JSON](../json/json.set.md)
