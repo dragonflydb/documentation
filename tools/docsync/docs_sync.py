@@ -23,10 +23,10 @@ Phase 2 — Update each file:
     command; otherwise generic page).
   * Pull the relevant source excerpts at <after> (handler body, ABSL_FLAG
     declarations, etc.).
-  * Boot a Dragonfly Docker container at <after>. Run every redis-cli
-    invocation already on the page and capture the actual output. New
-    examples the LLM proposes are also run in Docker before they're
-    accepted; if a proposed example errors out it is dropped.
+  * Boot a Dragonfly Docker container at <after>. Run eligible redis-cli
+    invocations already on the page and capture the actual output. Blocks that
+    require replication, native-cluster, failover, or remote-node state are
+    preserved because a standalone container cannot verify them.
   * The LLM produces the updated markdown with strict rules: only facts
     that the source or Docker confirms; general-case complexity only;
     never invent options or behaviors.
@@ -55,6 +55,23 @@ from datetime import datetime, timezone
 from fnmatch import fnmatch
 from pathlib import Path
 
+try:
+    from .openai_llm import (
+        DEFAULT_BALANCED_MODEL,
+        call_json,
+        configured_model,
+        create_client,
+        strict_object_schema,
+    )
+except ImportError:  # Direct execution: python tools/docsync/docs_sync.py
+    from openai_llm import (
+        DEFAULT_BALANCED_MODEL,
+        call_json,
+        configured_model,
+        create_client,
+        strict_object_schema,
+    )
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DOCS_DIR = REPO_ROOT / "docs"
 GENERATED = REPO_ROOT / "tools" / "generated"
@@ -67,9 +84,10 @@ DRAGONFLY_REPO_URL = "https://github.com/dragonflydb/dragonfly.git"
 DRAGONFLY_CHECKOUT = Path("/tmp/dragonfly-docsync")
 DRAGONFLY_IMAGE = "docker.dragonflydb.io/dragonflydb/dragonfly"
 
-MODEL = "claude-sonnet-4-6"
-DISCOVER_MAX_TOKENS = 16000
-UPDATE_MAX_TOKENS = 24000
+DISCOVER_MODEL = configured_model(DEFAULT_BALANCED_MODEL)
+UPDATE_MODEL = configured_model()
+DISCOVER_MAX_TOKENS = 24000
+UPDATE_MAX_TOKENS = 48000
 PING_TIMEOUT_S = 30
 
 
@@ -198,83 +216,19 @@ def build_diff_context(before: str, after: str, related_files: list[str],
 
 # --- LLM helpers -------------------------------------------------------------
 
-def _extract_json_object(text: str) -> dict | None:
-    text = text.strip()
-    try:
-        return json.loads(text)
-    except json.JSONDecodeError:
-        pass
-    fence = re.search(r"```(?:json|JSON)?\s*\n(.*?)\n```", text, re.DOTALL)
-    if fence:
-        try:
-            return json.loads(fence.group(1).strip())
-        except json.JSONDecodeError:
-            pass
-    depth = 0
-    in_str: str | None = None
-    start = -1
-    i = 0
-    while i < len(text):
-        c = text[i]
-        if in_str:
-            if c == "\\" and i + 1 < len(text):
-                i += 2
-                continue
-            if c == in_str:
-                in_str = None
-        elif c == '"':
-            in_str = c
-        elif c == "{":
-            if depth == 0:
-                start = i
-            depth += 1
-        elif c == "}":
-            depth -= 1
-            if depth == 0 and start != -1:
-                try:
-                    return json.loads(text[start:i + 1])
-                except json.JSONDecodeError:
-                    start = -1
-        i += 1
-    return None
-
-
 def call_llm_streaming(client, system_prompt: str, user_text: str,
-                       max_tokens: int, label: str) -> tuple[dict, dict]:
-    text_parts: list[str] = []
-    chars = 0
-    print(f"  streaming response", end="", flush=True)
-    with client.messages.stream(
-        model=MODEL,
-        max_tokens=max_tokens,
-        system=[{"type": "text", "text": system_prompt,
-                 "cache_control": {"type": "ephemeral"}}],
-        messages=[{"role": "user", "content": user_text}],
-    ) as stream:
-        for chunk in stream.text_stream:
-            text_parts.append(chunk)
-            chars += len(chunk)
-            if chars % 4000 < len(chunk):
-                print(".", end="", flush=True)
-        response = stream.get_final_message()
-    print(f" done ({chars} chars)")
-    text = "".join(text_parts).strip()
-    parsed = _extract_json_object(text)
-    if parsed is None:
-        LLM_DEBUG_DIR.mkdir(parents=True, exist_ok=True)
-        ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-        debug = LLM_DEBUG_DIR / f"docs_sync_{label}_{ts}.txt"
-        debug.write_text(text, encoding="utf-8")
-        raise RuntimeError(
-            f"LLM response did not contain a parseable JSON object; "
-            f"raw saved to {debug.relative_to(REPO_ROOT)}"
-        )
-    usage = {
-        "input_tokens": response.usage.input_tokens,
-        "output_tokens": response.usage.output_tokens,
-        "stop_reason": response.stop_reason,
-    }
-    return parsed, usage
+                       max_tokens: int, model: str, schema_name: str,
+                       schema: dict) -> tuple[dict, dict]:
+    return call_json(
+        client,
+        system_prompt=system_prompt,
+        user_text=user_text,
+        schema_name=schema_name,
+        schema=schema,
+        model=model,
+        max_output_tokens=max_tokens,
+        stream=True,
+    )
 
 
 # --- Phase 1: Discover -------------------------------------------------------
@@ -307,6 +261,26 @@ Return JSON only — no prose, no markdown fences, no preamble:
 
 The output JSON's first character must be `{` and the last must be `}`.
 """
+
+DISCOVER_SCHEMA = strict_object_schema({
+    "files_to_update": {
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": {
+                "path": {"type": "string"},
+                "reason": {"type": "string"},
+                "related_source_files": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                },
+            },
+            "required": ["path", "reason", "related_source_files"],
+            "additionalProperties": False,
+        },
+    },
+    "no_update_needed_summary": {"type": "string"},
+})
 
 
 def build_discover_prompt(diff: dict, md_index: list[dict]) -> str:
@@ -348,24 +322,28 @@ def discover_phase(before: str, after: str, also_update: list[str],
         "manual_overrides": [],
     }
 
-    if not os.getenv("ANTHROPIC_API_KEY"):
-        print("  WARNING: ANTHROPIC_API_KEY not set — skipping LLM analysis. "
+    if not os.getenv("OPENAI_API_KEY"):
+        print("  WARNING: OPENAI_API_KEY not set — skipping LLM analysis. "
               "Plan will only contain --also-update entries (if any).")
     else:
         try:
-            import anthropic
-        except ImportError:
-            print("  WARNING: anthropic SDK missing — LLM analysis skipped.")
+            client = create_client()
+        except RuntimeError as exc:
+            print(f"  WARNING: {exc} — LLM analysis skipped.")
         else:
-            client = anthropic.Anthropic()
             user_text = build_discover_prompt(diff, md_index)
-            print("  asking Claude to triage...")
-            parsed, usage = call_llm_streaming(
-                client, DISCOVER_SYSTEM, user_text,
-                DISCOVER_MAX_TOKENS, "discover",
-            )
+            print(f"  asking OpenAI ({DISCOVER_MODEL}) to triage...")
+            try:
+                parsed, usage = call_llm_streaming(
+                    client, DISCOVER_SYSTEM, user_text,
+                    DISCOVER_MAX_TOKENS, DISCOVER_MODEL,
+                    "docs_discovery", DISCOVER_SCHEMA,
+                )
+            finally:
+                client.close()
             print(f"  tokens: in={usage['input_tokens']} "
-                  f"out={usage['output_tokens']}")
+                  f"out={usage['output_tokens']} "
+                  f"reasoning={usage['reasoning_tokens']}")
             plan["files_to_update"] = parsed.get("files_to_update", []) or []
             plan["llm_summary"] = parsed.get("no_update_needed_summary", "") or ""
 
@@ -664,12 +642,104 @@ def tokenize_invocation(cmd: str) -> list[str]:
         return cmd.split()
 
 
+TOPOLOGY_DEPENDENT_COMMANDS = frozenset({
+    "ASKING",
+    "CLUSTER",
+    "DFLYCLUSTER",
+    "DFLYMIGRATE",
+    "FAILOVER",
+    "MIGRATE",
+    "PSYNC",
+    "READONLY",
+    "READWRITE",
+    "REPLCONF",
+    "REPLICAOF",
+    "REPLTAKEOVER",
+    "ROLE",
+    "SENTINEL",
+    "SLAVEOF",
+    "SYNC",
+    "WAIT",
+    "WAITAOF",
+})
+
+REDIS_CLI_OPTIONS_WITH_VALUE = frozenset({
+    "--cacert",
+    "--cacertdir",
+    "--cert",
+    "--key",
+    "--pass",
+    "--sni",
+    "--user",
+    "--uri",
+    "-a",
+    "-h",
+    "-n",
+    "-p",
+    "-s",
+    "-u",
+})
+
+
+def strip_redis_cli_options(argv: list[str]) -> list[str]:
+    """Return command arguments from a `$ redis-cli [options] COMMAND` line."""
+    index = 0
+    while index < len(argv) and argv[index].startswith("-"):
+        option = argv[index]
+        option_name = option.split("=", 1)[0]
+        index += 1
+        if option_name in REDIS_CLI_OPTIONS_WITH_VALUE and "=" not in option:
+            index += 1
+    return argv[index:]
+
+
+def topology_skip_reason(invocation: str) -> str | None:
+    """Explain why an example cannot be verified in the default container.
+
+    A single Dragonfly process, even in emulated cluster mode, cannot reproduce
+    replica acknowledgements, native-cluster slot migration, remote-node state,
+    or failover. Replacing curated output with that process's response corrupts
+    otherwise valid examples.
+    """
+    argv = strip_redis_cli_options(tokenize_invocation(invocation))
+    if not argv:
+        return None
+
+    command = argv[0].upper()
+    if command == "CLUSTER" and len(argv) > 1 and argv[1].upper() in {"HELP", "KEYSLOT"}:
+        return None
+    if command in TOPOLOGY_DEPENDENT_COMMANDS:
+        return f"{command} requires configured replication, cluster, or remote-node state"
+
+    info_sections = {arg.upper() for arg in argv[1:]}
+    if command == "INFO" and (
+        not info_sections
+        or "DEFAULT" in info_sections
+        or bool(info_sections & {"ALL", "CLUSTER", "REPLICATION"})
+    ):
+        return "INFO output depends on configured replication or cluster state"
+
+    return None
+
+
 def verify_invocations(session: DockerSession,
                        invocations: list[str]) -> list[dict]:
-    """Run each invocation and capture the actual output. Returns a list of
-    {invocation, stdout, stderr, returncode}."""
+    """Capture eligible runtime output and mark topology commands as skipped."""
     out: list[dict] = []
     for inv in invocations:
+        skip_reason = topology_skip_reason(inv)
+        if skip_reason:
+            out.append({
+                "invocation": inv,
+                "stdout": "",
+                "stderr": "",
+                "returncode": None,
+                "ok": None,
+                "skipped": True,
+                "skip_reason": skip_reason,
+            })
+            continue
+
         argv = tokenize_invocation(inv)
         stdout, stderr, rc = session.exec(argv)
         out.append({
@@ -742,6 +812,17 @@ def validate_update_output(input_md: str, output_md: str) -> list[str]:
     if "import PageTitle" in input_md and "import PageTitle" not in output_md:
         errors.append("`import PageTitle from ...` line was lost")
 
+    # A standalone container cannot validate these examples. Require the LLM
+    # to preserve every existing topology-dependent shell block byte-for-byte.
+    for match in SHELL_BLOCK_RE.finditer(input_md):
+        block = match.group(0)
+        invocations = extract_redis_invocations(block)
+        if any(topology_skip_reason(inv) for inv in invocations) and block not in output_md:
+            errors.append(
+                "topology-dependent shell block was modified without a "
+                "topology-specific runtime fixture"
+            )
+
     # ACL line: rule #4 says do not modify it. Take the input ACL line text
     # and confirm it appears verbatim in the output.
     in_acl = re.search(
@@ -758,16 +839,21 @@ def validate_update_output(input_md: str, output_md: str) -> list[str]:
 
 
 def verify_and_substitute_examples(
-    text: str, session: DockerSession,
+    text: str, session: DockerSession, baseline_text: str | None = None,
 ) -> tuple[str, list[dict], list[str]]:
     """Walk every ```shell``` block, run each `dragonfly>` invocation in
     Docker, and substitute the lines following each invocation with the
     actual output. Returns (new_text, errors, notes).
 
-    `FLUSHALL` is issued before every block so one example's keyspace
-    state cannot leak into another. Within a block, commands share state
-    (each subsequent `dragonfly>` line sees the keyspace left by the
-    previous one), which is what lets an example chain a SET and a GET.
+    Blocks unchanged from `baseline_text` are preserved to avoid churn from
+    dynamic values and nondeterministic reply ordering. Blocks containing
+    topology-dependent commands are also preserved verbatim: a single
+    container cannot authoritatively verify replication, failover, or
+    native-cluster output. For changed or new eligible blocks, `FLUSHALL` is
+    issued before every block so one example's keyspace state cannot leak into
+    another. Within a block, commands share state (each subsequent
+    `dragonfly>` line sees the keyspace left by the previous one), which is
+    what lets an example chain a SET and a GET.
 
     `errors` is a list of {invocation, rc, stderr} for non-zero exits.
     `notes` is a flat list of human-readable strings about the verification.
@@ -778,14 +864,42 @@ def verify_and_substitute_examples(
     last_pos = 0
     invocation_count = 0
     block_count = 0
+    topology_block_count = 0
+    unchanged_block_count = 0
+    baseline_blocks = (
+        [match.group(0) for match in SHELL_BLOCK_RE.finditer(baseline_text)]
+        if baseline_text is not None else []
+    )
 
-    for m in SHELL_BLOCK_RE.finditer(text):
+    for block_index, m in enumerate(SHELL_BLOCK_RE.finditer(text)):
         out_parts.append(text[last_pos:m.start()])
+        body = m.group("body").rstrip("\n")
+        block_invocations = [
+            line[len("dragonfly> "):].strip()
+            for line in body.split("\n")
+            if line.startswith("dragonfly> ")
+        ]
+        block_invocations.extend(
+            line[len("$ redis-cli "):].strip()
+            for line in body.split("\n")
+            if line.startswith("$ redis-cli ")
+        )
+        if any(topology_skip_reason(inv) for inv in block_invocations):
+            out_parts.append(m.group(0))
+            last_pos = m.end()
+            topology_block_count += 1
+            continue
+
+        if block_index < len(baseline_blocks) and m.group(0) == baseline_blocks[block_index]:
+            out_parts.append(m.group(0))
+            last_pos = m.end()
+            unchanged_block_count += 1
+            continue
+
         # Clean slate per block. The reset is invisible to the reader of
         # the doc — they just see each block start from an empty keyspace.
         session.exec(["FLUSHALL"])
         block_count += 1
-        body = m.group("body").rstrip("\n")
         lines = body.split("\n")
         rebuilt: list[str] = []
         i = 0
@@ -829,6 +943,16 @@ def verify_and_substitute_examples(
             f"verified {invocation_count} `dragonfly>` invocation(s) in "
             f"{block_count} block(s) (FLUSHALL between blocks)"
             + (f"; {len(errors)} non-zero exit(s)" if errors else "")
+        )
+    if topology_block_count:
+        notes.append(
+            f"preserved {topology_block_count} topology-dependent shell block(s) "
+            "without standalone output substitution"
+        )
+    if unchanged_block_count:
+        notes.append(
+            f"preserved {unchanged_block_count} unchanged shell block(s) "
+            "without dynamic-output churn"
         )
     return new_text, errors, notes
 
@@ -884,9 +1008,21 @@ page unusable:
    If you cannot derive a clear general-case complexity from the source,
    state the complexity in plain words instead of inventing a Big-O.
 3. Every example shown as a `dragonfly>` interaction inside a ```shell```
-   block (existing or new) is verified in Docker by the caller AFTER you
-   produce the markdown. The caller will replace the lines following
-   each `dragonfly>` line with the actual server output.
+   block (existing or new) is normally verified in Docker by the caller AFTER
+   you produce the markdown. The caller replaces the lines following each
+   eligible `dragonfly>` line with the actual server output.
+
+   Commands whose output depends on replication, failover, native-cluster
+   configuration, or another remote node are intentionally NOT executed in the
+   standalone verification container. Their input records have `skipped: true`.
+   Preserve existing topology-dependent command lines, output, comments, and
+   explanatory prose. A response from an unconfigured or emulated standalone
+   instance is never evidence that a curated replica or cluster example is
+   wrong.
+
+   Output order for map-like or shard-aggregated replies can be nondeterministic.
+   Do not rewrite an existing example merely to match a different valid ordering
+   or another run's dynamic values.
 
    The caller issues `FLUSHALL` BEFORE each ```shell``` block so each
    block starts from a clean keyspace — prior examples never leak into
@@ -908,7 +1044,7 @@ page unusable:
        meaningful result is encouraged.
      * For existing examples, you may keep them as-is or extend them
        with setup lines to make them clearer. The caller re-verifies
-       every invocation either way.
+       every eligible invocation either way.
      * Do not invent commands you cannot justify from the source or
        runtime facts.
 4. **Do NOT modify the `**ACL categor(y|ies):**` line.** That metadata
@@ -982,12 +1118,17 @@ Schema:
   { "markdown": "<full updated page content>",
     "notes":    ["<short bullet about a decision>", ...] }
 
-The caller verifies every `dragonfly>` invocation in your `markdown` by
-running it in a Docker container and substituting the captured output
-in place of whatever output you wrote. So you do not have to predict
-exact server output — but you DO have to put each example in the
-correct section (no appending blocks just to host examples).
+The caller verifies every eligible `dragonfly>` invocation in your `markdown`
+by running it in a Docker container and substituting the captured output.
+Topology-dependent blocks are preserved instead. You do not have to predict
+eligible server output — but you DO have to put each example in the correct
+section (no appending blocks just to host examples).
 """
+
+UPDATE_SCHEMA = strict_object_schema({
+    "markdown": {"type": "string"},
+    "notes": {"type": "array", "items": {"type": "string"}},
+})
 
 
 def build_update_user_text(
@@ -1054,7 +1195,7 @@ def build_update_user_text(
             "",
         ]
     parts += [
-        "=== docker_verified_examples (existing examples already verified) ===",
+        "=== docker_example_observations (topology-dependent examples are skipped) ===",
         json.dumps(docker_examples, indent=2, ensure_ascii=False),
         "",
         "=== task ===",
@@ -1104,6 +1245,7 @@ def update_one_file(
     invocations = extract_redis_invocations(page_text)
     docker_examples: list[dict] = []
     session = None
+    client = None
     is_command_page = bool(facts_entry)
     needs_docker = bool(invocations) or is_command_page
 
@@ -1120,17 +1262,16 @@ def update_one_file(
         docker_examples = verify_invocations(session, invocations)
 
     try:
+        if not os.getenv("OPENAI_API_KEY"):
+            result["status"] = "skipped"
+            result["error"] = "OPENAI_API_KEY not set"
+            return result
         try:
-            import anthropic
-        except ImportError:
+            client = create_client()
+        except RuntimeError as exc:
             result["status"] = "skipped"
-            result["error"] = "anthropic SDK not installed"
+            result["error"] = str(exc)
             return result
-        if not os.getenv("ANTHROPIC_API_KEY"):
-            result["status"] = "skipped"
-            result["error"] = "ANTHROPIC_API_KEY not set"
-            return result
-        client = anthropic.Anthropic()
         sibling_style = pick_sibling_style_reference(rel)
         if sibling_style:
             result["notes"].append(
@@ -1146,13 +1287,14 @@ def update_one_file(
             rel, page_text, handler_info, facts_entry, acl_cats,
             docker_examples, sibling_style, diff_context,
         )
-        print(f"  -> {rel}: calling Claude...")
+        print(f"  -> {rel}: calling OpenAI ({UPDATE_MODEL})...")
         parsed, usage = call_llm_streaming(
             client, UPDATE_SYSTEM, user_text, UPDATE_MAX_TOKENS,
-            f"update_{re.sub(r'[^a-z0-9]+', '_', rel.lower())[:60]}",
+            UPDATE_MODEL, "docs_update", UPDATE_SCHEMA,
         )
         print(f"     tokens: in={usage['input_tokens']} "
-              f"out={usage['output_tokens']}")
+              f"out={usage['output_tokens']} "
+              f"reasoning={usage['reasoning_tokens']}")
         new_md = parsed.get("markdown", "")
         notes = parsed.get("notes", []) or []
         result["notes"].extend(notes)
@@ -1181,13 +1323,12 @@ def update_one_file(
             )
             return result
 
-        # Verify every `dragonfly>` invocation in the LLM's markdown — both
-        # the existing examples and any new ones the LLM placed in their
-        # proper section — by running each in Docker and substituting the
-        # actual output.
+        # Verify changed and new eligible examples in the LLM's markdown by
+        # running them in Docker and substituting the actual output. Unchanged
+        # and topology-dependent blocks are preserved to avoid false churn.
         if session:
             new_md, exec_errors, exec_notes = verify_and_substitute_examples(
-                new_md, session,
+                new_md, session, baseline_text=page_text,
             )
             result["notes"].extend(exec_notes)
             if exec_errors:
@@ -1229,6 +1370,8 @@ def update_one_file(
             abs_path.write_text(new_md, encoding="utf-8")
         result["status"] = "updated"
     finally:
+        if client:
+            client.close()
         if session:
             kill_docker(session)
     return result

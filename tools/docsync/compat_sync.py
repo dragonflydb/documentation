@@ -48,6 +48,25 @@ from fnmatch import fnmatch
 from pathlib import Path
 from typing import Any
 
+try:
+    from .openai_llm import (
+        DEFAULT_BALANCED_MODEL,
+        call_json,
+        configured_model,
+        configured_reasoning_effort,
+        create_client,
+        strict_object_schema,
+    )
+except ImportError:  # Direct execution: python tools/docsync/compat_sync.py
+    from openai_llm import (
+        DEFAULT_BALANCED_MODEL,
+        call_json,
+        configured_model,
+        configured_reasoning_effort,
+        create_client,
+        strict_object_schema,
+    )
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 COMPAT_PAGE = REPO_ROOT / "docs" / "command-reference" / "compatibility.md"
 DOCS_COMMAND_DIR = REPO_ROOT / "docs" / "command-reference"
@@ -83,6 +102,13 @@ DEFAULT_MODULE_REFS = {
     "json": "v8.6.0",
     "bloom": "v8.6.2",
     "timeseries": "v8.6.2",
+}
+
+# Public commands registered by a module but omitted from its commands.json.
+# Keep this allowlist narrow: module repos also register internal DEBUG commands
+# which must not become part of the compatibility baseline.
+MODULE_SOURCE_SPEC_SUPPLEMENTS = {
+    "bloom": {"CF.COMPACT": "cf"},
 }
 
 PING_TIMEOUT_S = 30
@@ -244,8 +270,9 @@ class Assessment:
     # (False only for placeholders / names found in neither source).
     deterministic_change: bool = False
     # Optional independent model review of this row's deterministic verdict:
-    # {"agree": bool, "concern": str, "suggested_status": str|None}. Advisory —
-    # it never changes the label; disagreements become review-flag tasks.
+    # either {"agree": bool, "concern": str, "suggested_status": str|None} or
+    # {"error": str}. Advisory — it never changes the label; disagreements and
+    # failed calls become review-flag/review-error tasks.
     review: dict[str, Any] | None = None
 
 
@@ -259,6 +286,10 @@ class DockerSession:
 def run(cmd: list[str], cwd: Path | None = None,
         check: bool = True) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, check=check)
+
+
+def process_failure_detail(result: subprocess.CompletedProcess) -> str:
+    return (result.stderr or result.stdout).strip() or f"exit status {result.returncode}"
 
 
 def slug(s: str) -> str:
@@ -526,14 +557,43 @@ def ensure_checkout(name: str, repo: str, checkout: Path, ref: str, refresh: boo
     if not (checkout / ".git").exists():
         checkout.parent.mkdir(parents=True, exist_ok=True)
         print(f"  cloning {name} source to {checkout}...")
-        run(["git", "clone", "--quiet", repo, str(checkout)])
+        clone_result = run(
+            ["git", "clone", "--quiet", repo, str(checkout)], check=False,
+        )
+        if clone_result.returncode != 0:
+            raise RuntimeError(
+                f"could not clone {name} source from {repo} to {checkout}: "
+                f"{process_failure_detail(clone_result)}"
+            )
+    fetch_result = None
     if refresh:
-        run(["git", "fetch", "--tags", "--quiet"], cwd=checkout, check=False)
+        fetch_result = run(
+            ["git", "fetch", "--tags", "--quiet"], cwd=checkout, check=False,
+        )
     # Discard any leftover local state so a reused checkout is byte-identical to a
     # fresh clone at `ref` — the determinism guarantee depends on a clean tree.
     run(["git", "reset", "--hard", "--quiet"], cwd=checkout, check=False)
     run(["git", "clean", "-fdxq"], cwd=checkout, check=False)
-    run(["git", "checkout", "--quiet", ref], cwd=checkout)
+    checkout_result = run(
+        ["git", "checkout", "--quiet", ref], cwd=checkout, check=False,
+    )
+    if checkout_result.returncode != 0 and not refresh:
+        progress(f"{name} ref {ref!r} is not in the cached checkout; fetching tags")
+        fetch_result = run(
+            ["git", "fetch", "--tags", "--quiet"], cwd=checkout, check=False,
+        )
+        # A fetch can install the requested ref but still return non-zero because
+        # an unrelated tag update was rejected. Always retry the checkout once.
+        checkout_result = run(
+            ["git", "checkout", "--quiet", ref], cwd=checkout, check=False,
+        )
+    if checkout_result.returncode != 0:
+        detail = process_failure_detail(checkout_result)
+        if fetch_result is not None and fetch_result.returncode != 0:
+            detail += f"; git fetch failed: {process_failure_detail(fetch_result)}"
+        raise RuntimeError(
+            f"could not check out {name} ref {ref!r} in {checkout}: {detail}"
+        )
     return checkout
 
 
@@ -731,6 +791,29 @@ def find_module_commands_json(root: Path) -> Path | None:
     return hits[0] if hits else None
 
 
+_MODULE_REGISTRATION_RE = re.compile(
+    r'(?:RegisterCommand|RedisModule_CreateCommand)\s*\(\s*[^,]+,\s*'
+    r'"(?P<command>[A-Za-z_][A-Za-z0-9_.-]*)"',
+)
+
+
+def registered_module_commands(root: Path) -> set[str]:
+    commands: set[str] = set()
+    for pattern in ("*.c", "*.cc", "*.cpp", "*.h", "*.hpp"):
+        for path in root.rglob(pattern):
+            if "test" in path.parts or "tests" in path.parts:
+                continue
+            try:
+                text = path.read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+            commands.update(
+                normalize_command(match.group("command"))
+                for match in _MODULE_REGISTRATION_RE.finditer(text)
+            )
+    return commands
+
+
 def load_module_specs(module_dirs: dict[str, Path]) -> dict[str, RedisCommandSpec]:
     specs: dict[str, RedisCommandSpec] = {}
     for name, root in module_dirs.items():
@@ -745,7 +828,21 @@ def load_module_specs(module_dirs: dict[str, Path]) -> dict[str, RedisCommandSpe
             ingest_command_specs(json.loads(commands_json.read_text(encoding="utf-8")), specs)
         except (OSError, json.JSONDecodeError) as e:
             raise RuntimeError(f"module {name}: failed to read {commands_json}: {e}") from e
-        progress(f"module {name}: {len(specs) - before} command spec(s) from {commands_json.name}")
+        json_count = len(specs) - before
+        supplemented = 0
+        registered = registered_module_commands(root)
+        for command, group in MODULE_SOURCE_SPEC_SUPPLEMENTS.get(name, {}).items():
+            if command in registered and command not in specs:
+                specs[command] = RedisCommandSpec(name=command, group=group)
+                supplemented += 1
+        suffix = (
+            f" + {supplemented} public source-registration supplement(s)"
+            if supplemented else ""
+        )
+        progress(
+            f"module {name}: {json_count} command spec(s) from "
+            f"{commands_json.name}{suffix}"
+        )
     return specs
 
 
@@ -811,6 +908,8 @@ def _truncate(text: str, max_chars: int) -> str:
 # PascalCase calls that are replies/logging/casts, not option-parsing delegation.
 _DELEGATE_STOPWORDS = frozenset({
     "If", "For", "While", "Switch", "Return", "Move", "String", "StrCat",
+    "Action", "Apply", "Args", "Choice", "Compile", "Exist", "Field", "Flags",
+    "IfNot", "Into", "Map", "OneOf", "Options", "TagValue",
     "SendError", "SendOk", "SendLong", "SendDouble", "SendNull", "SendNullArray",
     "SendBulkString", "SendSimpleString", "SendStringArr", "SendVerbatimString",
     "StartArray", "StartCollection", "DCHECK", "CHECK", "LOG", "VLOG", "DVLOG",
@@ -828,7 +927,8 @@ def _find_definition_in_text(text: str, fn: str) -> tuple[int, int] | None:
         base, prefix = fn, r"(?:[A-Za-z_]\w*::)?"
     body_re = re.compile(
         r"(?:^|\n)[^\n;{}]*?\b" + prefix + re.escape(base)
-        + r"\s*\([^{};]*\)\s*(?:const|noexcept)?\s*\{",
+        + r"\s*\((?:=\s*\{\s*\}|[^{};])*?\)\s*"
+        + r"(?:(?:const|noexcept)\s*)*(?:->\s*[^;{}]+)?\{",
         re.DOTALL,
     )
     m = body_re.search(text)
@@ -844,18 +944,37 @@ def _find_definition_in_text(text: str, fn: str) -> tuple[int, int] | None:
 
 
 def _delegate_callees(body: str, own: set[str]) -> list[str]:
-    """PascalCase functions called in a handler body, first-seen order — the
-    likely delegated impl (Sort -> SortGeneric). A qualified call is kept
-    qualified (ScanOpts::TryFrom) so it resolves to the right file. Reply/log/cast
-    helpers are filtered out."""
+    """PascalCase functions called or used as an option-parser callback.
+
+    Dragonfly's argument parser also accepts compile-time/template callbacks,
+    for example ``parser.Next(ParseExpireArgs)`` and
+    ``HExpireTimeGeneric<Output>(...)``. Keep qualified names intact so a class
+    method resolves to the right file. MapNext dispatch callbacks are excluded:
+    walking every branch would leak one subcommand's options into its siblings.
+    """
     seen: list[str] = []
-    for m in re.finditer(
-        r"\b([A-Z][A-Za-z0-9_]{2,}(?:\s*::\s*[A-Z][A-Za-z0-9_]{2,})*)\s*\(", body):
-        name = re.sub(r"\s*", "", m.group(1))
-        bare = name.rsplit("::", 1)[-1]
-        if bare in _DELEGATE_STOPWORDS or name in own or name in seen:
-            continue
-        seen.append(name)
+    symbol = r"((?:[A-Za-z_]\w*\s*::\s*)*[A-Z][A-Za-z0-9_]{2,})"
+    patterns = (
+        # Ordinary calls, including Foo<TemplateArg>(...). Member calls are
+        # excluded because generic methods such as Apply/Next are not delegates.
+        r"(?<![.>])\b" + symbol + r"\s*(?:<[^\n;{}()]*>)?\s*\(",
+        # Parser callbacks: parser.Next(ParseFoo).
+        r"(?:\.|->)\s*(?:Next|NextOrDefault)\s*(?:<[^\n;{}()]*>)?"
+        r"\s*\(\s*&?\s*" + symbol,
+        # Compiled-grammar callbacks: Action("TOKEN", ParseFoo).
+        r"\bAction\s*(?:<[^\n;{}()]*>)?\s*\(\s*[^,\n()]+,"
+        r"\s*[+&]?\s*" + symbol,
+        # Family facades delegate subcommand parsing to FooCmd/FooMgr::Run.
+        r"(?:\.|->)\s*(Run)\s*\(",
+    )
+
+    for pattern in patterns:
+        for m in re.finditer(pattern, body):
+            name = re.sub(r"\s*", "", m.group(1))
+            bare = name.rsplit("::", 1)[-1]
+            if bare in _DELEGATE_STOPWORDS or name in own or name in seen:
+                continue
+            seen.append(name)
     return seen
 
 
@@ -869,14 +988,72 @@ _REG_WITH_HANDLER_RE = re.compile(
 # A C++ definition "<ret type> [Class::]Name(params) {"; the leading return type
 # distinguishes it from a call. Indexes every definition for cross-file delegation.
 _FN_DEF_RE = re.compile(
-    r"\n[A-Za-z_][\w:<>,&*\s]*?[ \t*&](?:[A-Za-z_]\w*::)?"
-    r"(?P<name>[A-Za-z_]\w*)\s*\([^{};]*\)\s*(?:const|noexcept)?\s*\{"
+    r"\n(?:template\s*<[^;{}]*>\s*)?[A-Za-z_][\w:<>,&*\s]*?[ \t*&]"
+    r"(?:[A-Za-z_]\w*::)?"
+    r"(?P<name>[A-Za-z_]\w*)\s*\((?:=\s*\{\s*\}|[^{};])*?\)\s*"
+    r"(?:(?:const|noexcept)\s*)*(?:->\s*[^;{}]+)?\{"
 )
 
 # A file-scope (column 0) `= "..."`/`= {...}` declaration, e.g.
 # `const char* AND_OP_NAME = "AND";`. Dragonfly compares some option tokens via
 # such constants, so the literal never appears inside a walked function body.
-_FILE_SCOPE_STRLIT_RE = re.compile(r'^\w[^\n]*=\s*[{"][^\n]*$', re.MULTILINE)
+_FILE_SCOPE_STRLIT_RE = re.compile(r'^\w[^\n(=]*=\s*[{"][^\n]*$', re.MULTILINE)
+
+
+def _find_file_scope_initializer(text: str, name: str) -> str:
+    """Return a referenced namespace/file-scope initializer through its `;`.
+
+    Compiled argument grammars are commonly declared as a multiline
+    ``constexpr auto kGrammar = Compile(...)`` and then applied by a handler.
+    Their option literals are outside every function body, so delegation alone
+    cannot see them. Only column-zero declarations are considered; this avoids
+    pulling an unrelated local ``kGrammar`` from a sibling handler.
+    """
+    declaration_re = re.compile(
+        r"^[A-Za-z_][^\n;{}]*\b" + re.escape(name)
+        + r"\b(?:\s*\[[^\]\n]*\])?\s*=",
+        re.MULTILINE,
+    )
+    m = declaration_re.search(text)
+    if not m:
+        return ""
+
+    depths = {"(": 0, "[": 0, "{": 0}
+    closing = {")": "(", "]": "[", "}": "{"}
+    state = "normal"
+    i = m.end()
+    while i < len(text):
+        char = text[i]
+        nxt = text[i + 1] if i + 1 < len(text) else ""
+        if state == "line":
+            if char == "\n":
+                state = "normal"
+        elif state == "block":
+            if char == "*" and nxt == "/":
+                state = "normal"
+                i += 1
+        elif state in {'"', "'"}:
+            if char == "\\":
+                i += 1
+            elif char == state:
+                state = "normal"
+        elif char == "/" and nxt == "/":
+            state = "line"
+            i += 1
+        elif char == "/" and nxt == "*":
+            state = "block"
+            i += 1
+        elif char in {'"', "'"}:
+            state = char
+        elif char in depths:
+            depths[char] += 1
+        elif char in closing:
+            opener = closing[char]
+            depths[opener] = max(0, depths[opener] - 1)
+        elif char == ";" and not any(depths.values()):
+            return text[m.start():i + 1]
+        i += 1
+    return ""
 
 
 def _family_hint(key: str) -> str:
@@ -1007,16 +1184,50 @@ class DragonflySource:
     def _delegation_text(self, path: Path, fn: str, hint: str = "",
                          budget: int = 60000, max_depth: int = 5) -> str:
         """Handler body + the bodies of functions it delegates to, across files,
-        so options parsed in a helper or a *_mgr.cc/*_cmd.cc are captured. `hint`
-        (the family word) disambiguates common callee names by file stem."""
+        so options parsed in a helper or a *_mgr.cc/*_cmd.cc are captured. It
+        also includes referenced file-scope compiled grammars. `hint` (the
+        family word) disambiguates common callee names by file stem."""
         def rank(candidate: Path) -> tuple[int, int]:
             stem = candidate.stem.lower()
             return (0 if hint and hint in stem else 1, len(stem))
 
         pieces: list[str] = []
         visited: set[str] = set()
+        initializer_seen: set[tuple[Path, str]] = set()
         total = 0
         queue: list[tuple[str, Path, int]] = [(f"Cmd{fn}", path, 0), (fn, path, 0)]
+
+        def append_referenced_initializers(source_path: Path, chunk: str, depth: int) -> None:
+            """Add only namespace-scope `kFoo = ...` values used by this chunk."""
+            nonlocal total
+            pending = [chunk]
+            source = self._read(source_path)
+            while pending and total < budget:
+                current = pending.pop()
+                for grammar_name in re.findall(r"\b(k[A-Z][A-Za-z0-9_]*)\b", current):
+                    marker = (source_path, grammar_name)
+                    if marker in initializer_seen:
+                        continue
+                    # A local static grammar is already inside the function body.
+                    if re.search(
+                        r"\b" + re.escape(grammar_name)
+                        + r"\b(?:\s*\[[^\]\n]*\])?\s*=",
+                        current,
+                    ):
+                        initializer_seen.add(marker)
+                        continue
+                    declaration = _find_file_scope_initializer(source, grammar_name)
+                    initializer_seen.add(marker)
+                    if not declaration:
+                        continue
+                    pieces.append(declaration)
+                    total += len(declaration)
+                    pending.append(declaration)
+                    if depth < max_depth:
+                        for callee in _delegate_callees(declaration, visited):
+                            if callee not in visited:
+                                queue.append((callee, source_path, depth + 1))
+
         while queue and total < budget:
             name, home, depth = queue.pop(0)
             if name in visited or depth > max_depth:
@@ -1032,12 +1243,16 @@ class DragonflySource:
                 candidates = sorted(self._files_defining(name.rsplit("::", 1)[-1]),
                                     key=rank)
             elif hint:
-                # Generic name (Parse/Run/Reserve): only follow it into a file of
-                # the same family (stem carries the hint), else it drags in an
-                # unrelated family's code.
-                candidates = sorted(
+                # Prefer the same family. A uniquely-defined shared helper is
+                # safe to follow across files (for example ExpiryOrPersist in
+                # family_utils.h); ambiguous generic names stay family-local.
+                family_candidates = sorted(
                     (p for p in self._files_defining(name) if hint in p.stem.lower()),
-                    key=rank)[:2]
+                    key=rank,
+                )
+                all_candidates = self._files_defining(name)
+                candidates = (family_candidates[:2] if family_candidates else
+                              all_candidates if len(all_candidates) == 1 else [])
             else:
                 candidates = sorted(self._files_defining(name), key=rank)[:2]
             for cand in candidates:
@@ -1047,6 +1262,7 @@ class DragonflySource:
                 body = self._read(cand)[span[0]:span[1]]
                 pieces.append(body)
                 total += len(body)
+                append_referenced_initializers(cand, body, depth)
                 if depth < max_depth:
                     for callee in _delegate_callees(body, visited):
                         if callee not in visited:
@@ -1252,6 +1468,20 @@ def kill_docker(session: DockerSession | None) -> None:
         subprocess.run(["docker", "rm", "-f", session.container], capture_output=True)
 
 
+def _curated_missing_tokens(row: CompatRow) -> set[str]:
+    """Option tokens in a curated Missing detail, if it has that form."""
+    if row.status != "partial":
+        return set()
+    match = re.fullmatch(r"\s*Missing:\s*(.*?)\.\s*", row.details)
+    if not match:
+        return set()
+    return {
+        token.strip().upper()
+        for token in match.group(1).split(",")
+        if token.strip()
+    }
+
+
 def deterministic_assessment(
     row: CompatRow,
     spec: RedisCommandSpec | None,
@@ -1300,11 +1530,37 @@ def deterministic_assessment(
     elif not in_redis:
         status = "dragonfly-specific"
     else:
-        missing = df.missing_options(row.command, spec)
+        missing = set(df.missing_options(row.command, spec))
+
+        # A curated row may track command-surface tokens omitted by the pinned
+        # upstream commands.json. Preserve and re-check those tokens against
+        # Dragonfly source instead of silently upgrading the row to supported.
+        # BF.INFO selectors added to Valkey but absent from RedisBloom's spec are
+        # one real example.
+        unmodeled = _curated_missing_tokens(row) - set(spec.tokens)
+        if unmodeled:
+            impl = df.implementation(row.command)
+            missing.update(token for token in unmodeled if not _token_honored(token, impl))
+            evidence.append(
+                "Curated option tokens absent from upstream spec: "
+                + ", ".join(sorted(unmodeled))
+            )
+            tasks.append({
+                "type": "upstream-spec-gap",
+                "command": row.command,
+                "family": row.family,
+                "tokens": sorted(unmodeled),
+                "message": "Curated option tokens are absent from the pinned upstream "
+                           "commands.json; checked them directly against Dragonfly source.",
+            })
+
         if missing:
             status = "partial"
-            details = "Missing: " + ", ".join(missing) + "."
-            evidence.append("Options absent from Dragonfly source: " + ", ".join(missing))
+            ordered_missing = sorted(missing)
+            details = "Missing: " + ", ".join(ordered_missing) + "."
+            evidence.append(
+                "Options absent from Dragonfly source: " + ", ".join(ordered_missing)
+            )
         else:
             status = "supported"
 
@@ -1377,26 +1633,39 @@ Output JSON only:
  "suggested_status": null or "supported|partial|unsupported|dragonfly-specific"}
 """
 
+REVIEW_SCHEMA = strict_object_schema({
+    "agree": {"type": "boolean"},
+    "concern": {"type": "string"},
+    "suggested_status": {
+        "anyOf": [
+            {
+                "type": "string",
+                "enum": [
+                    "supported", "partial", "unsupported", "dragonfly-specific",
+                ],
+            },
+            {"type": "null"},
+        ],
+    },
+})
+
 
 def _call_openai_json(system: str, user: str, model: str, retries: int = 3) -> dict:
+    client = create_client()
     try:
-        from openai import OpenAI
-    except ImportError as e:
-        raise RuntimeError("openai SDK not installed (pip install openai)") from e
-    client = OpenAI()
-    last = None
-    for attempt in range(1, retries + 1):
-        try:
-            resp = client.chat.completions.create(
-                model=model, temperature=0, seed=7,
-                messages=[{"role": "system", "content": system},
-                          {"role": "user", "content": user}],
-                response_format={"type": "json_object"},
-            )
-            return json.loads(resp.choices[0].message.content or "{}")
-        except Exception as e:  # noqa: BLE001
-            last = e
-    raise RuntimeError(f"model review call failed after {retries} attempts: {last}")
+        parsed, _usage = call_json(
+            client,
+            system_prompt=system,
+            user_text=user,
+            schema_name="compatibility_review",
+            schema=REVIEW_SCHEMA,
+            model=model,
+            max_output_tokens=8000,
+            retries=retries,
+        )
+        return parsed
+    finally:
+        client.close()
 
 
 def build_review_prompt(assessment: Assessment, spec: RedisCommandSpec | None,
@@ -1424,48 +1693,62 @@ def review_assessments(
     model: str,
     workers: int,
     progress_every: int,
-) -> list[dict[str, Any]]:
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Independently review every row's deterministic verdict with the model.
-    Attaches assessment.review and returns review-flag tasks for disagreements.
-    Never changes a label."""
+    Attaches review results and returns separate tasks for disagreements and
+    failed review calls. Never changes a label or discards deterministic output."""
     total = len(assessments)
     progress(f"model review of {total} row(s) using {model}")
 
     def review_one(a: Assessment) -> dict[str, Any]:
-        matches = command_matches(a.row.command, set(redis_specs))
-        spec = redis_specs.get(matches[0]) if matches else None
-        # Command-specific handler code, not the whole-dir blob.
-        impl = df.handler_impl(a.row.command)
         try:
+            matches = command_matches(a.row.command, set(redis_specs))
+            spec = redis_specs.get(matches[0]) if matches else None
+            # Command-specific handler code, not the whole-dir blob.
+            impl = df.handler_impl(a.row.command)
             parsed = _call_openai_json(REVIEW_SYSTEM, build_review_prompt(a, spec, impl), model)
-        except RuntimeError as e:
-            return {"agree": True, "concern": "", "suggested_status": None, "error": str(e)}
+        except Exception as e:  # Reported as a review-error task by the caller.
+            return {"error": str(e).strip() or type(e).__name__}
+        agree = bool(parsed.get("agree", True))
+        concern = str(parsed.get("concern") or "").strip()
+        if not agree and not concern:
+            return {"error": "Model returned agree=false without a concern."}
         return {
-            "agree": bool(parsed.get("agree", True)),
-            "concern": str(parsed.get("concern") or "").strip(),
+            "agree": agree,
+            "concern": concern,
             "suggested_status": (normalize_status(str(parsed["suggested_status"]))
                                  if parsed.get("suggested_status") else None),
         }
 
     flags: list[dict[str, Any]] = []
-    by_key = {(a.row.family, a.row.key): a for a in assessments}
+    errors: list[dict[str, Any]] = []
     with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
         futures = {pool.submit(review_one, a): a for a in assessments}
         for done, fut in enumerate(as_completed(futures), 1):
             a = futures[fut]
-            by_key[(a.row.family, a.row.key)].review = fut.result()
+            review = fut.result()
+            a.review = review
             if should_report(done, total, progress_every):
                 progress(f"review {done}/{total}")
     for a in assessments:
         rev = a.review or {}
-        if not rev.get("agree", True) and rev.get("concern"):
+        if "error" in rev:
+            errors.append({
+                "type": "review-error", "command": a.row.command, "family": a.row.family,
+                "status": a.proposed_status,
+                "message": str(rev["error"]),
+            })
+        elif not rev.get("agree", True) and rev.get("concern"):
             flags.append({
                 "type": "review-flag", "command": a.row.command, "family": a.row.family,
                 "status": a.proposed_status, "suggested_status": rev.get("suggested_status"),
                 "message": rev["concern"],
             })
-    progress(f"model review complete: {len(flags)} row(s) flagged for human review")
-    return flags
+    progress(
+        f"model review complete: {len(flags)} row(s) flagged for human review, "
+        f"{len(errors)} review call(s) failed"
+    )
+    return flags, errors
 
 
 def serialize_dataclass(obj: Any) -> Any:
@@ -1604,6 +1887,15 @@ def print_summary(
         for f in review_flags:
             sug = f" (suggests {f['suggested_status']})" if f.get("suggested_status") else ""
             print(f"  {f.get('family')} / {f.get('command')} [{f.get('status')}]{sug}: {f.get('message')}")
+    review_errors = [t for t in tasks if t.get("type") == "review-error"]
+    if review_errors:
+        print("")
+        print(f"Model review failed for {len(review_errors)} row(s) — deterministic output was still written:")
+        for error in review_errors:
+            print(
+                f"  {error.get('family')} / {error.get('command')} "
+                f"[{error.get('status')}]: {error.get('message')}"
+            )
     return 0
 
 
@@ -1649,8 +1941,9 @@ def add_cli_args() -> argparse.ArgumentParser:
                     help="After the deterministic pass, have a model independently review every "
                          "row and flag disagreements for a human. Advisory only — it never changes "
                          "a label. Requires OPENAI_API_KEY.")
-    ap.add_argument("--review-model", default=os.getenv("OPENAI_MODEL", "gpt-4.1"),
-                    help="Model for --review. Defaults to OPENAI_MODEL or gpt-4.1.")
+    ap.add_argument("--review-model", default=configured_model(DEFAULT_BALANCED_MODEL),
+                    help="Model for --review. Defaults to OPENAI_MODEL or "
+                         "gpt-5.6-terra.")
     ap.add_argument("--review-workers", type=int, default=6,
                     help="Parallel workers for the --review pass. Default: 6.")
     ap.add_argument("--add-missing-rows", action="store_true",
@@ -1667,6 +1960,18 @@ def add_cli_args() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = add_cli_args().parse_args()
+    if args.review:
+        if not os.getenv("OPENAI_API_KEY"):
+            print("ERROR: --review requires OPENAI_API_KEY.", file=sys.stderr)
+            return 2
+        try:
+            configured_reasoning_effort(args.review_model)
+            preflight_client = create_client()
+            preflight_client.close()
+        except Exception as exc:
+            print(f"ERROR: OpenAI review is not configured: {exc}", file=sys.stderr)
+            return 2
+
     # Writing the public doc is opt-in (--write-table) and only for a complete,
     # unfiltered run: a partial-coverage run must never clobber the full table.
     write_table = bool(args.write_table) and not args.filter and not args.limit
@@ -1674,8 +1979,12 @@ def main() -> int:
         progress("--write-table ignored: --filter / --limit runs never write the public table")
 
     progress("resolving source checkouts")
-    redis_source_root = resolve_redis_source(args)
-    dragonfly_source_root = resolve_dragonfly_source(args)
+    try:
+        redis_source_root = resolve_redis_source(args)
+        dragonfly_source_root = resolve_dragonfly_source(args)
+    except RuntimeError as exc:
+        print(f"ERROR: source checkout failed: {exc}", file=sys.stderr)
+        return 2
     if not redis_source_root:
         print("ERROR: a Redis source checkout is required for command specs.", file=sys.stderr)
         return 2
@@ -1736,11 +2045,12 @@ def main() -> int:
     # Optional independent model review of every row's deterministic verdict.
     # Advisory only: it flags rows for a human, never changes a label.
     review_flags: list[dict[str, Any]] = []
+    review_errors: list[dict[str, Any]] = []
     if args.review:
-        review_flags = review_assessments(
+        review_flags, review_errors = review_assessments(
             assessments, redis_specs, df, args.review_model,
             args.review_workers, args.progress_every)
-        extra_tasks = (extra_tasks or []) + review_flags
+        extra_tasks = (extra_tasks or []) + review_flags + review_errors
 
     draft_rows, change_log = assessments_to_rows(all_rows, assessments)
 
@@ -1761,8 +2071,16 @@ def main() -> int:
         print(f"Write summary: {len(applied)} label(s) updated from source analysis.")
         print(f"  wrote {display_path(args.output)}")
 
-    return print_summary(assessments, out_dir, write_table, extra_tasks=extra_tasks,
-                         review_flags=review_flags)
+    result = print_summary(assessments, out_dir, write_table, extra_tasks=extra_tasks,
+                           review_flags=review_flags)
+    if review_errors:
+        print(
+            f"ERROR: {len(review_errors)} model review call(s) failed; "
+            "deterministic outputs were written.",
+            file=sys.stderr,
+        )
+        return 2
+    return result
 
 
 if __name__ == "__main__":
