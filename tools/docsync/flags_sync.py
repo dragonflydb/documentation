@@ -25,7 +25,7 @@ Three-stage pipeline:
      better for the CLI reader, and the LLM polish is responsible for adding
      the enum-value table to the description.
 
-  3. LLM polish. Claude receives the mechanically-fixed page (already with
+  3. LLM polish. OpenAI receives the mechanically-fixed page (already with
      obsolete flags removed and defaults updated), the ground-truth dict
      restricted to flags that should be in the output, the source-code data
      per flag, and explicit instructions: add missing flags using their
@@ -57,6 +57,21 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
+try:
+    from .openai_llm import (
+        call_json,
+        configured_model,
+        create_client,
+        strict_object_schema,
+    )
+except ImportError:  # Direct execution: python tools/docsync/flags_sync.py
+    from openai_llm import (
+        call_json,
+        configured_model,
+        create_client,
+        strict_object_schema,
+    )
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 FLAGS_PAGE = REPO_ROOT / "docs" / "managing-dragonfly" / "flags.md"
 FACTS_DIR = REPO_ROOT / "tools" / "generated" / "facts"
@@ -66,8 +81,8 @@ DFLY_FACTS = REPO_ROOT / "tools" / "docsync" / "dfly_facts.py"
 DRAGONFLY_REPO = "https://github.com/dragonflydb/dragonfly.git"
 DRAGONFLY_CHECKOUT = Path("/tmp/dragonfly-docsync")
 
-MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 32000
+MODEL = configured_model()
+MAX_TOKENS = 64000
 
 SECTION_RE = re.compile(
     r"^###[ \t]+`--(?P<name>[a-z][a-z0-9_]*)`[ \t]*\n"
@@ -609,112 +624,23 @@ fences (```), no explanation. The schema:
 If you violate this format the downstream parser will discard your work.
 """
 
-
-def _extract_json_object(text: str) -> dict | None:
-    """Best-effort extraction of a top-level JSON object from `text`.
-
-    Handles the common LLM failure modes:
-      * verbatim JSON (no wrapping)               -> json.loads(text)
-      * preamble before / after the JSON          -> slice between first { and matching }
-      * ```json ... ``` fence                     -> extract fenced block
-    Returns the parsed dict, or None if nothing parseable was found.
-    """
-    text = text.strip()
-
-    try:
-        return json.loads(text)
-    except json.JSONDecodeError:
-        pass
-
-    fence = re.search(r"```(?:json|JSON)?\s*\n(.*?)\n```", text, re.DOTALL)
-    if fence:
-        try:
-            return json.loads(fence.group(1).strip())
-        except json.JSONDecodeError:
-            pass
-
-    depth = 0
-    in_str: str | None = None
-    start = -1
-    i = 0
-    while i < len(text):
-        c = text[i]
-        if in_str:
-            if c == "\\" and i + 1 < len(text):
-                i += 2
-                continue
-            if c == in_str:
-                in_str = None
-        elif c == '"':
-            in_str = c
-        elif c == "{":
-            if depth == 0:
-                start = i
-            depth += 1
-        elif c == "}":
-            depth -= 1
-            if depth == 0 and start != -1:
-                candidate = text[start:i + 1]
-                try:
-                    return json.loads(candidate)
-                except json.JSONDecodeError:
-                    start = -1
-        i += 1
-    return None
+POLISH_SCHEMA = strict_object_schema({
+    "markdown": {"type": "string"},
+    "notes": {"type": "array", "items": {"type": "string"}},
+})
 
 
 def call_llm(client, system_prompt: str, user_text: str) -> tuple[dict, dict]:
-    # Streaming is required because the Anthropic SDK refuses non-streaming
-    # requests that may exceed 10 minutes of generation time, which a 32K
-    # max_tokens polish on the full flags page reliably hits.
-    text_parts: list[str] = []
-    chars = 0
-    print("  streaming response", end="", flush=True)
-    with client.messages.stream(
+    return call_json(
+        client,
+        system_prompt=system_prompt,
+        user_text=user_text,
+        schema_name="flags_polish",
+        schema=POLISH_SCHEMA,
         model=MODEL,
-        max_tokens=MAX_TOKENS,
-        system=[{"type": "text", "text": system_prompt,
-                 "cache_control": {"type": "ephemeral"}}],
-        messages=[{"role": "user", "content": user_text}],
-    ) as stream:
-        for chunk in stream.text_stream:
-            text_parts.append(chunk)
-            chars += len(chunk)
-            if chars % 4000 < len(chunk):  # roughly one dot per 4K chars
-                print(".", end="", flush=True)
-        response = stream.get_final_message()
-    print(f" done ({chars} chars streamed)")
-    text = "".join(text_parts).strip()
-    if not text:
-        # Streaming should always yield text; if not, fall back to scanning
-        # the assembled message's content blocks just in case.
-        for block in response.content:
-            block_type = getattr(block, "type", None) or block.get("type")
-            if block_type == "text":
-                text += getattr(block, "text", "") or block.get("text", "")
-        text = text.strip()
-    if not text:
-        raise RuntimeError(
-            f"LLM returned no text content "
-            f"(stop_reason={response.stop_reason}, "
-            f"blocks={[getattr(b, 'type', None) for b in response.content]})"
-        )
-    parsed = _extract_json_object(text)
-    if parsed is None:
-        debug = SOURCE_DIR.parent / "llm_debug" / f"flags_polish_{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}.txt"
-        debug.parent.mkdir(parents=True, exist_ok=True)
-        debug.write_text(text, encoding="utf-8")
-        raise RuntimeError(
-            f"LLM response did not contain a parseable JSON object; "
-            f"raw text saved to {debug.relative_to(REPO_ROOT)} for inspection. "
-            f"stop_reason={response.stop_reason}, len={len(text)} chars."
-        )
-    usage = {
-        "input_tokens": response.usage.input_tokens,
-        "output_tokens": response.usage.output_tokens,
-        "stop_reason": response.stop_reason,
-    }
-    return parsed, usage
+        max_output_tokens=MAX_TOKENS,
+        stream=True,
+    )
 
 
 def build_polish_user_text(
@@ -1064,15 +990,15 @@ def main() -> int:
 
     will_run_llm = (
         not args.no_llm
-        and bool(os.getenv("ANTHROPIC_API_KEY"))
+        and bool(os.getenv("OPENAI_API_KEY"))
         and (mech.missing_from_doc or mech.removed_from_doc
              or mech.fixed_defaults or mech.deferred_enum)
     )
 
     if args.no_llm:
         polish_skipped_reason = "--no-llm"
-    elif not os.getenv("ANTHROPIC_API_KEY"):
-        polish_skipped_reason = "ANTHROPIC_API_KEY not set"
+    elif not os.getenv("OPENAI_API_KEY"):
+        polish_skipped_reason = "OPENAI_API_KEY not set"
     elif not (mech.missing_from_doc or mech.removed_from_doc
               or mech.fixed_defaults or mech.deferred_enum):
         polish_skipped_reason = "page already matches server, nothing to polish"
@@ -1089,12 +1015,11 @@ def main() -> int:
 
     if will_run_llm:
         try:
-            import anthropic
-        except ImportError:
-            polish_skipped_reason = "anthropic SDK not installed"
+            client = create_client()
+        except RuntimeError as exc:
+            polish_skipped_reason = str(exc)
         else:
-            print("\nCalling Claude for full-page polish...")
-            client = anthropic.Anthropic()
+            print(f"\nCalling OpenAI ({MODEL}) for full-page polish...")
             # Closed-world set: exactly the flags that should appear in the
             # output. Existing in the page (mechanically reconciled) plus
             # new user-facing ones to add. Upstream glog/absl flags that
@@ -1122,12 +1047,17 @@ def main() -> int:
                 mech.missing_from_doc, enum_defaults_to_expand,
             )
             try:
-                parsed, usage = call_llm(client, POLISH_SYSTEM, user_text)
+                try:
+                    parsed, usage = call_llm(client, POLISH_SYSTEM, user_text)
+                finally:
+                    client.close()
             except Exception as e:
                 polish_skipped_reason = f"LLM call failed: {e}"
             else:
                 print(f"  tokens: in={usage['input_tokens']} "
-                      f"out={usage['output_tokens']} stop={usage['stop_reason']}")
+                      f"out={usage['output_tokens']} "
+                      f"reasoning={usage['reasoning_tokens']} "
+                      f"status={usage['response_status']}")
                 polished = parsed.get("markdown", "")
                 polish_notes = parsed.get("notes", []) or []
                 if not polished.strip():

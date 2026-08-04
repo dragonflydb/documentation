@@ -34,6 +34,23 @@ from dataclasses import dataclass, field
 from fnmatch import fnmatch
 from pathlib import Path
 
+try:
+    from .openai_llm import (
+        DEFAULT_BALANCED_MODEL,
+        call_json,
+        configured_model,
+        create_client,
+        strict_object_schema,
+    )
+except ImportError:  # Direct execution: python tools/docsync/acl_sync.py
+    from openai_llm import (
+        DEFAULT_BALANCED_MODEL,
+        call_json,
+        configured_model,
+        create_client,
+        strict_object_schema,
+    )
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DOCS_DIR = REPO_ROOT / "docs" / "command-reference"
 FACTS_DIR = REPO_ROOT / "tools" / "generated" / "facts"
@@ -131,8 +148,8 @@ def render(prefix: str, cats: list[str]) -> str:
 
 # --- LLM repair for FAILED pages --------------------------------------------
 
-LLM_REPAIR_MODEL = "claude-sonnet-4-6"
-LLM_REPAIR_MAX_TOKENS = 8000
+LLM_REPAIR_MODEL = configured_model(DEFAULT_BALANCED_MODEL)
+LLM_REPAIR_MAX_TOKENS = 16000
 
 LLM_REPAIR_SYSTEM = """\
 You repair the ACL category metadata on a Dragonfly DB documentation page.
@@ -188,6 +205,12 @@ Output strictly this JSON, with no fences and no commentary:
     "patched_markdown": "<full file content if action=patch, else empty>" }
 """
 
+LLM_REPAIR_SCHEMA = strict_object_schema({
+    "action": {"type": "string", "enum": ["skip", "patch"]},
+    "reason": {"type": "string"},
+    "patched_markdown": {"type": "string"},
+})
+
 
 def _build_repair_user_text(
     page_text: str, command: str, server_cats: list[str], failure_reason: str,
@@ -204,18 +227,16 @@ def _build_repair_user_text(
 
 
 def _call_repair_llm(client, system_prompt: str, user_text: str) -> dict:
-    response = client.messages.create(
+    parsed, _usage = call_json(
+        client,
+        system_prompt=system_prompt,
+        user_text=user_text,
+        schema_name="acl_repair",
+        schema=LLM_REPAIR_SCHEMA,
         model=LLM_REPAIR_MODEL,
-        max_tokens=LLM_REPAIR_MAX_TOKENS,
-        system=[{"type": "text", "text": system_prompt,
-                 "cache_control": {"type": "ephemeral"}}],
-        messages=[{"role": "user", "content": user_text}],
+        max_output_tokens=LLM_REPAIR_MAX_TOKENS,
     )
-    text = response.content[0].text.strip()
-    if text.startswith("```"):
-        text = text.split("\n", 1)[1] if "\n" in text else text
-        text = text.rsplit("```", 1)[0]
-    return json.loads(text)
+    return parsed
 
 
 def _validate_llm_patch(patched: str, expected_cats: set[str]) -> str | None:
@@ -250,64 +271,67 @@ def llm_repair_failed(
     failed = [r for r in results if r.status == "failed"]
     if not failed:
         return
-    if not os.getenv("ANTHROPIC_API_KEY"):
+    if not os.getenv("OPENAI_API_KEY"):
         for r in failed:
-            r.reason += " (LLM repair skipped: ANTHROPIC_API_KEY not set)"
+            r.reason += " (LLM repair skipped: OPENAI_API_KEY not set)"
         return
     try:
-        import anthropic
-    except ImportError:
+        client = create_client()
+    except RuntimeError as exc:
         for r in failed:
-            r.reason += " (LLM repair skipped: anthropic SDK not installed)"
+            r.reason += f" (LLM repair skipped: {exc})"
         return
 
-    print(f"\nLLM repair pass over {len(failed)} failed page(s)...")
-    client = anthropic.Anthropic()
-    for r in failed:
-        if not r.command or r.command not in command_acl:
-            continue
-        server_cats = sorted(c.lower() for c in command_acl[r.command])
-        page_text = r.path.read_text(encoding="utf-8")
-        user_text = _build_repair_user_text(
-            page_text, r.command, server_cats, r.reason,
-        )
-        try:
-            resp = _call_repair_llm(client, LLM_REPAIR_SYSTEM, user_text)
-        except Exception as e:
-            r.reason += f" (LLM call failed: {e})"
-            continue
-        action = (resp.get("action") or "").lower()
-        llm_reason = (resp.get("reason") or "").strip()
-        if action == "skip":
-            r.status = "overview"
-            r.reason = f"LLM marked as container/overview: {llm_reason}"
+    print(f"\nOpenAI repair pass over {len(failed)} failed page(s) "
+          f"using {LLM_REPAIR_MODEL}...")
+    try:
+        for r in failed:
+            if not r.command or r.command not in command_acl:
+                continue
+            server_cats = sorted(c.lower() for c in command_acl[r.command])
+            page_text = r.path.read_text(encoding="utf-8")
+            user_text = _build_repair_user_text(
+                page_text, r.command, server_cats, r.reason,
+            )
+            try:
+                resp = _call_repair_llm(client, LLM_REPAIR_SYSTEM, user_text)
+            except Exception as e:
+                r.reason += f" (LLM call failed: {e})"
+                continue
+            action = (resp.get("action") or "").lower()
+            llm_reason = (resp.get("reason") or "").strip()
+            if action == "skip":
+                r.status = "overview"
+                r.reason = f"LLM marked as container/overview: {llm_reason}"
+                r.via = "llm"
+                print(f"  ⊘ {r.path.relative_to(REPO_ROOT)}: skip — {llm_reason}")
+                continue
+            if action != "patch":
+                r.reason += f" (LLM returned unknown action {action!r})"
+                print(f"  ✗ {r.path.relative_to(REPO_ROOT)}: bad action {action!r}")
+                continue
+            patched = resp.get("patched_markdown") or ""
+            if not patched.strip():
+                r.reason += " (LLM said 'patch' but returned empty markdown)"
+                print(f"  ✗ {r.path.relative_to(REPO_ROOT)}: empty patch")
+                continue
+            err = _validate_llm_patch(patched, set(server_cats))
+            if err:
+                r.reason += f" (LLM patch rejected: {err})"
+                print(f"  ✗ {r.path.relative_to(REPO_ROOT)}: {err}")
+                continue
+            # Validation passed — apply.
+            r.old = []
+            r.new = server_cats
+            r.status = "updated"
             r.via = "llm"
-            print(f"  ⊘ {r.path.relative_to(REPO_ROOT)}: skip — {llm_reason}")
-            continue
-        if action != "patch":
-            r.reason += f" (LLM returned unknown action {action!r})"
-            print(f"  ✗ {r.path.relative_to(REPO_ROOT)}: bad action {action!r}")
-            continue
-        patched = resp.get("patched_markdown") or ""
-        if not patched.strip():
-            r.reason += " (LLM said 'patch' but returned empty markdown)"
-            print(f"  ✗ {r.path.relative_to(REPO_ROOT)}: empty patch")
-            continue
-        err = _validate_llm_patch(patched, set(server_cats))
-        if err:
-            r.reason += f" (LLM patch rejected: {err})"
-            print(f"  ✗ {r.path.relative_to(REPO_ROOT)}: {err}")
-            continue
-        # Validation passed — apply.
-        r.old = []
-        r.new = server_cats
-        r.status = "updated"
-        r.via = "llm"
-        r.reason = f"LLM-inserted ACL line: {llm_reason}"
-        if not dry_run:
-            r.path.write_text(patched, encoding="utf-8")
-        print(f"  ✓ {r.path.relative_to(REPO_ROOT)}: patched with "
-              f"{', '.join(server_cats)}")
+            r.reason = f"LLM-inserted ACL line: {llm_reason}"
+            if not dry_run:
+                r.path.write_text(patched, encoding="utf-8")
+            print(f"  ✓ {r.path.relative_to(REPO_ROOT)}: patched with "
+                  f"{', '.join(server_cats)}")
+    finally:
+        client.close()
 
 
 # --- Main --------------------------------------------------------------------

@@ -14,7 +14,9 @@ tools/docsync/
 ├── flags_sync.py               # update flag defaults + add new flags
 ├── compat_sync.py              # build command compatibility evidence + draft
 ├── docs_sync.py                # update doc pages from a tag-to-tag source diff
-├── propose_change_message.py   # write a commit/PR title+body for the diff
+├── openai_llm.py               # shared Responses API + Structured Outputs adapter
+├── test_compat_sync.py         # offline source-checkout regression tests
+├── test_openai_llm.py          # offline adapter/schema/routing tests
 ├── dfly_facts.py               # helper — Docker → JSON ground truth
 └── requirements.txt
 ```
@@ -28,9 +30,7 @@ tools/generated/
 ├── source/<tag>.json           # parsed ABSL_FLAG / enum data (flags_sync)
 ├── update_plans/plan_<ts>.json     # output of docs_sync Phase 1
 ├── update_plans/results_<ts>.json  # output of docs_sync Phase 2
-├── change_messages/*.md        # output of propose_change_message.py
-└── llm_debug/                  # raw LLM responses for inspection:
-                                #   *_<ts>.txt      — JSON-parse failure
+└── llm_debug/                  # rejected LLM outputs for inspection:
                                 #   *_validation_failed_<ts>.md — validation failure
                                 #   *_rejected_<file>_<ts>.md   — structural rejection
 ```
@@ -41,11 +41,22 @@ tools/generated/
 pip install -r tools/docsync/requirements.txt
 docker pull docker.dragonflydb.io/dragonflydb/dragonfly:v1.38.0
 # compat_sync needs NO API key by default (deterministic source analysis).
-export OPENAI_API_KEY=...       # required for: compat_sync.py --review (optional)
-export ANTHROPIC_API_KEY=...    # required for: flags_sync LLM polish,
-                                # docs_sync (both phases), acl_sync repair pass,
-                                # propose_change_message
+export OPENAI_API_KEY=...       # required for every optional LLM step
+# Optional global overrides:
+export OPENAI_MODEL=gpt-5.6-sol
+export OPENAI_REASONING_EFFORT=medium
 ```
+
+All LLM calls use the OpenAI Responses API with strict Structured Outputs and
+`store=False`. Quality-sensitive page/flag updates default to `gpt-5.6-sol`.
+Discovery, ACL repair, and the high-volume compatibility review default to
+`gpt-5.6-terra`. `OPENAI_MODEL` overrides both defaults (set it to
+`gpt-5.6-sol` to run every workflow quality-first).
+`OPENAI_REASONING_EFFORT` accepts `none`, `low`, `medium`, `high`, `xhigh`, or
+`max`; it defaults to `medium` for GPT-5.6-family models. Set it to `default` to
+omit the parameter when overriding to a model with different reasoning support.
+Any override must support the Responses API, strict JSON Schema outputs, and
+the workflow's configured output cap (up to 64K tokens for `flags_sync.py`).
 
 ## acl_sync.py
 
@@ -60,9 +71,9 @@ a server command. Two stages:
      order, new ones are appended (alphabetically), removed ones are
      dropped.
 
-2. **LLM repair pass** (requires `ANTHROPIC_API_KEY`) — for every page
+2. **LLM repair pass** (requires `OPENAI_API_KEY`) — for every page
    that the mechanical pass could not handle (no ACL line on a page that
-   documents a real server command, multiple ACL lines, etc.) Claude is
+   documents a real server command, multiple ACL lines, etc.) The model is
    given the page text, the command name, the expected categories from
    the server, and detailed instructions:
    - if the page is a container / navigation page (body is mostly a list
@@ -174,6 +185,10 @@ python tools/docsync/compat_sync.py --dragonfly-ref v1.39.0 --redis-ref 8.6.4
 python tools/docsync/compat_sync.py --dragonfly-ref v1.39.0 --redis-ref 8.6.4 --write-table
 ```
 
+Source checkouts are cached under `/tmp`. When a requested ref is missing from a
+stale cache, the tool fetches tags and retries automatically. Use
+`--refresh-source` to fetch before every checkout.
+
 Artifacts under `tools/generated/compatibility/<ts>/`:
 
 - `assessments.json` — per-row status, `Missing:` details, and source evidence.
@@ -195,8 +210,13 @@ disagreements. It is **advisory: it never changes a label** — it produces
 `review-flag` tasks with a concrete concern and a suggested status, and the run
 summary lists them. The shipped table stays fully deterministic; the model is a
 second pair of eyes at scale, not the decider (which is why the LLM-only tool
-failed). Needs `OPENAI_API_KEY` (`--review-model`, default `gpt-4.1`); the
+failed). Needs `OPENAI_API_KEY` (`--review-model`, default `gpt-5.6-terra`); the
 default run needs no key.
+
+If one or more model calls fail, the tool records `review-error` tasks and still
+writes the deterministic table/artifacts plus all successful reviews. It then
+returns exit code 2 so an incomplete review cannot be mistaken for a complete
+one.
 
 ```sh
 # deterministic + model review of every row (flags disagreements, labels unchanged):
@@ -237,7 +257,7 @@ Three-stage pipeline:
      integer is what the CLI accepts, and the LLM polish is responsible
      for adding the enum-value table to the description.
 
-3. **LLM polish** (requires `ANTHROPIC_API_KEY`). Claude receives the
+3. **LLM polish** (requires `OPENAI_API_KEY`). The OpenAI model receives the
    mechanically-fixed page, the full ground-truth dict, the source-facts
    dict (with C++ comments and enum tables), the list of flags to add,
    the list to keep-even-though-removed, and the list of enum defaults to
@@ -279,7 +299,7 @@ releases. Two phases driven by one command:
 
 1. **Discover** (single LLM call). Computes the Dragonfly source diff
    between `--before` and `--after` (commit subjects + per-file stat,
-   never the raw diff), walks every `.md` under `docs/`, and asks Claude
+   never the raw diff), walks every `.md` under `docs/`, and asks OpenAI
    which pages plausibly need updating and why. The plan is saved to
    `tools/generated/update_plans/plan_<ts>.json`.
 
@@ -308,7 +328,7 @@ releases. Two phases driven by one command:
      they are reviewed against the **whole** current source state, with
      no implicit assumption about which area needs attention.
    - Send the page + source + sibling style + `diff_context` (or null) to
-     Claude with strict rules:
+     OpenAI with strict rules:
        * only assert facts the inputs support;
        * **general-case complexity only**, no edge cases;
        * never invent options or behaviors;
@@ -377,23 +397,6 @@ anything, why a write was skipped. Failed entries also point at the
 saved raw LLM output under `tools/generated/llm_debug/` so the failure
 mode can be inspected without re-running the LLM.
 
-## propose_change_message.py
-
-Reads the working-tree diff (including untracked files via
-`git ls-files --others`) and asks Claude for a conventional-commit title
-and a Markdown PR body. Writes the result to
-`tools/generated/change_messages/<timestamp>.md` and prints it.
-
-The script never runs `git commit` or `gh pr create`. It only proposes
-text — you copy it into your own commit / PR.
-
-```sh
-python tools/docsync/propose_change_message.py
-python tools/docsync/propose_change_message.py --staged
-python tools/docsync/propose_change_message.py --base origin/main
-python tools/docsync/propose_change_message.py --dump-prompt
-```
-
 ## Typical workflow
 
 ```sh
@@ -413,14 +416,11 @@ python tools/docsync/docs_sync.py --before v1.37.0 --after v1.38.0 --discover-on
 python tools/docsync/docs_sync.py --update-only-from \
     tools/generated/update_plans/plan_<ts>.json --after v1.38.0
 
-# 3. Read the failure summaries each script printed and fix anything that
+# 4. Read the failure summaries each script printed and fix anything that
 #    needs human judgement (FAILED list, llm_debug/ for rejected outputs).
 
-# 4. Verify the build.
+# 5. Verify the build.
 yarn build
-
-# 5. Get a commit/PR message proposal.
-python tools/docsync/propose_change_message.py
 ```
 
 ## dfly_facts.py (helper)
