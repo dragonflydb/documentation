@@ -97,7 +97,7 @@
 
 .resultsTable {
   width: 100%;
-  margin: 1.25rem 0 0;
+  margin: 1.25rem 0 2rem;
   font-size: 0.85rem;
   font-family: var(--ifm-font-family-monospace);
   font-variant-numeric: tabular-nums;
