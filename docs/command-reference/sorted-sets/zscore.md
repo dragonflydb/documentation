@@ -3,6 +3,7 @@ description: Learn how to use Redis ZSCORE command to get the score associated w
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # ZSCORE
 
@@ -70,6 +71,29 @@ dragonfly$> ZADD myzset 1.5 "memberA" 3.7 "memberB"
 dragonfly$> ZSCORE myzset "memberB"
 "3.7"
 ```
+
+<!-- benchmark:start -->
+## Benchmark
+
+<Benchmark
+  command="ZSCORE"
+  dragonflyOps={9100000}
+  valkeyOps={910400}
+  redisOps={692700}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="1M keys, 10 preloaded items each, 128B values, uniform key distribution"
+  duration="60s (10s warmup), 1 trial"
+  measuredOn="2026-07-28"
+  harnessPath="benchmarks/ZSCORE/dfly_bench/ZSCORE_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "9.10M ops/s", p50: "0.483 ms", p99: "0.996 ms", p999: "2.325 ms", avgLatency: "0.509 ms" },
+    { engine: "Valkey", throughput: "910.4K ops/s", p50: "5.434 ms", p99: "6.000 ms", p999: "6.902 ms", avgLatency: "5.259 ms" },
+    { engine: "Redis", throughput: "692.7K ops/s", p50: "6.796 ms", p99: "7.992 ms", p999: "13.916 ms", avgLatency: "6.916 ms" },
+  ]}
+/>
+<!-- benchmark:end -->
 
 ## Best Practices
 

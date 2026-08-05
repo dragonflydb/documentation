@@ -14,6 +14,7 @@
     "write-heading-ids": "yarn run docusaurus write-heading-ids",
     "pull-redis-docs": "ts-node ./scripts/pull-redis-docs.ts",
     "generate-compatibility-json": "ts-node ./scripts/generate-compatibility-json.ts",
+    "sync-benchmarks": "ts-node ./scripts/sync-benchmarks.ts",
     "dragonfly-latest-version": "curl -s https://version.dragonflydb.io/v1 | grep -oE '[0-9.]+'"
   },
   "dependencies": {

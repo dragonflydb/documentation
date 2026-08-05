@@ -3,6 +3,7 @@ description: Discover how to use Redis SET command to attach a value to a specif
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # SET
 
@@ -139,6 +140,29 @@ OK
 dragonfly$> TTL mykey
 (integer) 8  # Previous TTL remains unchanged.
 ```
+
+<!-- benchmark:start -->
+## Benchmark
+
+<Benchmark
+  command="SET"
+  dragonflyOps={7780000}
+  valkeyOps={1050000}
+  redisOps={1060000}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, 128B values, uniform key distribution"
+  duration="300s (10s warmup), 1 trial"
+  measuredOn="2026-07-28"
+  harnessPath="benchmarks/SET/dfly_bench/SET_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "7.78M ops/s", p50: "0.483 ms", p99: "3.271 ms", p999: "11.505 ms", avgLatency: "0.600 ms" },
+    { engine: "Valkey", throughput: "1.05M ops/s", p50: "4.461 ms", p99: "11.501 ms", p999: "15.771 ms", avgLatency: "4.541 ms" },
+    { engine: "Redis", throughput: "1.06M ops/s", p50: "3.896 ms", p99: "7.571 ms", p999: "13.354 ms", avgLatency: "4.534 ms" },
+  ]}
+/>
+<!-- benchmark:end -->
 
 ## Best Practices
 

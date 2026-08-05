@@ -3,6 +3,7 @@ description: "Learn how to use Redis DEL command to delete a key."
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # DEL
 
@@ -33,3 +34,26 @@ OK
 dragonfly> DEL key1 key2 key3
 (integer) 2
 ```
+
+<!-- benchmark:start -->
+## Benchmark
+
+<Benchmark
+  command="DEL"
+  dragonflyOps={10250000}
+  valkeyOps={2380000}
+  redisOps={1960000}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, 128B values, uniform key distribution"
+  duration="300s (10s warmup), 1 trial"
+  measuredOn="2026-07-28"
+  harnessPath="benchmarks/DEL/dfly_bench/DEL_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "10.25M ops/s", p50: "0.445 ms", p99: "0.822 ms", p999: "1.131 ms", avgLatency: "0.456 ms" },
+    { engine: "Valkey", throughput: "2.38M ops/s", p50: "1.759 ms", p99: "3.992 ms", p999: "4.461 ms", avgLatency: "2.008 ms" },
+    { engine: "Redis", throughput: "1.96M ops/s", p50: "2.255 ms", p99: "6.612 ms", p999: "7.977 ms", avgLatency: "2.439 ms" },
+  ]}
+/>
+<!-- benchmark:end -->

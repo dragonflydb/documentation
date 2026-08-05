@@ -3,6 +3,7 @@ description: Learn how to use the Redis ZADD command to add members to sorted se
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # ZADD
 
@@ -132,6 +133,29 @@ dragonfly$> ZADD myzset GT CH 20 "player1"
 dragonfly$> ZADD myzset LT CH 20 "player1"
 (integer) 1  # "player1" was updated because 20 is less than 25.
 ```
+
+<!-- benchmark:start -->
+## Benchmark
+
+<Benchmark
+  command="ZADD"
+  dragonflyOps={7220000}
+  valkeyOps={526000}
+  redisOps={448400}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, 128B values, uniform key distribution"
+  duration="300s (10s warmup), 1 trial"
+  measuredOn="2026-07-28"
+  harnessPath="benchmarks/ZADD/dfly_bench/ZADD_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "7.22M ops/s", p50: "0.564 ms", p99: "1.976 ms", p999: "10.717 ms", avgLatency: "0.642 ms" },
+    { engine: "Valkey", throughput: "526.0K ops/s", p50: "8.852 ms", p99: "17.620 ms", p999: "23.609 ms", avgLatency: "9.111 ms" },
+    { engine: "Redis", throughput: "448.4K ops/s", p50: "9.621 ms", p99: "16.999 ms", p999: "26.752 ms", avgLatency: "10.691 ms" },
+  ]}
+/>
+<!-- benchmark:end -->
 
 ## Best Practices
 

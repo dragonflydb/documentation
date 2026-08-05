@@ -3,6 +3,7 @@ description: "Learn Redis EXPIRE command that sets a key's time-to-live in secon
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # EXPIRE
 
@@ -85,6 +86,29 @@ OK
 dragonfly> TTL mykey
 (integer) -1
 ```
+
+<!-- benchmark:start -->
+## Benchmark
+
+<Benchmark
+  command="EXPIRE"
+  dragonflyOps={8510000}
+  valkeyOps={1100000}
+  redisOps={777500}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, 128B values, uniform key distribution"
+  duration="300s (10s warmup), 1 trial"
+  measuredOn="2026-07-29"
+  harnessPath="benchmarks/EXPIRE/dfly_bench/EXPIRE_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "8.51M ops/s", p50: "0.452 ms", p99: "2.705 ms", p999: "9.896 ms", avgLatency: "0.551 ms" },
+    { engine: "Valkey", throughput: "1.10M ops/s", p50: "3.997 ms", p99: "7.949 ms", p999: "11.370 ms", avgLatency: "4.373 ms" },
+    { engine: "Redis", throughput: "777.5K ops/s", p50: "5.777 ms", p99: "13.012 ms", p999: "15.763 ms", avgLatency: "6.162 ms" },
+  ]}
+/>
+<!-- benchmark:end -->
 
 ## Pattern: Navigation Session
 

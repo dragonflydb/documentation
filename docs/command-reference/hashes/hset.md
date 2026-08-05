@@ -3,6 +3,7 @@ description: "Learn how to use Redis HSET command to set the value of a hash fie
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # HSET
 
@@ -46,3 +47,26 @@ dragonfly> HGETALL myhash
 5) "field3"
 6) "World"
 ```
+
+<!-- benchmark:start -->
+## Benchmark
+
+<Benchmark
+  command="HSET"
+  dragonflyOps={7990000}
+  valkeyOps={704000}
+  redisOps={638500}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, 128B values, uniform key distribution"
+  duration="300s (10s warmup), 1 trial"
+  measuredOn="2026-07-29"
+  harnessPath="benchmarks/HSET/dfly_bench/HSET_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "7.99M ops/s", p50: "0.507 ms", p99: "1.985 ms", p999: "7.332 ms", avgLatency: "0.583 ms" },
+    { engine: "Valkey", throughput: "704.0K ops/s", p50: "6.573 ms", p99: "13.470 ms", p999: "17.760 ms", avgLatency: "6.804 ms" },
+    { engine: "Redis", throughput: "638.5K ops/s", p50: "6.839 ms", p99: "11.613 ms", p999: "18.655 ms", avgLatency: "7.503 ms" },
+  ]}
+/>
+<!-- benchmark:end -->

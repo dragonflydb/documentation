@@ -3,6 +3,7 @@ description: Learn the proper use of Redis MSET to set multiple keys to multiple
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # MSET
 
@@ -81,6 +82,29 @@ dragonfly$> MGET key1 key2 key3
 2) "second_value"
 3) "third_value"
 ```
+
+<!-- benchmark:start -->
+## Benchmark
+
+<Benchmark
+  command="MSET"
+  dragonflyOps={7420000}
+  valkeyOps={1240000}
+  redisOps={932900}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, 128B values, uniform key distribution"
+  duration="300s (10s warmup), 1 trial"
+  measuredOn="2026-07-28"
+  harnessPath="benchmarks/MSET/dfly_bench/MSET_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "7.42M ops/s", p50: "0.519 ms", p99: "3.193 ms", p999: "10.310 ms", avgLatency: "0.631 ms" },
+    { engine: "Valkey", throughput: "1.24M ops/s", p50: "3.705 ms", p99: "11.262 ms", p999: "15.579 ms", avgLatency: "3.843 ms" },
+    { engine: "Redis", throughput: "932.9K ops/s", p50: "4.390 ms", p99: "8.630 ms", p999: "15.157 ms", avgLatency: "5.132 ms" },
+  ]}
+/>
+<!-- benchmark:end -->
 
 ## Best Practices
 

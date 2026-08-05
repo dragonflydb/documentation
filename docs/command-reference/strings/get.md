@@ -3,6 +3,7 @@ description: Discover how to use Redis GET for fetching the value of a defined k
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # GET
 
@@ -94,6 +95,29 @@ OK
 dragonfly$> GET binary_data
 "\x00\x01\x02\x03"
 ```
+
+<!-- benchmark:start -->
+## Benchmark
+
+<Benchmark
+  command="GET"
+  dragonflyOps={9880000}
+  valkeyOps={1610000}
+  redisOps={1480000}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, 128B values, uniform key distribution"
+  duration="60s (10s warmup), 1 trial"
+  measuredOn="2026-07-28"
+  harnessPath="benchmarks/GET/dfly_bench/GET_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "9.88M ops/s", p50: "0.457 ms", p99: "0.785 ms", p999: "1.123 ms", avgLatency: "0.463 ms" },
+    { engine: "Valkey", throughput: "1.61M ops/s", p50: "2.544 ms", p99: "7.885 ms", p999: "8.791 ms", avgLatency: "2.959 ms" },
+    { engine: "Redis", throughput: "1.48M ops/s", p50: "3.250 ms", p99: "6.076 ms", p999: "6.956 ms", avgLatency: "3.218 ms" },
+  ]}
+/>
+<!-- benchmark:end -->
 
 ## Best Practices
 

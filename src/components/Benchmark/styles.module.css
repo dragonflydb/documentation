@@ -1,0 +1,145 @@
+.benchmark {
+  margin: 1.5rem 0 2rem;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 1rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr) 170px;
+  align-items: center;
+  gap: 16px;
+}
+
+.name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.winnerName {
+  color: var(--ifm-color-primary);
+}
+
+.track {
+  height: 22px;
+  border-radius: 5px;
+  background: var(--ifm-color-emphasis-200);
+  overflow: hidden;
+}
+
+.bar {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+  background: var(--ifm-color-emphasis-400);
+}
+
+.winnerBar {
+  background: var(--brand-gradient);
+}
+
+.value {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 8px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.relative {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-500);
+}
+
+.axis {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr) 170px;
+  gap: 16px;
+  margin: 12px 0 0;
+}
+
+.axisTicks {
+  display: flex;
+  justify-content: space-between;
+  height: 5px;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.axisTicks span {
+  width: 1px;
+  height: 4px;
+  background: var(--ifm-color-emphasis-300);
+}
+
+.axisLabels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.7rem;
+  color: var(--ifm-color-emphasis-500);
+}
+
+.axisCaption {
+  font-size: 0.72rem;
+  color: var(--ifm-color-emphasis-500);
+  text-align: center;
+  margin-top: 4px;
+}
+
+.resultsTable {
+  width: 100%;
+  margin: 1.25rem 0 2rem;
+  font-size: 0.85rem;
+  font-family: var(--ifm-font-family-monospace);
+  font-variant-numeric: tabular-nums;
+}
+
+.resultsTable th,
+.resultsTable td {
+  border: 1px solid var(--ifm-table-border-color);
+  padding: 0.4rem 0.75rem;
+  text-align: right;
+}
+
+.resultsTable th:first-child,
+.resultsTable td:first-child {
+  text-align: left;
+  font-family: var(--ifm-font-family-base);
+}
+
+.methodologyTable {
+  width: 100%;
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+}
+
+.methodologyTable tr {
+  background: none;
+}
+
+.methodologyTable td {
+  border: 1px solid var(--ifm-table-border-color);
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+}
+
+.methodologyLabel {
+  width: 168px;
+  color: var(--ifm-color-emphasis-600);
+  white-space: nowrap;
+}
+
+.footnote {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-700);
+  margin: 0.75rem 0 0;
+}

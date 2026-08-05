@@ -3,6 +3,7 @@ description: Learn how to use Redis INCR command for incrementing the integer va
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
+import Benchmark from '@site/src/components/Benchmark';
 
 # INCR
 
@@ -78,6 +79,29 @@ dragonfly$> INCR request_count
 dragonfly$> INCR request_count
 (integer) 102
 ```
+
+<!-- benchmark:start -->
+## Benchmark
+
+<Benchmark
+  command="INCR"
+  dragonflyOps={10780000}
+  valkeyOps={1920000}
+  redisOps={1560000}
+  hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
+  tool="dfly_bench"
+  client="32 threads, 5 connections, pipeline 30"
+  dataset="100M keys, uniform key distribution"
+  duration="300s (10s warmup), 1 trial"
+  measuredOn="2026-07-29"
+  harnessPath="benchmarks/INCR/dfly_bench/INCR_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "10.78M ops/s", p50: "0.413 ms", p99: "0.831 ms", p999: "1.188 ms", avgLatency: "0.433 ms" },
+    { engine: "Valkey", throughput: "1.92M ops/s", p50: "2.317 ms", p99: "7.349 ms", p999: "10.855 ms", avgLatency: "2.495 ms" },
+    { engine: "Redis", throughput: "1.56M ops/s", p50: "2.803 ms", p99: "5.972 ms", p999: "9.891 ms", avgLatency: "3.074 ms" },
+  ]}
+/>
+<!-- benchmark:end -->
 
 ## Best Practices
 
