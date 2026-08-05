@@ -47,6 +47,7 @@ dragonfly> LRANGE mylist 0 -1
 2) "two"
 ```
 
+<!-- benchmark:start -->
 ## Benchmark
 
 <Benchmark
@@ -57,7 +58,7 @@ dragonfly> LRANGE mylist 0 -1
   hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
   tool="dfly_bench"
   client="32 threads, 5 connections, pipeline 30"
-  dataset="1M lists, 100 items each, 128B values, uniform key distribution"
+  dataset="1M keys, 100 preloaded items each, 128B values, uniform key distribution"
   duration="300s (10s warmup), 1 trial"
   measuredOn="2026-07-29"
   harnessPath="benchmarks/RPOP/dfly_bench/RPOP_reproduce.md"
@@ -67,3 +68,4 @@ dragonfly> LRANGE mylist 0 -1
     { engine: "Redis", throughput: "1.49M ops/s", p50: "1.550 ms", p99: "11.361 ms", p999: "11.985 ms", avgLatency: "3.217 ms" },
   ]}
 />
+<!-- benchmark:end -->

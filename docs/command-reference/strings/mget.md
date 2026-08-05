@@ -100,6 +100,7 @@ dragonfly$> MGET key_expiring key_persistent
 2) "persistent_value"
 ```
 
+<!-- benchmark:start -->
 ## Benchmark
 
 <Benchmark
@@ -112,7 +113,7 @@ dragonfly$> MGET key_expiring key_persistent
   client="32 threads, 5 connections, pipeline 30"
   dataset="100M keys, 128B values, uniform key distribution"
   duration="60s (10s warmup), 1 trial"
-  measuredOn="2026-07-28"
+  measuredOn="2026-07-29"
   harnessPath="benchmarks/MGET/dfly_bench/MGET_reproduce.md"
   results={[
     { engine: "Dragonfly", throughput: "8.09M ops/s", p50: "0.549 ms", p99: "1.114 ms", p999: "1.432 ms", avgLatency: "0.570 ms" },
@@ -120,6 +121,7 @@ dragonfly$> MGET key_expiring key_persistent
     { engine: "Redis", throughput: "1.37M ops/s", p50: "3.408 ms", p99: "6.658 ms", p999: "7.939 ms", avgLatency: "3.478 ms" },
   ]}
 />
+<!-- benchmark:end -->
 
 ## Best Practices
 

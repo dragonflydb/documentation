@@ -44,6 +44,7 @@ dragonfly> LRANGE mylist 0 -1
 2) "world"
 ```
 
+<!-- benchmark:start -->
 ## Benchmark
 
 <Benchmark
@@ -64,3 +65,4 @@ dragonfly> LRANGE mylist 0 -1
     { engine: "Redis", throughput: "698.8K ops/s", p50: "6.573 ms", p99: "11.298 ms", p999: "17.824 ms", avgLatency: "6.856 ms" },
   ]}
 />
+<!-- benchmark:end -->

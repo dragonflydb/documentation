@@ -141,6 +141,7 @@ dragonfly$> TTL mykey
 (integer) 8  # Previous TTL remains unchanged.
 ```
 
+<!-- benchmark:start -->
 ## Benchmark
 
 <Benchmark
@@ -161,6 +162,7 @@ dragonfly$> TTL mykey
     { engine: "Redis", throughput: "1.06M ops/s", p50: "3.896 ms", p99: "7.571 ms", p999: "13.354 ms", avgLatency: "4.534 ms" },
   ]}
 />
+<!-- benchmark:end -->
 
 ## Best Practices
 

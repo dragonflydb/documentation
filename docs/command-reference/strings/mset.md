@@ -83,6 +83,7 @@ dragonfly$> MGET key1 key2 key3
 3) "third_value"
 ```
 
+<!-- benchmark:start -->
 ## Benchmark
 
 <Benchmark
@@ -103,6 +104,7 @@ dragonfly$> MGET key1 key2 key3
     { engine: "Redis", throughput: "932.9K ops/s", p50: "4.390 ms", p99: "8.630 ms", p999: "15.157 ms", avgLatency: "5.132 ms" },
   ]}
 />
+<!-- benchmark:end -->
 
 ## Best Practices
 

@@ -96,6 +96,7 @@ dragonfly$> GET binary_data
 "\x00\x01\x02\x03"
 ```
 
+<!-- benchmark:start -->
 ## Benchmark
 
 <Benchmark
@@ -116,6 +117,7 @@ dragonfly$> GET binary_data
     { engine: "Redis", throughput: "1.48M ops/s", p50: "3.250 ms", p99: "6.076 ms", p999: "6.956 ms", avgLatency: "3.218 ms" },
   ]}
 />
+<!-- benchmark:end -->
 
 ## Best Practices
 

@@ -39,6 +39,7 @@ dragonfly> TTL mykey
 (integer) 10
 ```
 
+<!-- benchmark:start -->
 ## Benchmark
 
 <Benchmark
@@ -59,3 +60,4 @@ dragonfly> TTL mykey
     { engine: "Redis", throughput: "1.94M ops/s", p50: "2.325 ms", p99: "2.980 ms", p999: "3.000 ms", avgLatency: "2.462 ms" },
   ]}
 />
+<!-- benchmark:end -->

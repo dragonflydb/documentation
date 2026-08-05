@@ -48,6 +48,7 @@ dragonfly> HGETALL myhash
 6) "World"
 ```
 
+<!-- benchmark:start -->
 ## Benchmark
 
 <Benchmark
@@ -60,7 +61,7 @@ dragonfly> HGETALL myhash
   client="32 threads, 5 connections, pipeline 30"
   dataset="100M keys, 128B values, uniform key distribution"
   duration="300s (10s warmup), 1 trial"
-  measuredOn="2026-07-28"
+  measuredOn="2026-07-29"
   harnessPath="benchmarks/HSET/dfly_bench/HSET_reproduce.md"
   results={[
     { engine: "Dragonfly", throughput: "7.99M ops/s", p50: "0.507 ms", p99: "1.985 ms", p999: "7.332 ms", avgLatency: "0.583 ms" },
@@ -68,3 +69,4 @@ dragonfly> HGETALL myhash
     { engine: "Redis", throughput: "638.5K ops/s", p50: "6.839 ms", p99: "11.613 ms", p999: "18.655 ms", avgLatency: "7.503 ms" },
   ]}
 />
+<!-- benchmark:end -->

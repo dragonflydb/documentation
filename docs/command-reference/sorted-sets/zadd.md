@@ -134,6 +134,7 @@ dragonfly$> ZADD myzset LT CH 20 "player1"
 (integer) 1  # "player1" was updated because 20 is less than 25.
 ```
 
+<!-- benchmark:start -->
 ## Benchmark
 
 <Benchmark
@@ -154,6 +155,7 @@ dragonfly$> ZADD myzset LT CH 20 "player1"
     { engine: "Redis", throughput: "448.4K ops/s", p50: "9.621 ms", p99: "16.999 ms", p999: "26.752 ms", avgLatency: "10.691 ms" },
   ]}
 />
+<!-- benchmark:end -->
 
 ## Best Practices
 

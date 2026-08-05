@@ -35,6 +35,7 @@ dragonfly> DEL key1 key2 key3
 (integer) 2
 ```
 
+<!-- benchmark:start -->
 ## Benchmark
 
 <Benchmark
@@ -55,3 +56,4 @@ dragonfly> DEL key1 key2 key3
     { engine: "Redis", throughput: "1.96M ops/s", p50: "2.255 ms", p99: "6.612 ms", p999: "7.977 ms", avgLatency: "2.439 ms" },
   ]}
 />
+<!-- benchmark:end -->

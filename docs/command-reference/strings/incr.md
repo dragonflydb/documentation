@@ -80,6 +80,7 @@ dragonfly$> INCR request_count
 (integer) 102
 ```
 
+<!-- benchmark:start -->
 ## Benchmark
 
 <Benchmark
@@ -100,6 +101,7 @@ dragonfly$> INCR request_count
     { engine: "Redis", throughput: "1.56M ops/s", p50: "2.803 ms", p99: "5.972 ms", p999: "9.891 ms", avgLatency: "3.074 ms" },
   ]}
 />
+<!-- benchmark:end -->
 
 ## Best Practices
 

@@ -72,6 +72,7 @@ dragonfly$> ZSCORE myzset "memberB"
 "3.7"
 ```
 
+<!-- benchmark:start -->
 ## Benchmark
 
 <Benchmark
@@ -82,7 +83,7 @@ dragonfly$> ZSCORE myzset "memberB"
   hardware="Server: m7g.8xlarge (arm64) · Client: c6gn.8xlarge (arm64)"
   tool="dfly_bench"
   client="32 threads, 5 connections, pipeline 30"
-  dataset="1M sorted-set members, 128B values, uniform key distribution"
+  dataset="1M keys, 10 preloaded items each, 128B values, uniform key distribution"
   duration="60s (10s warmup), 1 trial"
   measuredOn="2026-07-28"
   harnessPath="benchmarks/ZSCORE/dfly_bench/ZSCORE_reproduce.md"
@@ -92,6 +93,7 @@ dragonfly$> ZSCORE myzset "memberB"
     { engine: "Redis", throughput: "692.7K ops/s", p50: "6.796 ms", p99: "7.992 ms", p999: "13.916 ms", avgLatency: "6.916 ms" },
   ]}
 />
+<!-- benchmark:end -->
 
 ## Best Practices
 
