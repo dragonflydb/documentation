@@ -94,6 +94,11 @@ dragonfly$> INCR request_count
   duration="300s (10s warmup), 1 trial"
   measuredOn="2026-07-29"
   harnessPath="benchmarks/INCR/dfly_bench/INCR_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "10.78M ops/s", p50: "0.413 ms", p99: "0.831 ms", p999: "1.188 ms", avgLatency: "0.433 ms" },
+    { engine: "Valkey", throughput: "1.92M ops/s", p50: "2.317 ms", p99: "7.349 ms", p999: "10.855 ms", avgLatency: "2.495 ms" },
+    { engine: "Redis", throughput: "1.56M ops/s", p50: "2.803 ms", p99: "5.972 ms", p999: "9.891 ms", avgLatency: "3.074 ms" },
+  ]}
 />
 
 ## Best Practices

@@ -97,6 +97,11 @@ dragonfly$> MGET key1 key2 key3
   duration="300s (10s warmup), 1 trial"
   measuredOn="2026-07-28"
   harnessPath="benchmarks/MSET/dfly_bench/MSET_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "7.42M ops/s", p50: "0.519 ms", p99: "3.193 ms", p999: "10.310 ms", avgLatency: "0.631 ms" },
+    { engine: "Valkey", throughput: "1.24M ops/s", p50: "3.705 ms", p99: "11.262 ms", p999: "15.579 ms", avgLatency: "3.843 ms" },
+    { engine: "Redis", throughput: "932.9K ops/s", p50: "4.390 ms", p99: "8.630 ms", p999: "15.157 ms", avgLatency: "5.132 ms" },
+  ]}
 />
 
 ## Best Practices

@@ -110,6 +110,11 @@ dragonfly$> GET binary_data
   duration="60s (10s warmup), 1 trial"
   measuredOn="2026-07-28"
   harnessPath="benchmarks/GET/dfly_bench/GET_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "9.88M ops/s", p50: "0.457 ms", p99: "0.785 ms", p999: "1.123 ms", avgLatency: "0.463 ms" },
+    { engine: "Valkey", throughput: "1.61M ops/s", p50: "2.544 ms", p99: "7.885 ms", p999: "8.791 ms", avgLatency: "2.959 ms" },
+    { engine: "Redis", throughput: "1.48M ops/s", p50: "3.250 ms", p99: "6.076 ms", p999: "6.956 ms", avgLatency: "3.218 ms" },
+  ]}
 />
 
 ## Best Practices

@@ -23,6 +23,15 @@ interface BenchmarkProps {
   harnessPath: string;
   /** "memtier_benchmark" or "dfly_bench" — used in the closing methodology sentence. */
   tool: string;
+  /** Verbatim rows from the harness's "Expected results" table. */
+  results: {
+    engine: string;
+    throughput: string;
+    p50: string;
+    p99: string;
+    p999: string;
+    avgLatency: string;
+  }[];
 }
 
 function formatOps(n: number): string {
@@ -46,6 +55,7 @@ export default function Benchmark({
   measuredOn,
   harnessPath,
   tool,
+  results,
 }: BenchmarkProps): JSX.Element {
   const engines = [
     { name: "Dragonfly", ops: dragonflyOps, isWinner: true },
@@ -129,6 +139,37 @@ export default function Benchmark({
         </div>
         <span />
       </div>
+
+      <table className={styles.resultsTable}>
+        <thead>
+          <tr>
+            <th>Engine</th>
+            <th>Throughput</th>
+            <th>p50</th>
+            <th>p99</th>
+            <th>p99.9</th>
+            <th>Avg Latency</th>
+          </tr>
+        </thead>
+        <tbody>
+          {results.map((row) => (
+            <tr key={row.engine}>
+              <td
+                className={clsx({
+                  [styles.winnerName]: row.engine === "Dragonfly",
+                })}
+              >
+                {row.engine}
+              </td>
+              <td>{row.throughput}</td>
+              <td>{row.p50}</td>
+              <td>{row.p99}</td>
+              <td>{row.p999}</td>
+              <td>{row.avgLatency}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       <h3>Methodology</h3>
       <table className={styles.methodologyTable}>

@@ -61,4 +61,9 @@ dragonfly> LRANGE mylist 0 -1
   duration="300s (10s warmup), 1 trial"
   measuredOn="2026-07-29"
   harnessPath="benchmarks/LPOP/dfly_bench/LPOP_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "10.25M ops/s", p50: "0.432 ms", p99: "0.871 ms", p999: "3.507 ms", avgLatency: "0.456 ms" },
+    { engine: "Valkey", throughput: "1.69M ops/s", p50: "1.535 ms", p99: "10.042 ms", p999: "11.804 ms", avgLatency: "2.822 ms" },
+    { engine: "Redis", throughput: "1.33M ops/s", p50: "1.562 ms", p99: "11.894 ms", p999: "13.783 ms", avgLatency: "3.588 ms" },
+  ]}
 />

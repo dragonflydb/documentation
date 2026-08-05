@@ -49,4 +49,9 @@ dragonfly> HGET myhash field2
   duration="60s (10s warmup), 1 trial"
   measuredOn="2026-07-28"
   harnessPath="benchmarks/HGET/dfly_bench/HGET_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "9.31M ops/s", p50: "0.468 ms", p99: "0.875 ms", p999: "1.163 ms", avgLatency: "0.489 ms" },
+    { engine: "Valkey", throughput: "791.8K ops/s", p50: "6.483 ms", p99: "6.990 ms", p999: "6.999 ms", avgLatency: "6.044 ms" },
+    { engine: "Redis", throughput: "744.4K ops/s", p50: "6.522 ms", p99: "9.979 ms", p999: "13.329 ms", avgLatency: "6.429 ms" },
+  ]}
 />

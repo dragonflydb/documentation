@@ -155,6 +155,11 @@ dragonfly$> TTL mykey
   duration="300s (10s warmup), 1 trial"
   measuredOn="2026-07-28"
   harnessPath="benchmarks/SET/dfly_bench/SET_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "7.78M ops/s", p50: "0.483 ms", p99: "3.271 ms", p999: "11.505 ms", avgLatency: "0.600 ms" },
+    { engine: "Valkey", throughput: "1.05M ops/s", p50: "4.461 ms", p99: "11.501 ms", p999: "15.771 ms", avgLatency: "4.541 ms" },
+    { engine: "Redis", throughput: "1.06M ops/s", p50: "3.896 ms", p99: "7.571 ms", p999: "13.354 ms", avgLatency: "4.534 ms" },
+  ]}
 />
 
 ## Best Practices

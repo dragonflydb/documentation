@@ -86,6 +86,11 @@ dragonfly$> ZSCORE myzset "memberB"
   duration="60s (10s warmup), 1 trial"
   measuredOn="2026-07-28"
   harnessPath="benchmarks/ZSCORE/dfly_bench/ZSCORE_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "9.10M ops/s", p50: "0.483 ms", p99: "0.996 ms", p999: "2.325 ms", avgLatency: "0.509 ms" },
+    { engine: "Valkey", throughput: "910.4K ops/s", p50: "5.434 ms", p99: "6.000 ms", p999: "6.902 ms", avgLatency: "5.259 ms" },
+    { engine: "Redis", throughput: "692.7K ops/s", p50: "6.796 ms", p99: "7.992 ms", p999: "13.916 ms", avgLatency: "6.916 ms" },
+  ]}
 />
 
 ## Best Practices

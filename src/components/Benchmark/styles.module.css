@@ -95,6 +95,27 @@
   margin-top: 4px;
 }
 
+.resultsTable {
+  width: 100%;
+  margin: 1.25rem 0 0;
+  font-size: 0.85rem;
+  font-family: var(--ifm-font-family-monospace);
+  font-variant-numeric: tabular-nums;
+}
+
+.resultsTable th,
+.resultsTable td {
+  border: 1px solid var(--ifm-table-border-color);
+  padding: 0.4rem 0.75rem;
+  text-align: right;
+}
+
+.resultsTable th:first-child,
+.resultsTable td:first-child {
+  text-align: left;
+  font-family: var(--ifm-font-family-base);
+}
+
 .methodologyTable {
   width: 100%;
   margin: 0.75rem 0 0;

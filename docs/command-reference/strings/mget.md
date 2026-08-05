@@ -114,6 +114,11 @@ dragonfly$> MGET key_expiring key_persistent
   duration="60s (10s warmup), 1 trial"
   measuredOn="2026-07-28"
   harnessPath="benchmarks/MGET/dfly_bench/MGET_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "8.09M ops/s", p50: "0.549 ms", p99: "1.114 ms", p999: "1.432 ms", avgLatency: "0.570 ms" },
+    { engine: "Valkey", throughput: "1.49M ops/s", p50: "2.754 ms", p99: "8.701 ms", p999: "9.487 ms", avgLatency: "3.211 ms" },
+    { engine: "Redis", throughput: "1.37M ops/s", p50: "3.408 ms", p99: "6.658 ms", p999: "7.939 ms", avgLatency: "3.478 ms" },
+  ]}
 />
 
 ## Best Practices

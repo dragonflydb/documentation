@@ -53,4 +53,9 @@ dragonfly> TTL mykey
   duration="60s (10s warmup), 1 trial"
   measuredOn="2026-07-29"
   harnessPath="benchmarks/TTL/dfly_bench/TTL_reproduce.md"
+  results={[
+    { engine: "Dragonfly", throughput: "10.63M ops/s", p50: "0.411 ms", p99: "0.851 ms", p999: "1.076 ms", avgLatency: "0.439 ms" },
+    { engine: "Valkey", throughput: "2.33M ops/s", p50: "2.225 ms", p99: "2.495 ms", p999: "2.499 ms", avgLatency: "2.049 ms" },
+    { engine: "Redis", throughput: "1.94M ops/s", p50: "2.325 ms", p99: "2.980 ms", p999: "3.000 ms", avgLatency: "2.462 ms" },
+  ]}
 />
