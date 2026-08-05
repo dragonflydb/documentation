@@ -13,7 +13,6 @@ import CloudBadge from '@site/src/components/CloudBadge/CloudBadge'
 <PageTitle title="Data Stores | Dragonfly Cloud" />
 
 ## Overview
-B
 A [Dragonfly Cloud](https://dragonflydb.cloud/) data store represents an endpoint for storing and retrieving in-memory
 data, which is compatible with Redis (RESP2 and RESP3) and Memcached protocols. The endpoint is a fully managed
 service that is backed by one or more [Dragonfly](https://github.com/dragonflydb/dragonfly) server instances.
