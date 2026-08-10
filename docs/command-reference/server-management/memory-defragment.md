@@ -170,4 +170,4 @@ The cumulative effect of both the background task and this command is tracked by
 
 ## See also
 
-[`MEMORY`](./memory.md) | [`MEMORY MALLOC-STATS`](./memory-malloc-stats.md) | [`MEMORY HELP`](./memory-help.md) | [Server configuration flags](../../managing-dragonfly/flags.md)
+[`MEMORY`](./memory.md) | [`MEMORY DECOMMIT`](./memory-decommit.md) | [`MEMORY ARENA`](./memory-arena.md) | [`MEMORY MALLOC-STATS`](./memory-malloc-stats.md) | [`MEMORY HELP`](./memory-help.md) | [Server configuration flags](../../managing-dragonfly/flags.md)
