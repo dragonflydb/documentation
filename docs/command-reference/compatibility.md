@@ -186,11 +186,15 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">LATENCY LATEST</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">LATENCY RESET</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">LOLWUT</span> | <span class="support unsupported">Unsupported</span> |  |
+|  | <span class="command">MEMORY ARENA</span> | <span class="support dragonfly">Dragonfly-specific</span> |  |
+|  | <span class="command">MEMORY DECOMMIT</span> | <span class="support dragonfly">Dragonfly-specific</span> |  |
+|  | <span class="command">MEMORY DEFRAGMENT</span> | <span class="support dragonfly">Dragonfly-specific</span> |  |
 |  | <span class="command">MEMORY DOCTOR</span> | <span class="support unsupported">Unsupported</span> |  |
+|  | <span class="command">MEMORY HELP</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">MEMORY MALLOC-STATS</span> | <span class="support supported">Fully supported</span> |  |
-|  | <span class="command">MEMORY PURGE</span> | <span class="support unsupported">Unsupported</span> |  |
-|  | <span class="command">MEMORY STATS</span> | <span class="support supported">Fully supported</span> |  |
-|  | <span class="command">MEMORY USAGE</span> | <span class="support partial">Partially supported</span> | Missing: SAMPLES. |
+|  | <span class="command">MEMORY PURGE</span> | <span class="support unsupported">Unsupported</span> | Use MEMORY DECOMMIT instead. |
+|  | <span class="command">MEMORY STATS</span> | <span class="support partial">Partially supported</span> | Reports connection and replication memory only, not the full Redis field set. |
+|  | <span class="command">MEMORY USAGE</span> | <span class="support partial">Partially supported</span> | Missing: SAMPLES, which is accepted but ignored. |
 |  | <span class="command">MODULE LIST</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">MODULE LOAD</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">MODULE LOADEX</span> | <span class="support unsupported">Unsupported</span> |  |
