@@ -193,7 +193,7 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">MEMORY HELP</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">MEMORY MALLOC-STATS</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">MEMORY PURGE</span> | <span class="support unsupported">Unsupported</span> | Use MEMORY DECOMMIT instead. |
-|  | <span class="command">MEMORY STATS</span> | <span class="support partial">Partially supported</span> | Reports connection and replication memory only, not the full Redis field set. |
+|  | <span class="command">MEMORY STATS</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">MEMORY USAGE</span> | <span class="support partial">Partially supported</span> | Missing: SAMPLES, which is accepted but ignored. |
 |  | <span class="command">MODULE LIST</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">MODULE LOAD</span> | <span class="support unsupported">Unsupported</span> |  |
