@@ -1,5 +1,5 @@
 ---
-description:  Learn how to use Redis MEMORY command to fetch information on memory.
+description: Learn how to use Redis MEMORY command to fetch information on memory.
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -18,4 +18,12 @@ import PageTitle from '@site/src/components/PageTitle';
 
 This is a container command for memory introspection and management commands.
 
-<!-- To see the list of available commands you can call `MEMORY HELP`. -->
+## Subcommands
+
+- [`MEMORY DECOMMIT`](./memory-decommit.md): Return freed memory to the operating system, or
+  flush the tiered-storage cool queue.
+- [`MEMORY DEFRAGMENT`](./memory-defragment.md): Move allocations out of sparsely used pages.
+- [`MEMORY HELP`](./memory-help.md): List available `MEMORY` subcommands.
+- [`MEMORY MALLOC-STATS`](./memory-malloc-stats.md): Return allocator statistics.
+- [`MEMORY STATS`](./memory-stats.md): Return Dragonfly memory statistics.
+- [`MEMORY USAGE`](./memory-usage.md): Return the memory used by a key.
