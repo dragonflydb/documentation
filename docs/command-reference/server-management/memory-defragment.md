@@ -31,16 +31,12 @@ Dragonfly already runs this as a background task, gated by the `--mem_defrag_thr
 `MEMORY DEFRAGMENT` triggers the same relocation logic immediately, without those gating checks,
 and reports the page statistics it collected along the way.
 
-This command moves the stored values. The hash table that holds the keys is made of large
-allocations of its own, which it never moves; use
-[`MEMORY DEFRAGMENT-SEGMENTS`](./memory-defragment-segments.md) for those.
-
 ## Threshold
 
-The optional `threshold` is a ratio greater than 0 and at most 1: a page is a candidate for
-relocation when the ratio of its used blocks to its capacity is below the threshold. A lower value
-moves objects only out of very sparse pages, while a higher value is more aggressive and relocates
-objects out of pages that are already reasonably well utilized.
+The optional `threshold` is a ratio between 0 and 1: a page is a candidate for relocation when the
+ratio of its used blocks to its capacity is below the threshold. A lower value moves objects only
+out of very sparse pages, while a higher value is more aggressive and relocates objects out of
+pages that are already reasonably well utilized.
 
 When `threshold` is omitted, the value of the `--mem_defrag_page_utilization_threshold` flag is
 used, which defaults to `0.8`. The threshold in effect for the invocation is echoed back as a
@@ -82,7 +78,7 @@ The per-shard section is useful for tuning the `threshold` argument: if most pag
 the current threshold, raising it makes the next pass reclaim more memory.
 
 [Error reply](https://valkey.io/topics/protocol/#simple-errors): if `threshold` is not a valid
-floating point number, is outside the accepted range, or if an extra argument is supplied.
+floating point number.
 
 ## Examples
 
@@ -166,12 +162,6 @@ Objects skipped (do not support defragmentation): 0
 
 dragonfly> MEMORY DEFRAGMENT abc
 (error) ERR value is not a valid float
-
-dragonfly> MEMORY DEFRAGMENT 2
-(error) ERR Threshold must be between 0 and 1
-
-dragonfly> MEMORY DEFRAGMENT 0.5 xyz
-(error) ERR syntax error
 ```
 
 The cumulative effect of both the background task and this command is tracked by the
@@ -180,4 +170,4 @@ The cumulative effect of both the background task and this command is tracked by
 
 ## See also
 
-[`MEMORY`](./memory.md) | [`MEMORY DEFRAGMENT-SEGMENTS`](./memory-defragment-segments.md) | [`MEMORY DECOMMIT`](./memory-decommit.md) | [`MEMORY ARENA`](./memory-arena.md) | [`MEMORY MALLOC-STATS`](./memory-malloc-stats.md) | [`MEMORY HELP`](./memory-help.md) | [Server configuration flags](../../managing-dragonfly/flags.md)
+[`MEMORY`](./memory.md) | [`MEMORY DECOMMIT`](./memory-decommit.md) | [`MEMORY ARENA`](./memory-arena.md) | [`MEMORY MALLOC-STATS`](./memory-malloc-stats.md) | [`MEMORY HELP`](./memory-help.md) | [Server configuration flags](../../managing-dragonfly/flags.md)
