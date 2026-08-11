@@ -189,6 +189,7 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">MEMORY ARENA</span> | <span class="support dragonfly">Dragonfly-specific</span> |  |
 |  | <span class="command">MEMORY DECOMMIT</span> | <span class="support dragonfly">Dragonfly-specific</span> |  |
 |  | <span class="command">MEMORY DEFRAGMENT</span> | <span class="support dragonfly">Dragonfly-specific</span> |  |
+|  | <span class="command">MEMORY DEFRAGMENT-SEGMENTS</span> | <span class="support dragonfly">Dragonfly-specific</span> |  |
 |  | <span class="command">MEMORY DOCTOR</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">MEMORY HELP</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">MEMORY MALLOC-STATS</span> | <span class="support supported">Fully supported</span> |  |
