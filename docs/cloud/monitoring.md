@@ -14,7 +14,7 @@ import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 Dragonfly Cloud provides observability through the following monitoring features:
 
-- A readily available [console dashboard](#console-dashboard).
+- A readily available built-in [console dashboard](#console-dashboard).
 - A [Prometheus-compatible metrics endpoint](#prometheus-compatible-metrics-endpoint) that you can scrape and integrate with most monitoring and alerting solutions like Datadog and Grafana.
 
 If you have not yet created a Dragonfly Cloud data store, please refer to the [getting started](getting-started.md) guide.
