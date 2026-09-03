@@ -1,5 +1,5 @@
 ---
-description: "Monitor a Dragonfly Cloud data store with the built-in Grafana dashboard and Prometheus-compatible metrics endpoint."
+description: "Monitor a Dragonfly Cloud data store with the built-in dashboard and Prometheus-compatible metrics endpoint."
 sidebar_position: 7
 ---
 
@@ -14,16 +14,14 @@ import CloudBadge from'@site/src/components/CloudBadge/CloudBadge'
 
 Dragonfly Cloud provides observability through the following monitoring features:
 
-- A readily available Grafana-based [public dashboard](#public-dashboard).
+- A readily available [console dashboard](#console-dashboard).
 - A [Prometheus-compatible metrics endpoint](#prometheus-compatible-metrics-endpoint) that you can scrape and integrate with most monitoring and alerting solutions like Datadog and Grafana.
 
 If you have not yet created a Dragonfly Cloud data store, please refer to the [getting started](getting-started.md) guide.
 
-## Public Dashboard
+## Console Dashboard
 
-- To open a data store's public dashboard, click the dashboard icon (<svg style={{marginBottom: "-3px", marginLeft: "3px"}} xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white"><path d="M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z"/></svg>) in the relevant data store row.  
-- A Grafana-based dashboard will open in a new tab.
-- You can also find our public Grafana dashboard [here](https://grafana.com/grafana/dashboards/25167-dragonfly-cloud/).
+- To open a data store's dashboard, click the dashboard icon (<svg style={{marginBottom: "-3px", marginLeft: "3px"}} xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white"><path d="M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z"/></svg>) in the relevant data store row.  
 
 ## Prometheus Compatible Metrics Endpoint
 
@@ -45,6 +43,8 @@ In order to access the metrics endpoint, you must first acquire an API key:
 - The metrics endpoint is available for scraping at `https://api.dragonflydb.cloud/v1/metrics`.
 - Configure your monitoring system with the metrics endpoint and your API key to start monitoring your data store.
 - The API key should be passed in the `Authorization` header as a bearer token like so:
+
+You may use our published [Grafana dasbhoard template](https://grafana.com/grafana/dashboards/25167-dragonfly-cloud/).
 
 ```bash
 # Replace with your API key.
