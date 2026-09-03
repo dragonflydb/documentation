@@ -1,5 +1,5 @@
 ---
-description: "Monitor a Dragonfly Cloud data store with the built-in dashboard and Prometheus-compatible metrics endpoint."
+description: "Monitor a Dragonfly Cloud data store with the built-in console dashboard and Prometheus-compatible metrics endpoint."
 sidebar_position: 7
 ---
 
