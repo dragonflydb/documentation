@@ -52,4 +52,4 @@ $> KEY="dragonflydb_eyJpI...fQ=="
 $> curl https://api.dragonflydb.cloud/v1/metrics -H "Authorization: Bearer $KEY"
 ```
 
-You may use our published [Grafana dasbhoard template](https://grafana.com/grafana/dashboards/25167-dragonfly-cloud/).
+You may use our published [Grafana dashboard template](https://grafana.com/grafana/dashboards/25167-dragonfly-cloud/).
