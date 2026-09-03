@@ -68,6 +68,7 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">RENAME</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">RENAMENX</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">RESTORE</span> | <span class="support supported">Fully supported</span> |  |
+|  | <span class="command">RM</span> | <span class="support dragonfly">Dragonfly-specific</span> |  |
 |  | <span class="command">SCAN</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">SORT</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">SORT_RO</span> | <span class="support supported">Fully supported</span> |  |
