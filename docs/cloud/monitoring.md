@@ -44,8 +44,6 @@ In order to access the metrics endpoint, you must first acquire an API key:
 - Configure your monitoring system with the metrics endpoint and your API key to start monitoring your data store.
 - The API key should be passed in the `Authorization` header as a bearer token like so:
 
-You may use our published [Grafana dasbhoard template](https://grafana.com/grafana/dashboards/25167-dragonfly-cloud/).
-
 ```bash
 # Replace with your API key.
 $> KEY="dragonflydb_eyJpI...fQ=="
@@ -53,3 +51,5 @@ $> KEY="dragonflydb_eyJpI...fQ=="
 # Send a request to the metrics endpoint.
 $> curl https://api.dragonflydb.cloud/v1/metrics -H "Authorization: Bearer $KEY"
 ```
+
+You may use our published [Grafana dasbhoard template](https://grafana.com/grafana/dashboards/25167-dragonfly-cloud/).
