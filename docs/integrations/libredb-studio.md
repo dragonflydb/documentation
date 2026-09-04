@@ -13,34 +13,44 @@ Dragonfly speaks the Redis wire protocol, so LibreDB Studio connects to it the s
 
 ## TL;DR
 
-Run LibreDB Studio as a container next to Dragonfly, add a connection of type **Redis** pointed at your Dragonfly host and port, and use the query editor, key browser, and monitoring dashboard as you would against Redis.
+Run Dragonfly and LibreDB Studio on the same Docker network, add a connection of type **Redis** pointed at the Dragonfly container's name and port, and use the query editor, key browser, and monitoring dashboard as you would against Redis.
 
 ```sh
-docker run -p 3000:3000 ghcr.io/libredb/libredb-studio:latest
+docker network create libredb-studio
+docker run --name dragonfly --network libredb-studio --ulimit memlock=-1 docker.dragonflydb.io/dragonflydb/dragonfly:latest
+docker run --network libredb-studio -p 3000:3000 ghcr.io/libredb/libredb-studio:latest
 ```
 
 ## Running LibreDB Studio with Dragonfly
 
-### 1. Start Dragonfly
+Dragonfly and LibreDB Studio both run as containers here, so they need a Docker network in common: on Docker's default network a container cannot reach another one by name.
+
+### 1. Create a network
 
 ```sh
-docker run --name dragonfly -p 6379:6379 --ulimit memlock=-1 docker.dragonflydb.io/dragonflydb/dragonfly:latest
+docker network create libredb-studio
 ```
 
-### 2. Start LibreDB Studio
+### 2. Start Dragonfly
 
 ```sh
-docker run -p 3000:3000 ghcr.io/libredb/libredb-studio:latest
+docker run --name dragonfly --network libredb-studio --ulimit memlock=-1 docker.dragonflydb.io/dragonflydb/dragonfly:latest
+```
+
+### 3. Start LibreDB Studio
+
+```sh
+docker run --network libredb-studio -p 3000:3000 ghcr.io/libredb/libredb-studio:latest
 ```
 
 A Helm chart and an npm package (`npx @libredb/studio`) are also available. See the [LibreDB Studio repository](https://github.com/libredb/libredb-studio) for details.
 
-### 3. Create a connection
+### 4. Create a connection
 
 1. Open LibreDB Studio in your browser and sign in.
 1. Click the **+** button to add a new connection.
 1. For the connection type, select **Redis**.
-1. Fill in the host and port of your Dragonfly instance (`6379` by default).
+1. Fill in the host (`dragonfly`, the container name above) and port (`6379`) of your Dragonfly instance.
 1. Click **Test Connection** to verify, then **Establish Connection**.
 
 The connection appears in the sidebar with type `redis`. From there you can browse keys, run commands, and view monitoring data in the browser.
@@ -55,7 +65,7 @@ The connection appears in the sidebar with type `redis`. From there you can brow
 
 LibreDB Studio's Dragonfly support goes through its Redis driver rather than a Dragonfly-specific one, so a few panels show what Dragonfly's `INFO` and `CLIENT LIST` actually publish rather than the full picture:
 
-- The overview's version field shows `7.4.0`, the Redis compatibility level Dragonfly's `INFO` reports under `redis_version`, not Dragonfly's own version (`dragonfly_version`, published in the same `INFO` reply under its own field).
+- The overview's version field shows the Redis compatibility level Dragonfly's `INFO` reports under `redis_version`, not Dragonfly's own version, published in the same `INFO` reply under its own field, `dragonfly_version`.
 - The connections card reads "no limit published" rather than a number, because Dragonfly's `INFO` does not publish a value under the same field name the driver reads for a connection limit.
 - Every row in the active-sessions table shows `default` in the User column, whatever ACL user the connection authenticated as, because Dragonfly's `CLIENT LIST` does not publish a per-session user field.
 - Every row in the active-sessions table shows `idle` in the Query column and `N` in the State column, because Dragonfly's `CLIENT LIST` does not publish a per-session command or flags field either.
