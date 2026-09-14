@@ -37,7 +37,7 @@ CLI:
     python docs_sync.py --before v1.37.0 --after v1.38.0 --discover-only
     python docs_sync.py --update-only-from tools/generated/update_plans/<ts>.json
     python docs_sync.py --before v1.37.0 --after v1.38.0 --dry-run
-    python docs_sync.py --before v1.37.0 --after v1.38.0 --filter "command-reference/strings/*"
+    python docs_sync.py --before v1.37.0 --after v1.38.0 --filter "docs/command-reference/strings/*"
 """
 
 from __future__ import annotations
@@ -72,13 +72,24 @@ except ImportError:  # Direct execution: python tools/docsync/docs_sync.py
         strict_object_schema,
     )
 
+try:
+    from . import dfly_refs
+except ImportError:
+    import dfly_refs
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DOCS_DIR = REPO_ROOT / "docs"
 GENERATED = REPO_ROOT / "tools" / "generated"
 PLANS_DIR = GENERATED / "update_plans"
 LLM_DEBUG_DIR = GENERATED / "llm_debug"
 FACTS_DIR = GENERATED / "facts"
-DFLY_FACTS = REPO_ROOT / "tools" / "docsync" / "dfly_facts.py"
+
+# Pages another docsync script owns end to end. docs_sync never plans or edits
+# them: its LLM output would overwrite values those scripts validated.
+OWNED_PAGES = {
+    "docs/managing-dragonfly/flags.md": "flags_sync.py",
+    "docs/command-reference/compatibility.md": "compat_sync.py",
+}
 
 DRAGONFLY_REPO_URL = "https://github.com/dragonflydb/dragonfly.git"
 DRAGONFLY_CHECKOUT = Path("/tmp/dragonfly-docsync")
@@ -87,6 +98,10 @@ DRAGONFLY_IMAGE = "docker.dragonflydb.io/dragonflydb/dragonfly"
 DISCOVER_MODEL = configured_model(DEFAULT_BALANCED_MODEL)
 UPDATE_MODEL = configured_model()
 DISCOVER_MAX_TOKENS = 24000
+# The discover prompt lists every commit subject and changed file. The caps only
+# guard against a pathological range; hitting one prints a warning.
+DISCOVER_MAX_COMMITS = 1000
+DISCOVER_MAX_FILES = 2000
 UPDATE_MAX_TOKENS = 48000
 PING_TIMEOUT_S = 30
 
@@ -98,15 +113,50 @@ def run(cmd: list[str], cwd: Path | None = None,
     return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, check=check)
 
 
-def ensure_dragonfly_checkout(tag: str, refresh: bool = False) -> Path:
-    if not (DRAGONFLY_CHECKOUT / ".git").exists():
-        DRAGONFLY_CHECKOUT.parent.mkdir(parents=True, exist_ok=True)
-        print(f"  cloning Dragonfly source to {DRAGONFLY_CHECKOUT}...")
-        run(["git", "clone", "--quiet", DRAGONFLY_REPO_URL, str(DRAGONFLY_CHECKOUT)])
-    if refresh:
-        run(["git", "fetch", "--tags", "--quiet"], cwd=DRAGONFLY_CHECKOUT, check=False)
-    run(["git", "checkout", "--quiet", tag], cwd=DRAGONFLY_CHECKOUT, check=False)
-    return DRAGONFLY_CHECKOUT
+def ensure_dragonfly_checkout(tag: str) -> str:
+    """Check out `tag` at its current upstream commit; return the commit."""
+    return dfly_refs.ensure_checkout(DRAGONFLY_CHECKOUT, tag, DRAGONFLY_REPO_URL)
+
+
+def resolve_before(ref: str) -> str:
+    """Commit of --before: a tag (matched to upstream), or any local revision
+    when `ref` is a tag neither upstream nor in the checkout. Failures to bring
+    a real tag up to date are errors, never a silent fallback to a stale tag."""
+    lookup = dfly_refs.upstream_tag_lookup(ref, DRAGONFLY_REPO_URL)
+    if lookup[1] or dfly_refs.local_tag_commit(DRAGONFLY_CHECKOUT, ref):
+        return dfly_refs.ensure_tag(DRAGONFLY_CHECKOUT, ref, DRAGONFLY_REPO_URL, lookup)
+    commit = dfly_refs.resolve_commit(DRAGONFLY_CHECKOUT, ref)
+    if not commit:
+        raise RuntimeError(f"Dragonfly ref {ref!r} is neither a tag nor a revision in "
+                           f"{DRAGONFLY_CHECKOUT}")
+    return commit
+
+
+def normalize_doc_path(path: str) -> str:
+    """Repo-relative, normalized path of a page under docs/. Raises ValueError for
+    a path outside docs/, so `docs/a/../flags.md` cannot bypass OWNED_PAGES."""
+    if not isinstance(path, str) or not path:
+        raise ValueError(f"{path!r} is not a page under docs/")
+    normalized = Path(os.path.normpath(REPO_ROOT / path))
+    try:
+        normalized.relative_to(DOCS_DIR)
+    except ValueError:
+        raise ValueError(f"{path!r} is not a page under docs/") from None
+    return str(normalized.relative_to(REPO_ROOT))
+
+
+def plannable_path(path: str, source: str) -> str | None:
+    """Normalized path to put in a plan, or None (with a note) for a path that
+    is outside docs/ or owned by another docsync script."""
+    try:
+        rel = normalize_doc_path(path)
+    except ValueError as e:
+        print(f"  WARNING: {source}: {e}; not planned", file=sys.stderr)
+        return None
+    if rel in OWNED_PAGES:
+        print(f"  {source}: {rel} is owned by {OWNED_PAGES[rel]}; not planned")
+        return None
+    return rel
 
 
 # --- Markdown index ----------------------------------------------------------
@@ -148,12 +198,18 @@ def extract_first_paragraph(text: str, max_chars: int = 400) -> str:
     return para
 
 
+def matches_filter(rel: str, filter_glob: str) -> bool:
+    """--filter accepts a repo-relative (docs/...) or docs-relative glob."""
+    return (not filter_glob or fnmatch(rel, filter_glob)
+            or fnmatch(str(Path(rel).relative_to("docs")) if rel.startswith("docs/") else rel,
+                       filter_glob))
+
+
 def collect_md_index(filter_glob: str = "") -> list[dict]:
     out: list[dict] = []
     for f in sorted(DOCS_DIR.rglob("*.md")):
         rel = str(f.relative_to(REPO_ROOT))
-        if filter_glob and not fnmatch(rel, filter_glob) \
-                and not fnmatch(str(f.relative_to(DOCS_DIR)), filter_glob):
+        if rel in OWNED_PAGES or not matches_filter(rel, filter_glob):
             continue
         try:
             text = f.read_text(encoding="utf-8")
@@ -170,21 +226,28 @@ def collect_md_index(filter_glob: str = "") -> list[dict]:
 # --- Source diff summary -----------------------------------------------------
 
 def collect_source_diff_summary(before: str, after: str) -> dict:
-    src = ensure_dragonfly_checkout(after)
-    # Make sure we have <before> too — fetch all tags.
-    run(["git", "fetch", "--tags", "--quiet"], cwd=src, check=False)
+    after_commit = ensure_dragonfly_checkout(after)
+    before_commit = resolve_before(before)
+    print(f"  diff range: {before} @ {dfly_refs.short(before_commit)} .. "
+          f"{after} @ {dfly_refs.short(after_commit)}")
     log = run(["git", "log", "--no-merges", "--pretty=%h %s",
-               f"{before}..{after}"], cwd=src, check=False).stdout
-    stat = run(["git", "diff", "--stat", f"{before}..{after}"],
-               cwd=src, check=False).stdout
-    name_only = run(["git", "diff", "--name-only", f"{before}..{after}"],
-                    cwd=src, check=False).stdout
+               f"{before_commit}..{after_commit}"], cwd=DRAGONFLY_CHECKOUT).stdout
+    # --numstat prints full paths (--stat shortens long ones to ".../"), and
+    # --no-renames lists a rename as delete + add instead of "{old => new}".
+    numstat = run(["git", "diff", "--numstat", "--no-renames",
+                   f"{before_commit}..{after_commit}"], cwd=DRAGONFLY_CHECKOUT).stdout
+    files = []
+    for line in numstat.splitlines():
+        added, deleted, path = line.split("\t", 2)
+        files.append({"path": path, "added": added, "deleted": deleted})
     return {
         "before": before,
         "after": after,
+        "before_commit": before_commit,
+        "after_commit": after_commit,
         "commits": [l for l in log.splitlines() if l.strip()],
-        "stat": stat,
-        "files_changed": [l for l in name_only.splitlines() if l.strip()],
+        "files": files,
+        "files_changed": [f["path"] for f in files],
     }
 
 
@@ -198,17 +261,17 @@ def commits_touching_file(before: str, after: str, src_file: str) -> list[str]:
     return [l for l in p.stdout.splitlines() if l.strip()]
 
 
-def build_diff_context(before: str, after: str, related_files: list[str],
-                       reason: str) -> dict:
+def build_diff_context(diff: dict, related_files: list[str], reason: str) -> dict:
     """Compose the per-file diff_context to pass to the update LLM session."""
     commits_per_file = []
     for f in related_files:
-        commits = commits_touching_file(before, after, f)
+        # Resolved commits, not tag names: a tag may move while discover runs.
+        commits = commits_touching_file(diff["before_commit"], diff["after_commit"], f)
         if commits:
             commits_per_file.append({"file": f, "commits": commits})
     return {
-        "before": before,
-        "after": after,
+        "before": diff["before"],
+        "after": diff["after"],
         "discovery_reason": reason,
         "commits_per_file": commits_per_file,
     }
@@ -283,16 +346,28 @@ DISCOVER_SCHEMA = strict_object_schema({
 })
 
 
+def omitted_note(total: int, kept: int, what: str) -> str:
+    if total <= kept:
+        return ""
+    print(f"  WARNING: discover prompt omits {total - kept} of {total} {what}",
+          file=sys.stderr)
+    return f"... {total - kept} more {what} omitted"
+
+
 def build_discover_prompt(diff: dict, md_index: list[dict]) -> str:
+    commits = diff["commits"]
+    # Server source first, so a capped list never drops it for fuzz seeds/CI files.
+    files = sorted(diff["files"], key=lambda f: not f["path"].startswith("src/"))
     parts = [
         f"=== source diff summary {diff['before']}..{diff['after']} ===",
-        f"commits ({len(diff['commits'])}):",
-        "\n".join(diff["commits"][:300]),
-        ("..." if len(diff["commits"]) > 300 else ""),
+        f"commits ({len(commits)}):",
+        "\n".join(commits[:DISCOVER_MAX_COMMITS]),
+        omitted_note(len(commits), DISCOVER_MAX_COMMITS, "commits"),
         "",
-        "files_changed (top of diff --stat):",
-        "\n".join(diff["stat"].splitlines()[:200]),
-        ("..." if len(diff["stat"].splitlines()) > 200 else ""),
+        f"files_changed ({len(files)}; +added -deleted lines, src/ first):",
+        "\n".join(f"{f['path']} +{f['added']} -{f['deleted']}"
+                  for f in files[:DISCOVER_MAX_FILES]),
+        omitted_note(len(files), DISCOVER_MAX_FILES, "files"),
         "",
         f"=== docs index ({len(md_index)} markdown files) ===",
         json.dumps(md_index, indent=2, ensure_ascii=False),
@@ -305,24 +380,37 @@ def build_discover_prompt(diff: dict, md_index: list[dict]) -> str:
 
 
 def discover_phase(before: str, after: str, also_update: list[str],
-                   md_filter: str) -> dict:
+                   md_filter: str, dry_run: bool = False) -> dict:
     print(f"\n[Phase 1] Discover updates needed between {before} and {after}")
     diff = collect_source_diff_summary(before, after)
     print(f"  source diff: {len(diff['commits'])} commits, "
           f"{len(diff['files_changed'])} files changed")
+    if not diff["commits"]:
+        if not also_update:
+            raise RuntimeError(f"no commits between {before} and {after}; check the tags")
+        print(f"  WARNING: no commits between {before} and {after}; only "
+              f"--also-update pages are planned", file=sys.stderr)
     md_index = collect_md_index(md_filter)
     print(f"  docs index:  {len(md_index)} markdown file(s)")
 
     plan: dict = {
         "before": before,
         "after": after,
+        # The update phase refuses a plan whose tags have moved since discovery.
+        "before_commit": diff["before_commit"],
+        "after_commit": diff["after_commit"],
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "files_to_update": [],
         "llm_summary": "",
         "manual_overrides": [],
     }
 
-    if not os.getenv("OPENAI_API_KEY"):
+    if not diff["commits"]:
+        pass  # empty range: nothing to triage, only --also-update pages
+    elif dry_run:
+        print(f"  --dry-run: not asking OpenAI to triage {len(diff['commits'])} commits "
+              f"against {len(md_index)} pages; the plan holds only --also-update pages")
+    elif not os.getenv("OPENAI_API_KEY"):
         print("  WARNING: OPENAI_API_KEY not set — skipping LLM analysis. "
               "Plan will only contain --also-update entries (if any).")
     else:
@@ -344,7 +432,11 @@ def discover_phase(before: str, after: str, also_update: list[str],
             print(f"  tokens: in={usage['input_tokens']} "
                   f"out={usage['output_tokens']} "
                   f"reasoning={usage['reasoning_tokens']}")
-            plan["files_to_update"] = parsed.get("files_to_update", []) or []
+            plan["files_to_update"] = []
+            for entry in parsed.get("files_to_update", []) or []:
+                rel = plannable_path(entry.get("path", ""), "discovery")
+                if rel:
+                    plan["files_to_update"].append({**entry, "path": rel})
             plan["llm_summary"] = parsed.get("no_update_needed_summary", "") or ""
 
     # Attach diff_context for every LLM-discovered entry. Files added via
@@ -353,11 +445,14 @@ def discover_phase(before: str, after: str, also_update: list[str],
     for entry in plan["files_to_update"]:
         related = entry.get("related_source_files", []) or []
         reason = entry.get("reason", "")
-        entry["diff_context"] = build_diff_context(before, after, related, reason)
+        entry["diff_context"] = build_diff_context(diff, related, reason)
 
     if also_update:
         existing_paths = {e["path"] for e in plan["files_to_update"]}
         for path in also_update:
+            path = plannable_path(path, "--also-update")
+            if not path:
+                continue
             plan["manual_overrides"].append(path)
             if path in existing_paths:
                 # The path was already in the LLM-discovered list; keep the
@@ -371,16 +466,18 @@ def discover_phase(before: str, after: str, also_update: list[str],
                 "diff_context": None,
             })
 
-    PLANS_DIR.mkdir(parents=True, exist_ok=True)
-    ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    plan_path = PLANS_DIR / f"plan_{ts}.json"
-    plan_path.write_text(
-        json.dumps(plan, indent=2, ensure_ascii=False),
-        encoding="utf-8",
-    )
-    plan["_plan_path"] = str(plan_path.relative_to(REPO_ROOT))
-
-    print(f"\n  plan saved: {plan['_plan_path']}")
+    if dry_run:
+        print("\n  (dry-run — plan not saved)")
+    else:
+        PLANS_DIR.mkdir(parents=True, exist_ok=True)
+        ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        plan_path = PLANS_DIR / f"plan_{ts}.json"
+        plan_path.write_text(
+            json.dumps(plan, indent=2, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        plan["_plan_path"] = str(plan_path.relative_to(REPO_ROOT))
+        print(f"\n  plan saved: {plan['_plan_path']}")
     print(f"  files to update: {len(plan['files_to_update'])}")
     if plan["manual_overrides"]:
         print(f"  manual overrides: {len(plan['manual_overrides'])}")
@@ -571,7 +668,9 @@ def fix_mdx_jsx_unsafe(text: str) -> str:
 # --- Docker example verification --------------------------------------------
 
 SHELL_BLOCK_RE = re.compile(
-    r"^```shell[ \t]*\n(?P<body>.*?)^```\s*$",
+    # The closing fence must not consume the newline after it: rebuilt blocks
+    # end at the fence, so the blank line that follows would be lost.
+    r"^```shell[ \t]*\n(?P<body>.*?)^```[ \t]*$",
     re.DOTALL | re.MULTILINE,
 )
 
@@ -600,13 +699,11 @@ class DockerSession:
         return p.stdout.rstrip(), p.stderr.rstrip(), p.returncode
 
 
-def boot_docker(tag: str, emulated_cluster: bool = False,
-                skip_pull: bool = False) -> DockerSession:
+def boot_docker(tag: str, emulated_cluster: bool = False) -> DockerSession:
+    """Boot the local image; update_phase has already pulled and verified it."""
     image_ref = f"{DRAGONFLY_IMAGE}:{tag}"
-    if not skip_pull:
-        run(["docker", "pull", image_ref], check=False)
     container = f"dfly-docs-sync-{tag.replace('.', '-')}-{os.getpid()}"
-    args = ["docker", "run", "-d", "--name", container, image_ref]
+    args = ["docker", "run", "-d", "--pull=never", "--name", container, image_ref]
     if emulated_cluster:
         args.append("--cluster_mode=emulated")
     run(args)
@@ -1218,21 +1315,34 @@ def update_one_file(
     after_tag: str,
     facts: dict,
     src: Path,
-    skip_pull: bool,
     dry_run: bool,
 ) -> dict:
     """Update one file. Returns a result record."""
-    rel = entry["path"]
-    abs_path = REPO_ROOT / rel
     result: dict = {
-        "path": rel,
+        "path": entry.get("path"),
         "status": "pending",
         "reason_input": entry.get("reason", ""),
         "notes": [],
     }
+    try:
+        rel = normalize_doc_path(entry.get("path"))
+    except ValueError as e:
+        result["status"] = "failed"
+        result["error"] = str(e)
+        return result
+    result["path"] = rel
+    abs_path = REPO_ROOT / rel
+    if rel in OWNED_PAGES:
+        result["status"] = "skipped"
+        result["error"] = f"owned by {OWNED_PAGES[rel]}; docs_sync does not edit it"
+        return result
     if not abs_path.exists():
         result["status"] = "missing"
         result["error"] = f"file not found: {rel}"
+        return result
+    if dry_run:
+        result["status"] = "skipped"
+        result["notes"].append("dry-run: not sent to OpenAI, not written")
         return result
 
     page_text = abs_path.read_text(encoding="utf-8")
@@ -1252,12 +1362,13 @@ def update_one_file(
     if needs_docker:
         emu = needs_emulated_cluster(handler_info, command)
         try:
-            session = boot_docker(after_tag, emulated_cluster=emu,
-                                  skip_pull=skip_pull)
+            session = boot_docker(after_tag, emulated_cluster=emu)
         except Exception as e:
-            result["notes"].append(f"docker boot failed: {e}; "
-                                   f"verifying examples skipped")
-            session = None
+            # Without a server the LLM's predicted example output would be
+            # written unverified, so do not update the page at all.
+            result["status"] = "failed"
+            result["error"] = f"docker boot failed: {error_detail(e)}"
+            return result
     if session and invocations:
         docker_examples = verify_invocations(session, invocations)
 
@@ -1366,8 +1477,7 @@ def update_one_file(
             )
             return result
 
-        if not dry_run:
-            abs_path.write_text(new_md, encoding="utf-8")
+        abs_path.write_text(new_md, encoding="utf-8")
         result["status"] = "updated"
     finally:
         if client:
@@ -1381,26 +1491,56 @@ def update_phase(plan: dict, after_tag: str, skip_pull: bool, dry_run: bool,
                  filter_glob: str = "") -> list[dict]:
     print(f"\n[Phase 2] Update {len(plan['files_to_update'])} file(s) "
           f"against tag {after_tag}")
-    src = ensure_dragonfly_checkout(after_tag)
+    source_commit = ensure_dragonfly_checkout(after_tag)
+    src = DRAGONFLY_CHECKOUT
+    planned = plan.get("after_commit")
+    if planned is None:
+        print("  WARNING: plan records no after_commit (made before commit tracking); "
+              f"cannot verify it was discovered at {after_tag}'s current commit",
+              file=sys.stderr)
+    elif planned != source_commit:
+        raise RuntimeError(
+            f"plan was discovered at {after_tag} @ {dfly_refs.short(planned)}, but "
+            f"{after_tag} is now {dfly_refs.short(source_commit)}; the tag moved, "
+            f"so re-run discover"
+        )
+    if plan.get("before_commit") and plan.get("before"):
+        before_now = resolve_before(plan["before"])
+        if before_now != plan["before_commit"]:
+            raise RuntimeError(
+                f"plan was discovered from {plan['before']} @ "
+                f"{dfly_refs.short(plan['before_commit'])}, but {plan['before']} is now "
+                f"{dfly_refs.short(before_now)}; the tag moved, so re-run discover"
+            )
 
-    # Load facts
-    facts_path = FACTS_DIR / f"{after_tag}.json"
-    if not facts_path.exists():
-        print(f"  capturing facts via dfly_facts.py...")
-        cmd = ["python3", str(DFLY_FACTS), "--tag", after_tag]
-        if skip_pull:
-            cmd.append("--skip-pull")
-        subprocess.run(cmd, check=True)
-    facts = json.loads(facts_path.read_text(encoding="utf-8"))
+    # Source, image and facts must all come from the tag's current commit.
+    image_ref = f"{DRAGONFLY_IMAGE}:{after_tag}"
+    if not skip_pull:
+        dfly_refs.docker_pull(image_ref)
+    version, image_commit = dfly_refs.image_version(image_ref)
+    print(f"  image: {version}")
+    if not image_commit:
+        raise RuntimeError(f"`dragonfly --version` in {image_ref} has no build commit SHA "
+                           f"({version}); cannot verify it is {after_tag}")
+    facts = dfly_refs.load_facts(after_tag, FACTS_DIR, image_ref,
+                                 skip_pull=True, refresh=False)
+    dfly_refs.check_same_commit(after_tag, source=source_commit, image=image_commit,
+                                facts=dfly_refs.facts_commit(facts))
 
     results: list[dict] = []
-    entries = plan["files_to_update"]
-    if filter_glob:
-        entries = [e for e in entries if fnmatch(e["path"], filter_glob)]
+    entries = []
+    for e in plan["files_to_update"]:
+        try:
+            e = {**e, "path": normalize_doc_path(e.get("path"))}
+        except ValueError:
+            entries.append(e)  # invalid path: update_one_file reports it as failed
+            continue
+        if matches_filter(e["path"], filter_glob):
+            entries.append(e)
     for entry in entries:
         try:
             results.append(update_one_file(
-                entry, after_tag, facts, src, skip_pull, dry_run,
+                entry, after_tag, facts, src, dry_run,
             ))
         except Exception as e:
             results.append({
@@ -1413,6 +1553,12 @@ def update_phase(plan: dict, after_tag: str, skip_pull: bool, dry_run: bool,
 
 
 # --- Main --------------------------------------------------------------------
+
+def error_detail(e: Exception) -> str:
+    if isinstance(e, subprocess.CalledProcessError):
+        return f"{' '.join(e.cmd)} failed: {(e.stderr or '').strip()}"
+    return str(e)
+
 
 def parse_also_update(path: Path | None) -> list[str]:
     if not path:
@@ -1434,7 +1580,8 @@ def main() -> int:
                     help="Text file with paths to force-include in the plan, "
                          "one per line.")
     ap.add_argument("--filter", default="",
-                    help="Glob to limit which md files are processed.")
+                    help="Glob to limit which md files are processed "
+                         "(docs/command-reference/strings/* or command-reference/strings/*).")
     ap.add_argument("--discover-only", action="store_true",
                     help="Run Phase 1 only; print the plan and exit.")
     ap.add_argument("--update-only-from", type=Path,
@@ -1443,7 +1590,9 @@ def main() -> int:
     ap.add_argument("--skip-pull", action="store_true",
                     help="Skip docker pull for the Dragonfly image.")
     ap.add_argument("--dry-run", action="store_true",
-                    help="Do not write any updated files.")
+                    help="Run the checks (tags, image, facts) and list the pages without "
+                         "calling OpenAI or writing pages, plans or results. The checks may "
+                         "still check out the source, pull the image and capture facts.")
     args = ap.parse_args()
 
     if args.update_only_from:
@@ -1459,7 +1608,11 @@ def main() -> int:
             ap.error("--before and --after are required (unless "
                      "--update-only-from is used)")
         also = parse_also_update(args.also_update)
-        plan = discover_phase(args.before, args.after, also, args.filter)
+        try:
+            plan = discover_phase(args.before, args.after, also, args.filter, args.dry_run)
+        except (RuntimeError, subprocess.CalledProcessError) as e:
+            print(f"ERROR: {error_detail(e)}", file=sys.stderr)
+            return 2
         if args.discover_only:
             print("\n--- Plan summary ---")
             for entry in plan["files_to_update"]:
@@ -1468,8 +1621,12 @@ def main() -> int:
             return 0
         after_tag = args.after
 
-    results = update_phase(plan, after_tag, args.skip_pull, args.dry_run,
-                           args.filter)
+    try:
+        results = update_phase(plan, after_tag, args.skip_pull, args.dry_run,
+                               args.filter)
+    except (RuntimeError, subprocess.CalledProcessError) as e:
+        print(f"ERROR: {error_detail(e)}", file=sys.stderr)
+        return 2
 
     counters = {"updated": 0, "unchanged": 0, "failed": 0, "skipped": 0,
                 "missing": 0, "error": 0}
@@ -1485,6 +1642,12 @@ def main() -> int:
             if r["status"] in ("failed", "error"):
                 print(f"  {r['path']}: {r.get('error', '?')}")
 
+    if args.dry_run:
+        print("\nPages:")
+        for r in results:
+            print(f"  {r['status']}: {r['path']}" + (f" — {r['error']}" if r.get("error") else ""))
+        print("\n(dry-run — results not saved)")
+        return 0 if not (counters.get("failed") or counters.get("error")) else 1
     PLANS_DIR.mkdir(parents=True, exist_ok=True)
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     results_path = PLANS_DIR / f"results_{ts}.json"

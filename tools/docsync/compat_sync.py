@@ -67,6 +67,11 @@ except ImportError:  # Direct execution: python tools/docsync/compat_sync.py
         strict_object_schema,
     )
 
+try:
+    from . import dfly_refs
+except ImportError:
+    import dfly_refs
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 COMPAT_PAGE = REPO_ROOT / "docs" / "command-reference" / "compatibility.md"
 DOCS_COMMAND_DIR = REPO_ROOT / "docs" / "command-reference"
@@ -269,6 +274,9 @@ class Assessment:
     # True when the source-derived verdict should replace the curated label
     # (False only for placeholders / names found in neither source).
     deterministic_change: bool = False
+    # Option tokens of the command (Redis spec plus curated), upper case; used to
+    # tell whether curated wording mentions an option the verdict disagrees on.
+    option_tokens: list[str] = field(default_factory=list)
     # Optional independent model review of this row's deterministic verdict:
     # either {"agree": bool, "concern": str, "suggested_status": str|None} or
     # {"error": str}. Advisory — it never changes the label; disagreements and
@@ -379,7 +387,8 @@ def parse_compat_table(path: Path) -> tuple[str, list[CompatRow], str]:
             family=current_family,
             command=command,
             status=status,
-            details=details_cell.strip(),
+            # Unescaped, so render_compat_table escapes a pipe exactly once.
+            details=details_cell.strip().replace("\\|", "|"),
             line_no=line_no,
         ))
 
@@ -415,8 +424,8 @@ def unsupported_table_rows(rows: list[CompatRow]) -> list[CompatRow]:
 
 
 def detail_for_docs(row: CompatRow) -> str:
-    if row.status != "partial":
-        return ""
+    # Non-partial rows only carry curated notes (e.g. "Use MEMORY DECOMMIT
+    # instead."); assessments_to_rows decides whether they still apply.
     return re.sub(r"\s+", " ", row.details).strip()
 
 
@@ -565,11 +574,15 @@ def ensure_checkout(name: str, repo: str, checkout: Path, ref: str, refresh: boo
                 f"could not clone {name} source from {repo} to {checkout}: "
                 f"{process_failure_detail(clone_result)}"
             )
+    # A tag's commit upstream right now (None for branches/SHAs or offline). Tags
+    # of unpublished releases move, so a cached tag is checked against it.
+    reachable, upstream = dfly_refs.upstream_tag_lookup(ref, repo)
     fetch_result = None
     if refresh:
-        fetch_result = run(
-            ["git", "fetch", "--tags", "--quiet"], cwd=checkout, check=False,
-        )
+        fetch_result = dfly_refs.fetch_tags(checkout)
+    # After the refresh fetch, so a tag that became a branch upstream can recover.
+    if reachable and not upstream and dfly_refs.local_tag_commit(checkout, ref):
+        raise RuntimeError(f"{name} tag {ref!r} no longer exists upstream in {repo}")
     # Discard any leftover local state so a reused checkout is byte-identical to a
     # fresh clone at `ref` — the determinism guarantee depends on a clean tree.
     run(["git", "reset", "--hard", "--quiet"], cwd=checkout, check=False)
@@ -577,22 +590,32 @@ def ensure_checkout(name: str, repo: str, checkout: Path, ref: str, refresh: boo
     checkout_result = run(
         ["git", "checkout", "--quiet", ref], cwd=checkout, check=False,
     )
-    if checkout_result.returncode != 0 and not refresh:
-        progress(f"{name} ref {ref!r} is not in the cached checkout; fetching tags")
-        fetch_result = run(
-            ["git", "fetch", "--tags", "--quiet"], cwd=checkout, check=False,
-        )
-        # A fetch can install the requested ref but still return non-zero because
-        # an unrelated tag update was rejected. Always retry the checkout once.
-        checkout_result = run(
-            ["git", "checkout", "--quiet", ref], cwd=checkout, check=False,
-        )
+    if not refresh:
+        if checkout_result.returncode != 0:
+            progress(f"{name} ref {ref!r} is not in the cached checkout; fetching tags")
+        elif upstream and dfly_refs.resolve_commit(checkout, "HEAD") != upstream:
+            progress(f"{name} tag {ref!r} moved upstream to {upstream[:12]}; fetching tags")
+        else:
+            upstream = None  # cached checkout is current; no fetch needed
+        if checkout_result.returncode != 0 or upstream:
+            fetch_result = dfly_refs.fetch_tags(checkout)
+            checkout_result = run(
+                ["git", "checkout", "--quiet", ref], cwd=checkout, check=False,
+            )
     if checkout_result.returncode != 0:
         detail = process_failure_detail(checkout_result)
         if fetch_result is not None and fetch_result.returncode != 0:
             detail += f"; git fetch failed: {process_failure_detail(fetch_result)}"
         raise RuntimeError(
             f"could not check out {name} ref {ref!r} in {checkout}: {detail}"
+        )
+    head = dfly_refs.resolve_commit(checkout, "HEAD")
+    if upstream and head != upstream:
+        detail = (f"; git fetch failed: {process_failure_detail(fetch_result)}"
+                  if fetch_result is not None and fetch_result.returncode != 0 else "")
+        raise RuntimeError(
+            f"{name} tag {ref!r} is at {upstream[:12]} upstream but {checkout} "
+            f"is still at {(head or '?')[:12]}{detail}"
         )
     return checkout
 
@@ -707,8 +730,46 @@ def module_source_versions(module_dirs: dict[str, Path]) -> dict[str, str]:
     return versions
 
 
+def source_dir_commit(source_dir: Path) -> str | None:
+    """HEAD of source_dir only if it is the top of its own git work tree — not an
+    unpacked tarball that happens to sit inside some other repository."""
+    top = run(["git", "rev-parse", "--show-toplevel"], cwd=source_dir, check=False)
+    if top.returncode != 0 or Path(top.stdout.strip()).resolve() != source_dir.resolve():
+        return None
+    return dfly_refs.resolve_commit(source_dir, "HEAD")
+
+
+def verify_source_dir_ref(source_dir: Path, ref: str) -> None:
+    """--dragonfly-ref only labels a --dragonfly-source-dir run, so make sure the
+    directory really is at that ref instead of publishing a wrong label."""
+    head = source_dir_commit(source_dir)
+    if not head:
+        progress(f"WARNING: {source_dir} is not a git checkout; cannot verify that it "
+                 f"is Dragonfly {ref!r}")
+        return
+    # upstream_tag_lookup warns when GitHub is unreachable; the local ref may then be stale.
+    reachable, upstream = dfly_refs.upstream_tag_lookup(ref, DRAGONFLY_REPO)
+    if reachable and not upstream and dfly_refs.local_tag_commit(source_dir, ref):
+        raise RuntimeError(f"--dragonfly-ref {ref!r} is a tag in {source_dir} but does not "
+                           f"exist upstream in {DRAGONFLY_REPO}")
+    expected = upstream or dfly_refs.resolve_commit(source_dir, ref)
+    if not expected:
+        progress(f"WARNING: cannot resolve Dragonfly {ref!r}; {source_dir} is not verified")
+        return
+    if head != expected:
+        raise RuntimeError(
+            f"--dragonfly-source-dir {source_dir} is at {head[:12]}, "
+            f"but --dragonfly-ref {ref!r} is {expected[:12]}"
+        )
+
+
 def resolve_dragonfly_source(args: argparse.Namespace) -> Path | None:
     if args.dragonfly_source_dir:
+        if not args.dragonfly_source_dir.is_dir():
+            raise RuntimeError(f"--dragonfly-source-dir {args.dragonfly_source_dir} "
+                               f"is not a directory")
+        if args.dragonfly_ref:
+            verify_source_dir_ref(args.dragonfly_source_dir, args.dragonfly_ref)
         return args.dragonfly_source_dir
     if not args.dragonfly_ref:
         raise RuntimeError("--dragonfly-ref (or --dragonfly-source-dir) is required")
@@ -1468,18 +1529,58 @@ def kill_docker(session: DockerSession | None) -> None:
         subprocess.run(["docker", "rm", "-f", session.container], capture_output=True)
 
 
+_MISSING_LIST_RE = re.compile(r"\s*Missing:\s*(.*?)\.\s*")
+_OPTION_TOKEN_PIECE_RE = re.compile(r"[A-Z][A-Z0-9_]*(?:[-.][A-Z0-9_]+)*")
+
+
+def _missing_pieces(details: str) -> list[str]:
+    match = _MISSING_LIST_RE.fullmatch(details)
+    if not match:
+        return []
+    return [piece.strip() for piece in match.group(1).split(",") if piece.strip()]
+
+
+def _missing_tokens(details: str) -> set[str]:
+    """Option tokens listed in a `Missing: A, B.` detail. Tokens are written in
+    upper case (DIFF1, MALLOC-STATS); a piece of prose ("which is accepted but
+    ignored") is not a token."""
+    return {piece for piece in _missing_pieces(details)
+            if _OPTION_TOKEN_PIECE_RE.fullmatch(piece)}
+
+
 def _curated_missing_tokens(row: CompatRow) -> set[str]:
     """Option tokens in a curated Missing detail, if it has that form."""
     if row.status != "partial":
         return set()
-    match = re.fullmatch(r"\s*Missing:\s*(.*?)\.\s*", row.details)
-    if not match:
-        return set()
-    return {
-        token.strip().upper()
-        for token in match.group(1).split(",")
-        if token.strip()
-    }
+    return _missing_tokens(row.details)
+
+
+def _curated_details_apply(row: CompatRow, a: Assessment) -> bool:
+    """Whether the curated Details text survives the deterministic verdict.
+
+    It does while the label is unchanged and the analysis has nothing that
+    contradicts it: a note on a non-partial row (the analysis produces no text
+    there), or a partial row whose Missing list names exactly the options found
+    missing — possibly with human wording around them.
+    """
+    if not row.details.strip() or a.proposed_status != row.status:
+        return False
+    if row.status != "partial":
+        # A Missing list contradicts a supported/unsupported verdict; only free
+        # prose survives.
+        return not _MISSING_LIST_RE.fullmatch(row.details)
+    if _curated_missing_tokens(row) != _missing_tokens(a.unsupported_details):
+        return False
+    # The wording around the tokens must not name another option ("laddr",
+    # "and SKIPME since v1.30"): the verdict may disagree about it.
+    options = set(a.option_tokens)
+    for piece in _missing_pieces(row.details):
+        if _OPTION_TOKEN_PIECE_RE.fullmatch(piece):
+            continue
+        words = {w.upper() for w in re.findall(r"[A-Za-z][A-Za-z0-9_-]*", piece)}
+        if words & options:
+            return False
+    return True
 
 
 def deterministic_assessment(
@@ -1573,7 +1674,9 @@ def deterministic_assessment(
     return Assessment(
         row=row, proposed_status=status, unsupported_details=details,
         confidence="high", source="deterministic", evidence=evidence,
-        tasks=tasks, deterministic_change=True)
+        tasks=tasks, deterministic_change=True,
+        option_tokens=sorted({t.upper() for t in (spec.tokens if spec else [])}
+                             | _curated_missing_tokens(row)))
 
 
 def build_assessments(
@@ -1769,9 +1872,11 @@ def assessments_to_rows(
     The source-derived verdict is authoritative, so it replaces the curated
     label/details; a row keeps its curated value only when the assessment could
     not resolve it (deterministic_change False — e.g. a placeholder or a name
-    found in neither source). Every change from the curated label is recorded in
-    the change log. Matching is by (family, command) so identical command names
-    in different families do not collide.
+    found in neither source). Curated Details text that the verdict does not
+    contradict is kept (see _curated_details_apply). Every change from the
+    curated row is recorded in the change log, including the replaced text.
+    Matching is by (family, command) so identical command names in different
+    families do not collide.
     """
     by_key = {(a.row.family, a.row.key): a for a in assessments}
     out: list[CompatRow] = []
@@ -1781,15 +1886,20 @@ def assessments_to_rows(
         if not a or not a.deterministic_change:
             out.append(row)
             continue
+        details = row.details if _curated_details_apply(row, a) else a.unsupported_details
         out.append(CompatRow(row.family, row.command, a.proposed_status,
-                             a.unsupported_details, row.line_no, a.source))
-        if a.proposed_status != row.status or a.unsupported_details != row.details:
-            change_log.append({
+                             details, row.line_no, a.source))
+        if a.proposed_status != row.status or details != row.details:
+            entry = {
                 "type": "status-change-applied", "command": row.command, "family": row.family,
                 "from": row.status, "to": a.proposed_status,
-                "details": a.unsupported_details,
+                "details": details,
                 "message": "Applied from deterministic source analysis.",
-            })
+            }
+            if row.details.strip() and details != row.details:
+                entry["replaced_details"] = row.details
+                entry["message"] += " The curated Details text was replaced; check it."
+            change_log.append(entry)
     return out, change_log
 
 
@@ -1822,6 +1932,7 @@ def write_artifacts(
     change_log: list[dict[str, Any]],
     extra_tasks: list[dict[str, Any]] | None = None,
     module_versions: dict[str, str] | None = None,
+    dragonfly_commit: str | None = None,
 ) -> None:
     # draft_rows is the deterministic table computed once in main(), so the
     # preview a reviewer reads is byte-identical to what ships.
@@ -1830,6 +1941,7 @@ def write_artifacts(
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "method": "deterministic source analysis (no LLM, no runtime)",
         "dragonfly_ref": args.dragonfly_ref,
+        "dragonfly_commit": dragonfly_commit,
         "redis_ref": args.redis_ref,
         "module_versions": module_versions or {},
         "row_count": len(rows),
@@ -1932,7 +2044,8 @@ def add_cli_args() -> argparse.ArgumentParser:
                          "Names: search, json, bloom, timeseries. By default the version is "
                          "auto-detected from the Redis image's MODULE LIST. Repeatable.")
     ap.add_argument("--refresh-source", action="store_true",
-                    help="Fetch tags before checking out source refs.")
+                    help="Fetch tags before checking out source refs. (A missing ref, "
+                         "or a cached tag that moved upstream, is fetched regardless.)")
     ap.add_argument("--skip-pull", action="store_true",
                     help="Skip docker pull for the Redis module-detection image.")
     ap.add_argument("--progress-every", type=int, default=50,
@@ -2018,7 +2131,23 @@ def main() -> int:
         f"total Redis+module specs: {len(redis_specs)}"
     )
 
-    progress("indexing Dragonfly source")
+    dragonfly_commit = source_dir_commit(dragonfly_source_root)
+    if dragonfly_commit:
+        # DragonflySource scans the working tree, so local edits change the result.
+        status = run(["git", "status", "--porcelain", "--", "src"],
+                     cwd=dragonfly_source_root, check=False)
+        if status.returncode == 0 and status.stdout.strip():
+            progress(f"WARNING: {dragonfly_source_root} has uncommitted changes under src/; "
+                     f"results do not describe {args.dragonfly_ref or dragonfly_commit[:12]}")
+            dragonfly_commit += "-dirty"
+            if write_table and args.dragonfly_ref:
+                print(f"ERROR: --write-table refused: the table would be labelled Dragonfly "
+                      f"{args.dragonfly_ref}, but {dragonfly_source_root} has uncommitted "
+                      f"changes under src/. Commit or stash them, or drop --dragonfly-ref.",
+                      file=sys.stderr)
+                return 2
+    progress(f"indexing Dragonfly source "
+             f"({dragonfly_commit[:12] if dragonfly_commit else 'unknown commit'})")
     df = DragonflySource(dragonfly_source_root)
     progress(f"Dragonfly registered commands: {len(df.registered)}")
 
@@ -2059,7 +2188,8 @@ def main() -> int:
     progress(f"writing artifacts to {out_dir.relative_to(REPO_ROOT)}")
     write_artifacts(out_dir, before, after, rows, assessments, args,
                     draft_rows=draft_rows, change_log=change_log,
-                    extra_tasks=extra_tasks, module_versions=module_versions)
+                    extra_tasks=extra_tasks, module_versions=module_versions,
+                    dragonfly_commit=dragonfly_commit)
 
     if write_table:
         applied = [t for t in change_log if t.get("type") == "status-change-applied"]

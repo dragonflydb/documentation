@@ -72,14 +72,19 @@ except ImportError:  # Direct execution: python tools/docsync/flags_sync.py
         strict_object_schema,
     )
 
+try:
+    from . import dfly_refs
+except ImportError:
+    import dfly_refs
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 FLAGS_PAGE = REPO_ROOT / "docs" / "managing-dragonfly" / "flags.md"
 FACTS_DIR = REPO_ROOT / "tools" / "generated" / "facts"
 SOURCE_DIR = REPO_ROOT / "tools" / "generated" / "source"
-DFLY_FACTS = REPO_ROOT / "tools" / "docsync" / "dfly_facts.py"
 
 DRAGONFLY_REPO = "https://github.com/dragonflydb/dragonfly.git"
 DRAGONFLY_CHECKOUT = Path("/tmp/dragonfly-docsync")
+DRAGONFLY_IMAGE = "docker.dragonflydb.io/dragonflydb/dragonfly"
 
 MODEL = configured_model()
 MAX_TOKENS = 64000
@@ -102,11 +107,6 @@ UPSTREAM_GROUP_PREFIXES = (
     "glog-src/",
     "abseil_cpp-src/",
 )
-
-
-def run(cmd: list[str], cwd: Path | None = None,
-        check: bool = True) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, check=check)
 
 
 def filter_user_facing(flags: dict[str, dict]) -> dict[str, dict]:
@@ -199,17 +199,21 @@ def parse_sections(text: str) -> dict[str, FlagSection]:
 
 # --- Source code parsing (inline) -------------------------------------------
 
-def ensure_dragonfly_checkout(tag: str, refresh: bool) -> Path:
-    """Ensure /tmp/dragonfly-docsync is a clean checkout at `tag`."""
-    if not (DRAGONFLY_CHECKOUT / ".git").exists():
-        DRAGONFLY_CHECKOUT.parent.mkdir(parents=True, exist_ok=True)
-        print(f"  cloning Dragonfly source to {DRAGONFLY_CHECKOUT}...")
-        run(["git", "clone", "--quiet", DRAGONFLY_REPO, str(DRAGONFLY_CHECKOUT)])
-    if refresh:
-        run(["git", "fetch", "--tags", "--quiet"], cwd=DRAGONFLY_CHECKOUT, check=False)
-    # `git checkout <tag>` is idempotent and quiet
-    run(["git", "checkout", "--quiet", tag], cwd=DRAGONFLY_CHECKOUT, check=False)
-    return DRAGONFLY_CHECKOUT
+
+# Bump when parsing changes, so cached source facts are re-parsed.
+SOURCE_PARSER_VERSION = 2
+
+
+def _is_digit_separator(text: str, i: int) -> bool:
+    """A `'` inside a numeric literal (50'000, 0xFFFF'FFFF) is a C++14 digit
+    separator. After an identifier or an encoding prefix (u8'0', L'x') it opens
+    a char literal."""
+    if text[i] != "'" or i == 0 or i + 1 >= len(text) or not text[i + 1].isalnum():
+        return False
+    start = i
+    while start > 0 and (text[start - 1].isalnum() or text[start - 1] in "'_"):
+        start -= 1
+    return text[start].isdigit()
 
 
 def _split_top_level_commas(body: str) -> list[int]:
@@ -226,7 +230,7 @@ def _split_top_level_commas(body: str) -> list[int]:
                 continue
             if c == in_str:
                 in_str = None
-        elif c in ('"', "'"):
+        elif c == '"' or (c == "'" and not _is_digit_separator(body, i)):
             in_str = c
         elif c == "(":
             depth += 1
@@ -251,7 +255,7 @@ def _find_matching_paren(text: str, open_pos: int) -> int:
                 continue
             if c == in_str:
                 in_str = None
-        elif c in ('"', "'"):
+        elif c == '"' or (c == "'" and not _is_digit_separator(text, i)):
             in_str = c
         elif c == "(":
             depth += 1
@@ -264,6 +268,18 @@ def _find_matching_paren(text: str, open_pos: int) -> int:
 
 
 _STRING_LITERAL_RE = re.compile(r'"((?:[^"\\]|\\.)*)"', re.DOTALL)
+_SIMPLE_ESCAPES = {"n": "\n", "t": "\t", "r": "\r", "a": "\a", "b": "\b", "f": "\f",
+                   "v": "\v", "?": "?", '"': '"', "'": "'", "\\": "\\"}
+_ESCAPE_RE = re.compile(r"\\(x[0-9A-Fa-f]+|[0-7]{1,3}|.)", re.DOTALL)
+
+
+def _decode_escape(m: re.Match) -> str:
+    esc = m.group(1)
+    if esc[0] == "x":
+        return chr(int(esc[1:], 16) & 0xFF)
+    if esc[0] in "01234567":
+        return chr(int(esc, 8) & 0xFF)
+    return _SIMPLE_ESCAPES.get(esc, esc)
 
 
 def _join_string_literals(s: str) -> str:
@@ -271,9 +287,8 @@ def _join_string_literals(s: str) -> str:
     parts = _STRING_LITERAL_RE.findall(s)
     if not parts:
         return s.strip().strip(';').strip()
-    # Unescape \n, \t, \\
     joined = "".join(p for p in parts)
-    return re.sub(r"\\(.)", r"\1", joined)
+    return _ESCAPE_RE.sub(_decode_escape, joined)
 
 
 def _comments_above(text: str, line_start: int) -> str:
@@ -392,12 +407,32 @@ def _enum_type_token(type_str: str) -> str | None:
     return bare
 
 
+_MAIN_RE = re.compile(r"^\s*int\s+main\s*\(", re.MULTILINE)
+
+
+def _declaration_rank(path: str, group: str | None, other_binary: bool) -> int:
+    """Lower is better. Test, benchmark and other binaries redeclare server flags
+    (force_epoll in test_utils.cc, tcp_nodelay in dfly_bench.cc, bind in
+    ok_main.cc); the server's declaration is the one in the file --helpfull
+    names as the flag's group."""
+    if group and (path == group or path.endswith("/" + group)):
+        return 0
+    name = Path(path).name
+    if other_binary or "_test." in name or name.startswith("test_") or "bench" in name:
+        return 2
+    return 1
+
+
 def extract_source_facts(
     src: Path, target_names: set[str], verbose: bool = True,
+    groups: dict[str, str | None] | None = None,
 ) -> dict[str, dict]:
     """Scan dragonfly source, return {flag_name: {file, line, type,
     default_expr, description, comments, enum_values?}} for every
-    ABSL_FLAG whose name is in `target_names`."""
+    ABSL_FLAG whose name is in `target_names`. When a name is declared more
+    than once, `groups` (flag -> declaring file from --helpfull) picks the
+    server's declaration."""
+    groups = groups or {}
     if verbose:
         print(f"  scanning C++ source under {src}...")
     grep = subprocess.run(
@@ -405,19 +440,25 @@ def extract_source_facts(
          "--include=*.cc", "--include=*.h"],
         capture_output=True, text=True, check=False,
     )
-    files = [Path(p) for p in grep.stdout.splitlines() if p]
+    files = sorted(Path(p) for p in grep.stdout.splitlines() if p)
     flags: dict[str, dict] = {}
+    ranks: dict[str, int] = {}
     enum_pool: dict[str, list[dict]] = {}
     for f in files:
         try:
             text = f.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
+        # A file with its own main() other than the server's is another binary.
+        other_binary = f.name != "dfly_main.cc" and bool(_MAIN_RE.search(text))
         for decl in parse_absl_flags(text):
             if decl["name"] not in target_names:
                 continue
             decl["file"] = str(f.relative_to(src))
-            flags[decl["name"]] = decl
+            rank = _declaration_rank(decl["file"], groups.get(decl["name"]), other_binary)
+            if rank < ranks.get(decl["name"], 3):
+                flags[decl["name"]] = decl
+                ranks[decl["name"]] = rank
         enum_pool.update(parse_enum_definitions(text))
     # Also walk header files that didn't contain ABSL_FLAG (for enums).
     for f in src.rglob("*.h"):
@@ -438,19 +479,43 @@ def extract_source_facts(
     return flags
 
 
-def load_or_capture_source(args: argparse.Namespace,
-                           target_names: set[str]) -> dict[str, dict]:
+def load_or_capture_source(args: argparse.Namespace, target_names: set[str],
+                           facts_commit: str | None,
+                           groups: dict[str, str | None] | None = None) -> dict[str, dict]:
+    """Source facts for the commit the server facts came from.
+
+    The cache records the commit it was parsed at and is reused only while that
+    still is the tag's commit (the facts' commit, else the tag upstream).
+    """
     cache = SOURCE_DIR / f"{args.tag}.json"
+    if facts_commit is None:
+        print("  WARNING: facts have no meta.dragonfly_commit (captured before commit "
+              "tracking); source is taken at the tag's current commit, which may not "
+              f"match them. Re-capture with --tag {args.tag} to pin it.", file=sys.stderr)
+    expected = facts_commit or dfly_refs.upstream_tag_commit(args.tag)
     if cache.exists() and not args.refresh_source:
         cached = json.loads(cache.read_text(encoding="utf-8"))
-        # Cache covers all flags; intersect with current targets
-        return {n: cached[n] for n in target_names if n in cached}
-    src = ensure_dragonfly_checkout(args.tag, refresh=args.refresh_source)
-    facts = extract_source_facts(src, target_names)
+        commit = cached.get("commit") if isinstance(cached.get("flags"), dict) else None
+        if cached.get("parser") != SOURCE_PARSER_VERSION:
+            print(f"  cached source facts come from parser version {cached.get('parser') or 1}, "
+                  f"current is {SOURCE_PARSER_VERSION}; re-parsing")
+        elif commit and (expected is None or commit == expected):
+            print(f"  using cached source facts: {cache.relative_to(REPO_ROOT)} "
+                  f"(Dragonfly {dfly_refs.short(commit)})")
+            # Cache covers all flags; intersect with current targets
+            return {n: cached["flags"][n] for n in target_names if n in cached["flags"]}
+        else:
+            print(f"  cached source facts are from {dfly_refs.short(commit)}, "
+                  f"expected {dfly_refs.short(expected)}; re-parsing")
+    commit = dfly_refs.ensure_checkout(DRAGONFLY_CHECKOUT, args.tag, DRAGONFLY_REPO)
+    dfly_refs.check_same_commit(args.tag, source=commit, facts=facts_commit)
+    facts = extract_source_facts(DRAGONFLY_CHECKOUT, target_names, groups=groups)
     SOURCE_DIR.mkdir(parents=True, exist_ok=True)
     tmp = cache.with_suffix(cache.suffix + ".tmp")
     tmp.write_text(
-        json.dumps(facts, indent=2, sort_keys=True, ensure_ascii=False),
+        json.dumps({"tag": args.tag, "commit": commit, "parser": SOURCE_PARSER_VERSION,
+                    "flags": facts},
+                   indent=2, sort_keys=True, ensure_ascii=False),
         encoding="utf-8",
     )
     os.replace(tmp, cache)
@@ -462,18 +527,10 @@ def load_or_capture_source(args: argparse.Namespace,
 def load_facts(args: argparse.Namespace) -> dict:
     if args.facts:
         return json.loads(args.facts.read_text(encoding="utf-8"))
-    facts_path = FACTS_DIR / f"{args.tag}.json"
-    if facts_path.exists() and not args.refresh_facts:
-        print(f"  using cached facts: {facts_path.relative_to(REPO_ROOT)}")
-        return json.loads(facts_path.read_text(encoding="utf-8"))
-    cmd = ["python3", str(DFLY_FACTS), "--tag", args.tag]
-    if args.skip_pull:
-        cmd.append("--skip-pull")
-    print("  capturing facts via dfly_facts.py...")
-    p = subprocess.run(cmd)
-    if p.returncode != 0 or not facts_path.exists():
-        raise RuntimeError("dfly_facts capture failed")
-    return json.loads(facts_path.read_text(encoding="utf-8"))
+    return dfly_refs.load_facts(
+        args.tag, FACTS_DIR, f"{DRAGONFLY_IMAGE}:{args.tag}",
+        skip_pull=args.skip_pull, refresh=args.refresh_facts,
+    )
 
 
 # --- Mechanical pass ---------------------------------------------------------
@@ -932,7 +989,7 @@ def print_report(
             print(f"  ... ({len(mech.missing_from_doc) - 30} more)")
 
     if dry_run:
-        print("\n(dry-run — no files written)")
+        print("\n(dry-run — flags.md not written, OpenAI not called)")
     return failed
 
 
@@ -947,13 +1004,17 @@ def main() -> int:
     ap.add_argument("--skip-pull", action="store_true",
                     help="Skip docker pull when capturing facts.")
     ap.add_argument("--refresh-facts", action="store_true",
-                    help="Re-capture facts even if cached.")
+                    help="Re-capture facts even if cached. (Cached facts from "
+                         "another commit than the tag's are re-captured automatically.)")
     ap.add_argument("--refresh-source", action="store_true",
-                    help="Re-fetch & re-parse source even if cached.")
+                    help="Re-parse source even if cached. (A cache from another commit "
+                         "than the facts' is re-parsed automatically; re-parsing "
+                         "force-fetches tags.)")
     ap.add_argument("--skip-source", action="store_true",
                     help="Skip C++ source parsing (LLM gets --helpfull only).")
     ap.add_argument("--dry-run", action="store_true",
-                    help="Print everything without writing the page.")
+                    help="Run the mechanical pass and print the report without writing "
+                         "the page or calling OpenAI (facts may still be captured).")
     ap.add_argument("--no-llm", action="store_true",
                     help="Skip LLM polish step (mechanical pass only).")
     args = ap.parse_args()
@@ -974,8 +1035,17 @@ def main() -> int:
     if not FLAGS_PAGE.exists():
         ap.error(f"flags page not found: {FLAGS_PAGE}")
 
-    facts = load_facts(args)
+    try:
+        facts = load_facts(args)
+    except RuntimeError as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        return 2
     all_server_flags = facts["data"]["flags"]
+    if not all_server_flags:
+        # The mechanical pass deletes every documented flag the server does not
+        # report; an empty flag set would wipe the page.
+        print("ERROR: facts contain no flags; refusing to sync flags.md", file=sys.stderr)
+        return 2
     user_facing_flags = filter_user_facing(all_server_flags)
     excluded = sorted(set(all_server_flags) - set(user_facing_flags))
 
@@ -990,6 +1060,7 @@ def main() -> int:
 
     will_run_llm = (
         not args.no_llm
+        and not args.dry_run
         and bool(os.getenv("OPENAI_API_KEY"))
         and (mech.missing_from_doc or mech.removed_from_doc
              or mech.fixed_defaults or mech.deferred_enum)
@@ -997,6 +1068,8 @@ def main() -> int:
 
     if args.no_llm:
         polish_skipped_reason = "--no-llm"
+    elif args.dry_run:
+        polish_skipped_reason = "--dry-run (OpenAI is not called)"
     elif not os.getenv("OPENAI_API_KEY"):
         polish_skipped_reason = "OPENAI_API_KEY not set"
     elif not (mech.missing_from_doc or mech.removed_from_doc
@@ -1007,7 +1080,10 @@ def main() -> int:
     if will_run_llm and not args.skip_source:
         target = set(all_server_flags.keys())
         try:
-            source_facts = load_or_capture_source(args, target)
+            source_facts = load_or_capture_source(
+                args, target, dfly_refs.facts_commit(facts),
+                groups={n: f.get("group") for n, f in all_server_flags.items()},
+            )
         except Exception as e:
             print(f"  warning: source capture failed ({e}); "
                   f"LLM will only have --helpfull data")
