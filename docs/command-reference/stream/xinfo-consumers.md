@@ -20,7 +20,7 @@ XINFO CONSUMERS key group
 ```
 
 - **Time complexity:** O(1)
-- **ACL categories:** @read, @stream, @slow
+- **ACL categories:** @slow
 
 ## Parameter Explanations
 

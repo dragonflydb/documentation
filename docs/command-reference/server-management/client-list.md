@@ -16,7 +16,7 @@ CLIENT LIST [TYPE <type>] [ID <client-id> [client-id ...]]
 
 **Time complexity:** O(N) where N is the number of client connections
 
-**ACL categories:** @admin, @slow, @dangerous, @connection
+**ACL categories:** @slow, @connection
 
 The `CLIENT LIST` command returns information and statistics about the client
 connections server in a mostly human readable format.

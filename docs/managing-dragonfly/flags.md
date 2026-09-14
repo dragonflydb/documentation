@@ -26,6 +26,31 @@ flags which include specified substring in either in the name, description or pa
 
   `default: false`
 
+### `--cf_bucket_size`
+  Default cuckoo filter bucket size, in slots per bucket, when a filter is created without an explicit bucket size.
+
+  `default: 2`
+
+### `--cf_expansion_factor`
+  Default growth factor for cuckoo filter sub-filters.
+
+  `default: 1`
+
+### `--cf_initial_size`
+  Default initial capacity for a cuckoo filter.
+
+  `default: 1024`
+
+### `--cf_max_expansions`
+  Maximum number of sub-filters a cuckoo filter can grow to through `CF.ADD`, `CF.ADDNX`, `CF.INSERT`, or `CF.INSERTNX` before those commands start failing.
+
+  `default: 32`
+
+### `--cf_max_iterations`
+  Default maximum number of cuckoo filter relocation iterations before an insert fails.
+
+  `default: 20`
+
 ### `--cluster_mode`
   Set cluster mode. Available options are: `yes`, `emulated` and empty `""`.
 
@@ -34,7 +59,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--maxmemory`
   Limit on maximum-memory that is used by the database. 0 - means the program will automatically determine its maximum memory usage.
 
-  `default: 0`
+  `default: 0B`
 
 ### `--dbnum`
   Number of databases.
@@ -47,12 +72,12 @@ flags which include specified substring in either in the name, description or pa
   `default: ""`
 
 ### `--requirepass`
-  Password for AUTH authentication.
+  Password for AUTH authentication. If empty, it can also be set with the `DFLY_PASSWORD` environment variable.
 
   `default: ""`
 
 ### `--dbfilename`
-  The filename to save/load the DB.
+  The filename to save/load the DB. In addition to `{timestamp}`, the `{Y}`, `{m}`, and `{d}` macros can be used.
 
   `default: "dump-{timestamp}"`
 
@@ -86,7 +111,12 @@ flags which include specified substring in either in the name, description or pa
 ### `--max_client_iobuf_len`
   Maximum io buffer length that is used to read client requests.
 
-  `default: 64.0KiB`
+  `default: 32.0KiB`
+
+### `--iobuf_min_shrink_interval_sec`
+  Minimum time, in seconds, before a client input buffer may shrink. A value of 0 disables shrinking.
+
+  `default: 30`
 
 ### `--max_multi_bulk_len`
   Maximum multi-bulk (array) length that is allowed to be accepted when parsing RESP protocol
@@ -274,6 +304,21 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 0.2`
 
+### `--mem_defrag_check_sec_interval`
+  Number of seconds between every defragmentation necessity check.
+
+  `default: 60`
+
+### `--mem_defrag_max_burst_duration_us`
+  Maximum real time, measured in microseconds, that `DefragTask()` may run at the proactor's highest on-idle priority before forcing a cooldown. A value of 0 disables the duty-cycle cap.
+
+  `default: 0`
+
+### `--mem_defrag_backoff_duration_us`
+  Duration in microseconds to drop to low on-idle priority after `mem_defrag_max_burst_duration_us` is reached, before resuming at high priority.
+
+  `default: 0`
+
 ### `--shard_round_robin_prefix`
   Deprecated and will be removed.
 
@@ -313,6 +358,21 @@ flags which include specified substring in either in the name, description or pa
   Maximum bytes in-flight to disk before rejecting new stashes or applying client backpressure. Allows batching writes to saturate disk I/O even with few clients.
 
   `default: 256.0KiB`
+
+### `--tiered_offload_scan_budget_us`
+  Base CPU time slice, in microseconds, granted to a single background offloading scan. A value of 0 disables offloading scans.
+
+  `default: 100`
+
+### `--tiered_defrag_scan_budget_us`
+  Base CPU time slice, in microseconds, granted to a single background defragmentation scan. It scales up to three times this value with the amount of fragmentation found. A value of 0 disables defragmentation scans.
+
+  `default: 2`
+
+### `--tiered_max_pending_defrags`
+  Maximum number of concurrent defragmentation read operations.
+
+  `default: 50`
 
 ### `--keys_output_limit`
   Maximum number of keys output by keys command.
@@ -395,17 +455,15 @@ flags which include specified substring in either in the name, description or pa
   `default: 2`
 
 ### `--compression_mode`
-  Set 0 for no compression, set 1 for single entry lzf compression, set 2 for multi entry zstd compression on
-  df snapshot and single entry on rdb snapshot, set 3 for multi entry lz4 compression on df snapshot and
-  single entry on rdb snapshot.
+  Select the snapshot compression mode.
 
   `default: 3`
 
   Where:
-  - `0` — `NONE` — single-entry, no compression.
-  - `1` — `SINGLE_ENTRY` — single entry lzf compression.
-  - `2` — `MULTI_ENTRY_ZSTD` — multi entry zstd compression on df snapshot and single entry on rdb snapshot.
-  - `3` — `MULTI_ENTRY_LZ4` — multi entry lz4 compression on df snapshot and single entry on rdb snapshot.
+  - `0` — `NONE` — no compression.
+  - `1` — `SINGLE_ENTRY` — single-entry LZF compression.
+  - `2` — `MULTI_ENTRY_ZSTD` — multi-entry ZSTD compression for Dragonfly snapshots and single-entry compression for RDB snapshots.
+  - `3` — `MULTI_ENTRY_LZ4` — multi-entry LZ4 compression for Dragonfly snapshots and single-entry compression for RDB snapshots.
 
 ### `--master_connect_timeout_ms`
   Timeout for establishing connection to a replication master.
@@ -430,8 +488,9 @@ flags which include specified substring in either in the name, description or pa
 ### `--default_lua_flags`
   Configure default flags for running Lua scripts:
 
-  - Use `allow-undeclared-keys` to allow accessing undeclared keys,
+  - Use `allow-undeclared-keys` to allow accessing undeclared keys.
   - Use `disable-atomicity` to allow running scripts non-atomically.
+  - Use `legacy-float` to return floats as integers.
 
   Specify multiple values separated by space, for example `allow-undeclared-keys disable-atomicity`
   runs scripts non-atomically and allows accessing undeclared keys.
@@ -522,6 +581,21 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 32`
 
+### `--jwt_validate`
+  Master switch for JWT-mode authentication. When true, every `AUTH` credential is sent to `--jwt_validate_url` instead of being checked against the local ACL password store. The URL must be configured at startup. This flag can be changed at runtime with `CONFIG SET`.
+
+  `default: false`
+
+### `--jwt_validate_timeout_ms`
+  Deadline in milliseconds for the complete JWT validation HTTP call. A validator that does not respond before the deadline causes `AUTH` to be rejected.
+
+  `default: 300`
+
+### `--jwt_validate_url`
+  HTTP endpoint used to validate `AUTH` credentials in JWT mode. The endpoint must return JSON containing `valid`, `username`, and optionally `exp`. The named ACL user must already be provisioned. Dragonfly does not cache validation results, and the endpoint uses plain HTTP without TLS.
+
+  `default: ""`
+
 ### `--cluster_announce_ip`
   Ip that cluster commands announce to the client.
 
@@ -538,9 +612,19 @@ flags which include specified substring in either in the name, description or pa
   `default: 3000`
 
 ### `--shard_repl_backlog_len`
-  The length of the circular replication log per shard.
+  Legacy maximum number of entries retained by each shard's replication backlog. A nonzero value disables time- and byte-based eviction unless either newer backlog limit flag is explicitly configured.
 
-  `default: 8192`
+  `default: 0`
+
+### `--shard_repl_backlog_max_bytes`
+  Maximum bytes retained by each shard's replication backlog. A value of 0 uses `maxmemory / shard count / 200`.
+
+  `default: 0B`
+
+### `--shard_repl_backlog_time_ms`
+  Target retention age, in milliseconds, for entries in each shard's replication backlog. Older entries are evicted on later journal writes. A value of 0 disables time-based eviction.
+
+  `default: 5000`
 
 ### `--proactor_affinity_mode`
   Can be on, off or auto.
@@ -551,6 +635,16 @@ flags which include specified substring in either in the name, description or pa
   Number of io threads in the pool. If zero is specified, it will use as many as there are CPU cores.
 
   `default: 0`
+
+### `--proactor_busy_poll_usec`
+  How long a proactor busy-polls for completions before falling back to a blocking wait. Raising this value trades CPU usage for wakeup latency.
+
+  `default: 20`
+
+### `--proactor_irq_cpus`
+  Explicit list of CPU IDs or ranges that handle IRQs, such as `1,4,6,7` or `0-47`. These CPUs are pinned to the highest proactor thread indices. This does not affect the pool size and is ignored if it names an offline CPU or more CPUs than the pool has threads.
+
+  `default: ""`
 
 ### `--flagfile`
   Comma-separated list of files to load flags from.
@@ -598,7 +692,7 @@ flags which include specified substring in either in the name, description or pa
   `default: 2`
 
 ### `--command_alias`
-  Add an alias for given commands, format is: `<alias>=<original>, <alias>=<original>`
+  Add an alias for given commands, format is: `<alias>=<original>, <alias>=<original>`. Aliases must be set identically on replicas, if applicable.
 
   `default:`
 
@@ -692,6 +786,16 @@ flags which include specified substring in either in the name, description or pa
 
   `default: false`
 
+### `--enable_shared_read_buffer`
+  Use one read buffer per proactor for eligible RESP IoLoopV2 connections.
+
+  `default: false`
+
+### `--shared_read_buffer_len`
+  Capacity of the per-proactor RESP IoLoopV2 shared read buffer.
+
+  `default: 32.0KiB`
+
 ### `--enable_tcp_defer_accept`
   Enable TCP_DEFER_ACCEPT option on server sockets.
 
@@ -746,11 +850,6 @@ flags which include specified substring in either in the name, description or pa
   If true, `GET` returns a borrowed view into the CompactObj raw payload for large raw strings. If false, it uses the materializing path. This flag can be used to compare the zero-copy and materializing `GET` paths.
 
   `default: true`
-
-### `--huffman_table`
-  A comma separated map: `domain1:code1,domain2:code2,...` where domain can currently be only `KEYS` or `STRINGS`, code is a base64-encoded huffman table exported via `DEBUG COMPRESSION EXPORT`. If the flag is empty no huffman compression is applied.
-
-  `default: ""`
 
 ### `--info_replication_valkey_compatible`
   When true, output valkey compatible values for info-replication.
@@ -867,15 +966,15 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 1000`
 
+### `--max_rdb_save_serialize_buffer_capacity`
+  Maximum buffer capacity that the RDB serializer retains after a flush.
+
+  `default: 4194304`
+
 ### `--max_squashed_cmd_num`
   Max number of commands squashed in a single shard during squash optimization.
 
   `default: 100`
-
-### `--mem_defrag_check_sec_interval`
-  Number of seconds between every defragmentation necessity check.
-
-  `default: 60`
 
 ### `--mget_dedup_keys`
   If true, MGET will deduplicate keys.
@@ -1075,7 +1174,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--table_growth_margin`
   Prevents table from growing if number of free slots x average object size x this ratio is larger than memory budget.
 
-  `default: 0.4`
+  `default: 0.15`
 
 ### `--tcp_backlog`
   TCP listen(2) backlog parameter.
@@ -1141,6 +1240,11 @@ flags which include specified substring in either in the name, description or pa
   Length threshold for warning about long transaction queue.
 
   `default: 96`
+
+### `--disable_scope_based_mem_track`
+  Turn off scope-based memory metrics.
+
+  `default: true`
 
 ### `--unlink_experimental_async`
   If true, runs unlink command asynchronously.

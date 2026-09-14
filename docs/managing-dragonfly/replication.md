@@ -35,6 +35,11 @@ The instructions below apply to this type of replication as well, with the only 
 
 This replication process internally is vastly different from the original Redis replication algorithm, but from the outside, the API is kept the same to make it compatible with the current ecosystem.
 
+When a replica reconnects after losing its connection, the primary tries a partial sync from its per-shard replication backlog and falls back to a full sync if the backlog no longer holds the entries the replica is missing.
+Starting with Dragonfly v2.0.0, the backlog is limited by both age and size: `--shard_repl_backlog_time_ms` (default `5000`, `0` disables the age limit) evicts older entries as new writes arrive, and `--shard_repl_backlog_max_bytes` caps each shard's backlog (default `0`, which uses `maxmemory` / shard count / 200).
+If replicas often perform a full sync after short disconnections, increase these limits.
+The legacy `--shard_repl_backlog_len` flag is still accepted: a nonzero value limits the backlog by entry count and disables the age and size limits unless one of the new flags is also set.
+
 :::caution Experimental cascading replication
 
 Starting with Dragonfly v1.40.0, cascading replication is available behind the

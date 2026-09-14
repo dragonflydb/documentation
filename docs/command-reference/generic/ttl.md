@@ -25,7 +25,7 @@ given key will continue to be part of the dataset.
 
 [Integer reply](https://valkey.io/topics/protocol/#integers): TTL in seconds, or a negative value in order to signal an error.
 
-- The command returns `-2` if the key does not exist.
+- The command returns `-2` if the key does not exist or has expired.
 - The command returns `-1` if the key exists but has no associated expire.
 
 ## Examples

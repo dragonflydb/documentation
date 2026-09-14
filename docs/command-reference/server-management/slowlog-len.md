@@ -12,6 +12,8 @@ import PageTitle from '@site/src/components/PageTitle';
 
     SLOWLOG LEN
 
+**ACL categories:** @admin, @dangerous, @slow
+
 The `SLOWLOG LEN` returns the current number of entries in the slow log.
 A new entry is added to the slow log whenever a command exceeds the execution time threshold defined by the `slowlog_log_slower_than` configuration directive.
 The maximum number of entries in the slow log is governed by the `slowlog_max_len` configuration directive.

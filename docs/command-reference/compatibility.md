@@ -315,7 +315,7 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">GEORADIUSBYMEMBER</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">GEORADIUSBYMEMBER_RO</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">GEOSEARCH</span> | <span class="support supported">Fully supported</span> |  |
-|  | <span class="command">GEOSEARCHSTORE</span> | <span class="support unsupported">Unsupported</span> |  |
+|  | <span class="command">GEOSEARCHSTORE</span> | <span class="support supported">Fully supported</span> |  |
 | <span class="family">Bloom Filter</span> | <span class="command">BF.ADD</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">BF.MADD</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">BF.EXISTS</span> | <span class="support supported">Fully supported</span> |  |
@@ -426,4 +426,4 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">READONLY</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">READWRITE</span> | <span class="support supported">Fully supported</span> |  |
 
-Verification: Dragonfly v1.40.0; Redis 8.6.4; modules: BF, CF, CMS, FT, JSON, TDIGEST, TOPK, TS.
+Verification: Dragonfly v2.0.0; Redis 8.6.4; modules: BF, CF, CMS, FT, JSON, TDIGEST, TOPK, TS.

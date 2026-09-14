@@ -22,7 +22,7 @@ XGROUP DELCONSUMER key group consumer
 ```
 
 - **Time complexity:** O(1)
-- **ACL categories:** @write, @stream, @slow
+- **ACL categories:** @slow
 
 ## Parameter Explanations
 

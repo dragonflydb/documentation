@@ -58,6 +58,8 @@ An [array](https://valkey.io/topics/protocol/#arrays) of 5 integers with the fol
 4. Number of seconds to wait until a retry if the related action should be limited, else -1. (Equivalent to `Retry-After`)
 5. Number of seconds until the limit is fully restored. (Equivalent to `X-RateLimit-Reset`)
 
+Positive values in the last two fields are rounded up to whole seconds.
+
 ## Examples
 
 ```shell
@@ -66,7 +68,7 @@ dragonfly$> CL.THROTTLE user123 0 1 10 1
 2) (integer) 1
 3) (integer) 0
 4) (integer) -1
-5) (integer) 11
+5) (integer) 10
 
 dragonfly$> CL.THROTTLE user123 0 1 10 1
 1) (integer) 1

@@ -29,6 +29,7 @@ A backup can be triggered manually with the [`SAVE`](../command-reference/server
 
 When a Dragonfly instance is started, it will try to find a snapshot file in its configured `dir` path and will load it automatically.
 Like automatic backups, this can be disabled by configuring `dbfilename` with an empty value.
+Starting with Dragonfly v2.0.0, automatic loading also accepts RDB files written by Valkey versions that use the `VALKEY080` file header (for example, Valkey 9.1), including hash fields with per-field expiration.
 
 ## Flags
 

@@ -12,6 +12,8 @@ import PageTitle from '@site/src/components/PageTitle';
 
     SLOWLOG GET [count]
 
+**ACL categories:** @admin, @dangerous, @slow
+
 The `SLOWLOG GET` command returns entries from the slow log in chronological order.
 
 The Dragonfly Slow Log is a system to log queries that exceeded a specified execution time.
@@ -21,7 +23,7 @@ A new entry is added to the slow log whenever a command exceeds the execution ti
 defined by the `slowlog_log_slower_than` configuration directive.
 The maximum number of entries in the slow log is governed by the `slowlog_max_len` configuration directive.
 
-By default the command returns latest twenty entries in the log. The optional `count` argument limits the number of returned entries, so the command returns at most up to `count` entries, the special number -1 means return all entries.
+By default the command returns latest ten entries in the log. The optional `count` argument limits the number of returned entries, so the command returns at most up to `count` entries, the special number -1 means return all entries.
 
 Each entry from the slow log is comprised of the following six values:
 

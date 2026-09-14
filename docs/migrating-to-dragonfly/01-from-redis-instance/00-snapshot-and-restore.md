@@ -14,6 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 Snapshot and Restore is a widely adopted technique for migrating data across different database instances.
 To facilitate a transition from a Redis setup to a Dragonfly environment, the process involves configuring Redis to generate snapshots, known as RDB (Redis Database) files, on disk.
 Alternatively, users can manually trigger the [`SAVE`](https://redis.io/commands/save/) or [`BGSAVE`](https://redis.io/commands/bgsave/) command to create these snapshots.
+Starting with Dragonfly v2.0.0, you can also load RDB snapshots created by Valkey versions that write the `VALKEY080` file header (for example, Valkey 9.1), so the same steps apply when migrating from Valkey.
 
 To migrate the Redis data into a Dragonfly instance, the first step is to obtain the point-in-time snapshot, represented by the RDB file.
 As part of the Dragonfly initialization process, the system locates the designated `dir` path, a configurable flag that points to the directory where Dragonfly manages its on-disk data.

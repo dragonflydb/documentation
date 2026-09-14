@@ -19,6 +19,11 @@ import PageTitle from '@site/src/components/PageTitle';
 Executes all previously queued commands in a [transaction][tt] and restores the
 connection state to normal.
 
+If a command is rejected while queuing (for example, an unknown command or a
+wrong number of arguments), `EXEC` discards the transaction without executing
+any queued command and returns an `EXECABORT` error. The error from a nested
+`MULTI` call does not abort the transaction.
+
 [tt]: https://redis.io/topics/transactions
 
 When using `WATCH`, `EXEC` will execute commands only if the watched keys were

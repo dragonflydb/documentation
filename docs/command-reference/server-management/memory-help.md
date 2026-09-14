@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @slow
+**ACL categories:** @slow, @read
 
 The `MEMORY HELP` command returns a helpful text describing the different
 subcommands.

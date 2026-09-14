@@ -5,7 +5,7 @@ sidebar_position: 3
 
 # Dragonfly Instance Authentication
 
-This guide provides step-by-step instructions for setting up Dragonfly with authentication. Currently, Dragonfly supports two types of authentication:
+This guide provides step-by-step instructions for setting up Dragonfly with authentication. It covers two authentication configurations managed through Kubernetes secrets:
 
 - [Password-based authentication](#password-based-authentication) through a secret
 - [TLS-based authentication](#tls-based-authentication) through a secret

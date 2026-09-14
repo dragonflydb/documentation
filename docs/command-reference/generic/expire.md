@@ -57,6 +57,14 @@ will be `del`, not `expired`).
 - `GT`: Expiry will only be set if the new expiry is greater than current one.
 - `LT`: Expiry will only be set if the new expiry is less than current one.
 
+`NX` and `XX` cannot be combined, and neither can `GT` and `LT`; such
+combinations return an error.
+When `XX` is combined with `GT` or `LT`, the expiry will only be set if both
+conditions are satisfied.
+When `NX` is combined with `GT` or `LT`, the expiry will be set if the key has
+no expiry; otherwise `GT` or `LT` alone decides (Redis rejects these
+combinations).
+
 ## Refreshing Expiries
 
 It is possible to call `EXPIRE` using as argument a key that already has an

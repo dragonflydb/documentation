@@ -47,7 +47,10 @@ percentage in the first line of the report.
 The command runs on every shard thread in parallel, and each thread stops once it exhausts a small
 time budget, so a single invocation scans only part of the keyspace. Each shard keeps a scan
 cursor, and the next invocation resumes from where the previous one stopped. Run the command
-repeatedly to cover a large keyspace.
+repeatedly to cover a large keyspace. The budget is checked between groups of keys, not inside a
+single key, so a key holding a large collection is processed in full and a shard thread can run
+well past its budget. The command may temporarily monopolize shard threads, causing high CPU usage
+and latency spikes, so run it during low-traffic periods.
 
 When a shard completes a full pass over its data, the following invocation resets that shard's
 cursor and reports no pages for it — an empty `[Shard n]` section with zero counters. The

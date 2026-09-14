@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) where N is the number of active shard channels, and assuming constant time pattern matching (relatively short shard channels).
 
-**ACL categories:** @pubsub, @slow
+**ACL categories:** @slow
 
 Lists the currently *active shard channels*.
 

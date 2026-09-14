@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) for the SHARDNUMSUB subcommand, where N is the number of requested shard channels
 
-**ACL categories:** @pubsub, @slow
+**ACL categories:** @slow
 
 Returns the number of subscribers for the specified shard channels.
 

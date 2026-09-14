@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** Depends on how much memory is allocated, could be slow
 
-**ACL categories:** @slow
+**ACL categories:** @slow, @read
 
 The `MEMORY MALLOC-STATS` command provides an internal statistics report from
 the memory allocator.

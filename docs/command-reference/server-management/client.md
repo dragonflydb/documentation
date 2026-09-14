@@ -14,6 +14,8 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** Depends on subcommand.
 
+**ACL categories:** @connection, @slow
+
 This is a container command for client connection commands.
 
 Currently, the following subcommands are supported:

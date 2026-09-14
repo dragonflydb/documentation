@@ -30,7 +30,7 @@ When called without the `count` argument:
 
 When called with the `count` argument:
 
-[Array reply](https://valkey.io/topics/protocol/#arrays): list of popped elements, or `nil` when `key` does not exist.
+[Array reply](https://valkey.io/topics/protocol/#arrays): list of popped elements, or a null array when `key` does not exist.
 
 ## Examples
 

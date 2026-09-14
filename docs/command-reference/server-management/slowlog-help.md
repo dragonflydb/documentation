@@ -12,6 +12,8 @@ import PageTitle from '@site/src/components/PageTitle';
 
     SLOWLOG HELP
 
+**ACL categories:** @admin, @dangerous, @slow
+
 The `SLOWLOG HELP` command returns a helpful text describing the different subcommands.
 
 ## Return
