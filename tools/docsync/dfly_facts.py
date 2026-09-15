@@ -23,6 +23,10 @@ Output JSON shape (top level):
       "meta": {
         "captured_at": "2026-...Z",
         "image_digest": "sha256:...",
+        "image_id": "sha256:...",
+        "image_local_build": false,       # true for build_prerelease_image.sh output
+        "dragonfly_version": "dragonfly v1.38.0-<sha>",
+        "dragonfly_commit": "<sha>",      # consumers compare this to the tag's commit
         "runtime_config": { "maxmemory": "...", ... }   # volatile, host-dependent
       },
       "data": {
@@ -37,6 +41,13 @@ Output JSON shape (top level):
 `data` is bit-stable across runs on the same tag. `meta` is volatile by design
 (captured_at varies; runtime_config holds CONFIG GET output where some values
 like maxmemory are auto-detected from host memory).
+
+The image must be built from the commit the tag points to upstream; a stale
+local image (e.g. after a draft release tag moved), or a tag that does not exist
+upstream, aborts the capture. That check needs `git ls-remote` access to GitHub
+and is skipped with a warning otherwise.
+Docker is never allowed to pull implicitly: with --skip-pull the image must
+exist locally.
 For reproducibility tests: `jq -S .data <out>.json | sha256sum` should be
 identical between two runs on the same tag.
 """
@@ -55,6 +66,11 @@ from pathlib import Path
 
 import redis
 
+try:
+    from .dfly_refs import docker_pull, image_version, short, upstream_tag_lookup
+except ImportError:  # Direct execution: python tools/docsync/dfly_facts.py
+    from dfly_refs import docker_pull, image_version, short, upstream_tag_lookup
+
 DRAGONFLY_IMAGE = "docker.dragonflydb.io/dragonflydb/dragonfly"
 SCHEMA_VERSION = 1
 PING_TIMEOUT_S = 30
@@ -67,9 +83,12 @@ def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
 
 # --- Docker -------------------------------------------------------------------
 
-def docker_pull(image_ref: str) -> None:
-    print(f"  Pulling {image_ref}...")
-    run(["docker", "pull", image_ref])
+def docker_image_labels(image_ref: str) -> tuple[str, dict]:
+    """(image ID, config labels) of a local image."""
+    p = run(["docker", "image", "inspect", "--format",
+             "{{json .Id}}\t{{json .Config.Labels}}", image_ref])
+    image_id, labels = p.stdout.strip().split("\t", 1)
+    return json.loads(image_id), json.loads(labels) or {}
 
 
 def docker_image_digest(image_ref: str) -> str:
@@ -82,7 +101,7 @@ def docker_image_digest(image_ref: str) -> str:
 
 def docker_run_dragonfly(image_ref: str, name: str) -> str:
     """Boot Dragonfly detached. Return container IP on bridge network."""
-    run(["docker", "run", "-d", "--name", name, image_ref])
+    run(["docker", "run", "-d", "--pull=never", "--name", name, image_ref])
     p = run([
         "docker", "inspect", name,
         "--format", "{{.NetworkSettings.Networks.bridge.IPAddress}}",
@@ -100,7 +119,8 @@ def docker_rm(name: str) -> None:
 def docker_helpfull(image_ref: str) -> str:
     """Run `dragonfly --helpfull` in an ephemeral container and return raw stdout."""
     p = subprocess.run(
-        ["docker", "run", "--rm", "--entrypoint", "dragonfly", image_ref, "--helpfull"],
+        ["docker", "run", "--rm", "--pull=never", "--entrypoint", "dragonfly",
+         image_ref, "--helpfull"],
         capture_output=True, text=True,
     )
     return p.stdout
@@ -287,6 +307,17 @@ def write_atomic_json(path: Path, payload: dict) -> None:
 # --- Main ---------------------------------------------------------------------
 
 def main() -> int:
+    try:
+        return capture()
+    except RuntimeError as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        return 1
+    except subprocess.CalledProcessError as e:
+        print(f"ERROR: {' '.join(e.cmd)} failed: {(e.stderr or '').strip()}", file=sys.stderr)
+        return 1
+
+
+def capture() -> int:
     p = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     p.add_argument("--tag", required=True, help="Dragonfly tag (e.g. v1.38.0)")
     p.add_argument("--output", type=Path, default=None,
@@ -303,12 +334,33 @@ def main() -> int:
     print(f"[1/5] Image {image_ref}")
     if not args.skip_pull:
         docker_pull(image_ref)
+    version, commit = image_version(image_ref)
+    print(f"  {version}")
+    if not commit:
+        # Facts without a commit could never be matched to the tag again.
+        raise RuntimeError(f"`dragonfly --version` in {image_ref} has no build commit SHA "
+                           f"({version}); cannot pin facts to tag {args.tag}")
+    reachable, upstream = upstream_tag_lookup(args.tag)
+    if reachable and not upstream:
+        # Facts are keyed by tag name; a typo or branch name would pin nothing.
+        raise RuntimeError(f"tag {args.tag} does not exist upstream; refusing to capture "
+                           f"facts for it")
+    if upstream and commit != upstream:
+        raise RuntimeError(
+            f"image {image_ref} was built from {short(commit)}, but tag {args.tag} "
+            f"points to {short(upstream)} upstream. Rebuild or re-pull the image."
+        )
     image_digest = docker_image_digest(image_ref)
+    image_id, labels = docker_image_labels(image_ref)
 
     print(f"[2/5] Capture --helpfull (ephemeral container)...")
     helpfull_raw = docker_helpfull(image_ref)
     flags = parse_helpfull(helpfull_raw)
     print(f"  parsed {len(flags)} flags")
+    if not flags:
+        # An empty facts["data"]["flags"] would make flags_sync delete every
+        # section of flags.md, so never write one.
+        raise RuntimeError(f"`dragonfly --helpfull` in {image_ref} yielded no flags")
 
     print(f"[3/5] Boot {container_name}...")
     try:
@@ -334,6 +386,10 @@ def main() -> int:
         "meta": {
             "captured_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "image_digest": image_digest,
+            "image_id": image_id,
+            "image_local_build": "io.dragonflydb.local-build.source" in labels,
+            "dragonfly_version": version,
+            "dragonfly_commit": commit,
             "runtime_config": config,
         },
         "data": {

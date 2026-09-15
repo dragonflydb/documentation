@@ -16,8 +16,13 @@ tools/docsync/
 ├── docs_sync.py                # update doc pages from a tag-to-tag source diff
 ├── openai_llm.py               # shared Responses API + Structured Outputs adapter
 ├── test_compat_sync.py         # offline source-checkout regression tests
+├── test_dfly_refs.py           # offline tag/commit consistency tests
+├── test_acl_sync.py            # offline subcommand/container/dry-run tests
+├── test_flags_sync.py          # offline C++ flag parser / dry-run tests
 ├── test_openai_llm.py          # offline adapter/schema/routing tests
 ├── dfly_facts.py               # helper — Docker → JSON ground truth
+├── dfly_refs.py                # helper — pins a tag to one commit (source/image/facts)
+├── build_prerelease_image.sh   # builds the image for a draft (unpublished) release
 └── requirements.txt
 ```
 
@@ -27,7 +32,7 @@ Generated artifacts live under `tools/generated/` and are gitignored:
 tools/generated/
 ├── facts/<tag>.json            # output of dfly_facts.py
 ├── compatibility/<ts>/          # compat_sync evidence + draft table
-├── source/<tag>.json           # parsed ABSL_FLAG / enum data (flags_sync)
+├── source/<tag>.json           # parsed ABSL_FLAG / enum data + commit (flags_sync)
 ├── update_plans/plan_<ts>.json     # output of docs_sync Phase 1
 ├── update_plans/results_<ts>.json  # output of docs_sync Phase 2
 └── llm_debug/                  # rejected LLM outputs for inspection:
@@ -40,6 +45,7 @@ tools/generated/
 ```sh
 pip install -r tools/docsync/requirements.txt
 docker pull docker.dragonflydb.io/dragonflydb/dragonfly:v1.38.0
+#   (not published yet for a draft release — see "Unreleased tags" below)
 # compat_sync needs NO API key by default (deterministic source analysis).
 export OPENAI_API_KEY=...       # required for every optional LLM step
 # Optional global overrides:
@@ -58,11 +64,290 @@ omit the parameter when overriding to a model with different reasoning support.
 Any override must support the Responses API, strict JSON Schema outputs, and
 the workflow's configured output cap (up to 64K tokens for `flags_sync.py`).
 
+## Release runbook (run in this order)
+
+One pass per Dragonfly release. Run the scripts **one at a time**:
+`docs_sync.py`, `flags_sync.py` and `compat_sync.py` share the source checkout
+in `/tmp/dragonfly-docsync`. Review and commit after each step, so every change
+can be checked (and reverted) on its own. The code blocks contain no `#`
+comments, so they can be pasted into bash or zsh as they are.
+
+**Nothing in this runbook pushes anything, and nothing may be pushed.** The
+scripts only read from GitHub and Docker registries, and all their writes are
+local. Never `git push` to `dragonflydb/dragonfly`, never `docker push` the
+locally built image (it carries the official image name), and never modify
+releases or tags with `gh`.
+
+### 0. Once per machine
+
+- `pip install -r tools/docsync/requirements.txt`, Docker, `jq`, `yarn install`.
+- `gh auth login` with an account that can **see** draft releases of
+  `dragonflydb/dragonfly`.
+  - `gh` is used read-only: step 1 runs `gh release view`, and
+    `build_prerelease_image.sh` runs `gh api` and `gh release download`.
+  - GitHub shows a draft release only to accounts with write permission on
+    the repository. That is a visibility rule only: nothing is ever written.
+    Any other account gets `release not found` for a draft.
+- `export OPENAI_API_KEY=...` for the LLM steps (ACL repair, flags polish,
+  `docs_sync.py`). `compat_sync.py` does not need it.
+
+### 1. Choose the versions and the image source
+
+`OLD` and `REDIS` are recorded in the `Verification:` line at the end of the
+compatibility page. Read it now, because step 5 rewrites it:
+
+```sh
+grep '^Verification:' docs/command-reference/compatibility.md
+```
+
+For `Verification: Dragonfly v1.40.0; Redis 8.6.4; ...`, set `OLD` to the
+Dragonfly value and `REDIS` to the Redis value. Change `REDIS` only when you
+want to compare against a newer Redis. `NEW` is the release to document.
+
+```sh
+NEW=v2.0.0
+OLD=v1.40.0
+REDIS=8.6.4
+git switch -c docs/sync-$NEW
+gh release view $NEW -R dragonflydb/dragonfly --json isDraft,tagName
+```
+
+- **Published release** (`"isDraft": false`): run
+  `docker pull docker.dragonflydb.io/dragonflydb/dragonfly:$NEW`, then `PULL=`.
+- **Draft release** (`"isDraft": true`): the image is not published yet (see
+  [Unreleased tags](#unreleased-tags-draft-github-release)).
+  1. Run `tools/docsync/build_prerelease_image.sh $NEW`. The last line must
+     be `OK: ... (binary sha256 ... == release asset)`.
+  2. Set `PULL=--skip-pull`.
+
+### 2. Capture facts
+
+```sh
+python3 tools/docsync/dfly_facts.py --tag $NEW $PULL
+```
+
+The script prints `dragonfly <tag>-<commit>` and writes
+`tools/generated/facts/$NEW.json`. Steps 3, 4 and 6 reuse that file; step 5
+does not read it. It stops if the image was not built from the tag's commit.
+
+### 3. ACL category lines: `acl_sync.py`
+
+```sh
+python3 tools/docsync/acl_sync.py --tag $NEW $PULL --dry-run
+python3 tools/docsync/acl_sync.py --tag $NEW $PULL
+git diff docs/command-reference
+```
+
+- The `--dry-run` run is a preview: no pages written, no OpenAI.
+- Check the `Updated`, `not synced` and `UPDATE FAILED` lists.
+- A page still under `UPDATE FAILED` (exit code 1) needs a manual fix. Its
+  `expected:` line shows the exact ACL line to use: add it if the page has
+  none, or keep one ACL line if the page has several.
+- Commit.
+- This step runs before step 6 because `docs_sync.py` refuses to change ACL
+  lines.
+
+### 4. Flags page: `flags_sync.py`
+
+```sh
+python3 tools/docsync/flags_sync.py --tag $NEW $PULL --dry-run
+python3 tools/docsync/flags_sync.py --tag $NEW $PULL
+git diff docs/managing-dragonfly/flags.md
+```
+
+- The `--dry-run` run is the mechanical report: flags.md is not written and
+  OpenAI is not called.
+- Check the removed sections (flags the server no longer reports), the new
+  flags and the changed defaults.
+- The `LLM polish:` line should say `applied`. After `VALIDATION FAILED` or
+  `skipped (...)`, only the mechanical result is on disk. The raw output of a
+  rejected polish is in `tools/generated/llm_debug/`.
+- Exit codes:
+  - **1:** new flags were not added ("Flags missing from doc, NOT added"), or
+    a documented flag has no `default:` line ("Default-fix FAILURES").
+    `--dry-run` therefore exits 1 whenever there are new flags.
+  - **2:** the facts could not be loaded.
+- Commit.
+
+### 5. Compatibility table: `compat_sync.py`
+
+```sh
+python3 tools/docsync/compat_sync.py --dragonfly-ref $NEW --redis-ref $REDIS
+python3 tools/docsync/compat_sync.py --dragonfly-ref $NEW --redis-ref $REDIS --write-table
+git diff docs/command-reference/compatibility.md
+```
+
+- Before the second command, review
+  `tools/generated/compatibility/<ts>/tasks.json` and `draft_table.md`. In
+  `tasks.json`, check:
+  - `status-change-applied`: entries with `replaced_details` replaced a
+    curated note;
+  - `missing-row`;
+  - `unresolved-command`.
+- `--write-table` writes the page only for a full run: no `--filter`, no
+  `--limit`.
+- Commit.
+
+### 6. Page content: `docs_sync.py`
+
+```sh
+python3 tools/docsync/docs_sync.py --before $OLD --after $NEW $PULL --dry-run
+python3 tools/docsync/docs_sync.py --before $OLD --after $NEW --discover-only
+python3 tools/docsync/docs_sync.py --update-only-from tools/generated/update_plans/plan_<ts>.json $PULL
+git diff docs/
+```
+
+1. **`--dry-run`** checks the tags, the image and the facts. It makes no
+   OpenAI call and writes no pages, plan or results.
+2. **`--discover-only`** makes one LLM call and prints
+   `plan saved: tools/generated/update_plans/plan_<ts>.json`.
+   - Review that plan and delete the entries you do not want.
+   - To add a page, append `{"path": "docs/...md", "reason": "manual"}` to
+     `files_to_update`.
+   - Alternatively, pass `--also-update <file>` to the discover command: one
+     repo-relative path per line, e.g. `docs/command-reference/strings/incr.md`.
+     Re-running discover makes a new triage and a new plan.
+   - `flags.md` and `compatibility.md` are never planned or edited: steps 4
+     and 5 own them.
+3. **`--update-only-from`** updates the pages in the plan. To update in
+   batches, add `--filter 'docs/command-reference/strings/*'`.
+4. **Results:** read `tools/generated/update_plans/results_<ts>.json` and fix
+   the `failed`/`error` entries. Rejected LLM output is in
+   `tools/generated/llm_debug/`.
+5. **Examples:** review every changed example block by hand.
+   - Only `dragonfly> ` lines in changed or new ```` ```shell ```` blocks are
+     run in Docker and get their output replaced. Each such block starts from
+     an empty keyspace (`FLUSHALL`), so an example that depends on an earlier
+     block can get the wrong output.
+   - Output stays as the LLM wrote it for `dragonfly$> ` lines (most strings,
+     sorted-set and stream pages), `$ redis-cli ` lines, and blocks with
+     replication or cluster commands.
+6. Commit.
+
+### 7. Build
+
+```sh
+yarn build
+```
+
+The result is the local branch with one commit per step. Publishing it is a
+separate decision and is not part of this runbook.
+
+### If the tag moves while the release is a draft
+
+A script stops with one of these messages:
+- "image ... was built from X, but tag ... points to Y upstream";
+- "inputs are from different commits";
+- "plan was discovered at ...".
+
+To recover:
+
+1. Wait until upstream has rebuilt the release assets for the new commit.
+   `build_prerelease_image.sh` refuses assets built from the old commit.
+2. Re-run `tools/docsync/build_prerelease_image.sh $NEW`.
+3. Re-run steps 2–5. Stale caches are re-captured automatically.
+4. Re-run step 6 from `--discover-only`; the old plan is refused.
+
+### After the release is published
+
+Upstream's "Docker Release-v2" workflow pushes the image only after the
+release is published, so the image cannot be pulled for a while. Keep the
+local build until the pull works: `docker pull` replaces it.
+
+1. Check that the official image exists. If this fails, wait for the workflow
+   and retry:
+
+   ```sh
+   docker manifest inspect docker.dragonflydb.io/dragonflydb/dragonfly:$NEW
+   ```
+
+2. Pull the image and re-capture the facts:
+
+   ```sh
+   docker pull docker.dragonflydb.io/dragonflydb/dragonfly:$NEW
+   jq -S .data tools/generated/facts/$NEW.json | sha256sum
+   python3 tools/docsync/dfly_facts.py --tag $NEW
+   jq -S .data tools/generated/facts/$NEW.json | sha256sum
+   jq .meta.image_local_build tools/generated/facts/$NEW.json
+   ```
+
+3. Compare the output. The first hash is the draft build; the second and the
+   `false` are the official image. The official image is built from the same
+   commit, so the two hashes should match. If they differ, re-run steps 3–6
+   without `--skip-pull`.
+
+## Tags, commits and unreleased versions
+
+Every script keys its inputs by tag name, but a tag is only a pointer: while a
+GitHub release is still a draft, upstream may force-move its tag. So the scripts
+resolve the tag to a commit and require all inputs to agree on it
+(`dfly_refs.py`):
+
+- **Source checkout** (`/tmp/dragonfly-docsync`): `docs_sync.py`, and
+  `flags_sync.py` when it re-parses the source, compare the tag with upstream
+  before checking it out. If the tag is new or moved upstream, they fetch tags
+  with `--force --prune-tags`. The tag must then match upstream. A tag that no
+  longer exists upstream, cannot be resolved or cannot be checked out is an
+  error; previously the old tree was silently used. So is a checkout with local
+  changes or untracked files, since they would be parsed as part of the tag.
+  Only tags are accepted; `docs_sync --before` also takes a local revision that
+  is not a tag. `compat_sync.py` has its own checkout logic (see its section):
+  it also re-fetches a cached tag that moved and rejects a cached tag that was
+  deleted upstream, but accepts branches and SHAs.
+- **Docker image**: its commit is read from `dragonfly --version`.
+  `dfly_facts.py` refuses to capture from an image whose commit differs from the
+  tag's upstream commit, and refuses a tag that does not exist upstream. Docker never pulls implicitly (`--pull=never`), so with
+  `--skip-pull` the image must already exist locally.
+- **Cached facts** (`facts/<tag>.json`) record `meta.dragonfly_commit`. A cached
+  file whose commit differs from the tag's upstream commit, or from the local
+  image, or whose tag no longer exists upstream, is re-captured automatically. The same applies to a file written before
+  commit tracking existed. The flags_sync source cache (`source/<tag>.json`)
+  works the same way.
+- `docs_sync.py` plans record `before_commit`/`after_commit`. Phase 2 stops
+  before touching any page in these cases: either commit is no longer what its
+  tag points to (re-run discover); the source, image and facts commits differ;
+  or the image has no build SHA.
+
+The upstream check uses `git ls-remote` against GitHub (30s timeout; a fetch
+is bounded to 300s). When GitHub cannot be reached, the scripts print one
+WARNING per host and fall back to the local checkout/image only. They do not
+silently skip the check.
+
+### Unreleased tags (draft GitHub release)
+
+Upstream pushes `docker.dragonflydb.io/dragonflydb/dragonfly:<tag>` only when the
+release is **published**. While it is a draft, `docker pull` fails with
+`not found`/`manifest unknown`. Build the image from the draft release assets
+instead. The
+binary is byte-identical to the one the release will ship:
+
+```sh
+tools/docsync/build_prerelease_image.sh v2.0.0      # needs gh with access to the draft
+```
+
+Then pass `--skip-pull` to every script (`dfly_facts.py`, `acl_sync.py`,
+`flags_sync.py`, `docs_sync.py`). If the tag moves again, the scripts stop with
+"image ... was built from X, but tag ... points to Y upstream", "inputs are from
+different commits", or "plan was discovered at ...". Wait for upstream to rebuild
+the release assets (the build script refuses assets from the old commit),
+re-run the build script, then re-run the scripts. Once the release is published, remove the local image
+(`docker rmi ...:v2.0.0`) and run without `--skip-pull`. The official image has
+the same commit, so cached facts stay valid.
+
 ## acl_sync.py
 
 Captures `ACL CAT` from the live server and updates the `**ACL
 categor(y|ies):**` line on every command-reference page whose H1 matches
-a server command. Two stages:
+a server command. A subcommand page (`CLIENT LIST`, `XINFO STREAM`) whose name
+`ACL CAT` does not list on its own gets its parent command's categories.
+Dragonfly checks a subcommand it dispatches itself against the parent's
+categories (verified on a live v2.0.0 server). Subcommands registered on their
+own, such as `ACL SETUSER`, keep their own entry, and `XGROUP HELP` uses the
+hidden `_XGROUP_HELP` command that `CommandRegistry::FindExtended` routes it to
+(`ROUTED_SUBCOMMANDS`; the run warns about any other hidden command in the
+facts). Pages Docusaurus does not
+publish (a path component starting with `_`, e.g. `pubsub/_unsupported/`) are
+skipped. Two stages:
 
 1. **Mechanical pass** — minimal-diff edits:
    - if the *set* of categories on a page already equals the server set,
@@ -71,9 +356,12 @@ a server command. Two stages:
      order, new ones are appended (alphabetically), removed ones are
      dropped.
 
-2. **LLM repair pass** (requires `OPENAI_API_KEY`) — for every page
-   that the mechanical pass could not handle (no ACL line on a page that
-   documents a real server command, multiple ACL lines, etc.) The model is
+2. **LLM repair pass** (requires `OPENAI_API_KEY`; skipped by `--no-llm` and
+   `--dry-run`) — for every page that the mechanical pass could not handle
+   (no ACL line on a page that documents a real server command, multiple ACL
+   lines, etc.). Container pages ("This is a container command for ...") are
+   not exempt: on this site they carry the command's ACL line (CONFIG, MEMORY,
+   SLOWLOG, SCRIPT), so one without it is repaired like any other page. The model is
    given the page text, the command name, the expected categories from
    the server, and detailed instructions:
    - if the page is a container / navigation page (body is mostly a list
@@ -89,10 +377,13 @@ a server command. Two stages:
 
 Pages that remain in FAILED after both stages are listed at the end of
 the run with the LLM's complaint appended — they need a human to look.
+Every page that was not synced is listed too, with the reason (not a
+command, or a server command the server puts in no ACL category, such as
+`RANDOMKEY`).
 
 ```sh
 python tools/docsync/acl_sync.py --tag v1.38.0
-python tools/docsync/acl_sync.py --tag v1.38.0 --dry-run
+python tools/docsync/acl_sync.py --tag v1.38.0 --dry-run     # pages not written, no OpenAI
 python tools/docsync/acl_sync.py --tag v1.38.0 --no-llm        # mechanical-only
 python tools/docsync/acl_sync.py --tag v1.38.0 --filter "search/*"
 python tools/docsync/acl_sync.py --facts tools/generated/facts/v1.38.0.json
@@ -114,7 +405,16 @@ hallucinated option lists, run-to-run flips.)
 The curated table owns the **row set**; the **labels are recomputed**. The table
 is never restructured — commands present in Redis/Dragonfly but missing from it
 are reported as `missing-row` tasks, not injected (opt in with
-`--add-missing-rows`). Writing the doc is **opt-in** (`--write-table`); by
+`--add-missing-rows`). Curated Details text is kept while the verdict agrees
+with it. That covers a free-text note on a row whose label did not change ("Use
+MEMORY DECOMMIT instead."). It also covers human wording around the same
+`Missing:` options ("Missing: SAMPLES, which is accepted but ignored."), as
+long as the wording names no other option of the command. Only upper-case
+keywords (`DIFF1`, `MALLOC-STATS`) in a `Missing:` list count as options, and a
+`Missing:` list on a non-partial row is never kept. When the label or the missing options
+change, the derived text replaces the note, and the change log entry carries
+`replaced_details` so the lost note can be reviewed. Writing the doc is
+**opt-in** (`--write-table`); by
 default the tool only writes review artifacts under
 `tools/generated/compatibility/<ts>/`. Docker is used **only** to detect module
 versions.
@@ -186,8 +486,14 @@ python tools/docsync/compat_sync.py --dragonfly-ref v1.39.0 --redis-ref 8.6.4 --
 ```
 
 Source checkouts are cached under `/tmp`. When a requested ref is missing from a
-stale cache, the tool fetches tags and retries automatically. Use
-`--refresh-source` to fetch before every checkout.
+stale cache, or a cached tag has moved upstream, the tool fetches tags (with
+`--force`) and retries automatically. Use `--refresh-source` to fetch before
+every checkout. The Dragonfly commit is recorded in `metadata.json`, suffixed
+`-dirty` if `src/` has uncommitted changes. With `--dragonfly-source-dir`,
+`--dragonfly-ref` must match that directory's HEAD. The directory must be the
+root of its own git checkout to be verified; otherwise a WARNING is printed.
+`--write-table` together with `--dragonfly-ref` is refused when that checkout
+has uncommitted changes under `src/`.
 
 Artifacts under `tools/generated/compatibility/<ts>/`:
 
@@ -242,7 +548,13 @@ Three-stage pipeline:
      `/tmp/dragonfly-docsync` and checks out the requested tag) — gives
      the ABSL_FLAG declaration's file/line, surrounding C++ comments, and
      for enum-typed flags the enum's value list with positional indices.
-     Cached in `tools/generated/source/<tag>.json`.
+     When a flag is declared more than once (test and benchmark binaries
+     redeclare `force_epoll`, `tcp_nodelay`), the declaration from the file
+     that `--helpfull` names as the flag's group is used.
+     Cached in `tools/generated/source/<tag>.json` together with the
+     commit it was parsed at. The cache is re-parsed when that commit no
+     longer matches the facts, and the checkout must match the facts'
+     commit. Only loaded when the LLM polish runs.
 
 2. **Mechanical pass.**
    - **Delete** sections for flags the server no longer reports. The
@@ -280,10 +592,10 @@ document them).
 
 ```sh
 python tools/docsync/flags_sync.py --tag v1.38.0
-python tools/docsync/flags_sync.py --tag v1.38.0 --dry-run
+python tools/docsync/flags_sync.py --tag v1.38.0 --dry-run       # mechanical report, page not written, no OpenAI
 python tools/docsync/flags_sync.py --tag v1.38.0 --no-llm        # mechanical only
 python tools/docsync/flags_sync.py --tag v1.38.0 --skip-source   # no C++ context
-python tools/docsync/flags_sync.py --tag v1.38.0 --refresh-source
+python tools/docsync/flags_sync.py --tag v1.38.0 --refresh-source  # re-parse even if current
 python tools/docsync/flags_sync.py --facts tools/generated/facts/v1.38.0.json
 ```
 
@@ -295,12 +607,18 @@ flag isn't reported, documenting it would mislead users.
 ## docs_sync.py
 
 Updates documentation pages whose content drifted between two Dragonfly
-releases. Two phases driven by one command:
+releases. It never plans or edits `docs/managing-dragonfly/flags.md` or
+`docs/command-reference/compatibility.md`; `flags_sync.py` and `compat_sync.py`
+own them. Plan paths, whether from discovery, `--also-update` or a hand-edited
+plan, are normalized first, and paths outside `docs/` are rejected. Two phases
+driven by one command:
 
 1. **Discover** (single LLM call). Computes the Dragonfly source diff
-   between `--before` and `--after` (commit subjects + per-file stat,
-   never the raw diff), walks every `.md` under `docs/`, and asks OpenAI
-   which pages plausibly need updating and why. The plan is saved to
+   between `--before` and `--after` (every commit subject + every changed
+   file with added/deleted line counts, `src/` first, never the raw diff),
+   walks every `.md` under `docs/`, and asks OpenAI which pages plausibly
+   need updating and why. It aborts if either tag cannot be resolved, or
+   if the range has no commits and no `--also-update` pages were given. The plan is saved to
    `tools/generated/update_plans/plan_<ts>.json`.
 
    An optional `--also-update FILE` adds explicit paths to the plan
@@ -314,7 +632,11 @@ releases. Two phases driven by one command:
      pull the C++ handler body from the Dragonfly checkout at `--after`
      and the `COMMAND` / `ACL CAT` data captured by `dfly_facts.py`.
    - Boot a Dragonfly container at `--after` (with `--cluster_mode=emulated`
-     for cluster-family commands).
+     for cluster-family commands). The image is pulled once per run, unless
+     `--skip-pull` is given, and checked against the source and facts
+     commits before any page is processed. If the container fails to boot
+     for a page, that page is marked `failed` and left untouched. It is not
+     rewritten with unverified example output.
    - Pick a **sibling page** in the same directory as a *style template*
      (the shortest sibling that has H2 sections). The LLM is told to
      mirror the sibling's structural / formatting conventions and never
@@ -383,9 +705,17 @@ python tools/docsync/docs_sync.py \
     --update-only-from tools/generated/update_plans/plan_<ts>.json \
     --after v1.38.0        # skip discovery, run Phase 2 against a saved plan
 python tools/docsync/docs_sync.py --before v1.37.0 --after v1.38.0 \
-    --filter "command-reference/strings/*"
+    --filter "docs/command-reference/strings/*"
 python tools/docsync/docs_sync.py --before v1.37.0 --after v1.38.0 --dry-run
+    # checks tags/image/facts, lists the planned pages (only --also-update ones,
+    # since triage is not run); no OpenAI, no pages/plan/results written
 ```
+
+`--dry-run` never calls OpenAI and never writes doc pages, plans or results in
+any script. It may still refresh caches the checks need: capture
+`tools/generated/facts/<tag>.json`, check out the Dragonfly source, pull the
+image. To preview real LLM edits, run without it on a branch and review
+`git diff docs/`.
 
 Per-file results are written to
 `tools/generated/update_plans/results_<ts>.json`. Each entry has a
@@ -397,32 +727,6 @@ anything, why a write was skipped. Failed entries also point at the
 saved raw LLM output under `tools/generated/llm_debug/` so the failure
 mode can be inspected without re-running the LLM.
 
-## Typical workflow
-
-```sh
-# 1. Targeted, deterministic syncs (cheap, no diff range needed).
-python tools/docsync/acl_sync.py    --tag v1.38.0
-python tools/docsync/flags_sync.py  --tag v1.38.0
-
-# 2. Recompute the command compatibility table (deterministic; no API key).
-#    Review the change log, then re-run with --write-table to apply it.
-python tools/docsync/compat_sync.py --dragonfly-ref v1.39.0 --redis-ref 8.6.4
-python tools/docsync/compat_sync.py --dragonfly-ref v1.39.0 --redis-ref 8.6.4 --write-table
-
-# 3. Cross-page content sync between two releases (LLM-driven, expensive
-#    — only run when there is a real release-to-release jump to process).
-#    Start with --discover-only to review the plan, then run Phase 2.
-python tools/docsync/docs_sync.py --before v1.37.0 --after v1.38.0 --discover-only
-python tools/docsync/docs_sync.py --update-only-from \
-    tools/generated/update_plans/plan_<ts>.json --after v1.38.0
-
-# 4. Read the failure summaries each script printed and fix anything that
-#    needs human judgement (FAILED list, llm_debug/ for rejected outputs).
-
-# 5. Verify the build.
-yarn build
-```
-
 ## dfly_facts.py (helper)
 
 Boots `docker.dragonflydb.io/dragonflydb/dragonfly:<tag>`, captures
@@ -430,8 +734,13 @@ Boots `docker.dragonflydb.io/dragonflydb/dragonfly:<tag>`, captures
 `dragonfly --helpfull`, then writes a JSON snapshot under
 `tools/generated/facts/<tag>.json`.
 
-Sync scripts call this on demand and reuse the cached file when present.
-It can also be run by hand:
+Sync scripts call this on demand and reuse the cached file while its
+`meta.dragonfly_commit` still matches the tag (see "Tags, commits and
+unreleased versions"). The capture aborts if the image was built from a
+different commit than the tag, if `dragonfly --version` carries no build SHA,
+or if `--helpfull` yields no flags. `meta` also
+records `dragonfly_version`, `image_id` and `image_local_build`. It can also be
+run by hand:
 
 ```sh
 python tools/docsync/dfly_facts.py --tag v1.38.0

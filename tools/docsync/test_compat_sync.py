@@ -60,21 +60,107 @@ class CheckoutTests(unittest.TestCase):
         )
         self.assertIn("fetching tags", output.getvalue())
 
-    def test_checkout_is_retried_after_partially_successful_fetch(self) -> None:
-        self.commit("two", "v2")
-        # Moving an existing tag makes fetch return non-zero, while the new v2
-        # tag is still installed in the cached checkout.
+    def rev(self, cwd: Path, ref: str) -> str:
+        return self.git(cwd, "rev-parse", f"{ref}^{{commit}}").stdout.strip()
+
+    def move_v1_upstream(self) -> None:
+        (self.source / "content.txt").write_text("moved", encoding="utf-8")
+        self.git(self.source, "commit", "--quiet", "-am", "moved")
         self.git(self.source, "tag", "--force", "v1")
+
+    def test_checkout_is_retried_after_partially_failed_fetch(self) -> None:
+        self.commit("two", "v2")
+        self.move_v1_upstream()
+        # A stale lock makes the v1 update fail (fetch exits non-zero) while the
+        # new v2 tag is still installed.
+        (self.checkout / ".git" / "refs" / "tags" / "v1.lock").write_text("")
 
         with redirect_stdout(io.StringIO()):
             compat_sync.ensure_checkout(
                 "fixture", str(self.source), self.checkout, "v2", refresh=False,
             )
 
-        self.assertEqual(
-            self.git(self.checkout, "describe", "--tags", "--exact-match").stdout.strip(),
-            "v2",
-        )
+        self.assertEqual(self.rev(self.checkout, "HEAD"), self.rev(self.source, "v2"))
+
+    def test_cached_tag_that_moved_upstream_is_refetched(self) -> None:
+        self.move_v1_upstream()
+        output = io.StringIO()
+        with redirect_stdout(output):
+            compat_sync.ensure_checkout(
+                "fixture", str(self.source), self.checkout, "v1", refresh=False,
+            )
+        self.assertEqual(self.rev(self.checkout, "HEAD"), self.rev(self.source, "v1"))
+        self.assertIn("moved upstream", output.getvalue())
+
+    def test_moved_tag_is_refetched_with_refresh(self) -> None:
+        self.move_v1_upstream()
+        with redirect_stdout(io.StringIO()):
+            compat_sync.ensure_checkout(
+                "fixture", str(self.source), self.checkout, "v1", refresh=True,
+            )
+        self.assertEqual((self.checkout / "content.txt").read_text(), "moved")
+
+    def test_cached_tag_deleted_upstream_is_an_error(self) -> None:
+        self.git(self.source, "tag", "-d", "v1")
+        with redirect_stdout(io.StringIO()), self.assertRaises(RuntimeError) as raised:
+            compat_sync.ensure_checkout(
+                "fixture", str(self.source), self.checkout, "v1", refresh=False,
+            )
+        self.assertIn("no longer exists upstream", str(raised.exception))
+
+    def test_tag_that_became_a_branch_upstream_recovers_with_refresh(self) -> None:
+        self.git(self.source, "tag", "-d", "v1")
+        self.git(self.source, "branch", "v1")
+        with redirect_stdout(io.StringIO()):
+            compat_sync.ensure_checkout(
+                "fixture", str(self.source), self.checkout, "v1", refresh=True,
+            )
+
+    def test_revision_expressions_are_not_mistaken_for_tags(self) -> None:
+        self.commit("two", "v2")
+        with redirect_stdout(io.StringIO()):
+            compat_sync.ensure_checkout(
+                "fixture", str(self.source), self.checkout, "v2", refresh=False,
+            )
+            compat_sync.ensure_checkout(
+                "fixture", str(self.source), self.checkout, "v2~1", refresh=False,
+            )
+        self.assertEqual(self.rev(self.checkout, "HEAD"), self.rev(self.source, "v1"))
+
+    def test_source_dir_tag_missing_upstream_is_rejected(self) -> None:
+        with (
+            patch.object(compat_sync.dfly_refs, "upstream_tag_lookup", return_value=(True, None)),
+            redirect_stdout(io.StringIO()),
+            self.assertRaises(RuntimeError) as raised,
+        ):
+            compat_sync.verify_source_dir_ref(self.checkout, "v1")
+        self.assertIn("does not exist upstream", str(raised.exception))
+
+    def test_source_dir_inside_another_repo_has_no_commit(self) -> None:
+        nested = self.checkout / "unpacked"
+        nested.mkdir()
+        self.assertIsNone(compat_sync.source_dir_commit(nested))
+        self.assertEqual(compat_sync.source_dir_commit(self.checkout), self.rev(self.checkout, "HEAD"))
+
+    def test_missing_source_dir_is_a_checkout_error(self) -> None:
+        args = SimpleNamespace(dragonfly_source_dir=self.root / "missing", dragonfly_ref="v1")
+        with self.assertRaises(RuntimeError):
+            compat_sync.resolve_dragonfly_source(args)
+
+    def test_source_dir_at_another_commit_than_ref_is_rejected(self) -> None:
+        self.commit("two", "v2")
+        with redirect_stdout(io.StringIO()):
+            compat_sync.ensure_checkout(
+                "fixture", str(self.source), self.checkout, "v2", refresh=False,
+            )
+        with (
+            patch.object(compat_sync.dfly_refs, "upstream_tag_lookup", return_value=(False, None)),
+            redirect_stdout(io.StringIO()),
+        ):
+            compat_sync.verify_source_dir_ref(self.checkout, "v2")
+            with self.assertRaises(RuntimeError) as raised:
+                compat_sync.verify_source_dir_ref(self.checkout, "v1")
+        self.assertIn("--dragonfly-ref 'v1'", str(raised.exception))
 
     def test_unknown_ref_has_contextual_error(self) -> None:
         with redirect_stdout(io.StringIO()):
@@ -195,6 +281,121 @@ class ReviewFailureTests(unittest.TestCase):
             self.assertEqual(payload["tasks"], [review_flag, review_error])
             self.assertEqual(args.output.read_text(), "rendered\n")
             self.assertIn("deterministic outputs were written", stderr.getvalue())
+
+
+class CuratedDetailsTests(unittest.TestCase):
+    def apply(self, curated: tuple[str, str], derived: tuple[str, str]):
+        row = compat_sync.CompatRow("Server", "MEMORY USAGE", curated[0], curated[1])
+        assessment = compat_sync.Assessment(row, derived[0], derived[1],
+                                            deterministic_change=True)
+        [out], change_log = compat_sync.assessments_to_rows([row], [assessment])
+        return out, change_log
+
+    def test_prose_in_a_missing_list_is_not_an_option_token(self) -> None:
+        row = compat_sync.CompatRow("Server", "MEMORY USAGE", "partial",
+                                    "Missing: SAMPLES, which is accepted but ignored.")
+        self.assertEqual(compat_sync._curated_missing_tokens(row), {"SAMPLES"})
+        self.assertEqual(compat_sync._missing_tokens("Missing: MALLOC-STATS, ignored."),
+                         {"MALLOC-STATS"})
+
+    def test_note_on_an_unchanged_unsupported_row_is_kept_and_rendered(self) -> None:
+        out, change_log = self.apply(("unsupported", "Use MEMORY DECOMMIT instead."),
+                                     ("unsupported", ""))
+        self.assertEqual(out.details, "Use MEMORY DECOMMIT instead.")
+        self.assertEqual(change_log, [])
+        self.assertIn("Use MEMORY DECOMMIT instead.",
+                      compat_sync.render_compat_table("", [out], ""))
+
+    def test_curated_wording_is_kept_while_the_missing_options_are_the_same(self) -> None:
+        curated = "Missing: SAMPLES, which is accepted but ignored."
+        out, change_log = self.apply(("partial", curated), ("partial", "Missing: SAMPLES."))
+        self.assertEqual(out.details, curated)
+        self.assertEqual(change_log, [])
+
+    def test_tokens_with_digits_are_options(self) -> None:
+        self.assertEqual(compat_sync._missing_tokens("Missing: ANDOR, DIFF1, ONE."),
+                         {"ANDOR", "DIFF1", "ONE"})
+
+    def test_missing_list_on_a_non_partial_row_is_not_kept(self) -> None:
+        out, [entry] = self.apply(("supported", "Missing: BIT."), ("supported", ""))
+        self.assertEqual(out.details, "")
+        self.assertEqual(entry["replaced_details"], "Missing: BIT.")
+
+    def test_wording_that_names_another_option_is_not_kept(self) -> None:
+        row = compat_sync.CompatRow("Connection", "CLIENT KILL", "partial",
+                                    "Missing: MAXAGE, SKIPME, USER, laddr.")
+        a = compat_sync.Assessment(row, "partial", "Missing: MAXAGE, SKIPME, USER.",
+                                   deterministic_change=True,
+                                   option_tokens=["LADDR", "MAXAGE", "SKIPME", "USER"])
+        [out], [entry] = compat_sync.assessments_to_rows([row], [a])
+        self.assertEqual(out.details, "Missing: MAXAGE, SKIPME, USER.")
+        self.assertEqual(entry["replaced_details"], "Missing: MAXAGE, SKIPME, USER, laddr.")
+
+    def test_escaped_pipe_round_trips(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_dir:
+            page = Path(temporary_dir) / "compatibility.md"
+            page.write_text(
+                "| Command Family | Command | Dragonfly Support | Details |\n"
+                "|:--|:--|:--|:--|\n"
+                '| <span class="family">Server</span> | <span class="command">MEMORY PURGE</span> '
+                '| <span class="support unsupported">Unsupported</span> | Use A \\| B instead. |\n'
+            )
+            before, rows, after = compat_sync.parse_compat_table(page)
+            self.assertEqual(rows[0].details, "Use A | B instead.")
+            first = compat_sync.render_compat_table(before, rows, after)
+            page.write_text(first)
+            before, rows, after = compat_sync.parse_compat_table(page)
+            self.assertEqual(rows[0].details, "Use A | B instead.")
+            self.assertEqual(compat_sync.render_compat_table(before, rows, after), first)
+
+    def test_curated_text_is_replaced_and_logged_when_the_verdict_changes(self) -> None:
+        curated = "Missing: SAMPLES, which is accepted but ignored."
+        for derived in (("partial", "Missing: SAMPLES, TOP."), ("supported", "")):
+            out, [entry] = self.apply(("partial", curated), derived)
+            self.assertEqual(out.details, derived[1])
+            self.assertEqual(entry["replaced_details"], curated)
+
+
+class DirtyWriteTableTests(unittest.TestCase):
+    def test_write_table_is_refused_for_a_dirty_labelled_checkout(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_dir:
+            root = Path(temporary_dir)
+            dfly = root / "dfly"
+            (dfly / "src").mkdir(parents=True)
+            for args in (["init", "--quiet"], ["config", "user.name", "T"],
+                         ["config", "user.email", "t@example.com"]):
+                subprocess.run(["git", *args], cwd=dfly, check=True, capture_output=True)
+            (dfly / "src" / "a.cc").write_text("one")
+            subprocess.run(["git", "add", "."], cwd=dfly, check=True, capture_output=True)
+            subprocess.run(["git", "commit", "--quiet", "-m", "one"], cwd=dfly, check=True,
+                           capture_output=True)
+            (dfly / "src" / "a.cc").write_text("edited")
+            page = root / "compatibility.md"
+            page.write_text("original\n")
+            args = SimpleNamespace(
+                add_missing_rows=False, filter=[], limit=0, input=page, output=page,
+                progress_every=0, review=False, write_table=True, dragonfly_ref="v2.0.0",
+            )
+            stderr = io.StringIO()
+            with (
+                patch.multiple(
+                    compat_sync,
+                    add_cli_args=lambda: SimpleNamespace(parse_args=lambda: args),
+                    resolve_redis_source=lambda _args: root,
+                    resolve_dragonfly_source=lambda _args: dfly,
+                    parse_compat_table=lambda _path: ("", [], ""),
+                    load_redis_specs_from_checkout=lambda _root: {},
+                    resolve_module_sources=lambda _args: {},
+                    load_module_specs=lambda _dirs: {"GET": compat_sync.RedisCommandSpec("GET")},
+                    module_source_versions=lambda _dirs: {},
+                    DragonflySource=lambda _root: self.fail("must stop before indexing"),
+                ),
+                redirect_stdout(io.StringIO()),
+                redirect_stderr(stderr),
+            ):
+                self.assertEqual(compat_sync.main(), 2)
+            self.assertEqual(page.read_text(), "original\n")
+            self.assertIn("--write-table refused", stderr.getvalue())
 
 
 class DragonflySourceTests(unittest.TestCase):

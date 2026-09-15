@@ -34,6 +34,16 @@ class TopologyExampleTests(unittest.TestCase):
         self.assertIn("replication", observations[1]["skip_reason"])
         self.assertTrue(observations[2]["skipped"])
 
+    def test_rewritten_block_keeps_the_blank_line_after_it(self) -> None:
+        markdown = "Intro.\n\n```shell\ndragonfly> GET key\n(nil)\n```\n\nAfter the block.\n"
+
+        updated, _errors, _notes = docs_sync.verify_and_substitute_examples(
+            markdown, FakeDockerSession(),
+        )
+
+        self.assertIn('"value"', updated)
+        self.assertTrue(updated.endswith('"value"\n```\n\nAfter the block.\n'))
+
     def test_wait_block_is_preserved_verbatim(self) -> None:
         session = FakeDockerSession()
         markdown = """\

@@ -3,6 +3,10 @@
 
 Captures ACL ground truth from a Dragonfly Docker image (via dfly_facts.py)
 and updates every command-reference page whose H1 matches a server command.
+A subcommand page (`CLIENT LIST`) that `ACL CAT` does not list on its own is
+checked against its parent command: Dragonfly applies the parent's categories
+to subcommands it dispatches itself. Pages Docusaurus does not publish (a path
+component starting with `_`) are not processed.
 
 Updates are minimal-diff:
   * If the *set* of categories on a page already equals the server set, the
@@ -28,7 +32,6 @@ import argparse
 import json
 import os
 import re
-import subprocess
 import sys
 from dataclasses import dataclass, field
 from fnmatch import fnmatch
@@ -51,10 +54,15 @@ except ImportError:  # Direct execution: python tools/docsync/acl_sync.py
         strict_object_schema,
     )
 
+try:
+    from . import dfly_refs
+except ImportError:
+    import dfly_refs
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DOCS_DIR = REPO_ROOT / "docs" / "command-reference"
 FACTS_DIR = REPO_ROOT / "tools" / "generated" / "facts"
-DFLY_FACTS = REPO_ROOT / "tools" / "docsync" / "dfly_facts.py"
+DRAGONFLY_IMAGE = "docker.dragonflydb.io/dragonflydb/dragonfly"
 
 H1_RE = re.compile(r"^#[ \t]+(?P<name>[^\n]+?)\s*$", re.MULTILINE)
 ACL_LINE_RE = re.compile(
@@ -63,6 +71,9 @@ ACL_LINE_RE = re.compile(
     re.MULTILINE | re.IGNORECASE,
 )
 CATEGORY_RE = re.compile(r"@[A-Za-z][A-Za-z0-9_-]*")
+# Subcommands that Dragonfly's CommandRegistry::FindExtended routes to a hidden
+# command of their own instead of the parent (command_registry.cc).
+ROUTED_SUBCOMMANDS = {"XGROUP HELP": "_XGROUP_HELP"}
 
 
 @dataclass
@@ -74,6 +85,8 @@ class PageResult:
     old: list[str] = field(default_factory=list)
     new: list[str] = field(default_factory=list)
     via: str = "mechanical"    # "mechanical" | "llm"
+    expected: list[str] = field(default_factory=list)  # server categories for the page
+    inherited_from: str | None = None                  # parent command, for subcommand pages
 
 
 # --- Facts loading -----------------------------------------------------------
@@ -81,18 +94,10 @@ class PageResult:
 def load_facts(args: argparse.Namespace) -> dict:
     if args.facts:
         return json.loads(args.facts.read_text(encoding="utf-8"))
-    facts_path = FACTS_DIR / f"{args.tag}.json"
-    if facts_path.exists() and not args.refresh_facts:
-        print(f"  using cached facts: {facts_path.relative_to(REPO_ROOT)}")
-        return json.loads(facts_path.read_text(encoding="utf-8"))
-    cmd = ["python3", str(DFLY_FACTS), "--tag", args.tag]
-    if args.skip_pull:
-        cmd.append("--skip-pull")
-    print("  capturing facts via dfly_facts.py...")
-    p = subprocess.run(cmd)
-    if p.returncode != 0 or not facts_path.exists():
-        raise RuntimeError("dfly_facts capture failed")
-    return json.loads(facts_path.read_text(encoding="utf-8"))
+    return dfly_refs.load_facts(
+        args.tag, FACTS_DIR, f"{DRAGONFLY_IMAGE}:{args.tag}",
+        skip_pull=args.skip_pull, refresh=args.refresh_facts,
+    )
 
 
 # --- Page parsing ------------------------------------------------------------
@@ -105,6 +110,22 @@ def extract_command(text: str) -> str | None:
     name = m.group("name").strip().strip("`").strip()
     name = re.sub(r"\s+", " ", name)
     return name.upper() or None
+
+
+def server_categories(command: str, command_acl: dict) -> tuple[list[str] | None, str | None]:
+    """(categories, parent) for a page's command. ACL CAT lists commands that
+    are registered on their own, including subcommands such as ACL SETUSER.
+    Any other subcommand runs under its parent's categories, so it inherits
+    them (parent is then the parent command's name)."""
+    routed = ROUTED_SUBCOMMANDS.get(command)
+    if routed in command_acl:
+        return sorted(c.lower() for c in command_acl[routed]), None
+    if command in command_acl:
+        return sorted(c.lower() for c in command_acl[command]), None
+    parent = command.split(" ", 1)[0]
+    if parent != command and parent in command_acl:
+        return sorted(c.lower() for c in command_acl[parent]), parent
+    return None, None
 
 
 def parse_acl_line(text: str) -> tuple[re.Match | None, list[str], int]:
@@ -161,13 +182,12 @@ deterministic patcher could not handle the page (e.g. "no ACL line",
 
 Decide ONE action and output JSON only.
 
-  1. action = "skip" — when the page is *intentionally* without an ACL
-     line. This applies when the page is a container / navigation page:
-     its body is mostly a list of subcommand pages, with language like
-     "This is a container command for ...", "To see the list of available
-     commands you can call XYZ HELP", or just a bulleted list of links to
-     sibling pages. Such pages do not have a single ACL set — each
-     subcommand has its own page.
+  1. action = "skip" — only when the page does not document the command
+     at all (e.g. an index page that merely shares the command's name).
+     A container page for the command ("This is a container command for
+     ...", a list of subcommand pages) is NOT a skip: it documents the
+     command, and container pages on this site carry the command's ACL
+     line (e.g. CONFIG, MEMORY, SLOWLOG, SCRIPT) — patch it.
 
   2. action = "patch" — when the page documents the command and should
      have an ACL line. Insert exactly ONE line of the form
@@ -286,9 +306,9 @@ def llm_repair_failed(
           f"using {LLM_REPAIR_MODEL}...")
     try:
         for r in failed:
-            if not r.command or r.command not in command_acl:
+            if not r.expected:
                 continue
-            server_cats = sorted(c.lower() for c in command_acl[r.command])
+            server_cats = r.expected
             page_text = r.path.read_text(encoding="utf-8")
             user_text = _build_repair_user_text(
                 page_text, r.command, server_cats, r.reason,
@@ -336,15 +356,21 @@ def llm_repair_failed(
 
 # --- Main --------------------------------------------------------------------
 
+def is_published(path: Path) -> bool:
+    """Docusaurus excludes `_`-prefixed files and directories by default."""
+    return not any(part.startswith("_") for part in path.relative_to(DOCS_DIR).parts)
+
+
 def discover_pages(filter_glob: str) -> list[Path]:
-    pages = sorted(DOCS_DIR.rglob("*.md"))
+    pages = sorted(p for p in DOCS_DIR.rglob("*.md") if is_published(p))
     if filter_glob:
         pages = [p for p in pages
                  if fnmatch(str(p.relative_to(DOCS_DIR)), filter_glob)]
     return pages
 
 
-def process_page(path: Path, command_acl: dict, dry_run: bool) -> PageResult:
+def process_page(path: Path, command_acl: dict, dry_run: bool,
+                 server_commands: frozenset[str] = frozenset()) -> PageResult:
     text = path.read_text(encoding="utf-8")
     res = PageResult(path=path)
     cmd = extract_command(text)
@@ -353,11 +379,17 @@ def process_page(path: Path, command_acl: dict, dry_run: bool) -> PageResult:
         res.status = "overview"
         res.reason = "no H1 — not a command page"
         return res
-    if cmd not in command_acl:
+    server_cats, parent = server_categories(cmd, command_acl)
+    if server_cats is None:
         res.status = "overview"
-        res.reason = f"H1 {cmd!r} is not a server command"
+        if cmd in server_commands:
+            res.reason = (f"{cmd} is a server command, but the server lists it in no ACL "
+                          f"category; page left as is")
+        else:
+            res.reason = f"H1 {cmd!r} is not a server command"
         return res
-    server_cats = sorted(c.lower() for c in command_acl[cmd])
+    res.expected = server_cats
+    res.inherited_from = parent
     m, doc_cats, count = parse_acl_line(text)
     if not m:
         res.status = "failed"
@@ -383,6 +415,8 @@ def process_page(path: Path, command_acl: dict, dry_run: bool) -> PageResult:
         bits.append(f"+{','.join(added)}")
     if removed:
         bits.append(f"-{','.join(removed)}")
+    if parent:
+        bits.append(f"(categories of parent command {parent})")
     res.reason = " ".join(bits)
     return res
 
@@ -403,13 +437,15 @@ def report(results: list[PageResult], dry_run: bool) -> int:
     print(f"  updated:     {counters['updated']}  "
           f"(mechanical {via_counts['mechanical']}, llm {via_counts['llm']})")
     print(f"  unchanged:   {counters['unchanged']}")
-    print(f"  not a cmd:   {counters['overview']}  "
-          f"(silently skipped — {overview_via_llm} of them recognized as "
-          f"container/overview by the LLM repair pass)")
+    inherited = sum(1 for r in results if r.inherited_from and r.status in ("updated", "unchanged"))
+    print(f"  (of these, {inherited} subcommand page(s) checked against the parent command)")
+    print(f"  not synced:  {counters['overview']}  "
+          f"({overview_via_llm} of them recognized as container/overview by the LLM "
+          f"repair pass; all listed below)")
     print(f"  failed:      {counters['failed']}")
 
     if counters["updated"]:
-        suffix = " (dry-run — no files written)" if dry_run else ""
+        suffix = " (dry-run — pages not written)" if dry_run else ""
         print(f"\n=== Updated {counters['updated']} page(s){suffix} ===")
         for r in results:
             if r.status != "updated":
@@ -422,14 +458,13 @@ def report(results: list[PageResult], dry_run: bool) -> int:
             if r.reason:
                 print(f"      change: {r.reason}")
 
-    if overview_via_llm:
-        print(f"\n=== {overview_via_llm} page(s) classified as container/overview "
-              f"by the LLM repair pass ===")
+    if counters["overview"]:
+        print(f"\n=== {counters['overview']} page(s) not synced ===")
         for r in results:
-            if r.status == "overview" and r.via == "llm":
+            if r.status == "overview":
                 rel = r.path.relative_to(REPO_ROOT)
-                print(f"  {rel}  ({r.command})")
-                print(f"      {r.reason}")
+                tag = " [LLM]" if r.via == "llm" else ""
+                print(f"  {rel}  ({r.command}){tag}: {r.reason}")
 
     if counters["failed"]:
         print(f"\n=== UPDATE FAILED on {counters['failed']} page(s) — manual review needed ===")
@@ -440,6 +475,9 @@ def report(results: list[PageResult], dry_run: bool) -> int:
             print(f"  {rel}")
             print(f"    command: {r.command}")
             print(f"    reason:  {r.reason}")
+            if r.expected:
+                via = f" (categories of parent command {r.inherited_from})" if r.inherited_from else ""
+                print(f"    expected: **ACL categories:** {', '.join(r.expected)}{via}")
         return 1
     return 0
 
@@ -453,9 +491,12 @@ def main() -> int:
     ap.add_argument("--skip-pull", action="store_true",
                     help="Skip docker pull when capturing facts.")
     ap.add_argument("--refresh-facts", action="store_true",
-                    help="Re-capture facts even if a cached file exists.")
+                    help="Re-capture facts even if a cached file exists. (A cached "
+                         "file from another commit than the tag's is re-captured "
+                         "automatically.)")
     ap.add_argument("--dry-run", action="store_true",
-                    help="Show planned changes without writing.")
+                    help="Show planned changes without writing pages or calling OpenAI "
+                         "(facts may still be captured into tools/generated/facts/).")
     ap.add_argument("--filter", default="",
                     help="Glob (relative to docs/command-reference/) "
                          "to limit which pages are processed.")
@@ -464,17 +505,34 @@ def main() -> int:
                          "ACL line.")
     args = ap.parse_args()
 
-    facts = load_facts(args)
+    try:
+        facts = load_facts(args)
+    except RuntimeError as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        return 2
     command_acl = facts["data"]["command_acl"]
+    server_commands = frozenset(facts["data"].get("commands", {}))
+    unknown_hidden = sorted(c for c in command_acl
+                            if c.startswith("_") and c not in ROUTED_SUBCOMMANDS.values())
+    if unknown_hidden:
+        print(f"  WARNING: server has hidden commands {unknown_hidden} not in "
+              f"ROUTED_SUBCOMMANDS; check CommandRegistry::FindExtended for subcommands "
+              f"routed to them", file=sys.stderr)
     print(f"  ground truth: {len(command_acl)} commands with ACL data")
 
     pages = discover_pages(args.filter)
-    print(f"  scanning {len(pages)} page(s) under docs/command-reference/")
+    print(f"  scanning {len(pages)} published page(s) under docs/command-reference/")
 
-    results = [process_page(p, command_acl, args.dry_run) for p in pages]
+    results = [process_page(p, command_acl, args.dry_run, server_commands) for p in pages]
 
-    if not args.no_llm and any(r.status == "failed" for r in results):
-        llm_repair_failed(results, command_acl, args.dry_run)
+    if any(r.status == "failed" for r in results):
+        if args.no_llm or args.dry_run:
+            flag = "--no-llm" if args.no_llm else "--dry-run"
+            for r in results:
+                if r.status == "failed":
+                    r.reason += f" (LLM repair skipped: {flag})"
+        else:
+            llm_repair_failed(results, command_acl, args.dry_run)
 
     return report(results, args.dry_run)
 
