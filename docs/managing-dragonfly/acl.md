@@ -52,20 +52,6 @@ active and authenticated connections.
 Also note that the flag `--requirepass` also changes the `default` user password. So, if during Dragonfly startup the flag `requirepass` is set,
 then the `default` user's password will be the one specified in that flag.
 
-### JWT Validation
-
-Starting with Dragonfly v2.0.0, `AUTH` credentials can be validated by an external HTTP service instead of the ACL password store, for example to authenticate clients with JWTs.
-Set the service endpoint with `--jwt_validate_url=http://host[:port]/path` at startup, then enable validation with `--jwt_validate=true` or at runtime with `CONFIG SET jwt_validate true`.
-
-When validation is enabled, the password of every `AUTH` (and `HELLO ... AUTH`) command is sent to the endpoint as an HTTP `POST` request with the JSON body `{"token": "<password>"}`, and ACL passwords are not checked.
-Any username passed to `AUTH` is ignored. The endpoint must reply with HTTP `200` and a JSON body such as `{"valid": true, "username": "alice", "exp": 1789498775}`:
-
-- `username` must name an existing ACL user whose status is `ON`. The connection is authenticated as that user.
-- `exp` (optional, Unix time in seconds) sets when the authentication expires. After that, commands on the connection fail with `NOAUTH JWT token expired, please re-authenticate.` until the client authenticates again.
-
-Any other reply, a connection error, or no reply within `--jwt_validate_timeout_ms` milliseconds (default `300`) rejects the `AUTH` command.
-The endpoint must be reachable over plain HTTP (TLS is not supported), and Dragonfly does not cache validation results, so every `AUTH` command sends a request.
-
 :::warning
 The password or token of every `AUTH` command is sent to the validation endpoint in cleartext.
 Run the endpoint on the same host or on a trusted private network only.
