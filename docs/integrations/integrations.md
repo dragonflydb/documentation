@@ -29,6 +29,7 @@ providing users with peace of mind and confidence in the stability and performan
 - [Redlock](./redlock.md): Distributed lock pattern with implementations in various languages.
 - [Relay](./relay.md): Next-generation shared in-memory caching layer for PHP.
 - [Sidekiq](./sidekiq.md): Simple and efficient background job processing for Ruby.
+- [Tabularis](./tabularis.md): Open source desktop SQL workspace with a Redis plugin for browsing keys, editing values, and reading server stats.
 
 ## Making the Switch
 
