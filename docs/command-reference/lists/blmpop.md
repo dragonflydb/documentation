@@ -27,6 +27,6 @@ A `timeout` of zero can be used to block indefinitely.
 
 ## Return
 
-- [Null reply](https://valkey.io/topics/protocol/#nulls): when no element could be popped and the `timeout` is reached.
+- [Null array reply](https://valkey.io/topics/protocol/#nulls): when no element could be popped and the `timeout` is reached.
 - [Array reply](https://valkey.io/topics/protocol/#arrays): a two-element array with the first element
   being the name of the key from which elements were popped, and the second element being an array of the popped elements.

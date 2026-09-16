@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Syntax
 
-    SORT key [LIMIT offset count] [ASC | DESC] [ALPHA]
+    SORT key [LIMIT offset count] [ASC | DESC] [ALPHA] [STORE destination]
 
 **Time complexity:** O(N+M\*log(M)) where N is the number of elements in the list or set to sort, and M the number of returned elements. When the elements are not sorted, complexity is O(N).
 
@@ -67,6 +67,11 @@ in descending order:
 SORT mylist LIMIT 0 5 ALPHA DESC
 ```
 
+The `STORE` modifier stores the sorted elements at `destination`. If the source
+key does not exist, the destination is deleted and the command returns `0`.
+
 ## Return
 
-[Array reply](https://valkey.io/topics/protocol/#arrays): list of sorted elements.
+Without `STORE`, [Array reply](https://valkey.io/topics/protocol/#arrays): list of sorted elements.
+
+With `STORE`, [Integer reply](https://valkey.io/topics/protocol/#integers): the number of elements stored at `destination`. If the source key does not exist, the reply is `0`.

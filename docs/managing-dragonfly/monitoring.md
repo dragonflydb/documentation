@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # Monitoring
 
-By default, Dragonfly allows HTTP access through its main TCP port (i.e., `6379`) and exposes Prometheus-compatible metrics at `:6379/metrics`. These include metrics for connection memory and pipelines. Batch I/O counters are available through `INFO stats`, but are not currently exported by the Prometheus endpoint.
+By default, Dragonfly allows HTTP access through its main TCP port (i.e., `6379`) and exposes Prometheus-compatible metrics at `:6379/metrics`. These include metrics for connection memory and pipelines. Starting with Dragonfly v2.0.0, the `dragonfly_expired_keys_total` and `dragonfly_evicted_keys_total` counters are always exported with a value, even when it is zero; earlier versions omitted their samples until the first key expired or was evicted. Batch I/O counters are available through `INFO stats`, but are not currently exported by the Prometheus endpoint.
 
 Check out this complete example of setting up a [Grafana Monitoring Stack with Dragonfly](https://github.com/dragonflydb/dragonfly/tree/main/tools/local/monitoring).
 

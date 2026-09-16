@@ -52,6 +52,11 @@ active and authenticated connections.
 Also note that the flag `--requirepass` also changes the `default` user password. So, if during Dragonfly startup the flag `requirepass` is set,
 then the `default` user's password will be the one specified in that flag.
 
+:::warning
+When JWT validation is enabled, the password or token of every `AUTH` command is sent to the validation endpoint in cleartext.
+Run the endpoint on the same host or on a trusted private network only.
+:::
+
 ## ACL Groups
 
 Each command belongs to a set of ACL groups. The syntax for specifying a group is:

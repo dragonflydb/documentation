@@ -31,7 +31,7 @@ See [`BZMPOP`](./bzmpop) for the blocking variant of this command.
 
 ## Return Values
 
-- [Null reply](https://valkey.io/topics/protocol/#nulls): when no member could be popped.
+- [Null array reply](https://valkey.io/topics/protocol/#nulls): when no member could be popped.
 - [Array reply](https://valkey.io/topics/protocol/#arrays): a two-element array with the first element
   being the name of the key from which members were popped, and the second element is an array of the popped members.
   Every entry in the elements array is also an array that contains the member and its score.

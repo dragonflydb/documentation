@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @pubsub, @slow
+**ACL categories:** @slow
 
 Returns the number of unique patterns that are subscribed to by clients (that are performed using the `PSUBSCRIBE` command).
 

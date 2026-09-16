@@ -16,7 +16,7 @@ This command is particularly useful when you want to find the position of a spec
 ## Syntax
 
 ```shell
-ZRANK key member
+ZRANK key member [WITHSCORE]
 ```
 
 - **Time complexity:** O(log(N))
@@ -26,12 +26,14 @@ ZRANK key member
 
 - `key`: The key of the sorted set where the rank is to be determined.
 - `member`: The member for which the rank is to be returned.
+- `WITHSCORE`: If specified, the command also returns the member's score.
 
 ## Return Values
 
-- The command returns the rank (index) of the specified `member`.
+- Without `WITHSCORE`, the command returns the rank (index) of the specified `member`.
+- With `WITHSCORE`, the command returns an array containing the rank and score of the specified `member`.
 - The rank is a zero-based integer (starting from `0` for the member with the lowest score).
-- If the `member` does not exist in the set, `ZRANK` returns `nil`.
+- If the `member` does not exist in the set, `ZRANK` returns `nil`. With `WITHSCORE`, it returns a null array.
 
 ## Code Examples
 
@@ -51,6 +53,10 @@ dragonfly$> ZRANK leaderboard "Player2"
 
 dragonfly$> ZRANK leaderboard "Player3"
 (integer) 2
+
+dragonfly$> ZRANK leaderboard "Player2" WITHSCORE
+1) (integer) 1
+2) "6000"
 ```
 
 ### Non-Existing Member
@@ -62,6 +68,9 @@ dragonfly$> ZADD leaderboard 5000 "Player1" 6000 "Player2" 7000 "Player3"
 (integer) 3
 
 dragonfly$> ZRANK leaderboard "Player4"
+(nil)
+
+dragonfly$> ZRANK leaderboard "Player4" WITHSCORE
 (nil)
 ```
 
@@ -104,7 +113,7 @@ Even with larger sets, you can quickly determine the rank of any member.
 ## Common Mistakes
 
 - Not checking if a member exists before calling `ZRANK`, as it will return `nil` if the member is absent.
-- Confusing the rank with the score. `ZRANK` does not return the score but rather the position of the member within the sorted set based on their score.
+- Confusing the rank with the score. By default, `ZRANK` returns the position of the member within the sorted set based on its score. Use `WITHSCORE` to return the score alongside the rank.
 
 ## FAQs
 
@@ -119,4 +128,4 @@ If the key exists, but it does not hold a sorted set, `ZRANK` will return an err
 
 ### What happens if the key does not exist?
 
-If the key does not exist at all, `ZRANK` simply returns `nil`.
+If the key does not exist at all, `ZRANK` returns `nil`. With `WITHSCORE`, it returns a null array.

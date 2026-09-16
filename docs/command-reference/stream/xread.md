@@ -31,7 +31,8 @@ XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] id [id ...]
 
 ## Return Values
 
-- The command returns a list of streams and the corresponding entries that were read from them.
+- With RESP2, the command returns a list of streams and the corresponding entries that were read from them.
+- With RESP3, the command returns a map from stream keys to their corresponding entries, including when a read completes after blocking.
 - If the `BLOCK` option is used and a timeout occurs, or if there is no stream that can be served, `nil` is returned.
 
 ## Code Examples

@@ -22,7 +22,7 @@ XGROUP DESTROY key group
 ```
 
 - **Time complexity:** O(N) where N is the number of entries in the group's pending entries list (PEL).
-- **ACL categories:** @write, @stream, @slow
+- **ACL categories:** @slow
 
 ## Parameter Explanations
 

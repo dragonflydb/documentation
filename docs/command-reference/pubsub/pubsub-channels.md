@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) where N is the number of active channels, and assuming constant time pattern matching (relatively short channels and patterns)
 
-**ACL categories:** @pubsub, @fast
+**ACL categories:** @slow
 
 Lists the currently *active channels*, whose name matches `pattern`.
 

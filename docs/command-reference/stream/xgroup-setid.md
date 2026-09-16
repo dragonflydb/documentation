@@ -20,7 +20,7 @@ XGROUP SETID key group <id | $>
 ```
 
 - **Time complexity:** O(1)
-- **ACL categories:** @write, @stream, @slow
+- **ACL categories:** @slow
 
 ## Parameter Explanations
 
