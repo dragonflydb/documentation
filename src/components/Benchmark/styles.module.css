@@ -95,6 +95,41 @@
   margin-top: 4px;
 }
 
+@media (max-width: 480px) {
+  .row,
+  .axis {
+    grid-template-columns: 64px minmax(0, 1fr) 76px;
+    gap: 8px;
+  }
+
+  .name {
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .value {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+  }
+
+  .opsValue {
+    font-size: 0.75rem;
+  }
+
+  .relative {
+    font-size: 0.62rem;
+  }
+
+  .axisLabels {
+    font-size: 0.6rem;
+  }
+
+  .axisCaption {
+    font-size: 0.65rem;
+  }
+}
+
 .resultsTable {
   width: 100%;
   margin: 1.25rem 0 2rem;
