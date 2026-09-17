@@ -44,6 +44,15 @@ You can use the `redis-cli` to connect to `localhost:6379` or open a browser and
 **Note:** On some configurations, running with the `docker run --privileged ...` flag can fix some
 initialization errors.
 
+## Managed one-click deploy
+
+If you'd rather not run the container yourself, [Easypanel](https://easypanel.io) is a self-hosted deployment platform with a one-click Dragonfly template:
+
+[![Deploy on Easypanel][easypanel-btn]][easypanel-deploy]
+
+[easypanel-btn]: https://easypanel.io/img/deploy-on-easypanel-40.svg
+[easypanel-deploy]: https://easypanel.io/templates/dragonfly
+
 ## Step 2
 
 Connect with a redis client
