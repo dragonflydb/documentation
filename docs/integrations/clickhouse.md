@@ -94,11 +94,10 @@ However, if range queries are required, ClickHouse can still utilize the `SCAN` 
 - Point query example -- `WHERE key = xx` or `WHERE key IN (xx, yy)`
 - Range query example -- `WHERE key > xx`
 
-Dragonfly is able to support up to 1TB on a single instance.
+Dragonfly supports multi-terabyte datasets on a single instance.
 Redis, on the other hand, is typically constrained to handling tens of GB on an individual instance.
 Further, the use of Redis Cluster, which might seem like a solution, is off the table as it doesn't support the `SCAN` command in its cluster mode.
 Hence, for applications requiring expansive datasets and range queries, Dragonfly stands as the most effective and reliable choice for the key-value table engine when paired with ClickHouse.
-We do understand that 1TB is probably not "big data" in modern terms, but supporting 1TB on a single instance is still an advantage and should be sufficient for many ad-hoc analytics use cases.
 
 ## Useful Resources
 
