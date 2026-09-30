@@ -50,6 +50,24 @@ and then accept the peering connection in your AWS account console:
 - Modify your relevant security groups to allow traffic from the Dragonfly Cloud private network CIDR.
 - Observe the connection becoming **Active** after a few moments in the Dragonfly Cloud console.
 
+:::warning Avoid overlapping routes
+AWS route tables use **longest prefix match**, so a more specific (smaller) route always takes priority over a
+broader one, even if the broader route was added for the peering connection.
+
+If an existing route table already has a route whose destination CIDR falls **within** the Dragonfly Cloud
+private network CIDR, it will silently override the peering route for that range and break connectivity, even
+though both routes appear active.
+
+For example, if the Dragonfly Cloud private network CIDR is `192.168.0.0/18`, do **not** also have a route for
+`192.168.0.0/24` (or any other subset of that range) pointing to a different target, such as a NAT gateway,
+internet gateway, or another peering/transit gateway connection. Traffic destined for addresses in `192.168.0.0/24`
+would be sent to that route instead of the AWS peering connection, causing the data store to become unreachable
+from those subnets.
+
+Before adding the peering route, check every route table associated with your subnets for any existing, more
+specific routes that overlap with the Dragonfly Cloud private network CIDR, and remove or adjust them as needed.
+:::
+
 You can read more about AWS peering
 connections [here](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html).
 If you haven't done so already, create a data store with a private network and start building your applications with
