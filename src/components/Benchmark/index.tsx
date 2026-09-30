@@ -111,7 +111,9 @@ export default function Benchmark({
               </span>
               <span className={styles.value}>
                 <span
-                  className={clsx({ [styles.winnerName]: engine.isWinner })}
+                  className={clsx(styles.opsValue, {
+                    [styles.winnerName]: engine.isWinner,
+                  })}
                 >
                   {formatOps(engine.ops)}
                 </span>
@@ -135,7 +137,7 @@ export default function Benchmark({
               <span key={i}>{label}</span>
             ))}
           </div>
-          <div className={styles.axisCaption}>operations / second</div>
+          <div className={styles.axisCaption}>ops/second</div>
         </div>
         <span />
       </div>
