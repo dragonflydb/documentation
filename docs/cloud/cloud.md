@@ -44,5 +44,7 @@ to be cost-efficient, highly available, secure, and simple to operate.
 - [Bring Your Own Cloud (BYOC)](byoc/byoc.md)
 - [Data Retention Policy](data-retention.md)
 - [Managing Dragonfly Cloud Users](users.md)
+- [MCP](mcp.md)
+- [Terraform Provider](terraform-provider.md)
 - [Dragonfly Cloud Pricing](pricing.md)
 - [Dragonfly Cloud Support Plans](support.md)
