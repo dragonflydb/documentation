@@ -1,6 +1,7 @@
 ---
 description: "Dragonfly Cloud's usage-based pricing model for active data stores, data transfer, and backup storage."
-sidebar_position: 13
+sidebar_position: 1
+slug: /cloud/pricing
 ---
 
 import PageTitle from '@site/src/components/PageTitle';
@@ -15,16 +16,31 @@ import CloudBadge from '@site/src/components/CloudBadge/CloudBadge'
 Dragonfly Cloud applies a transparent usage-based pricing model with the following components:
 
 - [Overview](#overview)
+- [Price Summary](#price-summary)
 - [Active Data Stores](#active-data-stores)
   - [Active Data Store Cost Calculation](#active-data-store-cost-calculation)
   - [Active Data Store Cost Example](#active-data-store-cost-example)
 - [Data Transfer](#data-transfer)
-- [Backup Storage](#backup-storage)
+
+See [Payment Methods](./payment-methods.md) for the ways to pay, including credit card and AWS, GCP, and Azure Marketplace.
 
 You can track your usage and costs under the [Account > Usage](https://dragonflydb.cloud/account/usage) tab
 in Dragonfly Cloud. The usage and cost information is updated every few hours.
-However, data transfer and backup storage costs may take up to 24 hours to reflect.
+However, data transfer may take up to 24 hours to reflect.
 Read on for more details about each component.
+
+:::note
+The prices on this page apply to standard Dragonfly Cloud data stores. Pricing for
+[Bring Your Own Cloud (BYOC)](../byoc/byoc.md) is different. To get a quote, contact
+[support@dragonflydb.io](mailto:support@dragonflydb.io) or [request a demo](https://www.dragonflydb.io/request-demo).
+:::
+
+## Price Summary
+
+| Component | How it is charged |
+|-----------|-------------------|
+| Active data stores | Per GB of provisioned memory per month, prorated hourly. Depends on the compute performance tier (**Standard**, **Enhanced**, **Extreme**), cloud provider, and region. For example, 1 GB on the **Enhanced** tier in AWS `us-east-1` is **$11.0 per month**. |
+| Data transfer | Public data transfer rates set by the cloud vendor. |
 
 ## Active Data Stores
 
@@ -73,17 +89,14 @@ The cost of this data store can be calculated as follows:
   within the same region.
 - Dragonfly Cloud applies public data transfer fee rates set by cloud vendors for data store traffic.
   For detailed and specific pricing, please refer to the [AWS](https://aws.amazon.com/ec2/pricing/on-demand/), [GCP](https://cloud.google.com/vpc/network-pricing) and [Azure](https://azure.microsoft.com/en-us/pricing/details/bandwidth/) pricing pages.
-- **To reduce data transfer expenses, using [data stores with a private network](./datastores.md#private-endpoint) is
+- **To reduce data transfer expenses, using [data stores with a private network](../datastores.md#private-endpoint) is
   recommended**.
 - Additionally, data stores with high availability configuration may incur charges for cross-availability-zone traffic
   within the cloud provider's network.
 
-## Backup Storage
-
-- Backup storage costs $0.1 per GB per month, prorated hourly.
 
 [^1]: The total memory provisioned to the data store, including all primary and replica Dragonfly server instances.
 
 [^2]: The compute performance tier determines the CPU-to-memory ratio for the data store. Currently, Dragonfly Cloud
 offers **Standard**, **Enhanced**, and **Extreme** performance tiers.
-Read more [here](datastores.md#creating-a-data-store).
+Read more [here](../datastores.md#creating-a-data-store).
