@@ -1,0 +1,5 @@
+position: 12
+label: "Access & Permissions"
+link:
+  type: "generated-index"
+  description: "Manage who can access Dragonfly Cloud and what they can do: SSO, users, and API keys."
