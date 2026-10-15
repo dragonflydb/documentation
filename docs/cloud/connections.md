@@ -51,9 +51,10 @@ and then accept the peering connection in your AWS account console:
 - Observe the connection becoming **Active** after a few moments in the Dragonfly Cloud console.
 
 :::warning Avoid overlapping CIDRs
-Overlapping CIDRs between the Dragonfly Cloud network and your VPC (including existing, more specific routes in your
-route tables) can break connectivity. See the explanation about overlapping CIDRs in
-[Networks](./networks.md#creating-a-private-network).
+The Dragonfly Cloud network CIDR must not overlap your VPC CIDR; see the overlap examples in
+[Networks](./networks.md#creating-a-private-network). Also check the relevant AWS route tables for routes that are more
+specific than the Dragonfly Cloud CIDR. AWS uses longest-prefix matching, so those routes take precedence over the
+peering route for the covered addresses and can break connectivity.
 :::
 
 You can read more about AWS peering
