@@ -39,10 +39,16 @@ to be cost-efficient, highly available, secure, and simple to operate.
 - [Monitoring Data Stores](monitoring.md)
 - [Creating & Managing Backups](backups.md)
 
-## Other Dragonfly Cloud Features, Pricing & Support
+
+## Billing
+
+- [Dragonfly Cloud Pricing](billing/pricing.md)
+- [Dragonfly Cloud Payment Methods](billing/payment-methods.md)
+- [Dragonfly Cloud Usage](billing/usage.md)
+
+## Other Dragonfly Cloud Features & Support
 
 - [Bring Your Own Cloud (BYOC)](byoc/byoc.md)
 - [Data Retention Policy](data-retention.md)
 - [Managing Dragonfly Cloud Users](access-permissions/users.md)
-- [Dragonfly Cloud Pricing](pricing.md)
 - [Dragonfly Cloud Support Plans](support.md)

@@ -227,5 +227,5 @@ Here is a recipe to rotate the passkey for a data store, since it is part of the
 
 ## Pricing & Support
 
-- See more information about Dragonfly Cloud pricing [here](./pricing.md).
+- See more information about Dragonfly Cloud pricing [here](./billing/pricing.md).
 - See more information about Dragonfly Cloud support plans [here](./support.md).

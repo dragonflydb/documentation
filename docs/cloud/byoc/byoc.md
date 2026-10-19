@@ -52,7 +52,7 @@ To let Dragonfly Cloud manage resources in your cloud account, you create a role
 - Dragonfly Cloud assumes this role only when it needs to provision or manage BYOC resources.
 - The role follows the **principle of least privilege**.
 - For AWS:
-    - Access is limited to resources tagged as `managed-by: dragonfly-cloud`.
+    - Access is limited to resources tagged as `owner: dragonfly-cloud`.
     - Role assumption is protected with a **shared secret**, so only your Dragonfly Cloud BYOC account can use it.
 
 You can review the exact permissions in the public onboarding templates:
