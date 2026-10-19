@@ -225,6 +225,63 @@ Here is a recipe to rotate the passkey for a data store, since it is part of the
 - ***CAUTION: Altering ACL rules can potentially disrupt access for current users. It is always recommended to test ACL
   rules on a test data store before applying them to a production data store.***
 
+## Microsoft Entra ID Integration
+
+Connect Microsoft Entra ID to Dragonfly Cloud by registering an application in Azure and adding it as an identity provider.
+Configure the Azure application first, then create the identity provider and a data store that uses it.
+
+### Configure Azure
+
+1. In the [Azure portal](https://portal.azure.com/), search for **App registrations** and click **New registration**.
+2. Enter a descriptive **Name** and set **Supported account types** to **Accounts in this organizational directory only (Single tenant)**.
+   Click **Register**.
+3. Navigate to **Expose an API** in the application's left sidebar and enable the **Application ID URI**.
+   Keep the default URI assigned by Azure. Copy and store this value to use when setting the scope of your token.
+4. Navigate to **Manifest** in the left sidebar and change `requestedAccessTokenVersion` from `null` to `2`.
+   This configures the application to use Microsoft's version 2 access tokens, the JSON Web Token (JWT) format expected by Dragonfly Cloud.
+   Click **Save**.
+5. In the Azure portal, go to **Enterprise applications** and select the application.
+   Check that the required users have access to the application.
+6. Return to the app registration and navigate to **Overview** in the left sidebar.
+   Under **Essentials**, copy the **Directory (tenant) ID** and **Application (client) ID**.
+   You will use these values when configuring Dragonfly Cloud.
+
+### Configure Dragonfly Cloud
+
+1. Navigate to **Access > Identity providers** in Dragonfly Cloud.
+2. Click **+ Identity Provider**.
+3. Enter a meaningful name for the provider, along with the **Directory (tenant) ID** and **Application (client) ID** copied from Azure.
+4. Submit the form to create the identity provider.
+
+### Create a Data Store
+
+1. On the **Data Stores** tab, click the [+Data Store](https://dragonflydb.cloud/datastores/new) button and
+   configure the data store as described in [Creating a Data Store](#creating-a-data-store).
+2. Under **Security**, select **Microsoft Entra ID**.
+3. Under **ACL Rules**, add the following rule, replacing `$OID` with your
+   [user object ID](https://learn.microsoft.com/en-us/partner-center/account-settings/find-ids-and-domain-names#find-the-user-object-id)
+   or the object ID of your
+   [VM's managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-configure-managed-identities):
+
+   ```text
+   USER $OID ON ~* &* +@ALL
+   ```
+
+   This rule grants the identity access to all keys, Pub/Sub channels, and commands.
+   Restrict the rule to the permissions your application needs.
+4. Create the data store to apply the configuration.
+
+### Connect to a Data Store
+
+One way to connect to an **Active** data store is with Azure CLI and Redis CLI.
+Sign in to Azure CLI as the ACL identity, then replace `<application-id>` with your Azure **Application (client) ID**
+and `<datastore-id>` with your data store ID:
+
+```bash
+TOKEN=$(az account get-access-token --scope "api://<application-id>/.default" --query accessToken -o tsv)
+redis-cli -h <datastore-id>.dragonflydb.cloud -p 6385 --pass "$TOKEN" --tls
+```
+
 ## Pricing & Support
 
 - See more information about Dragonfly Cloud pricing [here](./billing/pricing.md).
