@@ -29,7 +29,7 @@ If you have not yet created a Dragonfly Cloud data store, please refer to the [g
 
 In order to access the metrics endpoint, you must first acquire an API key:
 
-- Navigate to the [Account > API Keys](https://dragonflydb.cloud/account/keys) tab in Dragonfly Cloud.
+- See [API Keys](./access-permissions/api-keys.md) for full details. Navigate to the [Account > API Keys](https://dragonflydb.cloud/account/keys) tab in Dragonfly Cloud.
 - Click the [+API Key](https://dragonflydb.cloud/account/keys) button to open the **Create Key** dialog.
 - In the **Create Key** dialog, enter a meaningful name for the key (e.g., `metrics`).
 - Leave **Read Metrics** selected in the **Permissions** dropdown.

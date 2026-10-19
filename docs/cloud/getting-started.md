@@ -25,7 +25,7 @@ Dragonfly Cloud drastically simplifies the deployment, management, and operation
 
 - All you have to do is navigate to [Dragonfly Cloud](https://dragonflydb.cloud) and sign up for an account.
 - To complete the sign-up process, you will be required to pick a name for your **Organization**.
-- You can later [add more users](./users.md) to your organization and manage their permissions.
+- You can later [add more users](./access-permissions/users.md) to your organization and manage their permissions.
 
 ## Creating Your First Data Store
 
