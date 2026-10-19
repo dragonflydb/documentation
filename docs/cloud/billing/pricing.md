@@ -1,5 +1,5 @@
 ---
-description: "Dragonfly Cloud's usage-based pricing model for active data stores, data transfer, and backup storage."
+description: "Dragonfly Cloud's usage-based pricing model for active data stores, data transfer."
 sidebar_position: 1
 slug: /cloud/pricing
 ---
@@ -63,8 +63,8 @@ You can use the following tools to get **an accurate estimate** of your active d
 
 - Use the [pricing calculator](https://www.dragonflydb.io/pricing#calculator) to estimate the cost of a data store
   based on its memory size, cloud provider, and region.
-- In [Dragonfly Cloud](https://dragonflydb.cloud/), the data store cost (excluding data transfer cost and backup
-  storage cost) is displayed every time you create or update a data store.
+- In [Dragonfly Cloud](https://dragonflydb.cloud/), the data store cost (excluding data transfer cost)
+  is displayed every time you create or update a data store.
 
 ### Active Data Store Cost Example
 

@@ -27,7 +27,7 @@ This lets you consolidate billing and apply your existing AWS commitments and cr
 
 ## GCP Marketplace
 
-Subscribe through the [Google Cloud Marketplace listing](https://console.cloud.google.com/marketplace/product/dragonflydb-public/dragonfly-cloud).
+Subscribe through the Google Cloud Marketplace listing.
 All Dragonfly Cloud usage is included in your monthly Google Cloud bill, so you can manage payments directly
 from your existing GCP billing interface and use your GCP credits.
 Read more in the [announcement blog post](https://www.dragonflydb.io/blog/dragonfly-cloud-now-available-in-gcp-marketplace).
@@ -37,11 +37,6 @@ Read more in the [announcement blog post](https://www.dragonflydb.io/blog/dragon
 Subscribe through the Azure Marketplace and Dragonfly Cloud usage appears on your monthly Azure bill,
 allowing you to use your existing Azure billing relationship and commitments.
 
-:::note
-Marketplace billing is independent of where your data stores run. For example, you can pay through
-one cloud's marketplace while running data stores in a different cloud provider or region.
-:::
-
 ## Linking a Marketplace Account
 
 - **New customers:** Open the Dragonfly Cloud listing in your cloud marketplace and click **Subscribe**.
@@ -49,4 +44,3 @@ one cloud's marketplace while running data stores in a different cloud provider 
 - **Existing customers:** Open the billing page in Dragonfly Cloud and link your AWS, GCP, or Azure account
   as a payment method.
 
-For billing questions, see [Support](../support.md).
