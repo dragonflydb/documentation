@@ -1,7 +1,7 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-import {themes} from "prism-react-renderer";
+import { themes } from "prism-react-renderer";
 import remarkDragonflyVersion from "./src/theme/plugins/remark-dragonfly-version.mjs";
 
 const codeTheme = themes.palenight;

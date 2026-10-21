@@ -1,4 +1,5 @@
 ---
+slug: /cloud/sso/microsoft
 description: "Set up SAML-based single sign-on between Dragonfly Cloud and Microsoft Entra ID."
 sidebar_position: 6
 ---

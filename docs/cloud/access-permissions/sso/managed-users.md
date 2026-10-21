@@ -1,4 +1,5 @@
 ---
+slug: /cloud/sso/users
 description: "Automatically provision and manage Dragonfly Cloud users from your identity provider using SCIM."
 sidebar_position: 3
 ---
