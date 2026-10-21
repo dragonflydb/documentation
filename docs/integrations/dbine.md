@@ -7,7 +7,7 @@ description: DBine
 
 ## Introduction
 
-[DBine](https://dbine.com) is a free, open source (MIT licensed) desktop database manager for Windows, macOS, and Linux, with 130+ databases and cloud services in the same window. It has a key browser, a command editor, and a server monitor for Redis-compatible servers.
+[DBine](https://dbine.com) is a free, open source (Apache 2.0 licensed) desktop database manager for Windows, macOS, and Linux, with 130+ databases and cloud services in the same window. It has a key browser, a command editor, and a server monitor for Redis-compatible servers.
 
 DBine has a **Dragonfly** connection type. It speaks the Redis protocol and reads Dragonfly's own fields where they differ from Redis, for example the version from `dragonfly_version`.
 
