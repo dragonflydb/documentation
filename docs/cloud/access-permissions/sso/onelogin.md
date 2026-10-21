@@ -1,4 +1,5 @@
 ---
+slug: /cloud/sso/onelogin
 description: "Set up SAML-based single sign-on between Dragonfly Cloud and OneLogin."
 sidebar_position: 5
 ---

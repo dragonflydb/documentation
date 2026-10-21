@@ -1,16 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
-  "redirects": [
-    {
-      "source": "/docs/cloud/users",
-      "destination": "/docs/cloud/access-permissions/users",
-      "permanent": true
-    },
-    {
-      "source": "/docs/cloud/sso/:path*",
-      "destination": "/docs/cloud/access-permissions/sso/:path*",
-      "permanent": true
-    }
-  ]
+  "cleanUrls": true
 }
