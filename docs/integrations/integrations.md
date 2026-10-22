@@ -22,6 +22,7 @@ providing users with peace of mind and confidence in the stability and performan
 
 - [BullMQ](./bullmq.md): Premium job and message queue system for Node.js.
 - [ClickHouse](./clickhouse.md): Ultra fast and resource efficient open-source database for real-time applications and analytics.
+- [DBine](./dbine.md): Free, open source desktop database manager with a key browser, a command editor, and a server monitor.
 - [django-cacheops](./django-cacheops.md): Slick ORM cache with automatic granular event-driven invalidation for Django.
 - [Feast](./feast.md): Customizable feature store for operational machine learning written in Python.
 - [LibreDB Studio](./libredb-studio.md): Open source browser-based database IDE with a query editor, key browser, and monitoring dashboard.
