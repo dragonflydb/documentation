@@ -361,6 +361,9 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">JSON.TOGGLE</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">JSON.TYPE</span> | <span class="support supported">Fully supported</span> |  |
 | <span class="family">Search</span> | <span class="command">FT.CREATE</span> | <span class="support partial">Partially supported</span> | Missing: DISABLE, ENABLE, INDEXALL, MAXTEXTFIELDS, NOFIELDS, NOFREQS, NOHL, PAYLOAD_FIELD, SCORE, SCORE_FIELD. |
+|  | <span class="command">FT.ALIASADD</span> | <span class="support supported">Fully supported</span> | Requires a development build; unavailable in v2.0.2. See [FT.ALIASADD](./search/ft.aliasadd.md). |
+|  | <span class="command">FT.ALIASUPDATE</span> | <span class="support supported">Fully supported</span> | Requires a development build; unavailable in v2.0.2. Creates the alias if missing. See [FT.ALIASUPDATE](./search/ft.aliasupdate.md). |
+|  | <span class="command">FT.ALIASDEL</span> | <span class="support supported">Fully supported</span> | Requires a development build; unavailable in v2.0.2. Preserves the target index. See [FT.ALIASDEL](./search/ft.aliasdel.md). |
 |  | <span class="command">FT.SEARCH</span> | <span class="support partial">Partially supported</span> | Missing: EXPANDER, EXPLAINSCORE, FIELDS, FRAGS, GEOFILTER, HIGHLIGHT, INFIELDS, INKEYS, INORDER, LEN, NOSTOPWORDS, PAYLOAD, SLOP, SUMMARIZE, TAGS, TIMEOUT, VERBATIM, WITHPAYLOADS. |
 |  | <span class="command">FT.HYBRID</span> | <span class="support partial">Partially supported</span> | Missing: ADHOC, BATCHES, BATCH_SIZE, COUNT_DISTINCTISH, FIRST_VALUE, NOSORT, OFFSET, POLICY, QUANTILE, RANDOM_SAMPLE, STDDEV, TIMEOUT, TIMESHARING, TIMESTAMP, TOLIST. |
 |  | <span class="command">FT.ALTER</span> | <span class="support supported">Fully supported</span> |  |
