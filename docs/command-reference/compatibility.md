@@ -322,8 +322,8 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">BF.MEXISTS</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">BF.RESERVE</span> | <span class="support partial">Partially supported</span> | Missing: EXPANSION, NONSCALING. |
 |  | <span class="command">BF.INSERT</span> | <span class="support unsupported">Unsupported</span> |  |
-|  | <span class="command">BF.SCANDUMP</span> | <span class="support supported">Fully supported</span> |  |
-|  | <span class="command">BF.LOADCHUNK</span> | <span class="support supported">Fully supported</span> |  |
+|  | <span class="command">BF.SCANDUMP</span> | <span class="support supported">Fully supported</span> | See [BF.SCANDUMP](./bloom-filter/bf.scandump.md) for chunk iteration and binary data handling. |
+|  | <span class="command">BF.LOADCHUNK</span> | <span class="support supported">Fully supported</span> | The first chunk replaces an existing key of any type and clears its expiration. See [BF.LOADCHUNK](./bloom-filter/bf.loadchunk.md). |
 |  | <span class="command">BF.INFO</span> | <span class="support partial">Partially supported</span> | Missing: ERROR, MAXSCALEDCAPACITY, TIGHTENING. |
 |  | <span class="command">BF.CARD</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">BF.DEBUG</span> | <span class="support unsupported">Unsupported</span> |  |
