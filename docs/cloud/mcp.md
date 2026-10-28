@@ -72,7 +72,7 @@ Choose your preferred AI client below and follow its setup instructions. In each
 
 ### Visual Studio Code
 
-Add the following to your VS Code `settings.json` file (or to `.vscode/mcp.json` for a workspace-specific server):
+Add the following to your user-profile `mcp.json` (open it with **MCP: Open User Configuration** in the Command Palette), or to `.vscode/mcp.json` for a workspace-specific server:
 
 ```json
 {
