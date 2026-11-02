@@ -63,6 +63,7 @@ resource "dfcloud_datastore" "cache" {
   location = {
     region   = "us-central1"
     provider = "gcp"
+    availability_zones = ["us-central1-a", "us-central1-a"]
   }
  
   tier = {
