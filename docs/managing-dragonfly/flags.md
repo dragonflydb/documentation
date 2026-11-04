@@ -328,6 +328,15 @@ flags which include specified substring in either in the name, description or pa
 
   `default: ""`
 
+### `--shard_sidekiq_queues`
+  If true, Sidekiq queues (`<prefix>queue:<q>`) and Sidekiq Pro `super_fetch` private queues
+  (`<prefix>queue:sq|<identity>|<q>`) are sharded by the queue name `<q>` only, so a queue and its private
+  queues share a shard. Applies to any key containing `queue:`, not only Sidekiq keys.
+  See the [Sidekiq integration guide](../integrations/sidekiq.md).
+  Ignored when `--cluster_mode` is set together with `--experimental_cluster_shard_by_slot`.
+
+  `default: false`
+
 ### `--tiered_prefix`
   Enables tiered storage if set. The string denotes the path and prefix of the files associated
   with tiered storage. For example, `tiered_prefix=/path/to/file-prefix`.
