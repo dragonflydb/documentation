@@ -168,6 +168,15 @@ def is_enum_change(doc: str, server: str) -> bool:
     return bool(_INT_RE.match(doc.strip()) and _ENUM_NAME_RE.match(server.strip()))
 
 
+def documents_enum_value(body: str, number: str, name: str) -> bool:
+    """True if one line of a flag section maps the integer default to the enum
+    constant the server reports, as a list item (`- `3` — `MULTI_ENTRY_LZ4``)
+    or a table row. A mention of the constant elsewhere does not count."""
+    num = re.compile(rf"(?<![\w.]){re.escape(number.strip())}(?![\w.])")
+    const = re.compile(rf"(?<![A-Za-z0-9_]){re.escape(name.strip())}(?![A-Za-z0-9_])")
+    return any(num.search(line) and const.search(line) for line in body.splitlines())
+
+
 # --- Section parsing ---------------------------------------------------------
 
 @dataclass
@@ -1174,9 +1183,11 @@ def main() -> int:
     mech_sections = parse_sections(mech_text)
     help_updates = (help_text_changes(mech_sections, all_server_flags, previous_flags)
                     if previous_flags is not None else [])
-    # An enum default whose section already names the server's value has its table.
+    # An enum default whose section already maps the integer to the server's
+    # constant has its value table.
     pending_enum = [(n, doc, server) for (n, doc, server) in mech.deferred_enum
-                    if n in mech_sections and server not in mech_sections[n].body]
+                    if n in mech_sections
+                    and not documents_enum_value(mech_sections[n].body, doc, server)]
     editable = (set(mech.missing_from_doc) | {n for n, _, _ in pending_enum}
                 | {u["flag"] for u in help_updates})
     polish_discarded: list[str] = []

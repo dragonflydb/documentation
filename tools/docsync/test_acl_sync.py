@@ -115,6 +115,21 @@ class ModelTests(unittest.TestCase):
         problems = acl_model.invariants(facts, acl_model.command_acl_view(facts))
         self.assertIn("RANDOMKEY: listed by COMMAND but in no ACL category", problems)
 
+    def test_invariants_require_the_category_lists(self) -> None:
+        # Without them the categories page would be generated empty.
+        facts = make_facts()
+        del facts["data"]["acl_categories"]
+        problems = acl_model.invariants(facts, acl_model.command_acl_view(facts))
+        self.assertTrue(any("no acl_categories" in p for p in problems), problems)
+
+    def test_invariants_catch_category_members_that_disagree(self) -> None:
+        facts = make_facts()
+        members = facts["data"]["acl_categories"]["@admin"]
+        dropped = members.pop()
+        problems = acl_model.invariants(facts, acl_model.command_acl_view(facts))
+        self.assertIn(f"@admin: ACL CAT members and command_acl disagree on "
+                      f"{acl_model.normalise_name(dropped)}", problems)
+
 
 class PageTests(unittest.TestCase):
     def setUp(self) -> None:
@@ -328,6 +343,15 @@ class MainTests(unittest.TestCase):
         code, _, err = self.run_main(facts, "--no-verify-live", "--no-llm")
         self.assertEqual(code, acl_sync.EXIT_SHAPE)
         self.assertIn("NEWHIDDEN", err)
+        self.assertEqual(self.setuser.read_text(), page("ACL SETUSER", "**ACL categories:** @slow\n"))
+
+    def test_categories_page_failure_writes_nothing_and_skips_the_llm(self) -> None:
+        self.categories.write_text("# ACL categories\n\nNo markers here.\n")
+        # GET has no ACL line, so a run that got that far would call the LLM.
+        (self.docs / "get.md").write_text(page("GET", "Returns the value.\n"))
+        code, _, err = self.run_main(make_facts(), "--no-verify-live")
+        self.assertEqual(code, acl_sync.EXIT_PAGES)
+        self.assertIn("has no acl-categories begin/end markers; nothing was written", err)
         self.assertEqual(self.setuser.read_text(), page("ACL SETUSER", "**ACL categories:** @slow\n"))
 
     def test_live_check_failure_writes_nothing(self) -> None:

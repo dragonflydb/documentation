@@ -731,11 +731,12 @@ DOCKER_RM_TIMEOUT_S = 60
 
 
 FENCED_BLOCK_RE = re.compile(r"^```[^\n]*\n(?P<body>.*?)^```[ \t]*$", re.DOTALL | re.MULTILINE)
-EXAMPLE_PROMPTS = ("dragonfly> ", "dragonfly$> ")
+EXAMPLE_PROMPTS = ("dragonfly> ", "dragonfly$> ", CLI_PREFIX)
 
 
 def example_commands(text: str) -> Counter:
-    """Every `dragonfly>` / `dragonfly$>` command line in any fenced block."""
+    """Every `dragonfly>` / `dragonfly$>` command line and `$ redis-cli`
+    invocation in any fenced block."""
     out: Counter = Counter()
     for m in FENCED_BLOCK_RE.finditer(text):
         for line in m.group("body").splitlines():
@@ -1396,7 +1397,8 @@ def classify_blocks(text: str,
     kind is "topology" or "push-mode" (kept as written: a standalone container
     cannot verify the block, or redis-cli never returns from it), "unchanged"
     (identical to the block at the same position in `baseline_text`),
-    "no-commands" (no `dragonfly>` line) or "changed"."""
+    "redis-cli" (has `$ redis-cli` lines, which the verifier does not run:
+    kept as written), "no-commands" (no `dragonfly>` line) or "changed"."""
     baseline_blocks = (
         [match.group(0) for match in SHELL_BLOCK_RE.finditer(baseline_text)]
         if baseline_text is not None else []
@@ -1410,6 +1412,8 @@ def classify_blocks(text: str,
             kind = skip[0]
         elif index < len(baseline_blocks) and m.group(0) == baseline_blocks[index]:
             kind = "unchanged"
+        elif block_cli_lines(lines):
+            kind = "redis-cli"
         elif not commands:
             kind = "no-commands"
         else:
@@ -1419,14 +1423,16 @@ def classify_blocks(text: str,
 
 
 def unverified_new_blocks(text: str, baseline_text: str) -> list[dict]:
-    """Topology-dependent and push-mode blocks of `text` that `baseline_text`
-    does not have: they are never run, so their output is as the LLM wrote it."""
+    """Topology-dependent, push-mode and `$ redis-cli` blocks of `text` that
+    `baseline_text` does not have: they are never run, so their output is as
+    the LLM wrote it."""
     out: list[dict] = []
     for number, m, kind in classify_blocks(text, baseline_text):
-        if kind in ("topology", "push-mode") and m.group(0) not in baseline_text:
-            invocations = extract_redis_invocations(m.group(0))
-            out.append({"block": number, "kind": kind,
-                        "command": invocations[0] if invocations else ""})
+        if kind in ("topology", "push-mode", "redis-cli") and m.group(0) not in baseline_text:
+            first = next((line for line in block_lines(m)
+                          if line.startswith((PROMPT, CLI_PREFIX))), "")
+            command = first[len(PROMPT):] if first.startswith(PROMPT) else first
+            out.append({"block": number, "kind": kind, "command": command.strip()})
     return out
 
 
@@ -1487,7 +1493,7 @@ def verify_and_substitute_examples(
     last_pos = 0
     invocation_count = 0
     block_count = 0
-    kept = {"topology": 0, "push-mode": 0}
+    kept = {"topology": 0, "push-mode": 0, "redis-cli": 0}
     new_kept: list[int] = []
     unchanged_block_count = 0
     replayed = 0
@@ -1581,9 +1587,15 @@ def verify_and_substitute_examples(
             "PSUBSCRIBE, SSUBSCRIBE or MONITOR never return in a redis-cli session); "
             "their output is as written"
         )
+    if kept["redis-cli"]:
+        notes.append(
+            f"preserved {kept['redis-cli']} new or changed shell block(s) with "
+            "`$ redis-cli` lines as written: the verifier does not run them"
+        )
     if new_kept:
         notes.append(
-            f"{len(new_kept)} of the topology-dependent or push-mode block(s) are not in "
+            f"{len(new_kept)} of the topology-dependent, push-mode or `$ redis-cli` "
+            f"block(s) are not in "
             f"the input page (block(s) {', '.join(map(str, new_kept))}): they were not "
             "run, so their output is the LLM's prediction"
         )

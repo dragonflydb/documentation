@@ -179,7 +179,9 @@ git diff docs/command-reference docs/managing-dragonfly/acl-categories.md
     `acl_model.py`, never the pages by hand;
   - **live check** (exit 3): `ACL DRYRUN` on a container from the facts image must
     allow each page's command for exactly the categories acl_sync resolved, and
-    name the same governing entry. `--no-verify-live` skips it.
+    name the same governing entry. `--no-verify-live` skips it;
+  - **categories page** (exit 1): `docs/managing-dragonfly/acl-categories.md`
+    exists, has its markers, and every category has a description.
 - Check the `Updated` list (each line is tagged `[own]`, `[acl-only CLIENT KILL]`,
   `[inherited from XINFO]` or `[routed -> _XGROUP_HELP]`), `not synced`,
   `ACL CAT entries used by no page`, the duplicate-page list and `UPDATE FAILED`.
@@ -278,7 +280,8 @@ git diff docs/
      carry over inside the block, but keys never carry into the next block.
      An example that depends on an earlier block's keys gets the wrong output.
    - A page whose LLM output changes the front matter, or removes or changes an
-     existing `dragonfly>` command in any code block, is rejected and not written:
+     existing `dragonfly>` command or `$ redis-cli` line in any code block, is
+     rejected and not written:
      an example that fails on its own needs setup lines, not removal.
    - Existing prose that the LLM removed or rewrote is listed in the run summary
      and in `removed_text` in the results. Keep a change only if the old line was
@@ -290,10 +293,10 @@ git diff docs/
      redis-cli's stderr, or contains QUIT/EXIT fails the page; the page is not
      written and the LLM markdown is saved as
      `tools/generated/llm_debug/docs_sync_unverified_*.md`.
-   - Output stays as the LLM wrote it for `dragonfly$> ` lines (most strings,
-     sorted-set and stream pages), `$ redis-cli ` lines, and blocks with
-     replication, cluster, SUBSCRIBE or MONITOR commands. New blocks of that
-     kind are listed under `unverified_blocks`: verify them by hand.
+   - Blocks with `$ redis-cli ` lines, and blocks with replication, cluster,
+     SUBSCRIBE or MONITOR commands, are not run: their output stays as the LLM
+     wrote it. New or changed blocks of that kind are listed under
+     `unverified_blocks`: verify them by hand.
 6. Commit.
 
 ### 7. Build
@@ -441,13 +444,14 @@ releases spelled them `ACL SETUSER`. `tools/generated/facts/<tag>.json` keeps th
 spelling `ACL CAT` returns, and `acl_model.command_acl_view` reads both.
 
 **Order of a run.** Nothing is written before the last step, so exit codes 3 and
-4 never leave a half-updated tree.
+4, and a categories page that cannot be generated, never leave a half-updated tree.
 
 1. **Facts shape checks** (`acl_model.invariants`, exit 4): every entry name is
    `CMD` or `CMD SUB`; an entry missing from `COMMAND` is an ACL-only subcommand
    of a listed parent or one of `KNOWN_HIDDEN`; every `COMMAND` entry has
-   categories; the routed target exists. These checks would have stopped the
-   v2.1.0 run that read `ACL|SETUSER` as an unknown command.
+   categories; the routed target exists; the facts have the `ACL CAT` member
+   lists, and they name the same entries as `command_acl`. These checks would
+   have stopped the v2.1.0 run that read `ACL|SETUSER` as an unknown command.
 2. **Mechanical pass** — minimal-diff edits, computed for every page:
    - if the *set* of categories on a page already equals the server set,
      the file is **not touched at all**, even if the line is spelled oddly;
@@ -465,7 +469,10 @@ spelling `ACL CAT` returns, and `acl_model.command_acl_view` reads both.
    arguments: `XGROUP HELP <arg>` would not be routed) must allow exactly the
    resolved categories, and the `-@all` user's denial must name the resolved
    entry. A page resolved as "not a server command" must be unknown to the server.
-4. **LLM repair pass** (requires `OPENAI_API_KEY`; skipped by `--no-llm` and
+4. **Categories page check** (exit 1, nothing written): the page exists, has
+   its markers, and every category has a description in `CATEGORY_DESCRIPTIONS`.
+   It runs before the LLM repair, so a run that cannot finish makes no LLM calls.
+5. **LLM repair pass** (requires `OPENAI_API_KEY`; skipped by `--no-llm` and
    `--dry-run`) — for pages with no ACL line or several ACL lines. Container
    pages ("This is a container command for ...") carry the command's ACL line on
    this site (CONFIG, MEMORY, SLOWLOG, SCRIPT), so one without it is repaired like
@@ -474,7 +481,7 @@ spelling `ACL CAT` returns, and `acl_model.command_acl_view` reads both.
    ends with exactly one ACL line with the server's categories. A page the model
    calls "not a page for this command" is listed for confirmation and the run
    exits 1.
-5. **Write** the updated pages and the categories page (not with `--dry-run`).
+6. **Write** the updated pages and the categories page (not with `--dry-run`).
 
 The report lists every page that was not synced, the `ACL CAT` entries no page
 uses (candidates for new pages; not shown with `--filter`), commands documented
@@ -672,7 +679,9 @@ Three-stage pipeline:
      an uppercase enum constant, e.g. `compression_mode: 3 →
      MULTI_ENTRY_LZ4`) are NOT mechanically rewritten: keeping the
      integer is what the CLI accepts, and the LLM polish is responsible
-     for adding the enum-value table to the description.
+     for adding the enum-value table to the description. A section with a
+     line that already maps the integer to the constant, such as
+     ``- `3` — `MULTI_ENTRY_LZ4` ``, is left as it is.
 
 3. **LLM polish** (requires `OPENAI_API_KEY`; runs only when there is something
    for it to write). The OpenAI model receives the mechanically-fixed page, the
@@ -792,7 +801,8 @@ driven by one command:
      shrunk to less than half of input, output that's just `...`,
      missing frontmatter / H1 / `<PageTitle>` / `import PageTitle`,
      dropped H2 sections, a changed front matter, a removed or changed existing
-     `dragonfly>` example command, a modified, removed or added ACL line, and a
+     `dragonfly>` example command or `$ redis-cli` line, a modified, removed or
+     added ACL line, and a
      changed topology or SUBSCRIBE/MONITOR block. On any failure the run is
      marked `failed`, the raw LLM markdown is saved to
      `tools/generated/llm_debug/docs_sync_rejected_<file>_<ts>.md`, and
@@ -822,9 +832,9 @@ driven by one command:
          refused FLUSHALL or MULTI, or QUIT/EXIT fails the page: it is not
          written, and the LLM markdown is saved as
          `tools/generated/llm_debug/docs_sync_unverified_<file>_<ts>.md`;
-       * blocks with SUBSCRIBE, PSUBSCRIBE, SSUBSCRIBE or MONITOR, and
-         topology-dependent blocks, are kept as written; new ones are listed in
-         `unverified_blocks`.
+       * blocks with `$ redis-cli` lines, blocks with SUBSCRIBE, PSUBSCRIBE,
+         SSUBSCRIBE or MONITOR, and topology-dependent blocks are kept as
+         written; new or changed ones are listed in `unverified_blocks`.
      The LLM is encouraged to extend examples with setup commands at the top
      of a block (e.g. `RPUSH mylist a b c` before `LRANGE mylist 0 -1`) when
      this makes the example clearer.

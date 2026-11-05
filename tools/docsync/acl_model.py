@@ -92,8 +92,12 @@ def invariants(facts: dict, view: dict[str, list[str]]) -> list[str]:
     """Shape checks that fail loudly when the facts no longer match the model
     above, e.g. a new spelling of subcommand entries or a new hidden command."""
     commands = server_commands(facts)
-    listed = {"@" + c.lower().lstrip("@") for c in facts.get("data", {}).get("acl_categories", {})}
+    acl_categories = facts.get("data", {}).get("acl_categories") or {}
+    listed = {"@" + c.lower().lstrip("@") for c in acl_categories}
     problems: list[str] = []
+    if view and not acl_categories:
+        problems.append("the facts have no acl_categories (ACL CAT per category), "
+                        "so the ACL categories page cannot be generated")
     for name in sorted(view):
         if not NAME_RE.match(name):
             problems.append(f"{name!r}: unexpected ACL entry name")
@@ -118,4 +122,16 @@ def invariants(facts: dict, view: dict[str, list[str]]) -> list[str]:
     used = {c for cats in view.values() for c in cats}
     if listed and used - listed:
         problems.append(f"categories used by entries but not listed by ACL CAT: {sorted(used - listed)}")
+    # command_acl is ACL CAT inverted, and the categories page lists the ACL CAT
+    # members: both must name the same entries.
+    members: dict[str, set[str]] = {}
+    for name, cats in view.items():
+        for cat in cats:
+            members.setdefault(cat, set()).add(name)
+    for raw, raw_members in sorted(acl_categories.items()):
+        cat = "@" + raw.lower().lstrip("@")
+        differ = sorted({normalise_name(m) for m in raw_members} ^ members.get(cat, set()))
+        if differ:
+            shown = ", ".join(differ[:5]) + (", ..." if len(differ) > 5 else "")
+            problems.append(f"{cat}: ACL CAT members and command_acl disagree on {shown}")
     return problems

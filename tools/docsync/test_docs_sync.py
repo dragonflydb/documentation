@@ -877,6 +877,19 @@ dragonfly> GET key
         self.assertEqual(written, llm)
         self.assertEqual(docs_sync.unverified_new_blocks(self.PAGE, self.PAGE), [])
 
+    def test_new_redis_cli_block_is_kept_and_reported_as_unverified(self) -> None:
+        llm = self.PAGE + "\n```shell\n$ redis-cli -3 HELLO\npredicted\n```\n"
+        session = FakeDockerSession()
+
+        result, written, _prompts, _debug = self.run_update(self.PAGE, llm, session)
+
+        self.assertEqual(result["status"], "updated")
+        self.assertEqual(result["unverified_blocks"],
+                         [{"block": 2, "kind": "redis-cli", "command": "$ redis-cli -3 HELLO"}])
+        self.assertTrue(any("`$ redis-cli` lines as written" in note for note in result["notes"]))
+        self.assertEqual(written, llm)
+        self.assertEqual(session.calls, [])
+
 
 class SummaryTests(unittest.TestCase):
     def test_summary_lists_error_replies_and_unverified_blocks(self) -> None:
@@ -904,10 +917,6 @@ class SummaryTests(unittest.TestCase):
         self.assertIn("New example blocks that were not run (1)", out.getvalue())
         self.assertIn("docs/command-reference/x.md (updated): block 2 (push-mode): "
                       "SUBSCRIBE news", out.getvalue())
-
-
-if __name__ == "__main__":
-    unittest.main()
 
 
 class UnpublishedPageTests(unittest.TestCase):
@@ -977,6 +986,12 @@ dragonfly> FT.CREATE idx ON JSON SCHEMA $.title AS title TEXT
         errors = docs_sync.validate_update_output(self.PAGE, out)
         self.assertTrue(any(e.startswith("2 existing example command(s) were removed") for e in errors), errors)
 
+    def test_changed_redis_cli_invocations_are_rejected(self) -> None:
+        page = self.PAGE + "\n```shell\n$ redis-cli -3 HELLO\n```\n"
+        out = page.replace("$ redis-cli -3 HELLO", "$ redis-cli -2 HELLO")
+        errors = docs_sync.validate_update_output(page, out)
+        self.assertTrue(any(e.startswith("1 existing example command(s) were removed") for e in errors), errors)
+
     def test_added_setup_lines_are_accepted(self) -> None:
         out = self.PAGE.replace("```shell\n", "```shell\ndragonfly> FT.CREATE products-v2 ON HASH PREFIX 1 v2: SCHEMA title TEXT\nOK\n", 1)
         self.assertEqual(docs_sync.validate_update_output(self.PAGE, out), [])
@@ -986,3 +1001,7 @@ dragonfly> FT.CREATE idx ON JSON SCHEMA $.title AS title TEXT
         self.assertEqual(docs_sync.removed_prose(self.PAGE, out),
                          ["Batch I/O counters are available through `INFO stats`."])
         self.assertEqual(docs_sync.removed_prose(self.PAGE, self.PAGE), [])
+
+
+if __name__ == "__main__":
+    unittest.main()

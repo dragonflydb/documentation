@@ -89,10 +89,6 @@ class DryRunTests(unittest.TestCase):
         self.assertIn("--dry-run", out.getvalue())
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class MergePolishTests(unittest.TestCase):
     MECH = ("# Flags\n\nIntro.\n\n## Available Flags\n\n"
             "### `--alpha`\n  Alpha flag.\n\n  `default: 1`\n\n"
@@ -133,3 +129,22 @@ class MergePolishTests(unittest.TestCase):
         previous = {"alpha": {"description": "a"}, "beta": {"description": "old"}}
         changes = flags_sync.help_text_changes(sections, current, previous)
         self.assertEqual(changes, [{"flag": "beta", "previous_help": "old", "current_help": "new"}])
+
+
+
+class EnumValueTests(unittest.TestCase):
+    def test_a_mapping_line_documents_the_value(self) -> None:
+        listed = "  Where:\n  - `0` — `NONE` — no compression.\n  - `3` — `MULTI_ENTRY_LZ4` — LZ4.\n"
+        table = "| Value | Name |\n| --- | --- |\n| 3 | MULTI_ENTRY_LZ4 |\n"
+        self.assertTrue(flags_sync.documents_enum_value(listed, "3", "MULTI_ENTRY_LZ4"))
+        self.assertTrue(flags_sync.documents_enum_value(table, "3", "MULTI_ENTRY_LZ4"))
+
+    def test_a_mention_without_the_mapping_does_not(self) -> None:
+        prose = "  The server reports MULTI_ENTRY_LZ4, the mode added in v1.3.\n"
+        self.assertFalse(flags_sync.documents_enum_value(prose, "3", "MULTI_ENTRY_LZ4"))
+        self.assertFalse(flags_sync.documents_enum_value("  - `3` — `MULTI_ENTRY_LZ4X`\n",
+                                                         "3", "MULTI_ENTRY_LZ4"))
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -724,6 +724,17 @@ def run(args: argparse.Namespace) -> int:
             return EXIT_LIVE
         live = f"passed ({checked} pages agree with ACL DRYRUN on {image_ref})"
 
+    # The categories page depends only on the facts. Check it before the LLM
+    # repair, and write nothing when it cannot be generated.
+    if args.filter:
+        categories = CategoriesPage(status="skipped", reason="--filter")
+    else:
+        categories = update_categories_page(facts)
+    if categories.status == "failed" and not args.dry_run:
+        print(f"ERROR: the ACL categories page cannot be updated: {categories.reason}; "
+              "nothing was written", file=sys.stderr)
+        return EXIT_PAGES
+
     if any(r.status == "failed" and r.llm_eligible for r in results):
         if args.no_llm or args.dry_run:
             flag = "--no-llm" if args.no_llm else "--dry-run"
@@ -732,11 +743,6 @@ def run(args: argparse.Namespace) -> int:
                     r.reason += f" (LLM repair skipped: {flag})"
         else:
             llm_repair_failed(results)
-
-    if args.filter:
-        categories = CategoriesPage(status="skipped", reason="--filter")
-    else:
-        categories = update_categories_page(facts)
 
     if not args.dry_run:
         for r in results:

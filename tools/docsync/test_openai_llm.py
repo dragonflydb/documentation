@@ -121,11 +121,15 @@ class OpenAILLMTests(unittest.TestCase):
         self.assertEqual(request["text"]["format"]["schema"], self.schema)
 
     def test_installed_openai_sdk_serializes_responses_request(self):
-        try:  # openai 3.x depends on httpx2, older releases on httpx
-            import httpx2 as httpx
-        except ImportError:
-            import httpx
+        import openai
         from openai import OpenAI
+
+        # Build the mock client on the HTTP package the installed SDK is built
+        # on: httpx2 for openai 3.x, httpx for older releases. Probing for the
+        # packages instead would pick httpx2 for an older SDK that has both.
+        backend = next(cls for cls in openai.DefaultHttpxClient.__mro__
+                       if not cls.__module__.startswith("openai"))
+        httpx = importlib.import_module(backend.__module__.split(".")[0])
 
         captured = {}
 
