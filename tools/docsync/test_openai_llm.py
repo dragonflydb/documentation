@@ -121,7 +121,10 @@ class OpenAILLMTests(unittest.TestCase):
         self.assertEqual(request["text"]["format"]["schema"], self.schema)
 
     def test_installed_openai_sdk_serializes_responses_request(self):
-        import httpx
+        try:  # openai 3.x depends on httpx2, older releases on httpx
+            import httpx2 as httpx
+        except ImportError:
+            import httpx
         from openai import OpenAI
 
         captured = {}

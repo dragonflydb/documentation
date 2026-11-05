@@ -46,6 +46,7 @@ The `LIMITED` option is planned for future releases but full functionality is no
 <summary><code>QUERY query</code></summary>
 
 is query string, sent to the [`FT.SEARCH`](./ft.search.md) or [`FT.AGGREGATE`](./ft.aggregate.md) command to collect performance details.
+The query uses the [query syntax](./query-syntax.md) of `FT.SEARCH`.
 </details>
 
 ## Return

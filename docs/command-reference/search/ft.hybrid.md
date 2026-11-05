@@ -48,7 +48,7 @@ is the index name. You must first create the index with [`FT.CREATE`](./ft.creat
 <details open>
 <summary><code>SEARCH query</code></summary>
 
-is the full-text query, using the same [query syntax](https://redis.io/docs/latest/develop/interact/search-and-query/query/) as `FT.SEARCH`. If the query is more than a single word, put it in quotes.
+is the full-text query, using the same [query syntax](./query-syntax.md) as `FT.SEARCH`; see also the [Valkey Search query syntax](https://valkey.io/topics/search-query/). If the query is more than a single word, put it in quotes.
 </details>
 
 <details open>

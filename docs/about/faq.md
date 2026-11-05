@@ -7,12 +7,14 @@ sidebar_position: 2
 
 ## What is the licensing model for Dragonfly? Is it open source?
 
-Dragonfly is released under [BSL 1.1](https://github.com/dragonflydb/dragonfly/blob/main/LICENSE.md) (Business Source License). We believe that a BSL license is more permissive than AGPL-like licenses. In general terms, it means that dragonfly's code is free to use and free to change as long as you do not sell services directly related to dragonfly or in-memory datastores.
+Starting with v2.1, Dragonfly is released under the [Dragonfly Source-Available License (DSAL)](https://github.com/dragonflydb/dragonfly/blob/main/LICENSE.md). DSAL is a "source available" license and it's not strictly an open-source license. In general terms, it means that Dragonfly's code is free to use, modify and incorporate into your own applications or products, as long as you do not distribute or offer it as a standalone database, data store, caching product or a substantially similar product or service. Production use is free up to an aggregate of 100 vCPUs across all your concurrently running instances (including replicas), while non-production use is unlimited. Usage beyond that requires a commercial license.
 We followed the model set by other companies like Elastic, Redis, MongoDB, Cockroach labs, Redpanda Data to protect our rights to provide service and support for the software we are building.
+
+Releases before v2.1 remain under BSL 1.1 (Business Source License), with the terms in the `LICENSE.md` file of each release, for example [v2.0.0](https://github.com/dragonflydb/dragonfly/blob/v2.0.0/LICENSE.md).
 
 ## Can I use Dragonfly in production?
 
-Yes, Dragonfly is built for production and has seen massive adoption across demanding, data-intensive environments. As long as you do not offer Dragonfly as a managed service, you are completely free to self-host it in production under the BSL license.
+Yes, Dragonfly is built for production and has seen massive adoption across demanding, data-intensive environments. Under the DSAL, which applies to v2.1 and later, you are free to self-host Dragonfly in production up to an aggregate of 100 vCPUs across all your concurrently running instances (including replicas), as long as you do not provide Dragonfly as a standalone database, data store or caching product or service. Beyond that, you need a commercial license. See the [LICENSE](https://github.com/dragonflydb/dragonfly/blob/main/LICENSE.md) for the exact terms.
 
 For teams that want out-of-the-box scaling, security, and expert support, we launched **[Dragonfly Cloud](https://www.dragonflydb.io/cloud)** - the easiest and most reliable way to run Dragonfly in production.
 

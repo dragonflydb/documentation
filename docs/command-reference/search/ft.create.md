@@ -65,6 +65,8 @@ Field types are:
 
  - `GEO` - Allows geographic range queries against the value in this attribute.
 
+See [Query syntax](./query-syntax.md) for how to query each attribute type.
+
 :::note About `VECTOR`
 - Full documentation on vector options is available in the [Valkey FT.CREATE reference](https://valkey.io/commands/ft.create/).
 - Currently, Dragonfly has limited support for vector options.

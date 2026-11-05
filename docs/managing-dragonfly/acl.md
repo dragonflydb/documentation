@@ -7,7 +7,7 @@ description: "Configure Dragonfly's Access Control Lists (ACL) to control which 
 Dragonfly has built-in support for ACL. Dragonfly operators get fine-grained control over how and who accesses the datastore via the ACL family of commands.
 Since Dragonfly is designed as a drop-in replacement for Redis, you can expect the same API functionality for ACL as in Redis.
 
-All connections in Dragonfly default to the user `default` (unless that user is disabled). By default, user `default` can `AUTH` in Dragonfly using any password, 
+All connections in Dragonfly default to the user `default` (unless that user is disabled). By default, user `default` can `AUTH` in Dragonfly using any password,
 and is allowed to execute any command and is part of all the available ACL groups.
 
 Permissions for a given user are controlled via a domain-specific language (DSL) and are divided into four categories:
@@ -89,8 +89,9 @@ ACL SETUSER John +@ALL -@ADMIN -@FAST
 ```
 
 Which basically grants all but the `@ADMIN` and `@FAST` groups to the user. That way, it's easy to express which groups of permissions
-the user should not be a part of. The list of all categories is accessible with the command `ACL CAT` and user specific information 
+the user should not be a part of. The list of all categories is accessible with the command `ACL CAT` and user specific information
 is accessible with the command `ACL GETUSER <username>`.
+See [ACL Categories](./acl-categories.md) for every category and the commands in it.
 
 ## Command Rules
 
@@ -148,7 +149,7 @@ Note, that the `aclfile` file is compatible with Redis (however it must not cont
 pub/sub DSL's because these yet are not supported so if you plan to migrate, just open the file and strip them away).
 
 If you want the `aclfile` to be writable, that is, if you want `ACL SAVE` to work, we would advise against placing the `aclfile`
-under `/etc` directory because usually that directory is only accessible by Dragonfly as `readonly`. You change this behavior, by editing 
+under `/etc` directory because usually that directory is only accessible by Dragonfly as `readonly`. You change this behavior, by editing
 the systemd service file located in `/lib/systemd/system/dragonfly.service`.
 
 For convenience, we suggest to place acl files in `/var/lib/dragonfly/`.
