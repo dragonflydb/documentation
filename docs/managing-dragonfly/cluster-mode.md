@@ -22,9 +22,11 @@ $> dragonfly --cluster_mode=emulated
 # Connecting to the Dragonfly instance using Redis-CLI.
 $> redis-cli
 
-# See which cluster commands are supported
-dragonfly> CLUSTER HELP
+# Check the cluster state
+dragonfly> CLUSTER INFO
 ```
+
+See [`CLUSTER`](../command-reference/cluster-management/cluster.md) for the supported cluster subcommands.
 
 Now you can connect to your Dragonfly instance with a Redis client that supports the Redis Cluster protocol,
 here's how it would look like in Python using [redis-py](https://github.com/redis/redis-py):
@@ -41,7 +43,8 @@ b'bar'
 ### Notes
 
 - Your application code may be using a regular Redis client that does not require cluster commands as well.
-- By default, if the `--cluster_mode` server flag is not specified, Dragonfly runs in this emulated cluster mode.
+- Cluster mode is disabled by default: if the `--cluster_mode` server flag is not specified,
+  `CLUSTER` commands return `ERR Cluster is disabled. Enabled via passing --cluster_mode=emulated|yes`.
 - In emulated mode, `cluster_announce_ip` and `announce_port` can be changed at runtime with `CONFIG SET`.
   Subsequent cluster topology replies use the new values.
 - In emulated mode, replicas advertise the master's announced address in cluster topology replies.
@@ -85,6 +88,8 @@ add the following (to both masters and replicas):
 - `--cluster_mode=yes` to let the nodes know that they are part of a cluster.
 - `--admin_port=X`, where `X` is a port that you'll use to run _admin commands_.
   Note that this port generally should **NOT** be exposed to your data store users.
+- `--cluster_node_id=ID`, where `ID` is a unique string that identifies the node in the cluster configuration.
+  The node keeps this ID across restarts. Without this flag, the node generates a new random ID every time it starts.
 
 When a Dragonfly server is started in cluster mode,
 it will reply with errors to any user requests until the cluster is properly configured.
@@ -106,9 +111,11 @@ which node owns which hash slots, etc.
 
 The following are the major commands and steps you need in order to configure a Dragonfly Cluster:
 
-- `DFLYCLUSTER MYID`:
+- `CLUSTER MYID`:
   The first thing you'll need to do is to get each node's ID, which is a unique string identifying
-  the node. The ID can be retrieved by issuing the command `DFLYCLUSTER MYID` on each of the nodes.
+  the node. The ID can be retrieved by issuing the command
+  [`CLUSTER MYID`](../command-reference/cluster-management/cluster-myid.md) on each of the nodes.
+  For a node started with `--cluster_node_id`, the ID is the value of this flag.
 - `DFLYCLUSTER CONFIG`:
   Once you have all of the IDs, build the configuration string (see below) and pass it to all nodes
   using the `DFLYCLUSTER CONFIG` command. Note that this command takes a **JSON-encoded string** as the parameter.
@@ -122,28 +129,57 @@ It is important to pass the exact same configuration to all nodes.
 The configuration is a JSON-encoded string in the following format:
 
 ```json
-[  // Array of node-entries.
-  {  // Node #1
-    "slot_ranges": [
-      { "start": X1, "end": Y1 },  // Slots [X1, Y1) are owned by node 1.
-      { "start": X2, "end": Y2 }   // Slots [X2, Y2) are also owned by node 1.
-    ],
-    "master": {
-      "id": "...",   // Returned from DFLYCLUSTER MYID.
-      "ip": "...",   // The IP or hostname that clients should use to access this node.
-      "port": "..."  // The port that clients should use to access this node.
-    },
-    "replicas": [  // Replicas use the same fields as the master config.
-      { "id": "...", "ip": "...", port: "..." },  // The first replica of the master/primary node.
-      { "id": "...", "ip": "...", port: "..." }   // The second replica of the master/primary node.
-    ]
-  },
-  { ... }, // Node #2
-  { ... }, // Node #3, etc
+[
+   {
+      "slot_ranges": [
+         {
+            "start": 0,
+            "end": 16383
+         }
+      ],
+      "master": {
+         "id": "node-1",
+         "ip": "10.0.0.1",
+         "port": 6379,
+         "health": "online"
+      },
+      "replicas": [
+         {
+            "id": "node-2",
+            "ip": "10.0.0.2",
+            "port": 6379,
+            "health": "online"
+         }
+      ],
+      "migrations": []
+   }
 ]
 ```
 
-Here is an example of a Dragonfly Cluster configuration with 2 master/primary nodes, each with 1 replica:
+It is an array with one entry per shard: a master/primary node, its replicas, and the hash slots they own.
+Each entry has the following fields:
+
+- `slot_ranges`: the hash slots owned by the shard. Ranges are inclusive: `{ "start": 0, "end": 8191 }`
+  covers slots `0` through `8191`. Every slot from `0` to `16383` must be owned by exactly one shard.
+- `master`: the master/primary node.
+- `replicas`: the replicas of the master/primary node. Replicas use the same fields as the master.
+  This field is required. Use an empty array (`[]`) for a shard without replicas.
+- `migrations`: optional, the outgoing
+  [slot migrations](../command-reference/cluster-management/dflycluster-config.md#slot-migration) of the shard.
+
+The master and each replica have the following fields:
+
+- `id`: the node ID, returned by `CLUSTER MYID`.
+- `ip`: the IP or hostname that clients should use to access this node.
+- `port`: the port that clients should use to access this node, as a number.
+- `health`: optional, the state that cluster topology replies report for the node:
+  `online` (the default), `loading`, `fail` or `hidden`. For example,
+  [`CLUSTER SLOTS`](../command-reference/cluster-management/cluster-slots.md) lists only the replicas that are `online`.
+
+The configuration must be valid JSON: keys are quoted, and comments and trailing commas are not allowed.
+
+Here is an example of a Dragonfly Cluster configuration with 2 master/primary nodes, each with 1 replica,
+for nodes started with `--cluster_node_id` set to `node-1` through `node-4`:
 
 ```json
 [
@@ -155,15 +191,15 @@ Here is an example of a Dragonfly Cluster configuration with 2 master/primary no
          }
       ],
       "master": {
-         "id": "...",
-         "ip": "...",
-         "port": "..."
+         "id": "node-1",
+         "ip": "10.0.0.1",
+         "port": 6379
       },
       "replicas": [
          {
-            "id": "...",
-            "ip": "...",
-            "port": "..."
+            "id": "node-2",
+            "ip": "10.0.0.2",
+            "port": 6379
          }
       ]
    },
@@ -175,15 +211,15 @@ Here is an example of a Dragonfly Cluster configuration with 2 master/primary no
          }
       ],
       "master": {
-         "id": "...",
-         "ip": "...",
-         "port": "..."
+         "id": "node-3",
+         "ip": "10.0.0.3",
+         "port": 6379
       },
       "replicas": [
          {
-            "id": "...",
-            "ip": "...",
-            "port": "..."
+            "id": "node-4",
+            "ip": "10.0.0.4",
+            "port": 6379
          }
       ]
    }
@@ -193,6 +229,9 @@ Here is an example of a Dragonfly Cluster configuration with 2 master/primary no
 You'll need to resend the configuration to nodes after restart and to update all nodes
 with the new configuration upon any changes to the cluster,
 such as adding/removing nodes, changing hostnames, etc.
+A node started with `--cluster_node_id` keeps its ID across restarts, so you can resend the same configuration.
+Otherwise, the node gets a new random ID every time it starts: update the configuration with the new ID
+and send it to all nodes. A master whose ID is not in the configuration owns no slots and deletes all of its keys.
 
 ### Notes
 
@@ -206,7 +245,8 @@ such as adding/removing nodes, changing hostnames, etc.
 - `DFLYMIGRATE` is rejected unless cluster mode is enabled.
 - Dragonfly supports the migration of data slots between nodes as well. A detailed explanation can
   be found in one of our blog posts [here](https://www.dragonflydb.io/blog/redis-and-dragonfly-cluster-design-comparison).
-  We will update the documentation to reflect these steps soon.
+  The configuration fields of a migration are described in
+  [`DFLYCLUSTER CONFIG`](../command-reference/cluster-management/dflycluster-config.md#slot-migration).
 
 ## Dragonfly Swarm
 

@@ -783,7 +783,7 @@ flags which include specified substring in either in the name, description or pa
   `default: false`
 
 ### `--cluster_node_id`
-  ID within a cluster, used for slot assignment. MUST be unique. If empty, uses master replication ID (random string).
+  ID within a cluster, used for slot assignment. MUST be unique. If empty, uses master replication ID (random string), which changes every time the node starts. Set this flag to keep the node ID across restarts. Applies with `--cluster_mode=yes`. Setting it with `--cluster_mode=emulated` is unsupported: Dragonfly exits at startup.
 
   `default: ""`
 
@@ -913,7 +913,7 @@ flags which include specified substring in either in the name, description or pa
   `default: 0`
 
 ### `--locktag_delimiter`
-  If set, this char is used to extract a lock tag by looking at delimiters, like hash tags. If unset, regular hashtag extraction is done (with `{}`). Must be used with `--lock_on_hashtags`.
+  If set, this char is used to extract a lock tag by looking at delimiters, like hash tags. If unset, regular hashtag extraction is done (with `{}`). Locks use this tag only with `--lock_on_hashtags`. In cluster mode (`--cluster_mode=emulated` or `--cluster_mode=yes`), the tag also determines the hash slot of a key, with or without `--lock_on_hashtags`; see [`CLUSTER KEYSLOT`](../command-reference/cluster-management/cluster-keyslot.md).
 
   `default: ""`
 

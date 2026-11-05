@@ -27,8 +27,5 @@ Currently, the following subcommands are supported:
 - [XGROUP SETID](./xgroup-setid.md)
 - [XGROUP HELP](./xgroup-help.md)
 
-All subcommands except `XGROUP HELP` are checked as `XGROUP` itself, so `+xgroup` and `-xgroup` cover them and category rules use the categories of `XGROUP`.
-`XGROUP HELP` is checked against a hidden command with other categories, as described on [its page](./xgroup-help.md#acl-permissions).
-
 `XGROUP` with fewer than two arguments, other than `XGROUP HELP`, returns `ERR wrong number of arguments for 'xgroup' command`.
-An unknown subcommand returns `ERR syntax error`, while Valkey returns an `unknown subcommand` error.
+An unknown subcommand returns `ERR syntax error`.

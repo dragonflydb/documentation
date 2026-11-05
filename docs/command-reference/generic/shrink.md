@@ -25,13 +25,12 @@ Small hashes stored as a listpack (see [`--listpack_max_bytes`](../../managing-d
 and [`--listpack_max_field_len`](../../managing-dragonfly/flags.md#--listpack_max_field_len)), small integer-only sets stored as an intset,
 and keys of all other types return an error.
 
-In Dragonfly v2.1.0, the reply is not the amount of memory that `SHRINK` frees:
+The reply depends on the encoding:
 
 - Sets use the OAH format by default ([`--use_oah_set`](../../managing-dragonfly/flags.md#--use_oah_set)),
   which shrinks the table automatically when members are removed, so `SHRINK` on a set usually returns `0`.
-  It still compacts a set whose members expired and were dropped by a read, because reads do not shrink the table. That compaction frees memory.
-- For hashes, and for sets when `--use_oah_set=false`, the reply reports how much the bucket array shrank, but the array keeps its allocated memory.
-  `MEMORY USAGE` of the key does not decrease after `SHRINK`, even when the reply is not `0`, unless `SHRINK` removed expired fields or members.
+  It still compacts a set whose members expired and were dropped by a read, because reads do not shrink the table.
+- For hashes, and for sets when `--use_oah_set=false`, the reply reports how much the bucket array shrank.
 
 ## Return
 

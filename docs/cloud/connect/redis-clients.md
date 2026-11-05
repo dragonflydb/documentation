@@ -31,7 +31,7 @@ Here are a few popular client libraries and code snippets to connect to the data
 
 ### Single-Shard Data Store
 
-- Install [`redis-cli`](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/).
+- Install [`redis-cli`](https://valkey.io/topics/installation/).
 - With the **Connection URI** from the data store drawer, run `redis-cli` in the terminal:
 
 ```shell

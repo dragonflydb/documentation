@@ -74,6 +74,6 @@ dragonfly> JSON.GET doc $
 
 ## Related topics
 
-* [RedisJSON](https://redis.io/docs/latest/develop/data-types/json/)
-* [Index and search JSON documents](https://redis.io/docs/latest/develop/data-types/json/indexing_json/)
+* [Valkey JSON](https://valkey.io/topics/valkey-json/)
+* [Index JSON documents with Valkey Search](https://valkey.io/topics/search-data-formats/)
 

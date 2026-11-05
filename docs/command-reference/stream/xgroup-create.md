@@ -42,7 +42,7 @@ XGROUP CREATE key group <id | $> [MKSTREAM]
 Create a consumer group for an existing stream starting with new messages:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream mygroup $
+dragonfly> XGROUP CREATE mystream mygroup $
 OK
 ```
 
@@ -51,7 +51,7 @@ OK
 Create the consumer group starting from a specific message ID:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream mygroup "1609459200000-0"
+dragonfly> XGROUP CREATE mystream mygroup "1609459200000-0"
 OK
 ```
 
@@ -60,7 +60,7 @@ OK
 Create a consumer group while automatically creating the stream if it does not exist:
 
 ```shell
-dragonfly$> XGROUP CREATE newstream mygroup $ MKSTREAM
+dragonfly> XGROUP CREATE newstream mygroup $ MKSTREAM
 OK
 ```
 

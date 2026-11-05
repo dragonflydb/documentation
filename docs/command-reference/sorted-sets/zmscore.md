@@ -39,10 +39,10 @@ If a member is not part of the sorted set, `nil` is returned for that specific m
 Retrieve scores for multiple members in a sorted set:
 
 ```shell
-dragonfly$> ZADD myzset 1 "Alice" 2 "Bob" 3 "Charlie"
+dragonfly> ZADD myzset 1 "Alice" 2 "Bob" 3 "Charlie"
 (integer) 3
 
-dragonfly$> ZMSCORE myzset "Alice" "Charlie"
+dragonfly> ZMSCORE myzset "Alice" "Charlie"
 1) "1"
 2) "3"
 ```
@@ -52,10 +52,10 @@ dragonfly$> ZMSCORE myzset "Alice" "Charlie"
 Query the sorted set for both existing and non-existing members:
 
 ```shell
-dragonfly$> ZADD myzset 1 "Alice" 2 "Bob" 3 "Charlie"
+dragonfly> ZADD myzset 1 "Alice" 2 "Bob" 3 "Charlie"
 (integer) 3
 
-dragonfly$> ZMSCORE myzset "Alice" "Bob" "Unknown"
+dragonfly> ZMSCORE myzset "Alice" "Bob" "Unknown"
 1) "1"
 2) "2"
 3) (nil)

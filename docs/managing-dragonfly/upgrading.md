@@ -15,8 +15,9 @@ In this section, v2.0 means the v2.0.x releases.
 
 ### License
 
-Starting with v2.1, Dragonfly is released under the Dragonfly Source-Available License (DSAL) instead of the Business Source License 1.1 (BSL 1.1).
+Starting with v2.1, Dragonfly is released as Dragonfly Enterprise under the Dragonfly Source-Available License (DSAL) instead of the Business Source License 1.1 (BSL 1.1).
 Releases before v2.1 remain under BSL 1.1.
+Production use is free up to an aggregate of 100 vCPUs; beyond that, a commercial license is required, which you can get by signing up at [dragonflydb.cloud](https://dragonflydb.cloud/signup).
 Review the new terms before you upgrade. See [License](../about/license.md).
 
 ### Removed and retired flags

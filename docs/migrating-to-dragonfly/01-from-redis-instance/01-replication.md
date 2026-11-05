@@ -70,7 +70,7 @@ slave0:ip=200.0.0.2,port=6380,state=online,offset=15693,lag=2
 ```shell
 dragonfly:6380$> INFO replication
 # Replication
-role:replica
+role:slave
 master_host:200.0.0.1
 master_port:6379
 master_link_status:up

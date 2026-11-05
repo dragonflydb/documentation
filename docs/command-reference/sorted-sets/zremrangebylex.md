@@ -42,13 +42,13 @@ ZREMRANGEBYLEX key min max
 Remove members between `alpha` and `delta` inclusively:
 
 ```shell
-dragonfly$> ZADD myzset 0 "alpha" 0 "bravo" 0 "charlie" 0 "delta" 0 "echo"
+dragonfly> ZADD myzset 0 "alpha" 0 "bravo" 0 "charlie" 0 "delta" 0 "echo"
 (integer) 5
 
-dragonfly$> ZREMRANGEBYLEX myzset [alpha [delta
+dragonfly> ZREMRANGEBYLEX myzset [alpha [delta
 (integer) 4
 
-dragonfly$> ZRANGE myzset 0 -1
+dragonfly> ZRANGE myzset 0 -1
 1) "echo"
 ```
 
@@ -57,13 +57,13 @@ dragonfly$> ZRANGE myzset 0 -1
 Remove an inclusive-to-exclusive range, excluding `alpha` but including `delta`:
 
 ```shell
-dragonfly$> ZADD myzset 0 "alpha" 0 "bravo" 0 "charlie" 0 "delta" 0 "echo"
+dragonfly> ZADD myzset 0 "alpha" 0 "bravo" 0 "charlie" 0 "delta" 0 "echo"
 (integer) 5
 
-dragonfly$> ZREMRANGEBYLEX myzset (alpha [delta
+dragonfly> ZREMRANGEBYLEX myzset (alpha [delta
 (integer) 3
 
-dragonfly$> ZRANGE myzset 0 -1
+dragonfly> ZRANGE myzset 0 -1
 1) "alpha"
 2) "echo"
 ```
@@ -73,13 +73,13 @@ dragonfly$> ZRANGE myzset 0 -1
 Remove everything up to `delta` inclusively:
 
 ```shell
-dragonfly$> ZADD myzset 0 "alpha" 0 "bravo" 0 "charlie" 0 "delta" 0 "echo"
+dragonfly> ZADD myzset 0 "alpha" 0 "bravo" 0 "charlie" 0 "delta" 0 "echo"
 (integer) 5
 
-dragonfly$> ZREMRANGEBYLEX myzset - [delta
+dragonfly> ZREMRANGEBYLEX myzset - [delta
 (integer) 4
 
-dragonfly$> ZRANGE myzset 0 -1
+dragonfly> ZRANGE myzset 0 -1
 1) "echo"
 ```
 
@@ -88,13 +88,13 @@ dragonfly$> ZRANGE myzset 0 -1
 Use `ZREMRANGEBYLEX` and the `-` and `+` special values to remove all members in a sorted set:
 
 ```shell
-dragonfly$> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
+dragonfly> ZADD myzset 0 alpha 0 bravo 0 charlie 0 delta 0 echo
 (integer) 5
 
-dragonfly$> ZREMRANGEBYLEX myzset - +
+dragonfly> ZREMRANGEBYLEX myzset - +
 (integer) 5
 
-dragonfly$> ZRANGE myzset 0 -1
+dragonfly> ZRANGE myzset 0 -1
 (empty array)
 ```
 

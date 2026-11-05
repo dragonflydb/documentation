@@ -931,3 +931,58 @@ class UnpublishedPageTests(unittest.TestCase):
         self.assertEqual(indexed, ["docs/command-reference/stream/xgroup.md"])
         self.assertIsNone(planned)
         self.assertEqual(kept, "docs/command-reference/stream/xgroup.md")
+
+
+class ContentGuardTests(unittest.TestCase):
+    PAGE = """---
+description: "Offload large string values to SSD/NVMe storage."
+---
+
+import PageTitle from '@site/src/components/PageTitle';
+
+# FT.ALIASDEL
+
+<PageTitle title="Redis FT.ALIASDEL Command (Documentation) | Dragonfly" />
+
+## Syntax
+
+    FT.ALIASDEL alias
+
+Batch I/O counters are available through `INFO stats`.
+Padding text that keeps the page well above the structural length checks of the validator.
+
+## Examples
+
+```shell
+dragonfly> FT.ALIASDEL products
+OK
+dragonfly> FT.SEARCH products-v2 * NOCONTENT
+1) (integer) 1
+2) "v2:1"
+```
+
+``` bash
+dragonfly> FT.CREATE idx ON JSON SCHEMA $.title AS title TEXT
+```
+"""
+
+    def test_changed_front_matter_is_rejected(self) -> None:
+        out = self.PAGE.replace("SSD/NVMe", "SSD/NMe")
+        self.assertIn("frontmatter was changed; it must stay byte-identical",
+                      docs_sync.validate_update_output(self.PAGE, out))
+
+    def test_removed_or_replaced_example_commands_are_rejected(self) -> None:
+        out = self.PAGE.replace("dragonfly> FT.SEARCH products-v2 * NOCONTENT\n1) (integer) 1\n2) \"v2:1\"\n", "")
+        out = out.replace("$.title AS title TEXT", "$.title AS title_text TEXT")
+        errors = docs_sync.validate_update_output(self.PAGE, out)
+        self.assertTrue(any(e.startswith("2 existing example command(s) were removed") for e in errors), errors)
+
+    def test_added_setup_lines_are_accepted(self) -> None:
+        out = self.PAGE.replace("```shell\n", "```shell\ndragonfly> FT.CREATE products-v2 ON HASH PREFIX 1 v2: SCHEMA title TEXT\nOK\n", 1)
+        self.assertEqual(docs_sync.validate_update_output(self.PAGE, out), [])
+
+    def test_removed_prose_is_reported(self) -> None:
+        out = self.PAGE.replace("Batch I/O counters are available through `INFO stats`.\n", "")
+        self.assertEqual(docs_sync.removed_prose(self.PAGE, out),
+                         ["Batch I/O counters are available through `INFO stats`."])
+        self.assertEqual(docs_sync.removed_prose(self.PAGE, self.PAGE), [])

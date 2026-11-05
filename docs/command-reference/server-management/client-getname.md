@@ -16,7 +16,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @slow, @connection
 
-The `CLIENT GETNAME` returns the name of the current connection as set by `CLIENT SETNAME`. Since every new connection starts without an associated name, if no name was assigned a null bulk reply is returned.
+The `CLIENT GETNAME` returns the name of the current connection as set by `CLIENT SETNAME`. A new connection is named after its connection ID (the value that `CLIENT ID` returns) until a name is set. If the name was removed by setting it to an empty string, a null bulk reply is returned.
 
 ## Return
 

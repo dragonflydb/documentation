@@ -42,10 +42,10 @@ ZREVRANGEBYLEX key max min [LIMIT offset count]
 Return elements in reverse lexicographical order between `d` and `b` inclusive:
 
 ```shell
-dragonfly$> ZADD myzset 0 "a" 0 "b" 0 "c" 0 "d" 0 "e"
+dragonfly> ZADD myzset 0 "a" 0 "b" 0 "c" 0 "d" 0 "e"
 (integer) 5
 
-dragonfly$> ZREVRANGEBYLEX myzset [d [b
+dragonfly> ZREVRANGEBYLEX myzset [d [b
 1) "d"
 2) "c"
 3) "b"
@@ -56,10 +56,10 @@ dragonfly$> ZREVRANGEBYLEX myzset [d [b
 Return elements between `d` (exclusive) and `b` (inclusive):
 
 ```shell
-dragonfly$> ZADD myzset 0 "a" 0 "b" 0 "c" 0 "d" 0 "e"
+dragonfly> ZADD myzset 0 "a" 0 "b" 0 "c" 0 "d" 0 "e"
 (integer) 5
 
-dragonfly$> ZREVRANGEBYLEX myzset (d [b
+dragonfly> ZREVRANGEBYLEX myzset (d [b
 1) "c"
 2) "b"
 ```
@@ -69,10 +69,10 @@ dragonfly$> ZREVRANGEBYLEX myzset (d [b
 Return only the first 2 elements in reverse lexicographical order between `f` and `a`, skipping the first element (`offset=1`):
 
 ```shell
-dragonfly$> ZADD myzset 0 "a" 0 "b" 0 "c" 0 "d" 0 "e" 0 "f"
+dragonfly> ZADD myzset 0 "a" 0 "b" 0 "c" 0 "d" 0 "e" 0 "f"
 (integer) 6
 
-dragonfly$> ZREVRANGEBYLEX myzset "[f" "[a" LIMIT 1 2
+dragonfly> ZREVRANGEBYLEX myzset "[f" "[a" LIMIT 1 2
 1) "e"
 2) "d"
 ```
@@ -82,10 +82,10 @@ dragonfly$> ZREVRANGEBYLEX myzset "[f" "[a" LIMIT 1 2
 Return elements between `+` and `-`:
 
 ```shell
-dragonfly$> ZADD myzset 0 "a" 0 "b" 0 "c" 0 "d" 0 "e"
+dragonfly> ZADD myzset 0 "a" 0 "b" 0 "c" 0 "d" 0 "e"
 (integer) 5
 
-dragonfly$> ZREVRANGEBYLEX myzset + -
+dragonfly> ZREVRANGEBYLEX myzset + -
 1) "e"
 2) "d"
 3) "c"
@@ -97,10 +97,10 @@ Since we are using the `ZREVRANGEBYLEX` command, the elements are returned in re
 Thus, the following example returns an empty array when the range is specified from `-` to `+`:
 
 ```shell
-dragonfly$> ZADD myzset 0 "a" 0 "b" 0 "c" 0 "d" 0 "e"
+dragonfly> ZADD myzset 0 "a" 0 "b" 0 "c" 0 "d" 0 "e"
 (integer) 5
 
-dragonfly$> ZREVRANGEBYLEX myzset - +
+dragonfly> ZREVRANGEBYLEX myzset - +
 (empty array)
 ```
 

@@ -52,7 +52,7 @@ Note that the `GT`, `LT` and `NX` options are mutually exclusive.
 Adding scores for members in a sorted set:
 
 ```shell
-dragonfly$> ZADD myzset 10 "player1" 20 "player2" 15 "player3"
+dragonfly> ZADD myzset 10 "player1" 20 "player2" 15 "player3"
 (integer) 3
 ```
 
@@ -63,10 +63,10 @@ In this example, three members (`"player1"`, `"player2"`, and `"player3"`) are a
 Updating the score of an already existing member:
 
 ```shell
-dragonfly$> ZADD myzset 10 "player1" 20 "player2" 15 "player3"
+dragonfly> ZADD myzset 10 "player1" 20 "player2" 15 "player3"
 (integer) 3
 
-dragonfly$> ZADD myzset 25 "player1"
+dragonfly> ZADD myzset 25 "player1"
 (integer) 0  # No new members added, only score updated.
 ```
 
@@ -77,13 +77,13 @@ The member `"player1"` already exists, so `ZADD` only updates its score to 25, a
 Using the `NX` and `XX` flags to conditionally add or update members:
 
 ```shell
-dragonfly$> ZADD myzset 25 "player1"
+dragonfly> ZADD myzset 25 "player1"
 (integer) 1
 
-dragonfly$> ZADD myzset NX 30 "player2"
+dragonfly> ZADD myzset NX 30 "player2"
 (integer) 1  # Added because "player2" did not previously exist.
 
-dragonfly$> ZADD myzset XX 40 "player1"
+dragonfly> ZADD myzset XX 40 "player1"
 (integer) 0  # Updated the score of "player1", no new members were added.
 ```
 
@@ -96,10 +96,10 @@ As shown in the example above:
 Incrementing a score instead of setting it to a new value:
 
 ```shell
-dragonfly$> ZADD myzset 25 "player1"
+dragonfly> ZADD myzset 25 "player1"
 (integer) 1
 
-dragonfly$> ZADD myzset INCR 5 "player1"
+dragonfly> ZADD myzset INCR 5 "player1"
 "30"  # The score of "player1" was incremented by 5, resulting in a new score of 30.
 ```
 
@@ -110,10 +110,10 @@ In this example, the `INCR` option increments the existing score of `"player1"` 
 Using the `CH` flag to report changes:
 
 ```shell
-dragonfly$> ZADD myzset 25 "player1"
+dragonfly> ZADD myzset 25 "player1"
 (integer) 1
 
-dragonfly$> ZADD myzset CH 50 "player2" 30 "player1"
+dragonfly> ZADD myzset CH 50 "player2" 30 "player1"
 (integer) 2  # Two elements were affected: "player2" was added, and "player1"'s score was updated.
 ```
 
@@ -124,13 +124,13 @@ The `CH` flag ensures that `ZADD` returns the number of members that were added 
 Using the `GT` and `LT` options to update scores conditionally:
 
 ```shell
-dragonfly$> ZADD myzset 25 "player1"
+dragonfly> ZADD myzset 25 "player1"
 (integer) 1
 
-dragonfly$> ZADD myzset GT CH 20 "player1"
+dragonfly> ZADD myzset GT CH 20 "player1"
 (integer) 0  # "player1" was not updated because 20 is not greater than 25.
 
-dragonfly$> ZADD myzset LT CH 20 "player1"
+dragonfly> ZADD myzset LT CH 20 "player1"
 (integer) 1  # "player1" was updated because 20 is less than 25.
 ```
 

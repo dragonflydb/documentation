@@ -197,10 +197,20 @@ git diff docs/command-reference docs/managing-dragonfly/acl-categories.md
 ### 4. Flags page: `flags_sync.py`
 
 ```sh
-python3 tools/docsync/flags_sync.py --tag $NEW $PULL --dry-run
-python3 tools/docsync/flags_sync.py --tag $NEW $PULL
+python3 tools/docsync/flags_sync.py --tag $NEW --previous-tag $OLD $PULL --dry-run
+python3 tools/docsync/flags_sync.py --tag $NEW --previous-tag $OLD $PULL
 git diff docs/managing-dragonfly/flags.md
 ```
+
+- `--previous-tag $OLD` loads the facts of the release the page documents now
+  (it pulls that image if needed). The LLM may then update the sections of
+  flags whose `--helpfull` text changed since `$OLD`, listed under
+  `Documented flags whose --helpfull text changed`. Without it, only new flags
+  and enum tables are written, and the run says help-text changes were not checked.
+- The page is rebuilt from the mechanical result: only new flags, those
+  changed-help sections and enum tables come from the LLM. Any other section the
+  LLM rewrote is kept as it was, and the run lists it under
+  `kept the page's text for N section(s)`.
 
 - The `--dry-run` run is the mechanical report: flags.md is not written and
   OpenAI is not called.
@@ -267,6 +277,12 @@ git diff docs/
      redis-cli session after `FLUSHALL`, so HELLO 3, SELECT, MULTI and AUTH
      carry over inside the block, but keys never carry into the next block.
      An example that depends on an earlier block's keys gets the wrong output.
+   - A page whose LLM output changes the front matter, or removes or changes an
+     existing `dragonfly>` command in any code block, is rejected and not written:
+     an example that fails on its own needs setup lines, not removal.
+   - Existing prose that the LLM removed or rewrote is listed in the run summary
+     and in `removed_text` in the results. Keep a change only if the old line was
+     wrong for the new release.
    - Server error replies are written into the page, because a documented
      error case is legitimate. Every one of them is listed in the run summary
      and in `example_errors` in the results: check each against the page text.
@@ -658,17 +674,23 @@ Three-stage pipeline:
      integer is what the CLI accepts, and the LLM polish is responsible
      for adding the enum-value table to the description.
 
-3. **LLM polish** (requires `OPENAI_API_KEY`). The OpenAI model receives the
-   mechanically-fixed page, the full ground-truth dict, the source-facts
-   dict (with C++ comments and enum tables), the list of flags to add,
-   the list to keep-even-though-removed, and the list of enum defaults to
-   expand. It produces a polished page that:
-   - keeps existing flag descriptions verbatim where facts already match;
-   - integrates new C++ comment context only when it adds real value;
+3. **LLM polish** (requires `OPENAI_API_KEY`; runs only when there is something
+   for it to write). The OpenAI model receives the mechanically-fixed page, the
+   ground-truth dict, the source-facts dict (with C++ comments and enum tables),
+   the flags to add, the documented flags whose `--helpfull` text changed since
+   `--previous-tag` (`flags_to_update`, with the old and new help), and the enum
+   defaults to expand. It:
    - writes descriptions for flags missing from the doc using the help
      text + source comments;
+   - updates the sections in `flags_to_update` to the new help text;
    - for enum-typed defaults, keeps the integer in `default:` and adds a
      value table to the description body.
+   **Deterministic merge:** the page is then rebuilt from the mechanical result,
+   taking from the model's output only those sections; a new flag goes after the
+   section that precedes it there. Every other byte, including the intro and the
+   sections the model reworded anyway, stays as the mechanical pass left it.
+   On the v2.1.0 run the model reworded 183 unchanged sections despite the prompt;
+   the merge discards exactly those edits.
    The LLM output is validated (every server flag present, defaults match
    modulo byte equivalence, enum defaults still integers). If validation
    fails the LLM output is discarded and the mechanical-only result stays
@@ -680,6 +702,7 @@ auto-add (but their defaults are still corrected if a human chose to
 document them).
 
 ```sh
+python tools/docsync/flags_sync.py --tag v2.1.0 --previous-tag v2.0.0
 python tools/docsync/flags_sync.py --tag v1.38.0
 python tools/docsync/flags_sync.py --tag v1.38.0 --dry-run       # mechanical report, page not written, no OpenAI
 python tools/docsync/flags_sync.py --tag v1.38.0 --no-llm        # mechanical only
@@ -768,7 +791,8 @@ driven by one command:
      failures: output shorter than 80 non-whitespace chars, output
      shrunk to less than half of input, output that's just `...`,
      missing frontmatter / H1 / `<PageTitle>` / `import PageTitle`,
-     dropped H2 sections, a modified, removed or added ACL line, and a
+     dropped H2 sections, a changed front matter, a removed or changed existing
+     `dragonfly>` example command, a modified, removed or added ACL line, and a
      changed topology or SUBSCRIBE/MONITOR block. On any failure the run is
      marked `failed`, the raw LLM markdown is saved to
      `tools/generated/llm_debug/docs_sync_rejected_<file>_<ts>.md`, and
@@ -843,8 +867,9 @@ was used, whether `diff_context` was present, how many invocations were
 verified in Docker, blocks that did not complete, whether MDX safety wrapped
 anything, why a write was skipped. `example_errors` lists every `(error)`
 reply written into an example (`{block, command, reply}`) and
-`unverified_blocks` the new blocks that were kept as written; the run summary
-prints both. Failed entries also point at the saved raw LLM output under
+`unverified_blocks` the new blocks that were kept as written, and `removed_text`
+the existing prose lines the output no longer contains; the run summary prints
+all three. Failed entries also point at the saved raw LLM output under
 `tools/generated/llm_debug/` so the failure mode can be inspected without
 re-running the LLM.
 

@@ -16,7 +16,7 @@ This is useful for scenarios such as distributed stream consumers where you need
 ## Syntax
 
 ```shell
-XCLAIM key group consumer min-idle-time id [id ...] [IDLE ms] [TIME ms-unix-time] 
+XCLAIM key group consumer min-idle-time id [id ...] [IDLE ms] [TIME ms-unix-time]
        [RETRYCOUNT count] [FORCE] [JUSTID]
 ```
 
@@ -51,22 +51,22 @@ The result structure depends on whether `JUSTID` was used:
 Claim a specific pending message for a new consumer:
 
 ```shell
-dragonfly$> XADD mystream * field1 value1
+dragonfly> XADD mystream * field1 value1
 "1629392070655-0"
 
-dragonfly$> XGROUP CREATE mystream mygroup 0
+dragonfly> XGROUP CREATE mystream mygroup 0
 OK
 
 # A consumer (i.e., 'consumer-1') reads the message, but does not acknowledge it yet.
 # The message is now pending.
-dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1629392070655-0"
          2) 1) "field1"
             2) "value1"
 
 # Another consumer (i.e., 'consumer-2') claims the pending message.
-dragonfly$> XCLAIM mystream mygroup consumer-2 10000 "1629392070655-0"
+dragonfly> XCLAIM mystream mygroup consumer-2 10000 "1629392070655-0"
 1) 1) "1629392070655-0"
    2) 1) "field1"
       2) "value1"
@@ -77,7 +77,7 @@ dragonfly$> XCLAIM mystream mygroup consumer-2 10000 "1629392070655-0"
 Only get the IDs of claimed messages:
 
 ```shell
-dragonfly$> XCLAIM mystream mygroup consumer-2 10000 "1629392070655-0" JUSTID
+dragonfly> XCLAIM mystream mygroup consumer-2 10000 "1629392070655-0" JUSTID
 1) "1629392070655-0"
 ```
 
@@ -86,7 +86,7 @@ dragonfly$> XCLAIM mystream mygroup consumer-2 10000 "1629392070655-0" JUSTID
 Adjust the message's idle time and retry count upon claiming:
 
 ```shell
-dragonfly$> XCLAIM mystream mygroup consumer-2 10000 "1629392070655-0" IDLE 5000 RETRYCOUNT 2
+dragonfly> XCLAIM mystream mygroup consumer-2 10000 "1629392070655-0" IDLE 5000 RETRYCOUNT 2
 1) 1) "1629392070655-0"
    2) 1) "field1"
       2) "value1"

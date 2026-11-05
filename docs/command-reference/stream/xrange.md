@@ -50,21 +50,21 @@ We can retrieve entries from a stream in different ways:
 
 ```shell
 # Adding entries to a stream.
-dragonfly$> XADD mystream "1609459200000-0" sensor 0 temperature 23.0 humidity 50.0
+dragonfly> XADD mystream "1609459200000-0" sensor 0 temperature 23.0 humidity 50.0
 "1609459200000-0"
 
-dragonfly$> XADD mystream "1609459200001-0" sensor 1 temperature 23.1 humidity 50.1
+dragonfly> XADD mystream "1609459200001-0" sensor 1 temperature 23.1 humidity 50.1
 "1609459200001-0"
 
-dragonfly$> XADD mystream "1609459200001-1" sensor 2 temperature 23.2 humidity 50.2
+dragonfly> XADD mystream "1609459200001-1" sensor 2 temperature 23.2 humidity 50.2
 "1609459200001-1"
 
-dragonfly$> XADD mystream "1609459200002-0" sensor 3 temperature 23.3 humidity 50.3
+dragonfly> XADD mystream "1609459200002-0" sensor 3 temperature 23.3 humidity 50.3
 "1609459200002-0"
 
 # Retrieving entries using the first and second IDs from previous commands.
 # Note that the start and end IDs are inclusive by default.
-dragonfly$> XRANGE mystream "1609459200000-0" "1609459200001-0"
+dragonfly> XRANGE mystream "1609459200000-0" "1609459200001-0"
 1) 1) "1609459200000-0"
    2) 1) "sensor"
       2) "0"
@@ -81,7 +81,7 @@ dragonfly$> XRANGE mystream "1609459200000-0" "1609459200001-0"
       6) "50.1"
 
 # Using the '(' prefix to exclude the end range entry.
-dragonfly$> XRANGE mystream "1609459200000-0" "(1609459200001-0"
+dragonfly> XRANGE mystream "1609459200000-0" "(1609459200001-0"
 1) 1) "1609459200000-0"
    2) 1) "sensor"
       2) "0"
@@ -94,7 +94,7 @@ dragonfly$> XRANGE mystream "1609459200000-0" "(1609459200001-0"
 # For the start ID, the sequence number is set to the minimum value.
 # For the end ID, the sequence number is set to the maximum value.
 # The command below is equivalent to: XRANGE mystream "1609459200000-0" "1609459200001-18446744073709551615"
-dragonfly$> XRANGE mystream "1609459200000" "1609459200001"
+dragonfly> XRANGE mystream "1609459200000" "1609459200001"
 1) 1) "1609459200000-0"
    2) 1) "sensor"
       2) "0"
@@ -119,7 +119,7 @@ dragonfly$> XRANGE mystream "1609459200000" "1609459200001"
 
 # Retrieving all entries from the stream.
 # Be cautious with this command as it can return a large amount of data.
-dragonfly$> XRANGE mystream - +
+dragonfly> XRANGE mystream - +
 # All entries in the stream are returned.
 ```
 
@@ -130,20 +130,20 @@ It can be combined with other parameters to control the amount of data fetched, 
 
 ```shell
 # Adding entries to a stream.
-dragonfly$> XADD mystream "1609459200000-0" sensor 0 temperature 23.0 humidity 50.0
+dragonfly> XADD mystream "1609459200000-0" sensor 0 temperature 23.0 humidity 50.0
 "1609459200000-0"
 
-dragonfly$> XADD mystream "1609459200001-0" sensor 1 temperature 23.1 humidity 50.1
+dragonfly> XADD mystream "1609459200001-0" sensor 1 temperature 23.1 humidity 50.1
 "1609459200001-0"
 
-dragonfly$> XADD mystream "1609459200001-1" sensor 2 temperature 23.2 humidity 50.2
+dragonfly> XADD mystream "1609459200001-1" sensor 2 temperature 23.2 humidity 50.2
 "1609459200001-1"
 
-dragonfly$> XADD mystream "1609459200002-0" sensor 3 temperature 23.3 humidity 50.3
+dragonfly> XADD mystream "1609459200002-0" sensor 3 temperature 23.3 humidity 50.3
 "1609459200002-0"
 
 # Retrieving from the stream with the 'COUNT' option.
-dragonfly$> XRANGE mystream - + COUNT 2
+dragonfly> XRANGE mystream - + COUNT 2
 1) 1) "1609459200000-0"
    2) 1) "sensor"
       2) "0"

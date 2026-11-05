@@ -20,10 +20,10 @@ dragonfly> ROLE
 1) "master"
 2) 1) 1) "172.19.0.4"
       2) "6379"
-      3) "stable_sync"
+      3) "online"
 ```
 
-This command will return either `master` or `replica` with additional information, depending on the role of the instance.
+This command will return either `master` or `slave` with additional information, depending on the role of the instance.
 
 ## Redis-Dragonfly Replication
 
@@ -207,6 +207,6 @@ dragonfly> INFO REPLICATION
 # Replication
 role:master
 connected_slaves:1
-slave0:ip=127.0.0.1,port=6380,state=stable_sync,lag=0 # <- The replication lag is reported here.
+slave0:ip=127.0.0.1,port=6380,state=online,lag=0 # <- The replication lag is reported here.
 master_replid:3ad69228e6973c1fc24805efb46d3f6eeeee4fde
 ```

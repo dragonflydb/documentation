@@ -49,20 +49,20 @@ The command returns a three-element array:
 Claim messages that have been pending for over 5 seconds:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
+dragonfly> XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
 
-dragonfly$> XADD mystream * name Alice
+dragonfly> XADD mystream * name Alice
 "1636581234567-0"
 
-dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1636581234567-0"
          2) 1) "name"
             2) "Alice"
 
 # Assume 'consumer-1' is unavailable and 'consumer-2' takes over.
-dragonfly$> XAUTOCLAIM mystream mygroup consumer-2 5000 0
+dragonfly> XAUTOCLAIM mystream mygroup consumer-2 5000 0
 1) "0-0" # Next ID to scan from. Note that '0-0' means the entire stream was scanned.
 2) 1) 1) "1736363819856-0"
       2) 1) "name"
@@ -75,16 +75,16 @@ dragonfly$> XAUTOCLAIM mystream mygroup consumer-2 5000 0
 Claim up to 2 messages pending beyond 2 seconds:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
+dragonfly> XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
 
-dragonfly$> XADD mystream * name Alice
+dragonfly> XADD mystream * name Alice
 "1736363098647-0"
 
-dragonfly$> XADD mystream * name Bob
+dragonfly> XADD mystream * name Bob
 "1736363102426-0"
 
-dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 2 STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup consumer-1 COUNT 2 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1736363098647-0"
          2) 1) "name"
@@ -93,7 +93,7 @@ dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 2 STREAMS mystream >
          2) 1) "name"
             2) "Bob"
 
-dragonfly$> XAUTOCLAIM mystream mygroup consumer-2 2000 0 COUNT 2
+dragonfly> XAUTOCLAIM mystream mygroup consumer-2 2000 0 COUNT 2
 1) "0-0" # Next ID to scan from. Note that '0-0' means the entire stream was scanned.
 2) 1) 1) "1736363098647-0"
       2) 1) "name"

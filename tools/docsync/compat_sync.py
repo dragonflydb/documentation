@@ -511,9 +511,10 @@ def command_matches(command: str, available: set[str]) -> list[str]:
 
 # Internal/administrative commands that must never appear in the PUBLIC
 # compatibility table: replication/cluster coordination, debug, and any
-# underscore- or DFLY-prefixed handler.
+# underscore- or DFLY-prefixed handler. REPLTAKEOVER is public: it has a
+# command page and a Dragonfly-specific row.
 INTERNAL_COMMAND_NAMES = {
-    "DFLY", "DFLYCLUSTER", "DFLYMIGRATE", "ADDREPLICAOF", "REPLTAKEOVER",
+    "DFLY", "DFLYCLUSTER", "DFLYMIGRATE", "ADDREPLICAOF",
 }
 
 

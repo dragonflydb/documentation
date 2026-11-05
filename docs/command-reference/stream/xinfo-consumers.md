@@ -39,17 +39,17 @@ XINFO CONSUMERS key group
 Get information about consumers in a consumer group:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
+dragonfly> XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
 
-dragonfly$> XADD mystream * field1 value1
+dragonfly> XADD mystream * field1 value1
 "1736319841099-0"
 
-dragonfly$> XADD mystream * field2 value2
+dragonfly> XADD mystream * field2 value2
 "1736319844825-0"
 
 # Read from the stream using consumer-1.
-dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1736319841099-0"
          2) 1) "field1"
@@ -57,7 +57,7 @@ dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 
 # Get information about consumers in the consumer group.
 # The output shows the consumer name, pending message count, and idle time.
-dragonfly$> XINFO CONSUMERS mystream mygroup
+dragonfly> XINFO CONSUMERS mystream mygroup
 1) 1) "name"
    2) "consumer-1"
    3) "pending"
@@ -66,7 +66,7 @@ dragonfly$> XINFO CONSUMERS mystream mygroup
    6) (integer) 5000 # Idle time in milliseconds.
 
 # Read from the stream using consumer-2.
-dragonfly$> XREADGROUP GROUP mygroup consumer-2 COUNT 1 STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup consumer-2 COUNT 1 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1736319844825-0"
          2) 1) "field2"
@@ -74,7 +74,7 @@ dragonfly$> XREADGROUP GROUP mygroup consumer-2 COUNT 1 STREAMS mystream >
 
 # Get information about consumers in the consumer group.
 # Now there are two consumers in the group, and the output shows details for both.
-dragonfly$> XINFO CONSUMERS mystream mygroup
+dragonfly> XINFO CONSUMERS mystream mygroup
 1) 1) "name"
    2) "consumer-1"
    3) "pending"

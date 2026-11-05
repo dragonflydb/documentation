@@ -242,4 +242,4 @@ dragonfly> FT.HYBRID idx SEARCH "running" VSIM @vec $q KNN 3 COMBINE LINEAR 4 AL
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
+- [Valkey Search](https://valkey.io/topics/search/)

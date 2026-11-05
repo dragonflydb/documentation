@@ -10,13 +10,13 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-In Dragonfly, as well as in Redis and Valkey, the `XREADGROUP` command is used to read messages from a stream, primarily used within the context of consumer groups. 
+In Dragonfly, as well as in Redis and Valkey, the `XREADGROUP` command is used to read messages from a stream, primarily used within the context of consumer groups.
 Consumer groups allow you to implement fan-out message processing, where different consumers can read distinct messages avoiding reading duplicates, thus enhancing efficient data processing.
 
 ## Syntax
 
 ```shell
-XREADGROUP GROUP groupname consumer [COUNT count] [BLOCK milliseconds] 
+XREADGROUP GROUP groupname consumer [COUNT count] [BLOCK milliseconds]
     [NOACK] STREAMS key [key ...] id [id ...]
 ```
 
@@ -40,7 +40,7 @@ Once a consumer successfully processes a message, it should call `XACK` so that 
 
 ## Return Values
 
-- The command returns entries from the stream for a consumer, grouped by stream name. 
+- The command returns entries from the stream for a consumer, grouped by stream name.
 - If the `BLOCK` option is used and a timeout occurs, or if there is no stream that can be served, `nil` is returned.
 
 ## Code Examples
@@ -50,13 +50,13 @@ Once a consumer successfully processes a message, it should call `XACK` so that 
 Create a consumer group and read messages:
 
 ```shell
-dragonfly$> XADD mystream * field1 value1
+dragonfly> XADD mystream * field1 value1
 "16082358984-0"
 
-dragonfly$> XGROUP CREATE mystream mygroup 0
+dragonfly> XGROUP CREATE mystream mygroup 0
 OK
 
-dragonfly$> XREADGROUP GROUP mygroup myconsumer STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup myconsumer STREAMS mystream >
 1) "mystream"
 2) 1) 1) "16082358984-0"
       2) 1) "field1"
@@ -68,19 +68,19 @@ dragonfly$> XREADGROUP GROUP mygroup myconsumer STREAMS mystream >
 Read up to two messages from a stream:
 
 ```shell
-dragonfly$> XADD mystream * field1 value1
+dragonfly> XADD mystream * field1 value1
 "1752103450737-0"
 
-dragonfly$> XADD mystream * field2 value2
+dragonfly> XADD mystream * field2 value2
 "1752103459160-0"
 
-dragonfly$> XADD mystream * field3 value3
+dragonfly> XADD mystream * field3 value3
 "1752103462157-0"
 
-dragonfly$> XGROUP CREATE mystream mygroup 0
+dragonfly> XGROUP CREATE mystream mygroup 0
 OK
 
-dragonfly$> XREADGROUP GROUP mygroup myconsumer COUNT 2 STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup myconsumer COUNT 2 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1752103450737-0"
          2) 1) "field1"
@@ -95,7 +95,7 @@ dragonfly$> XREADGROUP GROUP mygroup myconsumer COUNT 2 STREAMS mystream >
 Wait for new messages for up to 2000 milliseconds:
 
 ```shell
-dragonfly$> XREADGROUP GROUP mygroup myconsumer BLOCK 2000 STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup myconsumer BLOCK 2000 STREAMS mystream >
 ```
 
 ## Best Practices

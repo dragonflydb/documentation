@@ -1,5 +1,5 @@
 ---
-description: "The Dragonfly Source-Available License (DSAL) for v2.1 and later, BSL 1.1 for older releases, and the Creative Commons license for these docs."
+description: "The Dragonfly Source-Available License (DSAL) for Dragonfly Enterprise (v2.1 and later), BSL 1.1 for older releases, and the Creative Commons license for these docs."
 sidebar_position: 3
 ---
 
@@ -7,14 +7,16 @@ sidebar_position: 3
 
 ## Software Licensing
 
-Starting with v2.1, Dragonfly is released under the
+Starting with v2.1, Dragonfly is released as Dragonfly Enterprise under the
 [Dragonfly Source-Available License (DSAL)](https://github.com/dragonflydb/dragonfly/blob/main/LICENSE.md).
+Dragonfly Enterprise is the continuation of Dragonfly: the same codebase, built by the same team.
 DSAL is a "source available" license and it's not strictly an open-source license.
 In general terms, it means that Dragonfly's code is free to use, modify and incorporate into your own
 applications or products, as long as you do not distribute or offer it as a standalone database,
 data store, caching product or a substantially similar product or service.
 Production use is free up to an aggregate of 100 vCPUs across all your concurrently running instances
-(including replicas), while non-production use is unlimited. Usage beyond that requires a commercial license.
+(including replicas), while non-production use is unlimited. Usage beyond that requires a commercial license:
+to get one, sign up at [dragonflydb.cloud](https://dragonflydb.cloud/signup).
 
 The license defines the limit and what counts toward it:
 

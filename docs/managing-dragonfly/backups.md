@@ -62,12 +62,12 @@ $> ./dragonfly --logtostderr --dir my-snapshot-dir --dbfilename my-snapshot-file
 While the Dragonfly instance is running, issue the [`SAVE`](../command-reference/server-management/save.md) command twice, with roughly 5 seconds in between:
 
 ```shell
-dragonfly$> SAVE
+dragonfly> SAVE
 OK
 
 # 5 seconds later...
 
-dragonfly$> SAVE
+dragonfly> SAVE
 OK
 ```
 

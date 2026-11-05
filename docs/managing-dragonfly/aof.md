@@ -1,5 +1,5 @@
 ---
-description: "Experimental per-shard append-only file (AOF) in Dragonfly v2.1.0: how to enable it, startup and replay, durability, and current limitations."
+description: "Experimental per-shard append-only file (AOF) in Dragonfly v2.1.0: how to enable it, the files it writes, startup and replay, durability, and snapshots."
 sidebar_position: 3
 ---
 
@@ -11,8 +11,6 @@ Upon server restart, these operations are replayed to reconstruct the original d
 :::caution Experimental
 
 Dragonfly v2.1.0 includes an experimental AOF. It is disabled by default and enabled with the `--aof` flag.
-It has no log compaction yet, and some crashes leave a log that Dragonfly cannot replay without manual recovery.
-Read the [limitations](#limitations) before you rely on it.
 Snapshots remain the default persistence method: see [Saving Backups](./backups.md) and the [snapshotting design](./snapshotting.md).
 
 :::
@@ -37,8 +35,8 @@ Start Dragonfly with `--aof`:
 ```
 
 Without `--dir`, the files are written to the working directory.
-A log can only be replayed with the shard count it was written with (see [limitations](#limitations)),
-so set [`--proactor_threads`](./flags.md#--proactor_threads) explicitly instead of relying on the CPU count.
+A log is replayed with the shard count it was written with: [`--num_shards`](./flags.md#--num_shards) if set,
+otherwise the number of threads. Set [`--proactor_threads`](./flags.md#--proactor_threads) explicitly instead of relying on the CPU count.
 
 With Docker, Dragonfly also needs a seccomp profile that allows io_uring:
 
@@ -88,8 +86,6 @@ dragonfly> REPLICAOF 10.0.0.2 6379
 - **`--aof`**: If true, each shard logs its writes to an append-only file in `--dir`. Default: `false`.
 - **`--aof_max_buffered_bytes`**: Per shard, the amount of logged data not yet written to disk above which the shard blocks until writes complete. Default: `64MiB`.
   Do not set it below `8kb`, the size of a log block.
-  With a smaller value, a shard can hang for good once keys start to expire:
-  in a test with `4kb`, writes never completed and the server did not stop until it was killed.
 
 ## Files in `--dir`
 
@@ -134,16 +130,8 @@ On later starts, Dragonfly does not look for snapshots by `--dbfilename`. Instea
 2. Replays each shard's log on top of the base, all shards in parallel.
 3. Continues each shard's log in a new segment.
 
-At the end of the replay, each shard logs the following warning.
-It marks the normal end of the log, not a disk error:
-
-```text
-W20261105 12:12:35.756007    11 execution_state.cc:93] ReportError: Input/output error
-```
-
 Startup blocks until the base is loaded and the log is replayed.
-Unlike a regular snapshot load, which answers with `LOADING` errors meanwhile, Dragonfly accepts TCP connections during the replay but answers no command until it finishes,
-so clients and health checks wait or time out. Configure startup and liveness probes to allow for the replay time.
+Configure startup and liveness probes to allow for the replay time.
 Because v2.1.0 has no compaction, every start replays the entire log since the base, and the replay takes longer as the log grows.
 
 ## Durability
@@ -159,19 +147,6 @@ up to one heartbeat interval of writes, plus any blocks still queued for the dis
 A crash of the machine or a power loss can also lose about the last second of written data.
 A clean shutdown, with `SIGTERM` or [`SHUTDOWN`](../command-reference/server-management/shutdown.md), writes and syncs every logged record before Dragonfly exits.
 
-If a write or `fdatasync` fails, for example because the disk is full, that shard stops writing its log until Dragonfly restarts.
-Clients keep getting normal replies, and only the server log shows the failure:
-
-```text
-E20261105 12:16:27.472812    11 aof_segment_writer.cc:199] AOF write failed at offset 2082650: No space left on device
-```
-
-The writes made after the failure are not in the log, and the next restart loses them.
-If the last block that reached the disk ends inside a record, which is likely under write load,
-the restart fails instead, as described in [Crash Recovery](#crash-recovery).
-Watch the server log for `AOF write failed` and `AOF fdatasync failed`.
-To keep the data, free disk space and [start a new AOF from a snapshot](#starting-a-new-aof-from-a-snapshot) before you restart Dragonfly.
-
 ## Crash Recovery
 
 After a crash, the end of a shard's log can be missing or damaged.
@@ -184,33 +159,6 @@ W20261105 12:13:05.864760    11 execution_state.cc:93] ReportError: AOF log ends
 
 Damage is never skipped: everything after the first damaged block of a shard is dropped, and the later segments of that shard are renamed to `*.discarded`.
 
-Each shard's log is recovered on its own.
-A multi-key command or a [`MULTI`](../command-reference/generic/multi.md)/`EXEC` transaction that wrote to several shards can therefore come back on only some of them.
-
-Dragonfly v2.1.0 cannot recover the following cases on its own:
-
-- **The log ends inside a record.** A record that does not fit in the rest of a block continues in the next one,
-  which is common under write load and always the case for records larger than 8 KB.
-  If a crash or a failed write leaves only the first part of such a record in the log, startup fails:
-
-  ```text
-  E20261105 13:38:09.394534    11 aof_replay.cc:72] AOF shard 0: the log ends inside a record after lsn 1, resuming after it is not supported yet
-  E20261105 13:38:09.394541    11 aof_replay.cc:115] AOF replay failed on shard 0: State not recoverable
-  E20261105 13:38:09.394557    11 server_family.cc:1076] AOF replay failed: State not recoverable
-  ```
-
-- **A crash during a command that the replay runs on all shards together:**
-  [`FLUSHALL`](../command-reference/server-management/flushall.md), [`FLUSHDB`](../command-reference/server-management/flushdb.md),
-  and the search index commands `FT.CREATE`, `FT.ALTER`, `FT.DROPINDEX`, `FT.SYNUPDATE`, `FT.ALIASADD`, `FT.ALIASUPDATE` and `FT.ALIASDEL`.
-  If the command reached the logs of only some shards, the first restart succeeds, but the logs stay inconsistent.
-  A later restart then either fails with `Global commands out of order across flows` and `AOF replay failed: State not recoverable`,
-  or, if none of these commands ran in between, it runs the old command again, but only after the shards whose logs lack it have replayed everything:
-  an old `FLUSHALL` or `FLUSHDB` then deletes writes made on those shards after the first restart.
-  If a crash may have interrupted one of these commands, start a new AOF from a snapshot right after the first restart.
-
-If Dragonfly cannot replay the log, start a new AOF from the newest snapshot in `--dir`, as described [below](#starting-a-new-aof-from-a-snapshot).
-The writes logged after that snapshot are lost.
-
 ## Snapshots and AOF
 
 In v2.1.0, snapshots do not shorten the log.
@@ -218,20 +166,13 @@ In v2.1.0, snapshots do not shorten the log.
 and [`--snapshot_cron`](./backups.md#the-snapshot_cron-flag) write regular snapshots, and the manifest keeps the base from the first start.
 
 - With `--aof`, Dragonfly writes no snapshot on shutdown, not even with `SHUTDOWN SAVE`.
-- Keep a `{timestamp}` in `--dbfilename`, as in the default `dump-{timestamp}`, so that every save writes new files.
-  With a fixed name such as `dump`, a save overwrites the snapshot that is the base of the log,
-  and the next start replays the entire log on top of the newer data.
-  Commands that are not idempotent are then applied twice:
-  with a counter at `10` in the base, `INCR`, `SAVE`, `INCR`, `BGSAVE` and a restart left the counter at `14` instead of `12`.
+- Keep a `{timestamp}` in `--dbfilename`, as in the default `dump-{timestamp}`, so that every save writes new files and the base snapshot of the log stays unchanged.
 - Do not delete or move the base snapshot. Its file name is in `appendonly.manifest`.
-- Do not run `DEBUG RELOAD` or `DFLY LOAD` on an instance started with `--aof`.
-  They clear the dataset and load a snapshot, but only the clearing is logged:
-  after the next restart, the loaded data is gone, and the writes made after the reload can be discarded as a damaged tail as well.
 
 ## Starting a New AOF from a Snapshot
 
 There is no log compaction in v2.1.0: segments are never deleted, and every start adds one per shard.
-To shrink the log, change the shard count, or recover from a log that Dragonfly cannot replay, start a new AOF from a snapshot:
+To shrink the log or change the shard count, start a new AOF from a snapshot:
 
 1. Stop the clients that write to Dragonfly. Writes made after the next step are lost.
 2. Run `SAVE DF`. With a `{timestamp}` in `--dbfilename`, it writes a new snapshot in Dragonfly format.
@@ -240,25 +181,8 @@ To shrink the log, change the shard count, or recover from a log that Dragonfly 
 5. Start Dragonfly with `--aof`, and with a new `--proactor_threads` value if you change the shard count.
    The newest snapshot that matches `--dbfilename` becomes the base of a new, empty log.
 
-If Dragonfly cannot replay the log, skip steps 1 to 3.
-The new log then starts from the newest snapshot already in `--dir`, and the writes logged after that snapshot are lost.
+## Monitoring
 
-## Limitations
+`INFO` has no AOF fields, and Dragonfly exports no AOF metrics. AOF messages appear in the server log.
 
-- **Fixed shard count.** A log can only be replayed with the shard count it was written with:
-  [`--num_shards`](./flags.md#--num_shards) if set, otherwise the number of threads,
-  `--proactor_threads`, which defaults to one per available CPU and so follows container CPU limits.
-  Otherwise, startup fails with `AOF replay failed: AOF written with a different shard count`.
-- **Expired keys can come back.** If the TTL of a key runs out while Dragonfly is stopped, and the key was modified after its TTL was set,
-  the replay can recreate the key without a TTL.
-  For example, after `SET k 10 EX 2` and `INCRBY k 5`, a restart 3 seconds later returns `k` with the value `5` and no TTL.
-  Keys that were not modified after they got their TTL expire as expected.
-- **Replication.** Replicas cannot use AOF: `--replicaof` together with `--aof` stops startup,
-  and [`REPLICAOF`](../command-reference/server-management/replicaof.md) with a host and port is rejected. An instance started with `--aof` can serve as a primary.
-- **Untested combinations.** Dragonfly's AOF tests do not cover replication, [cluster mode](./cluster-mode.md) or [SSD tiering](./tiering.md).
-- **No monitoring.** `INFO` has no AOF fields, and there are no AOF metrics. Failures appear only in the server log.
-
-The planned design, including checkpoints that keep the log bounded, is described in the upstream
-[design proposal](https://github.com/dragonflydb/dragonfly/blob/v2.1.0/docs/aof.md). Dragonfly v2.1.0 implements only what this page describes.
-
-If you have any thoughts or suggestions about this, we encourage you to join the conversation on our [Discord server](https://discord.com/invite/HsPjXGVH85).
+If you have any thoughts or suggestions about AOF, we encourage you to join the conversation on our [Discord server](https://discord.com/invite/HsPjXGVH85).

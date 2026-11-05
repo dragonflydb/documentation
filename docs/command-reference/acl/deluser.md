@@ -16,6 +16,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 Delete one or more ACL users and terminate all the connections that are authenticated with such users.
 The `default` user cannot be removed from the system since it is the default user that every new connection is authenticated with.
+If the argument list contains `default`, it is skipped and is not counted in the reply.
 The argument list may contain ACL users that do not exist.
 In such cases, no operation is performed for the non-existent ACL users.
 
@@ -37,5 +38,5 @@ dragonfly> ACL DELUSER non_existent_user
 (integer) 0
 
 dragonfly> ACL DELUSER default
-(error) ERR The 'default' user cannot be removed
+(integer) 0
 ```

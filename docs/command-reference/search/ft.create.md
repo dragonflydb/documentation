@@ -89,9 +89,9 @@ Field options are:
 
 :::note About ignored field options
 The following field options are accepted but ignored for compatibility with Redis:
-- `UNF` - ignored without arguments
+- `UNF` - kept in the index definition and listed by [`FT.INFO`](./ft.info.md)
 - `PHONETIC` - ignored with its argument
-- `INDEXMISSING`, `INDEXEMPTY` - ignored without warning
+- `INDEXMISSING`, `INDEXEMPTY` - kept in the index definition and listed by [`FT.INFO`](./ft.info.md) (`INDEXEMPTY` only on `TEXT` and `TAG` fields); `INDEXMISSING` cannot be combined with `NOINDEX`
 :::
 
 </details>

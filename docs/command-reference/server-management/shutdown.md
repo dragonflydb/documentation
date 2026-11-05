@@ -48,7 +48,7 @@ The `SHUTDOWN` command supports optional modifiers to alter the behavior of the 
 ### Signal Handling
 
 * If Dragonfly receives one of the signals `SIGTERM` and `SIGINT`, the same `SHUTDOWN` sequence is performed.
-* See also [Signal Handling](https://redis.io/topics/signals).
+* See also [Signal Handling](https://valkey.io/topics/signals/).
 
 ## Return
 

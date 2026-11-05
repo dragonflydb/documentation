@@ -730,6 +730,41 @@ DOCKER_RUN_TIMEOUT_S = 120
 DOCKER_RM_TIMEOUT_S = 60
 
 
+FENCED_BLOCK_RE = re.compile(r"^```[^\n]*\n(?P<body>.*?)^```[ \t]*$", re.DOTALL | re.MULTILINE)
+EXAMPLE_PROMPTS = ("dragonfly> ", "dragonfly$> ")
+
+
+def example_commands(text: str) -> Counter:
+    """Every `dragonfly>` / `dragonfly$>` command line in any fenced block."""
+    out: Counter = Counter()
+    for m in FENCED_BLOCK_RE.finditer(text):
+        for line in m.group("body").splitlines():
+            line = line.strip()
+            if line.startswith(EXAMPLE_PROMPTS):
+                out[line] += 1
+    return out
+
+
+def prose_lines(text: str) -> list[str]:
+    """Non-blank lines outside the front matter and fenced blocks."""
+    body = FRONTMATTER_RE.sub("", text, count=1)
+    body = FENCED_BLOCK_RE.sub("", body)
+    return [line.strip() for line in body.splitlines() if line.strip()]
+
+
+def removed_prose(input_md: str, output_md: str) -> list[str]:
+    """Prose lines of the input that the output no longer contains verbatim:
+    removed or rewritten text a human should check."""
+    kept = Counter(prose_lines(output_md))
+    removed = []
+    for line in prose_lines(input_md):
+        if kept[line]:
+            kept[line] -= 1
+        else:
+            removed.append(line)
+    return removed
+
+
 def extract_redis_invocations(text: str) -> list[str]:
     """Return every `dragonfly>` line found inside ```shell blocks."""
     invocations: list[str] = []
@@ -1284,6 +1319,20 @@ def validate_update_output(input_md: str, output_md: str) -> list[str]:
     out_fm = bool(re.match(r"\A---\n.*?\n---\n", output_md, re.DOTALL))
     if in_fm and not out_fm:
         errors.append("frontmatter (---...---) block was lost")
+    elif in_fm:
+        in_front = FRONTMATTER_RE.match(input_md).group(0)
+        out_front = FRONTMATTER_RE.match(output_md)
+        if not out_front or out_front.group(0) != in_front:
+            errors.append("frontmatter was changed; it must stay byte-identical")
+
+    # Existing examples may get setup lines and new commands, but no existing
+    # command may disappear: a command that fails in isolation needs setup, not
+    # removal, and a replaced example loses what a human chose to show.
+    dropped = example_commands(input_md) - example_commands(output_md)
+    if dropped:
+        listed = "; ".join(sorted(dropped)[:5]) + ("; ..." if len(dropped) > 5 else "")
+        errors.append(f"{sum(dropped.values())} existing example command(s) were removed "
+                      f"or changed: {listed}")
 
     if re.search(r"^# ", input_md, re.MULTILINE) \
             and not re.search(r"^# ", output_md, re.MULTILINE):
@@ -2041,6 +2090,12 @@ def update_one_file(
             )
             new_md = safe_md
 
+        gone = removed_prose(page_text, new_md)
+        if gone:
+            result["removed_text"] = gone
+            result["notes"].append(f"{len(gone)} line(s) of existing prose were removed or "
+                                   f"rewritten; check each against the source")
+
         # No-change-skip: if the final markdown equals the input — exactly
         # or after stripping cosmetic-only differences (trailing spaces,
         # collapsed blank-line runs) — the page already matches reality.
@@ -2233,6 +2288,16 @@ def main() -> int:
         for r, e in flagged:
             print(f"  {r['path']} ({r['status']}): block {e['block']}: "
                   f"{e['command']} -> {e['reply']}")
+    rewritten = [r for r in results if r.get("removed_text") and r["status"] == "updated"]
+    if rewritten:
+        print(f"\nExisting prose removed or rewritten on {len(rewritten)} page(s); check that "
+              "each line was wrong before keeping the change:")
+        for r in rewritten:
+            print(f"  {r['path']}: {len(r['removed_text'])} line(s)")
+            for line in r["removed_text"][:3]:
+                print(f"      - {line[:140]}")
+            if len(r["removed_text"]) > 3:
+                print(f"      ... see removed_text in the results file")
     unverified = [(r, b) for r in results for b in r.get("unverified_blocks", [])]
     if unverified:
         print(f"\nNew example blocks that were not run ({len(unverified)}); their output "

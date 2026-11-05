@@ -44,17 +44,17 @@ Retrieve entries from a stream within a specified ID range in reverse order:
 
 ```shell
 # Adding entries to a stream.
-dragonfly$> XADD mystream * field1 value1
+dragonfly> XADD mystream * field1 value1
 "1752105492073-0"
 
-dragonfly$> XADD mystream * field2 value2
+dragonfly> XADD mystream * field2 value2
 "1752105495609-0"
 
-dragonfly$> XADD mystream * field3 value3
+dragonfly> XADD mystream * field3 value3
 "1752105500367-0"
 
 # Retrieve entries in reverse order.
-dragonfly$> XREVRANGE mystream + -
+dragonfly> XREVRANGE mystream + -
 1) 1) "1752105500367-0"
    2) 1) "field3"
       2) "value3"
@@ -71,7 +71,7 @@ dragonfly$> XREVRANGE mystream + -
 You can get just the last element added into the stream using the `COUNT` option:
 
 ```shell
-dragonfly$> XREVRANGE mystream + - COUNT 1
+dragonfly> XREVRANGE mystream + - COUNT 1
 1) 1) "1752105500367-0"
    2) 1) "field3"
       2) "value3"

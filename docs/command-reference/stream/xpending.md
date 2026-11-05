@@ -46,19 +46,19 @@ XPENDING key group [start end count] [consumer]
 Get basic pending message information:
 
 ```shell
-dragonfly$> > XADD mystream * name John
+dragonfly> XADD mystream * name John
 "1752095746463-0"
 
-dragonfly$> XGROUP CREATE mystream mygroup 0
+dragonfly> XGROUP CREATE mystream mygroup 0
 OK
 
-dragonfly$> XREADGROUP GROUP mygroup myconsumer COUNT 1 STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup myconsumer COUNT 1 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1752095746463-0"
          2) 1) "name"
             2) "John"
 
-dragonfly$> XPENDING mystream mygroup
+dragonfly> XPENDING mystream mygroup
 1) (integer) 1
 2) "1752095746463-0"
 3) "1752095746463-0"
@@ -71,7 +71,7 @@ dragonfly$> XPENDING mystream mygroup
 In order to see all the pending messages with more associated information we need to also pass a range of IDs, in a similar way we do it with [`XRANGE`](xrange.md):
 
 ```shell
-dragonfly$> XPENDING mystream mygroup - + 10
+dragonfly> XPENDING mystream mygroup - + 10
 1) 1) "1752095746463-0"
    2) "myconsumer"
    3) (integer) 638625
@@ -88,7 +88,7 @@ In the extended form we no longer see the summary information, instead there is 
 It is also possible to pass an additional argument, the consumer, in order to see the messages having a specific owner:
 
 ```shell
-dragonfly$> XPENDING mystream mygroup - + 10 myconsumer
+dragonfly> XPENDING mystream mygroup - + 10 myconsumer
 ```
 
 ### Filter by Idle Time
@@ -96,7 +96,7 @@ dragonfly$> XPENDING mystream mygroup - + 10 myconsumer
 It is also possible to filter pending stream entries by their idle-time, given in milliseconds:
 
 ```shell
-dragonfly$> XPENDING mystream mygroup IDLE 10000 - + 10
+dragonfly> XPENDING mystream mygroup IDLE 10000 - + 10
 1) 1) "1752095746463-0"
    2) "myconsumer"
    3) (integer) 997525

@@ -41,19 +41,19 @@ XGROUP DESTROY key group
 Delete a consumer group named `mygroup` from `mystream`:
 
 ```shell
-dragonfly$> XADD mystream * name "Alice"
+dragonfly> XADD mystream * name "Alice"
 "1736315194818-0"
 
-dragonfly$> XGROUP CREATE mystream mygroup 0
+dragonfly> XGROUP CREATE mystream mygroup 0
 OK
 
 # Delete the consumer group 'mygroup'.
 # Since the group exists, the command returns 1.
-dragonfly$> XGROUP DESTROY mystream mygroup
+dragonfly> XGROUP DESTROY mystream mygroup
 (integer) 1
 
 # Attempting to delete the group again will return 0.
-dragonfly$> XGROUP DESTROY mystream mygroup
+dragonfly> XGROUP DESTROY mystream mygroup
 (integer) 0
 ```
 

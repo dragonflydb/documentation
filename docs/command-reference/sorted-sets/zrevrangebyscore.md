@@ -44,10 +44,10 @@ ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]
 Retrieve the members in a sorted set with scores between `50` and `0` inclusive, ordered from highest to lowest:
 
 ```shell
-dragonfly$> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
+dragonfly> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
 (integer) 4
 
-dragonfly$> ZREVRANGEBYSCORE leaderboard 50 0
+dragonfly> ZREVRANGEBYSCORE leaderboard 50 0
 1) "Alice"
 2) "Charlie"
 ```
@@ -57,10 +57,10 @@ dragonfly$> ZREVRANGEBYSCORE leaderboard 50 0
 Retrieve the members and their scores between `50` and `0` inclusive:
 
 ```shell
-dragonfly$> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
+dragonfly> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
 (integer) 4
 
-dragonfly$> ZREVRANGEBYSCORE leaderboard 50 0 WITHSCORES
+dragonfly> ZREVRANGEBYSCORE leaderboard 50 0 WITHSCORES
 1) "Alice"
 2) "50"
 3) "Charlie"
@@ -72,10 +72,10 @@ dragonfly$> ZREVRANGEBYSCORE leaderboard 50 0 WITHSCORES
 Retrieve up to two members from the sorted set with scores between `100` and `0`, skipping the first element (`offset=1`):
 
 ```shell
-dragonfly$> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
+dragonfly> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
 (integer) 4
 
-dragonfly$> ZREVRANGEBYSCORE leaderboard 100 0 WITHSCORES LIMIT 1 2
+dragonfly> ZREVRANGEBYSCORE leaderboard 100 0 WITHSCORES LIMIT 1 2
 1) "Dana"
 2) "75"
 3) "Alice"
@@ -88,10 +88,10 @@ Use parentheses to represent exclusive ranges.
 For example, retrieve members with scores between `100` (exclusive) and `50` (inclusive):
 
 ```shell
-dragonfly$> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
+dragonfly> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
 (integer) 4
 
-dragonfly$> ZREVRANGEBYSCORE leaderboard (100 50 WITHSCORES
+dragonfly> ZREVRANGEBYSCORE leaderboard (100 50 WITHSCORES
 1) "Dana"
 2) "75"
 3) "Alice"
@@ -103,10 +103,10 @@ dragonfly$> ZREVRANGEBYSCORE leaderboard (100 50 WITHSCORES
 Retrieve members with scores between `+inf` and `50`:
 
 ```shell
-dragonfly$> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
+dragonfly> ZADD leaderboard 50 "Alice" 100 "Bob" 25 "Charlie" 75 "Dana"
 (integer) 4
 
-dragonfly$> ZREVRANGEBYSCORE leaderboard +inf 50 WITHSCORES
+dragonfly> ZREVRANGEBYSCORE leaderboard +inf 50 WITHSCORES
 1) "Bob"
 2) "100"
 3) "Dana"
