@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) where N is the total number of keys in selected hash slots
 
-**ACL categories:** @slow, @admin
+**ACL categories:** @slow, @admin, @dangerous
 
 Delete all the keys of selected hash slots.
 This command never fails.

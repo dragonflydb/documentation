@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1) for each item added, so O(N) to add N items when the command is called with multiple arguments.
 
-**ACL categories:** @bloom
+**ACL categories:** @bloom, @fast, @write
 
 Adds one or more items to a Bloom filter `key`.
 

@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1) on average per shard.
 
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow, @write
 
 Adds an alternate name for an existing search index. Applications can query
 the alias with [`FT.SEARCH`](./ft.search.md) and later switch it to another

@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(M*N) when path is evaluated to a single value where M is the number of keys and N is the size of the value, O(N1+N2+...+Nm) when path is evaluated to multiple values where m is the number of keys and Ni is the size of the i-th key
 
-**ACL categories:** @json
+**ACL categories:** @json, @fast, @read
 
 Return the values at `path` from multiple `key` arguments
 

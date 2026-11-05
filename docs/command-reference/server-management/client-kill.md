@@ -17,7 +17,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) where N is the number of client connections.
 
-**ACL categories:** @slow, @connection
+**ACL categories:** @slow, @connection, @admin, @dangerous
 
 Terminate client connections that match the specified filter.
 

@@ -10,7 +10,7 @@ description: Creates or updates a synonym group
       [SKIPINITIALSCAN] term [term ...]
 
 **Time complexity:** O(N)
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow, @write
 
 ## Description
 

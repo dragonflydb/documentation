@@ -22,7 +22,7 @@ description: Runs a hybrid search that combines a full-text query with vector si
 
 **Time complexity:** O(N) to run the text query (N = documents matching the query) plus O(K) for the vector search (K = candidates examined), and O(M·log(M)) to merge and rank the combined set of M unique candidates.
 
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow
 
 ## Description
 

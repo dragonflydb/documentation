@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** N/A
 
-**ACL categories:** @json
+**ACL categories:** @json, @fast, @read
 
 Return helpful information about the [`JSON.DEBUG`](./json.debug.md) command.
 

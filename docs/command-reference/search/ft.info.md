@@ -10,7 +10,7 @@ description: Returns information and statistics on the index
 
 **Time complexity:** Proportional to the number of shards and the amount of index metadata returned.
 
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow
 
 ## Description
 

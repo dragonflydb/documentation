@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
     CLIENT PAUSE timeout [WRITE | ALL]
 
 **Time complexity:** O(1)
-**ACL categories:** @slow, @connection
+**ACL categories:** @slow, @connection, @admin, @dangerous
 
 CLIENT PAUSE is a connections control command able to suspend all the Dragonfly clients for the specified amount of time (in milliseconds).
 

@@ -16,7 +16,7 @@ CL.THROTTLE <key> <max_burst> <count per period> <period> [<quantity>]
 
 **Time complexity:** O(1)
 
-**ACL categories:** @throttle
+**ACL categories:** @throttle, @fast, @write
 
 This command provides functionality for implementing a rate limiter and
 is based on a Redis module called [redis-cell](https://github.com/brandur/redis-cell).

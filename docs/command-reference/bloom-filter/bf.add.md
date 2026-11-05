@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @bloom
+**ACL categories:** @bloom, @fast, @write
 
 Adds a single item to a Bloom filter `key`.
 If the `key` does not exist, a new Bloom filter is created with default parameters.

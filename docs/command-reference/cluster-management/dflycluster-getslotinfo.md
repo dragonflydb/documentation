@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) where N is the number of provided slots
 
-**ACL categories:**  @admin, @slow
+**ACL categories:** @admin, @slow, @dangerous
 
 The `DFLYCLUSTER GETSLOTINFO` command is used to get information regarding provided hash slots.
 

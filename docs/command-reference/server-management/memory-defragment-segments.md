@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) in the worst case, where N is the number of hash-table directory entries in the selected database. Each shard uses an internal time budget to limit work per invocation.
 
-**ACL categories (Dragonfly v2.0.2):** @read, @slow
+**ACL categories:** @slow, @admin, @dangerous
 
 This Dragonfly-specific command attempts to relocate the selected database's
 primary hash-table segments from sparsely used allocator pages. It is intended

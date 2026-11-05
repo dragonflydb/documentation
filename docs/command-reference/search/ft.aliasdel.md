@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1) on average per shard.
 
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow, @write
 
 Removes an existing search index alias. The target index and its documents
 remain intact and can still be accessed using the index name or other aliases.

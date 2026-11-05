@@ -21,7 +21,7 @@ XGROUP CREATE key group <id | $> [MKSTREAM]
 ```
 
 - **Time complexity:** O(1)
-- **ACL categories:** @slow
+- **ACL categories:** @slow, @stream, @write
 
 ## Parameter Explanations
 

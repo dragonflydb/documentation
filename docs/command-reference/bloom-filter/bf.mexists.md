@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1) for each item checked, so O(N) to check N items when the command is called with multiple arguments.
 
-**ACL categories:** @bloom
+**ACL categories:** @bloom, @fast, @read
 
 Checks for the existence of one or more items in a Bloom filter `key`.
 

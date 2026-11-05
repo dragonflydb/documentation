@@ -19,7 +19,7 @@ description: Searches the index with a query, returning docs or just IDs
       [FILTER field min max]
 
 **Time complexity:** Varies with query structure, index type, scoring, sorting, and result set size.
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow
 
 ## Description
 
