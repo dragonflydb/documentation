@@ -42,6 +42,7 @@ after the SCHEMA keyword, declares which fields to index:
 
  - `AS {attribute}` defines the attribute associated to the identifier.
    For example, you can use this feature to alias a complex JSONPath expression with more memorable (and easier to type) name.
+   The same Hash field or JSONPath can be declared multiple times with different attributes.
 
 Field types are:
 
@@ -181,6 +182,12 @@ Index a JSON document using bare field names (without JSONPath prefix).
 
 ``` bash
 dragonfly> FT.CREATE idx2 ON JSON SCHEMA title TEXT categories TAG
+```
+
+Declare the same JSONPath as both a `TEXT` and a `TAG` attribute.
+
+``` bash
+dragonfly> FT.CREATE idx3 ON JSON SCHEMA $.title AS title_text TEXT $.title AS title_tag TAG
 ```
 </details>
 

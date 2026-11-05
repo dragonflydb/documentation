@@ -7,7 +7,7 @@ description: Searches the index with a query, returning docs or just IDs
 ## Syntax
 
 ```
-FT.ALTER {index} [SKIPINITIALSCAN] SCHEMA ADD {attribute} {options} ...
+FT.ALTER {index} SCHEMA ADD {attribute} {options} ...
 ```
 
 **Time complexity:** O(N) where N is the number of keys in the keyspace
@@ -17,12 +17,12 @@ FT.ALTER {index} [SKIPINITIALSCAN] SCHEMA ADD {attribute} {options} ...
 ## Description
 
 Add a new attribute to the index.
-Note that adding an attribute to the index causes any future document updates to use the new attribute when indexing and reindexing existing documents.
+The index can be referenced by its name or by an alias.
+Adding an attribute rebuilds the index: existing documents are reindexed with the new attribute, and later document updates use it too.
 
 ## Required arguments
 
-- The `index` parameter is the index name to alter.
-- The `SKIPINITIALSCAN` option: if set, the command does not scan and index.
+- The `index` parameter is the index name or alias to alter.
 - After the `SCHEMA ADD` keywords, declares which fields to add:
   - `attribute` is an attribute to add.
   - `options` are attribute options. Refer to [`FT.CREATE`](ft.create.md) for more information.
@@ -35,6 +35,8 @@ Note that adding an attribute to the index causes any future document updates to
 ## Examples
 
 ``` bash
+dragonfly> FT.CREATE idx ON HASH SCHEMA id NUMERIC
+OK
 dragonfly> FT.ALTER idx SCHEMA ADD id2 NUMERIC SORTABLE
 OK
 ```

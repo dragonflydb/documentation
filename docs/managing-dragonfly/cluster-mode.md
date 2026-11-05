@@ -44,6 +44,7 @@ b'bar'
 - By default, if the `--cluster_mode` server flag is not specified, Dragonfly runs in this emulated cluster mode.
 - In emulated mode, `cluster_announce_ip` and `announce_port` can be changed at runtime with `CONFIG SET`.
   Subsequent cluster topology replies use the new values.
+- In emulated mode, replicas advertise the master's announced address in cluster topology replies.
 
 ## Multi-Shard Cluster
 
@@ -202,6 +203,7 @@ such as adding/removing nodes, changing hostnames, etc.
   much of its logic can be reused for nodes present on remote machines as well.
 - If you're getting errors trying to issue the `DFLYCLUSTER CONFIG`, check Dragonfly's logs (if you
   can pass `--logtostderr` temporarily) to see why the config was rejected.
+- `DFLYMIGRATE` is rejected unless cluster mode is enabled.
 - Dragonfly supports the migration of data slots between nodes as well. A detailed explanation can
   be found in one of our blog posts [here](https://www.dragonflydb.io/blog/redis-and-dragonfly-cluster-design-comparison).
   We will update the documentation to reflect these steps soon.

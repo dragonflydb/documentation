@@ -113,7 +113,7 @@ The special `+ALL` (note without the `@`) is used to denote all the currently im
 ## Key Permissions
 
 It's also possible to restrict operations on given keys. Note, users are permitted to execute a command only when their ACL's both include that command (or group)
-and contain a key pattern that matches the keys of the command. Key patterns are:
+and contain a key pattern that matches the keys of the command. A command that both reads and writes a key, such as `INCR`, needs read and write access to it, so a `%W~` pattern alone does not allow it. Key patterns are:
 
 - `~<pattern>`: Add a pattern of keys that can be mentioned as part of commands. For instance `~*` allows all the keys. The pattern is a glob-style pattern, and it is possible to specify multiple patterns.
 - `%R~<pattern>`: Add the specified **read** key pattern. This behaves similar to the regular key pattern but only grants permission to read from keys that match the given pattern.
@@ -143,10 +143,10 @@ The state of all the users and their permissions can be captured and placed in a
 the `--aclfile` option is used to specify the file from which Dragonfly will load the ACL state from.
 
 Afterwards, any change done at runtime, can be persisted at anytime via the command `ACL SAVE` which
-evicts the currently stored ACL state to the file specified in the `--aclfile` option.
+atomically saves the current ACL state to the file specified in the `--aclfile` option.
 
-Note, that the `aclfile` file is compatible with Redis (however it must not contain any keys or
-pub/sub DSL's because these yet are not supported so if you plan to migrate, just open the file and strip them away).
+The `aclfile` file is compatible with Redis. Dragonfly validates the file, including password hashes.
+If the file does not load, Dragonfly exits at startup, and `ACL LOAD` returns an error and keeps the current users.
 
 If you want the `aclfile` to be writable, that is, if you want `ACL SAVE` to work, we would advise against placing the `aclfile`
 under `/etc` directory because usually that directory is only accessible by Dragonfly as `readonly`. You change this behavior, by editing

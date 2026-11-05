@@ -25,7 +25,7 @@ call.
 
 [Array reply](https://valkey.io/topics/protocol/#arrays), specifically:
 
-A multi bulk reply containing two elements:
+An array containing two bulk string elements:
 
 * unix time in seconds.
 * microseconds.

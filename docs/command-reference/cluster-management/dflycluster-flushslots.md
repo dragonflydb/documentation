@@ -16,8 +16,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **ACL categories:** @slow, @admin, @dangerous
 
-Delete all the keys of selected hash slots.
-This command never fails.
+Delete all the keys of selected hash slots across all databases.
 
 Note: command only deletes keys that were present at the time the command was invoked. Keys created during an asynchronous flush will be unaffected.
 

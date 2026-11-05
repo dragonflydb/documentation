@@ -28,8 +28,9 @@ their queries.
   The target must be an index name, not another alias.
 
 An alias refers to an index without copying its data or creating a new index.
-Multiple aliases can refer to the same index. [`FT._LIST`](./ft._list.md)
-lists index names, not aliases. Dropping the target index removes its aliases.
+Multiple aliases can refer to the same index. Alias definitions are persisted
+in snapshots. [`FT._LIST`](./ft._list.md) lists index names, not aliases.
+Dropping the target index removes its aliases.
 
 ## Return
 

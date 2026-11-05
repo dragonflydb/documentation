@@ -177,7 +177,7 @@ As with disk backups, Dragonfly will automatically load the latest snapshot from
 In addition to the backups flags described above, cloud storage includes flags:
 - **`s3_endpoint`** -- When using an S3-compatible service overrides the S3 endpoint.
 - **`s3_ec2_metadata`** -- Whether to load AWS credentials from EC2 metadata. Only enable this flag when running in EC2. Disabled by default.
-- **`s3_sign_payload`** -- Whether to sign the request payload when uploading snapshots to S3. Enabled by default, though signing the payload does have a performance overhead so can be disabled if needed.
+- **`s3_upload_traffic_mark`** -- Linux `SO_MARK` for S3 snapshot upload sockets, so an externally configured `tc` bandwidth class can shape them. Requires `CAP_NET_ADMIN`. When it is set, the pacing from `snapshot_egress_limit_bytes` is not applied to these sockets.
 - **`s3_use_https`** -- Whether to use HTTPS. Enabled by default.
 
 ### Authentication

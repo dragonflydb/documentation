@@ -28,7 +28,8 @@ when an existing alias should cause an error.
 
 Updating the alias changes which index subsequent queries through that alias
 use. It does not rebuild, copy, or delete either index or their documents.
-Prepare the replacement index before switching the alias to it.
+Prepare the replacement index before switching the alias to it. Alias
+definitions are persisted in snapshots.
 
 If the requested target is missing or is an alias, the command returns an error
 and leaves the existing mapping unchanged.
@@ -43,11 +44,16 @@ name conflicts with an index, or the target is missing or is itself an alias.
 
 ## Examples
 
-Starting with the `products` alias and `products-v1` index from the
-[`FT.ALIASADD` example](./ft.aliasadd.md#examples), create a replacement index
-and switch the alias:
+Create the `products-v1` index and `products` alias, then create a replacement
+index and switch the alias:
 
 ```shell
+dragonfly> FT.CREATE products-v1 ON HASH PREFIX 1 v1: SCHEMA title TEXT
+OK
+
+dragonfly> FT.ALIASADD products products-v1
+OK
+
 dragonfly> FT.CREATE products-v2 ON HASH PREFIX 1 v2: SCHEMA title TEXT
 OK
 
@@ -72,6 +78,9 @@ dragonfly> FT.SEARCH products * NOCONTENT
 An alias that does not exist is created:
 
 ```shell
+dragonfly> FT.CREATE products-v1 ON HASH PREFIX 1 v1: SCHEMA title TEXT
+OK
+
 dragonfly> FT.ALIASUPDATE new-alias products-v1
 OK
 ```

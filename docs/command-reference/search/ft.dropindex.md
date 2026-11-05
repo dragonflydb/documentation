@@ -13,7 +13,7 @@ description: Deletes the index
 
 ## Description
 
-Delete an index.
+Delete an index by its name or alias.
 
 By default, `FT.DROPINDEX` only removes the index definition and associated metadata while keeping the actual documents (HASH or JSON keys) intact.
 
@@ -22,7 +22,7 @@ By default, `FT.DROPINDEX` only removes the index definition and associated meta
 <details open>
 <summary><code>index</code></summary>
 
-is index name. You must first create the index using [`FT.CREATE`](./ft.create.md).
+is an index name or an alias that resolves to an index. You must first create the index using [`FT.CREATE`](./ft.create.md).
 </details>
 
 ## Optional arguments

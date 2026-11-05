@@ -9,9 +9,14 @@ Dragonfly allows users to execute scripts written in [Lua](https://lua.org). Its
 
 Dragonfly uses Lua version 5.4.
 
+With `--lua_max_stall_ms` set to a positive value, Dragonfly aborts a script that has not written data or published a message yet
+once it keeps its thread busy without yielding for longer than that many milliseconds.
+The client gets `ERR Error running script (call to <sha>): Script killed: blocked its thread for too long`.
+The flag is `0`, which disables the check, by default.
+
 ## Script flags
 
-Dragonfly provides additional flexibility with special script flags. By default, none are set. 
+Dragonfly provides additional flexibility with special script flags. By default, none are set.
 
 Flags can be configured in multiple ways:
 
@@ -41,13 +46,13 @@ First, determine what SHAs are used by the framework/application. This can be do
 
 ### Allowing undeclared keys
 
-Dragonfly forbids accessing undeclared keys from scripts and returns the following error: 
+Dragonfly forbids accessing undeclared keys from scripts and returns the following error:
 
 ```
 script tried accessing undeclared key
 ```
- 
-To allow accessing any keys, including undeclared, the flag `allow-undeclared-keys` should be used. 
+
+To allow accessing any keys, including undeclared, the flag `allow-undeclared-keys` should be used.
 This option is disabled by default because unpredictability, atomicity and multithreading don't mix well. If enabled, Dragonfly has to stop all other operations when the script is running.
 
 ## Sandbox restrictions
