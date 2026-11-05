@@ -15,7 +15,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) where N is the number of heap pages inspected.
 
-**ACL categories:** @read, @slow
+**ACL categories:** @slow, @admin, @dangerous
 
 The `MEMORY ARENA` command reports allocator arena statistics broken down by block size. It is a
 diagnostic command, useful for understanding where committed memory is going and how much of it is

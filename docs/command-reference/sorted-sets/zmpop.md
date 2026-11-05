@@ -22,7 +22,7 @@ ZMPOP numkeys key [key ...] <MIN | MAX> [COUNT count]
 - **ACL categories:** @write, @sortedset, @slow
 
 When the `MIN` modifier is used, the elements popped are those with the lowest scores from the first non-empty sorted set.
-The `MAX` modifier causes elements with the highest scores to be popped. 
+The `MAX` modifier causes elements with the highest scores to be popped.
 The optional `COUNT` can be used to specify the number of elements to pop, and is set to 1 by default.
 
 The number of popped elements is the minimum from the sorted set's cardinality and `COUNT`'s value.
@@ -41,68 +41,68 @@ See [`BZMPOP`](./bzmpop) for the blocking variant of this command.
 ### Pop from a Single Sorted Set
 
 ```shell
-dragonfly$> ZADD key 1 "one" 2 "two" 3 "three" 4 "four"
+dragonfly> ZADD key 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
 
-dragonfly$> ZMPOP 1 key MIN
+dragonfly> ZMPOP 1 key MIN
 1) "key"
 2) 1) 1) "one"
       2) "1"
 
-dragonfly$> ZRANGE key 0 -1
+dragonfly> ZRANGE key 0 -1
 1) "two"
 2) "three"
 3) "four"
 
-dragonfly$> ZMPOP 1 key MAX COUNT 2
+dragonfly> ZMPOP 1 key MAX COUNT 2
 1) "key"
 2) 1) 1) "four"
       2) "4"
    2) 1) "three"
       2) "3"
 
-dragonfly$> ZRANGE key 0 -1
+dragonfly> ZRANGE key 0 -1
 1) "two"
 ```
 
 ### Pop from Multiple Sorted Sets
 
 ```shell
-dragonfly$> ZADD key1 1 "one" 2 "two"
+dragonfly> ZADD key1 1 "one" 2 "two"
 (integer) 2
-dragonfly$> ZADD key2 3 "three" 4 "four"
+dragonfly> ZADD key2 3 "three" 4 "four"
 (integer) 2
 
-dragonfly$> ZMPOP 2 key1 key2 MIN COUNT 2
+dragonfly> ZMPOP 2 key1 key2 MIN COUNT 2
 1) "key1"
 2) 1) 1) "one"
       2) "1"
    2) 1) "two"
       2) "2"
 
-dragonfly$> ZRANGE key1 0 -1
+dragonfly> ZRANGE key1 0 -1
 (empty array)
-dragonfly$> ZRANGE key2 0 -1
+dragonfly> ZRANGE key2 0 -1
 1) "three"
 2) "four"
 
 # Now the first key is empty. ZMPOP will pop elements from the next key.
-dragonfly$> ZMPOP 2 key1 key2 MIN COUNT 2
+dragonfly> ZMPOP 2 key1 key2 MIN COUNT 2
 1) "key2"
 2) 1) 1) "three"
       2) "3"
    2) 1) "four"
       2) "4"
 
-dragonfly$> ZRANGE key1 0 -1
+dragonfly> ZRANGE key1 0 -1
 (empty array)
-dragonfly$> ZRANGE key2 0 -1
+dragonfly> ZRANGE key2 0 -1
 (empty array)
 ```
 
 ### No Element to Pop
 
 ```shell
-dragonfly$> ZMPOP 1 non-existent MIN
+dragonfly> ZMPOP 1 non-existent MIN
 (nil)
 ```

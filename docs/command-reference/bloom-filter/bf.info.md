@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(F), where F is the number of sub-filters.
 
-**ACL categories:** @bloom
+**ACL categories:** @bloom, @read, @slow
 
 Returns usage information and properties of the Bloom filter stored at `key`.
 Without a selector, the command returns all available properties. With a

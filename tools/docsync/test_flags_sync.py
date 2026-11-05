@@ -89,5 +89,62 @@ class DryRunTests(unittest.TestCase):
         self.assertIn("--dry-run", out.getvalue())
 
 
+class MergePolishTests(unittest.TestCase):
+    MECH = ("# Flags\n\nIntro.\n\n## Available Flags\n\n"
+            "### `--alpha`\n  Alpha flag.\n\n  `default: 1`\n\n"
+            "### `--beta`\n  Beta flag.\n\n  `default: 2`\n\n"
+            "### `--gamma`\n  Gamma flag.\n\n  `default: 3`\n")
+
+    def polished(self) -> str:
+        return ("# Flags\n\nIntro rewritten.\n\n## Available Flags\n\n"
+                "### `--alpha`\n  Alpha flag, reworded.\n\n  `default: 1`\n\n"
+                "### `--beta`\n  Beta flag with new help.\n\n  `default: 2`\n\n"
+                "### `--beta_two`\n  New flag.\n\n  `default: 0`\n\n"
+                "### `--gamma`\n  Gamma flag.\n\n  `default: 3`\n")
+
+    def test_only_editable_and_new_sections_come_from_the_llm(self) -> None:
+        merged, discarded, added = flags_sync.merge_polish(self.MECH, self.polished(), {"beta", "beta_two"})
+        self.assertIn("Intro.\n", merged)
+        self.assertNotIn("Intro rewritten", merged)
+        self.assertIn("  Alpha flag.\n", merged)
+        self.assertIn("  Beta flag with new help.\n", merged)
+        self.assertEqual(discarded, ["alpha"])
+        self.assertEqual(added, ["beta_two"])
+        names = [s for s in flags_sync.parse_sections(merged)]
+        self.assertEqual(names, ["alpha", "beta", "beta_two", "gamma"])
+
+    def test_unchanged_page_is_byte_identical(self) -> None:
+        merged, discarded, added = flags_sync.merge_polish(self.MECH, self.MECH, set())
+        self.assertEqual((merged, discarded, added), (self.MECH, [], []))
+
+    def test_new_section_after_the_last_one_keeps_spacing(self) -> None:
+        polished = self.MECH + "\n### `--omega`\n  Last.\n\n  `default: 9`\n"
+        merged, _, added = flags_sync.merge_polish(self.MECH, polished, {"omega"})
+        self.assertEqual(added, ["omega"])
+        self.assertTrue(merged.endswith("  `default: 3`\n\n### `--omega`\n  Last.\n\n  `default: 9`\n"))
+
+    def test_help_text_changes(self) -> None:
+        sections = flags_sync.parse_sections(self.MECH)
+        current = {"alpha": {"description": "a"}, "beta": {"description": "new"}, "gamma": {"description": "g"}}
+        previous = {"alpha": {"description": "a"}, "beta": {"description": "old"}}
+        changes = flags_sync.help_text_changes(sections, current, previous)
+        self.assertEqual(changes, [{"flag": "beta", "previous_help": "old", "current_help": "new"}])
+
+
+
+class EnumValueTests(unittest.TestCase):
+    def test_a_mapping_line_documents_the_value(self) -> None:
+        listed = "  Where:\n  - `0` — `NONE` — no compression.\n  - `3` — `MULTI_ENTRY_LZ4` — LZ4.\n"
+        table = "| Value | Name |\n| --- | --- |\n| 3 | MULTI_ENTRY_LZ4 |\n"
+        self.assertTrue(flags_sync.documents_enum_value(listed, "3", "MULTI_ENTRY_LZ4"))
+        self.assertTrue(flags_sync.documents_enum_value(table, "3", "MULTI_ENTRY_LZ4"))
+
+    def test_a_mention_without_the_mapping_does_not(self) -> None:
+        prose = "  The server reports MULTI_ENTRY_LZ4, the mode added in v1.3.\n"
+        self.assertFalse(flags_sync.documents_enum_value(prose, "3", "MULTI_ENTRY_LZ4"))
+        self.assertFalse(flags_sync.documents_enum_value("  - `3` — `MULTI_ENTRY_LZ4X`\n",
+                                                         "3", "MULTI_ENTRY_LZ4"))
+
+
 if __name__ == "__main__":
     unittest.main()

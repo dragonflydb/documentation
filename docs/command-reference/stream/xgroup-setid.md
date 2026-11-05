@@ -20,7 +20,7 @@ XGROUP SETID key group <id | $>
 ```
 
 - **Time complexity:** O(1)
-- **ACL categories:** @slow
+- **ACL categories:** @slow, @stream, @write
 
 ## Parameter Explanations
 
@@ -42,23 +42,23 @@ XGROUP SETID key group <id | $>
 Change the last delivered ID for a consumer group using a specific ID:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
+dragonfly> XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
 
-dragonfly$> XADD mystream * field1 value1
+dragonfly> XADD mystream * field1 value1
 "1736318170000-0" # The first message ID.
 
-dragonfly$> XADD mystream * field2 value2
+dragonfly> XADD mystream * field2 value2
 "1736318179999-0" # The second message ID.
 
 # Set the last delivered ID the a value that is
 # greater than the first message ID, but less than the second message ID.
-dragonfly$> XGROUP SETID mystream mygroup "1736318175555-0"
+dragonfly> XGROUP SETID mystream mygroup "1736318175555-0"
 OK
 
 # Read a message from the stream using a consumer.
 # You can see that it starts to read from the second message.
-dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1736318179999-0"
          2) 1) "field2"
@@ -70,22 +70,22 @@ dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 Set the last delivered ID for a consumer group to the latest stream entry:
 
 ```shell
-dragonfly$>XGROUP CREATE mystream mygroup $ MKSTREAM
+dragonfly>XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
 
-dragonfly$> XADD mystream * field1 value1
+dragonfly> XADD mystream * field1 value1
 "1736318170000-0"
 
-dragonfly$> XADD mystream * field2 value2
+dragonfly> XADD mystream * field2 value2
 "1736318179999-0"
 
 # Set the last delivered ID to the latest entry in the stream.
-dragonfly$> XGROUP SETID mystream mygroup $
+dragonfly> XGROUP SETID mystream mygroup $
 OK
 
 # Read a message from the stream using a consumer.
 # Since there are no new messages, the consumer does not read any messages.
-dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 (nil)
 ```
 
@@ -94,22 +94,22 @@ dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 Set the ID to the very first message in the stream in order to reprocess all messages:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
+dragonfly> XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
 
-dragonfly$> XADD mystream * field1 value1
+dragonfly> XADD mystream * field1 value1
 "1736318170000-0"
 
-dragonfly$> XADD mystream * field2 value2
+dragonfly> XADD mystream * field2 value2
 "1736318179999-0"
 
 # Set the last delivered ID to the first message in the stream.
-dragonfly$> XGROUP SETID mystream mygroup 0
+dragonfly> XGROUP SETID mystream mygroup 0
 OK
 
 # Read a message from the stream using a consumer.
 # You can see that it starts to read from the very first message.
-dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1736318170000-0"
          2) 1) "field1"

@@ -46,10 +46,10 @@ Both `min` and `max` can be:
 Count all members with a score between `1` and `4`:
 
 ```shell
-dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
+dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
 
-dragonfly$> ZCOUNT myzset 1 4
+dragonfly> ZCOUNT myzset 1 4
 (integer) 4
 ```
 
@@ -58,17 +58,17 @@ dragonfly$> ZCOUNT myzset 1 4
 Count members where the score is between `1` (exclusive) and `4` (inclusive):
 
 ```shell
-dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
+dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
 
-dragonfly$> ZCOUNT myzset (1 4
+dragonfly> ZCOUNT myzset (1 4
 (integer) 3
 ```
 
 Count members where the score is between `1` (inclusive) and `4` (exclusive):
 
 ```shell
-dragonfly$> ZCOUNT myzset 1 (4
+dragonfly> ZCOUNT myzset 1 (4
 (integer) 3
 ```
 
@@ -76,7 +76,7 @@ dragonfly$> ZCOUNT myzset 1 (4
 Count members where the score is between `1` and `4`, both exclusive:
 
 ```shell
-dragonfly$> ZCOUNT myzset (1 (4
+dragonfly> ZCOUNT myzset (1 (4
 (integer) 2
 ```
 
@@ -85,10 +85,10 @@ dragonfly$> ZCOUNT myzset (1 (4
 Count members without specifying an upper or lower bound using `-inf` and `+inf`:
 
 ```shell
-dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
+dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
 
-dragonfly$> ZCOUNT myzset -inf +inf
+dragonfly> ZCOUNT myzset -inf +inf
 (integer) 4
 ```
 

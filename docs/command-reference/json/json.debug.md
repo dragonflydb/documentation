@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** N/A
 
-**ACL categories:** @json
+**ACL categories:** @json, @fast, @read
 
 This is a container command for debugging related tasks.
 

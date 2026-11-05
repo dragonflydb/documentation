@@ -79,7 +79,7 @@ Command flags are returned as an array. It can contain the following simple stri
   (see the [`maxmemory`](../../managing-dragonfly/flags#--maxmemory) configuration directive).
 - `fast`: The command operates in constant or log(N) time.
 - `loading`: The command is allowed while the database is loading.
-- `noscript`: The command can't be called from [scripts](https://redis.io/docs/latest/develop/interact/programmability/eval-intro/).
+- `noscript`: The command can't be called from [scripts](https://valkey.io/topics/eval-intro/).
 - `readonly`: The command doesn't modify data.
 - `write`: The command may modify data.
 

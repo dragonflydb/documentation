@@ -22,7 +22,7 @@ XGROUP DELCONSUMER key group consumer
 ```
 
 - **Time complexity:** O(1)
-- **ACL categories:** @slow
+- **ACL categories:** @slow, @stream, @write
 
 ## Parameter Explanations
 
@@ -42,27 +42,27 @@ Remove a consumer from a group:
 
 ```shell
 # Create a stream.
-dragonfly$> XADD mystream * name "Alice"
+dragonfly> XADD mystream * name "Alice"
 "1530105600018-0"
 
 # Create a consumer group.
-dragonfly$> XGROUP CREATE mystream mygroup 0
+dragonfly> XGROUP CREATE mystream mygroup 0
 OK
 
 # Add a consumer to the group.
-dragonfly$> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
+dragonfly> XREADGROUP GROUP mygroup consumer-1 COUNT 1 STREAMS mystream >
 1) 1) "mystream"
    2) 1) 1) "1530105600018-0"
          2) 1) "name"
             2) "Alice"
 
 # Acknowledge the message.
-dragonfly$> XACK mystream mygroup "1530105600018-0"
+dragonfly> XACK mystream mygroup "1530105600018-0"
 (integer) 1
 
 # Remove the consumer from the group.
 # Since the consumer has no pending messages (acknowledged), the return value is 0.
-dragonfly$> XGROUP DELCONSUMER mystream mygroup consumer-1
+dragonfly> XGROUP DELCONSUMER mystream mygroup consumer-1
 (integer) 0
 ```
 

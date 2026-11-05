@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) where N is the number of entries visited during the invocation, which is bounded by an internal time budget per thread.
 
-**ACL categories:** @read, @slow
+**ACL categories:** @slow, @admin, @dangerous
 
 The `MEMORY DEFRAGMENT` command runs a defragmentation pass on demand and returns a report
 describing what was scanned. This command is Dragonfly-specific.

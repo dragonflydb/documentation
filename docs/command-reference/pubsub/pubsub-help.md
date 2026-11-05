@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @slow
+**ACL categories:** @slow, @pubsub
 
 The `PUBSUB HELP` command returns a helpful text describing the different subcommands.
 

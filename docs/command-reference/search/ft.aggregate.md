@@ -22,7 +22,7 @@ description: Runs a search query and performs aggregate transformations
 
 **Time complexity:** O(N)
 
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow
 
 ## Description
 
@@ -44,6 +44,7 @@ is index name. You must first create the index using [`FT.CREATE`](./ft.create.m
 is text query to search. If it's more than a single word, put it in quotes.
 Both `FLAT` and `HNSW` indexes support KNN and `VECTOR_RANGE` queries. HNSW queries can override `EF_RUNTIME` for KNN search and `EPSILON` for range search. A vector distance score alias defined by the query can be referenced by aggregation operations.
 Refer to the [Valkey Search query syntax](https://valkey.io/topics/search-query/) for more details.
+For the full Dragonfly query syntax and its differences from Valkey Search, see [Query syntax](./query-syntax.md).
 </details>
 
 ## Optional arguments

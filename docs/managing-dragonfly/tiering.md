@@ -37,7 +37,7 @@ Here are the main server flags related to SSD data tiering:
   See upload/offload thresholds and examples below for more details.
 - `tiered_offload_threshold`: The ratio of free memory, below which values will be actively offloaded to disk by a background process.
 - `tiered_upload_threshold`: The ratio of free memory, below which values are no longer returned to memory when read.
-- `tiered_max_pending_stash_bytes`: The maximum number of bytes in-flight to disk before new stashes are rejected or client backpressure is applied. This allows batching writes to saturate disk I/O even with few clients. (Replaces the retired `tiered_storage_write_depth` flag.)
+- `tiered_max_pending_bytes`: Cap on the total in-flight bytes to the disk, counting both reads and writes. It applies backpressure to new stashes and throttles background snapshot serialization and defragmentation while the device is overloaded, so they do not starve client reads. (Replaces `tiered_max_pending_stash_bytes`, retired in v2.1.0, which replaced the retired `tiered_storage_write_depth` flag.)
 - `tiered_max_file_size`: The maximum file size in bytes (must be multiples of 256MB), usually determined automatically.
 - `tiered_min_value_size`: This option can be used to raise the 64-byte value limit to offload only larger values.
 - `registered_buffer_size`: The size of registered buffers to use for zero-copy reads and writes with `io_uring`.
@@ -64,7 +64,7 @@ The command above configures Dragonfly to:
 ## Checking Data Tiering Metrics
 
 Dragonfly provides detailed metrics to help you monitor and analyze data tiering performance.
-By running the `INFO TIERED` command, you will get the following metrics:
+By running the `INFO TIERED` command, you will get metrics including:
 
 - `tiered_entries`: The number of value entries offloaded to disk.
 - `tiered_entries_bytes`: The amount of data (in bytes) offloaded to disk.
@@ -80,6 +80,12 @@ By running the `INFO TIERED` command, you will get the following metrics:
 - `tiered_ram_hits`: The number of entry lookups resulted in in-memory hits.
 - `tiered_ram_misses`: The number of entry lookups resulted in disk reads.
 - `tiered_ram_cool_hits`: The number of entry lookups resulted in cooling buffer hits.
+
+Dragonfly v2.1.0 adds the fields `tiered_alloc_segment_bytes`, `tiered_alloc_large_bytes`, `tiered_alloc_free_extent_bytes`,
+`tiered_device_read_usage_percent`, `tiered_device_write_usage_percent`, `tiered_device_total_usage_percent`,
+`tiered_pending_read_bytes`, `tiered_small_bins_estimated_bucket_fragmentation`, `tiered_total_repacks` and `tiered_repack_usec`.
+The last two belong to the repack scan, which regroups small offloaded values scattered across disk pages.
+It is off by default; enable it with `--tiered_repack_scan_budget_us`.
 
 ### Experimental Cooling
 

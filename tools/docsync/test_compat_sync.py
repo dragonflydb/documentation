@@ -626,6 +626,100 @@ class DragonflySourceTests(unittest.TestCase):
         self.assertIn("CF.COMPACT", specs)
         self.assertEqual(specs["CF.COMPACT"].group, "cf")
 
+    def test_reply_builder_literal_does_not_honor_an_option(self) -> None:
+        # v2.1.0: the CLIENT TRACKINGINFO reply has a "redirect" field. CLIENT
+        # TRACKING never parses REDIRECT, but its implementation text is the
+        # parent CLIENT handler, which also walks the TRACKINGINFO sibling.
+        self.write_source(
+            "server_family.cc",
+            """
+            void ClientTracking(CmdArgParser parser, CommandContext* cmd_cntx) {
+              if (parser.Check("ON")) {
+                is_on = true;
+              } else if (!parser.Check("OFF")) {
+                return cmd_cntx->SendError(kSyntaxErr);
+              }
+              if (parser.Check("OPTIN")) {
+                option = Tracking::OPTIN;
+              } else if (parser.Check("OPTOUT")) {
+                option = Tracking::OPTOUT;
+              } else if (parser.Check("NOLOOP")) {
+                noloop = true;
+              }
+              return cmd_cntx->rb()->SendOk();
+            }
+
+            void ClientTrackingInfo(ParsedArgs args, CommandContext* cmd_cntx) {
+              auto* rb = static_cast<RedisReplyBuilder*>(cmd_cntx->rb());
+              rb->StartCollection(3, CollectionType::MAP);
+              rb->SendBulkString("flags");
+              rb->SendBulkStrArr(flags, CollectionType::SET);
+              rb->SendBulkString("redirect");
+              // REDIRECT is not supported, so 0 means tracking is on without redirection.
+              rb->SendLong(is_on ? 0 : -1);
+              rb->SendBulkString("prefixes");
+              rb->SendEmptyArray();
+            }
+
+            void ServerFamily::Client(CmdArgParser parser, CommandContext* cmd_cntx) {
+              string sub_cmd = absl::AsciiStrToUpper(parser.Next<string_view>());
+              if (sub_cmd == "TRACKING") {
+                return ClientTracking(CmdArgParser{sub_args}, cmd_cntx);
+              } else if (sub_cmd == "TRACKINGINFO") {
+                return ClientTrackingInfo(sub_args, cmd_cntx);
+              }
+            }
+
+            void ServerFamily::Register(CommandRegistry* registry) {
+              *registry << CI{"CLIENT", 0}.HFUNC(Client);
+            }
+            """,
+        )
+        source = compat_sync.DragonflySource(self.root)
+
+        implementation = source.implementation("CLIENT TRACKING")
+        self.assertIn('rb->SendBulkString("redirect");', implementation)
+        self.assertTrue(compat_sync._token_honored("OPTIN", implementation))
+        self.assertFalse(compat_sync._token_honored("REDIRECT", implementation))
+        self.assertTrue(source.command_exists("CLIENT TRACKINGINFO"))
+
+        row = compat_sync.CompatRow(
+            family="Connection",
+            command="CLIENT TRACKING",
+            status="partial",
+            details="Missing: BCAST, PREFIX, REDIRECT.",
+        )
+        spec = compat_sync.RedisCommandSpec(
+            name="CLIENT TRACKING",
+            group="connection",
+            tokens=["ON", "OFF", "REDIRECT", "PREFIX", "BCAST", "OPTIN", "OPTOUT", "NOLOOP"],
+        )
+        assessment = compat_sync.deterministic_assessment(row, spec, source)
+
+        self.assertEqual(assessment.proposed_status, "partial")
+        self.assertEqual(assessment.unsupported_details, "Missing: BCAST, PREFIX, REDIRECT.")
+
+    def test_reply_call_scan_skips_comments_and_keeps_rejections(self) -> None:
+        text = textwrap.dedent(
+            """
+            void CmdExample(CmdArgParser parser, CommandContext* cmd_cntx) {
+              // A comment naming rb->SendError( does not open a reply call.
+              if (parser.Check("NOW")) {}
+              rb->SendSimpleString(StrCat('(', "FIELD"));
+              if (parser.Check("FORCE")) {}
+              Exist("ABORT", &Opts::abort);
+              return cmd_cntx->SendError("SHUTDOWN ABORT is not supported");
+            }
+            """,
+        )
+
+        self.assertTrue(compat_sync._token_honored("NOW", text))
+        self.assertFalse(compat_sync._token_honored("FIELD", text))
+        # The '(' char literal does not leave the scan inside the reply call.
+        self.assertTrue(compat_sync._token_honored("FORCE", text))
+        # The rejection check still reads the SendError message.
+        self.assertFalse(compat_sync._token_honored("ABORT", text))
+
 
 if __name__ == "__main__":
     unittest.main()

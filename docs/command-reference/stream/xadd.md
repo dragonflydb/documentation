@@ -10,7 +10,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 ## Introduction
 
-In Dragonfly, as well as in Redis and Valkey, the `XADD` command is used to append a new entry to a stream. 
+In Dragonfly, as well as in Redis and Valkey, the `XADD` command is used to append a new entry to a stream.
 Streams are data structures that enable storing and processing ordered logs of events, and `XADD` is essential for adding data to these streams.
 
 ## Syntax
@@ -48,7 +48,7 @@ XADD key [<MAXLEN | MINID> [~ | =] threshold] <* | id> field value [field value 
 Add an entry to a stream:
 
 ```shell
-dragonfly$> XADD mystream * sensor-id 1234 temperature 20.1
+dragonfly> XADD mystream * sensor-id 1234 temperature 20.1
 "1609459200001-0"
 ```
 
@@ -57,7 +57,7 @@ dragonfly$> XADD mystream * sensor-id 1234 temperature 20.1
 Add an entry and trim the stream to keep only the latest 5 entries:
 
 ```shell
-dragonfly$> XADD mystream MAXLEN = 5 * sensor-id 1235 temperature 20.1
+dragonfly> XADD mystream MAXLEN = 5 * sensor-id 1235 temperature 20.1
 "1609459200002-0"
 ```
 
@@ -66,7 +66,7 @@ dragonfly$> XADD mystream MAXLEN = 5 * sensor-id 1235 temperature 20.1
 Stream entries can contain multiple field-value pairs:
 
 ```shell
-dragonfly$> XADD mystream * sensor-id 1236 temperature 20.1 humidity 40
+dragonfly> XADD mystream * sensor-id 1236 temperature 20.1 humidity 40
 "1609459200003-0"
 ```
 
@@ -78,20 +78,20 @@ When using a specific ID, ensure it is unique and greater than the target stream
 
 ```shell
 # Using an auto-generated ID.
-dragonfly$> XADD mystream * sensor-id 1237 temperature 20.1
+dragonfly> XADD mystream * sensor-id 1237 temperature 20.1
 "1735929311498-0"
 
 # Using a specific ID in full format (timestamp-sequence).
-dragonfly$> XADD mystream "1735929311498-1" sensor-id 1237 temperature 20.2
+dragonfly> XADD mystream "1735929311498-1" sensor-id 1237 temperature 20.2
 "1735929311498-1"
 
 # Using a specific ID in partial format (timestamp only).
-dragonfly$> XADD mystream "1735929311498-*" sensor-id 1237 temperature 20.3
+dragonfly> XADD mystream "1735929311498-*" sensor-id 1237 temperature 20.3
 "1735929311498-2"
 
 # Using an ID that is less than the top item's ID will result in an error.
 # In this case, the partial format ID is less than the top item's ID.
-dragonfly$> XADD mystream "1700000000000-*" sensor-id 1237 temperature 20.4
+dragonfly> XADD mystream "1700000000000-*" sensor-id 1237 temperature 20.4
 (error) ERR The ID specified in XADD is equal or smaller than the target stream top item
 ```
 

@@ -20,7 +20,7 @@ XINFO STREAM key [FULL [COUNT count]]
 ```
 
 - **Time complexity:** O(1)
-- **ACL categories:** @slow
+- **ACL categories:** @slow, @read, @stream
 
 ## Parameter Explanations
 
@@ -40,10 +40,10 @@ XINFO STREAM key [FULL [COUNT count]]
 Get information about a stream:
 
 ```shell
-dragonfly$> XADD mystream * sensor-id 1234 temperature 19.8
+dragonfly> XADD mystream * sensor-id 1234 temperature 19.8
 "1632494980015-0"
 
-dragonfly$> XINFO STREAM mystream
+dragonfly> XINFO STREAM mystream
  1) "length"
  2) (integer) 1
  3) "radix-tree-keys"

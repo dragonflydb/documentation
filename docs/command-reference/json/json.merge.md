@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 **Time complexity:** O(M+N) where M is the size of the original json object located at `key`,
 and N is the size of the value merged into it.
 
-**ACL categories:** @json
+**ACL categories:** @json, @fast, @write
 
 The `JSON.MERGE` command merges a provided JSON value into matching paths within
 the existing JSON object at the specified `key`.

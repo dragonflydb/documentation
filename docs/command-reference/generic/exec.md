@@ -24,12 +24,12 @@ wrong number of arguments), `EXEC` discards the transaction without executing
 any queued command and returns an `EXECABORT` error. The error from a nested
 `MULTI` call does not abort the transaction.
 
-[tt]: https://redis.io/topics/transactions
+[tt]: https://valkey.io/topics/transactions/
 
 When using `WATCH`, `EXEC` will execute commands only if the watched keys were
 not modified, allowing for a [check-and-set mechanism][ttc].
 
-[ttc]: https://redis.io/topics/transactions#cas
+[ttc]: https://valkey.io/topics/transactions/#optimistic-locking-using-check-and-set
 
 ## Return
 

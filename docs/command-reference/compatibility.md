@@ -34,7 +34,7 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">CLIENT SETINFO</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CLIENT SETNAME</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CLIENT TRACKING</span> | <span class="support partial">Partially supported</span> | Missing: BCAST, PREFIX, REDIRECT. |
-|  | <span class="command">CLIENT TRACKINGINFO</span> | <span class="support unsupported">Unsupported</span> |  |
+|  | <span class="command">CLIENT TRACKINGINFO</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CLIENT UNBLOCK</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">CLIENT UNPAUSE</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CLIENT HELP</span> | <span class="support supported">Fully supported</span> |  |
@@ -70,6 +70,7 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">RESTORE</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">RM</span> | <span class="support dragonfly">Dragonfly-specific</span> |  |
 |  | <span class="command">SCAN</span> | <span class="support supported">Fully supported</span> |  |
+|  | <span class="command">SHRINK</span> | <span class="support dragonfly">Dragonfly-specific</span> |  |
 |  | <span class="command">SORT</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">SORT_RO</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">TOUCH</span> | <span class="support supported">Fully supported</span> |  |
@@ -203,6 +204,7 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">MODULE UNLOAD</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">MONITOR</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">REPLICAOF</span> | <span class="support supported">Fully supported</span> |  |
+|  | <span class="command">REPLTAKEOVER</span> | <span class="support dragonfly">Dragonfly-specific</span> |  |
 |  | <span class="command">ROLE</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">SAVE</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">SHUTDOWN</span> | <span class="support partial">Partially supported</span> | Missing: ABORT. |
@@ -295,6 +297,7 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">MGET</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">MSET</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">MSETNX</span> | <span class="support supported">Fully supported</span> |  |
+|  | <span class="command">PREPEND</span> | <span class="support dragonfly">Dragonfly-specific</span> |  |
 |  | <span class="command">PSETEX</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">SET</span> | <span class="support partial">Partially supported</span> | Missing: IFDEQ, IFDNE, IFEQ, IFNE. |
 |  | <span class="command">SETEX</span> | <span class="support supported">Fully supported</span> |  |
@@ -400,6 +403,7 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">CF.RESERVE</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CF.SCANDUMP</span> | <span class="support unsupported">Unsupported</span> |  |
 | <span class="family">Cluster</span> | <span class="command">ASKING</span> | <span class="support unsupported">Unsupported</span> |  |
+|  | <span class="command">CLUSTER</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CLUSTER ADDSLOTS</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">CLUSTER ADDSLOTSRANGE</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">CLUSTER BUMPEPOCH</span> | <span class="support unsupported">Unsupported</span> |  |
@@ -411,6 +415,7 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">CLUSTER FLUSHSLOTS</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">CLUSTER FORGET</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">CLUSTER GETKEYSINSLOT</span> | <span class="support unsupported">Unsupported</span> |  |
+|  | <span class="command">CLUSTER HELP</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CLUSTER INFO</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CLUSTER KEYSLOT</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CLUSTER LINKS</span> | <span class="support unsupported">Unsupported</span> |  |
@@ -430,4 +435,4 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">READONLY</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">READWRITE</span> | <span class="support supported">Fully supported</span> |  |
 
-Verification: Dragonfly v2.0.0; Redis 8.6.4; modules: BF, CF, CMS, FT, JSON, TDIGEST, TOPK, TS.
+Verification: Dragonfly v2.1.0; Redis 8.6.4; modules: BF, CF, CMS, FT, JSON, TDIGEST, TOPK, TS.

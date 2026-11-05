@@ -10,7 +10,7 @@ fix.
 
 ```
 tools/docsync/
-├── acl_sync.py                 # update **ACL categor(y|ies):** lines
+├── acl_sync.py                 # update **ACL categor(y|ies):** lines + the ACL categories page
 ├── flags_sync.py               # update flag defaults + add new flags
 ├── compat_sync.py              # build command compatibility evidence + draft
 ├── docs_sync.py                # update doc pages from a tag-to-tag source diff
@@ -20,6 +20,7 @@ tools/docsync/
 ├── test_acl_sync.py            # offline subcommand/container/dry-run tests
 ├── test_flags_sync.py          # offline C++ flag parser / dry-run tests
 ├── test_openai_llm.py          # offline adapter/schema/routing tests
+├── acl_model.py                # helper — which ACL entry the server checks for a command
 ├── dfly_facts.py               # helper — Docker → JSON ground truth
 ├── dfly_refs.py                # helper — pins a tag to one commit (source/image/facts)
 ├── build_prerelease_image.sh   # builds the image for a draft (unpublished) release
@@ -44,7 +45,7 @@ tools/generated/
 
 ```sh
 pip install -r tools/docsync/requirements.txt
-docker pull docker.dragonflydb.io/dragonflydb/dragonfly:v1.38.0
+docker pull docker.dragonflydb.io/dragonflydb/dragonfly:v2.1.0
 #   (not published yet for a draft release — see "Unreleased tags" below)
 # compat_sync needs NO API key by default (deterministic source analysis).
 export OPENAI_API_KEY=...       # required for every optional LLM step
@@ -83,13 +84,18 @@ releases or tags with `gh`.
 - `pip install -r tools/docsync/requirements.txt`, Docker, `jq`, `yarn install`.
 - `gh auth login` with an account that can **see** draft releases of
   `dragonflydb/dragonfly`.
-  - `gh` is used read-only: step 1 runs `gh release view`, and
+  - `gh` is used read-only: step 1 runs `gh release list`/`gh release view`, and
     `build_prerelease_image.sh` runs `gh api` and `gh release download`.
   - GitHub shows a draft release only to accounts with write permission on
     the repository. That is a visibility rule only: nothing is ever written.
     Any other account gets `release not found` for a draft.
 - `export OPENAI_API_KEY=...` for the LLM steps (ACL repair, flags polish,
   `docs_sync.py`). `compat_sync.py` does not need it.
+- The offline unit tests must pass (pytest is not required):
+
+  ```sh
+  python3 -m unittest discover -s tools/docsync -t . -p 'test_*.py'
+  ```
 
 ### 1. Choose the versions and the image source
 
@@ -100,24 +106,34 @@ compatibility page. Read it now, because step 5 rewrites it:
 grep '^Verification:' docs/command-reference/compatibility.md
 ```
 
-For `Verification: Dragonfly v1.40.0; Redis 8.6.4; ...`, set `OLD` to the
+For `Verification: Dragonfly v2.0.0; Redis 8.6.4; ...`, set `OLD` to the
 Dragonfly value and `REDIS` to the Redis value. Change `REDIS` only when you
 want to compare against a newer Redis. `NEW` is the release to document.
 
+`NEW` is always the Docker image and git tag (`v2.1.0`). The facts file, the
+branch and the `Verification:` line are named after it. The GitHub release can
+have a different tag: the v2.1.0 image was shipped by the release `v2.1`, so
+`gh release view v2.1.0` answers `release not found`. Find the release with
+`gh release list`, and test whether the image is published with
+`docker manifest inspect`:
+
 ```sh
-NEW=v2.0.0
-OLD=v1.40.0
+NEW=v2.1.0
+OLD=v2.0.0
 REDIS=8.6.4
 git switch -c docs/sync-$NEW
-gh release view $NEW -R dragonflydb/dragonfly --json isDraft,tagName
+gh api repos/dragonflydb/dragonfly/git/ref/tags/$NEW --jq .object.sha
+gh release list -R dragonflydb/dragonfly --limit 3
+docker manifest inspect docker.dragonflydb.io/dragonflydb/dragonfly:$NEW >/dev/null && echo published
 ```
 
-- **Published release** (`"isDraft": false`): run
+- **Published image:** run
   `docker pull docker.dragonflydb.io/dragonflydb/dragonfly:$NEW`, then `PULL=`.
-- **Draft release** (`"isDraft": true`): the image is not published yet (see
-  [Unreleased tags](#unreleased-tags-draft-github-release)).
-  1. Run `tools/docsync/build_prerelease_image.sh $NEW`. The last line must
-     be `OK: ... (binary sha256 ... == release asset)`.
+- **Draft release** (no image yet; `gh release view <release tag> --json isDraft`
+  says `true`): see [Unreleased tags](#unreleased-tags-draft-github-release).
+  1. Run `RELEASE_TAG=<release tag> tools/docsync/build_prerelease_image.sh $NEW`
+     (`RELEASE_TAG` defaults to `$NEW`). The last line must be
+     `OK: ... (binary sha256 ... == release asset)`.
   2. Set `PULL=--skip-pull`.
 
 ### 2. Capture facts
@@ -126,23 +142,56 @@ gh release view $NEW -R dragonflydb/dragonfly --json isDraft,tagName
 python3 tools/docsync/dfly_facts.py --tag $NEW $PULL
 ```
 
-The script prints `dragonfly <tag>-<commit>` and writes
-`tools/generated/facts/$NEW.json`. Steps 3, 4 and 6 reuse that file; step 5
-does not read it. It stops if the image was not built from the tag's commit.
+The script prints `dragonfly <version>-<commit>` and writes
+`tools/generated/facts/$NEW.json`. The version label can differ from the tag
+(`v2.1` for the tag `v2.1.0`); only the commit is checked against the tag.
+Steps 3, 4 and 6 reuse that file; step 5 does not read it. It stops if the
+image was not built from the tag's commit.
+
+### 2b. Pages for new commands and features
+
+No script creates pages: `acl_sync.py` and `docs_sync.py` only edit pages that
+exist. Write pages for new commands and features by hand before step 3, and
+commit them.
+
+- The H1 of a command page is the command name (`# CLIENT TRACKINGINFO`).
+  Both scripts key on it.
+- `acl_sync.py --dry-run` (step 3) lists the `ACL CAT entries used by no page`:
+  server commands that have no page yet. For a new page, its `UPDATE FAILED`
+  entry prints the exact ACL line to add.
+- Leave hand-written pages out of the step 6 plan, or review their examples
+  after it.
 
 ### 3. ACL category lines: `acl_sync.py`
 
 ```sh
 python3 tools/docsync/acl_sync.py --tag $NEW $PULL --dry-run
 python3 tools/docsync/acl_sync.py --tag $NEW $PULL
-git diff docs/command-reference
+git diff docs/command-reference docs/managing-dragonfly/acl-categories.md
 ```
 
-- The `--dry-run` run is a preview: no pages written, no OpenAI.
-- Check the `Updated`, `not synced` and `UPDATE FAILED` lists.
-- A page still under `UPDATE FAILED` (exit code 1) needs a manual fix. Its
+- The `--dry-run` run is a preview: no pages written, no OpenAI. It still runs
+  the live check, which starts a container from the `$NEW` image.
+- Nothing is written unless all of these pass:
+  - **facts shape checks** (exit 4): the facts must match the model in
+    `acl_model.py`, e.g. no unknown hidden command, no COMMAND entry without a
+    category. A violation means Dragonfly changed how it reports ACLs: update
+    `acl_model.py`, never the pages by hand;
+  - **live check** (exit 3): `ACL DRYRUN` on a container from the facts image must
+    allow each page's command for exactly the categories acl_sync resolved, and
+    name the same governing entry. `--no-verify-live` skips it;
+  - **categories page** (exit 1): `docs/managing-dragonfly/acl-categories.md`
+    exists, has its markers, and every category has a description.
+- Check the `Updated` list (each line is tagged `[own]`, `[acl-only CLIENT KILL]`,
+  `[inherited from XINFO]` or `[routed -> _XGROUP_HELP]`), `not synced`,
+  `ACL CAT entries used by no page`, the duplicate-page list and `UPDATE FAILED`.
+- A page under `UPDATE FAILED` (exit code 1) needs a manual fix. Its
   `expected:` line shows the exact ACL line to use: add it if the page has
-  none, or keep one ACL line if the page has several.
+  none, or keep one ACL line if the page has several. An `unrecognised ACL line`
+  is never sent to the LLM: rewrite it as `**ACL categories:** ...`.
+- The run also regenerates the command lists in
+  `docs/managing-dragonfly/acl-categories.md`. A category without a description
+  fails the run: add it to `CATEGORY_DESCRIPTIONS` in `acl_sync.py`.
 - Commit.
 - This step runs before step 6 because `docs_sync.py` refuses to change ACL
   lines.
@@ -150,10 +199,20 @@ git diff docs/command-reference
 ### 4. Flags page: `flags_sync.py`
 
 ```sh
-python3 tools/docsync/flags_sync.py --tag $NEW $PULL --dry-run
-python3 tools/docsync/flags_sync.py --tag $NEW $PULL
+python3 tools/docsync/flags_sync.py --tag $NEW --previous-tag $OLD $PULL --dry-run
+python3 tools/docsync/flags_sync.py --tag $NEW --previous-tag $OLD $PULL
 git diff docs/managing-dragonfly/flags.md
 ```
+
+- `--previous-tag $OLD` loads the facts of the release the page documents now
+  (it pulls that image if needed). The LLM may then update the sections of
+  flags whose `--helpfull` text changed since `$OLD`, listed under
+  `Documented flags whose --helpfull text changed`. Without it, only new flags
+  and enum tables are written, and the run says help-text changes were not checked.
+- The page is rebuilt from the mechanical result: only new flags, those
+  changed-help sections and enum tables come from the LLM. Any other section the
+  LLM rewrote is kept as it was, and the run lists it under
+  `kept the page's text for N section(s)`.
 
 - The `--dry-run` run is the mechanical report: flags.md is not written and
   OpenAI is not called.
@@ -216,12 +275,28 @@ git diff docs/
    `tools/generated/llm_debug/`.
 5. **Examples:** review every changed example block by hand.
    - Only `dragonfly> ` lines in changed or new ```` ```shell ```` blocks are
-     run in Docker and get their output replaced. Each such block starts from
-     an empty keyspace (`FLUSHALL`), so an example that depends on an earlier
-     block can get the wrong output.
-   - Output stays as the LLM wrote it for `dragonfly$> ` lines (most strings,
-     sorted-set and stream pages), `$ redis-cli ` lines, and blocks with
-     replication or cluster commands.
+     run in Docker and get their output replaced. Each block runs in one
+     redis-cli session after `FLUSHALL`, so HELLO 3, SELECT, MULTI and AUTH
+     carry over inside the block, but keys never carry into the next block.
+     An example that depends on an earlier block's keys gets the wrong output.
+   - A page whose LLM output changes the front matter, or removes or changes an
+     existing `dragonfly>` command or `$ redis-cli` line in any code block, is
+     rejected and not written:
+     an example that fails on its own needs setup lines, not removal.
+   - Existing prose that the LLM removed or rewrote is listed in the run summary
+     and in `removed_text` in the results. Keep a change only if the old line was
+     wrong for the new release.
+   - Server error replies are written into the page, because a documented
+     error case is legitimate. Every one of them is listed in the run summary
+     and in `example_errors` in the results: check each against the page text.
+   - A changed block that times out (30 s), loses its connection, writes to
+     redis-cli's stderr, or contains QUIT/EXIT fails the page; the page is not
+     written and the LLM markdown is saved as
+     `tools/generated/llm_debug/docs_sync_unverified_*.md`.
+   - Blocks with `$ redis-cli ` lines, and blocks with replication, cluster,
+     SUBSCRIBE or MONITOR commands, are not run: their output stays as the LLM
+     wrote it. New or changed blocks of that kind are listed under
+     `unverified_blocks`: verify them by hand.
 6. Commit.
 
 ### 7. Build
@@ -323,6 +398,7 @@ binary is byte-identical to the one the release will ship:
 
 ```sh
 tools/docsync/build_prerelease_image.sh v2.0.0      # needs gh with access to the draft
+RELEASE_TAG=v2.1 tools/docsync/build_prerelease_image.sh v2.1.0   # release tag != image tag
 ```
 
 Then pass `--skip-pull` to every script (`dfly_facts.py`, `acl_sync.py`,
@@ -336,61 +412,92 @@ the same commit, so cached facts stay valid.
 
 ## acl_sync.py
 
-Captures `ACL CAT` from the live server and updates the `**ACL
-categor(y|ies):**` line on every command-reference page whose H1 matches
-a server command. A subcommand page (`CLIENT LIST`, `XINFO STREAM`) whose name
-`ACL CAT` does not list on its own gets its parent command's categories.
-Dragonfly checks a subcommand it dispatches itself against the parent's
-categories (verified on a live v2.0.0 server). Subcommands registered on their
-own, such as `ACL SETUSER`, keep their own entry, and `XGROUP HELP` uses the
-hidden `_XGROUP_HELP` command that `CommandRegistry::FindExtended` routes it to
-(`ROUTED_SUBCOMMANDS`; the run warns about any other hidden command in the
-facts). Pages Docusaurus does not
-publish (a path component starting with `_`, e.g. `pubsub/_unsupported/`) are
-skipped. Two stages:
+Updates the `**ACL categories:**` line on every published command-reference page
+whose H1 is a server command, and the command lists of
+`docs/managing-dragonfly/acl-categories.md`. Pages Docusaurus does not publish
+(a path component starting with `_`, e.g. `pubsub/_unsupported/`) are skipped.
 
-1. **Mechanical pass** — minimal-diff edits:
+**Which categories a page shows.** The categories of the entry Dragonfly checks
+when a client sends the page's H1 as a command (`acl_model.resolve`, which follows
+`CommandRegistry::FindExtended` and `CommandId::AclTarget`; verified against
+`ACL DRYRUN` on every page of a live v2.1.0 server). Only the first two words of
+the H1 count; further words are arguments.
+
+- **own:** the H1 is an entry of its own: a command listed by `COMMAND`, a hidden
+  command (`DFLYCLUSTER`), or an ACL subcommand (`ACL SETUSER` is registered as a
+  separate command). `+acl` and `-acl` change only the bare `ACL` command.
+- **acl-only:** `ACL CAT` lists `CMD|SUB` but `COMMAND` does not list `CMD SUB`.
+  In v2.1.0: `CLIENT KILL/LIST/MIGRATE/PAUSE/UNPAUSE` and
+  `MEMORY ARENA/DECOMMIT/DEFRAGMENT/DEFRAGMENT-SEGMENTS/TRACK`. The container runs
+  it, but the server checks the subcommand's own categories. `+cmd` grants it,
+  `+cmd|sub` grants only it, and removing one of its categories denies only it.
+- **inherited:** `CMD SUB` is not an entry, so the server checks the container's
+  entry. No `cmd|sub` rule exists for it (`+client|getname` is rejected).
+  Inheriting does not prove that `SUB` exists.
+- **routed:** `XGROUP HELP` alone runs the hidden `_XGROUP_HELP` command
+  (`acl_model.ROUTED_SUBCOMMANDS`). `+xgroup` does not grant it.
+- `ACL <SUB>` never falls back to `ACL`: an unknown ACL subcommand is not a
+  server command.
+
+Since v2.1.0 `ACL CAT` spells subcommand entries `CMD|SUB` (`ACL|SETUSER`); older
+releases spelled them `ACL SETUSER`. `tools/generated/facts/<tag>.json` keeps the
+spelling `ACL CAT` returns, and `acl_model.command_acl_view` reads both.
+
+**Order of a run.** Nothing is written before the last step, so exit codes 3 and
+4, and a categories page that cannot be generated, never leave a half-updated tree.
+
+1. **Facts shape checks** (`acl_model.invariants`, exit 4): every entry name is
+   `CMD` or `CMD SUB`; an entry missing from `COMMAND` is an ACL-only subcommand
+   of a listed parent or one of `KNOWN_HIDDEN`; every `COMMAND` entry has
+   categories; the routed target exists; the facts have the `ACL CAT` member
+   lists, and they name the same entries as `command_acl`. These checks would
+   have stopped the v2.1.0 run that read `ACL|SETUSER` as an unknown command.
+2. **Mechanical pass** — minimal-diff edits, computed for every page:
    - if the *set* of categories on a page already equals the server set,
-     the file is **not touched at all**;
+     the file is **not touched at all**, even if the line is spelled oddly;
    - when the set differs, categories that stay keep their original
      order, new ones are appended (alphabetically), removed ones are
-     dropped.
+     dropped. A label with a qualifier
+     (`**ACL categories (Dragonfly v2.0.2):**`) is rewritten as
+     `**ACL categories:**`;
+   - an ACL-like line the parser cannot read is a failure that is never sent
+     to the LLM.
+3. **Live check** (exit 3; `--no-verify-live` skips it): a container from the
+   facts image (its commit must equal the facts commit) gets one user per
+   `ACL CAT` category (`ON nopass ~* &* -@all +@<category>`) plus `+@all` and
+   `-@all` users. For every page H1, `ACL DRYRUN <user> <H1 words>` (no further
+   arguments: `XGROUP HELP <arg>` would not be routed) must allow exactly the
+   resolved categories, and the `-@all` user's denial must name the resolved
+   entry. A page resolved as "not a server command" must be unknown to the server.
+4. **Categories page check** (exit 1, nothing written): the page exists, has
+   its markers, and every category has a description in `CATEGORY_DESCRIPTIONS`.
+   It runs before the LLM repair, so a run that cannot finish makes no LLM calls.
+5. **LLM repair pass** (requires `OPENAI_API_KEY`; skipped by `--no-llm` and
+   `--dry-run`) — for pages with no ACL line or several ACL lines. Container
+   pages ("This is a container command for ...") carry the command's ACL line on
+   this site (CONFIG, MEMORY, SLOWLOG, SCRIPT), so one without it is repaired like
+   any other page. The patch is accepted only if its diff inserts one ACL line
+   (plus at most two blank lines) and deletes only ACL-like lines, and the page
+   ends with exactly one ACL line with the server's categories. A page the model
+   calls "not a page for this command" is listed for confirmation and the run
+   exits 1.
+6. **Write** the updated pages and the categories page (not with `--dry-run`).
 
-2. **LLM repair pass** (requires `OPENAI_API_KEY`; skipped by `--no-llm` and
-   `--dry-run`) — for every page that the mechanical pass could not handle
-   (no ACL line on a page that documents a real server command, multiple ACL
-   lines, etc.). Container pages ("This is a container command for ...") are
-   not exempt: on this site they carry the command's ACL line (CONFIG, MEMORY,
-   SLOWLOG, SCRIPT), so one without it is repaired like any other page. The model is
-   given the page text, the command name, the expected categories from
-   the server, and detailed instructions:
-   - if the page is a container / navigation page (body is mostly a list
-     of subcommand pages, language like "This is a container command for
-     ..."), classify it as overview and skip — no edit;
-   - otherwise insert exactly one new line of the form `**ACL
-     categories:** @cat1, @cat2, ...` directly after `**Time
-     complexity:**` (or after the H1 + Syntax block if there is no Time
-     complexity line), mirroring the surrounding bullet/plain style.
-   The LLM output is *validated*: the patched page must contain exactly
-   one ACL line whose category set matches the server. If validation
-   fails the patch is rejected and the page stays in the FAILED list.
-
-Pages that remain in FAILED after both stages are listed at the end of
-the run with the LLM's complaint appended — they need a human to look.
-Every page that was not synced is listed too, with the reason (not a
-command, or a server command the server puts in no ACL category, such as
-`RANDOMKEY`).
+The report lists every page that was not synced, the `ACL CAT` entries no page
+uses (candidates for new pages; not shown with `--filter`), commands documented
+on more than one page, and the failures with the exact expected line.
 
 ```sh
-python tools/docsync/acl_sync.py --tag v1.38.0
-python tools/docsync/acl_sync.py --tag v1.38.0 --dry-run     # pages not written, no OpenAI
-python tools/docsync/acl_sync.py --tag v1.38.0 --no-llm        # mechanical-only
-python tools/docsync/acl_sync.py --tag v1.38.0 --filter "search/*"
-python tools/docsync/acl_sync.py --facts tools/generated/facts/v1.38.0.json
+python tools/docsync/acl_sync.py --tag v2.1.0
+python tools/docsync/acl_sync.py --tag v2.1.0 --dry-run          # pages not written, no OpenAI
+python tools/docsync/acl_sync.py --tag v2.1.0 --no-llm           # mechanical-only
+python tools/docsync/acl_sync.py --tag v2.1.0 --filter "search/*"
+python tools/docsync/acl_sync.py --facts tools/generated/facts/v2.1.0.json
+python tools/docsync/acl_sync.py --tag v2.1.0 --no-verify-live   # no container
 ```
 
-Exit code is non-zero if any page is reported as FAILED after both
-passes.
+Exit codes: 0 ok; 1 pages failed or need confirmation; 2 facts could not be
+loaded or an unexpected error; 3 live check failed; 4 facts shape check failed.
 
 ## compat_sync.py
 
@@ -431,7 +538,12 @@ versions.
    implementation? A token counts only as a string **literal** (`"DIALECT"`, not
    the bare word — bare `DB` matched `db_index` variables) and **not** when it
    appears only inside an explicit rejection (`"SHUTDOWN ABORT is not supported"`,
-   `"COMMAND DOCS Not Implemented"` — recognized but stubbed). Any genuinely
+   `"COMMAND DOCS Not Implemented"` — recognized but stubbed), and **not** when
+   it is only an argument of a reply-builder call: `rb->SendBulkString("redirect")`
+   is the CLIENT TRACKINGINFO reply field, not CLIENT TRACKING parsing a
+   `REDIRECT` option. Matching stays case-insensitive: a case-sensitive match
+   would drop lowercase literals the parsers do compare (geo units, aggregate
+   function names, `JSON.DEBUG memory`). Any genuinely
    absent/stubbed → `partial` `Missing: <tokens>.`; none → `supported`.
    Subcommand existence uses only the code reachable from the command's **own**
    public handler, so the internal `DFLYCLUSTER FLUSHSLOTS` dispatch is not
@@ -567,19 +679,27 @@ Three-stage pipeline:
      an uppercase enum constant, e.g. `compression_mode: 3 →
      MULTI_ENTRY_LZ4`) are NOT mechanically rewritten: keeping the
      integer is what the CLI accepts, and the LLM polish is responsible
-     for adding the enum-value table to the description.
+     for adding the enum-value table to the description. A section with a
+     line that already maps the integer to the constant, such as
+     ``- `3` — `MULTI_ENTRY_LZ4` ``, is left as it is.
 
-3. **LLM polish** (requires `OPENAI_API_KEY`). The OpenAI model receives the
-   mechanically-fixed page, the full ground-truth dict, the source-facts
-   dict (with C++ comments and enum tables), the list of flags to add,
-   the list to keep-even-though-removed, and the list of enum defaults to
-   expand. It produces a polished page that:
-   - keeps existing flag descriptions verbatim where facts already match;
-   - integrates new C++ comment context only when it adds real value;
+3. **LLM polish** (requires `OPENAI_API_KEY`; runs only when there is something
+   for it to write). The OpenAI model receives the mechanically-fixed page, the
+   ground-truth dict, the source-facts dict (with C++ comments and enum tables),
+   the flags to add, the documented flags whose `--helpfull` text changed since
+   `--previous-tag` (`flags_to_update`, with the old and new help), and the enum
+   defaults to expand. It:
    - writes descriptions for flags missing from the doc using the help
      text + source comments;
+   - updates the sections in `flags_to_update` to the new help text;
    - for enum-typed defaults, keeps the integer in `default:` and adds a
      value table to the description body.
+   **Deterministic merge:** the page is then rebuilt from the mechanical result,
+   taking from the model's output only those sections; a new flag goes after the
+   section that precedes it there. Every other byte, including the intro and the
+   sections the model reworded anyway, stays as the mechanical pass left it.
+   On the v2.1.0 run the model reworded 183 unchanged sections despite the prompt;
+   the merge discards exactly those edits.
    The LLM output is validated (every server flag present, defaults match
    modulo byte equivalence, enum defaults still integers). If validation
    fails the LLM output is discarded and the mechanical-only result stays
@@ -591,6 +711,7 @@ auto-add (but their defaults are still corrected if a human chose to
 document them).
 
 ```sh
+python tools/docsync/flags_sync.py --tag v2.1.0 --previous-tag v2.0.0
 python tools/docsync/flags_sync.py --tag v1.38.0
 python tools/docsync/flags_sync.py --tag v1.38.0 --dry-run       # mechanical report, page not written, no OpenAI
 python tools/docsync/flags_sync.py --tag v1.38.0 --no-llm        # mechanical only
@@ -616,7 +737,9 @@ driven by one command:
 1. **Discover** (single LLM call). Computes the Dragonfly source diff
    between `--before` and `--after` (every commit subject + every changed
    file with added/deleted line counts, `src/` first, never the raw diff),
-   walks every `.md` under `docs/`, and asks OpenAI which pages plausibly
+   walks every published `.md` under `docs/` (a path part starting with `_`,
+   such as `pubsub/_unsupported/`, is skipped and never planned), and asks
+   OpenAI which pages plausibly
    need updating and why. It aborts if either tag cannot be resolved, or
    if the range has no commits and no `--also-update` pages were given. The plan is saved to
    `tools/generated/update_plans/plan_<ts>.json`.
@@ -630,13 +753,18 @@ driven by one command:
    - Read the current page.
    - Identify the topic from the H1; if it matches a real server command,
      pull the C++ handler body from the Dragonfly checkout at `--after`
-     and the `COMMAND` / `ACL CAT` data captured by `dfly_facts.py`.
+     and the `COMMAND` data captured by `dfly_facts.py`. Pages under
+     `docs/command-reference/` also get the ACL categories the server checks
+     for the command (`acl_model.resolve`), as information only.
    - Boot a Dragonfly container at `--after` (with `--cluster_mode=emulated`
      for cluster-family commands). The image is pulled once per run, unless
      `--skip-pull` is given, and checked against the source and facts
      commits before any page is processed. If the container fails to boot
      for a page, that page is marked `failed` and left untouched. It is not
-     rewritten with unverified example output.
+     rewritten with unverified example output. Every `docker` call has a
+     timeout (a block runs under `timeout 30` inside the container), and the
+     container is removed even when a step fails. A page without examples
+     gets a container too when the LLM adds some.
    - Pick a **sibling page** in the same directory as a *style template*
      (the shortest sibling that has H2 sections). The LLM is told to
      mirror the sibling's structural / formatting conventions and never
@@ -660,8 +788,9 @@ driven by one command:
        * **match the existing visual style exactly** (heading levels,
          metadata block style, parameter / example framing, link
          convention) — change CONTENT not FORM;
-       * **do NOT modify the `**ACL categor(y|ies):**` line** — that
-         metadata is owned by `acl_sync.py` and must stay byte-identical;
+       * **do NOT modify, remove or add a `**ACL categor(y|ies)...:**`
+         line** (a qualified label counts) — that metadata is owned by
+         `acl_sync.py` and must stay byte-identical;
        * **do NOT change page structure** — keep every existing section
          in place, do not add new top-level sections, do not move or
          append example blocks. New examples must be placed inside the
@@ -671,21 +800,44 @@ driven by one command:
      failures: output shorter than 80 non-whitespace chars, output
      shrunk to less than half of input, output that's just `...`,
      missing frontmatter / H1 / `<PageTitle>` / `import PageTitle`,
-     dropped H2 sections, modified ACL line. On any failure the run is
+     dropped H2 sections, a changed front matter, a removed or changed existing
+     `dragonfly>` example command or `$ redis-cli` line, a modified, removed or
+     added ACL line, and a
+     changed topology or SUBSCRIBE/MONITOR block. On any failure the run is
      marked `failed`, the raw LLM markdown is saved to
      `tools/generated/llm_debug/docs_sync_rejected_<file>_<ts>.md`, and
      the file on disk is **not touched**.
-   - **Docker verification**: the caller walks every `dragonfly>`
-     invocation in the LLM's markdown and runs it in Docker, substituting
-     whatever output the LLM wrote with the actual server output.
-     **`FLUSHALL` is issued before every ```shell``` block** so prior
-     examples never leak into the next — each block starts from a clean
-     keyspace. Within a block state persists, so a chain like `SET k 1`
-     → `GET k` works. Non-zero exits are noted but the captured stderr
-     replaces the LLM's predicted output (so a documented error case
-     shows the real error). The LLM is encouraged to extend examples
-     with setup commands at the top of a block (e.g. `RPUSH mylist a b c`
-     before `LRANGE mylist 0 -1`) when this makes the example clearer.
+   - **Docker verification**: every changed or new ```` ```shell ```` block
+     with `dragonfly>` lines runs in **one redis-cli session**
+     (`docker exec -i <container> timeout 30 redis-cli --no-raw`) after
+     `FLUSHALL`, and its replies replace the output the LLM wrote:
+       * command lines are sent as written: redis-cli parses quotes and `\x`
+         escapes itself;
+       * replies are split by an unknown-command marker
+         (`__DOCSYNC_SEP_<n>__`) sent after each command, except between
+         MULTI and EXEC/DISCARD/RESET, where each queued command answers one
+         line. The markers count as commands and unknown-command errors in
+         INFO/CLIENT INFO counters;
+       * connection state (HELLO 3, SELECT, MULTI, AUTH, CLIENT TRACKING)
+         carries within a block; keys do not carry across blocks, while ACL
+         users, CONFIG values and scripts do, in page order;
+       * changed blocks run on a fresh container, after the unchanged blocks
+         before them are replayed in page order (their text is kept);
+       * redis-cli's `(N.NNs)` timing lines are dropped, so output matches
+         one-shot calls; blank and `#` comment lines that end a command's
+         predicted output are kept;
+       * `(error)` replies are written (a documented error case is
+         legitimate) and recorded in `example_errors`;
+       * a timeout, a lost connection, anything on redis-cli's stderr, a
+         refused FLUSHALL or MULTI, or QUIT/EXIT fails the page: it is not
+         written, and the LLM markdown is saved as
+         `tools/generated/llm_debug/docs_sync_unverified_<file>_<ts>.md`;
+       * blocks with `$ redis-cli` lines, blocks with SUBSCRIBE, PSUBSCRIBE,
+         SSUBSCRIBE or MONITOR, and topology-dependent blocks are kept as
+         written; new or changed ones are listed in `unverified_blocks`.
+     The LLM is encouraged to extend examples with setup commands at the top
+     of a block (e.g. `RPUSH mylist a b c` before `LRANGE mylist 0 -1`) when
+     this makes the example clearer.
    - Post-processing safety nets:
        * MDX placeholder wrap — anything the LLM left bare in prose
          (`<key>` → `` `<key>` ``) is escaped, while real HTML elements
@@ -722,10 +874,14 @@ Per-file results are written to
 status (`updated`, `unchanged`, `failed`, `skipped`, `missing`, `error`)
 and a `notes` list with everything the run noticed: which sibling style
 was used, whether `diff_context` was present, how many invocations were
-verified in Docker, any non-zero exits, whether MDX safety wrapped
-anything, why a write was skipped. Failed entries also point at the
-saved raw LLM output under `tools/generated/llm_debug/` so the failure
-mode can be inspected without re-running the LLM.
+verified in Docker, blocks that did not complete, whether MDX safety wrapped
+anything, why a write was skipped. `example_errors` lists every `(error)`
+reply written into an example (`{block, command, reply}`) and
+`unverified_blocks` the new blocks that were kept as written, and `removed_text`
+the existing prose lines the output no longer contains; the run summary prints
+all three. Failed entries also point at the saved raw LLM output under
+`tools/generated/llm_debug/` so the failure mode can be inspected without
+re-running the LLM.
 
 ## dfly_facts.py (helper)
 

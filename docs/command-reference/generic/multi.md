@@ -20,7 +20,7 @@ Marks the start of a [transaction][tt] block.
 Subsequent commands will be queued for atomic execution using `EXEC`.
 If a command is rejected while queuing (for example, an unknown command or a wrong number of arguments), `EXEC` aborts the transaction instead of executing the queued commands. The error from a nested `MULTI` call does not abort the transaction.
 
-[tt]: https://redis.io/topics/transactions
+[tt]: https://valkey.io/topics/transactions/
 
 ## Return
 

@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @bloom
+**ACL categories:** @bloom, @fast, @read
 
 Checks for the existence of a single item in a Bloom filter `key`.
 

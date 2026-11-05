@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1) on average per shard.
 
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow, @write
 
 Removes an existing search index alias. The target index and its documents
 remain intact and can still be accessed using the index name or other aliases.
@@ -38,10 +38,18 @@ does not exist. Deleting the same alias a second time returns an error.
 
 ## Examples
 
-Continuing from the [`FT.ALIASUPDATE` example](./ft.aliasupdate.md#examples),
-remove the alias and query the underlying index directly:
+Create an index with an alias, remove the alias, and query the underlying index directly:
 
 ```shell
+dragonfly> FT.CREATE products-v2 ON HASH PREFIX 1 v2: SCHEMA title TEXT
+OK
+
+dragonfly> HSET v2:1 title second
+(integer) 1
+
+dragonfly> FT.ALIASADD products products-v2
+OK
+
 dragonfly> FT.ALIASDEL products
 OK
 

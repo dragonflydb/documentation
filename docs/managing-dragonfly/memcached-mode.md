@@ -31,19 +31,19 @@ and it's not recommended to mix up operations from both APIs other than on the s
 ```shell
 # === Redis API === #
 # Set a key in database '0', which is the default database.
-dragonfly$> SET my_key_db_ZERO 1000
+dragonfly> SET my_key_db_ZERO 1000
 OK
 
 # Switch to database '1'.
-dragonfly$> SELECT 1
+dragonfly> SELECT 1
 OK
 
 # Database '1' has no keys.
-dragonfly$> KEYS *
+dragonfly> KEYS *
 (empty array)
 
 # Set a key in database '1'.
-dragonfly$> SET my_key_db_ONE 1000
+dragonfly> SET my_key_db_ONE 1000
 OK
 ```
 
@@ -58,6 +58,6 @@ END
 
 # Try to read the key 'my_key_db_ONE' via the Memcached API.
 # The key is not found since it only exists in database '1'.
-dragonfly-memcached$> get my_key_db_ONE 
+dragonfly-memcached$> get my_key_db_ONE
 END
 ```

@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** Depends on the number of tracked replicas and shards, and on how long the command waits.
 
-**ACL categories:** @slow, @connection
+**ACL categories:** @slow, @connection, @blocking
 
 This command blocks the current client until all previous write commands are
 acknowledged by at least `numreplicas` replicas, or until `timeout`

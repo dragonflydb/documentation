@@ -22,7 +22,7 @@ BZPOPMIN key [key ...] timeout
 ```
 
 - **Time complexity:** O(log(N)) with N being the number of elements in the sorted set.
-- **ACL categories:** @write, @sortedset, @blocking, @slow
+- **ACL categories:** @write, @sortedset, @blocking, @fast
 
 ## Parameter Explanations
 
@@ -47,10 +47,10 @@ If the timeout expires without any elements to pop, `nil` is returned.
 Pop the element with the lowest score from a single sorted set with a 5-second timeout:
 
 ```shell
-dragonfly$> ZADD myzset 1 "task1" 2 "task2" 3 "task3"
+dragonfly> ZADD myzset 1 "task1" 2 "task2" 3 "task3"
 (integer) 3
 
-dragonfly$> BZPOPMIN myzset 5
+dragonfly> BZPOPMIN myzset 5
 1) "myzset"
 2) "task1"
 3) "1"
@@ -62,13 +62,13 @@ You can specify multiple sorted sets.
 The command will act on the first non-empty set encountered:
 
 ```shell
-dragonfly$> ZADD zset1 1 "a" 2 "b"
+dragonfly> ZADD zset1 1 "a" 2 "b"
 (integer) 2
 
-dragonfly$> ZADD zset2 3 "x" 4 "y"
+dragonfly> ZADD zset2 3 "x" 4 "y"
 (integer) 2
 
-dragonfly$> BZPOPMIN zset1 zset2 0
+dragonfly> BZPOPMIN zset1 zset2 0
 1) "zset1"
 2) "a"
 3) "1"
@@ -79,7 +79,7 @@ dragonfly$> BZPOPMIN zset1 zset2 0
 If none of the sorted sets contain any eligible elements within the given timeout period, the command will return `nil`:
 
 ```shell
-dragonfly$> BZPOPMIN myzset 5
+dragonfly> BZPOPMIN myzset 5
 (nil)  # No elements in the sorted set, waited for 5 seconds and then returned nil.
 ```
 
@@ -89,10 +89,10 @@ Imagine using sorted sets to manage tasks in a job queue, with each task having 
 Use `BZPOPMIN` to fetch the highest-priority task (the one with the lowest score):
 
 ```shell
-dragonfly$> ZADD task_queue 10 "low_priority_task" 5 "medium_priority_task" 1 "high_priority_task"
+dragonfly> ZADD task_queue 10 "low_priority_task" 5 "medium_priority_task" 1 "high_priority_task"
 (integer) 3
 
-dragonfly$> BZPOPMIN task_queue 0
+dragonfly> BZPOPMIN task_queue 0
 1) "task_queue"
 2) "high_priority_task"
 3) "1"

@@ -18,7 +18,7 @@ The `XSETID` command is an internal command. It is used by a Dragonfly primary i
 XSETID key last-id
 ```
 
-**ACL categories:** @slow, @stream, @write
+**ACL categories:** @stream, @write, @fast
 
 ## Parameter Explanations
 

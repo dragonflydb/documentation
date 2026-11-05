@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(F + C) per call, where F is the number of sub-filters and C is the number of bytes returned.
 
-**ACL categories:** @bloom
+**ACL categories:** @bloom, @read, @slow
 
 Exports the Bloom filter stored at `key` as a sequence of binary chunks. Use
 [`BF.LOADCHUNK`](./bf.loadchunk.md) to restore those chunks into a Bloom filter.

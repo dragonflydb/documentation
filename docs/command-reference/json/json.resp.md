@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) when path is evaluated to a single value, where N is the size of the value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
-**ACL categories:** @json
+**ACL categories:** @json, @fast, @read
 
 Return the JSON in `key` in [Redis serialization protocol specification](https://valkey.io/topics/protocol/) form
 
@@ -100,5 +100,5 @@ dragonfly> JSON.RESP item:2
 
 ## Related topics
 
-* [RedisJSON](https://redis.io/docs/latest/develop/data-types/json/)
-* [Index and search JSON documents](https://redis.io/docs/latest/develop/data-types/json/indexing_json/)
+* [Valkey JSON](https://valkey.io/topics/valkey-json/)
+* [Index JSON documents with Valkey Search](https://valkey.io/topics/search-data-formats/)
