@@ -6,7 +6,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # FT.ALIASUPDATE
 
-<PageTitle title="Redis FT.ALIASUPDATE Command (Documentation) | Dragonfly" />
+<PageTitle title="FT.ALIASUPDATE Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -19,13 +19,6 @@ import PageTitle from '@site/src/components/PageTitle';
 Changes an alias to refer to the specified search index. **If the alias does
 not exist, this command creates it.** Use [`FT.ALIASADD`](./ft.aliasadd.md)
 when an existing alias should cause an error.
-
-:::note Availability
-
-Verified with the Dragonfly development build `df-2cd7a2e`. This command is not
-available in Dragonfly v2.0.2.
-
-:::
 
 ## Arguments and behavior
 

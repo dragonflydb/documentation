@@ -6,7 +6,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # FT.ALIASDEL
 
-<PageTitle title="Redis FT.ALIASDEL Command (Documentation) | Dragonfly" />
+<PageTitle title="FT.ALIASDEL Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -18,13 +18,6 @@ import PageTitle from '@site/src/components/PageTitle';
 
 Removes an existing search index alias. The target index and its documents
 remain intact and can still be accessed using the index name or other aliases.
-
-:::note Availability
-
-Verified with the Dragonfly development build `df-2cd7a2e`. This command is not
-available in Dragonfly v2.0.2.
-
-:::
 
 ## Arguments and behavior
 

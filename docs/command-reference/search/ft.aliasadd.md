@@ -6,7 +6,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 # FT.ALIASADD
 
-<PageTitle title="Redis FT.ALIASADD Command (Documentation) | Dragonfly" />
+<PageTitle title="FT.ALIASADD Command (Documentation) | Dragonfly" />
 
 ## Syntax
 
@@ -20,13 +20,6 @@ Adds an alternate name for an existing search index. Applications can query
 the alias with [`FT.SEARCH`](./ft.search.md) and later switch it to another
 index with [`FT.ALIASUPDATE`](./ft.aliasupdate.md), keeping the same name in
 their queries.
-
-:::note Availability
-
-Verified with the Dragonfly development build `df-2cd7a2e`. This command is not
-available in Dragonfly v2.0.2.
-
-:::
 
 ## Arguments and behavior
 
