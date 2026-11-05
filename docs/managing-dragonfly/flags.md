@@ -67,12 +67,13 @@ flags which include specified substring in either in the name, description or pa
   `default: 16`
 
 ### `--bind`
-  Bind address. If empty - binds on all interfaces. It's not advised due to security implications.
+  Bind address. If empty, binds on all interfaces over IPv4 and IPv6 when dual-stack sockets are supported. This is not advised due to security implications.
 
   `default: ""`
 
 ### `--requirepass`
-  Password for AUTH authentication. If empty, it can also be set with the `DFLY_PASSWORD` environment variable.
+  Password for AUTH authentication. Like every flag, it can also be set with the `DFLY_requirepass` environment variable.
+  `DFLY_PASSWORD` is not supported, although the server's help text mentions it: Dragonfly exits at startup with `unknown environment variable DFLY_PASSWORD`.
 
   `default: ""`
 
@@ -86,13 +87,23 @@ flags which include specified substring in either in the name, description or pa
 
   `default: ""`
 
+### `--aof`
+  If true, each shard logs its writes to an append-only file in `--dir`. Experimental; see [Append Only File (AOF)](./aof.md) for the requirements and limitations.
+
+  `default: false`
+
+### `--aof_max_buffered_bytes`
+  Per shard, the number of unwritten AOF bytes above which the shard blocks until writes complete. Do not set it below `8kb`, the size of an AOF log block. See [Append Only File (AOF)](./aof.md).
+
+  `default: 64.00MiB`
+
 ### `--snapshot_cron`
   Cron expression for the time to save a snapshot, crontab style.
 
   `default:`
 
 ### `--snapshot_egress_limit_bytes`
-  Per-shard-thread socket egress bandwidth budget in bytes per second. Each shard throttles its snapshot traversal loop to stay under this rate. Accepts human-readable sizes such as `100mb` and `1gb`. A value of 0 disables throttling.
+  Per-shard-thread socket egress bandwidth budget in bytes per second. Each shard throttles its snapshot traversal loop to stay under this rate. Accepts human-readable sizes such as `100mb` and `1gb`. S3 upload sockets are also paced at this rate unless `s3_upload_traffic_mark` is set. A value of 0 disables throttling.
 
   `default: 0B`
 
@@ -328,6 +339,11 @@ flags which include specified substring in either in the name, description or pa
 
   `default: ""`
 
+### `--shard_sidekiq_queues`
+  If true, Sidekiq queues (`<prefix>queue:<q>`) and Sidekiq Pro `super_fetch` private queues (`<prefix>queue:sq|<identity>|<q>`) are sharded by queue name only, so a queue and its private queues share a shard. Ignored with `--experimental_cluster_shard_by_slot`.
+
+  `default: false`
+
 ### `--tiered_prefix`
   Enables tiered storage if set. The string denotes the path and prefix of the files associated
   with tiered storage. For example, `tiered_prefix=/path/to/file-prefix`.
@@ -354,8 +370,8 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 5000`
 
-### `--tiered_max_pending_stash_bytes`
-  Maximum bytes in-flight to disk before rejecting new stashes or applying client backpressure. Allows batching writes to saturate disk I/O even with few clients.
+### `--tiered_max_pending_bytes`
+  Cap on the total volume of in-flight bytes to the tiered storage device, including reads and writes. It governs stash write back-pressure and throttles background serialization and defragmentation while the device is overloaded so they do not starve client reads.
 
   `default: 256.0KiB`
 
@@ -373,6 +389,21 @@ flags which include specified substring in either in the name, description or pa
   Maximum number of concurrent defragmentation read operations.
 
   `default: 50`
+
+### `--tiered_repack_scan_budget_us`
+  Base CPU time slice, in microseconds, granted to one background bin-bucket repack scan, which regroups small offloaded values scattered across disk pages. 0 disables repack scans.
+
+  `default: 0`
+
+### `--tiered_repack_max_reads`
+  Maximum number of concurrent page reads that one repack scan may issue.
+
+  `default: 10`
+
+### `--tiered_repack_acceptable_waste`
+  Number of disk pages beyond the theoretical minimum over which a bucket may spread its small values before the repack scan regroups it.
+
+  `default: 2`
 
 ### `--keys_output_limit`
   Maximum number of keys output by keys command.
@@ -395,7 +426,8 @@ flags which include specified substring in either in the name, description or pa
   `default: 0`
 
 ### `--list_compress_dict_threshold`
-  Minimum list malloc usage in bytes before attempting ZSTD dictionary compression. A value of 0 disables it. Compression is synchronous and may block the thread.
+  Deprecated. Use `--list_compress_policy=min_size=<bytes>` instead.
+  When `--list_compress_policy` is not set, a value above 0 still enables ZSTD dictionary compression for lists whose malloc usage reaches this many bytes, and Dragonfly logs a deprecation warning once. Compression is synchronous and may block the thread.
 
   `default: 0`
 
@@ -403,6 +435,16 @@ flags which include specified substring in either in the name, description or pa
   Compression level for QList ZSTD dictionaries. A value of -1 uses ZSTD's default tuning.
 
   `default: -1`
+
+### `--list_compress_policy`
+  Policy for compressing list nodes with a ZSTD dictionary. An empty value, the default, disables compression. Otherwise, use a comma-separated list of options:
+
+  - `min_size=<bytes>`: the list must reach this malloc usage before its nodes are compressed. 0 means no size requirement.
+  - `edge_depth=<n>`: how many nodes at each end of the list stay uncompressed, from 1 to 16. The default, 1, keeps the head and the tail uncompressed.
+
+  For example, `min_size=4096,edge_depth=2` keeps two nodes at each end of lists that occupy at least 4KB uncompressed. A bare integer is also accepted as `min_size`, where 0 disables compression. The policy is ignored unless `--list_compress_depth` is 0, and it is ignored for lists backed by tiered storage.
+
+  `default:`
 
 ### `--list_max_listpack_size`
   Maximum listpack size, default is 8kb.
@@ -502,6 +544,11 @@ flags which include specified substring in either in the name, description or pa
 
   `default: false`
 
+### `--lua_max_stall_ms`
+  If positive, aborts a Lua script that has not written yet after it keeps its thread busy without yielding for longer than this many milliseconds. 0 disables the check.
+
+  `default: 0`
+
 ### `--df_snapshot_format`
   If true, save in dragonfly-specific snapshotting format
 
@@ -527,18 +574,13 @@ flags which include specified substring in either in the name, description or pa
 
   `default: ""`
 
-### `--s3_sign_payload`
-  Whether to sign the s3 request payload when uploading snapshots.
+### `--s3_upload_traffic_mark`
+  Linux `SO_MARK` applied to S3 snapshot upload sockets so they can be assigned to an externally configured `tc` bandwidth class. Requires `CAP_NET_ADMIN`. When set, socket pacing from `snapshot_egress_limit_bytes` is not applied. 0 leaves sockets unmarked.
 
-  `default: true`
+  `default: 0`
 
 ### `--s3_use_https`
   Whether to use https for s3 endpoints.
-
-  `default: true`
-
-### `--s3_use_helio_client`
-  If true, use helio's native S3 client; if false, use aws-sdk-cpp.
 
   `default: true`
 
@@ -582,7 +624,7 @@ flags which include specified substring in either in the name, description or pa
   `default: 32`
 
 ### `--jwt_validate`
-  Master switch for JWT-mode authentication. When true, every `AUTH` credential is sent to `--jwt_validate_url` instead of being checked against the local ACL password store. The URL must be configured at startup. This flag can be changed at runtime with `CONFIG SET`.
+  Master switch for JWT-mode authentication. When true, every `AUTH` credential is sent to `--jwt_validate_url` instead of being checked against the local ACL password store. The URL must be set at startup. This flag is startup-only and cannot be set with `CONFIG SET`.
 
   `default: false`
 
@@ -631,20 +673,15 @@ flags which include specified substring in either in the name, description or pa
 
   `default: "on"`
 
+### `--proactor_tail_cpus`
+  Explicit list of CPU IDs or ranges to pin at the end of the thread list, such as `1,4,6,7` or `0-47`. These CPUs are pinned to the highest proactor thread indices, while other online CPUs are pinned to lower indices. This does not affect pool size. The value is ignored with a logged error if it names an offline CPU or more CPUs than the pool has threads.
+
+  `default: ""`
+
 ### `--proactor_threads`
   Number of io threads in the pool. If zero is specified, it will use as many as there are CPU cores.
 
   `default: 0`
-
-### `--proactor_busy_poll_usec`
-  How long a proactor busy-polls for completions before falling back to a blocking wait. Raising this value trades CPU usage for wakeup latency.
-
-  `default: 20`
-
-### `--proactor_irq_cpus`
-  Explicit list of CPU IDs or ranges that handle IRQs, such as `1,4,6,7` or `0-47`. These CPUs are pinned to the highest proactor thread indices. This does not affect the pool size and is ignored if it names an offline CPU or more CPUs than the pool has threads.
-
-  `default: ""`
 
 ### `--flagfile`
   Comma-separated list of files to load flags from.
@@ -761,18 +798,13 @@ flags which include specified substring in either in the name, description or pa
 
   `default: false`
 
-### `--disable_json_defragmentation`
-  If true, disable json object defragmentation.
-
-  `default: false`
-
 ### `--enable_heartbeat_rss_eviction`
   Enable eviction during heartbeat when rss memory is under pressure. Eviction based on used_memory will still be enabled.
 
   `default: true`
 
 ### `--enable_memcache_io_loop_v2`
-  Enable the event-driven IoLoopV2 for non-TLS Memcache connections.
+  Enable the event-driven IoLoopV2 for Memcache connections.
 
   `default: true`
 
@@ -782,9 +814,9 @@ flags which include specified substring in either in the name, description or pa
   `default: true`
 
 ### `--enable_resp_io_loop_v2`
-  Enable the event-driven IoLoopV2 for non-TLS RESP connections.
+  Enable the event-driven IoLoopV2 for RESP connections.
 
-  `default: false`
+  `default: true`
 
 ### `--enable_shared_read_buffer`
   Use one read buffer per proactor for eligible RESP IoLoopV2 connections.
@@ -816,11 +848,6 @@ flags which include specified substring in either in the name, description or pa
 
   `default: false`
 
-### `--experimental_flat_json`
-  If true, uses flat json implementation.
-
-  `default: false`
-
 ### `--expose_http_api`
   If set, will expose a POST `/api` handler for sending redis commands as json array.
 
@@ -847,7 +874,7 @@ flags which include specified substring in either in the name, description or pa
   `default: false`
 
 ### `--get_zero_copy`
-  If true, `GET` returns a borrowed view into the CompactObj raw payload for large raw strings. If false, it uses the materializing path. This flag can be used to compare the zero-copy and materializing `GET` paths.
+  If true, `GET` and `MGET` return a borrowed view into the CompactObj raw payload for large raw strings. If false, they use the materializing path. This flag can be used to compare the zero-copy and materializing read paths.
 
   `default: true`
 
@@ -976,13 +1003,8 @@ flags which include specified substring in either in the name, description or pa
 
   `default: 100`
 
-### `--mget_dedup_keys`
-  If true, MGET will deduplicate keys.
-
-  `default: false`
-
 ### `--migration_buckets_cpu_budget`
-  How much CPU budget to use for migration buckets serialization.
+  CPU budget used for migration bucket serialization and slot flushing.
 
   `default: 0.2`
 
@@ -1137,7 +1159,7 @@ flags which include specified substring in either in the name, description or pa
   `default: true`
 
 ### `--send_timeout`
-  Close the connection after it is stuck on send for N seconds (0 to disable).
+  Close the connection if no bytes can be sent for N seconds. 0 disables the timeout.
 
   `default: 0`
 
@@ -1244,7 +1266,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--disable_scope_based_mem_track`
   Turn off scope-based memory metrics.
 
-  `default: true`
+  `default: false`
 
 ### `--unlink_experimental_async`
   If true, runs unlink command asynchronously.
@@ -1274,7 +1296,7 @@ flags which include specified substring in either in the name, description or pa
 ### `--use_oah_set`
   If true, store SET values in OAHSet instead of StringSet.
 
-  `default: false`
+  `default: true`
 
 ### `--user`
   If not empty - drop privileges to this user (and their primary group) after binding ports. Accepts username or numeric uid. If `--dir` is set, chowns the data directory to this user.
