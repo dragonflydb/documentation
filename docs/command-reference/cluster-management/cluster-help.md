@@ -18,10 +18,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 The `CLUSTER HELP` command returns a helpful text describing the `CLUSTER` subcommands.
 
-The text describes only `SLOTS`, `NODES`, `INFO` and `HELP`.
-Dragonfly also supports [`CLUSTER KEYSLOT`](./cluster-keyslot.md), [`CLUSTER MYID`](./cluster-myid.md)
-and [`CLUSTER SHARDS`](./cluster-shards.md), which the text leaves out.
-See [`CLUSTER`](./cluster.md) for the full list.
+See [`CLUSTER`](./cluster.md) for the full list of supported subcommands.
 
 Like every `CLUSTER` subcommand, `CLUSTER HELP` requires `--cluster_mode=emulated` or `--cluster_mode=yes`.
 Otherwise, it returns `ERR Cluster is disabled. Enabled via passing --cluster_mode=emulated|yes`.

@@ -28,14 +28,10 @@ A subcommand listed below as `CMD|SUB` has its own ACL entry and its own categor
 For `CLIENT` and `MEMORY`, a rule for the container also covers these subcommands:
 `+client` grants `CLIENT KILL`, and `-memory` denies `MEMORY ARENA`.
 
-`ACL` is different: each `ACL` subcommand is a command of its own.
-`+acl` and `-acl` change only the bare `ACL` command, so `+@all -acl` still allows `ACL SETUSER`.
-Use `-acl|setuser` and the other `-acl|<subcommand>` rules, or `-@admin`, to take them away.
-
 Every other subcommand runs under the categories of its container.
 For example, `CLIENT GETNAME` has the categories of `CLIENT`, and a rule `+client|getname` is rejected with `ERR Unrecognized parameter`.
 
-`XGROUP HELP` is served by the hidden command `_XGROUP_HELP`, so `+xgroup` does not grant it, while `+_xgroup_help` or one of its categories does.
+`_XGROUP_HELP` is the internal command that serves `XGROUP HELP`.
 `DFLY` and `DFLYMIGRATE` are internal replication and slot-migration commands, and `GAT` serves the Memcached protocol.
 
 ## Categories and Commands

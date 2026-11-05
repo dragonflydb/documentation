@@ -45,32 +45,3 @@ dragonfly> XGROUP HELP
 17)     Print this help.
 ```
 
-The help text lists `ENTRIESREAD` as an option of `XGROUP CREATE`, but Dragonfly accepts the option there and ignores it.
-The `entries-read` counter of the new group stays unset, and [`XINFO GROUPS`](./xinfo-groups.md) reports it as nil.
-In Valkey, the option sets the counter.
-In Dragonfly, set the counter with [`XGROUP SETID`](./xgroup-setid.md) and `ENTRIESREAD entries_read`.
-`XGROUP CREATE` reads `MKSTREAM` only directly after the ID and ignores every later argument, so `MKSTREAM` after `ENTRIESREAD` has no effect and the command fails if the stream does not exist.
-
-## ACL Permissions
-
-Dragonfly serves `XGROUP HELP` with the hidden command `_XGROUP_HELP` and checks ACL rules against it, not against `XGROUP`.
-Its categories are `@read`, `@slow` and `@stream`, while `XGROUP` is in `@slow`, `@stream` and `@write`.
-A `+xgroup` rule therefore does not grant `XGROUP HELP`, and `-xgroup` does not revoke it.
-Grant it with `+_xgroup_help` or with one of its categories.
-In Valkey, `+xgroup` grants `XGROUP HELP` together with the other subcommands.
-
-Running `XGROUP HELP` without the permission returns `NOPERM <username> has no ACL permissions`.
-`ACL DRYRUN` names the hidden command:
-
-```shell
-dragonfly> ACL SETUSER stream-admin ON >secret ~* -@all +xgroup
-OK
-dragonfly> ACL DRYRUN stream-admin XGROUP CREATE mystream mygroup $ MKSTREAM
-OK
-dragonfly> ACL DRYRUN stream-admin XGROUP HELP
-"This user has no permissions to run the '_XGROUP_HELP' command"
-dragonfly> ACL SETUSER stream-admin +_xgroup_help
-OK
-dragonfly> ACL DRYRUN stream-admin XGROUP HELP
-OK
-```

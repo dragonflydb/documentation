@@ -47,13 +47,13 @@ The six retired flags are still accepted but have no effect. Each one logs an er
 ERROR: Accessing retired flag 'mget_dedup_keys'
 ```
 
-Set as `DFLY_` environment variables, all eight flags make Dragonfly abort at startup, the retired ones included:
+Set as `DFLY_` environment variables, the two removed flags make Dragonfly abort at startup:
 
 ```text
-unknown environment variable DFLY_mget_dedup_keys
+unknown environment variable DFLY_proactor_irq_cpus
 ```
 
-Remove these variables from your Docker, Docker Compose and Kubernetes configurations before you upgrade.
+Remove all eight flags from the command lines, flagfiles and `DFLY_` environment variables of your Docker, Docker Compose and Kubernetes configurations before you upgrade.
 The current flags are described in [Server Configuration Flags](./flags.md).
 
 ### Changed flag defaults

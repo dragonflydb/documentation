@@ -28,10 +28,7 @@ not implemented in Dragonfly. Use `REPLTAKEOVER` on the replica instead.
 `REPLTAKEOVER` needs a running master. If the master has failed, promote the replica with
 [`REPLICAOF NO ONE`](./replicaof.md).
 
-:::caution
-Run `REPLTAKEOVER` only on a replica of a Dragonfly master. In Dragonfly v2.1.0, running it on a
-replica of a Redis or Valkey master crashes the replica process.
-:::
+`REPLTAKEOVER` is part of Dragonfly's own replication protocol, so the master must be a Dragonfly instance.
 
 ## Arguments
 

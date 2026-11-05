@@ -73,7 +73,6 @@ flags which include specified substring in either in the name, description or pa
 
 ### `--requirepass`
   Password for AUTH authentication. Like every flag, it can also be set with the `DFLY_requirepass` environment variable.
-  `DFLY_PASSWORD` is not supported, although the server's help text mentions it: Dragonfly exits at startup with `unknown environment variable DFLY_PASSWORD`.
 
   `default: ""`
 

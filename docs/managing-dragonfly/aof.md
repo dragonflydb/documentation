@@ -108,8 +108,7 @@ appendonly.manifest
 - `appendonly-<shard>-<seq>.aof` are the log segments of each shard.
   Every start continues the log in a new segment, and while Dragonfly runs, each shard keeps its next, still empty segment ready.
   A clean shutdown deletes the empty segment. After a crash, it stays.
-- `*.discarded` files are segments that crash recovery set aside. Dragonfly never reads them,
-  but a later recovery can replace a `*.discarded` file of the same name: move them out of `--dir` to keep them.
+- `*.discarded` files are segments that crash recovery set aside. Dragonfly never reads them.
 - The base snapshot, if one was adopted at the first start, stays where it is. Dragonfly never deletes it.
 
 ## Startup

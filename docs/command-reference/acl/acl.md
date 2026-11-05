@@ -40,23 +40,19 @@ An unknown subcommand returns `` ERR unknown command `ACL` ``.
 ## Subcommand Permissions
 
 Each `ACL` subcommand is a separate command with its own ACL categories, which are listed on its page.
-The rules `+acl` and `-acl` apply only to the bare `ACL` command, so they neither grant nor revoke any subcommand.
-This differs from Valkey, where `+acl` grants every `ACL` subcommand and `-acl` revokes them all.
 
 To grant or revoke a single subcommand, use `+acl|<subcommand>` or `-acl|<subcommand>`, for example `+acl|whoami`.
 Category rules work as usual.
 `ACL CAT`, `ACL GENPASS`, `ACL WHOAMI` and `ACL HELP` are only in `@slow`.
 The other subcommands are also in `@admin` and `@dangerous`, so `-@admin` revokes them.
 
-In the following example, `-acl` does not stop the user from creating users, while `-acl|setuser` does:
+In the following example, `-acl|setuser` stops the user from creating users, while other `ACL` subcommands stay allowed:
 
 ```shell
-dragonfly> ACL SETUSER app ON >secret +@all -acl
-OK
-dragonfly> ACL DRYRUN app ACL SETUSER alice ON
-OK
-dragonfly> ACL SETUSER app -acl|setuser
+dragonfly> ACL SETUSER app ON >secret +@all -acl|setuser
 OK
 dragonfly> ACL DRYRUN app ACL SETUSER alice ON
 "This user has no permissions to run the 'ACL SETUSER' command"
+dragonfly> ACL DRYRUN app ACL WHOAMI
+OK
 ```
