@@ -108,6 +108,8 @@ Some key points to keep in mind when you choose a Dragonfly Swarm data store:
 - Multi-shard data stores scale both vertically and horizontally—up to 15TB of in-memory data with tens of millions of QPS.
 - If your workload requires more than 15TB of memory, please contact support.
 
+After creating a Swarm data store, use the [Cluster menu](./cluster-management.md) to view migrations and configure memory balancing and controller limits.
+
 ## Security
 
 Dragonfly Cloud supports using both public and private networks for data access.
