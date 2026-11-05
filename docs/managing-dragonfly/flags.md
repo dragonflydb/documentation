@@ -86,6 +86,16 @@ flags which include specified substring in either in the name, description or pa
 
   `default: ""`
 
+### `--aof`
+  **Experimental.** If true, each shard logs its writes to an append-only file in `--dir`. Requires io_uring and a local `--dir`, and is not supported on replicas. See [Append Only File (AOF)](./aof.md).
+
+  `default: false`
+
+### `--aof_max_buffered_bytes`
+  **Experimental.** Per shard: unwritten AOF bytes above which the shard blocks until writes complete.
+
+  `default: 64MB`
+
 ### `--snapshot_cron`
   Cron expression for the time to save a snapshot, crontab style.
 
