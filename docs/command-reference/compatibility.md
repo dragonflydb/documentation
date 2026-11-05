@@ -34,7 +34,7 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">CLIENT SETINFO</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CLIENT SETNAME</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CLIENT TRACKING</span> | <span class="support partial">Partially supported</span> | Missing: BCAST, PREFIX, REDIRECT. |
-|  | <span class="command">CLIENT TRACKINGINFO</span> | <span class="support unsupported">Unsupported</span> |  |
+|  | <span class="command">CLIENT TRACKINGINFO</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CLIENT UNBLOCK</span> | <span class="support unsupported">Unsupported</span> |  |
 |  | <span class="command">CLIENT UNPAUSE</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">CLIENT HELP</span> | <span class="support supported">Fully supported</span> |  |
@@ -430,4 +430,4 @@ Dragonfly-specific precision, limits, and other behavioral differences.
 |  | <span class="command">READONLY</span> | <span class="support supported">Fully supported</span> |  |
 |  | <span class="command">READWRITE</span> | <span class="support supported">Fully supported</span> |  |
 
-Verification: Dragonfly v2.0.0; Redis 8.6.4; modules: BF, CF, CMS, FT, JSON, TDIGEST, TOPK, TS.
+Verification: Dragonfly v2.1.0; Redis 8.6.4; modules: BF, CF, CMS, FT, JSON, TDIGEST, TOPK, TS.
