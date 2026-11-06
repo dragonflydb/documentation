@@ -1,12 +1,12 @@
 ---
-description: "Dragonfly's BSL 1.1 software license and the Creative Commons license covering this documentation."
+description: "The Dragonfly Source Available License and the Creative Commons license covering this documentation."
 sidebar_position: 3
 ---
 
 # License
 
 ## Software Licensing
-Dragonfly is released under [BSL 1.1](https://github.com/dragonflydb/dragonfly/blob/main/LICENSE.md) (Business Source License). 
+Dragonfly is released under [Dragonfly Source Available License](https://github.com/dragonflydb/dragonfly/blob/main/LICENSE.md).
 
 ## Documentation Licensing
 
