@@ -253,6 +253,12 @@ Configure the Azure application first, then create the identity provider and a d
 3. Enter a meaningful name for the provider, along with the **Directory (tenant) ID** and **Application (client) ID** copied from Azure.
 4. Submit the form to create the identity provider.
 
+#### Group mappings
+
+For group-based access, configure the identity provider’s `group_mappings` to map an Entra group object ID to a 
+Dragonfly ACL username, then use that username instead of $OID in the ACL rule. Entra must include the group’s 
+object ID in the access token’s groups claim for its members to authenticate as the mapped ACL user.
+
 ### Create a Data Store
 
 1. On the **Data Stores** tab, click the [+Data Store](https://dragonflydb.cloud/datastores/new) button and
