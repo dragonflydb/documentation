@@ -5,6 +5,8 @@ on:
     paths:
       - 'docs/**'
       - '*.md'
+      - '.lychee.toml'
+      - '.github/workflows/check-links.yml'
   schedule:
     # Run daily at 6:00 UTC
     - cron: '0 6 * * *'
@@ -16,88 +18,63 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: yarn
 
-      - name: Install markdown-link-check
-        run: npm install -g markdown-link-check
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
-      - name: Create config
-        run: |
-          cat > .mlc-config.json << 'EOF'
-          {
-            "ignorePatterns": [{ "pattern": "^/" }, { "pattern": "^#" }, { "pattern": "localhost" }],
-            "httpHeaders": [
-              {
-                "urls": ["https://"],
-                "headers": {
-                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-                }
-              }
-            ],
-            "timeout": "20s",
-            "retryOn429": true,
-            "retryCount": 5,
-            "aliveStatusCodes": [200, 201, 202, 203, 204, 206, 301, 302, 303, 307, 308, 400, 403, 429]
-          }
-          EOF
+      # Internal links, anchors, and images are resolved by Docusaurus
+      # (onBrokenLinks and onBrokenAnchors are set to "throw" in docusaurus.config.mjs).
+      # This is deterministic, so a failure here blocks the pull request.
+      - name: Check internal links (Docusaurus build)
+        run: yarn build
 
-      - name: Check links in all markdown files
+      - name: Restore lychee cache
+        uses: actions/cache@v4
+        with:
+          path: .lycheecache
+          key: lychee-${{ github.run_id }}
+          restore-keys: lychee-
+
+      # External links depend on third-party sites, so each unique URL is checked once, with retries.
+      # See .lychee.toml for the settings.
+      # - Pull requests: check only the docs files the PR changes, so a PR is blocked only by links it can fix.
+      #   If the PR changes this workflow or .lychee.toml, check all docs to validate the change.
+      # - Scheduled and manual runs: check all docs. A broken link fails the run and sends a notification.
+      - name: Select files for the external link check
+        id: files
         env:
-          FORCE_COLOR: 1
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          # Create a temporary file to collect all broken links
-          broken_links_report=$(mktemp)
-          trap 'rm -f "$broken_links_report"' EXIT
-
-          files_checked=0
-          files_with_errors=0
-
-          while IFS= read -r file; do
-            files_checked=$((files_checked + 1))
-
-            # Run markdown-link-check and capture output and exit code
-            set +e
-            output=$(markdown-link-check --config .mlc-config.json "$file" 2>&1)
-            exit_code=$?
-            set -e
-
-            # Print the full output for each file
-            echo "$output"
-            echo ""
-
-            # Check if there are any broken links using exit code
-            if [ $exit_code -ne 0 ]; then
-              files_with_errors=$((files_with_errors + 1))
-              echo "" >> "$broken_links_report"
-              echo "📄 $file" >> "$broken_links_report"
-              echo "$output" >> "$broken_links_report"
-            fi
-          done < <(find docs -name "*.md" -type f)
-
-          echo ""
-          echo "=========================================="
-          echo "📊 Link Check Summary"
-          echo "=========================================="
-          echo "Files checked: $files_checked"
-
-          if [ "$files_with_errors" -gt 0 ]; then
-            echo "Files with broken links: $files_with_errors"
-            echo ""
-            echo "=========================================="
-            echo "❌ Broken Links Report"
-            echo "=========================================="
-            cat "$broken_links_report"
-            echo ""
-            echo "=========================================="
-            echo "::error::Found broken links in $files_with_errors file(s)!"
-            exit 1
+          all="'docs/**/*.md'"
+          if [ "$EVENT_NAME" != "pull_request" ]; then
+            files="$all"
+          elif git diff --name-only "$BASE_SHA" HEAD | grep -qE '^(\.lychee\.toml|\.github/workflows/check-links\.yml)$'; then
+            files="$all"
+          else
+            files=$(while IFS= read -r -d '' file; do printf '%q ' "$file"; done < <(git diff --name-only -z --diff-filter=ACMR "$BASE_SHA" HEAD -- 'docs/*.md'))
           fi
+          echo "Files to check: ${files:-none}"
+          echo "files=$files" >> "$GITHUB_OUTPUT"
 
-          echo "✅ All links are valid!"
+      - name: Check external links
+        if: steps.files.outputs.files != ''
+        uses: lycheeverse/lychee-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          failIfEmpty: false
+          args: --config .lychee.toml --root-dir ${{ github.workspace }} --no-progress ${{ steps.files.outputs.files }}
+          fail: true
+          jobSummary: true
 
       - name: Send notification on failure
         if: failure() && github.ref == 'refs/heads/main'
