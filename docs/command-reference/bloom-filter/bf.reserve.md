@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1)
 
-**ACL categories:** @bloom
+**ACL categories:** @bloom, @fast, @write
 
 Creates a new Bloom filter with an initial capacity of at least `capacity`
 and a false positive rate `false_positive_rate` that should be a double between `0` and `0.5`.

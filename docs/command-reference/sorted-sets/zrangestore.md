@@ -30,13 +30,13 @@ This command is like [`ZRANGE`](./zrange.md), but stores the result in the `dest
 ## Code Examples
 
 ```shell
-dragonfly$> ZADD key 1 one 2 two 3 three 4 four
+dragonfly> ZADD key 1 one 2 two 3 three 4 four
 (integer) 4
 
-dragonfly$> ZRANGESTORE dst key 1 3
+dragonfly> ZRANGESTORE dst key 1 3
 (integer) 3
 
-dragonfly$> ZRANGE dst 0 -1
+dragonfly> ZRANGE dst 0 -1
 1) "two"
 2) "three"
 3) "four"

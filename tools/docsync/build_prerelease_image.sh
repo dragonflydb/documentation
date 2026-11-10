@@ -18,17 +18,23 @@
 #
 #   tools/docsync/build_prerelease_image.sh v2.0.0               # host arch
 #   tools/docsync/build_prerelease_image.sh v2.0.0 linux/amd64
+#   RELEASE_TAG=v2.1 tools/docsync/build_prerelease_image.sh v2.1.0
+#
+# <tag> is the image and git tag the docsync scripts use. RELEASE_TAG is the tag
+# of the GitHub release that holds the assets, when it differs (release v2.1
+# shipped image v2.1.0); it defaults to <tag>.
 set -euo pipefail
 
 TAG=${1:?usage: $0 <tag> [platform]}
 PLATFORM=${2:-linux/$(docker info --format '{{.Architecture}}' | sed 's/aarch64/arm64/;s/x86_64/amd64/')}
 REPO=dragonflydb/dragonfly
+RELEASE_TAG=${RELEASE_TAG:-$TAG}
 IMAGE=docker.dragonflydb.io/dragonflydb/dragonfly:${TAG}
 WORK=$(mktemp -d)
 trap 'rm -rf "$WORK"' EXIT
 
 SHA=$(gh api "repos/$REPO/commits/$TAG" --jq .sha)
-echo "tag $TAG -> $SHA, platform $PLATFORM"
+echo "tag $TAG -> $SHA, release $RELEASE_TAG, platform $PLATFORM"
 
 if docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
   echo "NOTE: $IMAGE is published; use 'docker pull' and drop --skip-pull instead." >&2
@@ -43,7 +49,7 @@ chmod +x "$WORK"/tools/docker/*.sh
 
 # The workflow fetches "dragonfly-.*\.tar\.gz", but the *-dbgsym tarballs unpack
 # to a plain "dragonfly" that "COPY releases/dragonfly-*" never picks up.
-gh release download "$TAG" -R "$REPO" -D "$WORK/releases" \
+gh release download "$RELEASE_TAG" -R "$REPO" -D "$WORK/releases" \
   -p 'dragonfly-aarch64.tar.gz' -p 'dragonfly-x86_64.tar.gz'
 for f in "$WORK"/releases/*.tar.gz; do tar xfz "$f" -C "$WORK/releases"; done
 rm "$WORK"/releases/*.tar.gz

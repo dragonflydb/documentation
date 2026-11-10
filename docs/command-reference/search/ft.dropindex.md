@@ -9,11 +9,11 @@ description: Deletes the index
     FT.DROPINDEX index [DD]
 
 **Time complexity:** O(1) or O(N) if `DD` is used, where N is the number of documents in the index.
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow, @write
 
 ## Description
 
-Delete an index.
+Delete an index by its name or alias.
 
 By default, `FT.DROPINDEX` only removes the index definition and associated metadata while keeping the actual documents (HASH or JSON keys) intact.
 
@@ -22,7 +22,7 @@ By default, `FT.DROPINDEX` only removes the index definition and associated meta
 <details open>
 <summary><code>index</code></summary>
 
-is index name. You must first create the index using [`FT.CREATE`](./ft.create.md).
+is an index name or an alias that resolves to an index. You must first create the index using [`FT.CREATE`](./ft.create.md).
 </details>
 
 ## Optional arguments
@@ -80,4 +80,4 @@ This will permanently delete all HASH or JSON keys that were indexed by `idx`.
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
+- [Valkey Search](https://valkey.io/topics/search/)

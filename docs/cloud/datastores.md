@@ -58,7 +58,7 @@ On this page, you will find information on how to create, configure, and connect
   and [peering connections](./connections.md).
 - By default, the data store will consist of a single Dragonfly server instance.
   To create a highly available data store, read more about [high availability](#high-availability) below.
-  
+
 
 ### Connection Details & Data Store Status
 
@@ -133,6 +133,17 @@ Dragonfly Cloud supports using both public and private networks for data access.
 **Tip:** In order to completely avoid data transfer charges, place your data store in the same availability zone (AZ)
 as your application. See [high availability](#high-availability) for specifying the data store availability zone.
 
+### IP Allowlist {#ip-allowlist}
+
+You can restrict which client IP addresses are allowed to connect to a data store.
+
+- New data stores accept connections from any address (`0.0.0.0/0`).
+- To change the allowlist, click the data store three-dot
+  menu (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>)
+  then select **Access** -> **IP Allowlist**.
+- Click **Add IP/CIDR** to add an IPv4 address (e.g., `203.0.113.10`) or CIDR block (e.g., `10.0.0.0/16`), then click **Update**.
+  IPv6 addresses are not supported.
+
 ## Durability & High Availability
 
 ### Eviction Policy
@@ -184,7 +195,7 @@ providing the most suitable server configuration(s) for your workload when you s
   with a [private network](#private-endpoint).
 - **Sidekiq:** Enable this for running [Sidekiq](https://sidekiq.org/) workloads,
   [read more](/docs/integrations/sidekiq.md).
-- **SSD Data Tiering:** Extends data store capacity X8 with SSD, for example, a 50GB memory data store has 400GB capacity.  
+- **SSD Data Tiering:** Extends data store capacity X8 with SSD, for example, a 50GB memory data store has 400GB capacity.
   SSD data tiering offloads large string values, keys and small values are kept in memory.
   SSD data tiering is currently supported on AWS and GCP and requires Enhanced Compute tier or supported BYOC instance family.
   Support for more data types is coming soon.
@@ -230,6 +241,11 @@ Here is a recipe to rotate the passkey for a data store, since it is part of the
 Connect Microsoft Entra ID to Dragonfly Cloud by registering an application in Azure and adding it as an identity provider.
 Configure the Azure application first, then create the identity provider and a data store that uses it.
 
+- Microsoft Entra ID authentication is available only for data stores on **Microsoft Azure**.
+- It must be selected when the data store is created and cannot be enabled or disabled afterwards.
+- Data stores that use Microsoft Entra ID authentication do not have a passkey.
+  Clients authenticate with an Entra ID access token instead.
+
 ### Configure Azure
 
 1. In the [Azure portal](https://portal.azure.com/), search for **App registrations** and click **New registration**.
@@ -248,16 +264,20 @@ Configure the Azure application first, then create the identity provider and a d
 
 ### Configure Dragonfly Cloud
 
-1. Navigate to **Access > Identity providers** in Dragonfly Cloud.
+1. Navigate to **Access > Identity Providers** in Dragonfly Cloud.
 2. Click **+ Identity Provider**.
-3. Enter a meaningful name for the provider, along with the **Directory (tenant) ID** and **Application (client) ID** copied from Azure.
-4. Submit the form to create the identity provider.
+3. Enter a meaningful **Name** for the provider, along with the **Tenant ID** (Directory (tenant) ID) and **Client ID** (Application (client) ID) copied from Azure.
+4. Click **Save provider** to create the identity provider.
+
+You can register multiple identity providers (for example, one per Entra tenant, or separate ones for human and service identities).
+A token is accepted if any of your account's identity providers validates it.
+Deleting an identity provider can cause new connections to Entra-enabled data stores to fail.
 
 #### Group mappings
 
-For group-based access, configure the identity provider’s `group_mappings` to map an Entra group object ID to a 
-Dragonfly ACL username, then use that username instead of $OID in the ACL rule. Entra must include the group’s 
-object ID in the access token’s groups claim for its members to authenticate as the mapped ACL user.
+For group-based access, configure the identity provider's `group_mappings` to map an Entra group object ID to a
+Dragonfly ACL username, then use that username instead of `$OID` in the ACL rule. Entra must include the group's
+object ID in the access token's `groups` claim for its members to authenticate as the mapped ACL user.
 
 ### Create a Data Store
 
@@ -287,6 +307,21 @@ and `<datastore-id>` with your data store ID:
 TOKEN=$(az account get-access-token --scope "api://<application-id>/.default" --query accessToken -o tsv)
 redis-cli -h <datastore-id>.dragonflydb.cloud -p 6385 --pass "$TOKEN" --tls
 ```
+
+## Tags
+
+Tags are key/value pairs you can attach to a data store to organize it, for example `env=prod` or `team=payments`.
+Tags can also be used to [scope API keys](./access-permissions/api-keys.md#scoping-a-key-to-tagged-data-stores).
+
+- To add tags when creating a data store, expand the **Tags** section of the data store form.
+- To edit tags of an existing data store, click the data store three-dot
+  menu (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>)
+  then select **Maintenance** -> **Tags**.
+- To filter the data store list by tag, use the **Tags** filter on the **Data Stores** tab. Tags are shown as `key=value`.
+- Tag keys must start with a letter. Keys and values may contain only letters, digits, hyphens (`-`), and underscores (`_`),
+  and can be up to 63 characters long. Values may be empty.
+- The following keys are reserved and cannot be used:
+  `customer_id`, `datastore_id`, `shard_id`, `node_id`, `network_id`, `account_id`, `owner`, `df-version`.
 
 ## Pricing & Support
 

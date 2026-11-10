@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(F + B) per call, where F is the number of sub-filters and B is the number of bytes copied or initialized. Starting a new sub-filter initializes its entire storage.
 
-**ACL categories:** @bloom
+**ACL categories:** @bloom, @slow, @write
 
 Restores a Bloom filter at `key` from binary chunks produced by
 [`BF.SCANDUMP`](./bf.scandump.md).

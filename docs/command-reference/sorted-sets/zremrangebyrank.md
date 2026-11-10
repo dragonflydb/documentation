@@ -40,13 +40,13 @@ ZREMRANGEBYRANK key start stop
 Remove the members ranked between `0` (the first rank) and `1` (the second rank) in a sorted set:
 
 ```shell
-dragonfly$> ZADD leaderboard 100 "Alice" 150 "Bob" 200 "Charlie"
+dragonfly> ZADD leaderboard 100 "Alice" 150 "Bob" 200 "Charlie"
 (integer) 3
 
-dragonfly$> ZREMRANGEBYRANK leaderboard 0 1
+dragonfly> ZREMRANGEBYRANK leaderboard 0 1
 (integer) 2
 
-dragonfly$> ZRANGE leaderboard 0 -1
+dragonfly> ZRANGE leaderboard 0 -1
 1) "Charlie"
 ```
 
@@ -55,13 +55,13 @@ dragonfly$> ZRANGE leaderboard 0 -1
 Remove all members from a sorted set by specifying the entire range:
 
 ```shell
-dragonfly$> ZADD players 120 "Player1" 140 "Player2" 160 "Player3"
+dragonfly> ZADD players 120 "Player1" 140 "Player2" 160 "Player3"
 (integer) 3
 
-dragonfly$> ZREMRANGEBYRANK players 0 -1
+dragonfly> ZREMRANGEBYRANK players 0 -1
 (integer) 3
 
-dragonfly$> ZRANGE players 0 -1
+dragonfly> ZRANGE players 0 -1
 (empty array)
 ```
 
@@ -70,13 +70,13 @@ dragonfly$> ZRANGE players 0 -1
 Remove the last two members from the sorted set using negative ranks:
 
 ```shell
-dragonfly$> ZADD scores 300 "u1" 400 "u2" 500 "u3" 600 "u4"
+dragonfly> ZADD scores 300 "u1" 400 "u2" 500 "u3" 600 "u4"
 (integer) 4
 
-dragonfly$> ZREMRANGEBYRANK scores -2 -1
+dragonfly> ZREMRANGEBYRANK scores -2 -1
 (integer) 2
 
-dragonfly$> ZRANGE scores 0 -1
+dragonfly> ZRANGE scores 0 -1
 1) "u1"
 2) "u2"
 ```

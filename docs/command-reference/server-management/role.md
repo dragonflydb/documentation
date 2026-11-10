@@ -21,7 +21,7 @@ Provide information on the role of a Dragonfly instance in the context of replic
 ## Output format
 
 The command returns an array of elements. The first element is the role of
-the instance, as one of the following three strings:
+the instance, as one of the following strings:
 
 * "master"
 * "slave"
@@ -36,8 +36,7 @@ An example of output when `dragonfly> ROLE` is called in a master instance:
 1) "master"
 2) 1) 1) "127.0.0.1"
       2) "6380"
-      3) "stable_sync"
-
+      3) "online"
 ```
 
 The master output is composed of the following parts:
@@ -50,19 +49,23 @@ The master output is composed of the following parts:
 An example of output when `ROLE` is called in a replica instance:
 
 ```
-1) "replica"
+1) "slave"
 2) "127.0.0.1"
 3) "6379"
-4) "stable_sync"
+4) "online"
 ```
 
 The replica output is composed of the following parts:
 
-1. The string `replica`, because of backward compatibility (see note at the end of this page).
-2. The IP of the master.
+1. The string `slave`.
+2. The IP address or hostname of the master.
 3. The port number of the master.
-4. The current replication state, that can be `connecting` (trying to form a network link), `preparation` (initial connection has been made), `full_sync` (the master and replica are performing a full synchronization) and `stable_sync` (the replica is online)
+4. The current replication state, that can be `connecting` (trying to form a network link), `preparation` (initial connection has been made), `full_sync` (the master and replica are performing a full synchronization) and `online` (the replica is in stable sync with the master).
+
+`slave` and `online` are the default, Valkey-compatible values. When an instance runs with
+[`--info_replication_valkey_compatible=false`](../../managing-dragonfly/flags.md#--info_replication_valkey_compatible),
+its `ROLE` reply contains `replica` instead of `slave` and `stable_sync` instead of `online`.
 
 ## Return
 
-[Array reply](https://valkey.io/topics/protocol/#arrays): where the first element is one of `master`, `slave`, `sentinel` and the additional elements are role-specific as illustrated above.
+[Array reply](https://valkey.io/topics/protocol/#arrays): where the first element is `master` or `slave` and the additional elements are role-specific as illustrated above.

@@ -46,10 +46,10 @@ ZRANGEBYLEX key min max [LIMIT offset count]
 Let's create a sorted set of words and retrieve words that fall between `apple` and `banana` inclusively:
 
 ```shell
-dragonfly$> ZADD fruits 0 apple 0 apricot 0 avocado 0 banana 0 berry
+dragonfly> ZADD fruits 0 apple 0 apricot 0 avocado 0 banana 0 berry
 (integer) 5
 
-dragonfly$> ZRANGEBYLEX fruits [apple [banana
+dragonfly> ZRANGEBYLEX fruits [apple [banana
 1) "apple"
 2) "apricot"
 3) "avocado"
@@ -61,10 +61,10 @@ dragonfly$> ZRANGEBYLEX fruits [apple [banana
 You can exclude the start or end of the range by using parentheses `(` instead of square brackets `[`:
 
 ```shell
-dragonfly$> ZADD fruits 0 apple 0 apricot 0 avocado 0 banana 0 berry
+dragonfly> ZADD fruits 0 apple 0 apricot 0 avocado 0 banana 0 berry
 (integer) 5
 
-dragonfly$> ZRANGEBYLEX fruits (apple [banana
+dragonfly> ZRANGEBYLEX fruits (apple [banana
 1) "apricot"
 2) "avocado"
 3) "banana"
@@ -75,10 +75,10 @@ dragonfly$> ZRANGEBYLEX fruits (apple [banana
 You can limit the number of results by specifying an `offset` and `count`:
 
 ```shell
-dragonfly$> ZADD fruits 0 apple 0 apricot 0 avocado 0 banana 0 berry
+dragonfly> ZADD fruits 0 apple 0 apricot 0 avocado 0 banana 0 berry
 (integer) 5
 
-dragonfly$> ZRANGEBYLEX fruits [a [z LIMIT 1 2
+dragonfly> ZRANGEBYLEX fruits [a [z LIMIT 1 2
 1) "apricot"
 2) "avocado"
 ```
@@ -90,15 +90,15 @@ In this example, the query starts from the second-smallest member (`offset=1`) a
 If no elements fall within the specified lexicographical range, the command will return an empty list:
 
 ```shell
-dragonfly$> ZADD fruits 0 apple 0 apricot 0 avocado 0 banana 0 berry
+dragonfly> ZADD fruits 0 apple 0 apricot 0 avocado 0 banana 0 berry
 (integer) 5
 
 # No elements between "zzz" and "zzzz".
-dragonfly$> ZRANGEBYLEX fruits [zzz [zzzz
+dragonfly> ZRANGEBYLEX fruits [zzz [zzzz
 (empty array)
 
 # No elements between "zzz" and the positive infinite string.
-dragonfly$> ZRANGEBYLEX fruits [zzz +
+dragonfly> ZRANGEBYLEX fruits [zzz +
 (empty array)
 ```
 
@@ -108,11 +108,11 @@ When elements have different scores, the returned elements are unspecified:
 
 ```shell
 # Here, the 'apple' element has a score of 1.
-dragonfly$> ZADD fruits 1 apple 0 apricot 0 avocado 0 banana 0 berry
+dragonfly> ZADD fruits 1 apple 0 apricot 0 avocado 0 banana 0 berry
 (integer) 5
 
 # We cannot rely on the order of elements with different scores while using ZRANGEBYLEX.
-dragonfly$> ZRANGEBYLEX fruits - +
+dragonfly> ZRANGEBYLEX fruits - +
 1) "apricot"
 2) "avocado"
 3) "banana"

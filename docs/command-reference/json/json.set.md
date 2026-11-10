@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(M+N) when path is evaluated to a single value where M is the size of the original value (if it exists) and N is the size of the new value, O(M+N) when path is evaluated to multiple values where M is the size of the key and N is the size of the new value
 
-**ACL categories:** @json
+**ACL categories:** @json, @fast, @write
 
 Set the JSON value at `path` in `key`
 
@@ -115,5 +115,5 @@ dragonfly> JSON.GET doc
 
 ## Related topics
 
-* [RedisJSON](https://redis.io/docs/latest/develop/data-types/json/)
-* [Index and search JSON documents](https://redis.io/docs/latest/develop/data-types/json/indexing_json/)
+* [Valkey JSON](https://valkey.io/topics/valkey-json/)
+* [Index JSON documents with Valkey Search](https://valkey.io/topics/search-data-formats/)

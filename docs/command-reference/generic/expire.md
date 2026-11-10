@@ -48,7 +48,7 @@ Note that calling `EXPIRE`/`PEXPIRE` with a non-positive timeout or
 will be `del`, not `expired`).
 
 [del]: ./del.md
-[ntf]: https://redis.io/topics/notifications
+[ntf]: https://valkey.io/topics/notifications/
 
 ## Options
 

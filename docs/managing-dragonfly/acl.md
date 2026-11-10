@@ -7,7 +7,7 @@ description: "Configure Dragonfly's Access Control Lists (ACL) to control which 
 Dragonfly has built-in support for ACL. Dragonfly operators get fine-grained control over how and who accesses the datastore via the ACL family of commands.
 Since Dragonfly is designed as a drop-in replacement for Redis, you can expect the same API functionality for ACL as in Redis.
 
-All connections in Dragonfly default to the user `default` (unless that user is disabled). By default, user `default` can `AUTH` in Dragonfly using any password, 
+All connections in Dragonfly default to the user `default` (unless that user is disabled). By default, user `default` can `AUTH` in Dragonfly using any password,
 and is allowed to execute any command and is part of all the available ACL groups.
 
 Permissions for a given user are controlled via a domain-specific language (DSL) and are divided into four categories:
@@ -89,8 +89,9 @@ ACL SETUSER John +@ALL -@ADMIN -@FAST
 ```
 
 Which basically grants all but the `@ADMIN` and `@FAST` groups to the user. That way, it's easy to express which groups of permissions
-the user should not be a part of. The list of all categories is accessible with the command `ACL CAT` and user specific information 
+the user should not be a part of. The list of all categories is accessible with the command `ACL CAT` and user specific information
 is accessible with the command `ACL GETUSER <username>`.
+See [ACL Categories](./acl-categories.md) for every category and the commands in it.
 
 ## Command Rules
 
@@ -112,7 +113,7 @@ The special `+ALL` (note without the `@`) is used to denote all the currently im
 ## Key Permissions
 
 It's also possible to restrict operations on given keys. Note, users are permitted to execute a command only when their ACL's both include that command (or group)
-and contain a key pattern that matches the keys of the command. Key patterns are:
+and contain a key pattern that matches the keys of the command. A command that both reads and writes a key, such as `INCR`, needs read and write access to it, so a `%W~` pattern alone does not allow it. Key patterns are:
 
 - `~<pattern>`: Add a pattern of keys that can be mentioned as part of commands. For instance `~*` allows all the keys. The pattern is a glob-style pattern, and it is possible to specify multiple patterns.
 - `%R~<pattern>`: Add the specified **read** key pattern. This behaves similar to the regular key pattern but only grants permission to read from keys that match the given pattern.
@@ -142,13 +143,13 @@ The state of all the users and their permissions can be captured and placed in a
 the `--aclfile` option is used to specify the file from which Dragonfly will load the ACL state from.
 
 Afterwards, any change done at runtime, can be persisted at anytime via the command `ACL SAVE` which
-evicts the currently stored ACL state to the file specified in the `--aclfile` option.
+atomically saves the current ACL state to the file specified in the `--aclfile` option.
 
-Note, that the `aclfile` file is compatible with Redis (however it must not contain any keys or
-pub/sub DSL's because these yet are not supported so if you plan to migrate, just open the file and strip them away).
+The `aclfile` file is compatible with Redis. Dragonfly validates the file, including password hashes.
+If the file does not load, Dragonfly exits at startup, and `ACL LOAD` returns an error and keeps the current users.
 
 If you want the `aclfile` to be writable, that is, if you want `ACL SAVE` to work, we would advise against placing the `aclfile`
-under `/etc` directory because usually that directory is only accessible by Dragonfly as `readonly`. You change this behavior, by editing 
+under `/etc` directory because usually that directory is only accessible by Dragonfly as `readonly`. You change this behavior, by editing
 the systemd service file located in `/lib/systemd/system/dragonfly.service`.
 
 For convenience, we suggest to place acl files in `/var/lib/dragonfly/`.

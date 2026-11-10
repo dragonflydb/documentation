@@ -41,26 +41,26 @@ The optional `WITHSCORES` modifier changes the reply so it includes the respecti
 ## Code Examples
 
 ```shell
-dragonfly$> ZADD numbers 1 one 2 two 3 three 4 four
+dragonfly> ZADD numbers 1 one 2 two 3 three 4 four
 (integer) 4
 
 # Returns a single random member.
-dragonfly$> ZRANDMEMBER numbers
+dragonfly> ZRANDMEMBER numbers
 1) "one"
 
 # Return multiple random members.
-dragonfly$> ZRANDMEMBER numbers 2
+dragonfly> ZRANDMEMBER numbers 2
 1) "two"
 2) "three"
 
 # Return multiple random members (allowed to return the same element multiple times).
-dragonfly$> ZRANDMEMBER numbers -3
+dragonfly> ZRANDMEMBER numbers -3
 1) "three"
 2) "three"
 3) "four"
 
 # Return multiple random members with scores.
-dragonfly$> ZRANDMEMBER numbers 3 WITHSCORES
+dragonfly> ZRANDMEMBER numbers 3 WITHSCORES
 1) "two"
 2) "2"
 3) "three"
@@ -69,12 +69,12 @@ dragonfly$> ZRANDMEMBER numbers 3 WITHSCORES
 6) "4"
 
 # Return nil or an empry array on non-existent keys.
-dragonfly$> ZRANDMEMBER non-existent
+dragonfly> ZRANDMEMBER non-existent
 (nil)
 
-dragonfly$> ZRANDMEMBER non-existent 10
+dragonfly> ZRANDMEMBER non-existent 10
 (empty array)
 
-dragonfly$> ZRANDMEMBER non-existent 10 WITHSCORES
+dragonfly> ZRANDMEMBER non-existent 10 WITHSCORES
 (empty array)
 ```

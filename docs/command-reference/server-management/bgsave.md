@@ -20,7 +20,7 @@ Equivalent to [SAVE](../server-management/save) and kept for compatibility reaso
 
 The optional `SCHEDULE` subcommand is accepted for client compatibility but is a no-op: concurrent saves are still rejected and saves are not queued.
 
-[tp]: https://redis.io/topics/persistence
+[tp]: https://valkey.io/topics/persistence/
 
 ## Return
 

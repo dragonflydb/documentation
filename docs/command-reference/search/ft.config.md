@@ -11,7 +11,7 @@ description: Configure search engine at runtime
     FT.CONFIG HELP [option]
 
 **Time complexity:** O(1)
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @admin, @dangerous, @slow
 
 ## Description
 
@@ -137,4 +137,4 @@ dragonfly> FT.CONFIG HELP *
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
+- [Valkey Search](https://valkey.io/topics/search/)

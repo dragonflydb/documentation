@@ -41,13 +41,13 @@ ZREMRANGEBYSCORE key min max
 Remove members with scores between `1` and `3`:
 
 ```shell
-dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
+dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
 
-dragonfly$> ZREMRANGEBYSCORE myzset 1 3
+dragonfly> ZREMRANGEBYSCORE myzset 1 3
 (integer) 3
 
-dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
+dragonfly> ZRANGE myzset 0 -1 WITHSCORES
 1) "four"
 2) "4"
 ```
@@ -57,13 +57,13 @@ dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 Remove all members with scores less than or equal to `2`:
 
 ```shell
-dragonfly$> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
+dragonfly> ZADD myzset 1 "one" 2 "two" 3 "three" 4 "four"
 (integer) 4
 
-dragonfly$> ZREMRANGEBYSCORE myzset -inf 2
+dragonfly> ZREMRANGEBYSCORE myzset -inf 2
 (integer) 2
 
-dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
+dragonfly> ZRANGE myzset 0 -1 WITHSCORES
 1) "three"
 2) "3"
 3) "four"
@@ -75,13 +75,13 @@ dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 Use floating-point numbers to target a specific score range. In this case, remove members with scores between `2.5` and `4.5`:
 
 ```shell
-dragonfly$> ZADD myzset 2.5 "apple" 3.5 "banana" 1.5 "cherry"
+dragonfly> ZADD myzset 2.5 "apple" 3.5 "banana" 1.5 "cherry"
 (integer) 3
 
-dragonfly$> ZREMRANGEBYSCORE myzset 2.5 4.5
+dragonfly> ZREMRANGEBYSCORE myzset 2.5 4.5
 (integer) 2
 
-dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
+dragonfly> ZRANGE myzset 0 -1 WITHSCORES
 1) "cherry"
 2) "1.5"
 ```
@@ -91,13 +91,13 @@ dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
 To remove all members with scores greater than `3.5`, use `+inf`:
 
 ```shell
-dragonfly$> ZADD myzset 2.5 "cat" 4 "dog" 6 "elephant"
+dragonfly> ZADD myzset 2.5 "cat" 4 "dog" 6 "elephant"
 (integer) 3
 
-dragonfly$> ZREMRANGEBYSCORE myzset 3.5 +inf
+dragonfly> ZREMRANGEBYSCORE myzset 3.5 +inf
 (integer) 2
 
-dragonfly$> ZRANGE myzset 0 -1 WITHSCORES
+dragonfly> ZRANGE myzset 0 -1 WITHSCORES
 1) "cat"
 2) "2.5"
 ```

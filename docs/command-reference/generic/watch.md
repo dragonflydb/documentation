@@ -19,7 +19,7 @@ import PageTitle from '@site/src/components/PageTitle';
 Marks the given keys to be watched for conditional execution of a
 [transaction][tt].
 
-[tt]: https://redis.io/topics/transactions
+[tt]: https://valkey.io/topics/transactions/
 
 ## Return
 

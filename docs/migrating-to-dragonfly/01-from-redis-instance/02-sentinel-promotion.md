@@ -109,7 +109,7 @@ The reason is that during a failover process, Sentinel needs to notify the clien
 - The primary instance is offline.
 - Sentinel has promoted a new primary instance, and here is the network information of the new primary.
 
-The Sentinel-to-clients notification mechanism is powered by Pub/Sub, you can read more about Sentinel internals [here](https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/).
+The Sentinel-to-clients notification mechanism is powered by Pub/Sub, you can read more about Sentinel internals [here](https://valkey.io/topics/sentinel/).
 **Using a Sentinel-compatible client is essential to achieve the goal of minimal downtime migration.**
 
 ### 3. Configure Replication
@@ -139,7 +139,7 @@ slave0:ip=200.0.0.2,port=6380,state=online,offset=15693,lag=2
 ```shell
 dragonfly:6380$> INFO replication
 # Replication
-role:replica
+role:slave
 master_host:200.0.0.1
 master_port:6379
 master_link_status:up

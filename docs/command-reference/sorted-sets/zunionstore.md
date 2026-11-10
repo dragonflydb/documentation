@@ -46,16 +46,16 @@ ZUNIONSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]]
 Union two sorted sets and store the result in a new key:
 
 ```shell
-dragonfly$> ZADD zset1 1 "apple" 2 "banana" 3 "cherry"
+dragonfly> ZADD zset1 1 "apple" 2 "banana" 3 "cherry"
 (integer) 3
 
-dragonfly$> ZADD zset2 1 "banana" 4 "date" 5 "elderberry"
+dragonfly> ZADD zset2 1 "banana" 4 "date" 5 "elderberry"
 (integer) 3
 
-dragonfly$> ZUNIONSTORE result 2 zset1 zset2
+dragonfly> ZUNIONSTORE result 2 zset1 zset2
 (integer) 5
 
-dragonfly$> ZRANGE result 0 -1 WITHSCORES
+dragonfly> ZRANGE result 0 -1 WITHSCORES
  1) "apple"
  2) "1"
  3) "banana"
@@ -73,16 +73,16 @@ dragonfly$> ZRANGE result 0 -1 WITHSCORES
 Use the `WEIGHTS` option to multiply scores before performing the union:
 
 ```shell
-dragonfly$> ZADD zset1 1 "apple" 2 "banana" 3 "cherry"
+dragonfly> ZADD zset1 1 "apple" 2 "banana" 3 "cherry"
 (integer) 3
 
-dragonfly$> ZADD zset2 1 "banana" 4 "date" 5 "elderberry"
+dragonfly> ZADD zset2 1 "banana" 4 "date" 5 "elderberry"
 (integer) 3
 
-dragonfly$> ZUNIONSTORE result 2 zset1 zset2 WEIGHTS 2 3
+dragonfly> ZUNIONSTORE result 2 zset1 zset2 WEIGHTS 2 3
 (integer) 5
 
-dragonfly$> ZRANGE result 0 -1 WITHSCORES
+dragonfly> ZRANGE result 0 -1 WITHSCORES
  1) "apple"
  2) "2"        # 1x2 + 0x3 = 2
  3) "cherry"
@@ -100,17 +100,17 @@ dragonfly$> ZRANGE result 0 -1 WITHSCORES
 Use the `AGGREGATE` option to specify how to compute the final scores when an element exists in multiple sets:
 
 ```shell
-dragonfly$> ZADD zset1 1 "apple" 2 "banana" 3 "cherry"
+dragonfly> ZADD zset1 1 "apple" 2 "banana" 3 "cherry"
 (integer) 3
 
-dragonfly$> ZADD zset2 1 "banana" 4 "date" 5 "elderberry"
+dragonfly> ZADD zset2 1 "banana" 4 "date" 5 "elderberry"
 (integer) 3
 
 # Using the MIN aggregation.
-dragonfly$> ZUNIONSTORE result 2 zset1 zset2 AGGREGATE MIN
+dragonfly> ZUNIONSTORE result 2 zset1 zset2 AGGREGATE MIN
 (integer) 5
 
-dragonfly$> ZRANGE result 0 -1 WITHSCORES
+dragonfly> ZRANGE result 0 -1 WITHSCORES
  1) "apple"
  2) "1"
  3) "banana"
@@ -123,10 +123,10 @@ dragonfly$> ZRANGE result 0 -1 WITHSCORES
 10) "5"
 
 # Using the MAX aggregation.
-dragonfly$> ZUNIONSTORE result 2 zset1 zset2 AGGREGATE MAX
+dragonfly> ZUNIONSTORE result 2 zset1 zset2 AGGREGATE MAX
 (integer) 5
 
-dragonfly$> ZRANGE result 0 -1 WITHSCORES
+dragonfly> ZRANGE result 0 -1 WITHSCORES
  1) "apple"
  2) "1"
  3) "banana"

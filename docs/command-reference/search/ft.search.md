@@ -19,7 +19,7 @@ description: Searches the index with a query, returning docs or just IDs
       [FILTER field min max]
 
 **Time complexity:** Varies with query structure, index type, scoring, sorting, and result set size.
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow
 
 ## Description
 
@@ -41,6 +41,7 @@ is index name. You must first create the index using [`FT.CREATE`](./ft.create.m
 
 is text query to search. If it's more than a single word, put it in quotes.
 Refer to the [Valkey Search query syntax](https://valkey.io/topics/search-query/) for more details.
+For the full Dragonfly query syntax and its differences from Valkey Search, see [Query syntax](./query-syntax.md).
 
 The query language supports the following operators:
 

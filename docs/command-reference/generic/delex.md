@@ -27,7 +27,7 @@ DELEX key [IFEQ value | IFNE value | IFDEQ digest | IFDNE digest]
 - O(min(M,N)) for value comparisons (IFEQ/IFNE) where M and N are value lengths
 - O(N) for digest comparisons (IFDEQ/IFDNE) where N is the length of the stored string value
 
-**ACL categories:** @keyspace, @write, @slow
+**ACL categories:** @keyspace, @write, @fast, @string
 
 ## Parameter Explanations
 
@@ -49,11 +49,11 @@ DELEX key [IFEQ value | IFNE value | IFDEQ digest | IFDNE digest]
 Without a condition, `DELEX` behaves like the standard [`DEL`](./del.md) command:
 
 ```shell
-dragonfly$> SET mykey "hello"
+dragonfly> SET mykey "hello"
 OK
-dragonfly$> DELEX mykey
+dragonfly> DELEX mykey
 (integer) 1
-dragonfly$> EXISTS mykey
+dragonfly> EXISTS mykey
 (integer) 0
 ```
 
@@ -62,16 +62,16 @@ dragonfly$> EXISTS mykey
 Delete the key only if the value matches:
 
 ```shell
-dragonfly$> SET mykey "hello"
+dragonfly> SET mykey "hello"
 OK
-dragonfly$> DELEX mykey IFEQ "hello"
+dragonfly> DELEX mykey IFEQ "hello"
 (integer) 1
 
-dragonfly$> SET mykey "hello"
+dragonfly> SET mykey "hello"
 OK
-dragonfly$> DELEX mykey IFEQ "world"
+dragonfly> DELEX mykey IFEQ "world"
 (integer) 0
-dragonfly$> GET mykey
+dragonfly> GET mykey
 "hello"
 ```
 
@@ -80,16 +80,16 @@ dragonfly$> GET mykey
 Delete the key only if the value differs:
 
 ```shell
-dragonfly$> SET mykey "hello"
+dragonfly> SET mykey "hello"
 OK
-dragonfly$> DELEX mykey IFNE "world"
+dragonfly> DELEX mykey IFNE "world"
 (integer) 1
 
-dragonfly$> SET mykey "hello"
+dragonfly> SET mykey "hello"
 OK
-dragonfly$> DELEX mykey IFNE "hello"
+dragonfly> DELEX mykey IFNE "hello"
 (integer) 0
-dragonfly$> GET mykey
+dragonfly> GET mykey
 "hello"
 ```
 
@@ -98,18 +98,18 @@ dragonfly$> GET mykey
 Delete the key only if the digest matches:
 
 ```shell
-dragonfly$> SET mykey "test"
+dragonfly> SET mykey "test"
 OK
-dragonfly$> DIGEST mykey
+dragonfly> DIGEST mykey
 "9ec9f7918d7dfc40"
-dragonfly$> DELEX mykey IFDEQ "9ec9f7918d7dfc40"
+dragonfly> DELEX mykey IFDEQ "9ec9f7918d7dfc40"
 (integer) 1
 
-dragonfly$> SET mykey "test"
+dragonfly> SET mykey "test"
 OK
-dragonfly$> DELEX mykey IFDEQ "0000000000000000"
+dragonfly> DELEX mykey IFDEQ "0000000000000000"
 (integer) 0
-dragonfly$> GET mykey
+dragonfly> GET mykey
 "test"
 ```
 
@@ -118,18 +118,18 @@ dragonfly$> GET mykey
 Delete the key only if the digest differs:
 
 ```shell
-dragonfly$> SET mykey "test"
+dragonfly> SET mykey "test"
 OK
-dragonfly$> DIGEST mykey
+dragonfly> DIGEST mykey
 "9ec9f7918d7dfc40"
-dragonfly$> DELEX mykey IFDNE "0000000000000000"
+dragonfly> DELEX mykey IFDNE "0000000000000000"
 (integer) 1
 
-dragonfly$> SET mykey "test"
+dragonfly> SET mykey "test"
 OK
-dragonfly$> DELEX mykey IFDNE "9ec9f7918d7dfc40"
+dragonfly> DELEX mykey IFDNE "9ec9f7918d7dfc40"
 (integer) 0
-dragonfly$> GET mykey
+dragonfly> GET mykey
 "test"
 ```
 
@@ -138,13 +138,13 @@ dragonfly$> GET mykey
 Use `DELEX` for optimistic locking to ensure data hasn't changed:
 
 ```shell
-dragonfly$> SET counter "100"
+dragonfly> SET counter "100"
 OK
-dragonfly$> DIGEST counter
+dragonfly> DIGEST counter
 "e3cd843a18868415"
 
 # Later, delete only if the value hasn't changed
-dragonfly$> DELEX counter IFDEQ "e3cd843a18868415"
+dragonfly> DELEX counter IFDEQ "e3cd843a18868415"
 (integer) 1
 ```
 

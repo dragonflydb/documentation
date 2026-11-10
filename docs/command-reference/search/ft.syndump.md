@@ -9,7 +9,7 @@ description: Dumps the synonyms from an index
     FT.SYNDUMP index
 
 **Time complexity:** O(1)
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow
 
 ## Description
 
@@ -49,4 +49,4 @@ dragonfly> FT.SYNDUMP idx
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
+- [Valkey Search](https://valkey.io/topics/search/)

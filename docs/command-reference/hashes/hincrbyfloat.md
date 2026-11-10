@@ -51,6 +51,6 @@ dragonfly> HINCRBYFLOAT mykey field 2.0e2
 
 ## Implementation details
 
-The command is always propagated in the replication link and the Append Only
-File as a `HSET` operation, so that differences in the underlying floating point
-math implementation will not be sources of inconsistency.
+The command is propagated in the replication link as the `HINCRBYFLOAT` command
+itself, with its original arguments: each replica applies the same increment to
+its copy of the field.

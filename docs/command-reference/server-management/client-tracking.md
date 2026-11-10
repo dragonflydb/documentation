@@ -18,10 +18,10 @@ CLIENT TRACKING <ON | OFF> [OPTIN] [OPTOUT] [NOLOOP]
 
 **ACL categories:** @slow, @connection
 
-**Important**: New in Dragonfly v1.14, only available when the [RESP3](https://github.com/redis/redis-specifications/blob/master/protocol/RESP3.md) protocol is used.
+**Important**: New in Dragonfly v1.14, only available when the [RESP3](https://valkey.io/topics/protocol/#resp-versions) protocol is used.
 
 The `CLIENT TRACKING` command enables the tracking feature of the Dragonfly server, which is used for server-assisted client side caching.
-See more details about server-assisted client side caching in the [Redis documentation](https://redis.io/docs/latest/develop/use/client-side-caching/).
+See more details about server-assisted client side caching in the [Valkey documentation](https://valkey.io/topics/client-side-caching/).
 
 When tracking is enabled, Dragonfly remembers the keys that the connection requested in order to send later invalidation messages when such keys are modified.
 Invalidation messages are sent in the same connection when the RESP3 protocol is used.
@@ -30,6 +30,9 @@ Solely creating a key will not make Dragonfly track the key. See the examples be
 
 The feature will remain active in the current connection for all its life, unless tracking is disabled with `CLIENT TRACKING OFF` at some point,
 and Dragonfly stops tracking the keys for the connection, and no invalidation messages are sent.
+
+To check whether tracking is enabled for the current connection and which options are in effect,
+use [`CLIENT TRACKINGINFO`](./client-trackinginfo.md).
 
 ## Return
 

@@ -40,10 +40,10 @@ ZREVRANK key member
 Getting the reverse rank of a member in a sorted set:
 
 ```shell
-dragonfly$> ZADD leaderboard 100 "PlayerA" 200 "PlayerB" 150 "PlayerC"
+dragonfly> ZADD leaderboard 100 "PlayerA" 200 "PlayerB" 150 "PlayerC"
 (integer) 3
 
-dragonfly$> ZREVRANK leaderboard "PlayerB"
+dragonfly> ZREVRANK leaderboard "PlayerB"
 (integer) 0  # PlayerB has the highest score, so its rank is 0.
 ```
 
@@ -52,10 +52,10 @@ dragonfly$> ZREVRANK leaderboard "PlayerB"
 When the specified member is not in the sorted set, `ZREVRANK` will return `nil`:
 
 ```shell
-dragonfly$> ZADD leaderboard 100 "PlayerA" 200 "PlayerB" 150 "PlayerC"
+dragonfly> ZADD leaderboard 100 "PlayerA" 200 "PlayerB" 150 "PlayerC"
 (integer) 3
 
-dragonfly$> ZREVRANK leaderboard "PlayerD"
+dragonfly> ZREVRANK leaderboard "PlayerD"
 (nil)  # PlayerD does not exist in the sorted set.
 ```
 

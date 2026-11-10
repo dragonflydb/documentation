@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) where N is the number of heap pages inspected.
 
-**ACL categories:** @read, @slow
+**ACL categories:** @slow, @admin, @dangerous
 
 The `MEMORY DECOMMIT` command asks the allocator to return memory that the server has already
 freed back to the operating system, which lowers the process resident set size reported as

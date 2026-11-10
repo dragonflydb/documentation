@@ -66,11 +66,11 @@ $> redis-cli --tls -h dfly.scalable-meteorite-collections.com -a ${DFLY_PASS_TOK
 ```
 
 ```bash
-dragonfly$> SET anchdrite 33.7
+dragonfly> SET anchdrite 33.7
 OK
-dragonfly$> SET pallasite 19.1
+dragonfly> SET pallasite 19.1
 OK
-dragonfly$> GET anchdrite
+dragonfly> GET anchdrite
 "33.7"
 ```
 

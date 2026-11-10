@@ -49,13 +49,13 @@ See [`ZINTERSTORE`](./zinterstore.md) command for more detailed explanation of o
 ### Using `WITHSCORE` Option
 
 ```shell
-dragonfly$> ZADD zset1 1 a 2 b
+dragonfly> ZADD zset1 1 a 2 b
 (integer) 2
 
-dragonfly$> ZADD zset2 2 a 3 b
+dragonfly> ZADD zset2 2 a 3 b
 (integer) 2
 
-dragonfly$> ZINTER 2 zset1 zset2 WITHSCORES
+dragonfly> ZINTER 2 zset1 zset2 WITHSCORES
 1) "a"
 2) (double) 3  # Score: (1 + 2) = 2
 3) "b"

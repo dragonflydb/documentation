@@ -14,13 +14,13 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) where N is the number of provided slots
 
-**ACL categories:**  @admin, @slow
+**ACL categories:** @admin, @slow, @dangerous
 
 The `DFLYCLUSTER GETSLOTINFO` command is used to get information regarding provided hash slots.
 
 ## Return
 
-[Array reply](https://valkey.io/topics/protocol/#arrays): a nested list of slots info. When a slot has data offloaded to SSD tiered storage, its entry also includes `tiered_bytes`, the number of bytes the slot holds on disk. The field is omitted for slots with no offloaded data.
+[Array reply](https://valkey.io/topics/protocol/#arrays): a nested list of slots info. Requested slots that are not owned by the current cluster node are omitted. When a slot has data offloaded to SSD tiered storage, its entry also includes `tiered_bytes`, the number of bytes the slot holds on disk. The field is omitted for slots with no offloaded data.
 
 ## Examples
 

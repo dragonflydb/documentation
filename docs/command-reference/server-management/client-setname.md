@@ -22,13 +22,13 @@ The assigned name is displayed in the output of `CLIENT LIST` so that it is poss
 
 For instance when Dragonfly is used in order to implement a queue, producers and consumers of messages may want to set the name of the connection according to their role.
 
-It is not possible to use spaces in the connection name as this would violate the format of the `CLIENT LIST` reply.
+Do not use spaces in the connection name, as they would break the format of the `CLIENT LIST` reply.
 
 It is possible to entirely remove the connection name setting it to the empty string, that is not a valid connection name since it serves to this specific purpose.
 
 The connection name can be inspected using `CLIENT GETNAME`.
 
-Every new connection starts without an assigned name.
+A new connection is named after its connection ID (the value that `CLIENT ID` returns) until a name is set.
 
 Tip: setting names to connections is a good way to debug connection leaks due to bugs in the application using Dragonfly.
 
