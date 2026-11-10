@@ -963,7 +963,7 @@ flags which include specified substring in either in the name, description or pa
   `default:`
 
 ### `--luagc`
-  Specifies Lua garbage collector preferences. By default uses default lua GC parameters. Format should be `inc/200/100/13` or `gen/20/100` where `inc` and `gen` are types of GC, numbers are parameters. For more information see section 2.5 (Garbage Collection) of the [Lua 5.4 Reference Manual](https://www.lua.org/manual/5.4/).
+  Specifies Lua garbage collector preferences. By default uses default lua GC parameters. Format should be `inc/200/100/13` or `gen/20/100` where `inc` and `gen` are types of GC, numbers are parameters. For more information check https://www.lua.org/manual/5.4/manual.html#2.5
 
   `default:`
 

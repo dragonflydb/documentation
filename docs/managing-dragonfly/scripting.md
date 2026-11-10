@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # Scripting with Lua
 
-Dragonfly allows users to execute scripts written in [Lua](https://www.lua.org/). Its interface for managing and writing scripts its compatible with the [interface provided by Redis](https://valkey.io/topics/eval-intro/).
+Dragonfly allows users to execute scripts written in [Lua](https://lua.org). Its interface for managing and writing scripts its compatible with the [interface provided by Redis](https://valkey.io/topics/eval-intro/).
 
 Dragonfly uses Lua version 5.4.
 
