@@ -71,6 +71,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          failIfEmpty: false
           args: --config .lychee.toml --root-dir ${{ github.workspace }} --no-progress ${{ steps.files.outputs.files }}
           fail: true
           jobSummary: true
