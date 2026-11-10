@@ -60,7 +60,7 @@ jobs:
           elif git diff --name-only "$BASE_SHA" HEAD | grep -qE '^(\.lychee\.toml|\.github/workflows/check-links\.yml)$'; then
             files="$all"
           else
-            files=$(git diff --name-only --diff-filter=ACMR "$BASE_SHA" HEAD -- 'docs/*.md' | tr '\n' ' ')
+            files=$(while IFS= read -r -d '' file; do printf '%q ' "$file"; done < <(git diff --name-only -z --diff-filter=ACMR "$BASE_SHA" HEAD -- 'docs/*.md'))
           fi
           echo "Files to check: ${files:-none}"
           echo "files=$files" >> "$GITHUB_OUTPUT"
