@@ -18,7 +18,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 Flushes all the previously watched keys for a [transaction][tt].
 
-[tt]: https://redis.io/topics/transactions
+[tt]: https://valkey.io/topics/transactions/
 
 If you call `EXEC` or `DISCARD`, there's no need to manually call `UNWATCH`.
 

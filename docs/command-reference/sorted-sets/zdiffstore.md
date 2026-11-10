@@ -39,16 +39,16 @@ ZDIFFSTORE destination numkeys key [key ...]
 Return the members found in the first sorted set but not in the second:
 
 ```shell
-dragonfly$> ZADD myzset1 1 "one" 2 "two" 3 "three"
+dragonfly> ZADD myzset1 1 "one" 2 "two" 3 "three"
 (integer) 3
 
-dragonfly$> ZADD myzset2 2 "two" 4 "four"
+dragonfly> ZADD myzset2 2 "two" 4 "four"
 (integer) 2
 
-dragonfly$> ZDIFFSTORE result 2 myzset1 myzset2
+dragonfly> ZDIFFSTORE result 2 myzset1 myzset2
 (integer) 2
 
-dragonfly$> ZRANGE result 0 -1
+dragonfly> ZRANGE result 0 -1
 1) "one"
 2) "three"
 ```

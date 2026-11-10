@@ -24,12 +24,14 @@ Currently, the following subcommands are supported:
 - [CLIENT GETNAME](./client-getname.md)
 - [CLIENT ID](./client-id.md)
 - [CLIENT KILL](./client-kill.md)
+- [CLIENT INFO](./client-info.md)
 - [CLIENT LIST](./client-list.md)
 - [CLIENT UNPAUSE](./client-unpause.md)
 - [CLIENT PAUSE](./client-pause.md)
 - [CLIENT SETNAME](./client-setname.md)
 - [CLIENT SETINFO](./client-setinfo.md)
 - [CLIENT TRACKING](./client-tracking.md)
+- [CLIENT TRACKINGINFO](./client-trackinginfo.md)
 - CLIENT MIGRATE
 - [CLIENT HELP](./client-help.md)
 

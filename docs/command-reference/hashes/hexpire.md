@@ -17,7 +17,7 @@ import PageTitle from '@site/src/components/PageTitle';
 **ACL categories:** @write, @hash, @fast
 
 Set an expiration (TTL or time to live) on one or more fields of a given hash key.
-You must specify at least one field. 
+You must specify at least one field.
 Field(s) will automatically be deleted from the hash key when their TTLs expire.
 
 ## Return
@@ -36,14 +36,14 @@ Field(s) will automatically be deleted from the hash key when their TTLs expire.
 ## Examples
 
 ```shell
-dragonfly$> HEXPIRE no-key 20 FIELDS 2 field1 field2
+dragonfly> HEXPIRE no-key 20 FIELDS 2 field1 field2
 (nil)
-dragonfly$> HSET mykey field1 "hello" field2 "world"
+dragonfly> HSET mykey field1 "hello" field2 "world"
 (integer 2)
-dragonfly$> HEXPIRE mykey 10 FIELDS 3 field1 field2 field3
+dragonfly> HEXPIRE mykey 10 FIELDS 3 field1 field2 field3
 1) (integer) 1
 2) (integer) 1
 3) (integer) -2
-dragonfly$> HGETALL mykey
+dragonfly> HGETALL mykey
 (empty array)
 ```

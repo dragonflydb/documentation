@@ -36,7 +36,7 @@ Optional argument `filename` is used to override current **`dbfilename`** for sa
   The default filename is `dump-{timestamp}`.
 - **`snapshot_cron`** - Generate snapshots periodically. The argument is a cron format (e.g. `0 0 * * *`, `*/5 * * * *`)
 
-[tp]: https://redis.io/topics/persistence
+[tp]: https://valkey.io/topics/persistence/
 
 ## Return
 

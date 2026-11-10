@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 **Time complexity:** O(K*(M+N)) where K is the aggregate of all matching paths for the provided keys,
 M is the size of the original value, and N is the size of the new value.
 
-**ACL categories:** @json
+**ACL categories:** @json, @fast, @write
 
 Atomically sets the JSON value in each node identified by applying the `path` argument to a JSON object for each `key`.
 If `$` is used as the path, the entire object is overwritten or created with the provided value.

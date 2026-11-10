@@ -10,7 +10,7 @@ description: Returns information and statistics on the index
 
 **Time complexity:** Proportional to the number of shards and the amount of index metadata returned.
 
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow
 
 ## Description
 
@@ -31,19 +31,19 @@ is index name. You must first create the index using [`FT.CREATE`](./ft.create.m
 Returned values include:
 
 - `index_name`: name of the index upon creation by using [`FT.CREATE`](./ft.create.md).
-- `index_definition`: contains information about the index configuration, including `key_type`, `prefixes`, `default_language`, optional `language_field`, and `default_score`.
+- `index_definition`: contains information about the index configuration, including `key_type`, `prefixes`, optional `default_language`, optional `language_field`, and `default_score`.
 - `index_options`: index-level options, including `NOOFFSETS` when configured (may be empty).
 - `attributes`: index schema - for each field contains:
   - `identifier`: the original field name or JSONPath
   - `attribute`: the field alias (or same as identifier if no alias provided)
   - `type`: field type (TEXT, TAG, NUMERIC, VECTOR, GEO)
-  - field-specific options such as `SORTABLE`, `NOINDEX`, `WEIGHT` (for TEXT fields), `SEPARATOR` (for TAG fields), `algorithm`, `data_type`, `dim`, `distance_metric`, and algorithm-specific parameters (for VECTOR fields), and `blocksize` (for NUMERIC fields)
+  - field-specific options such as `SORTABLE`, `UNF`, `NOINDEX`, `INDEXEMPTY`, `INDEXMISSING`, `WEIGHT` (for TEXT fields), `SEPARATOR` (for TAG fields), `algorithm`, `data_type`, `dim`, `distance_metric`, and algorithm-specific parameters (for VECTOR fields), and `blocksize` (for NUMERIC fields)
 - `num_docs`: Number of documents in the index.
 - `indexing`: whether the index is currently being built (`1`) or not (`0`).
 - `percent_indexed`: fraction of the data that has been indexed so far.
 - `stopwords_list`: custom stopwords list (only present when custom stopwords are configured).
 
-The order of entries within `attributes` is not guaranteed and may differ between calls.
+The entries within `attributes` follow schema declaration order.
 
 ## Examples
 
@@ -57,55 +57,54 @@ dragonfly> FT.CREATE idx ON HASH PREFIX 1 blog:post: SCHEMA title TEXT SORTABLE 
 OK
 dragonfly> FT.INFO idx
  1) index_name
- 2) idx
+ 2) "idx"
  3) index_definition
  4) 1) key_type
     2) HASH
     3) prefixes
     4) 1) "blog:post:"
-    5) default_language
-    6) english
-    7) default_score
-    8) (integer) 1
+    5) default_score
+    6) (integer) 1
  5) index_options
  6) (empty array)
  7) attributes
- 8) 1) 1) identifier
-       2) title
-       3) attribute
-       4) title
-       5) type
-       6) TEXT
-       7) SORTABLE
-       8) WEIGHT
-       9) 1.000000
-    2) 1) identifier
-       2) description
-       3) attribute
-       4) description
-       5) type
-       6) TEXT
-       7) NOINDEX
-       8) WEIGHT
-       9) 1.000000
-    3) 1) identifier
-       2) published_at
-       3) attribute
-       4) published_at
-       5) type
-       6) NUMERIC
-       7) SORTABLE
-       8) blocksize
-       9) 10000
-    4) 1) identifier
-       2) category
-       3) attribute
-       4) category
-       5) type
-       6) TAG
-       7) SORTABLE
-       8) SEPARATOR
-       9) ,
+ 8) 1) 1) "identifier"
+       2) "title"
+       3) "attribute"
+       4) "title"
+       5) "type"
+       6) "TEXT"
+       7) "WEIGHT"
+       8) "1"
+       9) "SORTABLE"
+    2)  1) "identifier"
+        2) "published_at"
+        3) "attribute"
+        4) "published_at"
+        5) "type"
+        6) "NUMERIC"
+        7) "blocksize"
+        8) "10000"
+        9) "SORTABLE"
+       10) "UNF"
+    3) 1) "identifier"
+       2) "category"
+       3) "attribute"
+       4) "category"
+       5) "type"
+       6) "TAG"
+       7) "SEPARATOR"
+       8) ","
+       9) "SORTABLE"
+    4) 1) "identifier"
+       2) "description"
+       3) "attribute"
+       4) "description"
+       5) "type"
+       6) "TEXT"
+       7) "WEIGHT"
+       8) "1"
+       9) "NOINDEX"
  9) num_docs
 10) (integer) 1
 11) indexing

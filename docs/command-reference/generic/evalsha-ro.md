@@ -22,12 +22,12 @@ Evaluate a script from the server's cache by its SHA1 digest in read-only mode.
 
 The first argument is the script's SHA1 digest as returned by `SCRIPT LOAD`. The second argument is the number of input key name arguments, followed by all the keys accessed by the script. Any additional input arguments should not represent names of keys.
 
-For a general introduction to scripting, see `EVAL` and the [Redis Programmability docs](https://redis.io/docs/latest/develop/interact/programmability/).
+For a general introduction to scripting, see `EVAL` and the [Valkey Programmability docs](https://valkey.io/topics/programmability/).
 For Valkey semantics reference, see the [corresponding command page here](https://valkey.io/commands/evalsha_ro/).
 
 ## Return
 
-The reply is the result returned by the script, using the [RESP](https://valkey.io/topics/protocol//) types.
+The reply is the result returned by the script, using the [RESP](https://valkey.io/topics/protocol/) types.
 
 ## Examples
 

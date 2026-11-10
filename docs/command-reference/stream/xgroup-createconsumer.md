@@ -20,7 +20,7 @@ XGROUP CREATECONSUMER key group consumer
 ```
 
 - **Time complexity:** O(1)
-- **ACL categories:** @slow
+- **ACL categories:** @slow, @stream, @write
 
 ## Parameter Explanations
 
@@ -41,14 +41,14 @@ Create a new consumer in a consumer group:
 
 ```shell
 # Create a stream with items
-dragonfly$> XADD mystream * field1 value1
+dragonfly> XADD mystream * field1 value1
 "1609471230723-0"
 
-dragonfly$> XGROUP CREATE mystream mygroup 0
+dragonfly> XGROUP CREATE mystream mygroup 0
 OK
 
 # Create a consumer named 'consumer-1' in 'mygroup'.
-dragonfly$> XGROUP CREATECONSUMER mystream mygroup consumer-1
+dragonfly> XGROUP CREATECONSUMER mystream mygroup consumer-1
 (integer) 1
 ```
 
@@ -58,7 +58,7 @@ Recreate the same consumer to demonstrate the return value:
 
 ```shell
 # Attempt to create an existing consumer.
-dragonfly$> XGROUP CREATECONSUMER mystream mygroup consumer-1
+dragonfly> XGROUP CREATECONSUMER mystream mygroup consumer-1
 (integer) 0 # Consumer already exists.
 ```
 
@@ -76,7 +76,7 @@ dragonfly$> XGROUP CREATECONSUMER mystream mygroup consumer-1
 
 ### What happens if the consumer group does not exist?
 
-If the specified consumer group does not exist, `XGROUP CREATECONSUMER` will return an error. 
+If the specified consumer group does not exist, `XGROUP CREATECONSUMER` will return an error.
 Ensure the group is created with `XGROUP CREATE` before adding consumers.
 
 ### Can a consumer belong to multiple groups?

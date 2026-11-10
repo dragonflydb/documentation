@@ -15,7 +15,7 @@ This command is similar to [`ZINTER`](./zinter.md), but instead of returning the
 
 By default, the command calculates the cardinality of the intersection of all given sets.
 When provided with the optional `LIMIT` argument (which defaults to `0` and means unlimited),
-if the intersection cardinality reaches the `limit` partway through the computation, the algorithm will exit and yield the `limit` value as the cardinality. 
+if the intersection cardinality reaches the `limit` partway through the computation, the algorithm will exit and yield the `limit` value as the cardinality.
 
 ## Syntax
 
@@ -39,20 +39,20 @@ ZINTERCARD numkeys key [key ...] [LIMIT limit]
 ## Code Examples
 
 ```shell
-dragonfly$> ZADD zset1 1 a 2 b 3 c
+dragonfly> ZADD zset1 1 a 2 b 3 c
 (integer) 3
 
-dragonfly$> ZADD zset2 1 a 2 b 3 c 4 d 5 e
+dragonfly> ZADD zset2 1 a 2 b 3 c 4 d 5 e
 (integer) 5
 
-dragonfly$> ZINTER 2 zset1 zset2
+dragonfly> ZINTER 2 zset1 zset2
 1) "a"
 2) "b"
 3) "c"
 
-dragonfly$> ZINTERCARD 2 zset1 zset2
+dragonfly> ZINTERCARD 2 zset1 zset2
 (integer) 3
 
-dragonfly$> ZINTERCARD 2 zset1 zset2 LIMIT 2
+dragonfly> ZINTERCARD 2 zset1 zset2 LIMIT 2
 (integer) 2
 ```

@@ -35,6 +35,7 @@ from __future__ import annotations
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import functools
 import html
 import json
 import os
@@ -510,9 +511,10 @@ def command_matches(command: str, available: set[str]) -> list[str]:
 
 # Internal/administrative commands that must never appear in the PUBLIC
 # compatibility table: replication/cluster coordination, debug, and any
-# underscore- or DFLY-prefixed handler.
+# underscore- or DFLY-prefixed handler. REPLTAKEOVER is public: it has a
+# command page and a Dragonfly-specific row.
 INTERNAL_COMMAND_NAMES = {
-    "DFLY", "DFLYCLUSTER", "DFLYMIGRATE", "ADDREPLICAOF", "REPLTAKEOVER",
+    "DFLY", "DFLYCLUSTER", "DFLYMIGRATE", "ADDREPLICAOF",
 }
 
 
@@ -1123,16 +1125,72 @@ def _family_hint(key: str) -> str:
     return key.split()[0].split(".")[0].lower()
 
 
+# Lexer for _blank_reply_literals(), one left-to-right pass. `str` is a string
+# literal (raw R"(...)" too); `call` opens a member Send*( call — the reply-builder
+# API (rb->SendBulkString(, cmd_cntx->SendError(, builder.SendOk(). Comments, char
+# literals and digit separators (100'000) are matched only so the quotes and
+# parentheses inside them are skipped.
+_REPLY_SCAN_RE = re.compile(
+    r"//[^\n]*"
+    r"|/\*.*?(?:\*/|\Z)"
+    r'|(?P<str>(?<![A-Za-z0-9_])(?:u8|[uUL])?R"(?P<delim>[^()\\\s]{0,16})\(.*?\)(?P=delim)"'
+    r'|"(?:[^"\\\n]|\\.)*"?)'
+    r"|(?<=[0-9])'(?=[0-9])"
+    r"|'(?:[^'\\\n]|\\.)*'?"
+    r"|(?P<call>(?:\.|->)\s*Send[A-Z]\w*\s*(?:<[^\n;{}()]*>)?\s*\()"
+    r"|(?P<open>\()|(?P<close>\))",
+    re.DOTALL,
+)
+
+
+@functools.lru_cache(maxsize=64)
+def _blank_reply_literals(text: str) -> str:
+    """`text` with every string literal inside a reply-builder Send*(...) call
+    emptied (`rb->SendBulkString("redirect")` -> `rb->SendBulkString("")`).
+
+    Those literals are reply payload — map field names, status and error text —
+    never option parsing: v2.1.0's CLIENT TRACKINGINFO replies with the field
+    "redirect", which made CLIENT TRACKING's unparsed REDIRECT look honored.
+    Literals of nested calls in the arguments (UnknownSubCmd("X", "CMD")) are
+    emptied too. Every member Send*( call counts: the few that are not reply
+    builders (channel_store->SendMessages) carry payload as well. Free calls
+    (SendNextPhaseRequest("SYNC")) and everything outside a call are kept."""
+    pieces: list[str] = []
+    last = 0
+    depth = 0  # parenthesis depth inside the outermost reply call; 0 = outside
+    for m in _REPLY_SCAN_RE.finditer(text):
+        if m.group("call") is not None:
+            depth += 1
+        elif not depth:
+            continue
+        elif m.group("open") is not None:
+            depth += 1
+        elif m.group("close") is not None:
+            depth -= 1
+        elif m.group("str") is not None:
+            pieces.append(text[last:m.start()])
+            pieces.append('""')
+            last = m.end()
+    if not pieces:
+        return text
+    pieces.append(text[last:])
+    return "".join(pieces)
+
+
 def _token_honored(token: str, text: str) -> bool:
     """Whether a Redis option/subcommand keyword is PARSED AND HONORED in `text`.
     Tested as a string LITERAL ("TOKEN") — the way Dragonfly matches options
     (parser.Check("X"), sub_cmd == "X"); a bare word matched variables (db_index
-    for DB). Not honored if named only inside a rejection ("... not supported"):
-    recognized but stubbed. Punctuation-only tokens (~, =) count as honored."""
+    for DB). A literal that is an argument of a reply-builder call
+    (rb->SendBulkString("redirect")) is reply payload and does not count. Not
+    honored if named only inside a rejection ("... not supported"): recognized
+    but stubbed; the rejection check still reads the SendError messages.
+    Punctuation-only tokens (~, =) count as honored."""
     tok = token.strip().upper()
     if len(tok) < 2 or not re.search(r"[A-Z]", tok):
         return True
-    if not re.search(r'"' + re.escape(tok) + r'"', text, re.IGNORECASE):
+    if not re.search(r'"' + re.escape(tok) + r'"', _blank_reply_literals(text),
+                     re.IGNORECASE):
         return False
     rejected = re.search(
         r'"[^"]*\b' + re.escape(tok) + r'\b[^"]*(?:not supported|not implemented)"',

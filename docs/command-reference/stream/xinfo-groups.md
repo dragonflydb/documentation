@@ -20,7 +20,7 @@ XINFO GROUPS key
 ```
 
 - **Time complexity:** O(1)
-- **ACL categories:** @slow
+- **ACL categories:** @slow, @read, @stream
 
 ## Parameter Explanations
 
@@ -44,10 +44,10 @@ XINFO GROUPS key
 Get information about consumer groups for a stream:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream mygroup $ MKSTREAM
+dragonfly> XGROUP CREATE mystream mygroup $ MKSTREAM
 OK
 
-dragonfly$> XINFO GROUPS mystream
+dragonfly> XINFO GROUPS mystream
 1)  1) "name"
     2) "mygroup"
     3) "consumers"
@@ -67,13 +67,13 @@ dragonfly$> XINFO GROUPS mystream
 Creating and monitoring multiple consumer groups:
 
 ```shell
-dragonfly$> XGROUP CREATE mystream group1 $ MKSTREAM
+dragonfly> XGROUP CREATE mystream group1 $ MKSTREAM
 OK
 
-dragonfly$> XGROUP CREATE mystream group2 $
+dragonfly> XGROUP CREATE mystream group2 $
 OK
 
-dragonfly$> XINFO GROUPS mystream
+dragonfly> XINFO GROUPS mystream
 1)  1) "name"
     2) "group1"
     3) "consumers"

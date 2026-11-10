@@ -14,7 +14,7 @@ description: Creates an index with the given spec
       [NOINDEX] [ field_name [AS alias] TEXT | TAG | NUMERIC | VECTOR | GEO [ SORTABLE ] [NOINDEX] ...]
 
 **Time complexity:** O(K) at creation where K is the number of fields, O(N) if scanning the keyspace is triggered, where N is the number of keys in the keyspace.
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow, @write
 
 ## Description
 
@@ -42,6 +42,7 @@ after the SCHEMA keyword, declares which fields to index:
 
  - `AS {attribute}` defines the attribute associated to the identifier.
    For example, you can use this feature to alias a complex JSONPath expression with more memorable (and easier to type) name.
+   The same Hash field or JSONPath can be declared multiple times with different attributes.
 
 Field types are:
 
@@ -65,6 +66,8 @@ Field types are:
 
  - `GEO` - Allows geographic range queries against the value in this attribute.
 
+See [Query syntax](./query-syntax.md) for how to query each attribute type.
+
 :::note About `VECTOR`
 - Full documentation on vector options is available in the [Valkey FT.CREATE reference](https://valkey.io/commands/ft.create/).
 - Currently, Dragonfly has limited support for vector options.
@@ -86,9 +89,9 @@ Field options are:
 
 :::note About ignored field options
 The following field options are accepted but ignored for compatibility with Redis:
-- `UNF` - ignored without arguments
+- `UNF` - kept in the index definition and listed by [`FT.INFO`](./ft.info.md)
 - `PHONETIC` - ignored with its argument
-- `INDEXMISSING`, `INDEXEMPTY` - ignored without warning
+- `INDEXMISSING`, `INDEXEMPTY` - kept in the index definition and listed by [`FT.INFO`](./ft.info.md) (`INDEXEMPTY` only on `TEXT` and `TAG` fields); `INDEXMISSING` cannot be combined with `NOINDEX`
 :::
 
 </details>
@@ -179,6 +182,12 @@ Index a JSON document using bare field names (without JSONPath prefix).
 
 ``` bash
 dragonfly> FT.CREATE idx2 ON JSON SCHEMA title TEXT categories TAG
+```
+
+Declare the same JSONPath as both a `TEXT` and a `TAG` attribute.
+
+``` bash
+dragonfly> FT.CREATE idx3 ON JSON SCHEMA $.title AS title_text TEXT $.title AS title_tag TAG
 ```
 </details>
 

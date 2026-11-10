@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) for the NUMSUB subcommand, where N is the number of requested channels
 
-**ACL categories:** @slow
+**ACL categories:** @slow, @pubsub
 
 Returns the number of subscribers (exclusive of clients subscribed to patterns) for the specified channels.
 

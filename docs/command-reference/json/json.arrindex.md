@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) when path is evaluated to a single value where N is the size of the array, O(N) when path is evaluated to multiple values, where N is the size of the key
 
-**ACL categories:** @json
+**ACL categories:** @json, @fast, @read
 
 Search for the first occurrence of a JSON value in an array
 

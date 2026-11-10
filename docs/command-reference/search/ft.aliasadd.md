@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1) on average per shard.
 
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow, @write
 
 Adds an alternate name for an existing search index. Applications can query
 the alias with [`FT.SEARCH`](./ft.search.md) and later switch it to another
@@ -28,8 +28,9 @@ their queries.
   The target must be an index name, not another alias.
 
 An alias refers to an index without copying its data or creating a new index.
-Multiple aliases can refer to the same index. [`FT._LIST`](./ft._list.md)
-lists index names, not aliases. Dropping the target index removes its aliases.
+Multiple aliases can refer to the same index. Alias definitions are persisted
+in snapshots. [`FT._LIST`](./ft._list.md) lists index names, not aliases.
+Dropping the target index removes its aliases.
 
 ## Return
 

@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(1) when path is evaluated to a single value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
-**ACL categories:** @json
+**ACL categories:** @json, @fast, @write
 
 Multiply the number value stored at `path` by `number`
 

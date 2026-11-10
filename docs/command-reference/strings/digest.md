@@ -43,9 +43,9 @@ DIGEST key
 Compute digest of a string value:
 
 ```shell
-dragonfly$> SET mykey "Hello, Dragonfly!"
+dragonfly> SET mykey "Hello, Dragonfly!"
 OK
-dragonfly$> DIGEST mykey
+dragonfly> DIGEST mykey
 "063b4909128e92b7"
 ```
 
@@ -54,7 +54,7 @@ dragonfly$> DIGEST mykey
 If the key does not exist, `DIGEST` returns `nil`:
 
 ```shell
-dragonfly$> DIGEST non_existent_key
+dragonfly> DIGEST non_existent_key
 (nil)
 ```
 
@@ -63,35 +63,35 @@ dragonfly$> DIGEST non_existent_key
 The same value always produces the same digest:
 
 ```shell
-dragonfly$> SET key1 "test"
+dragonfly> SET key1 "test"
 OK
-dragonfly$> SET key2 "test"
+dragonfly> SET key2 "test"
 OK
-dragonfly$> DIGEST key1
+dragonfly> DIGEST key1
 "9ec9f7918d7dfc40"
-dragonfly$> DIGEST key2
+dragonfly> DIGEST key2
 "9ec9f7918d7dfc40"
 ```
 
 ### Different Values Produce Different Digests
 
 ```shell
-dragonfly$> SET key1 "hello"
+dragonfly> SET key1 "hello"
 OK
-dragonfly$> SET key2 "world"
+dragonfly> SET key2 "world"
 OK
-dragonfly$> DIGEST key1
+dragonfly> DIGEST key1
 "9555e8555c62dcfd"
-dragonfly$> DIGEST key2
+dragonfly> DIGEST key2
 "d6476c25083d69be"
 ```
 
 ### Error on Wrong Type
 
 ```shell
-dragonfly$> LPUSH mylist "item"
+dragonfly> LPUSH mylist "item"
 (integer) 1
-dragonfly$> DIGEST mylist
+dragonfly> DIGEST mylist
 (error) WRONGTYPE Operation against a key holding the wrong kind of value
 ```
 

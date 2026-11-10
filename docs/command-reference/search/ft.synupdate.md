@@ -10,7 +10,7 @@ description: Creates or updates a synonym group
       [SKIPINITIALSCAN] term [term ...]
 
 **Time complexity:** O(N)
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow, @write
 
 ## Description
 
@@ -74,4 +74,4 @@ OK
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
+- [Valkey Search](https://valkey.io/topics/search/)

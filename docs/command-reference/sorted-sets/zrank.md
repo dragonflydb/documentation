@@ -42,19 +42,19 @@ ZRANK key member [WITHSCORE]
 Rank players in a leaderboard by their scores:
 
 ```shell
-dragonfly$> ZADD leaderboard 5000 "Player1" 6000 "Player2" 7000 "Player3"
+dragonfly> ZADD leaderboard 5000 "Player1" 6000 "Player2" 7000 "Player3"
 (integer) 3
 
-dragonfly$> ZRANK leaderboard "Player1"
+dragonfly> ZRANK leaderboard "Player1"
 (integer) 0
 
-dragonfly$> ZRANK leaderboard "Player2"
+dragonfly> ZRANK leaderboard "Player2"
 (integer) 1
 
-dragonfly$> ZRANK leaderboard "Player3"
+dragonfly> ZRANK leaderboard "Player3"
 (integer) 2
 
-dragonfly$> ZRANK leaderboard "Player2" WITHSCORE
+dragonfly> ZRANK leaderboard "Player2" WITHSCORE
 1) (integer) 1
 2) "6000"
 ```
@@ -64,13 +64,13 @@ dragonfly$> ZRANK leaderboard "Player2" WITHSCORE
 Attempt to retrieve the rank of a member that doesn't exist returns `nil`:
 
 ```shell
-dragonfly$> ZADD leaderboard 5000 "Player1" 6000 "Player2" 7000 "Player3"
+dragonfly> ZADD leaderboard 5000 "Player1" 6000 "Player2" 7000 "Player3"
 (integer) 3
 
-dragonfly$> ZRANK leaderboard "Player4"
+dragonfly> ZRANK leaderboard "Player4"
 (nil)
 
-dragonfly$> ZRANK leaderboard "Player4" WITHSCORE
+dragonfly> ZRANK leaderboard "Player4" WITHSCORE
 (nil)
 ```
 
@@ -79,13 +79,13 @@ dragonfly$> ZRANK leaderboard "Player4" WITHSCORE
 When a player's score changes, the rank will dynamically adjust:
 
 ```shell
-dragonfly$> ZADD leaderboard 5000 "Player1" 6000 "Player2" 7000 "Player3"
+dragonfly> ZADD leaderboard 5000 "Player1" 6000 "Player2" 7000 "Player3"
 (integer) 3
 
-dragonfly$> ZADD leaderboard 8000 "Player2"
+dragonfly> ZADD leaderboard 8000 "Player2"
 (integer) 0
 
-dragonfly$> ZRANK leaderboard "Player2"
+dragonfly> ZRANK leaderboard "Player2"
 (integer) 2
 ```
 
@@ -96,10 +96,10 @@ Here, `Player2`'s score was updated to `8000` and now ranks at index `2`.
 For larger sets, `ZRANK` remains efficient and operates in logarithmic time complexity (`O(log(N))`):
 
 ```shell
-dragonfly$> ZADD large_set 1 "A" 2 "B" 3 "C" 4 "D" 5 "E"
+dragonfly> ZADD large_set 1 "A" 2 "B" 3 "C" 4 "D" 5 "E"
 (integer) 5
 
-dragonfly$> ZRANK large_set "D"
+dragonfly> ZRANK large_set "D"
 (integer) 3
 ```
 

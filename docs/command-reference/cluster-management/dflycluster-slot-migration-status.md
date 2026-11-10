@@ -15,7 +15,7 @@ import PageTitle from '@site/src/components/PageTitle';
 **Time complexity:** O(M + R), where M is the number of migrations on the
 node and R is the total number of their slot ranges.
 
-**ACL categories:** @admin, @slow
+**ACL categories:** @admin, @slow, @dangerous
 
 The `DFLYCLUSTER SLOT-MIGRATION-STATUS` command is used to get the status of one or all slot migrations on a Dragonfly node.
 If a `node_id` is provided, the result shows the status of the migrations between the current node and the specified `node_id`.

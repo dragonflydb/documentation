@@ -9,7 +9,7 @@ description: Uses SEARCH command to collect performance info
     FT.PROFILE index SEARCH | AGGREGATE [LIMITED] QUERY query
 
 **Time complexity:** O(N)
-**ACL categories:** @ft_search
+**ACL categories:** @ft_search, @slow
 
 ## Description
 
@@ -46,6 +46,7 @@ The `LIMITED` option is planned for future releases but full functionality is no
 <summary><code>QUERY query</code></summary>
 
 is query string, sent to the [`FT.SEARCH`](./ft.search.md) or [`FT.AGGREGATE`](./ft.aggregate.md) command to collect performance details.
+The query uses the [query syntax](./query-syntax.md) of `FT.SEARCH`.
 </details>
 
 ## Return
@@ -112,4 +113,4 @@ dragonfly> FT.PROFILE idx SEARCH QUERY "@category:{default}"
 
 ## Related topics
 
-- [RediSearch](https://redis.io/docs/latest/operate/oss_and_stack/stack-with-enterprise/search/)
+- [Valkey Search](https://valkey.io/topics/search/)

@@ -13,7 +13,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** Depends on subcommand.
 
-**ACL categories:** @slow
+**ACL categories:** @slow, @pubsub
 
 This is a container command for Pub/Sub introspection commands.
 

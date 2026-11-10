@@ -16,7 +16,7 @@ CL.THROTTLE <key> <max_burst> <count per period> <period> [<quantity>]
 
 **Time complexity:** O(1)
 
-**ACL categories:** @throttle
+**ACL categories:** @throttle, @fast, @write
 
 This command provides functionality for implementing a rate limiter and
 is based on a Redis module called [redis-cell](https://github.com/brandur/redis-cell).
@@ -40,12 +40,12 @@ a leaky bucket or a token bucket rate limiter, such as the following:
 - The rest of the parameters are self-explanary:
 
 ```shell
-dragonfly$> CL.THROTTLE user123 20 120 60 1
-#                          ^     ^   ^  ^ ^
-#                          |     |   |  | └───── apply 1 token (default if omitted)
-#                          |     |   └──┴─────── 120 tokens / 60 seconds
-#                          |     └────────────── 20 max_burst
-#                          └──────────────────── key "user123"
+dragonfly> CL.THROTTLE user123 20 120 60 1
+#                         ^     ^   ^  ^ ^
+#                         |     |   |  | └───── apply 1 token (default if omitted)
+#                         |     |   └──┴─────── 120 tokens / 60 seconds
+#                         |     └────────────── 20 max_burst
+#                         └──────────────────── key "user123"
 ```
 
 ## Return Values
@@ -63,14 +63,14 @@ Positive values in the last two fields are rounded up to whole seconds.
 ## Examples
 
 ```shell
-dragonfly$> CL.THROTTLE user123 0 1 10 1
+dragonfly> CL.THROTTLE user123 0 1 10 1
 1) (integer) 0
 2) (integer) 1
 3) (integer) 0
 4) (integer) -1
 5) (integer) 10
 
-dragonfly$> CL.THROTTLE user123 0 1 10 1
+dragonfly> CL.THROTTLE user123 0 1 10 1
 1) (integer) 1
 2) (integer) 1
 3) (integer) 0

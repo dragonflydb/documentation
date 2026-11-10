@@ -22,7 +22,7 @@ XGROUP DESTROY key group
 ```
 
 - **Time complexity:** O(N) where N is the number of entries in the group's pending entries list (PEL).
-- **ACL categories:** @slow
+- **ACL categories:** @slow, @stream, @write
 
 ## Parameter Explanations
 
@@ -41,19 +41,19 @@ XGROUP DESTROY key group
 Delete a consumer group named `mygroup` from `mystream`:
 
 ```shell
-dragonfly$> XADD mystream * name "Alice"
+dragonfly> XADD mystream * name "Alice"
 "1736315194818-0"
 
-dragonfly$> XGROUP CREATE mystream mygroup 0
+dragonfly> XGROUP CREATE mystream mygroup 0
 OK
 
 # Delete the consumer group 'mygroup'.
 # Since the group exists, the command returns 1.
-dragonfly$> XGROUP DESTROY mystream mygroup
+dragonfly> XGROUP DESTROY mystream mygroup
 (integer) 1
 
 # Attempting to delete the group again will return 0.
-dragonfly$> XGROUP DESTROY mystream mygroup
+dragonfly> XGROUP DESTROY mystream mygroup
 (integer) 0
 ```
 

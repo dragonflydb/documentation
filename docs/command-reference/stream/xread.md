@@ -19,7 +19,7 @@ It is a blocking command by nature and is commonly utilized for implementing mes
 XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] id [id ...]
 ```
 
-- **Time complexity:** 
+- **Time complexity:**
 - **ACL categories:** @read, @stream, @slow, @blocking
 
 ## Parameter Explanations
@@ -42,13 +42,13 @@ XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] id [id ...]
 Read from a single stream starting from the first message (non-blocking):
 
 ```shell
-dragonfly$> XADD mystream * name Alice age 30
+dragonfly> XADD mystream * name Alice age 30
 "1609945144079-0"
 
-dragonfly$> XADD mystream * name Bob age 25
+dragonfly> XADD mystream * name Bob age 25
 "1609945144079-1"
 
-dragonfly$> XREAD STREAMS mystream 0
+dragonfly> XREAD STREAMS mystream 0
 1) 1) "mystream"
    2) 1) 1) "1609945144079-0"
          2) 1) "name"
@@ -67,15 +67,15 @@ dragonfly$> XREAD STREAMS mystream 0
 Read a limited number of entries from a stream (non-blocking):
 
 ```shell
-dragonfly$> XADD mystream * name Alice age 30
+dragonfly> XADD mystream * name Alice age 30
 "1752099700000-0"
 
-dragonfly$> XADD mystream * name Bob age 25
+dragonfly> XADD mystream * name Bob age 25
 "1752099799999-0"
 
 # Read 1 entry from the beginning.
 # Note that '0' is an incomplete ID, which is equivalent to '0-0' in this case.
-dragonfly$> XREAD COUNT 1 STREAMS mystream 0
+dragonfly> XREAD COUNT 1 STREAMS mystream 0
 1) 1) "mystream"
    2) 1) 1) "1752099700000-0"
          2) 1) "name"
@@ -84,7 +84,7 @@ dragonfly$> XREAD COUNT 1 STREAMS mystream 0
             4) "30"
 
 # Read 1 entry after the ID "1752099700000-0".
-dragonfly$> XREAD COUNT 1 STREAMS mystream "1752099700000-0"
+dragonfly> XREAD COUNT 1 STREAMS mystream "1752099700000-0"
 1) 1) "mystream"
    2) 1) 1) "1752099799999-0"
          2) 1) "name"
@@ -98,16 +98,16 @@ dragonfly$> XREAD COUNT 1 STREAMS mystream "1752099700000-0"
 Read a limited number of entries from multiple streams (non-blocking):
 
 ```shell
-dragonfly$> XADD mystream1 * name Alice age 30
+dragonfly> XADD mystream1 * name Alice age 30
 "1752100089353-0"
 
-dragonfly$> XADD mystream1 * name Bob age 25
+dragonfly> XADD mystream1 * name Bob age 25
 "1752100097545-0"
 
-dragonfly$> XADD mystream2 * name Charlie age 20
+dragonfly> XADD mystream2 * name Charlie age 20
 "1752100108387-0"
 
-dragonfly$> XREAD COUNT 1 STREAMS mystream1 mystream2 "0-0" "0-0"
+dragonfly> XREAD COUNT 1 STREAMS mystream1 mystream2 "0-0" "0-0"
 1) 1) "mystream1"
    2) 1) 1) "1752100089353-0"
          2) 1) "name"
@@ -128,12 +128,12 @@ Block the command until new data arrives in the stream:
 
 ```shell
 # In a client terminal, set up a blocking read for 20 seconds.
-dragonfly$> XREAD BLOCK 20000 STREAMS mystream $
+dragonfly> XREAD BLOCK 20000 STREAMS mystream $
 ```
 
 ```shell
 # In a new client terminal, within 20 seconds, add an entry to the stream.
-dragonfly$> XADD mystream * name Charlie age 20
+dragonfly> XADD mystream * name Charlie age 20
 "1609945245092-0"
 ```
 

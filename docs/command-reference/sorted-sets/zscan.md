@@ -45,10 +45,10 @@ ZSCAN key cursor [MATCH pattern] [COUNT count]
 Scan members from a sorted set using the cursor, starting from `0`:
 
 ```shell
-dragonfly$> ZADD myzset 10 "a" 20 "b" 30 "c"
+dragonfly> ZADD myzset 10 "a" 20 "b" 30 "c"
 (integer) 3
 
-dragonfly$> ZSCAN myzset 0
+dragonfly> ZSCAN myzset 0
 1) "0"                   # New cursor (0 means full iteration has completed)
 2) 1) "a"                # Member
    2) "10"               # Score
@@ -63,17 +63,17 @@ dragonfly$> ZSCAN myzset 0
 Only scan for members whose names match a certain pattern:
 
 ```shell
-dragonfly$> ZADD myzset 10 "alpha" 20 "beta" 30 "gamma"
+dragonfly> ZADD myzset 10 "alpha" 20 "beta" 30 "gamma"
 (integer) 3
 
 # Scan members whose names start with "a".
-dragonfly$> ZSCAN myzset 0 MATCH a*
+dragonfly> ZSCAN myzset 0 MATCH a*
 1) "0"
 2) 1) "alpha"
    2) "10"
-   
+
 # Scan members whose names contain "a".
-dragonfly$> ZSCAN myzset 0 MATCH *a*
+dragonfly> ZSCAN myzset 0 MATCH *a*
 1) "0"
 2) 1) "alpha"
    2) "10"
@@ -94,7 +94,7 @@ CURSOR="0"
 while true; do
   # Fetch members from the sorted set.
   SCAN_RESULT=$(redis-cli ZSCAN myzset $CURSOR COUNT 2)
-  
+
   # Update cursor from server response.
   CURSOR=$(echo "$SCAN_RESULT" | head -n 1)
 

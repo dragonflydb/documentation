@@ -22,7 +22,7 @@ BZPOPMAX key [key ...] timeout
 ```
 
 - **Time complexity:** O(log(N)) with N being the number of elements in the sorted set.
-- **ACL categories:** @write, @sortedset, @blocking, @slow
+- **ACL categories:** @write, @sortedset, @blocking, @fast
 
 ## Parameter Explanations
 
@@ -46,10 +46,10 @@ If the timeout expires without any elements to pop, `nil` is returned.
 Pop the highest score element from a sorted set:
 
 ```shell
-dragonfly$> ZADD myzset 1 "item1" 2 "item2" 3 "item3"
+dragonfly> ZADD myzset 1 "item1" 2 "item2" 3 "item3"
 (integer) 3
 
-dragonfly$> BZPOPMAX myzset 0
+dragonfly> BZPOPMAX myzset 0
 1) "myzset"
 2) "item3"
 3) "3"
@@ -60,18 +60,18 @@ dragonfly$> BZPOPMAX myzset 0
 If the sorted set is empty, `BZPOPMAX` will wait for new elements or until the timeout:
 
 ```shell
-dragonfly$> ZADD myzset 1 "item1" 2 "item2"
+dragonfly> ZADD myzset 1 "item1" 2 "item2"
 (integer) 2
 
-dragonfly$> ZPOPMAX myzset
+dragonfly> ZPOPMAX myzset
 1) "item2"
 2) "2"
 
-dragonfly$> ZPOPMAX myzset
+dragonfly> ZPOPMAX myzset
 1) "item1"
 2) "1"
 
-dragonfly$> BZPOPMAX myzset 5
+dragonfly> BZPOPMAX myzset 5
 (nil)  # No elements in the sorted set, waited for 5 seconds and then returned nil.
 ```
 
@@ -81,13 +81,13 @@ You can specify multiple sorted sets.
 The command will act on the first non-empty set encountered:
 
 ```shell
-dragonfly$> ZADD zset1 1 "a" 2 "b"
+dragonfly> ZADD zset1 1 "a" 2 "b"
 (integer) 2
 
-dragonfly$> ZADD zset2 1 "x" 3 "y"
+dragonfly> ZADD zset2 1 "x" 3 "y"
 (integer) 2
 
-dragonfly$> BZPOPMAX zset1 zset2 0
+dragonfly> BZPOPMAX zset1 zset2 0
 1) "zset1"  # Even though 'zset2' has a higher score, 'zset1' is popped first because it was specified first.
 2) "b"
 3) "2"
@@ -98,7 +98,7 @@ dragonfly$> BZPOPMAX zset1 zset2 0
 By setting the `timeout` value to `0`, the connection will block indefinitely until a new element can be popped:
 
 ```shell
-dragonfly$> BZPOPMAX somezset 0
+dragonfly> BZPOPMAX somezset 0
 # The connection will block until a new element is added to 'somezset'.
 ```
 

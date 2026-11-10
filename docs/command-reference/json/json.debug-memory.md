@@ -14,7 +14,7 @@ import PageTitle from '@site/src/components/PageTitle';
 
 **Time complexity:** O(N) when path is evaluated to a single value, where N is the size of the value, O(N) when path is evaluated to multiple values, where N is the size of the key
 
-**ACL categories:** @json
+**ACL categories:** @json, @fast, @read
 
 Report the memory size in bytes of the JSON element.
 
@@ -79,10 +79,10 @@ dragonfly> JSON.SET obj_doc $ '{"a":1, "b":2, "c":{"k1":1,"k2":2}}'
 OK
 
 dragonfly> JSON.DEBUG MEMORY obj_doc $.c
-1) (integer) 336
+1) (integer) 80
 
 dragonfly> JSON.DEBUG MEMORY obj_doc $
-1) (integer) 1104
+1) (integer) 208
 
 dragonfly> JSON.SET arr_doc $ '[1, 2, 3, 4, 5]'
 OK
@@ -131,7 +131,7 @@ dragonfly> JSON.DEBUG MEMORY doc $[*]
 5) (integer) 0   # null
 6) (integer) 0   # {}
 7) (integer) 0   # []
-8) (integer) 336  # {"a":1, "b":2}
+8) (integer) 80  # {"a":1, "b":2}
 9) (integer) 48  # [1,2,3]
 ```
 
@@ -143,6 +143,6 @@ dragonfly> JSON.DEBUG MEMORY doc $[*]
 
 ## Related Topics
 
-- [RedisJSON](https://redis.io/docs/latest/develop/data-types/json/)
-- [Index and search JSON documents](https://redis.io/docs/latest/develop/data-types/json/indexing_json/)
+- [Valkey JSON](https://valkey.io/topics/valkey-json/)
+- [Index JSON documents with Valkey Search](https://valkey.io/topics/search-data-formats/)
 

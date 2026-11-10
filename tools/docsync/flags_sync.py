@@ -31,13 +31,17 @@ Three-stage pipeline:
      per flag, and explicit instructions: add missing flags using their
      ABSL_FLAG help and any surrounding C++ comment context; for enum-typed
      defaults, expand the description with a value table; preserve
-     human-written content. The output is validated (every flag present,
+     human-written content. The model may only change the sections of new
+     flags, of flags whose `--helpfull` text changed since `--previous-tag`,
+     and of enum defaults to expand: the page is rebuilt from the mechanical
+     result and takes only those sections from the model's output, so every
+     other byte stays as it was. The output is validated (every flag present,
      defaults match modulo equivalence, no duplicates) — if validation
      fails the LLM output is discarded and the mechanical-only result
-     stays on disk. A post-process pass also auto-deduplicates flag
-     sections in case the LLM emits stub copies.
+     stays on disk.
 
 Usage:
+    python tools/docsync/flags_sync.py --tag v2.1.0 --previous-tag v2.0.0
     python tools/docsync/flags_sync.py --tag v1.38.0
     python tools/docsync/flags_sync.py --tag v1.38.0 --dry-run
     python tools/docsync/flags_sync.py --tag v1.38.0 --no-llm
@@ -162,6 +166,15 @@ def is_enum_change(doc: str, server: str) -> bool:
     a number is a more useful default for a CLI reader, and the LLM polish
     will expand the description with the enum-value table."""
     return bool(_INT_RE.match(doc.strip()) and _ENUM_NAME_RE.match(server.strip()))
+
+
+def documents_enum_value(body: str, number: str, name: str) -> bool:
+    """True if one line of a flag section maps the integer default to the enum
+    constant the server reports, as a list item (`- `3` — `MULTI_ENTRY_LZ4``)
+    or a table row. A mention of the constant elsewhere does not count."""
+    num = re.compile(rf"(?<![\w.]){re.escape(number.strip())}(?![\w.])")
+    const = re.compile(rf"(?<![A-Za-z0-9_]){re.escape(name.strip())}(?![A-Za-z0-9_])")
+    return any(num.search(line) and const.search(line) for line in body.splitlines())
 
 
 # --- Section parsing ---------------------------------------------------------
@@ -628,6 +641,9 @@ You will receive:
     comment }.
   - `flags_to_add`: subset of `must_be_present` — flags the server reports
     that are NOT yet in the page; you must write new sections for these.
+  - `flags_to_update`: list of { flag, previous_help, current_help } for
+    documented flags whose `--helpfull` text changed since the previous
+    release. Update their sections so they match `current_help`.
   - `enum_defaults_to_expand`: list of { flag, doc_default, server_default }.
     For each, the page's `default:` MUST stay as the integer (it is what the
     CLI accepts). The flag's description in the polished page MUST list the
@@ -653,9 +669,11 @@ Hard rules:
      EXCEPTION: for flags listed in `enum_defaults_to_expand`, the
      `default:` line MUST be the integer `doc_default` (e.g. `3`), NOT the
      enum name. The enum name and meaning go in the description body.
-  3. For flags already documented: prefer the existing description. If the
-     `--helpfull` text or `source_facts.comments` adds useful detail not
-     already covered, integrate it sparingly. Do not rewrite for style.
+  3. For flags already documented: change a section only if the flag is in
+     `flags_to_update` or `enum_defaults_to_expand`. Keep the rest of such a
+     section's wording. Every other existing section, and everything outside
+     the flag sections, is restored byte-for-byte from the input after you
+     answer, so edits there are discarded. Do not rewrite for style.
   4. For flags in `flags_to_add`: write a clear, neutral description using
      `--helpfull` text + `source_facts.comments`. Do not invent capabilities
      beyond what those texts say.
@@ -707,6 +725,7 @@ def build_polish_user_text(
     must_be_present: list[str],
     flags_to_add: list[str],
     enum_defaults_to_expand: list[dict],
+    flags_to_update: list[dict] | None = None,
 ) -> str:
     parts = [
         "=== must_be_present ===",
@@ -726,6 +745,9 @@ def build_polish_user_text(
         "",
         "=== enum_defaults_to_expand ===",
         json.dumps(enum_defaults_to_expand, indent=2),
+        "",
+        "=== flags_to_update ===",
+        json.dumps(flags_to_update or [], indent=2, ensure_ascii=False),
         "",
         "=== current page ===",
         page_text,
@@ -857,6 +879,64 @@ def restore_missing_sections(
     return text, restored
 
 
+def merge_polish(mech_text: str, polished: str,
+                 editable: set[str]) -> tuple[str, list[str], list[str]]:
+    """Rebuild the page from `mech_text` and take from `polished` only the
+    bodies of `editable` sections and the sections it adds; a new section goes
+    after the section that precedes it in `polished`. Everything else keeps the
+    bytes of the mechanical pass. Returns (text, discarded edits, added)."""
+    mech = list(SECTION_RE.finditer(mech_text))
+    if not mech:
+        return mech_text, [], []
+    pol_matches = list(SECTION_RE.finditer(polished))
+    pol = {m.group("name"): m.group("body") for m in pol_matches}
+    pol_order = [m.group("name") for m in pol_matches]
+    mech_names = {m.group("name") for m in mech}
+    entries: list[list[str]] = []
+    discarded: list[str] = []
+    for m in mech:
+        name, body = m.group("name"), m.group("body")
+        if name in pol and pol[name] != body:
+            if name in editable:
+                body = pol[name]
+            else:
+                discarded.append(name)
+        entries.append([name, mech_text[m.start():m.start("body")], body])
+    added: list[str] = []
+    for i, name in enumerate(pol_order):
+        if name in mech_names:
+            continue
+        placed = {e[0] for e in entries}
+        anchor = next((p for p in reversed(pol_order[:i]) if p in placed), None)
+        pos = 0 if anchor is None else next(k for k, e in enumerate(entries) if e[0] == anchor) + 1
+        entries.insert(pos, [name, f"### `--{name}`\n", pol[name]])
+        added.append(name)
+    rewritten = set(added) | {n for n in editable if n in pol}
+    parts = [mech_text[:mech[0].start()]]
+    for k, (name, header, body) in enumerate(entries):
+        last = k == len(entries) - 1
+        if name in rewritten:
+            body = body.rstrip("\n") + ("\n" if last else "\n\n")
+        elif not last and not body.endswith("\n\n"):
+            body = body.rstrip("\n") + "\n\n"
+        elif last and not body.endswith("\n"):
+            body += "\n"
+        parts.append(header + body)
+    return "".join(parts), discarded, added
+
+
+def help_text_changes(sections: dict[str, "FlagSection"], current: dict[str, dict],
+                      previous: dict[str, dict]) -> list[dict]:
+    """Documented flags whose --helpfull text changed between two releases."""
+    out = []
+    for name in sorted(sections):
+        old, new = previous.get(name), current.get(name)
+        if old and new and old.get("description") != new.get("description"):
+            out.append({"flag": name, "previous_help": old.get("description", ""),
+                        "current_help": new.get("description", "")})
+    return out
+
+
 def validate_polish(
     polished: str,
     all_server_flags: dict[str, dict],
@@ -918,6 +998,9 @@ def print_report(
     polish_skipped_reason: str | None,
     polish_notes: list[str],
     dry_run: bool,
+    help_updates: list[str] | None = None,
+    polish_discarded: list[str] | None = None,
+    pending_enum: set[str] | None = None,
 ) -> int:
     print("")
     print("Ground truth:")
@@ -948,7 +1031,19 @@ def print_report(
         print("  (kept as integer in `default:`; LLM expands description "
               "with the value table)")
         for name, doc, server in mech.deferred_enum:
-            print(f"  --{name}: doc=`{doc}` server=`{server}`")
+            done = pending_enum is not None and name not in pending_enum
+            print(f"  --{name}: doc=`{doc}` server=`{server}`"
+                  + ("  (value table already on the page)" if done else ""))
+
+    if help_updates is None:
+        print("\nHelp-text changes: not checked (pass --previous-tag to let the LLM update "
+              "documented flags whose --helpfull text changed)")
+    elif help_updates:
+        print(f"\n=== Documented flags whose --helpfull text changed ({len(help_updates)}) ===")
+        for n in help_updates:
+            print(f"  --{n}")
+    else:
+        print("\nHelp-text changes: none since the previous release")
 
     if polish_skipped_reason:
         print(f"\nLLM polish: skipped ({polish_skipped_reason})")
@@ -964,6 +1059,11 @@ def print_report(
             print(f"  refreshed {len(polish_changed_flags)} flag section(s)")
         for n in polish_notes[:10]:
             print(f"  note: {n}")
+        if polish_discarded:
+            print(f"  kept the page's text for {len(polish_discarded)} section(s) the LLM "
+                  f"rewrote but was not allowed to change: "
+                  f"{', '.join('--' + n for n in polish_discarded[:10])}"
+                  f"{' ...' if len(polish_discarded) > 10 else ''}")
 
     failed = 0
 
@@ -1017,6 +1117,14 @@ def main() -> int:
                          "the page or calling OpenAI (facts may still be captured).")
     ap.add_argument("--no-llm", action="store_true",
                     help="Skip LLM polish step (mechanical pass only).")
+    prev = ap.add_mutually_exclusive_group()
+    prev.add_argument("--previous-tag",
+                      help="The release the page currently documents (e.g. v2.0.0). Flags whose "
+                           "--helpfull text changed since then are the only existing sections "
+                           "the LLM may update.")
+    prev.add_argument("--previous-facts", type=Path,
+                      help="Pre-captured facts JSON of the previous release, instead of "
+                           "--previous-tag.")
     args = ap.parse_args()
 
     if args.facts and not args.skip_source:
@@ -1049,6 +1157,20 @@ def main() -> int:
     user_facing_flags = filter_user_facing(all_server_flags)
     excluded = sorted(set(all_server_flags) - set(user_facing_flags))
 
+    previous_flags: dict[str, dict] | None = None
+    if args.previous_facts or args.previous_tag:
+        try:
+            if args.previous_facts:
+                previous = json.loads(args.previous_facts.read_text(encoding="utf-8"))
+            else:
+                previous = dfly_refs.load_facts(
+                    args.previous_tag, FACTS_DIR, f"{DRAGONFLY_IMAGE}:{args.previous_tag}",
+                    skip_pull=args.skip_pull, refresh=False)
+        except (RuntimeError, OSError, ValueError) as e:
+            print(f"ERROR: cannot load the previous release's facts: {e}", file=sys.stderr)
+            return 2
+        previous_flags = previous["data"]["flags"]
+
     page_text = FLAGS_PAGE.read_text(encoding="utf-8")
     mech_text, mech = mechanical_pass(page_text, all_server_flags, user_facing_flags)
 
@@ -1058,12 +1180,23 @@ def main() -> int:
     polish_notes: list[str] = []
     final_text = mech_text
 
+    mech_sections = parse_sections(mech_text)
+    help_updates = (help_text_changes(mech_sections, all_server_flags, previous_flags)
+                    if previous_flags is not None else [])
+    # An enum default whose section already maps the integer to the server's
+    # constant has its value table.
+    pending_enum = [(n, doc, server) for (n, doc, server) in mech.deferred_enum
+                    if n in mech_sections
+                    and not documents_enum_value(mech_sections[n].body, doc, server)]
+    editable = (set(mech.missing_from_doc) | {n for n, _, _ in pending_enum}
+                | {u["flag"] for u in help_updates})
+    polish_discarded: list[str] = []
+
     will_run_llm = (
         not args.no_llm
         and not args.dry_run
         and bool(os.getenv("OPENAI_API_KEY"))
-        and (mech.missing_from_doc or mech.removed_from_doc
-             or mech.fixed_defaults or mech.deferred_enum)
+        and bool(editable)
     )
 
     if args.no_llm:
@@ -1072,9 +1205,9 @@ def main() -> int:
         polish_skipped_reason = "--dry-run (OpenAI is not called)"
     elif not os.getenv("OPENAI_API_KEY"):
         polish_skipped_reason = "OPENAI_API_KEY not set"
-    elif not (mech.missing_from_doc or mech.removed_from_doc
-              or mech.fixed_defaults or mech.deferred_enum):
-        polish_skipped_reason = "page already matches server, nothing to polish"
+    elif not editable:
+        polish_skipped_reason = ("nothing for the LLM to write: no new flags, no changed help "
+                                 "text, no enum table to add")
 
     source_facts: dict[str, dict] = {}
     if will_run_llm and not args.skip_source:
@@ -1116,11 +1249,11 @@ def main() -> int:
             }
             enum_defaults_to_expand = [
                 {"flag": n, "doc_default": doc, "server_default": server}
-                for (n, doc, server) in mech.deferred_enum
+                for (n, doc, server) in pending_enum
             ]
             user_text = build_polish_user_text(
                 mech_text, gt_for_llm, sf_for_llm, must_be_present,
-                mech.missing_from_doc, enum_defaults_to_expand,
+                mech.missing_from_doc, enum_defaults_to_expand, help_updates,
             )
             try:
                 try:
@@ -1159,6 +1292,8 @@ def main() -> int:
                             f"auto-restored {len(restored)} missing section(s) "
                             f"from input: {sorted(set(restored))}"
                         )
+                    polished, polish_discarded, _added = merge_polish(
+                        mech_text, polished, editable)
                     enum_keep_int = {n: doc for (n, doc, _) in mech.deferred_enum}
                     polish_validation_errors = validate_polish(
                         polished, all_server_flags, must_be_present_set, enum_keep_int,
@@ -1172,11 +1307,7 @@ def main() -> int:
                               f"{debug.relative_to(REPO_ROOT)} for inspection")
                     if not polish_validation_errors:
                         final_text = polished
-                        polish_changed_flags = sorted(
-                            set(mech.missing_from_doc)
-                            | {n for n, _, _ in mech.fixed_defaults}
-                            | {n for n, _, _ in mech.deferred_enum}
-                        )
+                        polish_changed_flags = sorted(editable)
 
     if not args.dry_run:
         FLAGS_PAGE.write_text(final_text, encoding="utf-8")
@@ -1191,6 +1322,9 @@ def main() -> int:
         polish_skipped_reason=polish_skipped_reason,
         polish_notes=polish_notes,
         dry_run=args.dry_run,
+        help_updates=[u["flag"] for u in help_updates] if previous_flags is not None else None,
+        polish_discarded=polish_discarded,
+        pending_enum={n for n, _, _ in pending_enum},
     )
 
 

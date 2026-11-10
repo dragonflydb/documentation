@@ -38,16 +38,16 @@ XDEL key ID [ID ...]
 Delete a single entry from a stream:
 
 ```shell
-dragonfly$> XADD mystream * name "Alice" age "30"
+dragonfly> XADD mystream * name "Alice" age "30"
 "1527845627383-0"
 
-dragonfly$> XADD mystream * name "Bob" age "25"
+dragonfly> XADD mystream * name "Bob" age "25"
 "1527845627383-1"
 
-dragonfly$> XDEL mystream "1527845627383-0"
+dragonfly> XDEL mystream "1527845627383-0"
 (integer) 1
 
-dragonfly$> XRANGE mystream - +
+dragonfly> XRANGE mystream - +
 1) "1527845627383-1"
    1) "name"
    2) "Bob"
@@ -60,22 +60,22 @@ dragonfly$> XRANGE mystream - +
 Delete multiple entries from the stream by specifying multiple IDs:
 
 ```shell
-dragonfly$> XADD mystream * name "Alice" age "30"
+dragonfly> XADD mystream * name "Alice" age "30"
 "1527845627383-0"
 
-dragonfly$> XADD mystream * name "Bob" age "25"
+dragonfly> XADD mystream * name "Bob" age "25"
 "1527845627383-1"
 
-dragonfly$> XADD mystream * name "Charlie" age "22"
+dragonfly> XADD mystream * name "Charlie" age "22"
 "1527845627383-2"
 
-dragonfly$> XADD mystream * name "Diana" age "28"
+dragonfly> XADD mystream * name "Diana" age "28"
 "1527845627383-3"
 
-dragonfly$> XDEL mystream "1527845627383-1" "1527845627383-3"
+dragonfly> XDEL mystream "1527845627383-1" "1527845627383-3"
 (integer) 2
 
-dragonfly$> XRANGE mystream - +
+dragonfly> XRANGE mystream - +
 1) 1) "1527845627383-0"
    2) 1) "name"
       2) "Alice"

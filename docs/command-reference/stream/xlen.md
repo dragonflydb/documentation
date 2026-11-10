@@ -37,16 +37,16 @@ XLEN key
 Determine the number of entries in a stream:
 
 ```shell
-dragonfly$> XADD mystream * sensor-1-temperature 23.1
+dragonfly> XADD mystream * sensor-1-temperature 23.1
 "1678819562090-0"
 
-dragonfly$> XADD mystream * sensor-2-temperature 23.2
+dragonfly> XADD mystream * sensor-2-temperature 23.2
 "1678819562091-0"
 
-dragonfly$> XADD mystream * sensor-3-temperature 23.3
+dragonfly> XADD mystream * sensor-3-temperature 23.3
 "1678819562092-0"
 
-dragonfly$> XLEN mystream
+dragonfly> XLEN mystream
 (integer) 3
 ```
 
@@ -55,7 +55,7 @@ dragonfly$> XLEN mystream
 Check the length of a non-existent stream:
 
 ```shell
-dragonfly$> XLEN non-existent-stream
+dragonfly> XLEN non-existent-stream
 (integer) 0
 ```
 
