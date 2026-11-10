@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -28,7 +30,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      # Internal links, anchors, and images are resolved by Docusaurus (onBrokenLinks: "throw").
+      # Internal links, anchors, and images are resolved by Docusaurus
+      # (onBrokenLinks and onBrokenAnchors are set to "throw" in docusaurus.config.mjs).
       # This is deterministic, so a failure here blocks the pull request.
       - name: Check internal links (Docusaurus build)
         run: yarn build
@@ -40,17 +43,35 @@ jobs:
           key: lychee-${{ github.run_id }}
           restore-keys: lychee-
 
-      # External links depend on third-party sites, so a failure can be temporary.
-      # Each unique URL is checked once, with retries. See .lychee.toml for the settings.
-      # On pull requests the result is reported but does not block the merge.
-      # The scheduled run fails when a link is still broken, so dead links are found and fixed.
+      # External links depend on third-party sites, so each unique URL is checked once, with retries.
+      # See .lychee.toml for the settings.
+      # - Pull requests: check only the docs files the PR changes, so a PR is blocked only by links it can fix.
+      #   If the PR changes this workflow or .lychee.toml, check all docs to validate the change.
+      # - Scheduled and manual runs: check all docs. A broken link fails the run and sends a notification.
+      - name: Select files for the external link check
+        id: files
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          all="'docs/**/*.md'"
+          if [ "$EVENT_NAME" != "pull_request" ]; then
+            files="$all"
+          elif git diff --name-only "$BASE_SHA" HEAD | grep -qE '^(\.lychee\.toml|\.github/workflows/check-links\.yml)$'; then
+            files="$all"
+          else
+            files=$(git diff --name-only --diff-filter=ACMR "$BASE_SHA" HEAD -- 'docs/*.md' | tr '\n' ' ')
+          fi
+          echo "Files to check: ${files:-none}"
+          echo "files=$files" >> "$GITHUB_OUTPUT"
+
       - name: Check external links
+        if: steps.files.outputs.files != ''
         uses: lycheeverse/lychee-action@v2
-        continue-on-error: ${{ github.event_name == 'pull_request' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: --config .lychee.toml --root-dir ${{ github.workspace }} --no-progress 'docs/**/*.md'
+          args: --config .lychee.toml --root-dir ${{ github.workspace }} --no-progress ${{ steps.files.outputs.files }}
           fail: true
           jobSummary: true
 

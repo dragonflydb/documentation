@@ -14,6 +14,7 @@ const config = {
   url: "https://www.dragonflydb.io",
   baseUrl: isPreviewDeployment ? "/" : "/docs",
   onBrokenLinks: "throw",
+  onBrokenAnchors: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "website/favicon.ico",
   trailingSlash: false,
