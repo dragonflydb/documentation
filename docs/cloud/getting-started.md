@@ -37,6 +37,8 @@ Dragonfly Cloud drastically simplifies the deployment, management, and operation
 ## Payment & Development Instances
 
 - Before creating your first data store, you will be asked to add a **Payment Credit Card**.
+- To pay through AWS, GCP, or Azure Marketplace instead, see [Payment Methods](./billing/payment-methods.md).
+  After subscribing, continue to Dragonfly Cloud from the marketplace to link your account.
 - You can track usage and costs under the [Account > Usage](https://dragonflydb.cloud/account/usage) tab.
 - You are only charged while the data store is active, prorated to the hour.
 - You can delete a data store at any time to stop incurring charges.
