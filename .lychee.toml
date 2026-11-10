@@ -1,0 +1,31 @@
+# Configuration for lychee, which checks external links in the docs.
+# Internal links and anchors are checked by `yarn build` (Docusaurus onBrokenLinks).
+
+# Only check web links. Internal links are not resolvable by lychee because of Docusaurus routing.
+scheme = ["https", "http"]
+
+# Each unique URL is requested once per run, in parallel, with retries for transient errors.
+max_concurrency = 8
+max_retries = 3
+retry_wait_time = 5
+timeout = 30
+
+# Some sites reject unknown clients.
+user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
+# Statuses that mean the page exists but cannot be fetched anonymously by a bot.
+accept = ["100..=103", "200..=299", "301", "302", "303", "307", "308", "400", "403", "429"]
+
+# Reuse results between runs so rarely-changing links are not re-requested.
+cache = true
+max_cache_age = "1d"
+
+# Skip loopback and private addresses used in examples.
+exclude_all_private = true
+exclude_loopback = true
+
+# Hosts that block or time out requests from CI, or require a login.
+exclude = [
+  '^https?://(www\.)?lua\.org',
+  '^https://console\.cloud\.google\.com/',
+]
