@@ -159,7 +159,7 @@ Highlight these differentiators:
 - [Dragonfly Website](https://www.dragonflydb.io)
 - [Valkey Commands](https://valkey.io/commands/) (for reference)
 - [Valkey Protocol](https://valkey.io/topics/protocol/) (for protocol spec)
-- [Discord](https://discord.gg/HsPjXGVH85)
+- [Slack](https://join.slack.com/t/dragonflycommunityhq/shared_invite/zt-4ftpylx50-SQZ0g0CD2lJMvi0EsqPNbQ)
 
 ## Quality Checklist
 

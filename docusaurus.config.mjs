@@ -154,8 +154,8 @@ const config = {
                 label: "Blog",
               },
               {
-                href: "https://discord.gg/HsPjXGVH85",
-                label: "Discord",
+                href: "https://join.slack.com/t/dragonflycommunityhq/shared_invite/zt-4ftpylx50-SQZ0g0CD2lJMvi0EsqPNbQ",
+                label: "Slack",
               },
               {
                 href: "https://dragonfly.discourse.group/",
@@ -239,8 +239,8 @@ const config = {
             title: "Developers",
             items: [
               {
-                label: "Discord",
-                href: "https://discord.gg/HsPjXGVH85",
+                label: "Slack",
+                href: "https://join.slack.com/t/dragonflycommunityhq/shared_invite/zt-4ftpylx50-SQZ0g0CD2lJMvi0EsqPNbQ",
               },
               {
                 label: "GitHub",
