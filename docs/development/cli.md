@@ -7,4 +7,4 @@ sidebar_position: 1
 
 The [redis-cli](https://docs.redis.com/latest/rs/references/cli-utilities/redis-cli/) can also be used with Dragonfly, supporting nearly all of the same commands. 
 
-If you have questions or would like assistance, please join our [Discord](https://discord.gg/HsPjXGVH85) or [get in touch with our team](https://www.dragonflydb.io/early-access). 
+If you have questions or would like assistance, please join our [Slack](https://join.slack.com/t/dragonflycommunityhq/shared_invite/zt-4ftpylx50-SQZ0g0CD2lJMvi0EsqPNbQ) or [get in touch with our team](https://www.dragonflydb.io/early-access). 

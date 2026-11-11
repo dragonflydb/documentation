@@ -185,4 +185,4 @@ To shrink the log or change the shard count, start a new AOF from a snapshot:
 
 `INFO` has no AOF fields, and Dragonfly exports no AOF metrics. AOF messages appear in the server log.
 
-If you have any thoughts or suggestions about AOF, we encourage you to join the conversation on our [Discord server](https://discord.com/invite/HsPjXGVH85).
+If you have any thoughts or suggestions about AOF, we encourage you to join the conversation on our [Slack community](https://join.slack.com/t/dragonflycommunityhq/shared_invite/zt-4ftpylx50-SQZ0g0CD2lJMvi0EsqPNbQ).

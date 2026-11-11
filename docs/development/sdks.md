@@ -9,7 +9,7 @@ sidebar_position: 0
 
 Your favorite Redis SDK or library should work as expected with Dragonfly.
 
-If you run into any issues using a Redis SDK with Dragonfly, please reach out via [Discord](https://discord.gg/HsPjXGVH85) or [get in touch with our team](https://www.dragonflydb.io/early-access).
+If you run into any issues using a Redis SDK with Dragonfly, please reach out via [Slack](https://join.slack.com/t/dragonflycommunityhq/shared_invite/zt-4ftpylx50-SQZ0g0CD2lJMvi0EsqPNbQ) or [get in touch with our team](https://www.dragonflydb.io/early-access).
 
 ## Officially Supported SDKs
 
