@@ -27,7 +27,7 @@ In this guide, we will walk you through the steps to migrate from Redis Cloud to
 </BrowserOnly>
 
 :::tip Need Help?
-If you have any questions or need assistance with your migration, our team is here to help! Join our [Discord community](https://discord.gg/HsPjXGVH85) for real-time support.
+If you have any questions or need assistance with your migration, our team is here to help! Join our [Slack community](https://join.slack.com/t/dragonflycommunityhq/shared_invite/zt-4ftpylx50-SQZ0g0CD2lJMvi0EsqPNbQ) for real-time support.
 :::
 
 ## Prerequisites
