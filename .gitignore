@@ -25,3 +25,4 @@ temp-new-content.json
 tools/generated/
 __pycache__
 .lycheecache
+.idea/
