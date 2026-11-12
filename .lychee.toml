@@ -4,7 +4,9 @@
 # Only check web links. Internal links are not resolvable by lychee because of Docusaurus routing.
 scheme = ["https", "http"]
 
-# Each unique URL is requested once per run, in parallel, with retries for transient errors.
+# Links are checked in parallel. lychee itself retries only timeouts and some dropped connections.
+# In CI, .github/scripts/check-external-links.sh also retries links that fail on other network
+# errors or on HTTP 5xx.
 max_concurrency = 8
 max_retries = 3
 retry_wait_time = 5
