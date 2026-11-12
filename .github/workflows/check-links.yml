@@ -7,6 +7,7 @@ on:
       - '*.md'
       - '.lychee.toml'
       - '.github/workflows/check-links.yml'
+      - '.github/scripts/check-external-links.sh'
   schedule:
     # Run daily at 6:00 UTC
     - cron: '0 6 * * *'
@@ -43,10 +44,12 @@ jobs:
           key: lychee-${{ github.run_id }}
           restore-keys: lychee-
 
-      # External links depend on third-party sites, so each unique URL is checked once, with retries.
-      # See .lychee.toml for the settings.
+      # External links depend on third-party sites. When links fail on a network error, a timeout or
+      # an HTTP 5xx, lychee runs again, up to 10 times in total, until they pass. An HTTP 4xx other
+      # than 408 or 429, such as 404, is not retried and fails the check at once.
+      # See .lychee.toml and .github/scripts/check-external-links.sh.
       # - Pull requests: check only the docs files the PR changes, so a PR is blocked only by links it can fix.
-      #   If the PR changes this workflow or .lychee.toml, check all docs to validate the change.
+      #   If the PR changes this workflow, the script, or .lychee.toml, check all docs to validate the change.
       # - Scheduled and manual runs: check all docs. A broken link fails the run and sends a notification.
       - name: Select files for the external link check
         id: files
@@ -57,7 +60,7 @@ jobs:
           all="'docs/**/*.md'"
           if [ "$EVENT_NAME" != "pull_request" ]; then
             files="$all"
-          elif git diff --name-only "$BASE_SHA" HEAD | grep -qE '^(\.lychee\.toml|\.github/workflows/check-links\.yml)$'; then
+          elif git diff --name-only "$BASE_SHA" HEAD | grep -qE '^(\.lychee\.toml|\.github/workflows/check-links\.yml|\.github/scripts/check-external-links\.sh)$'; then
             files="$all"
           else
             files=$(while IFS= read -r -d '' file; do printf '%q ' "$file"; done < <(git diff --name-only -z --diff-filter=ACMR "$BASE_SHA" HEAD -- 'docs/*.md'))
@@ -65,16 +68,32 @@ jobs:
           echo "Files to check: ${files:-none}"
           echo "files=$files" >> "$GITHUB_OUTPUT"
 
+      # The retry script relies on details of this lychee version: exit status 2 and the format of
+      # the markdown report for failed links, and a cache that never stores failures.
+      # Check that they still hold before upgrading.
+      - name: Install lychee
+        if: steps.files.outputs.files != ''
+        env:
+          LYCHEE_VERSION: v0.24.2
+          LYCHEE_SHA256: 1f4e0ef7f6554a6ed33dd7ac144fb2e1bbed98598e7af973042fc5cd43951c9a
+        run: |
+          archive=lychee-x86_64-unknown-linux-gnu.tar.gz
+          curl -sSfL --connect-timeout 20 --max-time 120 --retry 8 --retry-delay 15 --retry-all-errors \
+            -o "$RUNNER_TEMP/$archive" \
+            "https://github.com/lycheeverse/lychee/releases/download/lychee-$LYCHEE_VERSION/$archive"
+          echo "$LYCHEE_SHA256  $RUNNER_TEMP/$archive" | sha256sum --check --strict
+          tar -xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/lychee-x86_64-unknown-linux-gnu" >> "$GITHUB_PATH"
+
       - name: Check external links
         if: steps.files.outputs.files != ''
-        uses: lycheeverse/lychee-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          failIfEmpty: false
-          args: --config .lychee.toml --root-dir ${{ github.workspace }} --no-progress ${{ steps.files.outputs.files }}
-          fail: true
-          jobSummary: true
+          FILES: ${{ steps.files.outputs.files }}
+        run: |
+          # FILES holds shell-quoted file paths, or a quoted glob that lychee expands.
+          eval "set -- $FILES"
+          .github/scripts/check-external-links.sh "$@"
 
       - name: Send notification on failure
         if: failure() && github.ref == 'refs/heads/main'
