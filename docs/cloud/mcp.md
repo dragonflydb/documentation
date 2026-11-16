@@ -27,9 +27,20 @@ MCP tools can perform **destructive, irreversible operations** on your Dragonfly
 
 Dragonfly Cloud does not expose your data store credentials (such as passwords) through the MCP server by default.
 
+## Connecting with OAuth (No API Key)
+
+MCP clients that implement the latest [MCP authorization specification](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization) can connect without an API key. The server supports OAuth 2.1 with Client ID Metadata Documents (CIMD), so these clients identify themselves automatically and need no manual registration.
+
+1. Add the server URL `https://api.dragonflydb.cloud/v1/mcp` to your MCP client, without an `Authorization` header.
+2. When the client connects, it opens a browser window.
+3. Sign in to Dragonfly Cloud and approve the access request.
+4. The client is now connected and can use the MCP tools with your permissions.
+
+If your client doesn't support OAuth, use an API key as described below. API keys are also the better choice for long-running or unattended use, such as agents and automation that can't rely on an interactive browser sign-in.
+
 ## Generating an API Key
 
-Access to the MCP server is authenticated using a Dragonfly Cloud API key with an MCP-specific scope:
+Access to the MCP server can also be authenticated using a Dragonfly Cloud API key with an MCP-specific scope. This is the recommended option for long-running integrations:
 
 - Navigate to the [Access > API Keys](https://dragonflydb.cloud/account/keys) tab in Dragonfly Cloud.
 - Click the [+API Key](https://dragonflydb.cloud/account/keys) button to open the **Create Key** dialog.
