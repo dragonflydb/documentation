@@ -68,11 +68,14 @@ const config = {
         "@type": "Organization",
         name: "DragonflyDB",
         url: "https://www.dragonflydb.io/",
-        logo: "https://dragonflydb.io/assets/logo.svg",
+        logo: "https://www.dragonflydb.io/assets/logo.svg",
+        description:
+          "Dragonfly is an in-memory data store that is API-compatible with Redis and Memcached. Its multi-threaded, shared-nothing architecture scales vertically across all cores of a single machine. It is available self-hosted and as Dragonfly Cloud, a fully managed service.",
         sameAs: [
           "https://twitter.com/dragonflydbio",
           "https://github.com/dragonflydb/dragonfly",
           "https://www.linkedin.com/company/dragonflydb",
+          "https://www.youtube.com/@dragonflydb",
         ],
       }),
     },
@@ -100,6 +103,21 @@ const config = {
         },
         sitemap: {
           lastmod: "datetime",
+          // With trailingSlash: false the docs root is served at "/docs" and
+          // "/docs/" answers 308, so list the final URL instead.
+          createSitemapItems: async (params) => {
+            const { defaultCreateSitemapItems, ...rest } = params;
+            const items = await defaultCreateSitemapItems(rest);
+            const baseUrl = rest.siteConfig.baseUrl.replace(/\/$/, "");
+
+            if (!baseUrl) return items;
+
+            const rootWithSlash = `${rest.siteConfig.url}${baseUrl}/`;
+
+            return items.map((item) =>
+              item.url === rootWithSlash ? { ...item, url: `${rest.siteConfig.url}${baseUrl}` } : item,
+            );
+          },
         },
         googleTagManager: {
           containerId: "GTM-M7MX697",

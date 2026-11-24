@@ -15,11 +15,14 @@
 // structured data.
 export const buildPageJsonLd = (siteUrl: string, permalink: string, dateModifiedMs: number) => {
   const dateModified = new Date(dateModifiedMs).toISOString();
+  // trailingSlash is false, so a trailing-slash permalink (the docs root) would
+  // name a URL that redirects. Keep "/" itself when the site is served at root.
+  const path = permalink.length > 1 ? permalink.replace(/\/$/, "") : permalink;
 
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    url: `${siteUrl}${permalink}`,
+    url: `${siteUrl}${path}`,
     dateModified,
   };
 };
